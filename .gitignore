@@ -1,0 +1,14 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+
+# Node
+node_modules/
+
+# Mac 
+.DS_Store
+
+# IDEs
+.idea/
+.vscode/
