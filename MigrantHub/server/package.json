@@ -8,7 +8,8 @@
     "client": "npm start --prefix ../client",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
     "client-install": "cd ../client && npm install",
-    "install-all": "npm install && npm run client-install"
+    "install-all": "npm install && npm run client-install",
+    "lint": "eslint routes app.js"
   },
   "dependencies": {
     "body-parser": "^1.18.3",
@@ -20,6 +21,9 @@
     "morgan": "~1.9.0"
   },
   "devDependencies": {
+    "eslint": "^5.3.0",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-plugin-import": "^2.14.0",
     "nodemon": "^1.18.4"
   }
 }
