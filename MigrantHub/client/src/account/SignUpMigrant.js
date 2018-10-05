@@ -62,7 +62,7 @@ const steps = ['Account', 'Contact', 'Personal', 'Language', 'Family', 'Educatio
 function getStepContent(step) {
   switch (step) {
     case 0:
-      return <AccountInfo />;
+      return <AccountInfo/>;
     case 1:
       return <ContactInfo />;
     case 2:
