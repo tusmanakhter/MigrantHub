@@ -23,22 +23,23 @@ const provinces = [
 
 const organizationTypes = [
   { value : 'FDRL', label : 'Federal'},
-  { value : 'PROV', label : "Provincial"},
-  { value : 'NGOV', label : "Non-governmental"}
+  { value : 'NGOV', label : "Non-governmental"},
+  { value : 'PROV', label : "Provincial"}
 ];
   
 // https://www.canada.ca/en/government/dept.html
 // https://libguides.smu.ca/govdoc/canada/departments
 const federalDepartments = [
-  { value : 'INDI', label : 'Indigenous and Northern Affairs Canada'},
   { value : 'AGRI', label : 'Agriculture and Agri-Food Canada'},
   { value : 'ATLA', label : 'Atlantic Canada Opportunities Agency'},
   { value : 'AUDI', label : 'Auditor General of Canada, Office of the'},
   { value : 'BANK', label : 'Bank of Canada'},
+  { value : 'HERE', label : 'Canadian Heritage'},
+  { value : 'HUMN', label : 'Canadian Human Rights Commission'},
   { value : 'HOUS', label : 'Canada Mortgage and Housing Corporation'},
   { value : 'REVE', label : 'Canada Revenue Agency'},
-  { value : 'HERE', label : 'Canadian Heritage'},
   { value : 'IMMI', label : 'Citizenship and Immigration Canada'},
+  { value : 'JUST', label : 'Department of Justice'},
   { value : 'EMPL', label : 'Employment and Social Development Canada'},
   { value : 'ENVR', label : 'Environment Canada'},
   { value : 'FINA', label : 'Finance Canada'},
@@ -46,16 +47,15 @@ const federalDepartments = [
   { value : 'GLOB', label : 'Global Affairs Canada'},
   { value : 'GGOV', label : 'Governor General of Canada'},
   { value : 'HLTH', label : 'Health Canada'},
+  { value : 'INDI', label : 'Indigenous and Northern Affairs Canada'},
   { value : 'INFR', label : 'Infrastructure Canada'},
   { value : 'INTR', label : 'Intergovernmental Affairs'},
-  { value : 'JUST', label : 'Department of Justice'},
   { value : 'ARCH', label : 'Library and Archives Canada'},
   { value : 'ARMY', label : 'National Defence and the Canadian Armed Forces'},
   { value : 'PUBL', label : 'Public Works and Government Services Canada'},
   { value : 'STAT', label : 'Statistics Canada'},
   { value : 'TRAN', label : 'Transport Canada'},
-  { value : 'TREA', label : 'Treasury Board of Canada'},
-  { value : 'HUMN', label : 'Canadian Human Rights Commission'},
+  { value : 'TREA', label : 'Treasury Board of Canada'}
 ];
   
  // https://en.wikipedia.org/wiki/Departments_of_the_Quebec_Government
@@ -70,12 +70,13 @@ const federalDepartments = [
    { value : '', label : ''},
  ];
 
+ // NEED TO CHECK THIS, GET IT APPROVED BY ABDULLAH
 const serviceTypes = [
-  { value : '', type: ''},
-  { value : '', type: ''},
-  { value : '', type: ''},
-  { value : '', type: ''},
-  { value : '', type: ''},
+  { value : 'FINA', label: 'Financial'},
+  { value : 'FOOD', label: 'Food'},
+  { value : 'HEAL', label: 'Health'},
+  { value : 'HOUS', label: 'Housing'},
+  { value : '', label: ''},
 ];
 
 class MerchantAboutInfo extends FormComponent {
@@ -123,7 +124,7 @@ class MerchantAboutInfo extends FormComponent {
             ))}
           </TextField>
         </Grid>
-        <Grid item xs={12} sm={6}>
+        {this.state.orgType == 'PROV' ? <Grid item xs={12} sm={6}>
           <TextField
             id="province"
             name="province"
@@ -140,7 +141,8 @@ class MerchantAboutInfo extends FormComponent {
               </MenuItem>
             ))}
           </TextField>
-        </Grid>
+        </Grid> : ''}
+        {this.state.orgType != '' && this.state.orgType != 'NGOV' ? //Check if Org Type is Gov
         <Grid item xs={12} sm={6}>
           <TextField
             id="department"
@@ -152,13 +154,24 @@ class MerchantAboutInfo extends FormComponent {
             fullWidth
             helperText="Please select a department"
           >
-            {federalDepartments.map(option => (
-              <MenuItem key={option.value} value={option.value}>
-                {option.label}
-              </MenuItem>
-            ))}
+          {this.state.orgType == "FDRL" ? 
+            // If Federal Org
+              federalDepartments.map(option => (
+                <MenuItem key={option.value} value={option.value}>
+                  {option.label}
+              </MenuItem> ))
+            // If Provincial Org  
+              : this.state.orgType == 'PROV' ? //NEED TO FILTER BY PROVINCE!
+              provincialDepartments.map(option => (
+                <MenuItem key={option.value} value={option.value}>
+                  {option.label}
+              </MenuItem> )) 
+            // If Non-Gov Org there is no Department (but service type)
+              : ''
+            }
           </TextField>
-        </Grid>
+        </Grid> : '' }
+        {this.state.orgType == 'NGOV' ? //If Non-Gov Org, ask for service type
         <Grid item xs={12} sm={6}>
           <TextField
             id="serviceType"
@@ -176,7 +189,7 @@ class MerchantAboutInfo extends FormComponent {
               </MenuItem>
             ))}
           </TextField>
-        </Grid>
+        </Grid> : ''}
         <Grid item xs={12}>
           <TextField
             id="description" 
