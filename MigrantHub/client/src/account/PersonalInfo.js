@@ -26,16 +26,19 @@ const gender = [
   { value: 'other', label: 'Other' },
 ];
 
+const relationshipStatus = [
+  { value: 'married', label: 'Married' },
+  { value: 'single', label: 'Single' },
+  { value: 'divorced', label: 'Divorced' },
+  { value: 'widowed', label: 'Widowed' },
+]
+
 const styles = theme => ({
-  formControl: {
-    margin: theme.spacing.unit * 3,
-  },
   group: {
-    margin: `${theme.spacing.unit}px 0`,
     flexDirection: 'row'
   },
-  label: {
-    flexDirection: 'row'
+  formControl: {
+    textAlign: 'left'
   }
 });
 
@@ -44,6 +47,7 @@ class PersonalInfo extends FormComponent {
     age: '',
     gender: '',
     nationality: '',
+    relationshipStatus: '',
     status: ''
   }
 
@@ -56,7 +60,7 @@ class PersonalInfo extends FormComponent {
         Personal Information
       </Typography>
       <Grid container spacing={24}>
-        <Grid item xs={12} sm={6}>
+        <Grid item xs={12} sm={3}>
           <TextField 
             id="age"
             name="age"
@@ -69,7 +73,7 @@ class PersonalInfo extends FormComponent {
             }}
           />
         </Grid>
-        <Grid item xs={12} sm={6}>
+        <Grid item xs={12} sm={5}>
           <TextField
             id="nationality" 
             name="nationality"
@@ -78,6 +82,25 @@ class PersonalInfo extends FormComponent {
             onChange={ event => this.handleChange(event)}
             fullWidth
           />
+        </Grid>
+        <Grid item xs={12} sm={4}>
+          <FormControl component="fieldset" fullWidth className={classes.formControl}>
+            <FormLabel component="legend">Gender</FormLabel>
+            <RadioGroup
+              aria-label="Gender"
+              id="gender"
+              name="gender"
+              className={classes.group}
+              value={this.state.gender}
+              onChange={ event => this.handleChange(event)}
+            >
+              {gender.map(option => (
+                <FormControlLabel key={option.value} value={option.value} control={<Radio />} label={option.label}>
+                  {option.label}
+                </FormControlLabel>
+              ))}
+            </RadioGroup>
+          </FormControl>
         </Grid>
         <Grid item xs={12} sm={6}>
           <TextField
@@ -98,23 +121,22 @@ class PersonalInfo extends FormComponent {
           </TextField>
         </Grid>
         <Grid item xs={12} sm={6}>
-          <FormControl component="fieldset" className={classes.formControl}>
-            <FormLabel component="legend">Gender</FormLabel>
-            <RadioGroup
-              aria-label="Gender"
-              id="gender"
-              name="gender"
-              className={classes.group}
-              value={this.state.gender}
-              onChange={ event => this.handleChange(event)}
-            >
-              {gender.map(option => (
-                <FormControlLabel key={option.value} value={option.value} control={<Radio />} label={option.label}>
-                  {option.label}
-                </FormControlLabel>
-              ))}
-            </RadioGroup>
-          </FormControl>
+          <TextField
+            id="relationshipStatus"
+            name="relationshipStatus"
+            select
+            label="Relationship Status"
+            value={this.state.relationshipStatus}
+            onChange={event => this.handleChange(event)}
+            helperText="Please select a relationship status"
+            fullWidth
+          >
+            {relationshipStatus.map(option => (
+              <MenuItem key={option.value} value={option.value}>
+                {option.label}
+              </MenuItem>
+            ))}
+          </TextField>
         </Grid>
       </Grid>
       </React.Fragment>

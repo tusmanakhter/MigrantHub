@@ -1,5 +1,7 @@
 import React from 'react';
 import FormComponent from './FormComponent'
+import PropTypes from 'prop-types';
+import withStyles from '@material-ui/core/styles/withStyles';
 import TextField from '@material-ui/core/TextField';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormGroup from '@material-ui/core/FormGroup';
@@ -7,6 +9,8 @@ import FormControl from '@material-ui/core/FormControl';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormLabel from '@material-ui/core/FormLabel';
 import Checkbox from '@material-ui/core/Checkbox';
+import Grid from '@material-ui/core/Grid';
+import Typography from '@material-ui/core/Typography';
 
 const educationLevels = [
   { value: 'earlyChildhood', label: 'Early childhood' },
@@ -20,9 +24,18 @@ const educationLevels = [
 ];
 
 const proficiencyExams = [
-  { value: 'proficiencyExams.ielts', label: 'IELTS' },
-  { value: 'proficiencyExams.french', label: 'French' }
+  { value: 'ielts', label: 'IELTS' },
+  { value: 'french', label: 'French' }
 ]
+
+const styles = theme => ({
+  group: {
+    flexDirection: 'row'
+  },
+  formControl: {
+    textAlign: 'left'
+  }
+});
 
 class EducationInfo extends FormComponent {
   state = {
@@ -30,15 +43,26 @@ class EducationInfo extends FormComponent {
     proficiencyExams: {
       ielts: '',
       french: '',
-      other: ''
+      others: ''
     },
   }
 
+  handleChangeExams = (name) => (event) => {
+    let proficiencyExams = { ...this.state.proficiencyExams };
+    proficiencyExams[name] = event.target.checked;
+    this.setState({ proficiencyExams });
+  }
+
   render() {
+    const { classes } = this.props;
+
     return (
-      <div className="EducationInfo">
-        <section>
-          <h2>Education Information</h2>
+      <React.Fragment>
+      <Typography variant="title" gutterBottom>
+        Education Information
+      </Typography>
+      <Grid container spacing={24}>
+        <Grid item xs={12}>
           <TextField
             name="educationLevel"
             select
@@ -47,6 +71,7 @@ class EducationInfo extends FormComponent {
             onChange={event => this.handleChange(event)}
             margin="normal"
             helperText="Please select an education level"
+            fullWidth
           >
             {educationLevels.map(option => (
               <MenuItem key={option.value} value={option.value}>
@@ -54,17 +79,19 @@ class EducationInfo extends FormComponent {
               </MenuItem>
             ))}
           </TextField>
-          <FormControl component="fieldset">
+        </Grid>
+        <Grid item xs={3} s={3}>
+          <FormControl component="fieldset" fullWidth className={classes.formControl}>
             <FormLabel component="legend">Proficiency Exams</FormLabel>
-            <FormGroup name="proficiencyExams">
+            <FormGroup className={classes.group} name="proficiencyExams">
               {proficiencyExams.map(option => (
                   <FormControlLabel
                     key={option.value}
                     control={
                       <Checkbox
                         name={option.value}
-                        checked={option.value}
-                        onChange={ event => this.handleChange(event)}
+                        checked={this.state.proficiencyExams[option.value]}
+                        onChange={this.handleChangeExams(option.value)}
                       />
                     }
                     label={option.label}
@@ -72,10 +99,25 @@ class EducationInfo extends FormComponent {
                 ))}
             </FormGroup>
           </FormControl>
-        </section>
-      </div>
+        </Grid>
+        <Grid item xs={9} s={9}>
+          <TextField
+            id="others" 
+            name="others"
+            label="Others"
+            value={this.state.others}
+            onChange={this.handleChangeExams(this.state.others)}
+            fullWidth
+          />
+        </Grid>
+      </Grid>
+      </React.Fragment>
     );
   }
 }
 
-export default EducationInfo;
+EducationInfo.propTypes = {
+  classes: PropTypes.object.isRequired,
+};
+
+export default withStyles(styles)(EducationInfo);

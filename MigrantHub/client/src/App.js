@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
 import SignUpMigrant from './account/SignUpMigrant';
-import SignUpMerchant from './account/SignUpMerchant';
 
 class App extends Component {
   state = { users: [] }
@@ -16,8 +15,7 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-      <SignUpMerchant/>
-        {/*  <SignUpMigrant />  */}
+        <SignUpMigrant />
       </div>
     );
   }

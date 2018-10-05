@@ -62,7 +62,7 @@ const steps = ['Account', 'Contact', 'Personal', 'Language', 'Family', 'Educatio
 function getStepContent(step) {
   switch (step) {
     case 0:
-      return <AccountInfo />;
+      return <AccountInfo/>;
     case 1:
       return <ContactInfo />;
     case 2:
@@ -135,11 +135,10 @@ class SignUpMigrant extends Component {
             {activeStep === steps.length ? (
               <React.Fragment>
                 <Typography variant="headline" gutterBottom>
-                  Thank you for your order.
+                  Welcome to MigrantHub.
                 </Typography>
                 <Typography variant="subheading">
-                  Your order number is #2001539. We have emailed your order confirmation, and will
-                  send you an update when your order has shipped.
+                  Check email for activation.
                 </Typography>
               </React.Fragment>
             ) : (

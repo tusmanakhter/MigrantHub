@@ -1,12 +1,18 @@
-import React, { Component } from 'react';
+import { Component } from 'react';
 
 class FormComponent extends Component {
   handleChange = event => {
     this.setState({
       [event.target.name]: event.target.value
     })
-    console.log(event.target);
   }
+
+  handleFieldChange = (field) => (event, value, selectedKey) => {
+    let data = { ...this.state.data };
+    data[field] = value;
+    this.setState({ data });
+  }
+
 }
 
 export default FormComponent;
