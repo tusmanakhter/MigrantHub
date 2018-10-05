@@ -1,5 +1,5 @@
 import React from 'react';
-import FormComponent from './FormComponent'
+import FormComponent from '../FormComponent';
 import TextField from '@material-ui/core/TextField';
 import MenuItem from '@material-ui/core/MenuItem';
 import PropTypes from 'prop-types';

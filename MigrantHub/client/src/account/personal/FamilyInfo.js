@@ -1,5 +1,5 @@
 import React from 'react';
-import FormComponent from './FormComponent'
+import FormComponent from '../FormComponent';
 import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';

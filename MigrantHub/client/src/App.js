@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
-import SignUpMigrant from './account/SignUpMigrant';
+import SignUpMigrant from './account/personal/SignUpMigrant';
+import SignUpMerchant from './account/business/SignUpMerchant';
 
 class App extends Component {
   state = { users: [] }
@@ -9,7 +10,7 @@ class App extends Component {
   componentDidMount() {
     fetch('/users')
       .then(res => res.json())
-      .then(users => this.setState({ users}));
+      .then(users => this.setState({ users }));
   }
 
   render() {

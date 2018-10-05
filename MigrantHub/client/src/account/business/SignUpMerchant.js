@@ -11,7 +11,7 @@ import StepLabel from '@material-ui/core/StepLabel';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 
-import AccountInfo from './AccountInfo';
+import AccountInfo from '../AccountInfo';
 import MerchantContactInfo from './MerchantContactInfo';
 import MerchantAboutInfo from './MerchantAboutInfo';
 
@@ -94,64 +94,64 @@ class SignUpMerchant extends Component {
   render() {
     const { classes } = this.props;
     const { activeStep } = this.state;
-    
+
     return (
       <React.Fragment>
-      <CssBaseline />
-      <AppBar position="absolute" color="default" className={classes.appBar}>
-        <Toolbar>
-          <Typography variant="title" color="inherit" noWrap>
-            MigrantHub
+        <CssBaseline />
+        <AppBar position="absolute" color="default" className={classes.appBar}>
+          <Toolbar>
+            <Typography variant="title" color="inherit" noWrap>
+              MigrantHub
           </Typography>
-        </Toolbar>
-      </AppBar>
-      <main className={classes.layout}>
-        <Paper className={classes.paper}>
-          <Typography variant="display1" align="center">
-            Sign Up
+          </Toolbar>
+        </AppBar>
+        <main className={classes.layout}>
+          <Paper className={classes.paper}>
+            <Typography variant="display1" align="center">
+              Sign Up
           </Typography>
-          <Stepper activeStep={activeStep} className={classes.stepper}>
-            {steps.map(label => (
-              <Step key={label}>
-                <StepLabel>{label}</StepLabel>
-              </Step>
-            ))}
-          </Stepper>
-          <React.Fragment>
-            {activeStep === steps.length ? (
-              <React.Fragment>
-                <Typography variant="headline" gutterBottom>
-                  Thank you for your order.
+            <Stepper activeStep={activeStep} className={classes.stepper}>
+              {steps.map(label => (
+                <Step key={label}>
+                  <StepLabel>{label}</StepLabel>
+                </Step>
+              ))}
+            </Stepper>
+            <React.Fragment>
+              {activeStep === steps.length ? (
+                <React.Fragment>
+                  <Typography variant="headline" gutterBottom>
+                    Thank you for your order.
                 </Typography>
-                <Typography variant="subheading">
-                  Your order number is #2001539. We have emailed your order confirmation, and will
-                  send you an update when your order has shipped.
+                  <Typography variant="subheading">
+                    Your order number is #2001539. We have emailed your order confirmation, and will
+                    send you an update when your order has shipped.
                 </Typography>
-              </React.Fragment>
-            ) : (
-              <React.Fragment>
-                {getStepContent(activeStep)}
-                <div className={classes.buttons}>
-                  {activeStep !== 0 && (
-                    <Button onClick={this.handleBack} className={classes.button}>
-                      Back
+                </React.Fragment>
+              ) : (
+                  <React.Fragment>
+                    {getStepContent(activeStep)}
+                    <div className={classes.buttons}>
+                      {activeStep !== 0 && (
+                        <Button onClick={this.handleBack} className={classes.button}>
+                          Back
                     </Button>
-                  )}
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    onClick={this.handleNext}
-                    className={classes.button}
-                  >
-                    {activeStep === steps.length - 1 ? 'Sign Up' : 'Next'}
-                  </Button>
-                </div>
-              </React.Fragment>
-            )}
-          </React.Fragment>
-        </Paper>
-      </main>
-    </React.Fragment>
+                      )}
+                      <Button
+                        variant="contained"
+                        color="primary"
+                        onClick={this.handleNext}
+                        className={classes.button}
+                      >
+                        {activeStep === steps.length - 1 ? 'Sign Up' : 'Next'}
+                      </Button>
+                    </div>
+                  </React.Fragment>
+                )}
+            </React.Fragment>
+          </Paper>
+        </main>
+      </React.Fragment>
     );
   }
 }

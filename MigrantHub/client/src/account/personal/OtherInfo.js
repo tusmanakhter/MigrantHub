@@ -1,5 +1,5 @@
 import React from 'react';
-import FormComponent from './FormComponent'
+import FormComponent from '../FormComponent';
 import PropTypes from 'prop-types';
 import withStyles from '@material-ui/core/styles/withStyles';
 import TextField from '@material-ui/core/TextField';
@@ -10,7 +10,7 @@ import Autosuggest from 'react-autosuggest';
 import Paper from '@material-ui/core/Paper';
 import match from 'autosuggest-highlight/match';
 import parse from 'autosuggest-highlight/parse';
-import {cities} from 'canada'
+import { cities } from 'canada';
 import deburr from 'lodash/deburr';
 
 const joiningReasons = [
@@ -25,7 +25,7 @@ const getSuggestions = value => {
 
   return inputLength === 0 ? [] : cities.filter(city => {
     const keep = count < 5 && (city[0] + ", " + city[1]).slice(0, inputLength).toLowerCase() === inputValue;
-    
+
     if (keep) {
       count++;
     }
@@ -49,10 +49,10 @@ const renderSuggestion = (suggestion, { query, isHighlighted }) => {
               {part.text}
             </span>
           ) : (
-            <strong key={String(index)} style={{ fontWeight: 300 }}>
-              {part.text}
-            </strong>
-          );
+              <strong key={String(index)} style={{ fontWeight: 300 }}>
+                {part.text}
+              </strong>
+            );
         })}
       </div>
     </MenuItem>
@@ -60,7 +60,7 @@ const renderSuggestion = (suggestion, { query, isHighlighted }) => {
 };
 
 const renderInputComponent = inputProps => {
-  const { classes, inputRef = () => {}, ref, ...other } = inputProps;
+  const { classes, inputRef = () => { }, ref, ...other } = inputProps;
 
   return (
     <TextField
@@ -133,7 +133,7 @@ class OtherInfo extends FormComponent {
 
   render() {
     const { classes } = this.props;
-    
+
     const autosuggestProps = {
       renderInputComponent,
       suggestions: this.state.suggestions,
@@ -145,62 +145,62 @@ class OtherInfo extends FormComponent {
 
     return (
       <React.Fragment>
-      <Typography variant="title" gutterBottom>
-      Other Information
+        <Typography variant="title" gutterBottom>
+          Other Information
       </Typography>
-      <Grid container spacing={24}>
-        <Grid item xs={12} sm={6}>
-          <Autosuggest
-            {...autosuggestProps}
-            inputProps={{
-              classes,
-              label: 'Settling Location',
-              value: this.state.settlingLocation,
-              onChange: this.handleAutoSuggestChange('settlingLocation'),
-            }}
-            theme={{
-              container: classes.container,
-              suggestionsContainerOpen: classes.suggestionsContainerOpen,
-              suggestionsList: classes.suggestionsList,
-              suggestion: classes.suggestion,
-            }}
-            renderSuggestionsContainer={options => (
-              <Paper {...options.containerProps} square>
-                {options.children}
-              </Paper>
-            )}
-          />
+        <Grid container spacing={24}>
+          <Grid item xs={12} sm={6}>
+            <Autosuggest
+              {...autosuggestProps}
+              inputProps={{
+                classes,
+                label: 'Settling Location',
+                value: this.state.settlingLocation,
+                onChange: this.handleAutoSuggestChange('settlingLocation'),
+              }}
+              theme={{
+                container: classes.container,
+                suggestionsContainerOpen: classes.suggestionsContainerOpen,
+                suggestionsList: classes.suggestionsList,
+                suggestion: classes.suggestion,
+              }}
+              renderSuggestionsContainer={options => (
+                <Paper {...options.containerProps} square>
+                  {options.children}
+                </Paper>
+              )}
+            />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              id="settlingDuration"
+              name="settlingDuration"
+              label="Settling Duration"
+              value={this.state.settlingDuration}
+              onChange={event => this.handleChange(event)}
+              fullWidth
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <TextField
+              id="joiningReason"
+              name="joiningReason"
+              select
+              label="Reason for joining"
+              value={this.state.joiningReason}
+              onChange={event => this.handleChange(event)}
+              margin="normal"
+              helperText="Please select a joining reason"
+              fullWidth
+            >
+              {joiningReasons.map(option => (
+                <MenuItem key={option.value} value={option.value}>
+                  {option.label}
+                </MenuItem>
+              ))}
+            </TextField>
+          </Grid>
         </Grid>
-        <Grid item xs={12} sm={6}>
-          <TextField 
-            id="settlingDuration"
-            name="settlingDuration"
-            label="Settling Duration"
-            value={this.state.settlingDuration}
-            onChange={ event => this.handleChange(event)}
-            fullWidth
-          />
-        </Grid>
-        <Grid item xs={12}>
-          <TextField
-            id="joiningReason"
-            name="joiningReason"
-            select
-            label="Reason for joining"
-            value={this.state.joiningReason}
-            onChange={event => this.handleChange(event)}
-            margin="normal"
-            helperText="Please select a joining reason"
-            fullWidth
-          >
-            {joiningReasons.map(option => (
-              <MenuItem key={option.value} value={option.value}>
-                {option.label}
-              </MenuItem>
-            ))}
-          </TextField>
-        </Grid>
-      </Grid>
       </React.Fragment>
     );
   }
