@@ -1,5 +1,4 @@
-import React from 'react';
-import FormComponent from './FormComponent'
+import React, { Component } from 'react';
 import TextField from '@material-ui/core/TextField';
 import MenuItem from '@material-ui/core/MenuItem';
 import PropTypes from 'prop-types';
@@ -16,17 +15,19 @@ import AddIcon from '@material-ui/icons/Add';
 import DeleteIcon from '@material-ui/icons/Delete';
 import InputAdornment from '@material-ui/core/InputAdornment';
 
-const jobStatus = [
+const jobStatuses = [
   { value: 'fulltime', label: 'Full Time' },
   { value: 'parttime', label: 'Part Time' },
   { value: 'unemployed', label: 'Unemployed' },
   { value: 'student', label: 'Student' }
 ]
 
-const lookingForJob = [
+const lookingForJobOptions = [
   { value: 'true', label: 'Yes' },
   { value: 'false', label: 'No' },
 ]
+
+const workObject = { title: '', company: '', years: '' };
 
 const styles = theme => ({
   container: {
@@ -60,37 +61,18 @@ const styles = theme => ({
     textAlign: 'left'
   }
 });
-class EmploymentInfo extends FormComponent {
-  state = {
-    jobStatus: '',
-    lookingForJob: '',
-    currentIncome: '', //optional
-    workExperience: [], //optional
-  }
-
-  handleAddWork = () => {
-    this.setState({
-      workExperience: this.state.workExperience.concat([{ title: '', company: '', years: '' }]),
-    });
-  }
-
-  handleRemoveWork = (index) => {
-    this.setState({
-      workExperience: this.state.workExperience.filter((s, _index) => _index !== index),
-    });
-  }
-
-  handleEditWork= (index) => (event) => {
-    this.setState({
-      workExperience: this.state.workExperience.map((s, _index) => {
-        if (_index !== index) return s;
-        return { ...s, [event.target.name]: event.target.value };
-      }),
-    });
-  }
-
+class EmploymentInfo extends Component {
   render() {
     const { classes } = this.props;
+
+    const handleChange = this.props.handleChange;
+    const handleAddObject= this.props.handleAddObject;
+    const handleRemoveObject= this.props.handleRemoveObject;
+    const handleEditObject= this.props.handleEditObject;
+    const jobStatus = this.props.jobStatus;
+    const lookingForJob = this.props.lookingForJob;
+    const currentIncome = this.props.currentIncome;
+    const workExperience = this.props.workExperience;
 
     return (
       <React.Fragment>
@@ -103,12 +85,12 @@ class EmploymentInfo extends FormComponent {
             name="jobStatus"
             select
             label="Job Status"
-            value={this.state.jobStatus}
-            onChange={event => this.handleChange(event)}
+            value={jobStatus}
+            onChange={event => handleChange(event)}
             helperText="Please select a job status"
             fullWidth
           >
-            {jobStatus.map(option => (
+            {jobStatuses.map(option => (
               <MenuItem key={option.value} value={option.value}>
                 {option.label}
               </MenuItem>
@@ -119,8 +101,8 @@ class EmploymentInfo extends FormComponent {
           <TextField 
               name="currentIncome"
               label="Current Income (Optional)"
-              value={this.state.currentIncome}
-              onChange={ event => this.handleChange(event)}
+              value={currentIncome}
+              onChange={ event => handleChange(event)}
               fullWidth
           />
         </Grid>
@@ -132,10 +114,10 @@ class EmploymentInfo extends FormComponent {
               id="lookingForJob"
               name="lookingForJob"
               className={classes.group}
-              value={this.state.lookingForJob}
-              onChange={ event => this.handleChange(event) }
+              value={lookingForJob}
+              onChange={ event => handleChange(event) }
             >
-              {lookingForJob.map(option => (
+              {lookingForJobOptions.map(option => (
                 <FormControlLabel key={option.value} value={option.value} control={<Radio />} label={option.label}>
                   {option.label}
                 </FormControlLabel>
@@ -149,12 +131,12 @@ class EmploymentInfo extends FormComponent {
           </Typography>
           <Button variant="fab" mini color="secondary" 
                   aria-label="Add" 
-                  onClick={this.handleAddWork}
+                  onClick={event => handleAddObject("workExperience", workObject)}
                   className={classes.button}>
             <AddIcon />
           </Button>
         </Grid>
-        {this.state.workExperience.map((work, index) => (
+        {workExperience.map((work, index) => (
           <React.Fragment key={index}>
           <Grid container spacing={24} item xs={12} sm={11}>
             <Grid item xs={12} sm={4}>
@@ -163,7 +145,7 @@ class EmploymentInfo extends FormComponent {
                 name="title"
                 label="Title"
                 value={work.title}
-                onChange={this.handleEditWork(index)}
+                onChange={handleEditObject("workExperience", index)}
                 fullWidth
               />
             </Grid>
@@ -173,7 +155,7 @@ class EmploymentInfo extends FormComponent {
                 name="company"
                 label="Company"
                 value={work.company}
-                onChange={this.handleEditWork(index)}
+                onChange={handleEditObject("workExperience", index)}
                 fullWidth
               />
             </Grid>
@@ -183,7 +165,7 @@ class EmploymentInfo extends FormComponent {
                 name="years"
                 label="years"
                 value={work.years}
-                onChange={this.handleEditWork(index)}
+                onChange={handleEditObject("workExperience", index)}
                 fullWidth
                 InputProps={{
                   endAdornment: <InputAdornment position="end">years</InputAdornment>
@@ -193,7 +175,7 @@ class EmploymentInfo extends FormComponent {
           </Grid>
           <Grid item xs={12} sm={1}>
           <Button variant="fab" mini aria-label="Delete" 
-                  onClick={(event) => this.handleRemoveWork(index, event)}
+                  onClick={(event) => handleRemoveObject("workExperience", index, event)}
                   className={classes.button}>
             <DeleteIcon />
           </Button>

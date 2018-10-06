@@ -1,5 +1,4 @@
-import React from 'react';
-import FormComponent from './FormComponent'
+import React, { Component } from 'react';
 import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
@@ -38,6 +37,8 @@ const relationshipStatus = [
   { value: 'widowed', label: 'Widowed' },
 ]
 
+const familyObject = { age: '', gender: '', relation: '', relationshipStatus: '' };
+
 const styles = theme => ({
   container: {
     position: 'relative',
@@ -70,35 +71,14 @@ const styles = theme => ({
     textAlign: 'left'
   }
 });
-class FamilyInfo extends FormComponent {
-  state = {
-    family : []
-  }
-
-  handleAddMember = () => {
-    this.setState({
-      family: this.state.family.concat([{ age: '', gender: '', relation: '', relationshipStatus: '' }]),
-    });
-  }
-
-  handleRemoveMember = (index) => {
-    this.setState({
-      family: this.state.family.filter((s, _index) => _index !== index),
-    });
-  }
-
-  handleEditMember= (index) => (event) => {
-    this.setState({
-      family: this.state.family.map((s, _index) => {
-        if (_index !== index) return s;
-        return { ...s, [event.target.name]: event.target.value };
-      }),
-    });
-  }
-
-  
+class FamilyInfo extends Component {
   render() {
     const { classes } = this.props;
+
+    const handleAddObject= this.props.handleAddObject;
+    const handleRemoveObject= this.props.handleRemoveObject;
+    const handleEditObject= this.props.handleEditObject;
+    const family = this.props.family;
 
     return (
       <React.Fragment>
@@ -112,12 +92,12 @@ class FamilyInfo extends FormComponent {
           </Typography>
           <Button variant="fab" mini color="secondary" 
                   aria-label="Add" 
-                  onClick={this.handleAddMember}
+                  onClick={event => handleAddObject("family", familyObject)}
                   className={classes.button}>
             <AddIcon />
           </Button>
         </Grid>
-        {this.state.family.map((member, index) => (
+        {family.map((member, index) => (
           <React.Fragment key={index}>
           <Grid container spacing={24} item xs={12} sm={11}>
             <Grid item xs={12} sm={2}>
@@ -126,7 +106,7 @@ class FamilyInfo extends FormComponent {
                 name="age"
                 label="Age"
                 value={member.age}
-                onChange={this.handleEditMember(index)}
+                onChange={handleEditObject("family", index)}
                 fullWidth
                 InputProps={{
                   endAdornment: <InputAdornment position="end">years</InputAdornment>
@@ -142,7 +122,7 @@ class FamilyInfo extends FormComponent {
                   name="gender"
                   className={classes.group}
                   value={member.gender}
-                  onChange={this.handleEditMember(index)}
+                  onChange={handleEditObject("family", index)}
                 >
                   {gender.map(option => (
                     <FormControlLabel key={option.value} value={option.value} control={<Radio />} label={option.label}>
@@ -159,7 +139,7 @@ class FamilyInfo extends FormComponent {
                 select
                 label="Relationship Status"
                 value={member.relationshipStatus}
-                onChange={this.handleEditMember(index)}
+                onChange={handleEditObject("family", index)}
                 helperText="Please select a relationship status"
                 fullWidth
               >
@@ -177,7 +157,7 @@ class FamilyInfo extends FormComponent {
                 select
                 label="Relation to you"
                 value={member.relation}
-                onChange={this.handleEditMember(index)}
+                onChange={handleEditObject("family", index)}
                 helperText="Please select a relation"
                 fullWidth
               >
@@ -191,7 +171,7 @@ class FamilyInfo extends FormComponent {
           </Grid>
           <Grid item xs={12} sm={1}>
           <Button variant="fab" mini aria-label="Delete" 
-                  onClick={(event) => this.handleRemoveMember(index, event)}
+                  onClick={(event) => handleRemoveObject("family", index, event)}
                   className={classes.button}>
             <DeleteIcon />
           </Button>

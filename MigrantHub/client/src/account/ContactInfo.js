@@ -1,5 +1,4 @@
-import React from 'react';
-import FormComponent from './FormComponent'
+import React, { Component } from 'react';
 import TextField from '@material-ui/core/TextField';
 import MenuItem from '@material-ui/core/MenuItem';
 import Grid from '@material-ui/core/Grid';
@@ -21,19 +20,18 @@ const provinces = [
   { value: 'YT', label: 'Yukon' }
 ];
 
-class ContactInfo extends FormComponent {
-  state = {
-    firstName: '',
-    lastName: '',
-    address: '',
-    apartment: '',
-    city: '',
-    province: '',
-    postalCode: '',
-    phoneNumber: '',
-  }
-
+class ContactInfo extends Component {
   render() {
+    const handleChange = this.props.handleChange;
+    const firstName = this.props.firstName;
+    const lastName = this.props.lastName;
+    const address = this.props.address;
+    const apartment = this.props.apartment;
+    const city = this.props.city;
+    const province = this.props.province;
+    const postalCode = this.props.postalCode;
+    const phoneNumber = this.props.phoneNumber;
+
     return (
       <React.Fragment>
       <Typography variant="title" gutterBottom>
@@ -45,8 +43,8 @@ class ContactInfo extends FormComponent {
             id="firstName" 
             name="firstName"
             label="First Name"
-            value={this.state.firstName}
-            onChange={event => this.handleChange(event)}
+            value={firstName}
+            onChange={event => handleChange(event)}
             fullWidth
           />
         </Grid>
@@ -55,8 +53,8 @@ class ContactInfo extends FormComponent {
             id="lastName" 
             name="lastName"
             label="Last Name"
-            value={this.state.lastName}
-            onChange={event => this.handleChange(event)}
+            value={lastName}
+            onChange={event => handleChange(event)}
             fullWidth
           />
         </Grid>
@@ -66,8 +64,8 @@ class ContactInfo extends FormComponent {
             name="address"
             label="Street Address"
             placeholder="Street and number"
-            value={this.state.address}
-            onChange={event => this.handleChange(event)}
+            value={address}
+            onChange={event => handleChange(event)}
             fullWidth
           />
         </Grid>
@@ -77,8 +75,8 @@ class ContactInfo extends FormComponent {
             name="apartment"
             label="Apartment"
             placeholder="Apartment, suite, unit, building, floor, etc."
-            value={this.state.apartment}
-            onChange={event => this.handleChange(event)}
+            value={apartment}
+            onChange={event => handleChange(event)}
             fullWidth
           />
         </Grid>
@@ -87,8 +85,8 @@ class ContactInfo extends FormComponent {
             id="city" 
             name="city"
             label="City"
-            value={this.state.city}
-            onChange={event => this.handleChange(event)}
+            value={city}
+            onChange={event => handleChange(event)}
             fullWidth
           />
         </Grid>
@@ -98,8 +96,8 @@ class ContactInfo extends FormComponent {
             name="province"
             select
             label="Province/Territory"
-            value={this.state.province}
-            onChange={event => this.handleChange(event)}
+            value={province}
+            onChange={event => handleChange(event)}
             fullWidth
             helperText="Please select a province/territory"
           >
@@ -115,8 +113,8 @@ class ContactInfo extends FormComponent {
             id="postalCode" 
             name="postalCode"
             label="Postal Code"
-            value={this.state.postalCode}
-            onChange={ event => this.handleChange(event)}
+            value={postalCode}
+            onChange={ event => handleChange(event)}
             fullWidth
           />
         </Grid>
@@ -125,8 +123,8 @@ class ContactInfo extends FormComponent {
             id="phoneNumber"
             name="phoneNumber"
             label="Phone Number"
-            value={this.state.phoneNumber}
-            onChange={ event => this.handleChange(event)}
+            value={phoneNumber}
+            onChange={ event => handleChange(event)}
             fullWidth
           />
         </Grid>

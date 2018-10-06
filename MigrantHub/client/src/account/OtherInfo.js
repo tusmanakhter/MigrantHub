@@ -1,5 +1,4 @@
-import React from 'react';
-import FormComponent from './FormComponent'
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import withStyles from '@material-ui/core/styles/withStyles';
 import TextField from '@material-ui/core/TextField';
@@ -105,11 +104,8 @@ const styles = theme => ({
     margin: theme.spacing.unit,
   },
 });
-class OtherInfo extends FormComponent {
+class OtherInfo extends Component {
   state = {
-    settlingLocation: '',
-    settlingDuration: '',
-    joiningReason: '',
     suggestions: []
   }
 
@@ -143,6 +139,12 @@ class OtherInfo extends FormComponent {
       renderSuggestion,
     };
 
+    const handleChange = this.props.handleChange;
+    const handleAutoSuggestChange = this.props.handleAutoSuggestChange;
+    const settlingLocation = this.props.settlingLocation;
+    const settlingDuration = this.props.settlingDuration;
+    const joiningReason = this.props.joiningReason;
+
     return (
       <React.Fragment>
       <Typography variant="title" gutterBottom>
@@ -155,8 +157,8 @@ class OtherInfo extends FormComponent {
             inputProps={{
               classes,
               label: 'Settling Location',
-              value: this.state.settlingLocation,
-              onChange: this.handleAutoSuggestChange('settlingLocation'),
+              value: settlingLocation,
+              onChange: handleAutoSuggestChange('settlingLocation'),
             }}
             theme={{
               container: classes.container,
@@ -176,8 +178,8 @@ class OtherInfo extends FormComponent {
             id="settlingDuration"
             name="settlingDuration"
             label="Settling Duration"
-            value={this.state.settlingDuration}
-            onChange={ event => this.handleChange(event)}
+            value={settlingDuration}
+            onChange={ event => handleChange(event)}
             fullWidth
           />
         </Grid>
@@ -187,8 +189,8 @@ class OtherInfo extends FormComponent {
             name="joiningReason"
             select
             label="Reason for joining"
-            value={this.state.joiningReason}
-            onChange={event => this.handleChange(event)}
+            value={joiningReason}
+            onChange={event => handleChange(event)}
             margin="normal"
             helperText="Please select a joining reason"
             fullWidth

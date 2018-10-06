@@ -1,5 +1,4 @@
-import React from 'react';
-import FormComponent from './FormComponent'
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import withStyles from '@material-ui/core/styles/withStyles';
 import TextField from '@material-ui/core/TextField';
@@ -23,7 +22,7 @@ const educationLevels = [
   { value: 'doctorate', label: 'Ph.D/Doctorate' }
 ];
 
-const proficiencyExams = [
+const proficiencyExaminations = [
   { value: 'ielts', label: 'IELTS' },
   { value: 'french', label: 'French' }
 ]
@@ -37,16 +36,7 @@ const styles = theme => ({
   }
 });
 
-class EducationInfo extends FormComponent {
-  state = {
-    educationLevel: '',
-    proficiencyExams: {
-      ielts: '',
-      french: '',
-      others: ''
-    },
-  }
-
+class EducationInfo extends Component {
   handleChangeExams = (name) => (event) => {
     let proficiencyExams = { ...this.state.proficiencyExams };
     proficiencyExams[name] = event.target.checked;
@@ -55,6 +45,11 @@ class EducationInfo extends FormComponent {
 
   render() {
     const { classes } = this.props;
+
+    const handleChange = this.props.handleChange;
+    const handleEditSingleObject = this.props.handleEditSingleObject;
+    const educationLevel = this.props.educationLevel;
+    const proficiencyExams = this.props.proficiencyExams;
 
     return (
       <React.Fragment>
@@ -67,8 +62,8 @@ class EducationInfo extends FormComponent {
             name="educationLevel"
             select
             label="Education Level"
-            value={this.state.educationLevel}
-            onChange={event => this.handleChange(event)}
+            value={educationLevel}
+            onChange={event => handleChange(event)}
             margin="normal"
             helperText="Please select an education level"
             fullWidth
@@ -84,14 +79,14 @@ class EducationInfo extends FormComponent {
           <FormControl component="fieldset" fullWidth className={classes.formControl}>
             <FormLabel component="legend">Proficiency Exams</FormLabel>
             <FormGroup className={classes.group} name="proficiencyExams">
-              {proficiencyExams.map(option => (
+              {proficiencyExaminations.map(option => (
                   <FormControlLabel
                     key={option.value}
                     control={
                       <Checkbox
                         name={option.value}
-                        checked={this.state.proficiencyExams[option.value]}
-                        onChange={this.handleChangeExams(option.value)}
+                        checked={proficiencyExams[option.value]}
+                        onChange={handleEditSingleObject("proficiencyExams", option.value)}
                       />
                     }
                     label={option.label}
@@ -105,8 +100,8 @@ class EducationInfo extends FormComponent {
             id="others" 
             name="others"
             label="Others"
-            value={this.state.others}
-            onChange={this.handleChangeExams(this.state.others)}
+            value={proficiencyExams.others}
+            onChange={handleEditSingleObject("proficiencyExams", "others")}
             fullWidth
           />
         </Grid>

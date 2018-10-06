@@ -1,5 +1,4 @@
-import React from 'react';
-import FormComponent from './FormComponent'
+import React, { Component } from 'react';
 import TextField from '@material-ui/core/TextField';
 import Input from '@material-ui/core/Input'
 import InputLabel from '@material-ui/core/InputLabel';
@@ -11,12 +10,9 @@ import FormControl from '@material-ui/core/FormControl';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 
-class AccountInfo extends FormComponent {
+class AccountInfo extends Component {
   state = {
-    email: '',
-    password: '',
-    confirmPassword: '',
-    showPassword: false
+    showPassword: false,
   }
 
   handleClickShowPassword = () => {
@@ -24,6 +20,11 @@ class AccountInfo extends FormComponent {
   };
 
   render() {
+    const handleChange = this.props.handleChange;
+    const email = this.props.email;
+    const password = this.props.password;
+    const confirmPassword = this.props.confirmPassword;
+
     return (
       <React.Fragment>
         <Typography variant="title" gutterBottom>
@@ -35,8 +36,8 @@ class AccountInfo extends FormComponent {
                 id="email"
                 name="email"
                 label="Email"
-                value={this.state.email}
-                onChange={event => this.handleChange(event)}
+                value={email}
+                onChange={event => handleChange(event)}
                 fullWidth
                 margin="normal"
             />
@@ -47,8 +48,8 @@ class AccountInfo extends FormComponent {
               <Input
                 name="password"
                 type={this.state.showPassword ? 'text' : 'password'}
-                value={this.state.password}
-                onChange={event => this.handleChange(event)}
+                value={password}
+                onChange={event => handleChange(event)}
                 endAdornment={
                   <InputAdornment position="end">
                     <IconButton
@@ -68,8 +69,8 @@ class AccountInfo extends FormComponent {
               <Input
                 name="confirmPassword"
                 type={this.state.showPassword ? 'text' : 'password'}
-                value={this.state.confirmPassword}
-                onChange={event => this.handleChange(event)}
+                value={confirmPassword}
+                onChange={event => handleChange(event)}
                 endAdornment={
                   <InputAdornment position="end">
                     <IconButton

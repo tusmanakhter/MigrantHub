@@ -1,7 +1,6 @@
-import React from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import withStyles from '@material-ui/core/styles/withStyles';
-import FormComponent from './FormComponent'
 import TextField from '@material-ui/core/TextField';
 import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
@@ -13,20 +12,20 @@ import InputAdornment from '@material-ui/core/InputAdornment';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 
-const status = [
+const statuses = [
   { value: 'immigrant', label: 'Immigrant' },
   { value: 'refugee', label: 'Refugee' },
   { value: 'resident', label: 'Permanent Resident' },
   { value: 'citizen', label: 'Citizen' }
 ];
 
-const gender = [
+const genders = [
   { value: 'male', label: 'Male' },
   { value: 'female', label: 'Female' },
   { value: 'other', label: 'Other' },
 ];
 
-const relationshipStatus = [
+const relationshipStatuses = [
   { value: 'married', label: 'Married' },
   { value: 'single', label: 'Single' },
   { value: 'divorced', label: 'Divorced' },
@@ -42,17 +41,16 @@ const styles = theme => ({
   }
 });
 
-class PersonalInfo extends FormComponent {
-  state = {
-    age: '',
-    gender: '',
-    nationality: '',
-    relationshipStatus: '',
-    status: ''
-  }
-
+class PersonalInfo extends Component {
   render() {
     const { classes } = this.props;
+
+    const handleChange = this.props.handleChange;
+    const age = this.props.age;
+    const gender = this.props.gender;
+    const nationality = this.props.nationality;
+    const relationshipStatus = this.props.relationshipStatus;
+    const status = this.props.status;
 
     return (
       <React.Fragment>
@@ -65,8 +63,8 @@ class PersonalInfo extends FormComponent {
             id="age"
             name="age"
             label="Age"
-            value={this.state.age}
-            onChange={ event => this.handleChange(event)}
+            value={age}
+            onChange={ event => handleChange(event)}
             fullWidth
             InputProps={{
               endAdornment: <InputAdornment position="end">years</InputAdornment>
@@ -78,8 +76,8 @@ class PersonalInfo extends FormComponent {
             id="nationality" 
             name="nationality"
             label="Nationality"
-            value={this.state.nationality}
-            onChange={ event => this.handleChange(event)}
+            value={nationality}
+            onChange={ event => handleChange(event)}
             fullWidth
           />
         </Grid>
@@ -91,10 +89,10 @@ class PersonalInfo extends FormComponent {
               id="gender"
               name="gender"
               className={classes.group}
-              value={this.state.gender}
-              onChange={ event => this.handleChange(event)}
+              value={gender}
+              onChange={ event => handleChange(event)}
             >
-              {gender.map(option => (
+              {genders.map(option => (
                 <FormControlLabel key={option.value} value={option.value} control={<Radio />} label={option.label}>
                   {option.label}
                 </FormControlLabel>
@@ -108,12 +106,12 @@ class PersonalInfo extends FormComponent {
             name="status"
             select
             label="Status"
-            value={this.state.status}
-            onChange={event => this.handleChange(event)}
+            value={status}
+            onChange={event => handleChange(event)}
             helperText="Please select a status"
             fullWidth
           >
-            {status.map(option => (
+            {statuses.map(option => (
               <MenuItem key={option.value} value={option.value}>
                 {option.label}
               </MenuItem>
@@ -126,12 +124,12 @@ class PersonalInfo extends FormComponent {
             name="relationshipStatus"
             select
             label="Relationship Status"
-            value={this.state.relationshipStatus}
-            onChange={event => this.handleChange(event)}
+            value={relationshipStatus}
+            onChange={event => handleChange(event)}
             helperText="Please select a relationship status"
             fullWidth
           >
-            {relationshipStatus.map(option => (
+            {relationshipStatuses.map(option => (
               <MenuItem key={option.value} value={option.value}>
                 {option.label}
               </MenuItem>
