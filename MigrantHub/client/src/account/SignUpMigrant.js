@@ -20,6 +20,10 @@ import EducationInfo from './EducationInfo';
 import EmploymentInfo from './EmploymentInfo';
 import OtherInfo from './OtherInfo';
 
+import axios from 'axios';
+import {Link} from 'react-router-dom';
+var querystring = require('querystring');
+
 const styles = theme => ({
   appBar: {
     position: 'relative',
@@ -120,6 +124,9 @@ class SignUpMigrant extends Component {
     settlingLocation: '',
     settlingDuration: '',
     joiningReason: '',
+
+    // DB response
+    messageFromServer: ''
   }
 
   getStepContent(step) {
@@ -215,8 +222,14 @@ class SignUpMigrant extends Component {
     let error = this.validate();
     if (!error) {
       this.setState(state => ({
-        activeStep: state.activeStep + 1,
+          activeStep: state.activeStep + 1,
       }));
+    }
+    if(this.state.activeStep == 7){
+        this.insertProfile(this);
+        this.insertProfileLanguage(this);
+        this.insertProfileFamily(this);
+        this.insertProfileWork(this);
     }
   };
 
@@ -283,10 +296,113 @@ class SignUpMigrant extends Component {
     this.setState({ [name]: obj[name] });
   }
 
-  validate = () => {
-    let error = this.child.current.validate();
-    return error;
+  // Send profile data in post body to add to mongodb
+  insertProfile(e) {
+      axios.post('/insertProfile',
+          querystring.stringify({
+              email: e.state.email,
+              password: e.state.password,
+              confirmPassword: e.state.confirmPassword,
+              firstName: e.state.firstName,
+              lastName: e.state.lastName,
+              address: e.state.address,
+              apartment: e.state.apartment,
+              city: e.state.city,
+              province: e.state.province,
+              postalCode: e.state.postalCode,
+              phoneNumber: e.state.phoneNumber,
+              age: e.state.age,
+              gender: e.state.gender,
+              nationality: e.state.nationality,
+              relationshipStatus: e.state.relationshipStatus,
+              status: e.state.status,
+              writingLevel: e.state.writingLevel,
+              speakingLevel: e.state.speakingLevel,
+              motherTongue: e.state.motherTongue,
+              educationLevel: e.state.educationLevel,
+              proficiencyExams: e.state.proficiencyExams,
+              jobStatus: e.state.jobStatus,
+              lookingForJob: e.state.lookingForJob,
+              currentIncome: e.state.currentIncome,
+              settlingLocation: e.state.settlingLocation,
+              settlingDuration: e.state.settlingDuration,
+              joiningReason: e.state.joiningReason
+          }), {
+              headers: {
+                  "Content-Type": "application/x-www-form-urlencoded"
+              }
+          }).then(function (response) {
+          e.setState({
+              messageFromServer: response.data
+          });
+      });
   }
+// Send profile languages data in post body to add to mongodb
+  insertProfileLanguage(e) {
+      for (var x = 0; x < e.state.languages.length; ++x) {
+          axios.post('/insertProfileLanguages',
+              querystring.stringify({
+                  email: e.state.email,
+                  name: e.state.languages[x].name,
+                  writingLevel: e.state.languages[x].writingLevel,
+                  speakingLevel: e.state.languages[x].speakingLevel
+              }), {
+                  headers: {
+                      "Content-Type": "application/x-www-form-urlencoded"
+                  }
+              }).then(function (response) {
+              e.setState({
+                  messageFromServer: response.data
+              });
+          });
+      }
+  }
+// Send profile family data in post body to add to mongodb
+    insertProfileFamily(e) {
+        for (var x = 0; x < e.state.family.length; ++x) {
+            axios.post('/insertProfileFamily',
+                querystring.stringify({
+                    email: e.state.email,
+                    age: e.state.family[x].age,
+                    gender: e.state.family[x].gender,
+                    relationshipStatus: e.state.family[x].relationshipStatus,
+                    relation: e.state.family[x].relation
+                }), {
+                    headers: {
+                        "Content-Type": "application/x-www-form-urlencoded"
+                    }
+                }).then(function (response) {
+                e.setState({
+                    messageFromServer: response.data
+                });
+            });
+        }
+    }
+// Send profile work data in post body to add to mongodb
+    insertProfileWork(e) {
+      for(var x = 0; x<e.state.workExperience.length;++x){
+          axios.post('/insertProfileWork',
+              querystring.stringify({
+                  email: e.state.email,
+                  title: e.state.workExperience[x].title,
+                  company: e.state.workExperience[x].company,
+                  years: e.state.workExperience[x].years
+              }), {
+                  headers: {
+                      "Content-Type": "application/x-www-form-urlencoded"
+                  }
+              }).then(function(response) {
+              e.setState({
+                  messageFromServer: response.data
+              });
+          });
+      }
+  }
+
+    validate = () => {
+        let error = this.child.current.validate();
+        return error;
+    }
 
   render() {
     const { classes } = this.props;
@@ -294,7 +410,8 @@ class SignUpMigrant extends Component {
 
     return (
       <React.Fragment>
-      <CssBaseline />
+        <h3>{this.state.messageFromServer}</h3>
+        <CssBaseline />
       <AppBar position="absolute" color="default" className={classes.appBar}>
         <Toolbar>
           <Typography variant="title" color="inherit" noWrap>
