@@ -60,13 +60,21 @@ const styles = theme => ({
 const steps = ['Account', 'Contact', 'Personal', 'Language', 'Family', 'Education', 'Employment', 'Other'];
 
 class SignUpMigrant extends Component {
+  constructor(props){
+    super(props);
+    this.child = React.createRef();
+  }
+
   state = {
     activeStep: 0,
 
     // Account Info
     email: '',
+    emailError: "",
     password: '',
+    passwordError: "",
     confirmPassword: '',
+    confirmPasswordError: "",
 
     // Contact Info
     firstName: '',
@@ -118,6 +126,7 @@ class SignUpMigrant extends Component {
     switch (step) {
       case 0:
         return <AccountInfo
+                ref={this.child}
                 handleChange={this.handleChange}
                 email={this.state.email}
                 password={this.state.password}
@@ -125,6 +134,7 @@ class SignUpMigrant extends Component {
                />;
       case 1:
         return <ContactInfo
+                ref={this.child}
                 handleChange={this.handleChange}
                 firstName={this.state.firstName}
                 lastName={this.state.lastName}
@@ -137,6 +147,7 @@ class SignUpMigrant extends Component {
                />;
       case 2:
         return <PersonalInfo
+                ref={this.child}
                 handleChange={this.handleChange}
                 age={this.state.age}
                 gender={this.state.gender}
@@ -146,6 +157,7 @@ class SignUpMigrant extends Component {
                />;
       case 3:
         return <LanguageInfo
+                ref={this.child}
                 handleChange={this.handleChange}
                 handleAutoSuggestChange={this.handleAutoSuggestChange}
                 handleAddObject={this.handleAddObject}
@@ -159,6 +171,7 @@ class SignUpMigrant extends Component {
                />;
       case 4:
         return <FamilyInfo
+                ref={this.child}
                 handleAddObject={this.handleAddObject}
                 handleRemoveObject={this.handleRemoveObject}
                 handleEditObject={this.handleEditObject}
@@ -166,6 +179,7 @@ class SignUpMigrant extends Component {
                />;
       case 5:
         return <EducationInfo
+                ref={this.child}
                 handleChange={this.handleChange}
                 handleEditSingleObject={this.handleEditSingleObject}
                 educationLevel={this.state.educationLevel}
@@ -173,6 +187,7 @@ class SignUpMigrant extends Component {
                />;
       case 6:
         return <EmploymentInfo
+                ref={this.child}
                 handleChange={this.handleChange}
                 handleAddObject={this.handleAddObject}
                 handleRemoveObject={this.handleRemoveObject}
@@ -184,6 +199,7 @@ class SignUpMigrant extends Component {
                />;
       case 7:
         return <OtherInfo
+                ref={this.child}
                 handleChange={this.handleChange}
                 handleAutoSuggestChange={this.handleAutoSuggestChange}
                 settlingLocation={this.state.settlingLocation}
@@ -196,9 +212,12 @@ class SignUpMigrant extends Component {
   }
 
   handleNext = () => {
-    this.setState(state => ({
-      activeStep: state.activeStep + 1,
-    }));
+    let error = this.validate();
+    if (!error) {
+      this.setState(state => ({
+        activeStep: state.activeStep + 1,
+      }));
+    }
   };
 
   handleBack = () => {
@@ -262,6 +281,11 @@ class SignUpMigrant extends Component {
                                                       event.target.value);
     obj[name][fieldName] = value;
     this.setState({ [name]: obj[name] });
+  }
+
+  validate = () => {
+    let error = this.child.current.validate();
+    return error;
   }
 
   render() {
