@@ -1,5 +1,4 @@
-import React from 'react';
-import FormComponent from '../FormComponent';
+import React, { Component } from 'react';
 import TextField from '@material-ui/core/TextField';
 import MenuItem from '@material-ui/core/MenuItem';
 import Grid from '@material-ui/core/Grid';
@@ -21,7 +20,7 @@ const provinces = [
   { value: 'YT', label: 'Yukon' }
 ];
 
-class MerchantContactInfo extends FormComponent {
+class MerchantContactInfo extends Component {
   state = {
     merchantName: '',
     address: '',

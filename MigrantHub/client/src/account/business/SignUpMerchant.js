@@ -122,8 +122,8 @@ class SignUpMerchant extends Component {
               {activeStep === steps.length ? (
                 <React.Fragment>
                   <Typography variant="headline" gutterBottom>
-                    Thank you for your order.
-                </Typography>
+                    Welcome!
+                  </Typography>
                   <Typography variant="subheading">
                     Your account has been created! We will redirect you shortly.
                 </Typography>
