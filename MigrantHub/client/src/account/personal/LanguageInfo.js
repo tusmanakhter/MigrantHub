@@ -1,5 +1,4 @@
-import React from 'react';
-import FormComponent from '../FormComponent';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import withStyles from '@material-ui/core/styles/withStyles';
 import TextField from '@material-ui/core/TextField';
@@ -84,6 +83,8 @@ const renderInputComponent = inputProps => {
   );
 };
 
+const langObject = { name: '', writingLevel: '', speakingLevel: '' };
+
 const styles = theme => ({
   container: {
     position: 'relative',
@@ -110,12 +111,8 @@ const styles = theme => ({
     margin: theme.spacing.unit,
   },
 });
-class LanguageInfo extends FormComponent {
+class LanguageInfo extends Component {
   state = {
-    languages: [],
-    writingLevel: '',
-    speakingLevel: '',
-    motherTongue: '',
     suggestions: []
   }
 
@@ -131,42 +128,6 @@ class LanguageInfo extends FormComponent {
     });
   };
 
-  handleAutoSuggestChange = name => (event, { newValue }) => {
-    this.setState({
-      [name]: newValue,
-    });
-  };
-
-  handleAddLanguage = () => {
-    this.setState({
-      languages: this.state.languages.concat([{ name: '', writingLevel: '', speakingLevel: '' }]),
-    });
-  }
-
-  handleRemoveLanguage = (index) => {
-    this.setState({
-      languages: this.state.languages.filter((s, _index) => _index !== index),
-    });
-  }
-
-  handleEditLanguageName = (name, index) => (event, { newValue }) => {
-    this.setState({
-      languages: this.state.languages.map((s, _index) => {
-        if (_index !== index) return s;
-        return { ...s, [name]: newValue };
-      }),
-    });
-  }
-
-  handleEditLanguageOther = (index) => (event) => {
-    this.setState({
-      languages: this.state.languages.map((s, _index) => {
-        if (_index !== index) return s;
-        return { ...s, [event.target.name]: event.target.value };
-      }),
-    });
-  }
-
   render() {
     const { classes } = this.props;
 
@@ -178,6 +139,17 @@ class LanguageInfo extends FormComponent {
       getSuggestionValue,
       renderSuggestion,
     };
+
+    const handleChange = this.props.handleChange;
+    const handleAutoSuggestChange = this.props.handleAutoSuggestChange;
+    const handleAddObject= this.props.handleAddObject;
+    const handleRemoveObject= this.props.handleRemoveObject;
+    const handleEditObjectAutosuggest= this.props.handleEditObjectAutosuggest;
+    const handleEditObject= this.props.handleEditObject;
+    const languages = this.props.languages;
+    const writingLevel = this.props.writingLevel;
+    const speakingLevel = this.props.speakingLevel;
+    const motherTongue = this.props.motherTongue;
 
     return (
       <React.Fragment>
@@ -191,8 +163,8 @@ class LanguageInfo extends FormComponent {
             inputProps={{
               classes,
               label: 'Mother Tongue',
-              value: this.state.motherTongue,
-              onChange: this.handleAutoSuggestChange('motherTongue'),
+              value: motherTongue,
+              onChange: handleAutoSuggestChange('motherTongue'),
             }}
             theme={{
               container: classes.container,
@@ -213,8 +185,8 @@ class LanguageInfo extends FormComponent {
             name="writingLevel"
             select
             label="Writing Level"
-            value={this.state.writingLevel}
-            onChange={event => this.handleChange(event)}
+            value={writingLevel}
+            onChange={event => handleChange(event)}
             fullWidth
           >
             {languageLevels.map(option => (
@@ -230,8 +202,8 @@ class LanguageInfo extends FormComponent {
             name="speakingLevel"
             select
             label="Speaking Level"
-            value={this.state.speakingLevel}
-            onChange={event => this.handleChange(event)}
+            value={speakingLevel}
+            onChange={event => handleChange(event)}
             fullWidth
           >
             {languageLevels.map(option => (
@@ -247,12 +219,12 @@ class LanguageInfo extends FormComponent {
           </Typography>
           <Button variant="fab" mini color="secondary" 
                   aria-label="Add" 
-                  onClick={this.handleAddLanguage}
+                  onClick={event => handleAddObject("languages", langObject)}
                   className={classes.button}>
             <AddIcon />
           </Button>
         </Grid>
-        {this.state.languages.map((language, index) => (
+        {languages.map((language, index) => (
           <React.Fragment key={index}>
           <Grid container spacing={24} item xs={12} sm={11}>
             <Grid item xs={12} sm={4}>
@@ -262,7 +234,7 @@ class LanguageInfo extends FormComponent {
                     classes,
                     value: language.name,
                     label: "Language",
-                    onChange: this.handleEditLanguageName('name', index),
+                    onChange: handleEditObjectAutosuggest("languages", "name", index),
                   }}
                   theme={{
                     container: classes.container,
@@ -284,7 +256,7 @@ class LanguageInfo extends FormComponent {
                 select
                 label="Writing Level"
                 value={language.writingLevel}
-                onChange={this.handleEditLanguageOther(index)}
+                onChange={handleEditObject("languages", index)}
                 fullWidth
               >
                 {languageLevels.map(option => (
@@ -301,7 +273,7 @@ class LanguageInfo extends FormComponent {
                 select
                 label="Speaking Level"
                 value={language.speakingLevel}
-                onChange={this.handleEditLanguageOther(index)}
+                onChange={handleEditObject("languages", index)}
                 fullWidth
               >
                 {languageLevels.map(option => (
@@ -314,7 +286,7 @@ class LanguageInfo extends FormComponent {
           </Grid>
           <Grid item xs={12} sm={1}>
           <Button variant="fab" mini aria-label="Delete" 
-                  onClick={(event) => this.handleRemoveLanguage(index, event)}
+                  onClick={(event) => handleRemoveObject("languages", index, event)}
                   className={classes.button}>
             <DeleteIcon />
           </Button>
