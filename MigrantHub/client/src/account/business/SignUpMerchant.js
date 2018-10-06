@@ -11,7 +11,7 @@ import StepLabel from '@material-ui/core/StepLabel';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 
-import AccountInfo from '../AccountInfo';
+import AccountInfo from './BusinessAccountInfo';
 import MerchantContactInfo from './MerchantContactInfo';
 import MerchantAboutInfo from './MerchantAboutInfo';
 
@@ -108,8 +108,9 @@ class SignUpMerchant extends Component {
         <main className={classes.layout}>
           <Paper className={classes.paper}>
             <Typography variant="display1" align="center">
-              Sign Up
-          </Typography>
+              Business Account Sign Up
+            </Typography>
+            <p>This account allows for organizations to provide their services to all newcomers.</p>
             <Stepper activeStep={activeStep} className={classes.stepper}>
               {steps.map(label => (
                 <Step key={label}>
@@ -124,8 +125,7 @@ class SignUpMerchant extends Component {
                     Thank you for your order.
                 </Typography>
                   <Typography variant="subheading">
-                    Your order number is #2001539. We have emailed your order confirmation, and will
-                    send you an update when your order has shipped.
+                    Your account has been created! We will redirect you shortly.
                 </Typography>
                 </React.Fragment>
               ) : (

@@ -1,8 +1,12 @@
 import React, { Component } from 'react';
+import { BrowserRouter, Route, Switch } from "react-router-dom";
 import logo from './logo.svg';
 import './App.css';
 import SignUpMigrant from './account/personal/SignUpMigrant';
 import SignUpMerchant from './account/business/SignUpMerchant';
+import Error from "./components/Error";
+import Home from "./home/HomePage";
+import AccountTypeMenu from "./account/AccountTypeMenu";
 
 class App extends Component {
   state = { users: [] }
@@ -16,8 +20,18 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <SignUpMigrant />
-      </div>
+        <BrowserRouter>
+          <div>
+            <AccountTypeMenu />
+            <Switch>
+              <Route path="/" component={Home} exact />
+              <Route path="/BusinessAccount" component={SignUpMerchant} />
+              <Route path="/UserAccount" component={SignUpMigrant} />
+              <Route component={Error} />
+            </Switch>
+          </div>
+        </BrowserRouter>
+      </div >
     );
   }
 }

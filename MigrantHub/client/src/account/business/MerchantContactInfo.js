@@ -25,7 +25,6 @@ class MerchantContactInfo extends FormComponent {
   state = {
     merchantName: '',
     address: '',
-    apartment: '',
     city: '',
     province: '',
     postalCode: '',
@@ -35,91 +34,80 @@ class MerchantContactInfo extends FormComponent {
   render() {
     return (
       <React.Fragment>
-      <Typography variant="title" gutterBottom>
-        Contact Information
+        <Typography variant="title" gutterBottom>
+          Contact Information
       </Typography>
-      <Grid container spacing={24}>
-        <Grid item xs={12}>
-          <TextField
-            id="merchantName" 
-            name="merchantName"
-            label="Name"
-            value={this.state.merchantName}
-            onChange={event => this.handleChange(event)}
-            fullWidth
-          />
+        <Grid container spacing={24}>
+          <Grid item xs={12}>
+            <TextField
+              id="merchantName"
+              name="merchantName"
+              label="Name"
+              value={this.state.merchantName}
+              onChange={event => this.handleChange(event)}
+              fullWidth
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <TextField
+              id="address"
+              name="address"
+              label="Street Address"
+              placeholder="Street and number"
+              value={this.state.address}
+              onChange={event => this.handleChange(event)}
+              fullWidth
+            />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              id="city"
+              name="city"
+              label="City"
+              value={this.state.city}
+              onChange={event => this.handleChange(event)}
+              fullWidth
+            />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              id="province"
+              name="province"
+              select
+              label="Province/Territory"
+              value={this.state.province}
+              onChange={event => this.handleChange(event)}
+              fullWidth
+              helperText="Please select a province/territory"
+            >
+              {provinces.map(option => (
+                <MenuItem key={option.value} value={option.value}>
+                  {option.label}
+                </MenuItem>
+              ))}
+            </TextField>
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              id="postalCode"
+              name="postalCode"
+              label="Postal Code"
+              value={this.state.postalCode}
+              onChange={event => this.handleChange(event)}
+              fullWidth
+            />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              id="phoneNumber"
+              name="phoneNumber"
+              label="Phone Number"
+              value={this.state.phoneNumber}
+              onChange={event => this.handleChange(event)}
+              fullWidth
+            />
+          </Grid>
         </Grid>
-        <Grid item xs={12}>
-          <TextField
-            id="address" 
-            name="address"
-            label="Street Address"
-            placeholder="Street and number"
-            value={this.state.address}
-            onChange={event => this.handleChange(event)}
-            fullWidth
-          />
-        </Grid>
-        <Grid item xs={12}>
-          <TextField
-            id="apartment" 
-            name="apartment"
-            label="Apartment"
-            placeholder="Apartment, suite, unit, building, floor, etc."
-            value={this.state.apartment}
-            onChange={event => this.handleChange(event)}
-            fullWidth
-          />
-        </Grid>
-        <Grid item xs={12} sm={6}>
-          <TextField
-            id="city" 
-            name="city"
-            label="City"
-            value={this.state.city}
-            onChange={event => this.handleChange(event)}
-            fullWidth
-          />
-        </Grid>
-        <Grid item xs={12} sm={6}>
-          <TextField
-            id="province"
-            name="province"
-            select
-            label="Province/Territory"
-            value={this.state.province}
-            onChange={event => this.handleChange(event)}
-            fullWidth
-            helperText="Please select a province/territory"
-          >
-            {provinces.map(option => (
-              <MenuItem key={option.value} value={option.value}>
-                {option.label}
-              </MenuItem>
-            ))}
-          </TextField>
-        </Grid>
-        <Grid item xs={12} sm={6}>
-          <TextField
-            id="postalCode" 
-            name="postalCode"
-            label="Postal Code"
-            value={this.state.postalCode}
-            onChange={ event => this.handleChange(event)}
-            fullWidth
-          />
-        </Grid>
-        <Grid item xs={12} sm={6}>
-          <TextField
-            id="phoneNumber"
-            name="phoneNumber"
-            label="Phone Number"
-            value={this.state.phoneNumber}
-            onChange={ event => this.handleChange(event)}
-            fullWidth
-          />
-        </Grid>
-      </Grid>
       </React.Fragment>
     );
   }

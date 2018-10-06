@@ -1,5 +1,5 @@
 import React from 'react';
-import FormComponent from './FormComponent';
+import FormComponent from '../FormComponent';
 import TextField from '@material-ui/core/TextField';
 import Input from '@material-ui/core/Input'
 import InputLabel from '@material-ui/core/InputLabel';
@@ -39,6 +39,21 @@ const AccountInfoUI = ({
                             margin="normal"
                         />
                         {touched.email && errors.email && <div>{errors.email}</div>}
+                    </div>
+                </Grid>
+                <Grid item xs={12}>
+                    <div>
+                        <TextField
+                            id="corpId"
+                            name="corpId"
+                            label="Valid Corporation Id"
+                            value={values.corpId}
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            fullWidth
+                            margin="normal"
+                        />
+                        {touched.corpId && errors.corpId && <div>{errors.corpId}</div>}
                     </div>
                 </Grid>
                 <Grid item xs={12} sm={6}>
@@ -99,8 +114,9 @@ const AccountInfo = withFormik({
         }
     },
     validationSchema: Yup.object().shape({
-        email: Yup.string().email('Email not valid').required('Email is required'),
+        email: Yup.string().min(9, 'Email not valid').required('Email is required'),
         password: Yup.string().min(9, 'Password must be 9 characters or longer.').required('Password is required'),
+        corpId: Yup.string().min(9, 'Corporation Id must be recognized by the Federal Government (Format : ####)').required('Corporation Id is required'),
         confirmPassword: Yup.string().min(9, 'Password must be 9 characters or longer.').oneOf([Yup.ref('password')], 'Password does not match').required('Confirm Password is Required'),
     }),
     handleSubmit(values) {
