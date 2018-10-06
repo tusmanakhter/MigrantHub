@@ -20,30 +20,41 @@ const provinces = [
   { value: 'YT', label: 'Yukon' }
 ];
 
-class MerchantContactInfo extends Component {
-  state = {
-    merchantName: '',
-    address: '',
-    city: '',
-    province: '',
-    postalCode: '',
-    phoneNumber: '',
-  }
-
+class ContactInfo extends Component {
   render() {
+    const handleChange = this.props.handleChange;
+    const firstName = this.props.firstName;
+    const lastName = this.props.lastName;
+    const address = this.props.address;
+    const apartment = this.props.apartment;
+    const city = this.props.city;
+    const province = this.props.province;
+    const postalCode = this.props.postalCode;
+    const phoneNumber = this.props.phoneNumber;
+
     return (
       <React.Fragment>
         <Typography variant="title" gutterBottom>
           Contact Information
       </Typography>
         <Grid container spacing={24}>
-          <Grid item xs={12}>
+          <Grid item xs={12} sm={6}>
             <TextField
-              id="merchantName"
-              name="merchantName"
-              label="Name"
-              value={this.state.merchantName}
-              onChange={event => this.handleChange(event)}
+              id="firstName"
+              name="firstName"
+              label="First Name"
+              value={firstName}
+              onChange={event => handleChange(event)}
+              fullWidth
+            />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              id="lastName"
+              name="lastName"
+              label="Last Name"
+              value={lastName}
+              onChange={event => handleChange(event)}
               fullWidth
             />
           </Grid>
@@ -53,8 +64,19 @@ class MerchantContactInfo extends Component {
               name="address"
               label="Street Address"
               placeholder="Street and number"
-              value={this.state.address}
-              onChange={event => this.handleChange(event)}
+              value={address}
+              onChange={event => handleChange(event)}
+              fullWidth
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <TextField
+              id="apartment"
+              name="apartment"
+              label="Apartment"
+              placeholder="Apartment, suite, unit, building, floor, etc."
+              value={apartment}
+              onChange={event => handleChange(event)}
               fullWidth
             />
           </Grid>
@@ -63,8 +85,8 @@ class MerchantContactInfo extends Component {
               id="city"
               name="city"
               label="City"
-              value={this.state.city}
-              onChange={event => this.handleChange(event)}
+              value={city}
+              onChange={event => handleChange(event)}
               fullWidth
             />
           </Grid>
@@ -74,8 +96,8 @@ class MerchantContactInfo extends Component {
               name="province"
               select
               label="Province/Territory"
-              value={this.state.province}
-              onChange={event => this.handleChange(event)}
+              value={province}
+              onChange={event => handleChange(event)}
               fullWidth
               helperText="Please select a province/territory"
             >
@@ -91,8 +113,8 @@ class MerchantContactInfo extends Component {
               id="postalCode"
               name="postalCode"
               label="Postal Code"
-              value={this.state.postalCode}
-              onChange={event => this.handleChange(event)}
+              value={postalCode}
+              onChange={event => handleChange(event)}
               fullWidth
             />
           </Grid>
@@ -101,8 +123,8 @@ class MerchantContactInfo extends Component {
               id="phoneNumber"
               name="phoneNumber"
               label="Phone Number"
-              value={this.state.phoneNumber}
-              onChange={event => this.handleChange(event)}
+              value={phoneNumber}
+              onChange={event => handleChange(event)}
               fullWidth
             />
           </Grid>
@@ -112,4 +134,4 @@ class MerchantContactInfo extends Component {
   }
 }
 
-export default MerchantContactInfo;
+export default ContactInfo;

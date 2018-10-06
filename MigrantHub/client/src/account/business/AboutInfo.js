@@ -78,17 +78,16 @@ const serviceTypes = [
   { value: '', label: '' },
 ];
 
-class MerchantAboutInfo extends Component {
-  state = {
-    organizationName: '',
-    orgType: '',
-    province: '',
-    department: '',
-    serviceType: '',
-    description: ''
-  }
-
+class AboutInfo extends Component {
   render() {
+
+    const handleChange = this.props.handleChange;
+    const organizationName = this.props.organizationName;
+    const orgType = this.props.orgType;
+    const department = this.props.department;
+    const serviceType = this.props.serviceType;
+    const description = this.props.description;
+
     return (
       <React.Fragment>
         <Typography variant="title" gutterBottom>
@@ -99,9 +98,9 @@ class MerchantAboutInfo extends Component {
             <TextField
               id="organizationName"
               name="organizationName"
-              label="Organization Name"
-              value={this.state.organizationName}
-              onChange={event => this.handleChange(event)}
+              label="Name of organization"
+              value={organizationName}
+              onChange={event => handleChange(event)}
               fullWidth
             />
           </Grid>
@@ -109,12 +108,10 @@ class MerchantAboutInfo extends Component {
             <TextField
               id="orgType"
               name="orgType"
-              select
               label="Organization Type"
-              value={this.state.orgType}
-              onChange={event => this.handleChange(event)}
+              value={orgType}
+              onChange={event => handleChange(event)}
               fullWidth
-              helperText="Please select an organization type"
             >
               {organizationTypes.map(option => (
                 <MenuItem key={option.value} value={option.value}>
@@ -123,7 +120,37 @@ class MerchantAboutInfo extends Component {
               ))}
             </TextField>
           </Grid>
-          {this.state.orgType == 'PROV' ? <Grid item xs={12} sm={6}>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              id="department"
+              name="department"
+              label="Name of the derpartment"
+              value={department}
+              onChange={event => handleChange(event)}
+              fullWidth
+            />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              id="serviceType"
+              name="serviceType"
+              label="Type of service"
+              value={serviceType}
+              onChange={event => handleChange(event)}
+              fullWidth
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <TextField
+              id="description"
+              name="description"
+              label="Description"
+              value={description}
+              onChange={event => this.handleChange(event)}
+              fullWidth
+            />
+          </Grid>
+          {/* {orgType == 'PROV' ? <Grid item xs={12} sm={6}>
             <TextField
               id="province"
               name="province"
@@ -140,8 +167,8 @@ class MerchantAboutInfo extends Component {
                 </MenuItem>
               ))}
             </TextField>
-          </Grid> : ''}
-          {this.state.orgType != '' && this.state.orgType != 'NGOV' ? //Check if Org Type is Gov
+          </Grid> : ''} */}
+          {/* {this.state.orgType != '' && this.state.orgType != 'NGOV' ? //Check if Org Type is Gov
             <Grid item xs={12} sm={6}>
               <TextField
                 id="department"
@@ -169,8 +196,8 @@ class MerchantAboutInfo extends Component {
                     : ''
                 }
               </TextField>
-            </Grid> : ''}
-          {this.state.orgType == 'NGOV' ? //If Non-Gov Org, ask for service type
+            </Grid> : ''} */}
+          {/* {this.state.orgType == 'NGOV' ? //If Non-Gov Org, ask for service type
             <Grid item xs={12} sm={6}>
               <TextField
                 id="serviceType"
@@ -188,21 +215,11 @@ class MerchantAboutInfo extends Component {
                   </MenuItem>
                 ))}
               </TextField>
-            </Grid> : ''}
-          <Grid item xs={12}>
-            <TextField
-              id="description"
-              name="description"
-              label="Description"
-              value={this.state.description}
-              onChange={event => this.handleChange(event)}
-              fullWidth
-            />
-          </Grid>
+            </Grid> : ''} */}
         </Grid>
       </React.Fragment>
     );
   }
 }
 
-export default MerchantAboutInfo;
+export default AboutInfo;

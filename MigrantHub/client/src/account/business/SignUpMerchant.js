@@ -11,10 +11,9 @@ import StepLabel from '@material-ui/core/StepLabel';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 
-import AccountInfo from './BusinessAccountInfo';
-import MerchantContactInfo from './MerchantContactInfo';
-import MerchantAboutInfo from './MerchantAboutInfo';
-
+import AccountInfo from './AccountInfo';
+import ContactInfo from './ContactInfo';
+import AboutInfo from './AboutInfo';
 
 const styles = theme => ({
   appBar: {
@@ -55,22 +54,70 @@ const styles = theme => ({
 
 const steps = ['Account', 'Contact', 'About'];
 
-function getStepContent(step) {
-  switch (step) {
-    case 0:
-      return <AccountInfo />;
-    case 1:
-      return <MerchantContactInfo />;
-    case 2:
-      return <MerchantAboutInfo />;
-    default:
-      throw new Error('Unknown step');
-  }
-}
-
-class SignUpMerchant extends Component {
+class SignUpBusiness extends Component {
   state = {
-    activeStep: 0
+    activeStep: 0,
+
+    // Account Info
+    email: '',
+    corpId: '',
+    password: '',
+    confirmPassword: '',
+
+    // Contact Info
+    firstName: '',
+    lastName: '',
+    address: '',
+    suite: '',
+    city: '',
+    province: '',
+    postalCode: '',
+    phoneNumber: '',
+
+    // About Info
+    organizationName: '',
+    orgType: '',
+    department: '',
+    serviceType: '',
+    description: '',
+
+  }
+
+  getStepContent(step) {
+    switch (step) {
+      case 0:
+        return <AccountInfo
+          handleChange={this.handleChange}
+          email={this.state.email}
+          password={this.state.password}
+          confirmPassword={this.state.confirmPassword}
+        />;
+      case 1:
+        return <ContactInfo
+          handleChange={this.handleChange}
+          firstName={this.state.firstName}
+          lastName={this.state.lastName}
+          address={this.state.address}
+          apartment={this.state.apartment}
+          city={this.state.city}
+          province={this.state.province}
+          postalCode={this.state.postalCode}
+          phoneNumber={this.state.phoneNumber}
+        />;
+      case 2:
+        return <AboutInfo
+          handleChange={this.handleChange}
+          age={this.state.age}
+          gender={this.state.gender}
+          organizationName={this.state.organizationName}
+          orgType={this.state.orgType}
+          department={this.state.department}
+          serviceType={this.state.serviceType}
+          description={this.state.description}
+        />;
+      default:
+        throw new Error('Unknown step');
+    }
   }
 
   handleNext = () => {
@@ -91,6 +138,57 @@ class SignUpMerchant extends Component {
     });
   };
 
+  handleChange = event => {
+    this.setState({
+      [event.target.name]: event.target.value
+    })
+  }
+
+  handleAutoSuggestChange = name => (event, { newValue }) => {
+    this.setState({
+      [name]: newValue,
+    });
+  };
+
+  handleAddObject = (name, object) => {
+    this.setState({
+      [name]: this.state[name].concat([object]),
+    });
+  }
+
+  handleRemoveObject = (name, index) => {
+    this.setState({
+      [name]: this.state[name].filter((s, _index) => _index !== index),
+    });
+  }
+
+  handleEditObjectAutosuggest = (name, fieldName, index) => (event, { newValue }) => {
+    this.setState({
+      [name]: this.state[name].map((s, _index) => {
+        if (_index !== index) return s;
+        return { ...s, [fieldName]: newValue };
+      }),
+    });
+  }
+
+  handleEditObject = (name, index) => (event) => {
+    this.setState({
+      [name]: this.state[name].map((s, _index) => {
+        if (_index !== index) return s;
+        return { ...s, [event.target.name]: event.target.value };
+      }),
+    });
+  }
+
+  handleEditSingleObject = (name, fieldName) => (event) => {
+    let obj = {};
+    obj[name] = { ...this.state[name] };
+    let value = ((event.target.type === 'checkbox') ? event.target.checked :
+      event.target.value);
+    obj[name][fieldName] = value;
+    this.setState({ [name]: obj[name] });
+  }
+
   render() {
     const { classes } = this.props;
     const { activeStep } = this.state;
@@ -108,9 +206,8 @@ class SignUpMerchant extends Component {
         <main className={classes.layout}>
           <Paper className={classes.paper}>
             <Typography variant="display1" align="center">
-              Business Account Sign Up
-            </Typography>
-            <p>This account allows for organizations to provide their services to all newcomers.</p>
+              Sign Up
+          </Typography>
             <Stepper activeStep={activeStep} className={classes.stepper}>
               {steps.map(label => (
                 <Step key={label}>
@@ -122,15 +219,15 @@ class SignUpMerchant extends Component {
               {activeStep === steps.length ? (
                 <React.Fragment>
                   <Typography variant="headline" gutterBottom>
-                    Welcome!
-                  </Typography>
+                    Welcome to MigrantHub.
+                </Typography>
                   <Typography variant="subheading">
-                    Your account has been created! We will redirect you shortly.
+                    Check email for activation.
                 </Typography>
                 </React.Fragment>
               ) : (
                   <React.Fragment>
-                    {getStepContent(activeStep)}
+                    {this.getStepContent(activeStep)}
                     <div className={classes.buttons}>
                       {activeStep !== 0 && (
                         <Button onClick={this.handleBack} className={classes.button}>
@@ -156,8 +253,8 @@ class SignUpMerchant extends Component {
   }
 }
 
-SignUpMerchant.propTypes = {
+SignUpBusiness.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(SignUpMerchant);
+export default withStyles(styles)(SignUpBusiness);

@@ -3,10 +3,11 @@ import { BrowserRouter, Route, Switch } from "react-router-dom";
 import logo from './logo.svg';
 import './App.css';
 import SignUpMigrant from './account/personal/SignUpMigrant';
-import SignUpMerchant from './account/business/SignUpMerchant';
-import Error from "./components/Error";
-import Home from "./home/HomePage";
-import AccountTypeMenu from "./account/AccountTypeMenu";
+import SignUpBusiness from './account/business/SignUpMerchant';
+import Error from './components/Error';
+import Home from './home/HomePage';
+import BusinessIdApi from './account/business/BusinessIdApi';
+import AccountTypeMenu from './account/AccountTypeMenu';
 
 class App extends Component {
   state = { users: [] }
@@ -25,7 +26,8 @@ class App extends Component {
             <AccountTypeMenu />
             <Switch>
               <Route path="/" component={Home} exact />
-              <Route path="/BusinessAccount" component={SignUpMerchant} />
+              <Route path="/test" component={BusinessIdApi} exact />
+              <Route path="/BusinessAccount" component={SignUpBusiness} />
               <Route path="/UserAccount" component={SignUpMigrant} />
               <Route component={Error} />
             </Switch>

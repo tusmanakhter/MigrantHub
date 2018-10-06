@@ -1,118 +1,146 @@
 import React, { Component } from 'react';
-import TextField from '@material-ui/core/TextField';
-import Input from '@material-ui/core/Input'
-import InputLabel from '@material-ui/core/InputLabel';
-import InputAdornment from '@material-ui/core/InputAdornment';
-import IconButton from '@material-ui/core/IconButton';
-import Visibility from '@material-ui/icons/Visibility';
-import VisibilityOff from '@material-ui/icons/VisibilityOff';
-import MenuItem from '@material-ui/core/MenuItem';
-import Checkbox from '@material-ui/core/Checkbox';
-import FormControl from '@material-ui/core/FormControl';
-import FormGroup from '@material-ui/core/FormGroup';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import FormLabel from '@material-ui/core/FormLabel';
+import PropTypes from 'prop-types';
+import withStyles from '@material-ui/core/styles/withStyles';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
+import Paper from '@material-ui/core/Paper';
+import Stepper from '@material-ui/core/Stepper';
+import Step from '@material-ui/core/Step';
+import StepLabel from '@material-ui/core/StepLabel';
 import Button from '@material-ui/core/Button';
-import { BrowserRouter } from "react-router-dom";
+import Typography from '@material-ui/core/Typography';
 
-const provinces = [
-  { value: 'AB', label: 'Alberta' },
-  { value: 'BC', label: 'British Columbia' },
-  { value: 'MB', label: 'Manitoba' },
-  { value: 'NB', label: 'New Brunswick' },
-  { value: 'NL', label: 'Newfoundland and Labrador' },
-  { value: 'NS', label: 'Nova Scotia' },
-  { value: 'NT', label: 'Northwest Territories' },
-  { value: 'NU', label: 'Nunavut' },
-  { value: 'ON', label: 'Ontario' },
-  { value: 'PE', label: 'Prince Edward Island' },
-  { value: 'QC', label: 'Quebec' },
-  { value: 'SK', label: 'Saskatchewan' },
-  { value: 'YT', label: 'Yukon' }
-];
+import AccountInfo from './AccountInfo';
+import ContactInfo from './ContactInfo';
+import PersonalInfo from './PersonalInfo';
+import LanguageInfo from './LanguageInfo';
+import FamilyInfo from './FamilyInfo';
+import EducationInfo from './EducationInfo';
+import EmploymentInfo from './EmploymentInfo';
+import OtherInfo from './OtherInfo';
 
-const organizationTypes = [
-  { value : 'FDRL', label : 'Federal'},
-  { value : 'PROV', label : "Provincial"},
-  { value : 'NGOV', label : "Non-governmental"}
-];
-  
-// https://www.canada.ca/en/government/dept.html
-// https://libguides.smu.ca/govdoc/canada/departments
-const federalDepartments = [
-  { value : 'INDI', label : 'Indigenous and Northern Affairs Canada'},
-  { value : 'AGRI', label : 'Agriculture and Agri-Food Canada'},
-  { value : 'ATLA', label : 'Atlantic Canada Opportunities Agency'},
-  { value : 'AUDI', label : 'Auditor General of Canada, Office of the'},
-  { value : 'BANK', label : 'Bank of Canada'},
-  { value : 'HOUS', label : 'Canada Mortgage and Housing Corporation'},
-  { value : 'REVE', label : 'Canada Revenue Agency'},
-  { value : 'HERE', label : 'Canadian Heritage'},
-  { value : 'IMMI', label : 'Citizenship and Immigration Canada'},
-  { value : 'EMPL', label : 'Employment and Social Development Canada'},
-  { value : 'ENVR', label : 'Environment Canada'},
-  { value : 'FINA', label : 'Finance Canada'},
-  { value : 'FISH', label : 'Fisheries and Oceans Canada'},
-  { value : 'GLOB', label : 'Global Affairs Canada'},
-  { value : 'GGOV', label : 'Governor General of Canada'},
-  { value : 'HLTH', label : 'Health Canada'},
-  { value : 'INFR', label : 'Infrastructure Canada'},
-  { value : 'INTR', label : 'Intergovernmental Affairs'},
-  { value : 'JUST', label : 'Department of Justice'},
-  { value : 'ARCH', label : 'Library and Archives Canada'},
-  { value : 'ARMY', label : 'National Defence and the Canadian Armed Forces'},
-  { value : 'PUBL', label : 'Public Works and Government Services Canada'},
-  { value : 'STAT', label : 'Statistics Canada'},
-  { value : 'TRAN', label : 'Transport Canada'},
-  { value : 'TREA', label : 'Treasury Board of Canada'},
-  { value : 'HUMN', label : 'Canadian Human Rights Commission'},
-];
-  
- // https://en.wikipedia.org/wiki/Departments_of_the_Quebec_Government
- // https://www.ontario.ca/page/ministries
- const provincialDepartments = [
-   { value : '', label : ''},
-   { value : '', label : ''},
-   { value : '', label : ''},
-   { value : '', label : ''},
-   { value : '', label : ''},
-   { value : '', label : ''},
-   { value : '', label : ''},
- ];
+const styles = theme => ({
+  appBar: {
+    position: 'relative',
+  },
+  layout: {
+    width: 'auto',
+    marginLeft: theme.spacing.unit * 2,
+    marginRight: theme.spacing.unit * 2,
+    [theme.breakpoints.up(600 + theme.spacing.unit * 2 * 2)]: {
+      width: 900,
+      marginLeft: 'auto',
+      marginRight: 'auto',
+    },
+  },
+  paper: {
+    marginTop: theme.spacing.unit * 3,
+    marginBottom: theme.spacing.unit * 3,
+    padding: theme.spacing.unit * 2,
+    [theme.breakpoints.up(600 + theme.spacing.unit * 3 * 2)]: {
+      marginTop: theme.spacing.unit * 6,
+      marginBottom: theme.spacing.unit * 6,
+      padding: theme.spacing.unit * 3,
+    },
+  },
+  stepper: {
+    padding: `${theme.spacing.unit * 3}px 0 ${theme.spacing.unit * 5}px`,
+  },
+  buttons: {
+    display: 'flex',
+    justifyContent: 'flex-end',
+  },
+  button: {
+    marginTop: theme.spacing.unit * 3,
+    marginLeft: theme.spacing.unit,
+  },
+});
 
-const serviceTypes = [
-  { value : '', type: ''},
-  { value : '', type: ''},
-  { value : '', type: ''},
-  { value : '', type: ''},
-  { value : '', type: ''},
-];
+const steps = ['Account', 'Contact', 'About'];
 
-class SignUpMerchant extends Component {
+class SignUpBusiness extends Component {
   state = {
-    email: '',
-    password: '',
+    activeStep: 0,
 
-    merchantName: '',
+    // Account Info
+    email: '',
+    corpId: '',
+    password: '',
+    confirmPassword: '',
+
+    // Contact Info
+    firstName: '',
+    lastName: '',
     address: '',
-    apartment: '',
+    suite: '',
     city: '',
     province: '',
     postalCode: '',
     phoneNumber: '',
 
+    // About Info
     organizationName: '',
     orgType: '',
-    province: '',
     department: '',
-    serviceType:'',
-    description:'',
+    serviceType: '',
+    description: '',
 
-    showPassword: false
   }
-  
-  handleClickShowPassword = () => {
-    this.setState(state => ({ showPassword: !state.showPassword }));
+
+  getStepContent(step) {
+    switch (step) {
+      case 0:
+        return <BusinessAccountInfo
+          handleChange={this.handleChange}
+          email={this.state.email}
+          password={this.state.password}
+          confirmPassword={this.state.confirmPassword}
+        />;
+      case 1:
+        return <BusinessContactInfo
+          handleChange={this.handleChange}
+          firstName={this.state.firstName}
+          lastName={this.state.lastName}
+          address={this.state.address}
+          apartment={this.state.apartment}
+          city={this.state.city}
+          province={this.state.province}
+          postalCode={this.state.postalCode}
+          phoneNumber={this.state.phoneNumber}
+        />;
+      case 2:
+        return <BusinessAboutInfo
+          handleChange={this.handleChange}
+          age={this.state.age}
+          gender={this.state.gender}
+          organizationName={this.state.organizationName}
+          orgType={this.state.orgType}
+          department={this.state.department}
+          serviceType={this.state.serviceType}
+          description={this.state.description}
+        />;
+      default:
+        throw new Error('Unknown step');
+    }
+  }
+
+  handleNext = () => {
+    this.setState(state => ({
+      activeStep: state.activeStep + 1,
+    }));
+  };
+
+  handleBack = () => {
+    this.setState(state => ({
+      activeStep: state.activeStep - 1,
+    }));
+  };
+
+  handleReset = () => {
+    this.setState({
+      activeStep: 0,
+    });
   };
 
   handleChange = event => {
@@ -121,189 +149,117 @@ class SignUpMerchant extends Component {
     })
   }
 
-  onSubmit = (event) => {
-    event.preventDefault();
-    console.log(this.state);
+  handleAutoSuggestChange = name => (event, { newValue }) => {
+    this.setState({
+      [name]: newValue,
+    });
+  };
+
+  handleAddObject = (name, object) => {
+    this.setState({
+      [name]: this.state[name].concat([object]),
+    });
+  }
+
+  handleRemoveObject = (name, index) => {
+    this.setState({
+      [name]: this.state[name].filter((s, _index) => _index !== index),
+    });
+  }
+
+  handleEditObjectAutosuggest = (name, fieldName, index) => (event, { newValue }) => {
+    this.setState({
+      [name]: this.state[name].map((s, _index) => {
+        if (_index !== index) return s;
+        return { ...s, [fieldName]: newValue };
+      }),
+    });
+  }
+
+  handleEditObject = (name, index) => (event) => {
+    this.setState({
+      [name]: this.state[name].map((s, _index) => {
+        if (_index !== index) return s;
+        return { ...s, [event.target.name]: event.target.value };
+      }),
+    });
+  }
+
+  handleEditSingleObject = (name, fieldName) => (event) => {
+    let obj = {};
+    obj[name] = { ...this.state[name] };
+    let value = ((event.target.type === 'checkbox') ? event.target.checked :
+      event.target.value);
+    obj[name][fieldName] = value;
+    this.setState({ [name]: obj[name] });
   }
 
   render() {
+    const { classes } = this.props;
+    const { activeStep } = this.state;
+
     return (
-        <div className="SignUpMerchant">
-            <form>
-              <h1>Sign Up</h1>
-              <section>
-                <h2>Account Information</h2>
-                <TextField 
-                  name="email"
-                  label="Email"
-                  value={this.state.email}
-                  onChange={event => this.handleChange(event)}
-                  margin="normal"
-                />
-                <FormControl margin="normal">
-                  <InputLabel htmlFor="password">Password</InputLabel>
-                  <Input
-                    name="password"
-                    type={this.state.showPassword ? 'text' : 'password'}
-                    value={this.state.password}
-                    onChange={event => this.handleChange(event)}
-                    endAdornment={
-                      <InputAdornment position="end">
-                        <IconButton
-                          aria-label="Toggle password visibility"
-                          onClick={this.handleClickShowPassword}
-                        >
-                          {this.state.showPassword ? <VisibilityOff /> : <Visibility />}
-                        </IconButton>
-                      </InputAdornment>
-                    }
-                  />
-                </FormControl>
-              </section>
-              <section>
-                <h2>Contact Information</h2>
-                <TextField 
-                  name="merchantName"
-                  label="Name"
-                  value={this.state.merchantName}
-                  onChange={event => this.handleChange(event)}
-                  margin="normal"
-                />
-                <TextField 
-                  name="address"
-                  label="Street Address"
-                  placeholder="Street and number"
-                  value={this.state.address}
-                  onChange={event => this.handleChange(event)}
-                  margin="normal"
-                />
-                <TextField 
-                  name="apartment"
-                  label="Apartment"
-                  placeholder="Apartment, suite, unit, building, floor, etc."
-                  value={this.state.apartment}
-                  onChange={event => this.handleChange(event)}
-                  margin="normal"
-                />
-                <TextField 
-                  name="city"
-                  label="City"
-                  value={this.state.city}
-                  onChange={event => this.handleChange(event)}
-                  margin="normal"
-                />
-                <TextField
-                  name="province"
-                  select
-                  label="Province/Territory"
-                  value={this.state.province}
-                  onChange={event => this.handleChange(event)}
-                  margin="normal"
-                  helperText="Please select a province/territory"
-                >
-                  {provinces.map(option => (
-                    <MenuItem key={option.value} value={option.value}>
-                      {option.label}
-                    </MenuItem>
-                  ))}
-                </TextField>
-                <TextField 
-                  name="postalCode"
-                  label="Postal Code"
-                  value={this.state.postalCode}
-                  onChange={ event => this.handleChange(event)}
-                  margin="normal"
-                />
-                <TextField 
-                  name="phoneNumber"
-                  label="Phone Number"
-                  value={this.state.phoneNumber}
-                  onChange={ event => this.handleChange(event)}
-                  margin="normal"
-                />
-              </section>
-              <section>
-                <h2>About Information</h2>
-                <TextField 
-                  name="organizationName"
-                  label="Organization Name"
-                  value={this.state.organizationName}
-                  onChange={event => this.handleChange(event)}
-                  margin="normal"
-                />
-                <TextField 
-                  name="orgType"
-                  select
-                  label="Organization Type"
-                  value={this.state.address}
-                  onChange={event => this.handleChange(event)}
-                  margin="normal"
-                  helperText="Please select an organization type"
-                >
-                  {organizationTypes.map(option => (
-                      <MenuItem key={option.value} value={option.value}>
-                        {option.label}
-                      </MenuItem>
-                    ))}
-                </TextField>
-                <TextField 
-                  name="province"
-                  select
-                  label="Province/Territory"
-                  value={this.state.province}
-                  onChange={event => this.handleChange(event)}
-                  margin="normal"
-                  helperText="Please select a province/territory"
-                >
-                {provinces.map(option => (
-                    <MenuItem key={option.value} value={option.value}>
-                      {option.label}
-                    </MenuItem>
-                  ))}
-                </TextField>
-                <TextField 
-                  name="department"
-                  select
-                  label="Department"
-                  value={this.state.department}
-                  onChange={event => this.handleChange(event)}
-                  margin="normal"
-                  helperText="Please select a department"
-                >
-                {federalDepartments.map(option => (
-                      <MenuItem key={option.value} value={option.value}>
-                        {option.label}
-                      </MenuItem>
-                    ))}
-                </TextField>
-                <TextField 
-                  name="serviceType"
-                  select
-                  label="Service Type"
-                  value={this.state.serviceType}
-                  onChange={ event => this.handleChange(event)}
-                  margin="normal"
-                  helperText="Please select a service type"
-                >
-                {serviceTypes.map(option => (
-                      <MenuItem key={option.value} value={option.value}>
-                        {option.label}
-                      </MenuItem>
-                    ))}
-                </TextField>
-                <TextField 
-                  name="description"
-                  label="Description"
-                  value={this.state.description}
-                  onChange={ event => this.handleChange(event)}
-                  margin="normal"
-                />
-              </section>
-              <Button onClick={event => this.onSubmit(event)}>Submit</Button>
-            </form>
-        </div>
+      <React.Fragment>
+        <CssBaseline />
+        <AppBar position="absolute" color="default" className={classes.appBar}>
+          <Toolbar>
+            <Typography variant="title" color="inherit" noWrap>
+              MigrantHub
+          </Typography>
+          </Toolbar>
+        </AppBar>
+        <main className={classes.layout}>
+          <Paper className={classes.paper}>
+            <Typography variant="display1" align="center">
+              Sign Up
+          </Typography>
+            <Stepper activeStep={activeStep} className={classes.stepper}>
+              {steps.map(label => (
+                <Step key={label}>
+                  <StepLabel>{label}</StepLabel>
+                </Step>
+              ))}
+            </Stepper>
+            <React.Fragment>
+              {activeStep === steps.length ? (
+                <React.Fragment>
+                  <Typography variant="headline" gutterBottom>
+                    Welcome to MigrantHub.
+                </Typography>
+                  <Typography variant="subheading">
+                    Check email for activation.
+                </Typography>
+                </React.Fragment>
+              ) : (
+                  <React.Fragment>
+                    {this.getStepContent(activeStep)}
+                    <div className={classes.buttons}>
+                      {activeStep !== 0 && (
+                        <Button onClick={this.handleBack} className={classes.button}>
+                          Back
+                    </Button>
+                      )}
+                      <Button
+                        variant="contained"
+                        color="primary"
+                        onClick={this.handleNext}
+                        className={classes.button}
+                      >
+                        {activeStep === steps.length - 1 ? 'Sign Up' : 'Next'}
+                      </Button>
+                    </div>
+                  </React.Fragment>
+                )}
+            </React.Fragment>
+          </Paper>
+        </main>
+      </React.Fragment>
     );
   }
 }
 
-export default SignUpMigrant;
+SignUpBusiness.propTypes = {
+  classes: PropTypes.object.isRequired,
+};
+
+export default withStyles(styles)(SignUpBusiness);
