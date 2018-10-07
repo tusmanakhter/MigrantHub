@@ -1,85 +1,56 @@
 var express = require('express');
 var router = express.Router();
-var bodyParser = require('body-parser');
 var User = require('../models/User');
+var qs = require('qs');
+
 router.get('/', function(req, res){
     res.render('index')
 });
 router.route('/insertProfile')
     .post(function(req,res) {
-        var user = new User();
-        user._id = req.body.email;
-        user.email = req.body.email;
-        user.password = req.body.password;
-        user.confirmPassword = req.body.confirmPassword;
-        user.firstName = req.body.firstName;
-        user.lastName = req.body.lastName;
-        user.address = req.address;
-        user.apartment = req.body.apartment;
-        user.city = req.body.city;
-        user.province = req.body.province;
-        user.postalCode = req.body.postalCode;
-        user.phoneNumber = req.body.phoneNumber;
-        user.age = req.body.age;
-        user.gender = req.body.gender;
-        user.nationality = req.body.nationality;
-        user.relationshipStatus = req.body.relationshipStatus;
-        user.status = req.body.status;
-        user.writingLevel = req.body.writingLevel;
-        user.speakingLevel = req.body.speakingLevel;
-        user.motherTongue = req.body.motherTongue;
-        user.educationLevel = req.body.educationLevel;
-        user.proficiencyExams = req.body.proficiencyExams;
-        user.jobStatus = req.body.jobStatus;
-        user.lookingForJob = req.body.lookingForJob;
-        user.currentIncome = req.body.currentIncome;
-        user.settlingLocation = req.body.settlingLocation;
-        user.settlingDuration = req.body.settlingDuration;
-        user.joiningReason = req.body.joiningReason;
+
+        let parsedObj = qs.parse(req.body);
+        console.log(parsedObj);
+        console.log(parsedObj.email);
+
+        let user = new User();
+        user._id = parsedObj.email;
+        user.email = parsedObj.email;
+        user.password = parsedObj.password;
+        user.confirmPassword = parsedObj.confirmPassword;
+        user.firstName = parsedObj.firstName;
+        user.lastName = parsedObj.lastName;
+        user.address = parsedObj.address;
+        user.apartment = parsedObj.apartment;
+        user.city = parsedObj.city;
+        user.province = parsedObj.province;
+        user.postalCode = parsedObj.postalCode;
+        user.phoneNumber = parsedObj.phoneNumber;
+        user.age = parsedObj.age;
+        user.gender = parsedObj.gender;
+        user.nationality = parsedObj.nationality;
+        user.relationshipStatus = parsedObj.relationshipStatus;
+        user.status = parsedObj.status;
+        user.languages = parsedObj.languages;
+        user.writingLevel = parsedObj.writingLevel;
+        user.speakingLevel = parsedObj.speakingLevel;
+        user.motherTongue = parsedObj.motherTongue;
+        user.family = parsedObj.family;
+        user.educationLevel = parsedObj.educationLevel;
+        user.proficiencyExams = parsedObj.proficiencyExams;
+        user.jobStatus = parsedObj.jobStatus;
+        user.lookingForJob = parsedObj.lookingForJob;
+        user.currentIncome = parsedObj.currentIncome;
+        user.workExperience = parsedObj.workExperience;
+        user.settlingLocation = parsedObj.settlingLocation;
+        user.settlingDuration = parsedObj.settlingDuration;
+        user.joiningReason = parsedObj.joiningReason;
         user.save(function(err) {
             if (err){
                 res.send(err);
+                console.log(err)
             }else{
                 res.send('User has been added!');
-            }
-        });
-    });
-
-router.route('/insertProfileLanguages')
-    .post(function(req,res) {
-        var language = {name: req.body.name, writingLevel: req.body.writingLevel, speakingLevel: req.body.speakingLevel};
-
-        User.findOneAndUpdate({_id: req.body.email}, {$push: {languages: language}}, function(err, result) {
-            if (err){
-                res.send(err);
-            }else{
-                res.send('Languages has been added!');
-            }
-        });
-    });
-
-router.route('/insertProfileFamily')
-    .post(function(req,res) {
-        var family = {age: req.body.age, gender: req.body.gender, relationshipStatus: req.body.relationshipStatus, relation: req.body.relation};
-
-        User.findOneAndUpdate({_id: req.body.email}, {$push: {family: family}}, function(err, result) {
-            if (err){
-                res.send(err);
-            }else{
-                res.send('Family has been added!');
-            }
-        });
-    });
-
-router.route('/insertProfileWork')
-    .post(function(req,res) {
-        var work = {title: req.body.title, company: req.body.company, years: req.body.years};
-
-        User.findOneAndUpdate({_id: req.body.email}, {$push: {workExperience: work}}, function(err, result) {
-            if (err){
-                res.send(err);
-            }else{
-                res.send('Work has been added!');
             }
         });
     });

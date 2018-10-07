@@ -34,8 +34,8 @@ var userSchema = new Schema({
     }],
     educationLevel: String,
     proficiencyExams: {
-        ielts: Boolean,
-        french: Boolean,
+        ielts: String,
+        french: String,
         others: String
     },
     jobStatus: String,

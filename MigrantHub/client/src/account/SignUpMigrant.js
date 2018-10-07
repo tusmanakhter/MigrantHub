@@ -22,7 +22,7 @@ import OtherInfo from './OtherInfo';
 
 import axios from 'axios';
 import {Link} from 'react-router-dom';
-var querystring = require('querystring');
+var qs = require('qs');
 
 const styles = theme => ({
   appBar: {
@@ -224,9 +224,6 @@ class SignUpMigrant extends Component {
     }
     if(this.state.activeStep == 7){
         this.insertProfile(this);
-        this.insertProfileLanguage(this);
-        this.insertProfileFamily(this);
-        this.insertProfileWork(this);
     }
   };
 
@@ -296,7 +293,7 @@ class SignUpMigrant extends Component {
   // Send profile data in post body to add to mongodb
   insertProfile(e) {
       axios.post('/insertProfile',
-          querystring.stringify({
+          qs.stringify({
               email: e.state.email,
               password: e.state.password,
               confirmPassword: e.state.confirmPassword,
@@ -313,87 +310,25 @@ class SignUpMigrant extends Component {
               nationality: e.state.nationality,
               relationshipStatus: e.state.relationshipStatus,
               status: e.state.status,
+              languages: e.state.languages,
               writingLevel: e.state.writingLevel,
               speakingLevel: e.state.speakingLevel,
               motherTongue: e.state.motherTongue,
+              family: e.state.family,
               educationLevel: e.state.educationLevel,
               proficiencyExams: e.state.proficiencyExams,
               jobStatus: e.state.jobStatus,
               lookingForJob: e.state.lookingForJob,
               currentIncome: e.state.currentIncome,
+              workExperience: e.state.workExperience,
               settlingLocation: e.state.settlingLocation,
               settlingDuration: e.state.settlingDuration,
               joiningReason: e.state.joiningReason
-          }), {
-              headers: {
-                  "Content-Type": "application/x-www-form-urlencoded"
-              }
-          }).then(function (response) {
+          })).then(function (response) {
           e.setState({
               messageFromServer: response.data
           });
       });
-  }
-// Send profile languages data in post body to add to mongodb
-  insertProfileLanguage(e) {
-      for (var x = 0; x < e.state.languages.length; ++x) {
-          axios.post('/insertProfileLanguages',
-              querystring.stringify({
-                  email: e.state.email,
-                  name: e.state.languages[x].name,
-                  writingLevel: e.state.languages[x].writingLevel,
-                  speakingLevel: e.state.languages[x].speakingLevel
-              }), {
-                  headers: {
-                      "Content-Type": "application/x-www-form-urlencoded"
-                  }
-              }).then(function (response) {
-              e.setState({
-                  messageFromServer: response.data
-              });
-          });
-      }
-  }
-// Send profile family data in post body to add to mongodb
-    insertProfileFamily(e) {
-        for (var x = 0; x < e.state.family.length; ++x) {
-            axios.post('/insertProfileFamily',
-                querystring.stringify({
-                    email: e.state.email,
-                    age: e.state.family[x].age,
-                    gender: e.state.family[x].gender,
-                    relationshipStatus: e.state.family[x].relationshipStatus,
-                    relation: e.state.family[x].relation
-                }), {
-                    headers: {
-                        "Content-Type": "application/x-www-form-urlencoded"
-                    }
-                }).then(function (response) {
-                e.setState({
-                    messageFromServer: response.data
-                });
-            });
-        }
-    }
-// Send profile work data in post body to add to mongodb
-    insertProfileWork(e) {
-      for(var x = 0; x<e.state.workExperience.length;++x){
-          axios.post('/insertProfileWork',
-              querystring.stringify({
-                  email: e.state.email,
-                  title: e.state.workExperience[x].title,
-                  company: e.state.workExperience[x].company,
-                  years: e.state.workExperience[x].years
-              }), {
-                  headers: {
-                      "Content-Type": "application/x-www-form-urlencoded"
-                  }
-              }).then(function(response) {
-              e.setState({
-                  messageFromServer: response.data
-              });
-          });
-      }
   }
 
     validate = () => {
