@@ -12,8 +12,9 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import Autosuggest from 'react-autosuggest';
 import match from 'autosuggest-highlight/match';
 import parse from 'autosuggest-highlight/parse';
-import {languages} from 'country-data'
+import {languages as languagesData} from 'country-data'
 import deburr from 'lodash/deburr';
+import validator from 'validator';
 
 const languageLevels = [
   { value: 'none', label: 'None' },
@@ -22,12 +23,14 @@ const languageLevels = [
   { value: 'advanced', label: 'Advanced' },
 ];
 
+const languages = languagesData.all.filter(word => !(/\d/.test(word.name)))
+
 const getSuggestions = value => {
   const inputValue = deburr(value.trim()).toLowerCase();
   const inputLength = inputValue.length;
   let count = 0;
 
-  return inputLength === 0 ? [] : languages.all.filter(language => {
+  return inputLength === 0 ? [] : languages.filter(language => {
     const keep = count < 5 && language.name.slice(0, inputLength).toLowerCase() === inputValue;
     
     if (keep) {
@@ -110,10 +113,76 @@ const styles = theme => ({
   button: {
     margin: theme.spacing.unit,
   },
+  select: {
+    textAlign: 'left'
+  }
 });
 class LanguageInfo extends Component {
   state = {
-    suggestions: []
+    suggestions: [],
+    languagesError: [],
+    writingLevelError: '',
+    speakingLevelError: '',
+    motherTongueError: '',
+  }
+
+  validate = () => {
+    let isError = false;
+    const errors = {
+      languagesError: [],
+      writingLevelError: '',
+      speakingLevelError: '',
+      motherTongueError: '',
+    };
+
+    if (validator.isEmpty(this.props.motherTongue)) {
+      errors.motherTongueError = "Mother tongue is required";
+      isError = true
+    } else if (!validator.isAlpha(this.props.motherTongue)) {
+      errors.motherTongueError = "Mother tongue is not valid"
+      isError = true
+    }
+
+    if (validator.isEmpty(this.props.writingLevel)) {
+      errors.writingLevelError = "Writing level is required";
+      isError = true
+    } 
+
+    if (validator.isEmpty(this.props.speakingLevel)) {
+      errors.speakingLevelError = "Speaking level is required";
+      isError = true
+    } 
+
+    this.props.languages.forEach((language, index) => {
+      errors.languagesError = errors.languagesError.concat([JSON.parse(JSON.stringify(langObject))]);
+      if (validator.isEmpty(language.name)) {
+        errors.languagesError[index].name = "Language name is required";
+        isError = true
+      } else if (!validator.isAlpha(language.name)) {
+        errors.languagesError[index].name = "Language name is not valid"
+        isError = true
+      }
+      if (validator.isEmpty(language.writingLevel)) {
+        errors.languagesError[index].writingLevel = "Writing level is required";
+        isError = true
+      } 
+  
+      if (validator.isEmpty(language.speakingLevel)) {
+        errors.languagesError[index].speakingLevel = "Speaking level is required";
+        isError = true
+      } 
+    });
+
+    this.setState({
+      ...this.state,
+      ...errors
+    })
+    
+    return isError;
+  }
+
+  objectErrorText = (name, index, field) => {
+    return this.state[name][index] === undefined ? "" : this.state[name][index][field] 
   }
 
   handleSuggestionsFetchRequested = ({ value }) => {
@@ -165,6 +234,8 @@ class LanguageInfo extends Component {
               label: 'Mother Tongue',
               value: motherTongue,
               onChange: handleAutoSuggestChange('motherTongue'),
+              helperText: this.state.motherTongueError,
+              error: this.state.motherTongueError.length > 0,
             }}
             theme={{
               container: classes.container,
@@ -188,6 +259,9 @@ class LanguageInfo extends Component {
             value={writingLevel}
             onChange={event => handleChange(event)}
             fullWidth
+            className={classes.select}
+            helperText={this.state.writingLevelError}
+            error={this.state.writingLevelError.length > 0}
           >
             {languageLevels.map(option => (
               <MenuItem key={option.value} value={option.value}>
@@ -204,7 +278,10 @@ class LanguageInfo extends Component {
             label="Speaking Level"
             value={speakingLevel}
             onChange={event => handleChange(event)}
+            className={classes.select}
             fullWidth
+            helperText={this.state.speakingLevelError}
+            error={this.state.speakingLevelError.length > 0}
           >
             {languageLevels.map(option => (
               <MenuItem key={option.value} value={option.value}>
@@ -235,6 +312,8 @@ class LanguageInfo extends Component {
                     value: language.name,
                     label: "Language",
                     onChange: handleEditObjectAutosuggest("languages", "name", index),
+                    helperText: this.objectErrorText("languagesError", index, "name"),
+                    error: this.objectErrorText("languagesError", index, "name").length > 0,
                   }}
                   theme={{
                     container: classes.container,
@@ -257,7 +336,10 @@ class LanguageInfo extends Component {
                 label="Writing Level"
                 value={language.writingLevel}
                 onChange={handleEditObject("languages", index)}
+                className={classes.select}
                 fullWidth
+                helperText={this.objectErrorText("languagesError", index, "writingLevel")}
+                error={this.objectErrorText("languagesError", index, "writingLevel").length > 0}
               >
                 {languageLevels.map(option => (
                   <MenuItem key={option.value} value={option.value}>
@@ -274,7 +356,10 @@ class LanguageInfo extends Component {
                 label="Speaking Level"
                 value={language.speakingLevel}
                 onChange={handleEditObject("languages", index)}
+                className={classes.select}
                 fullWidth
+                helperText={this.objectErrorText("languagesError", index, "speakingLevel")}
+                error={this.objectErrorText("languagesError", index, "speakingLevel").length > 0}
               >
                 {languageLevels.map(option => (
                   <MenuItem key={option.value} value={option.value}>

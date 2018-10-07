@@ -6,11 +6,13 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Autosuggest from 'react-autosuggest';
+import InputAdornment from '@material-ui/core/InputAdornment';
 import Paper from '@material-ui/core/Paper';
 import match from 'autosuggest-highlight/match';
 import parse from 'autosuggest-highlight/parse';
 import {cities} from 'canada'
 import deburr from 'lodash/deburr';
+import validator from 'validator';
 
 const joiningReasons = [
   { value: 'help', label: 'Help' },
@@ -103,10 +105,47 @@ const styles = theme => ({
   button: {
     margin: theme.spacing.unit,
   },
+  select: {
+    textAlign: 'left'
+  }
 });
 class OtherInfo extends Component {
   state = {
-    suggestions: []
+    suggestions: [],
+    settlingLocationError: '',
+    settlingDurationError: '',
+    joiningReasonError: '',
+  }
+  
+  validate = () => {
+    let isError = false;
+    const errors = {
+      settlingLocationError: '',
+      settlingDurationError: '',
+      joiningReasonError: '',
+    };
+
+    if (validator.isEmpty(this.props.settlingLocation)) {
+      errors.settlingLocationError = "Settling location is required";
+      isError = true
+    }
+
+    if (validator.isEmpty(this.props.settlingDuration)) {
+      errors.settlingDurationError = "Settling duration is required";
+      isError = true
+    }
+
+    if (validator.isEmpty(this.props.joiningReason)) {
+      errors.joiningReasonError = "Joining reason is required";
+      isError = true
+    }
+
+    this.setState({
+      ...this.state,
+      ...errors
+    })
+    
+    return isError;
   }
 
   handleSuggestionsFetchRequested = ({ value }) => {
@@ -159,6 +198,8 @@ class OtherInfo extends Component {
               label: 'Settling Location',
               value: settlingLocation,
               onChange: handleAutoSuggestChange('settlingLocation'),
+              helperText: this.state.settlingLocationError,
+              error: this.state.settlingLocationError.length > 0,
             }}
             theme={{
               container: classes.container,
@@ -181,6 +222,12 @@ class OtherInfo extends Component {
             value={settlingDuration}
             onChange={ event => handleChange(event)}
             fullWidth
+            type="number"
+            helperText={this.state.settlingDurationError}
+            error={this.state.settlingDurationError.length > 0}
+            InputProps={{
+              endAdornment: <InputAdornment position="end">years</InputAdornment>
+            }}
           />
         </Grid>
         <Grid item xs={12}>
@@ -191,9 +238,10 @@ class OtherInfo extends Component {
             label="Reason for joining"
             value={joiningReason}
             onChange={event => handleChange(event)}
-            margin="normal"
-            helperText="Please select a joining reason"
+            className={classes.select}
             fullWidth
+            helperText={this.state.joiningReasonError}
+            error={this.state.joiningReasonError.length > 0}
           >
             {joiningReasons.map(option => (
               <MenuItem key={option.value} value={option.value}>

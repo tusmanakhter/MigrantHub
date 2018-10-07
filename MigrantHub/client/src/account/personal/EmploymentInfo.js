@@ -14,6 +14,9 @@ import Button from '@material-ui/core/Button';
 import AddIcon from '@material-ui/icons/Add';
 import DeleteIcon from '@material-ui/icons/Delete';
 import InputAdornment from '@material-ui/core/InputAdornment';
+import FormHelperText from '@material-ui/core/FormHelperText';
+import validator from 'validator';
+import NumberFormat from 'react-number-format';
 
 const jobStatuses = [
   { value: 'fulltime', label: 'Full Time' },
@@ -29,24 +32,29 @@ const lookingForJobOptions = [
 
 const workObject = { title: '', company: '', years: '' };
 
+const IncomeMask = (props) => {
+  const { inputRef, onChange, ...other } = props;
+
+  return (
+    <NumberFormat
+      {...other}
+      onValueChange={values => {
+        onChange({
+            target: {
+              name: props.name,
+              value: values.value,
+            },
+        });
+      }}
+      thousandSeparator={true} 
+      prefix={'$'}
+    />
+  );
+}
+
 const styles = theme => ({
   container: {
     position: 'relative',
-  },
-  suggestionsContainerOpen: {
-    position: 'absolute',
-    zIndex: 1,
-    marginTop: theme.spacing.unit,
-    left: 0,
-    right: 0,
-  },
-  suggestion: {
-    display: 'block',
-  },
-  suggestionsList: {
-    margin: 0,
-    padding: 0,
-    listStyleType: 'none',
   },
   row: {
     display: 'inline-block'
@@ -59,9 +67,70 @@ const styles = theme => ({
   },
   formControl: {
     textAlign: 'left'
+  },
+  select: {
+    textAlign: 'left'
   }
 });
 class EmploymentInfo extends Component {
+  state = {
+    jobStatusError: '',
+    lookingForJobError: '',
+    workExperienceError: [],
+  }
+
+  validate = () => {
+    let isError = false;
+    const errors = {
+      jobStatusError: '',
+      lookingForJobError: '',
+      workExperienceError: [],
+    };
+
+    if (validator.isEmpty(this.props.jobStatus)) {
+      errors.jobStatusError = "Job status is required";
+      isError = true
+    }
+
+    if (validator.isEmpty(this.props.lookingForJob)) {
+      errors.lookingForJobError = "This field is required";
+      isError = true
+    }
+
+    this.props.workExperience.forEach((job, index) => {
+      errors.workExperienceError = errors.workExperienceError.concat([JSON.parse(JSON.stringify(workObject))]);
+
+      if (validator.isEmpty(job.title)) {
+        errors.workExperienceError[index].title = "Title is required";
+        isError = true
+      } else if (!validator.isAlpha(job.title)) {
+        errors.workExperienceError[index].title = "Title is not valid";
+        isError = true
+      } 
+
+      if (validator.isEmpty(job.company)) {
+        errors.workExperienceError[index].company = "Company is required";
+        isError = true
+      }
+
+      if (validator.isEmpty(job.years)) {
+        errors.workExperienceError[index].years = "Employment length is required";
+        isError = true
+      }
+    });
+
+    this.setState({
+      ...this.state,
+      ...errors
+    })
+    
+    return isError;
+  }
+
+  objectErrorText = (name, index, field) => {
+    return this.state[name][index] === undefined ? "" : this.state[name][index][field] 
+  }
+
   render() {
     const { classes } = this.props;
 
@@ -87,8 +156,10 @@ class EmploymentInfo extends Component {
             label="Job Status"
             value={jobStatus}
             onChange={event => handleChange(event)}
-            helperText="Please select a job status"
+            className={classes.select}
             fullWidth
+            helperText={this.state.jobStatusError}
+            error={this.state.jobStatusError.length > 0}
           >
             {jobStatuses.map(option => (
               <MenuItem key={option.value} value={option.value}>
@@ -104,11 +175,14 @@ class EmploymentInfo extends Component {
               value={currentIncome}
               onChange={ event => handleChange(event)}
               fullWidth
+              InputProps={{
+                inputComponent: IncomeMask,
+              }}
           />
         </Grid>
         <Grid item xs={12} sm={4}>
           <FormControl component="fieldset" fullWidth className={classes.formControl}>
-            <FormLabel component="legend">Looking for a job?</FormLabel>
+            <FormLabel component="legend" error={this.state.lookingForJobError.length > 0}>Looking for a job?</FormLabel>
             <RadioGroup
               aria-label="Looking for a job?"
               id="lookingForJob"
@@ -123,6 +197,11 @@ class EmploymentInfo extends Component {
                 </FormControlLabel>
               ))}
             </RadioGroup>
+            <FormHelperText
+                error={this.state.lookingForJobError.length > 0}
+              >
+                {this.state.lookingForJobError}
+            </FormHelperText>
           </FormControl>
         </Grid>
         <Grid item xs={12}>
@@ -146,6 +225,8 @@ class EmploymentInfo extends Component {
                 label="Title"
                 value={work.title}
                 onChange={handleEditObject("workExperience", index)}
+                helperText={this.objectErrorText("workExperienceError", index, "title")}
+                error={this.objectErrorText("workExperienceError", index, "title").length > 0}
                 fullWidth
               />
             </Grid>
@@ -156,6 +237,8 @@ class EmploymentInfo extends Component {
                 label="Company"
                 value={work.company}
                 onChange={handleEditObject("workExperience", index)}
+                helperText={this.objectErrorText("workExperienceError", index, "company")}
+                error={this.objectErrorText("workExperienceError", index, "company").length > 0}
                 fullWidth
               />
             </Grid>
@@ -163,10 +246,13 @@ class EmploymentInfo extends Component {
               <TextField 
                 id="years"
                 name="years"
-                label="years"
+                label="Employment length"
                 value={work.years}
                 onChange={handleEditObject("workExperience", index)}
+                helperText={this.objectErrorText("workExperienceError", index, "years")}
+                error={this.objectErrorText("workExperienceError", index, "years").length > 0}
                 fullWidth
+                type="number"
                 InputProps={{
                   endAdornment: <InputAdornment position="end">years</InputAdornment>
                 }}

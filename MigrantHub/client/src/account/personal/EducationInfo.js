@@ -10,6 +10,7 @@ import FormLabel from '@material-ui/core/FormLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
+import validator from 'validator';
 
 const educationLevels = [
   { value: 'earlyChildhood', label: 'Early childhood' },
@@ -33,10 +34,36 @@ const styles = theme => ({
   },
   formControl: {
     textAlign: 'left'
+  },
+  select: {
+    textAlign: 'left'
   }
 });
 
 class EducationInfo extends Component {
+  state = {
+    educationLevelError: '',
+  }
+
+  validate = () => {
+    let isError = false;
+    const errors = {
+      educationLevelError: '',
+    };
+
+    if (validator.isEmpty(this.props.educationLevel)) {
+      errors.educationLevelError = "Education level is required";
+      isError = true
+    }
+
+    this.setState({
+      ...this.state,
+      ...errors
+    })
+    
+    return isError;
+  }
+  
   handleChangeExams = (name) => (event) => {
     let proficiencyExams = { ...this.state.proficiencyExams };
     proficiencyExams[name] = event.target.checked;
@@ -64,9 +91,10 @@ class EducationInfo extends Component {
             label="Education Level"
             value={educationLevel}
             onChange={event => handleChange(event)}
-            margin="normal"
-            helperText="Please select an education level"
+            className={classes.select}
             fullWidth
+            helperText={this.state.educationLevelError}
+            error={this.state.educationLevelError.length > 0}
           >
             {educationLevels.map(option => (
               <MenuItem key={option.value} value={option.value}>

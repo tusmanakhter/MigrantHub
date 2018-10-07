@@ -20,6 +20,10 @@ import EducationInfo from './EducationInfo';
 import EmploymentInfo from './EmploymentInfo';
 import OtherInfo from './OtherInfo';
 
+import axios from 'axios';
+import {Link} from 'react-router-dom';
+var qs = require('qs');
+
 const styles = theme => ({
   appBar: {
     position: 'relative',
@@ -70,11 +74,8 @@ class SignUpMigrant extends Component {
 
     // Account Info
     email: '',
-    emailError: "",
     password: '',
-    passwordError: "",
     confirmPassword: '',
-    confirmPasswordError: "",
 
     // Contact Info
     firstName: '',
@@ -120,13 +121,16 @@ class SignUpMigrant extends Component {
     settlingLocation: '',
     settlingDuration: '',
     joiningReason: '',
+
+    // DB response
+    messageFromServer: ''
   }
 
   getStepContent(step) {
     switch (step) {
       case 0:
         return <AccountInfo
-                ref={this.child}
+                innerRef={this.child}
                 handleChange={this.handleChange}
                 email={this.state.email}
                 password={this.state.password}
@@ -134,7 +138,7 @@ class SignUpMigrant extends Component {
                />;
       case 1:
         return <ContactInfo
-                ref={this.child}
+                innerRef={this.child}
                 handleChange={this.handleChange}
                 firstName={this.state.firstName}
                 lastName={this.state.lastName}
@@ -147,7 +151,7 @@ class SignUpMigrant extends Component {
                />;
       case 2:
         return <PersonalInfo
-                ref={this.child}
+                innerRef={this.child}
                 handleChange={this.handleChange}
                 age={this.state.age}
                 gender={this.state.gender}
@@ -157,7 +161,7 @@ class SignUpMigrant extends Component {
                />;
       case 3:
         return <LanguageInfo
-                ref={this.child}
+                innerRef={this.child}
                 handleChange={this.handleChange}
                 handleAutoSuggestChange={this.handleAutoSuggestChange}
                 handleAddObject={this.handleAddObject}
@@ -171,7 +175,7 @@ class SignUpMigrant extends Component {
                />;
       case 4:
         return <FamilyInfo
-                ref={this.child}
+                innerRef={this.child}
                 handleAddObject={this.handleAddObject}
                 handleRemoveObject={this.handleRemoveObject}
                 handleEditObject={this.handleEditObject}
@@ -179,7 +183,7 @@ class SignUpMigrant extends Component {
                />;
       case 5:
         return <EducationInfo
-                ref={this.child}
+                innerRef={this.child}
                 handleChange={this.handleChange}
                 handleEditSingleObject={this.handleEditSingleObject}
                 educationLevel={this.state.educationLevel}
@@ -187,7 +191,7 @@ class SignUpMigrant extends Component {
                />;
       case 6:
         return <EmploymentInfo
-                ref={this.child}
+                innerRef={this.child}
                 handleChange={this.handleChange}
                 handleAddObject={this.handleAddObject}
                 handleRemoveObject={this.handleRemoveObject}
@@ -199,7 +203,7 @@ class SignUpMigrant extends Component {
                />;
       case 7:
         return <OtherInfo
-                ref={this.child}
+                innerRef={this.child}
                 handleChange={this.handleChange}
                 handleAutoSuggestChange={this.handleAutoSuggestChange}
                 settlingLocation={this.state.settlingLocation}
@@ -212,11 +216,14 @@ class SignUpMigrant extends Component {
   }
 
   handleNext = () => {
-    let error = this.validate();
+    let error = this.child.current.validate();
     if (!error) {
       this.setState(state => ({
-        activeStep: state.activeStep + 1,
+          activeStep: state.activeStep + 1,
       }));
+    }
+    if(this.state.activeStep === 7){
+        this.insertProfile(this);
     }
   };
 
@@ -283,9 +290,45 @@ class SignUpMigrant extends Component {
     this.setState({ [name]: obj[name] });
   }
 
-  validate = () => {
-    let error = this.child.current.validate();
-    return error;
+  // Send profile data in post body to add to mongodb
+  insertProfile(e) {
+      axios.post('/insertProfile',
+          qs.stringify({
+              email: e.state.email,
+              password: e.state.password,
+              confirmPassword: e.state.confirmPassword,
+              firstName: e.state.firstName,
+              lastName: e.state.lastName,
+              address: e.state.address,
+              apartment: e.state.apartment,
+              city: e.state.city,
+              province: e.state.province,
+              postalCode: e.state.postalCode,
+              phoneNumber: e.state.phoneNumber,
+              age: e.state.age,
+              gender: e.state.gender,
+              nationality: e.state.nationality,
+              relationshipStatus: e.state.relationshipStatus,
+              status: e.state.status,
+              languages: e.state.languages,
+              writingLevel: e.state.writingLevel,
+              speakingLevel: e.state.speakingLevel,
+              motherTongue: e.state.motherTongue,
+              family: e.state.family,
+              educationLevel: e.state.educationLevel,
+              proficiencyExams: e.state.proficiencyExams,
+              jobStatus: e.state.jobStatus,
+              lookingForJob: e.state.lookingForJob,
+              currentIncome: e.state.currentIncome,
+              workExperience: e.state.workExperience,
+              settlingLocation: e.state.settlingLocation,
+              settlingDuration: e.state.settlingDuration,
+              joiningReason: e.state.joiningReason
+          })).then(function (response) {
+          e.setState({
+              messageFromServer: response.data
+          });
+      });
   }
 
   render() {
@@ -294,7 +337,7 @@ class SignUpMigrant extends Component {
 
     return (
       <React.Fragment>
-      <CssBaseline />
+        <CssBaseline />
       <AppBar position="absolute" color="default" className={classes.appBar}>
         <Toolbar>
           <Typography variant="title" color="inherit" noWrap>
