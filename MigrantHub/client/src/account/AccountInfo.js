@@ -123,7 +123,8 @@ class AccountInfo extends Component {
            </Grid>
            <Grid item xs={12} sm={6}>
             <FormControl margin="normal" fullWidth>
-              <InputLabel htmlFor="password">Confirm Password</InputLabel>
+              <InputLabel htmlFor="password"
+              error={this.state.confirmPasswordError.length > 0 || this.state.passwordError.length > 0}>Confirm Password</InputLabel>
               <Input
                 name="confirmPassword"
                 type={this.state.showPassword ? 'text' : 'password'}

@@ -153,12 +153,36 @@ class LanguageInfo extends Component {
       isError = true
     } 
 
+    this.props.languages.forEach((language, index) => {
+      errors.languagesError = errors.languagesError.concat([JSON.parse(JSON.stringify(langObject))]);
+      if (validator.isEmpty(language.name)) {
+        errors.languagesError[index].name = "Language name is required";
+        isError = true
+      } else if (!validator.isAlpha(language.name)) {
+        errors.languagesError[index].name = "Language name is not valid"
+        isError = true
+      }
+      if (validator.isEmpty(language.writingLevel)) {
+        errors.languagesError[index].writingLevel = "Writing level is required";
+        isError = true
+      } 
+  
+      if (validator.isEmpty(language.speakingLevel)) {
+        errors.languagesError[index].speakingLevel = "Speaking level is required";
+        isError = true
+      } 
+    });
+
     this.setState({
       ...this.state,
       ...errors
     })
     
     return isError;
+  }
+
+  objectErrorText = (name, index, field) => {
+    return this.state[name][index] === undefined ? "" : this.state[name][index][field] 
   }
 
   handleSuggestionsFetchRequested = ({ value }) => {
@@ -288,6 +312,8 @@ class LanguageInfo extends Component {
                     value: language.name,
                     label: "Language",
                     onChange: handleEditObjectAutosuggest("languages", "name", index),
+                    helperText: this.objectErrorText("languagesError", index, "name"),
+                    error: this.objectErrorText("languagesError", index, "name").length > 0,
                   }}
                   theme={{
                     container: classes.container,
@@ -312,6 +338,8 @@ class LanguageInfo extends Component {
                 onChange={handleEditObject("languages", index)}
                 className={classes.select}
                 fullWidth
+                helperText={this.objectErrorText("languagesError", index, "writingLevel")}
+                error={this.objectErrorText("languagesError", index, "writingLevel").length > 0}
               >
                 {languageLevels.map(option => (
                   <MenuItem key={option.value} value={option.value}>
@@ -330,6 +358,8 @@ class LanguageInfo extends Component {
                 onChange={handleEditObject("languages", index)}
                 className={classes.select}
                 fullWidth
+                helperText={this.objectErrorText("languagesError", index, "speakingLevel")}
+                error={this.objectErrorText("languagesError", index, "speakingLevel").length > 0}
               >
                 {languageLevels.map(option => (
                   <MenuItem key={option.value} value={option.value}>

@@ -216,13 +216,13 @@ class SignUpMigrant extends Component {
   }
 
   handleNext = () => {
-    let error = this.validate();
+    let error = this.child.current.validate();
     if (!error) {
       this.setState(state => ({
           activeStep: state.activeStep + 1,
       }));
     }
-    if(this.state.activeStep == 7){
+    if(this.state.activeStep === 7){
         this.insertProfile(this);
     }
   };
@@ -330,11 +330,6 @@ class SignUpMigrant extends Component {
           });
       });
   }
-
-    validate = () => {
-        let error = this.child.current.validate();
-        return error;
-    }
 
   render() {
     const { classes } = this.props;

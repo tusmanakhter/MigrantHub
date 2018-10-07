@@ -56,21 +56,6 @@ const styles = theme => ({
   container: {
     position: 'relative',
   },
-  suggestionsContainerOpen: {
-    position: 'absolute',
-    zIndex: 1,
-    marginTop: theme.spacing.unit,
-    left: 0,
-    right: 0,
-  },
-  suggestion: {
-    display: 'block',
-  },
-  suggestionsList: {
-    margin: 0,
-    padding: 0,
-    listStyleType: 'none',
-  },
   row: {
     display: 'inline-block'
   },
@@ -91,6 +76,7 @@ class EmploymentInfo extends Component {
   state = {
     jobStatusError: '',
     lookingForJobError: '',
+    workExperienceError: [],
   }
 
   validate = () => {
@@ -98,6 +84,7 @@ class EmploymentInfo extends Component {
     const errors = {
       jobStatusError: '',
       lookingForJobError: '',
+      workExperienceError: [],
     };
 
     if (validator.isEmpty(this.props.jobStatus)) {
@@ -110,12 +97,38 @@ class EmploymentInfo extends Component {
       isError = true
     }
 
+    this.props.workExperience.forEach((job, index) => {
+      errors.workExperienceError = errors.workExperienceError.concat([JSON.parse(JSON.stringify(workObject))]);
+
+      if (validator.isEmpty(job.title)) {
+        errors.workExperienceError[index].title = "Title is required";
+        isError = true
+      } else if (!validator.isAlpha(job.title)) {
+        errors.workExperienceError[index].title = "Title is not valid";
+        isError = true
+      } 
+
+      if (validator.isEmpty(job.company)) {
+        errors.workExperienceError[index].company = "Company is required";
+        isError = true
+      }
+
+      if (validator.isEmpty(job.years)) {
+        errors.workExperienceError[index].years = "Employment length is required";
+        isError = true
+      }
+    });
+
     this.setState({
       ...this.state,
       ...errors
     })
     
     return isError;
+  }
+
+  objectErrorText = (name, index, field) => {
+    return this.state[name][index] === undefined ? "" : this.state[name][index][field] 
   }
 
   render() {
@@ -212,6 +225,8 @@ class EmploymentInfo extends Component {
                 label="Title"
                 value={work.title}
                 onChange={handleEditObject("workExperience", index)}
+                helperText={this.objectErrorText("workExperienceError", index, "title")}
+                error={this.objectErrorText("workExperienceError", index, "title").length > 0}
                 fullWidth
               />
             </Grid>
@@ -222,6 +237,8 @@ class EmploymentInfo extends Component {
                 label="Company"
                 value={work.company}
                 onChange={handleEditObject("workExperience", index)}
+                helperText={this.objectErrorText("workExperienceError", index, "company")}
+                error={this.objectErrorText("workExperienceError", index, "company").length > 0}
                 fullWidth
               />
             </Grid>
@@ -229,10 +246,13 @@ class EmploymentInfo extends Component {
               <TextField 
                 id="years"
                 name="years"
-                label="years"
+                label="Employment length"
                 value={work.years}
                 onChange={handleEditObject("workExperience", index)}
+                helperText={this.objectErrorText("workExperienceError", index, "years")}
+                error={this.objectErrorText("workExperienceError", index, "years").length > 0}
                 fullWidth
+                type="number"
                 InputProps={{
                   endAdornment: <InputAdornment position="end">years</InputAdornment>
                 }}
