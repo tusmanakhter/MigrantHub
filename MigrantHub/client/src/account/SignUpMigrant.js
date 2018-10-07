@@ -74,11 +74,8 @@ class SignUpMigrant extends Component {
 
     // Account Info
     email: '',
-    emailError: "",
     password: '',
-    passwordError: "",
     confirmPassword: '',
-    confirmPasswordError: "",
 
     // Contact Info
     firstName: '',
@@ -133,7 +130,7 @@ class SignUpMigrant extends Component {
     switch (step) {
       case 0:
         return <AccountInfo
-                ref={this.child}
+                innerRef={this.child}
                 handleChange={this.handleChange}
                 email={this.state.email}
                 password={this.state.password}
@@ -141,7 +138,7 @@ class SignUpMigrant extends Component {
                />;
       case 1:
         return <ContactInfo
-                ref={this.child}
+                innerRef={this.child}
                 handleChange={this.handleChange}
                 firstName={this.state.firstName}
                 lastName={this.state.lastName}
@@ -154,7 +151,7 @@ class SignUpMigrant extends Component {
                />;
       case 2:
         return <PersonalInfo
-                ref={this.child}
+                innerRef={this.child}
                 handleChange={this.handleChange}
                 age={this.state.age}
                 gender={this.state.gender}
@@ -164,7 +161,7 @@ class SignUpMigrant extends Component {
                />;
       case 3:
         return <LanguageInfo
-                ref={this.child}
+                innerRef={this.child}
                 handleChange={this.handleChange}
                 handleAutoSuggestChange={this.handleAutoSuggestChange}
                 handleAddObject={this.handleAddObject}
@@ -178,7 +175,7 @@ class SignUpMigrant extends Component {
                />;
       case 4:
         return <FamilyInfo
-                ref={this.child}
+                innerRef={this.child}
                 handleAddObject={this.handleAddObject}
                 handleRemoveObject={this.handleRemoveObject}
                 handleEditObject={this.handleEditObject}
@@ -186,7 +183,7 @@ class SignUpMigrant extends Component {
                />;
       case 5:
         return <EducationInfo
-                ref={this.child}
+                innerRef={this.child}
                 handleChange={this.handleChange}
                 handleEditSingleObject={this.handleEditSingleObject}
                 educationLevel={this.state.educationLevel}
@@ -194,7 +191,7 @@ class SignUpMigrant extends Component {
                />;
       case 6:
         return <EmploymentInfo
-                ref={this.child}
+                innerRef={this.child}
                 handleChange={this.handleChange}
                 handleAddObject={this.handleAddObject}
                 handleRemoveObject={this.handleRemoveObject}
@@ -206,7 +203,7 @@ class SignUpMigrant extends Component {
                />;
       case 7:
         return <OtherInfo
-                ref={this.child}
+                innerRef={this.child}
                 handleChange={this.handleChange}
                 handleAutoSuggestChange={this.handleAutoSuggestChange}
                 settlingLocation={this.state.settlingLocation}

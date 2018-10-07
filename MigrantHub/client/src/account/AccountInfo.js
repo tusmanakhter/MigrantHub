@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import withStyles from '@material-ui/core/styles/withStyles';
 import TextField from '@material-ui/core/TextField';
 import Input from '@material-ui/core/Input'
 import InputLabel from '@material-ui/core/InputLabel';
@@ -11,6 +13,8 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import validator from 'validator';
+
+const styles = theme => ({});
 
 class AccountInfo extends Component {
   state = {
@@ -49,6 +53,10 @@ class AccountInfo extends Component {
       errors.passwordError = "Passwords do not match"
       errors.confirmPasswordError = "Passwords do not match"
       isError = true
+    } else if (!validator.isLength(this.props.password, {min: 8})) {
+      errors.passwordError = "Password must be atleast 8 characters"
+      errors.confirmPasswordError = "Password must be atleast 8 characters"
+      isError = true
     }
 
     this.setState({
@@ -60,6 +68,8 @@ class AccountInfo extends Component {
   }
 
   render() {
+    const { classes } = this.props;
+
     const handleChange = this.props.handleChange;
     const email = this.props.email;
     const password = this.props.password;
@@ -79,7 +89,6 @@ class AccountInfo extends Component {
                 value={email}
                 onChange={event => handleChange(event)}
                 fullWidth
-                margin="normal"
                 helperText={this.state.emailError}
                 error={this.state.emailError.length > 0}
             />
@@ -120,7 +129,7 @@ class AccountInfo extends Component {
                 type={this.state.showPassword ? 'text' : 'password'}
                 value={confirmPassword}
                 onChange={event => handleChange(event)}
-                error={this.state.confirmPasswordError.length > 0}
+                error={this.state.confirmPasswordError.length > 0 || this.state.passwordError.length > 0}
                 endAdornment={
                   <InputAdornment position="end">
                     <IconButton
@@ -133,7 +142,7 @@ class AccountInfo extends Component {
                 }
               />
               <FormHelperText
-                error={this.state.confirmPasswordError.length > 0}
+                error={this.state.confirmPasswordError.length > 0 || this.state.passwordError.length > 0}
               >
                 {this.state.confirmPasswordError}
               </FormHelperText>
@@ -145,4 +154,8 @@ class AccountInfo extends Component {
   }
 }
 
-export default AccountInfo;
+AccountInfo.propTypes = {
+  classes: PropTypes.object.isRequired,
+};
+
+export default withStyles(styles)(AccountInfo);

@@ -11,6 +11,8 @@ import MenuItem from '@material-ui/core/MenuItem';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
+import FormHelperText from '@material-ui/core/FormHelperText';
+import validator from 'validator';
 
 const statuses = [
   { value: 'immigrant', label: 'Immigrant' },
@@ -38,10 +40,67 @@ const styles = theme => ({
   },
   formControl: {
     textAlign: 'left'
+  },
+  select: {
+    textAlign: 'left'
   }
 });
 
 class PersonalInfo extends Component {
+  state = {
+    ageError: '',
+    genderError: '',
+    nationalityError: '',
+    relationshipStatusError: '',
+    statusError: '',
+  }
+  
+  validate = () => {
+    let isError = false;
+    const errors = {
+      ageError: '',
+      genderError: '',
+      nationalityError: '',
+      relationshipStatusError: '',
+      statusError: '',
+    };
+
+    if (validator.isEmpty(this.props.age)) {
+      errors.ageError = "Age is required";
+      isError = true
+    }
+
+    if (validator.isEmpty(this.props.gender)) {
+      errors.genderError = "Gender is required";
+      isError = true
+    }
+   
+    if (validator.isEmpty(this.props.nationality)) {
+      errors.nationalityError = "Nationality is required";
+      isError = true
+    } else if (!validator.isAlpha(this.props.nationality)) {
+      errors.nationalityError = "This is not a valid nationality"
+      isError = true
+    }
+
+    if (validator.isEmpty(this.props.relationshipStatus)) {
+      errors.relationshipStatusError = "Relationship status is required";
+      isError = true
+    } 
+
+    if (validator.isEmpty(this.props.status)) {
+      errors.statusError = "Status is required";
+      isError = true
+    }
+
+    this.setState({
+      ...this.state,
+      ...errors
+    })
+    
+    return isError;
+  }
+
   render() {
     const { classes } = this.props;
 
@@ -64,8 +123,11 @@ class PersonalInfo extends Component {
             name="age"
             label="Age"
             value={age}
+            type="number"
             onChange={ event => handleChange(event)}
             fullWidth
+            helperText={this.state.ageError}
+            error={this.state.ageError.length > 0}
             InputProps={{
               endAdornment: <InputAdornment position="end">years</InputAdornment>
             }}
@@ -79,11 +141,13 @@ class PersonalInfo extends Component {
             value={nationality}
             onChange={ event => handleChange(event)}
             fullWidth
+            helperText={this.state.nationalityError}
+            error={this.state.nationalityError.length > 0}
           />
         </Grid>
         <Grid item xs={12} sm={4}>
           <FormControl component="fieldset" fullWidth className={classes.formControl}>
-            <FormLabel component="legend">Gender</FormLabel>
+            <FormLabel component="legend" error={this.state.genderError.length > 0}>Gender</FormLabel>
             <RadioGroup
               aria-label="Gender"
               id="gender"
@@ -98,6 +162,11 @@ class PersonalInfo extends Component {
                 </FormControlLabel>
               ))}
             </RadioGroup>
+            <FormHelperText
+                error={this.state.genderError.length > 0}
+              >
+                {this.state.genderError}
+            </FormHelperText>
           </FormControl>
         </Grid>
         <Grid item xs={12} sm={6}>
@@ -108,8 +177,10 @@ class PersonalInfo extends Component {
             label="Status"
             value={status}
             onChange={event => handleChange(event)}
-            helperText="Please select a status"
+            className={classes.select}
             fullWidth
+            helperText={this.state.statusError}
+            error={this.state.statusError.length > 0}
           >
             {statuses.map(option => (
               <MenuItem key={option.value} value={option.value}>
@@ -126,8 +197,10 @@ class PersonalInfo extends Component {
             label="Relationship Status"
             value={relationshipStatus}
             onChange={event => handleChange(event)}
-            helperText="Please select a relationship status"
+            className={classes.select}
             fullWidth
+            helperText={this.state.relationshipStatusError}
+            error={this.state.relationshipStatusError.length > 0}
           >
             {relationshipStatuses.map(option => (
               <MenuItem key={option.value} value={option.value}>

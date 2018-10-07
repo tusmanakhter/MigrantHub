@@ -69,9 +69,24 @@ const styles = theme => ({
   },
   formControl: {
     textAlign: 'left'
+  },
+  select: {
+    textAlign: 'left'
   }
 });
 class FamilyInfo extends Component {
+  validate = () => {
+    let isError = false;
+    const errors = {};
+
+    this.setState({
+      ...this.state,
+      ...errors
+    })
+    
+    return isError;
+  }
+
   render() {
     const { classes } = this.props;
 
@@ -140,6 +155,7 @@ class FamilyInfo extends Component {
                 label="Relationship Status"
                 value={member.relationshipStatus}
                 onChange={handleEditObject("family", index)}
+                className={classes.select}
                 helperText="Please select a relationship status"
                 fullWidth
               >
@@ -158,6 +174,7 @@ class FamilyInfo extends Component {
                 label="Relation to you"
                 value={member.relation}
                 onChange={handleEditObject("family", index)}
+                className={classes.select}
                 helperText="Please select a relation"
                 fullWidth
               >

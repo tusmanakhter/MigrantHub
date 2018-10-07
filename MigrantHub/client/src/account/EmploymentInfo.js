@@ -14,6 +14,9 @@ import Button from '@material-ui/core/Button';
 import AddIcon from '@material-ui/icons/Add';
 import DeleteIcon from '@material-ui/icons/Delete';
 import InputAdornment from '@material-ui/core/InputAdornment';
+import FormHelperText from '@material-ui/core/FormHelperText';
+import validator from 'validator';
+import NumberFormat from 'react-number-format';
 
 const jobStatuses = [
   { value: 'fulltime', label: 'Full Time' },
@@ -28,6 +31,26 @@ const lookingForJobOptions = [
 ]
 
 const workObject = { title: '', company: '', years: '' };
+
+const IncomeMask = (props) => {
+  const { inputRef, onChange, ...other } = props;
+
+  return (
+    <NumberFormat
+      {...other}
+      onValueChange={values => {
+        onChange({
+            target: {
+              name: props.name,
+              value: values.value,
+            },
+        });
+      }}
+      thousandSeparator={true} 
+      prefix={'$'}
+    />
+  );
+}
 
 const styles = theme => ({
   container: {
@@ -59,9 +82,42 @@ const styles = theme => ({
   },
   formControl: {
     textAlign: 'left'
+  },
+  select: {
+    textAlign: 'left'
   }
 });
 class EmploymentInfo extends Component {
+  state = {
+    jobStatusError: '',
+    lookingForJobError: '',
+  }
+
+  validate = () => {
+    let isError = false;
+    const errors = {
+      jobStatusError: '',
+      lookingForJobError: '',
+    };
+
+    if (validator.isEmpty(this.props.jobStatus)) {
+      errors.jobStatusError = "Job status is required";
+      isError = true
+    }
+
+    if (validator.isEmpty(this.props.lookingForJob)) {
+      errors.lookingForJobError = "This field is required";
+      isError = true
+    }
+
+    this.setState({
+      ...this.state,
+      ...errors
+    })
+    
+    return isError;
+  }
+
   render() {
     const { classes } = this.props;
 
@@ -87,8 +143,10 @@ class EmploymentInfo extends Component {
             label="Job Status"
             value={jobStatus}
             onChange={event => handleChange(event)}
-            helperText="Please select a job status"
+            className={classes.select}
             fullWidth
+            helperText={this.state.jobStatusError}
+            error={this.state.jobStatusError.length > 0}
           >
             {jobStatuses.map(option => (
               <MenuItem key={option.value} value={option.value}>
@@ -104,11 +162,14 @@ class EmploymentInfo extends Component {
               value={currentIncome}
               onChange={ event => handleChange(event)}
               fullWidth
+              InputProps={{
+                inputComponent: IncomeMask,
+              }}
           />
         </Grid>
         <Grid item xs={12} sm={4}>
           <FormControl component="fieldset" fullWidth className={classes.formControl}>
-            <FormLabel component="legend">Looking for a job?</FormLabel>
+            <FormLabel component="legend" error={this.state.lookingForJobError.length > 0}>Looking for a job?</FormLabel>
             <RadioGroup
               aria-label="Looking for a job?"
               id="lookingForJob"
@@ -123,6 +184,11 @@ class EmploymentInfo extends Component {
                 </FormControlLabel>
               ))}
             </RadioGroup>
+            <FormHelperText
+                error={this.state.lookingForJobError.length > 0}
+              >
+                {this.state.lookingForJobError}
+            </FormHelperText>
           </FormControl>
         </Grid>
         <Grid item xs={12}>
