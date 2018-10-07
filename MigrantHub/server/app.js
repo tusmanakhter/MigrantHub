@@ -1,6 +1,5 @@
 var serverConfig = require('./config');
 var express = require('express');
-var router = require('./routes/routes.js')
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
@@ -8,7 +7,6 @@ var mongoose = require('mongoose');
 var bodyParser = require('body-parser');
 
 var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
 var router = require('./routes/routes');
 
 var app = express();
@@ -22,7 +20,6 @@ app.use(bodyParser.json({limit: '50mb'}));
 app.use(bodyParser.urlencoded({limit: '50mb', extended: false}));
 
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
 app.use('/', router);
 
 // MongoDB/Mongoose Connection

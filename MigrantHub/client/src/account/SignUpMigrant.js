@@ -407,7 +407,6 @@ class SignUpMigrant extends Component {
 
     return (
       <React.Fragment>
-        <h3>{this.state.messageFromServer}</h3>
         <CssBaseline />
       <AppBar position="absolute" color="default" className={classes.appBar}>
         <Toolbar>
