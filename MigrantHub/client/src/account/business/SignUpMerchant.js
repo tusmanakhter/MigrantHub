@@ -11,8 +11,8 @@ import StepLabel from '@material-ui/core/StepLabel';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 
-import AccountInfo from './AccountInfo';
-import ContactInfo from './ContactInfo';
+import AccountInfo from '../personal/AccountInfo';
+import ContactInfo from '../personal/ContactInfo';
 import AboutInfo from './AboutInfo';
 
 const styles = theme => ({
@@ -65,31 +65,21 @@ class SignUpBusiness extends Component {
 
     // Account Info
     email: '',
-    emailError: "",
-    corpId: '',
-    corpIdError: '',
     password: '',
-    passwordError: "",
     confirmPassword: '',
-    confirmPasswordError: "",
 
     // Contact Info
     firstName: '',
-    firstNameError: "",
     lastName: '',
-    lastNameError: "",
     address: '',
-    addressError: "",
-    suite: '',
+    apartment: '',
     city: '',
-    cityError: "",
     province: '',
-    provinceError: "",
     postalCode: '',
-    postalCodeError: "",
     phoneNumber: '',
 
     // About Info
+    corpId: '',
     organizationName: '',
     orgType: '',
     department: '',
@@ -102,37 +92,37 @@ class SignUpBusiness extends Component {
     switch (step) {
       case 0:
         return <AccountInfo
-          ref={this.child}
-          handleChange={this.handleChange}
-          email={this.state.email}
-          password={this.state.password}
-          confirmPassword={this.state.confirmPassword}
-        />;
+                innerRef={this.child}
+                handleChange={this.handleChange}
+                email={this.state.email}
+                password={this.state.password}
+                confirmPassword={this.state.confirmPassword}
+               />;
       case 1:
         return <ContactInfo
-          ref={this.child}
-          handleChange={this.handleChange}
-          firstName={this.state.firstName}
-          lastName={this.state.lastName}
-          address={this.state.address}
-          apartment={this.state.apartment}
-          city={this.state.city}
-          province={this.state.province}
-          postalCode={this.state.postalCode}
-          phoneNumber={this.state.phoneNumber}
-        />;
+                innerRef={this.child}
+                handleChange={this.handleChange}
+                firstName={this.state.firstName}
+                lastName={this.state.lastName}
+                address={this.state.address}
+                apartment={this.state.apartment}
+                city={this.state.city}
+                province={this.state.province}
+                postalCode={this.state.postalCode}
+                phoneNumber={this.state.phoneNumber}
+               />;
       case 2:
         return <AboutInfo
-          ref={this.child}
-          handleChange={this.handleChange}
-          age={this.state.age}
-          gender={this.state.gender}
-          organizationName={this.state.organizationName}
-          orgType={this.state.orgType}
-          department={this.state.department}
-          serviceType={this.state.serviceType}
-          description={this.state.description}
-        />;
+                ref={this.child}
+                handleChange={this.handleChange}
+                age={this.state.age}
+                gender={this.state.gender}
+                organizationName={this.state.organizationName}
+                orgType={this.state.orgType}
+                department={this.state.department}
+                serviceType={this.state.serviceType}
+                description={this.state.description}
+               />;
       default:
         throw new Error('Unknown step');
     }

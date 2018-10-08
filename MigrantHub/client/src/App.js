@@ -10,14 +10,6 @@ import Home from './home/HomePage';
 import AccountTypeMenu from './account/AccountTypeMenu';
 
 class App extends Component {
-  state = { users: [] }
-
-  componentDidMount() {
-    fetch('/users')
-      .then(res => res.json())
-      .then(users => this.setState({ users }));
-  }
-
   render() {
     return (
       <div className="App">
