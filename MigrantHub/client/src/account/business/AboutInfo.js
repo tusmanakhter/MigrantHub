@@ -80,38 +80,38 @@ const serviceTypes = [
 ];
 
 class AboutInfo extends Component {
-  // state = {
-  //   organizationNameError: '',
-  //   orgTypeError: '',
-  //   departmentError: '',
-  //   serviceTypeError: '',
-  //   descriptionError: '',
-  // }
+  state = {
+    organizationNameError: '',
+    orgTypeError: '',
+    departmentError: '',
+    serviceTypeError: '',
+    descriptionError: '',
+  }
 
   validate = () => {
-    // let isError = false;
-    // const errors = {
-    //   organizationName: '',
-    //   orgType: '',
-    //   department: '',
-    //   serviceType: '',
-    //   description: '',
-    // };
+    let isError = false;
+    const errors = {
+      organizationName: '',
+      orgType: '',
+      department: '',
+      serviceType: '',
+      description: '',
+    };
 
-    // if (validator.isEmpty(this.props.organizationName)) {
-    //   errors.organizationNameError = "Organization name is required";
-    //   isError = true
-    // } else if (!validator.isAlpha(this.props.organizationName)) {
-    //   errors.organizationNameError = "Organization name is not valid"
-    //   isError = true
-    // }
+    if (validator.isEmpty(this.props.organizationName)) {
+      errors.organizationNameError = "Organization name is required";
+      isError = true
+    } else if (!validator.isAlpha(this.props.organizationName)) {
+      errors.organizationNameError = "Organization name is not valid"
+      isError = true
+    }
 
-    // this.setState({
-    //   ...this.state,
-    //   ...errors
-    // })
+    this.setState({
+      ...this.state,
+      ...errors
+    })
 
-    // return isError;
+    return isError;
   }
 
   render() {

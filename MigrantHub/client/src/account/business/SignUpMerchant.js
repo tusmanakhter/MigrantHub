@@ -108,7 +108,7 @@ class SignUpBusiness extends Component {
     switch (step) {
       case 0:
         return <AccountInfo
-          ref={this.child}
+          innerRef={this.child}
           handleChange={this.handleChange}
           email={this.state.email}
           password={this.state.password}
@@ -116,13 +116,13 @@ class SignUpBusiness extends Component {
         />;
       case 1:
         return <IdInfo
-          ref={this.child}
+          innerRef={this.child}
           handleChange={this.handleChange}
           corpId={this.state.corpId}
         />;
-      case 1:
+      case 2:
         return <ContactInfo
-          ref={this.child}
+          innerRef={this.child}
           handleChange={this.handleChange}
           firstName={this.state.firstName}
           lastName={this.state.lastName}
@@ -133,7 +133,7 @@ class SignUpBusiness extends Component {
           postalCode={this.state.postalCode}
           phoneNumber={this.state.phoneNumber}
         />;
-      case 2:
+      case 3:
         return <AboutInfo
           ref={this.child}
           handleChange={this.handleChange}

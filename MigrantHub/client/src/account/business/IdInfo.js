@@ -11,30 +11,30 @@ import validator from 'validator';
 const styles = theme => ({});
 
 class IdInfo extends Component {
-  // state = {
-  //   corpIdError: ""
-  // }
+  state = {
+    corpIdError: ""
+  }
 
   validate = () => {
-    // let isError = false;
-    // const errors = {
-    //   corpIdError: '',
-    // };
+    let isError = false;
+    const errors = {
+      corpIdError: '',
+    };
 
-    // if (validator.isEmpty(this.props.corpId)) {
-    //   errors.corpIdError = "corpId name is required";
-    //   isError = true
-    // } else if (!validator.isAlpha(this.props.corpId)) {
-    //   errors.corpIdError = "corpId name is not valid"
-    //   isError = true
-    // }
+    if (validator.isEmpty(this.props.corpId)) {
+      errors.corpIdError = "corpId name is required";
+      isError = true
+    } else if (!validator.isAlpha(this.props.corpId)) {
+      errors.corpIdError = "corpId name is not valid"
+      isError = true
+    }
 
-    // this.setState({
-    //   ...this.state,
-    //   ...errors
-    // })
+    this.setState({
+      ...this.state,
+      ...errors
+    })
 
-    // return isError;
+    return isError;
   }
 
   render() {
