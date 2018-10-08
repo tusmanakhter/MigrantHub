@@ -6,7 +6,7 @@ import SignUpMigrant from './account/personal/SignUpMigrant';
 import SignUpBusiness from './account/business/SignUpMerchant';
 import Error from './components/Error';
 import Home from './home/HomePage';
-import BusinessIdApi from './account/business/BusinessIdApi';
+//import BusinessIdApi from './account/business/BusinessIdApi';
 import AccountTypeMenu from './account/AccountTypeMenu';
 
 class App extends Component {
@@ -26,7 +26,6 @@ class App extends Component {
             <AccountTypeMenu />
             <Switch>
               <Route path="/" component={Home} exact />
-              <Route path="/test" component={BusinessIdApi} exact />
               <Route path="/BusinessAccount" component={SignUpBusiness} />
               <Route path="/UserAccount" component={SignUpMigrant} />
               <Route component={Error} />

@@ -55,23 +55,38 @@ const styles = theme => ({
 const steps = ['Account', 'Contact', 'About'];
 
 class SignUpBusiness extends Component {
+  constructor(props){
+    super(props);
+    this.child = React.createRef();
+  }
+
   state = {
     activeStep: 0,
 
     // Account Info
     email: '',
+    emailError: "",
     corpId: '',
+    corpIdError: '',
     password: '',
+    passwordError: "",
     confirmPassword: '',
+    confirmPasswordError: "",
 
     // Contact Info
     firstName: '',
+    firstNameError: "",
     lastName: '',
+    lastNameError: "",
     address: '',
+    addressError: "",
     suite: '',
     city: '',
+    cityError: "",
     province: '',
+    provinceError: "",
     postalCode: '',
+    postalCodeError: "",
     phoneNumber: '',
 
     // About Info
@@ -87,6 +102,7 @@ class SignUpBusiness extends Component {
     switch (step) {
       case 0:
         return <AccountInfo
+          ref={this.child}
           handleChange={this.handleChange}
           email={this.state.email}
           password={this.state.password}
@@ -94,6 +110,7 @@ class SignUpBusiness extends Component {
         />;
       case 1:
         return <ContactInfo
+          ref={this.child}
           handleChange={this.handleChange}
           firstName={this.state.firstName}
           lastName={this.state.lastName}
@@ -106,6 +123,7 @@ class SignUpBusiness extends Component {
         />;
       case 2:
         return <AboutInfo
+          ref={this.child}
           handleChange={this.handleChange}
           age={this.state.age}
           gender={this.state.gender}
@@ -121,9 +139,12 @@ class SignUpBusiness extends Component {
   }
 
   handleNext = () => {
-    this.setState(state => ({
-      activeStep: state.activeStep + 1,
-    }));
+    let error = this.validate();
+    if (!error) {
+      this.setState(state => ({
+        activeStep: state.activeStep + 1,
+      }));
+    }
   };
 
   handleBack = () => {
@@ -187,6 +208,11 @@ class SignUpBusiness extends Component {
       event.target.value);
     obj[name][fieldName] = value;
     this.setState({ [name]: obj[name] });
+  }
+
+  validate = () => {
+    let error = this.child.current.validate();
+    return error;
   }
 
   render() {
