@@ -119,6 +119,7 @@ router.get('/logout', function (req, res) {
 router.get('/', function(req, res){
     res.render('index')
 });
+
 router.route('/insertProfile')
     .post(function(req,res) {
 
@@ -171,26 +172,29 @@ router.route('/insertProfile')
 router.route('/insertBusinessProfile')
     .post(function(req,res) {
         let parsedObj = qs.parse(req.body);
-        let BusinessUser = new BusinessUser();
-        BusinessUser._id = parsedObj.email;
-        BusinessUser.email = parsedObj.email;
-        BusinessUser.corpId = parsedObj.corpId;
-        BusinessUser.password = parsedObj.password;
-        BusinessUser.confirmPassword = parsedObj.confirmPassword;
-        BusinessUser.firstName = parsedObj.firstName;
-        BusinessUser.lastName = parsedObj.lastName;
-        BusinessUser.address = parsedObj.address;
-        BusinessUser.apartment = parsedObj.apartment;
-        BusinessUser.city = parsedObj.city;
-        BusinessUser.province = parsedObj.province;
-        BusinessUser.postalCode = parsedObj.postalCode;
-        BusinessUser.phoneNumber = parsedObj.phoneNumber;
-        BusinessUser.nameOrganization = parsedObj.nameOrganization;
-        BusinessUser.typeOrganization = parsedObj.typeOrganization;
-        BusinessUser.nameDepartment = parsedObj.nameDepartment;
-        BusinessUser.typeService = parsedObj.typeService;
-        BusinessUser.description = parsedObj.description;
-        BusinessUser.save(function(err) {
+        console.log(parsedObj);
+        console.log(parsedObj.email);
+        
+        let businessUser = new BusinessUser();
+        businessUser._id = parsedObj.email;
+        businessUser.email = parsedObj.email;
+        businessUser.corpId = parsedObj.corpId;
+        businessUser.password = parsedObj.password;
+        businessUser.confirmPassword = parsedObj.confirmPassword;
+        businessUser.firstName = parsedObj.firstName;
+        businessUser.lastName = parsedObj.lastName;
+        businessUser.address = parsedObj.address;
+        businessUser.apartment = parsedObj.apartment;
+        businessUser.city = parsedObj.city;
+        businessUser.province = parsedObj.province;
+        businessUser.postalCode = parsedObj.postalCode;
+        businessUser.phoneNumber = parsedObj.phoneNumber;
+        businessUser.nameOrganization = parsedObj.nameOrganization;
+        businessUser.typeOrganization = parsedObj.typeOrganization;
+        businessUser.nameDepartment = parsedObj.nameDepartment;
+        businessUser.typeService = parsedObj.typeService;
+        businessUser.description = parsedObj.description;
+        businessUser.save(function(err) {
             if (err){
                 res.send(err);
                 console.log(err)
