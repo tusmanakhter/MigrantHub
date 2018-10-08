@@ -230,6 +230,7 @@ class SignUpBusiness extends Component {
     axios.post('/insertBusinessProfile',
       qs.stringify({
         email: e.state.email,
+        corpId: e.state.corpId,
         password: e.state.password,
         confirmPassword: e.state.confirmPassword,
         firstName: e.state.firstName,
@@ -239,6 +240,7 @@ class SignUpBusiness extends Component {
         city: e.state.city,
         province: e.state.province,
         postalCode: e.state.postalCode,
+        phoneNumber: e.state.phoneNumber,
         organizationName: e.state.organizationName,
         orgType: e.state.orgType,
         department: e.state.department,

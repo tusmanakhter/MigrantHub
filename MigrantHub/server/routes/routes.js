@@ -3,6 +3,7 @@ var router = express.Router();
 var User = require('../models/User');
 var BusinessUser = require('../models/BusinessUser');
 var MigrantProfileValidator = require('../MigrantProfileValidator');
+var BusinessProfileValidator = require('../BusinessProfileValidator');
 var qs = require('qs');
 var bcrypt = require('bcryptjs');
 
@@ -66,11 +67,11 @@ router.route('/insertProfile')
     }
   });
 
-router.route('/insertProfile')
+router.route('/insertBusinessProfile')
   .post(function (req, res) {
 
     let parsedObj = qs.parse(req.body);
-    let errors = MigrantProfileValidator(parsedObj);
+    let errors = BusinessProfileValidator(parsedObj);
 
     if (errors == "") {
       let businessuser = new BusinessUser();
@@ -96,18 +97,18 @@ router.route('/insertProfile')
       businessuser.province = parsedObj.province;
       businessuser.postalCode = parsedObj.postalCode;
       businessuser.phoneNumber = parsedObj.phoneNumber;
-      businessuser.nameOrganization = parsedObj.nameOrganization;
-      businessuser.typeOrganization = parsedObj.typeOrganization;
-      businessuser.nameDepartment = parsedObj.nameDepartment;
-      businessuser.typeService = parsedObj.typeService;
+      businessuser.organizationName = parsedObj.organizationName;
+      businessuser.orgType = parsedObj.orgType;
+      businessuser.department = parsedObj.department;
+      businessuser.serviceType = parsedObj.serviceType;
       businessuser.description = parsedObj.description;
       businessuser.save(function (err) {
         if (err) {
-          res.send("There was a error saving user.");
+          res.send("There was a error saving business user.");
           // Todo: Should create with error
           console.log(err)
         } else {
-          res.send('User has been added!');
+          res.send('Business user has been added!');
         }
       });
     } else {
