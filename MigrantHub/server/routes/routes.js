@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var User = require('../models/User');
+var BusinessUser = require('../models/BusinessUser');
 var qs = require('qs');
 
 router.get('/', function(req, res){
@@ -55,4 +56,36 @@ router.route('/insertProfile')
         });
     });
 
+router.route('/insertBusinessProfile')
+    .post(function(req,res) {
+        let parsedObj = qs.parse(req.body);
+        let BusinessUser = new BusinessUser();
+        BusinessUser._id = parsedObj.email;
+        BusinessUser.email = parsedObj.email;
+        BusinessUser.corpId = parsedObj.corpId;
+        BusinessUser.password = parsedObj.password;
+        BusinessUser.confirmPassword = parsedObj.confirmPassword;
+        BusinessUser.firstName = parsedObj.firstName;
+        BusinessUser.lastName = parsedObj.lastName;
+        BusinessUser.address = parsedObj.address;
+        BusinessUser.apartment = parsedObj.apartment;
+        BusinessUser.city = parsedObj.city;
+        BusinessUser.province = parsedObj.province;
+        BusinessUser.postalCode = parsedObj.postalCode;
+        BusinessUser.phoneNumber = parsedObj.phoneNumber;
+        BusinessUser.nameOrganization = parsedObj.nameOrganization;
+        BusinessUser.typeOrganization = parsedObj.typeOrganization;
+        BusinessUser.nameDepartment = parsedObj.nameDepartment;
+        BusinessUser.typeService = parsedObj.typeService;
+        BusinessUser.description = parsedObj.description;
+        BusinessUser.save(function(err) {
+            if (err){
+                res.send(err);
+                console.log(err)
+            }else{
+                res.send('Business user has been added!');
+            }
+        });
+    });
+    
 module.exports = router;

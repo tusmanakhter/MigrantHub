@@ -146,7 +146,7 @@ class AboutInfo extends Component {
               name="description"
               label="Description"
               value={description}
-              onChange={event => this.handleChange(event)}
+              onChange={event => handleChange(event)}
               fullWidth
             />
           </Grid>
