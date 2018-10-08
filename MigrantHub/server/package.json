@@ -11,13 +11,23 @@
     "install-all": "npm install && npm run client-install"
   },
   "dependencies": {
+    "connect-flash": "*",
+    "bcryptjs": "*",
     "body-parser": "^1.18.3",
     "concurrently": "^4.0.1",
     "cookie-parser": "~1.4.3",
     "debug": "~2.6.9",
     "express": "~4.16.0",
+    "express-handlebars": "*",
+    "express-messages": "*",
+    "express-session": "*",
+    "express-validator": "*",
+    "mongodb": "*",
     "mongoose": "^5.3.1",
     "morgan": "~1.9.0",
+    "passport": "*",
+    "passport-http": "*",
+    "passport-local": "*",
     "react-router-dom": "^4.3.1"
   },
   "devDependencies": {
