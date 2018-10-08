@@ -33,6 +33,7 @@ class AccountInfo extends Component {
     const errors = {
       emailError: "",
       passwordError: "",
+      confirmPasswordError: "",
     };
 
     if (validator.isEmpty(this.props.email)) {
