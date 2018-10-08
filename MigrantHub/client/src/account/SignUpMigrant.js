@@ -292,6 +292,12 @@ class SignUpMigrant extends Component {
 
   // Send profile data in post body to add to mongodb
   insertProfile(e) {
+      if(e.state.proficiencyExams.french == ''){
+          e.state.proficiencyExams.french = 'false'
+      }
+      if(e.state.proficiencyExams.ielts == ''){
+          e.state.proficiencyExams.ielts = 'false'
+      }
       axios.post('/insertProfile',
           qs.stringify({
               email: e.state.email,
@@ -337,6 +343,9 @@ class SignUpMigrant extends Component {
 
     return (
       <React.Fragment>
+          {this.state.messageFromServer.split('\n').map((item, key) => {
+              return <span key={key}>{item}<br/></span>
+          })}
         <CssBaseline />
       <AppBar position="absolute" color="default" className={classes.appBar}>
         <Toolbar>
