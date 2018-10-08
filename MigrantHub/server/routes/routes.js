@@ -18,12 +18,9 @@ router.route('/insertProfile')
             let user = new User();
             user._id = parsedObj.email;
             user.email = parsedObj.email;
-
             var salt = bcrypt.genSaltSync(10);
             var hash = bcrypt.hashSync(parsedObj.password, salt);
             user.password = hash;
-            user.confirmPassword = hash;
-
             user.firstName = parsedObj.firstName;
             user.lastName = parsedObj.lastName;
             user.address = parsedObj.address;
