@@ -3,6 +3,7 @@ import TextField from '@material-ui/core/TextField';
 import MenuItem from '@material-ui/core/MenuItem';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
+import validator from 'validator';
 
 const provinces = [
   { value: 'AB', label: 'Alberta' },
@@ -79,6 +80,40 @@ const serviceTypes = [
 ];
 
 class AboutInfo extends Component {
+  // state = {
+  //   organizationNameError: '',
+  //   orgTypeError: '',
+  //   departmentError: '',
+  //   serviceTypeError: '',
+  //   descriptionError: '',
+  // }
+
+  validate = () => {
+    // let isError = false;
+    // const errors = {
+    //   organizationName: '',
+    //   orgType: '',
+    //   department: '',
+    //   serviceType: '',
+    //   description: '',
+    // };
+
+    // if (validator.isEmpty(this.props.organizationName)) {
+    //   errors.organizationNameError = "Organization name is required";
+    //   isError = true
+    // } else if (!validator.isAlpha(this.props.organizationName)) {
+    //   errors.organizationNameError = "Organization name is not valid"
+    //   isError = true
+    // }
+
+    // this.setState({
+    //   ...this.state,
+    //   ...errors
+    // })
+
+    // return isError;
+  }
+
   render() {
 
     const handleChange = this.props.handleChange;
@@ -102,6 +137,8 @@ class AboutInfo extends Component {
               value={organizationName}
               onChange={event => handleChange(event)}
               fullWidth
+              helperText={this.state.organizationNameError}
+              error={this.state.organizationNameError.length > 0}
             />
           </Grid>
           <Grid item xs={12} sm={6}>
