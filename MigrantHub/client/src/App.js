@@ -6,6 +6,9 @@ import SignUpMigrant from './account/personal/SignUpMigrant';
 import SignUpBusiness from './account/business/SignUpMerchant';
 import Error from './components/Error';
 import Home from './home/HomePage';
+import Login from './account/Login';
+import TempError from './account/TempError';
+import TempHome from './account/TempHome';
 //import BusinessIdApi from './account/business/BusinessIdApi';
 import AccountTypeMenu from './account/AccountTypeMenu';
 
@@ -20,6 +23,9 @@ class App extends Component {
               <Route path="/" component={Home} exact />
               <Route path="/BusinessAccount" component={SignUpBusiness} />
               <Route path="/UserAccount" component={SignUpMigrant} />
+              <Route path="/Login" component={Login} />
+              <Route path="/TempHome" component={TempHome} />
+              <Route path="/TempError" component={TempError} />
               <Route component={Error} />
             </Switch>
           </div>
