@@ -15,9 +15,7 @@ class IdInfo extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      items: [],
-      isLoaded: false,
-      isValid: false,
+      isValidId: false,
       corpId: '',
     }
   }
@@ -39,6 +37,9 @@ class IdInfo extends Component {
     } else if (!validator.isNumeric(this.props.corpId)) {
       errors.corpIdError = "corpId name is not valid"
       isError = true
+    } else if (this.props.isValidId) {
+      errors.corpIdError = "corpId name is not valid"
+      isError = true
     }
 
     this.setState({
@@ -49,15 +50,11 @@ class IdInfo extends Component {
     return isError;
   }
 
-
   render() {
     const { classes } = this.props;
     const handleChange = this.props.handleChange;
     const corpId = this.props.corpId;
-
-    if (this.state.isValid) {
-      return (<div>Error</div>)
-    }
+    const isValidId = this.props.isValidId;
 
     return (
       <React.Fragment>
@@ -78,8 +75,11 @@ class IdInfo extends Component {
               onChange={event => handleChange(event)}
               fullWidth
             />
-            <IdApi corporationId={corpId}></IdApi>
-
+            <IdApi
+              corporationId={corpId}
+              handleValidateId={isValidId}
+            >
+            </IdApi>
           </Grid>
         </Grid>
       </React.Fragment>

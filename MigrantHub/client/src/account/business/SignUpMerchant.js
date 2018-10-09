@@ -77,6 +77,7 @@ class SignUpBusiness extends Component {
 
     //Id Info
     corpId: '',
+    isValidId: '',
     corpIdError: '',
 
     // Contact Info
@@ -118,6 +119,8 @@ class SignUpBusiness extends Component {
         return <IdInfo
           innerRef={this.child}
           handleChange={this.handleChange}
+          handleValidateId={this.handleValidateId}
+          isValidId={this.state.isValidId}
           corpId={this.state.corpId}
         />;
       case 2:

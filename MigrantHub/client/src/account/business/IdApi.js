@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Button from '@material-ui/core/Button';
+import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Checkbox from '@material-ui/core/Checkbox';
@@ -24,7 +25,7 @@ class IdApi extends Component {
       items: [],
       isLoaded: false,
       loading: false,
-      validId: true,
+      isValidId: false,
     }
   }
 
@@ -42,7 +43,8 @@ class IdApi extends Component {
           throw Error("RESQUEST FAIL")
         }
         this.setState({
-          loading: true
+          loading: true,
+          isLoaded: false,
         })
         return response;
       })
@@ -68,19 +70,45 @@ class IdApi extends Component {
         })
       });
     console.log('Verifying business ID');
+
   }
 
-  componentDidUpdate(prevProps) {
+
+  componentDidUpdate(prevProps, nextProps) {
     if (this.props.corporationId !== prevProps.corporationId) {
       this.setState({
         requestFailed: false,
         items: [],
         isLoaded: false,
         loading: false,
+        isValidId: false,
       });
     }
+    // if (!nextProps.items) {
+    //   console.log(nextProps.items);
+    //   if (nextProps.items[0]) {
+    //     console.log("INSIDE SET 2");
+    //     var firstEntry = String(prevProps.items[0]);
+    //     var firstEntryError = "could not find corporation " + prevProps.corporationId;
+    //     if (!(firstEntry === firstEntryError)) {
+    //       console.log("SETTING");
+    //       this.setState({
+    //         isValidId: true,
+    //       })
+    //       console.log(this.state.isValidId);
+    //     }
+    //   }
+    // }
   }
 
+  // setValidateID = () => {
+  //   console.log("VALIDATE CALLED");
+  //   if (this.state.items[0].corporationId == this.props.corporationId) {
+  //     this.setState({
+  //       isValidId: true,
+  //     })
+  //   }
+  // }
 
   render() {
     var { isLoaded, items, loading } = this.state;
@@ -124,5 +152,9 @@ class IdApi extends Component {
   };
 
 }
+
+IdApi.propTypes = {
+  classes: PropTypes.object.isRequired,
+};
 
 export default withStyles(styles)(IdApi);
