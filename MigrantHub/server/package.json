@@ -20,7 +20,6 @@
     "express": "~4.16.0",
     "mongoose": "^5.3.1",
     "morgan": "~1.9.0",
-    "react-router-dom": "^4.3.1",
     "validator": "^10.8.0"
   },
   "devDependencies": {
