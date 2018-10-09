@@ -24,3 +24,7 @@
 .Card-friend-panel {
   background-color: #153345;
 }
+
+ul {
+  list-style: none;
+}

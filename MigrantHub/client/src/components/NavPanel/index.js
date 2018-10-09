@@ -8,6 +8,7 @@ class NavPanel extends Component {
         <div>
             <Card className="Card-nav-panel">
                 <CardContent>
+                    <p>Navigation:</p>
                     <ul>
                         {this.props.navOptions.map( option =>
                         <li><a href={option.link}>{option.description}</a></li>

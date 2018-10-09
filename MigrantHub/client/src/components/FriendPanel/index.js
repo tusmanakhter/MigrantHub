@@ -7,12 +7,6 @@ import CardContent from '@material-ui/core/CardContent';
 import yes from './yes.svg';
 import no from './no.svg';
 
-// const styles = {
-//   card: {
-//     backgroundColor: #153345,
-//   }
-// }
-
 class FriendPanel extends Component {
     render(props) {
       return (
