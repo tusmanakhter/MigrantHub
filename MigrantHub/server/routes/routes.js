@@ -4,6 +4,7 @@ var User = require('../models/User');
 var BusinessUser = require('../models/BusinessUser');
 var MigrantProfileValidator = require('../MigrantProfileValidator');
 var qs = require('qs');
+var passport = require('../passport')
 var bcrypt = require('bcryptjs');
 
 router.get('/', function (req, res) {
@@ -111,5 +112,27 @@ router.route('/insertBusinessProfile')
       res.send(errors);
     }
   });
+
+  router.post(
+    '/logintemp',
+    function (req, res, next) {
+        next()
+    },
+    passport.authenticate('local'),
+    (req, res) => {
+        console.log('Logged in');
+        var userInfo = {
+            username: req.user.username
+        };
+        res.send(userInfo);
+    }
+)
+router.get('/', (req, res, next) => {
+    if (req.user) {
+        res.json({ user: req.user })
+    } else {
+        res.json({ user: null })
+    }
+})
 
 module.exports = router;
