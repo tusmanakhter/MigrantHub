@@ -70,6 +70,16 @@ class IdApi extends Component {
     console.log('Verifying business ID');
   }
 
+  componentDidUpdate(prevProps) {
+    if (this.props.corporationId !== prevProps.corporationId) {
+      this.setState({
+        requestFailed: false,
+        items: [],
+        isLoaded: false,
+        loading: false,
+      });
+    }
+  }
 
 
   render() {
@@ -90,7 +100,7 @@ class IdApi extends Component {
     if (firstEntry === firstEntryError) {
       return (
         <div>
-          <p>items[0]</p>
+          <p>Invalid ID</p>
           <Button variants="contained" color="secondary" onClick={this.updateView.bind(this)}> Validate </Button>
         </div>
       )
@@ -99,7 +109,7 @@ class IdApi extends Component {
       return (
         <div>
           <p> Your Corporate ID <strong>{items[0].corporationId}</strong> is recognized by the Government Of Canada  <Checkbox disabled checked value="checkedE" /> </p>
-          <br /><Button variants="contained" color="primary" onClick={this.updateView.bind(this)}> You May Proceed </Button>
+          <br /><Button variants="contained" color="primary"> You May Proceed </Button>
         </div >
       )
     }
