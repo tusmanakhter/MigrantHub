@@ -1,2 +1,5 @@
 language: node_js
-before_script: cd MigrantHub/server
+env:
+ - TEST_DIR=MigrantHub/client
+ - TEST_DIR=MigrantHub/server
+script: cd $TEST_DIR && npm install && npm test
