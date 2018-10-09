@@ -43,7 +43,7 @@ const PostalCodeMask = (props) => {
   return (
     <MaskedInput
       {...other}
-      mask={[/[A-Z]/, /\d/, /[A-Z]/, ' ', /\d/, /[A-Z]/, /\d/]}
+      mask={[/[a-zA-Z]/, /\d/, /[a-zA-Z]/, ' ', /\d/, /[a-zA-Z]/, /\d/]}
       placeholderChar={'\u2000'}
       guide={false}
     />
