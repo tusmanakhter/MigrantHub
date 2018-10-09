@@ -1,5 +1,6 @@
 .App {
-  text-align: center;
+  /* text-align: center; */
+  background-color: #E2B39A;
 }
 
 .App-logo {
@@ -7,22 +8,28 @@
   height: 80px;
 }
 
-.App-header {
-  background-color: #222;
-  height: 150px;
-  padding: 20px;
-  color: white;
-}
-
-.App-title {
-  font-size: 1.5em;
-}
-
-.App-intro {
-  font-size: large;
-}
-
 @keyframes App-logo-spin {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
+}
+
+.Panel {
+  background-color: #153345;
+  width: 20%;
+}
+
+.User-avatar {
+  height: 40px;
+}
+
+.Header {
+  background-color: #153345;
+}
+
+.SearchBar {
+  color: blue;
+}
+
+.Main-feed {
+  width: 60%;
 }
