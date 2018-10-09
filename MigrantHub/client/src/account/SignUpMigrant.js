@@ -21,7 +21,6 @@ import EmploymentInfo from './EmploymentInfo';
 import OtherInfo from './OtherInfo';
 
 import axios from 'axios';
-import {Link} from 'react-router-dom';
 var qs = require('qs');
 
 const styles = theme => ({
@@ -292,10 +291,10 @@ class SignUpMigrant extends Component {
 
   // Send profile data in post body to add to mongodb
   insertProfile(e) {
-      if(e.state.proficiencyExams.french == ''){
+      if(e.state.proficiencyExams.french === ''){
           e.state.proficiencyExams.french = 'false'
       }
-      if(e.state.proficiencyExams.ielts == ''){
+      if(e.state.proficiencyExams.ielts === ''){
           e.state.proficiencyExams.ielts = 'false'
       }
       axios.post('/insertProfile',
