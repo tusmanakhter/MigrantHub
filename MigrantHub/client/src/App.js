@@ -8,8 +8,8 @@ import Header from './components/Header/index'
 
 const theme = createMuiTheme({
   palette: {
-    primary: { main: '#E2B39A' },
-    secondary: { main: '#153345' },
+    primary: { main: '#153345' },
+    secondary: { main: '#E2B39A' },
   },
 });
 
