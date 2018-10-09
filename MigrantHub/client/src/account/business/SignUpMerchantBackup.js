@@ -11,14 +11,13 @@ import StepLabel from '@material-ui/core/StepLabel';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 
-import AccountInfo from './AccountInfo';
-import ContactInfo from './ContactInfo';
-import PersonalInfo from './PersonalInfo';
-import LanguageInfo from './LanguageInfo';
-import FamilyInfo from './FamilyInfo';
-import EducationInfo from './EducationInfo';
-import EmploymentInfo from './EmploymentInfo';
-import OtherInfo from './OtherInfo';
+import AccountInfo from '../personal/AccountInfo';
+import ContactInfo from '../personal/ContactInfo';
+import AboutInfo from './AboutInfo';
+import IdInfo from './IdInfo';
+
+import axios from 'axios';
+var qs = require('qs');
 
 const styles = theme => ({
   appBar: {
@@ -57,26 +56,44 @@ const styles = theme => ({
   },
 });
 
-const steps = ['Account', 'Contact', 'About'];
+const steps = ['Account', 'ID', 'Contact', 'About'];
 
 class SignUpBusiness extends Component {
+  constructor(props) {
+    super(props);
+    this.child = React.createRef();
+  }
+
   state = {
     activeStep: 0,
 
     // Account Info
     email: '',
-    corpId: '',
+    emailError: "",
     password: '',
+    passwordError: "",
     confirmPassword: '',
+    confirmPasswordError: "",
+
+    //Id Info
+    corpId: '',
+    corpIdError: '',
 
     // Contact Info
     firstName: '',
+    firstNameError: "",
     lastName: '',
+    lastNameError: "",
     address: '',
-    suite: '',
+    addressError: "",
+    apartment: '',
+    apartmentError: '',
     city: '',
+    cityError: "",
     province: '',
+    provinceError: "",
     postalCode: '',
+    postalCodeError: "",
     phoneNumber: '',
 
     // About Info
@@ -85,20 +102,27 @@ class SignUpBusiness extends Component {
     department: '',
     serviceType: '',
     description: '',
-
   }
 
   getStepContent(step) {
     switch (step) {
       case 0:
-        return <BusinessAccountInfo
+        return <AccountInfo
+          innerRef={this.child}
           handleChange={this.handleChange}
           email={this.state.email}
           password={this.state.password}
           confirmPassword={this.state.confirmPassword}
         />;
       case 1:
-        return <BusinessContactInfo
+        return <IdInfo
+          innerRef={this.child}
+          handleChange={this.handleChange}
+          corpId={this.state.corpId}
+        />;
+      case 2:
+        return <ContactInfo
+          innerRef={this.child}
           handleChange={this.handleChange}
           firstName={this.state.firstName}
           lastName={this.state.lastName}
@@ -109,8 +133,9 @@ class SignUpBusiness extends Component {
           postalCode={this.state.postalCode}
           phoneNumber={this.state.phoneNumber}
         />;
-      case 2:
-        return <BusinessAboutInfo
+      case 3:
+        return <AboutInfo
+          ref={this.child}
           handleChange={this.handleChange}
           age={this.state.age}
           gender={this.state.gender}
@@ -126,9 +151,15 @@ class SignUpBusiness extends Component {
   }
 
   handleNext = () => {
-    this.setState(state => ({
-      activeStep: state.activeStep + 1,
-    }));
+    let error = this.child.current.validate();
+    if (!error) {
+      this.setState(state => ({
+        activeStep: state.activeStep + 1,
+      }));
+    }
+    if (this.state.activeStep === 3) {
+      this.insertBusinessProfile(this);
+    }
   };
 
   handleBack = () => {
@@ -192,6 +223,34 @@ class SignUpBusiness extends Component {
       event.target.value);
     obj[name][fieldName] = value;
     this.setState({ [name]: obj[name] });
+  }
+
+  // Send profile data in post body to add to mongodb
+  insertBusinessProfile(e) {
+    axios.post('/insertBusinessProfile',
+      qs.stringify({
+        email: e.state.email,
+        corpId: e.state.corpId,
+        password: e.state.password,
+        confirmPassword: e.state.confirmPassword,
+        firstName: e.state.firstName,
+        lastName: e.state.lastName,
+        address: e.state.address,
+        apartment: e.state.apartment,
+        city: e.state.city,
+        province: e.state.province,
+        postalCode: e.state.postalCode,
+        phoneNumber: e.state.phoneNumber,
+        organizationName: e.state.organizationName,
+        orgType: e.state.orgType,
+        department: e.state.department,
+        serviceType: e.state.serviceType,
+        description: e.state.description,
+      })).then(function (response) {
+        e.setState({
+          messageFromServer: response.data
+        });
+      });
   }
 
   render() {
