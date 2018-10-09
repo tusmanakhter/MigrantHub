@@ -69,32 +69,20 @@ class SignUpBusiness extends Component {
 
     // Account Info
     email: '',
-    emailError: "",
     password: '',
-    passwordError: "",
     confirmPassword: '',
-    confirmPasswordError: "",
 
     //Id Info
     corpId: '',
-    isValidId: '',
-    corpIdError: '',
 
     // Contact Info
     firstName: '',
-    firstNameError: "",
     lastName: '',
-    lastNameError: "",
     address: '',
-    addressError: "",
     apartment: '',
-    apartmentError: '',
     city: '',
-    cityError: "",
     province: '',
-    provinceError: "",
     postalCode: '',
-    postalCodeError: "",
     phoneNumber: '',
 
     // About Info
@@ -119,8 +107,6 @@ class SignUpBusiness extends Component {
         return <IdInfo
           innerRef={this.child}
           handleChange={this.handleChange}
-          handleValidateId={this.handleValidateId}
-          isValidId={this.state.isValidId}
           corpId={this.state.corpId}
         />;
       case 2:
@@ -153,15 +139,15 @@ class SignUpBusiness extends Component {
     }
   }
 
-  handleNext = () => {
-    let error = this.child.current.validate();
+  handleNext = async () => {
+    let error = await this.child.current.validate();
     if (!error) {
       this.setState(state => ({
-        activeStep: state.activeStep + 1,
+          activeStep: state.activeStep + 1,
       }));
     }
-    if (this.state.activeStep === 3) {
-      this.insertBusinessProfile(this);
+    if(this.state.activeStep === 7){
+        this.insertProfile(this);
     }
   };
 

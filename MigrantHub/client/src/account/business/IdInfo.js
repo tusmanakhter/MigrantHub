@@ -8,38 +8,37 @@ import Typography from '@material-ui/core/Typography';
 import MaskedInput from 'react-text-mask';
 import validator from 'validator';
 import IdApi from './IdApi';
+import IdApi2 from './IdApi2';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 const styles = theme => ({});
 
 class IdInfo extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      isValidId: false,
-      corpId: '',
-    }
-  }
-
   state = {
     corpIdError: "",
-    isError: false
+    loading: false,
   }
 
-  validate = () => {
+  validate = async () => {
     let isError = false;
     const errors = {
       corpIdError: '',
     };
-
+    
     if (validator.isEmpty(this.props.corpId)) {
-      errors.corpIdError = "corpId name is required";
+      errors.corpIdError = "Corporation Id is required";
       isError = true
     } else if (!validator.isNumeric(this.props.corpId)) {
-      errors.corpIdError = "corpId name is not valid"
+      errors.corpIdError = "Corporation Id is not valid"
       isError = true
-    } else if (this.props.isValidId) {
-      errors.corpIdError = "corpId name is not valid"
-      isError = true
+    } else {
+      this.setState({loading: true});
+      let validId = await IdApi2.checkCorpId(this.props.corpId);
+      this.setState({loading: false});
+      if (!validId) {
+        errors.corpIdError = "Corporation Id is not valid (checked)"
+        isError = true;
+      }
     }
 
     this.setState({
@@ -74,14 +73,18 @@ class IdInfo extends Component {
               value={corpId}
               onChange={event => handleChange(event)}
               fullWidth
+              helperText={this.state.corpIdError}
+              error={this.state.corpIdError.length > 0}
             />
-            <IdApi
-              corporationId={corpId}
-              handleValidateId={isValidId}
-            >
-            </IdApi>
           </Grid>
         </Grid>
+        {this.state.loading ? <div>
+          <br />
+          <CircularProgress />
+          <br />
+          <p>Please wait while we verify your ID</p>
+        </div> : ""
+        }
       </React.Fragment>
     );
   }
