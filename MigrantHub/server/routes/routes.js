@@ -80,13 +80,9 @@ router.route('/insertBusinessProfile')
       var hash = bcrypt.hashSync(parsedObj.password, salt);
       businessuser.password = hash;
       businessuser.confirmPassword = hash;
-
-
       businessuser._id = parsedObj.email;
       businessuser.email = parsedObj.email;
       businessuser.corpId = parsedObj.corpId;
-      businessuser.password = parsedObj.password;
-      businessuser.confirmPassword = parsedObj.confirmPassword;
       businessuser.firstName = parsedObj.firstName;
       businessuser.lastName = parsedObj.lastName;
       businessuser.address = parsedObj.address;
