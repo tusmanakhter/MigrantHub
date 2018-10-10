@@ -50,7 +50,7 @@ class AccountInfo extends Component {
     } else if (validator.isEmpty(this.props.confirmPassword)) {
       errors.confirmPasswordError = "Confirm your password"
       isError = true
-    }  else if (!validator.equals(this.props.password, this.props.confirmPassword)) {
+    } else if (!validator.equals(this.props.password, this.props.confirmPassword)) {
       errors.passwordError = "Passwords do not match"
       errors.confirmPasswordError = "Passwords do not match"
       isError = true
@@ -69,8 +69,6 @@ class AccountInfo extends Component {
   }
 
   render() {
-    const { classes } = this.props;
-
     const handleChange = this.props.handleChange;
     const email = this.props.email;
     const password = this.props.password;

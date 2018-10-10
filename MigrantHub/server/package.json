@@ -8,7 +8,8 @@
     "client": "npm start --prefix ../client",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
     "client-install": "cd ../client && npm install",
-    "install-all": "npm install && npm run client-install"
+    "install-all": "npm install && npm run client-install",
+    "test": "mocha"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
@@ -17,15 +18,13 @@
     "cookie-parser": "~1.4.3",
     "debug": "~2.6.9",
     "express": "~4.16.0",
-    "express-session": "^1.15.6",
     "mongoose": "^5.3.1",
     "morgan": "~1.9.0",
-    "passport": "^0.4.0",
-    "passport-local": "^1.0.0",
-    "react-router-dom": "^4.3.1",
     "validator": "^10.8.0"
   },
   "devDependencies": {
+    "chai": "^4.2.0",
+    "mocha": "^5.2.0",
     "nodemon": "^1.18.4"
   }
 }
