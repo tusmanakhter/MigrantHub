@@ -5,7 +5,7 @@ import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import validator from 'validator';
-import IdApi2 from './IdApi';
+import IdApi from './IdApi';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
 const styles = theme => ({});
@@ -30,7 +30,7 @@ class IdInfo extends Component {
       isError = true
     } else {
       this.setState({ loading: true });
-      let validId = await IdApi2.checkCorpId(this.props.corpId);
+      let validId = await IdApi.checkCorpId(this.props.corpId);
       this.setState({ loading: false });
       if (!validId) {
         errors.corpIdError = "ID entered is invalid"
@@ -47,10 +47,8 @@ class IdInfo extends Component {
   }
 
   render() {
-    const { classes } = this.props;
     const handleChange = this.props.handleChange;
     const corpId = this.props.corpId;
-    const isValidId = this.props.isValidId;
 
     return (
       <React.Fragment>

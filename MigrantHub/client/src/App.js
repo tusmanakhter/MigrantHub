@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { BrowserRouter, Route, Switch } from "react-router-dom";
-import logo from './logo.svg';
 import './App.css';
 import SignUpMigrant from './account/personal/SignUpMigrant';
 import SignUpBusiness from './account/business/SignUpMerchant';
@@ -9,7 +8,6 @@ import Home from './home/HomePage';
 import Login from './account/Login';
 import TempError from './account/TempError';
 import TempHome from './account/TempHome';
-//import BusinessIdApi from './account/business/BusinessIdApi';
 import AccountTypeMenu from './account/AccountTypeMenu';
 
 class App extends Component {
