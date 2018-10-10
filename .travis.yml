@@ -1,2 +1,14 @@
+sudo: false
 language: node_js
-before_script: cd MigrantHub/server
+node_js:
+ - "8"
+before_install:
+ - 'npm install -g npm@6'
+cache:
+  directories:
+    - MigrantHub/client/node_modules
+    - MigrantHub/server/node_modules
+env:
+ - TEST_DIR=MigrantHub/client
+ - TEST_DIR=MigrantHub/server
+script: cd $TEST_DIR && npm install && npm test

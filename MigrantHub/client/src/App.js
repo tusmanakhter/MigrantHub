@@ -1,64 +1,35 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
-import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
-import FriendPanel from './components/FriendPanel/FriendPanel'
-import NavPanel from './components/NavPanel/NavPanel'
-import Header from './components/Header/Header'
-import Grid from '@material-ui/core/Grid';
-
-const theme = createMuiTheme({
-  palette: {
-    primary: { main: '#153345' },
-    secondary: { main: '#E2B39A' },
-  },
-});
+import { BrowserRouter, Route, Switch } from "react-router-dom";
+import SignUpMigrant from './account/personal/SignUpMigrant';
+import SignUpBusiness from './account/business/SignUpMerchant';
+import Main from './home/Main';
+import Error from './components/Error';
+import Home from './home/HomePage';
+import Login from './account/Login';
+import TempError from './account/TempError';
+import TempHome from './account/TempHome';
+import AccountTypeMenu from './account/AccountTypeMenu';
 
 class App extends Component {
-  //TODO get this information from the db as opposed to hardcoding it in
-  state = { 
-    appName: 'Migrant Hub',
-    appLogo: logo,
-    userName: 'Bob McBobberson',
-    userPic: logo,
-    friends: [
-      {id: 1, name: "Sandra Sanderson", pic: logo}, 
-      {id: 2, name: "Tammy Tammifier", pic: logo}, 
-      {id: 3, name: "Fernando Froodie", pic: logo}
-    ],
-    friendRequests: [
-      {id: 1, name: "Andrew Anderson", pic: logo}, 
-      {id: 2, name: "Andrew Anderson", pic: logo},
-    ],
-    navOptions: [
-      //TODO calculate what the options are, based on the type of user signed in
-      {description: "Messages", link: "#"},
-      {description: "Friends", link: "#"},
-      {description: "Services", link: "#"},
-    ],
-    navPanelVisibility: true,
-    friendPanelVisibility: true,
-    searchBarVisibility: true,
-  }
-
   render() {
     return (
-      <MuiThemeProvider theme={theme}>
-        <Header appLogo={this.state.appLogo} appName={this.state.appName} userName={this.state.userName} userPic={this.state.userPic} />
-        <div className="App">
-          <Grid container spacing={8}>
-            <Grid item xs={3}>
-              <div className="Panel">{this.state.navPanelVisibility && <NavPanel navOptions={this.state.navOptions} />}</div>
-            </Grid>
-            <Grid item xs={6}>
-              <div className="Main-feed"><h1>Welcome to your homepage {this.state.userName} ! :)</h1></div>
-            </Grid>
-            <Grid item xs={3}>
-              <div className="Panel">{this.state.friendPanelVisibility && <FriendPanel friends={this.state.friends} friendRequests={this.state.friendRequests} />}</div>
-            </Grid>
-          </Grid>
-        </div>
-      </MuiThemeProvider>
+      <div className="App">
+        <BrowserRouter>
+          <div>
+            <AccountTypeMenu />
+            <Switch>
+              <Route path="/" component={Home} exact />
+              <Route path="/Main" component={Main} exact />
+              <Route path="/BusinessAccount" component={SignUpBusiness} />
+              <Route path="/UserAccount" component={SignUpMigrant} />
+              <Route path="/Login" component={Login} />
+              <Route path="/TempHome" component={TempHome} />
+              <Route path="/TempError" component={TempError} />
+              <Route component={Error} />
+            </Switch>
+          </div>
+        </BrowserRouter>
+      </div >
     );
   }
 }
