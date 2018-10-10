@@ -64,7 +64,7 @@ class IdInfo extends Component {
             <TextField
               id="corpId"
               name="corpId"
-              label="Corporation Id Example: 1115553"
+              label="Corporation Id Example: 1234567"
               value={corpId}
               onChange={event => handleChange(event)}
               fullWidth

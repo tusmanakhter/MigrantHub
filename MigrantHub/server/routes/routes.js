@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var User = require('../models/User');
 var BusinessUser = require('../models/BusinessUser');
+var BusinessProfileValidator = require('../BusinessProfileValidator');
 var MigrantProfileValidator = require('../MigrantProfileValidator');
 var qs = require('qs');
 var passport = require('../passport')
@@ -113,26 +114,26 @@ router.route('/insertBusinessProfile')
     }
   });
 
-  router.post(
-    '/logintemp',
-    function (req, res, next) {
-        next()
-    },
-    passport.authenticate('local'),
-    (req, res) => {
-        console.log('Logged in');
-        var userInfo = {
-            username: req.user.username
-        };
-        res.send(userInfo);
-    }
+router.post(
+  '/logintemp',
+  function (req, res, next) {
+    next()
+  },
+  passport.authenticate('local'),
+  (req, res) => {
+    console.log('Logged in');
+    var userInfo = {
+      username: req.user.username
+    };
+    res.send(userInfo);
+  }
 )
 router.get('/', (req, res, next) => {
-    if (req.user) {
-        res.json({ user: req.user })
-    } else {
-        res.json({ user: null })
-    }
+  if (req.user) {
+    res.json({ user: req.user })
+  } else {
+    res.json({ user: null })
+  }
 })
 
 module.exports = router;

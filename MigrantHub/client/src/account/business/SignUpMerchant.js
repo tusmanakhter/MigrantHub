@@ -143,11 +143,11 @@ class SignUpBusiness extends Component {
     let error = await this.child.current.validate();
     if (!error) {
       this.setState(state => ({
-          activeStep: state.activeStep + 1,
+        activeStep: state.activeStep + 1,
       }));
     }
-    if(this.state.activeStep === 7){
-        this.insertProfile(this);
+    if (this.state.activeStep === 4) {
+      this.insertBusinessProfile(this);
     }
   };
 
