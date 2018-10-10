@@ -1,14 +1,34 @@
 import React, { Component } from 'react';
+import { BrowserRouter, Route, Switch } from "react-router-dom";
 import './App.css';
-import SignUpMigrant from './account/SignUpMigrant';
+import SignUpMigrant from './account/personal/SignUpMigrant';
+import SignUpBusiness from './account/business/SignUpMerchant';
+import Error from './components/Error';
+import Home from './home/HomePage';
+import Login from './account/Login';
+import TempError from './account/TempError';
+import TempHome from './account/TempHome';
+import AccountTypeMenu from './account/AccountTypeMenu';
 
 class App extends Component {
-
   render() {
     return (
       <div className="App">
-        <SignUpMigrant />
-      </div>
+        <BrowserRouter>
+          <div>
+            <AccountTypeMenu />
+            <Switch>
+              <Route path="/" component={Home} exact />
+              <Route path="/BusinessAccount" component={SignUpBusiness} />
+              <Route path="/UserAccount" component={SignUpMigrant} />
+              <Route path="/Login" component={Login} />
+              <Route path="/TempHome" component={TempHome} />
+              <Route path="/TempError" component={TempError} />
+              <Route component={Error} />
+            </Switch>
+          </div>
+        </BrowserRouter>
+      </div >
     );
   }
 }

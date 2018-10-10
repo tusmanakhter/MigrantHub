@@ -1,5 +1,5 @@
 import React from 'react';
-import LanguageInfo from '../LanguageInfo';
+import LanguageInfo from '../personal/LanguageInfo';
 
 import { shallow } from 'enzyme';
 

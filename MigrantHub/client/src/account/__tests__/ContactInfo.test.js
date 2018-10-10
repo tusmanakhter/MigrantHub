@@ -1,5 +1,5 @@
 import React from 'react';
-import ContactInfo from '../ContactInfo';
+import ContactInfo from '../personal/ContactInfo';
 
 import { shallow } from 'enzyme';
 

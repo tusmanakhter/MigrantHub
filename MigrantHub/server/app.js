@@ -9,6 +9,9 @@ var bodyParser = require('body-parser');
 var indexRouter = require('./routes/index');
 var router = require('./routes/routes');
 
+var expressSession = require('express-session')
+var passport = require('./passport');
+
 var app = express();
 
 app.use(logger('dev'));
@@ -18,6 +21,28 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.json({limit: '50mb'}));
 app.use(bodyParser.urlencoded({limit: '50mb', extended: false}));
+
+app.use(
+    expressSession({
+        secret: 'migrantHub',
+        resave: false,
+        saveUninitialized: false
+    })
+)
+
+app.use(passport.initialize())
+app.use(passport.session())
+
+app.use( (req, res, next) => {
+    console.log('Session created');
+    return next();
+});
+
+app.post('/login', (req, res) => {
+    console.log('User login');
+    req.session.email = req.body.email;
+    res.end()
+})
 
 app.use('/', indexRouter);
 app.use('/', router);

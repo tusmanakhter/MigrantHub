@@ -1,5 +1,5 @@
 import React from 'react';
-import AccountInfo from '../AccountInfo';
+import AccountInfo from '../personal/AccountInfo';
 
 import { shallow } from 'enzyme';
 
