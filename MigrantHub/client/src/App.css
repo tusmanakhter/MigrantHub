@@ -1,6 +1,8 @@
 @import url('https://fonts.googleapis.com/css?family=Roboto:300,400,500,700');
 
 .App {
+  background-color: #E2B39A;
+  /* color: white; */
   text-align: center;
   font-family: 'Roboto', sans-serif;
 }
@@ -10,22 +12,23 @@
   height: 80px;
 }
 
-.App-header {
-  background-color: #222;
-  height: 150px;
-  padding: 20px;
-  color: white;
-}
-
-.App-title {
-  font-size: 1.5em;
-}
-
-.App-intro {
-  font-size: large;
-}
-
 @keyframes App-logo-spin {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
+}
+
+.User-avatar {
+  height: 40px;
+}
+
+.Header {
+  background-color: #153345;
+}
+
+.Card-friend-panel {
+  background-color: #153345;
+}
+
+ul {
+  list-style: none;
 }

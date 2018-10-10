@@ -59,7 +59,7 @@ class Login extends Component {
 
           this.setState({
             redirectTo: true,
-            redirectToURL: '/TempHome'
+            redirectToURL: '/Main'
           })
         }
       }).catch(error => {

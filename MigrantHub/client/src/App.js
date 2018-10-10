@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { BrowserRouter, Route, Switch } from "react-router-dom";
-import './App.css';
 import SignUpMigrant from './account/personal/SignUpMigrant';
 import SignUpBusiness from './account/business/SignUpMerchant';
+import Main from './home/Main';
 import Error from './components/Error';
 import Home from './home/HomePage';
 import Login from './account/Login';
@@ -19,6 +19,7 @@ class App extends Component {
             <AccountTypeMenu />
             <Switch>
               <Route path="/" component={Home} exact />
+              <Route path="/Main" component={Main} exact />
               <Route path="/BusinessAccount" component={SignUpBusiness} />
               <Route path="/UserAccount" component={SignUpMigrant} />
               <Route path="/Login" component={Login} />
