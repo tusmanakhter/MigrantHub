@@ -2,13 +2,10 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import withStyles from '@material-ui/core/styles/withStyles';
 import TextField from '@material-ui/core/TextField';
-import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
-import MaskedInput from 'react-text-mask';
 import validator from 'validator';
-import IdApi from './IdApi';
-import IdApi2 from './IdApi2';
+import IdApi2 from './IdApi';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
 const styles = theme => ({});
@@ -24,19 +21,19 @@ class IdInfo extends Component {
     const errors = {
       corpIdError: '',
     };
-    
+
     if (validator.isEmpty(this.props.corpId)) {
       errors.corpIdError = "Corporation Id is required";
       isError = true
     } else if (!validator.isNumeric(this.props.corpId)) {
-      errors.corpIdError = "Corporation Id is not valid"
+      errors.corpIdError = "Please enter 7-digit"
       isError = true
     } else {
-      this.setState({loading: true});
+      this.setState({ loading: true });
       let validId = await IdApi2.checkCorpId(this.props.corpId);
-      this.setState({loading: false});
+      this.setState({ loading: false });
       if (!validId) {
-        errors.corpIdError = "Corporation Id is not valid (checked)"
+        errors.corpIdError = "ID entered is invalid"
         isError = true;
       }
     }
