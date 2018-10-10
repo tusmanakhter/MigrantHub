@@ -33,6 +33,9 @@ class AboutInfo extends Component {
     if (validator.isEmpty(this.props.organizationName)) {
       errors.organizationNameError = "Organization name is required";
       isError = true
+    } else if (!validator.isAlpha(this.props.organizationName)) {
+      errors.organizationNameError = "Organization name is not valid"
+      isError = true
     }
 
     this.setState({
@@ -90,7 +93,7 @@ class AboutInfo extends Component {
             <TextField
               id="department"
               name="department"
-              label="Name of the department"
+              label="Name of the derpartment"
               value={department}
               onChange={event => handleChange(event)}
               fullWidth
