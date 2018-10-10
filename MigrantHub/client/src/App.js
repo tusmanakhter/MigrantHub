@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
-import FriendPanel from './components/FriendPanel/index'
-import NavPanel from './components/NavPanel/index'
-import Header from './components/Header/index'
+import FriendPanel from './components/FriendPanel/FriendPanel'
+import NavPanel from './components/NavPanel/NavPanel'
+import Header from './components/Header/Header'
 import Grid from '@material-ui/core/Grid';
 
 const theme = createMuiTheme({
