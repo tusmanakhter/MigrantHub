@@ -12,12 +12,48 @@ import FormControl from '@material-ui/core/FormControl';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { Redirect } from 'react-router-dom'
-
+import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import Paper from '@material-ui/core/Paper';
+import Checkbox from '@material-ui/core/Checkbox';
+import LockIcon from '@material-ui/icons/LockOutlined';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+
 import axios from 'axios';
 var qs = require('qs');
 
-const styles = theme => ({});
+const styles = theme => ({
+  layout: {
+    width: 'auto',
+    display: 'block', // Fix IE11 issue.
+    marginLeft: theme.spacing.unit * 3,
+    marginRight: theme.spacing.unit * 3,
+    [theme.breakpoints.up(400 + theme.spacing.unit * 3 * 2)]: {
+      width: 400,
+      marginLeft: 'auto',
+      marginRight: 'auto',
+    },
+  },
+  paper: {
+    marginTop: theme.spacing.unit * 8,
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    padding: `${theme.spacing.unit * 2}px ${theme.spacing.unit * 3}px ${theme.spacing.unit * 3}px`,
+  },
+  avatar: {
+    margin: theme.spacing.unit,
+    backgroundColor: theme.palette.secondary.main,
+  },
+  form: {
+    width: '100%', // Fix IE11 issue.
+    marginTop: theme.spacing.unit,
+  },
+  submit: {
+    marginTop: theme.spacing.unit * 3,
+  },
+});
 
 class Login extends Component {
 
@@ -84,49 +120,68 @@ class Login extends Component {
 
     return (
       <React.Fragment>
-        <Typography variant="title" gutterBottom>
-          Account Information
-                </Typography>
-        <Grid container spacing={24}>
-          <Grid item xs={12}>
-            <TextField
-              id="username"
-              name="username"
-              label="Email"
-              value={username}
-              onChange={event => this.handleChange(event)}
-              fullWidth
-            />
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <FormControl margin="normal" fullWidth>
-              <InputLabel htmlFor="password">Password</InputLabel>
-              <Input
-                name="password"
-                type={this.state.showPassword ? 'text' : 'password'}
-                value={password}
-                onChange={event => this.handleChange(event)}
-                endAdornment={
-                  <InputAdornment position="end">
-                    <IconButton
-                      aria-label="Toggle password visibility"
-                      onClick={this.handleClickShowPassword}
-                    >
-                      {this.state.showPassword ? <VisibilityOff /> : <Visibility />}
-                    </IconButton>
-                  </InputAdornment>
-                }
-              />
-            </FormControl>
-          </Grid>
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={this.handleSubmit}
-            className={classes.button}
-          >                 Log-In
-                    </Button>
-        </Grid>
+        <CssBaseline />
+        <main className={classes.layout}>
+          <Paper className={classes.paper}>
+            <Typography component="h1" variant="h5">
+              Sign in
+            </Typography>
+            <Avatar className={classes.avatar}>
+              <LockIcon />
+            </Avatar>
+            <form className={classes.form}>
+            <Grid container>
+              <Grid item xs={12}>
+                <TextField
+                  id="username"
+                  name="username"
+                  label="Email"
+                  value={username}
+                  onChange={event => this.handleChange(event)}
+                  fullWidth
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <FormControl margin="normal" fullWidth>
+                  <InputLabel htmlFor="password">Password</InputLabel>
+                  <Input
+                    name="password"
+                    type={this.state.showPassword ? 'text' : 'password'}
+                    value={password}
+                    onChange={event => this.handleChange(event)}
+                    endAdornment={
+                      <InputAdornment position="end">
+                        <IconButton
+                          aria-label="Toggle password visibility"
+                          onClick={this.handleClickShowPassword}
+                        >
+                          {this.state.showPassword ? <VisibilityOff /> : <Visibility />}
+                        </IconButton>
+                      </InputAdornment>
+                    }
+                  />
+                </FormControl>
+              </Grid>
+              <Grid item xs={12}>
+                <FormControlLabel
+                  fullWidth
+                  control={<Checkbox value="remember" color="primary" />}
+                  label="Remember me"
+                />
+              </Grid>
+              <Button
+                fullWidth
+                variant="contained"
+                color="primary"
+                onClick={this.handleSubmit}
+                className={classes.submit}
+              >
+                Sign in
+              </Button>
+            </Grid>
+            </form>
+          </Paper>
+        </main>
       </React.Fragment>
     )
   }
