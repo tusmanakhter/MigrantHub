@@ -10,6 +10,7 @@ class AccountTypeMenu extends Component {
           <li><NavLink to="/UserAccount"> Create personal account </NavLink></li>
           <li><NavLink to="/BusinessAccount"> Create a business account </NavLink></li>
           <li><NavLink to="/Login">LogIn</NavLink></li>
+          <li><NavLink to="/CreateEvent">Create an event</NavLink></li>
         </ul>
       </div>
     )

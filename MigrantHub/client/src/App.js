@@ -8,6 +8,7 @@ import Home from './home/HomePage';
 import Login from './account/Login';
 import TempError from './account/TempError';
 import TempHome from './account/TempHome';
+import CreateEvent from './events/CreateEvent';
 import AccountTypeMenu from './account/AccountTypeMenu';
 
 class App extends Component {
@@ -25,6 +26,7 @@ class App extends Component {
               <Route path="/Login" component={Login} />
               <Route path="/TempHome" component={TempHome} />
               <Route path="/TempError" component={TempError} />
+              <Route path="/CreateEvent" component={CreateEvent} />
               <Route component={Error} />
             </Switch>
           </div>
