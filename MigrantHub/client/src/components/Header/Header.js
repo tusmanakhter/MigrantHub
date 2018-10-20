@@ -16,6 +16,7 @@ import AccountCircle from '@material-ui/icons/AccountCircle';
 import MailIcon from '@material-ui/icons/Mail';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import MoreIcon from '@material-ui/icons/MoreVert';
+import { Redirect } from 'react-router-dom'
 
 const styles = theme => ({
   root: {
@@ -91,6 +92,8 @@ class Header extends Component {
   state = {
     anchorEl: null,
     mobileMoreAnchorEl: null,
+    redirectTo: false,
+    redirectToURL: ''
   };
 
   handleProfileMenuOpen = event => {
@@ -110,7 +113,19 @@ class Header extends Component {
     this.setState({ mobileMoreAnchorEl: null });
   };
 
+  handleEditProfile = event => {
+    this.setState({
+      redirectTo: true,
+      redirectToURL: '/EditPersonal'
+    })
+  }
+
   render() {
+
+    if (this.state.redirectTo) {
+      return <Redirect to={this.state.redirectToURL} />
+    }
+
     const { anchorEl, mobileMoreAnchorEl } = this.state;
     const { classes } = this.props;
     const isMenuOpen = Boolean(anchorEl);
@@ -126,6 +141,7 @@ class Header extends Component {
       >
         <MenuItem onClick={this.handleClose}>Profile</MenuItem>
         <MenuItem onClick={this.handleClose}>My account</MenuItem>
+        <MenuItem onClick={this.handleEditProfile}>Edit Profile</MenuItem>
       </Menu>
     );
 
