@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import SignUpMigrant from './account/personal/SignUpMigrant';
-import SignUpBusiness from './account/business/SignUpMerchant';
+import SignUpBusiness from './account/business/SignUpBusiness';
 import Main from './home/Main';
 import Error from './components/Error';
 import Home from './home/HomePage';
