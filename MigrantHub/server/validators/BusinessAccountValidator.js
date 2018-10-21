@@ -1,7 +1,7 @@
 var validator = require('validator');
 
 // Function to perform server-side validation of the create business account before sending to db.
-const BusinessProfileValidator = (businessObject) =>{
+const BusinessAccountValidator = (businessObject) =>{
 
     let errors = "";
 
@@ -62,4 +62,4 @@ const BusinessProfileValidator = (businessObject) =>{
     return errors;
 };
 
-module.exports = BusinessProfileValidator;
+module.exports = BusinessAccountValidator;

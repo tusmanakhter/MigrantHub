@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-
+import HomeLayout from '../../home/HomeLayout'
 import SignUp from '../common/SignUp';
 import AccountInfo from '../common/AccountInfo';
 import ContactInfo from '../common/ContactInfo';
@@ -57,8 +57,8 @@ class SignUpBusiness extends Component {
   }
 
   // Send profile data in post body to add to mongodb
-  insertBusinessProfile(e) {
-    axios.post('/insertBusinessProfile',
+  createAccount(e) {
+    axios.post('/account/create/business',
       qs.stringify({
         email: e.state.email,
         corpId: e.state.corpId,
@@ -89,11 +89,13 @@ class SignUpBusiness extends Component {
 
     return (
       <React.Fragment>
-        <SignUp
-          insertProfile={this.insertBusinessProfile}
-          steps={steps}
-          getStepContent={this.getStepContent}
-        />
+        <HomeLayout>
+          <SignUp
+            createAccount={this.createAccount}
+            steps={steps}
+            getStepContent={this.getStepContent}
+          />
+        </HomeLayout>
       </React.Fragment>
     );
   }

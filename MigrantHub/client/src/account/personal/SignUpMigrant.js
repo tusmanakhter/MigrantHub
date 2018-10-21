@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-
+import HomeLayout from '../../home/HomeLayout'
 import SignUp from '../common/SignUp';
 import AccountInfo from '../common/AccountInfo';
 import ContactInfo from '../common/ContactInfo';
@@ -104,14 +104,14 @@ class SignUpMigrant extends Component {
   }
 
   // Send profile data in post body to add to mongodb
-  insertProfile(e) {
+  createAccount(e) {
       if(e.state.proficiencyExams.french === ''){
           e.state.proficiencyExams.french = 'false'
       }
       if(e.state.proficiencyExams.ielts === ''){
           e.state.proficiencyExams.ielts = 'false'
       }
-      axios.post('/insertProfile',
+      axios.post('/account/create/user',
           qs.stringify({
               email: e.state.email,
               password: e.state.password,
@@ -155,11 +155,13 @@ class SignUpMigrant extends Component {
 
     return (
       <React.Fragment>
-        <SignUp
-          insertProfile={this.insertProfile}
-          steps={steps}
-          getStepContent={this.getStepContent}
-        />
+        <HomeLayout>
+          <SignUp
+            createAccount={this.createAccount}
+            steps={steps}
+            getStepContent={this.getStepContent}
+          />
+        </HomeLayout>
       </React.Fragment>
     );
   }

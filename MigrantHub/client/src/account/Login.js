@@ -19,6 +19,7 @@ import Paper from '@material-ui/core/Paper';
 import Checkbox from '@material-ui/core/Checkbox';
 import LockIcon from '@material-ui/icons/LockOutlined';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
+import HomeLayout from '../home/HomeLayout'
 
 import axios from 'axios';
 var qs = require('qs');
@@ -83,7 +84,7 @@ class Login extends Component {
   // Send profile data in post body to add to mongodb
   sendLogin(e) {
 
-    axios.post('/logintemp',
+    axios.post('/account/login',
       qs.stringify({
         username: e.state.username,
         password: e.state.password,
@@ -120,68 +121,69 @@ class Login extends Component {
 
     return (
       <React.Fragment>
-        <CssBaseline />
-        <main className={classes.layout}>
-          <Paper className={classes.paper}>
-            <Typography component="h1" variant="h5">
-              Sign in
-            </Typography>
-            <Avatar className={classes.avatar}>
-              <LockIcon />
-            </Avatar>
-            <form className={classes.form}>
-            <Grid container>
-              <Grid item xs={12}>
-                <TextField
-                  id="username"
-                  name="username"
-                  label="Email"
-                  value={username}
-                  onChange={event => this.handleChange(event)}
-                  fullWidth
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <FormControl margin="normal" fullWidth>
-                  <InputLabel htmlFor="password">Password</InputLabel>
-                  <Input
-                    name="password"
-                    type={this.state.showPassword ? 'text' : 'password'}
-                    value={password}
-                    onChange={event => this.handleChange(event)}
-                    endAdornment={
-                      <InputAdornment position="end">
-                        <IconButton
-                          aria-label="Toggle password visibility"
-                          onClick={this.handleClickShowPassword}
-                        >
-                          {this.state.showPassword ? <VisibilityOff /> : <Visibility />}
-                        </IconButton>
-                      </InputAdornment>
-                    }
-                  />
-                </FormControl>
-              </Grid>
-              <Grid item xs={12}>
-                <FormControlLabel
-                  fullWidth
-                  control={<Checkbox value="remember" color="primary" />}
-                  label="Remember me"
-                />
-              </Grid>
-              <Button
-                fullWidth
-                variant="contained"
-                color="primary"
-                onClick={this.handleSubmit}
-                className={classes.submit}
-              >
+        <HomeLayout>
+          <CssBaseline />
+          <main className={classes.layout}>
+            <Paper className={classes.paper}>
+              <Typography component="h2" variant="display1">
                 Sign in
-              </Button>
-            </Grid>
-            </form>
-          </Paper>
-        </main>
+              </Typography>
+              <Avatar className={classes.avatar}>
+                <LockIcon />
+              </Avatar>
+              <form className={classes.form}>
+              <Grid container>
+                <Grid item xs={12}>
+                  <TextField
+                    id="username"
+                    name="username"
+                    label="Email"
+                    value={username}
+                    onChange={event => this.handleChange(event)}
+                    fullWidth
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <FormControl margin="normal" fullWidth>
+                    <InputLabel htmlFor="password">Password</InputLabel>
+                    <Input
+                      name="password"
+                      type={this.state.showPassword ? 'text' : 'password'}
+                      value={password}
+                      onChange={event => this.handleChange(event)}
+                      endAdornment={
+                        <InputAdornment position="end">
+                          <IconButton
+                            aria-label="Toggle password visibility"
+                            onClick={this.handleClickShowPassword}
+                          >
+                            {this.state.showPassword ? <VisibilityOff /> : <Visibility />}
+                          </IconButton>
+                        </InputAdornment>
+                      }
+                    />
+                  </FormControl>
+                </Grid>
+                <Grid item xs={12}>
+                  <FormControlLabel
+                    control={<Checkbox value="remember" color="primary" />}
+                    label="Remember me"
+                  />
+                </Grid>
+                <Button
+                  fullWidth
+                  variant="contained"
+                  color="primary"
+                  onClick={this.handleSubmit}
+                  className={classes.submit}
+                >
+                  Sign in
+                </Button>
+              </Grid>
+              </form>
+            </Paper>
+          </main>
+        </HomeLayout>
       </React.Fragment>
     )
   }
