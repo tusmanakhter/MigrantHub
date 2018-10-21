@@ -127,7 +127,7 @@ class SignUp extends Component {
       }));
     }
     if (this.state.activeStep === this.sendStep) {
-      this.props.insertProfile(this);
+      this.props.createAccount(this);
     }
   };
 

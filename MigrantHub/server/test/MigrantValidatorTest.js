@@ -1,4 +1,4 @@
-var MigrantProfileValidator = require('../MigrantProfileValidator');
+var MigrantAccountValidator = require('../validators/MigrantAccountValidator');
 var chai = require('chai');
 var assert = chai.assert;
 
@@ -206,16 +206,16 @@ const invalidNumbersMerchantProfileData = {
     joiningReason : "help"
 };
 
-describe('MigrantProfileValidator()', function () {
+describe('MigrantAccountValidator()', function () {
     it('Validates migrant profile data should return empty error string.', function () {
 
         console.log("Error free profile data")
-        let errors = MigrantProfileValidator(validMerchantProfileData);
+        let errors = MigrantAccountValidator(validMerchantProfileData);
         assert.equal(errors, "");
     });
 });
 
-describe('MigrantProfileValidator()', function () {
+describe('MigrantAccountValidator()', function () {
     it('Invalid migrant profile data should return a string with all the errors', function () {
 
         var expectedErrors =
@@ -265,12 +265,12 @@ describe('MigrantProfileValidator()', function () {
             "\nJoining reason is required and empty";
 
         console.log("Error profile data, caused by empty fields")
-        let forcedErrors = MigrantProfileValidator(emptyMerchantProfileData);
+        let forcedErrors = MigrantAccountValidator(emptyMerchantProfileData);
         assert.equal(forcedErrors, expectedErrors);
     });
 });
 
-    describe('MigrantProfileValidator()', function () {
+    describe('MigrantAccountValidator()', function () {
         it('Invalid migrant profile data should return a string with all the errors', function () {
 
             var expectedErrors =
@@ -281,7 +281,7 @@ describe('MigrantProfileValidator()', function () {
                 "\nEmployment length is not valid"
 
             console.log("Error profile data, caused by empty fields");
-            let forcedErrors = MigrantProfileValidator(invalidNumbersMerchantProfileData);
+            let forcedErrors = MigrantAccountValidator(invalidNumbersMerchantProfileData);
             console.log(forcedErrors);
             assert.equal(forcedErrors, expectedErrors);
         });

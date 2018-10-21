@@ -1,29 +1,27 @@
-var express = require('express');
-var router = express.Router();
-var User = require('../models/User');
+var User = require('../models/MigrantUser');
 var BusinessUser = require('../models/BusinessUser');
-var BusinessProfileValidator = require('../BusinessProfileValidator');
-var MigrantProfileValidator = require('../MigrantProfileValidator');
+var Admin = require('../models/Admin');
+var BusinessAccountValidator = require('../validators/BusinessAccountValidator');
+var MigrantAccountValidator = require('../validators/MigrantAccountValidator');
+var AdminAccountValidator = require('../validators/AdminAccountValidator');
 var qs = require('qs');
-var passport = require('../passport')
 var bcrypt = require('bcryptjs');
 
-router.get('/', function (req, res) {
-  res.render('index')
-});
-router.route('/insertProfile')
-  .post(function (req, res) {
 
+module.exports = {
+  createUser: function(req, res) {
     let parsedObj = qs.parse(req.body);
-    let errors = MigrantProfileValidator(parsedObj);
+    let errors = MigrantAccountValidator(parsedObj);
 
     if (errors == "") {
       let user = new User();
+      let salt = bcrypt.genSaltSync(10);
+      let hash = bcrypt.hashSync(parsedObj.password, salt);
+
       user._id = parsedObj.email;
       user.email = parsedObj.email;
-      var salt = bcrypt.genSaltSync(10);
-      var hash = bcrypt.hashSync(parsedObj.password, salt);
       user.password = hash;
+
       user.firstName = parsedObj.firstName;
       user.lastName = parsedObj.lastName;
       user.address = parsedObj.address;
@@ -63,25 +61,21 @@ router.route('/insertProfile')
     } else {
       res.send(errors);
     }
-  });
+  },
 
-router.route('/insertBusinessProfile')
-  .post(function (req, res) {
-
+  createBusiness: function(req, res) {
     let parsedObj = qs.parse(req.body);
-    let errors = BusinessProfileValidator(parsedObj);
+    let errors = BusinessAccountValidator(parsedObj);
 
     if (errors == "") {
       let businessuser = new BusinessUser();
-      businessuser._id = parsedObj.email;
-      businessuser.email = parsedObj.email;
+      let salt = bcrypt.genSaltSync(10);
+      let hash = bcrypt.hashSync(parsedObj.password, salt);
 
-      var salt = bcrypt.genSaltSync(10);
-      var hash = bcrypt.hashSync(parsedObj.password, salt);
-      businessuser.password = hash;
-      businessuser.confirmPassword = hash;
       businessuser._id = parsedObj.email;
       businessuser.email = parsedObj.email;
+      businessuser.password = hash;
+
       businessuser.corpId = parsedObj.corpId;
       businessuser.firstName = parsedObj.firstName;
       businessuser.lastName = parsedObj.lastName;
@@ -108,28 +102,32 @@ router.route('/insertBusinessProfile')
     } else {
       res.send(errors);
     }
-  });
-
-router.post(
-  '/logintemp',
-  function (req, res, next) {
-    next()
   },
-  passport.authenticate('local'),
-  (req, res) => {
-    console.log('Logged in');
-    var userInfo = {
-      username: req.user.username
-    };
-    res.send(userInfo);
-  }
-)
-router.get('/', (req, res, next) => {
-  if (req.user) {
-    res.json({ user: req.user })
-  } else {
-    res.json({ user: null })
-  }
-})
 
-module.exports = router;
+  createAdmin: function(req, res) {
+    let parsedObj = qs.parse(req.body);
+    let errors = AdminAccountValidator(parsedObj);
+
+    if (errors == "") {
+      let admin = new Admin();
+      let salt = bcrypt.genSaltSync(10);
+      let hash = bcrypt.hashSync(parsedObj.password, salt);
+
+      admin._id = parsedObj.email;
+      admin.email = parsedObj.email;
+      admin.password = hash;
+
+      admin.save(function (err) {
+        if (err) {
+          res.send("There was a error saving admin user.");
+          // Todo: Should create with error
+          console.log(err)
+        } else {
+          res.send('Admin user has been added!');
+        }
+      });
+    } else {
+      res.send(errors);
+    }
+  },
+};

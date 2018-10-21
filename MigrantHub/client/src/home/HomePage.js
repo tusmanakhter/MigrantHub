@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
-
+import HomeLayout from './HomeLayout'
 class HomePage extends Component {
   render() {
     return (
-      <div>
+      <HomeLayout>
         <div className="HomePage">
-          <h1>WELCOME TO OUR WEBSITE</h1>
+          <h1>Welcome to MigrantHub</h1>
         </div>
-      </div>
+      </HomeLayout>
     );
   }
 }

@@ -6,8 +6,7 @@ var logger = require('morgan');
 var mongoose = require('mongoose');
 var bodyParser = require('body-parser');
 
-var indexRouter = require('./routes/index');
-var router = require('./routes/routes');
+var router = require('./routes/index');
 
 var expressSession = require('express-session')
 var passport = require('./passport');
@@ -38,13 +37,6 @@ app.use( (req, res, next) => {
     return next();
 });
 
-app.post('/login', (req, res) => {
-    console.log('User login');
-    req.session.email = req.body.email;
-    res.end()
-})
-
-app.use('/', indexRouter);
 app.use('/', router);
 
 // MongoDB/Mongoose Connection
