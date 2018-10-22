@@ -89,6 +89,7 @@ class CreatEvent extends Component {
         timeEndError: '',
         repeatError: '',
         timeEnd: '',
+        secondsEnd: '',
         repeat: '', 
 
         //Errors
