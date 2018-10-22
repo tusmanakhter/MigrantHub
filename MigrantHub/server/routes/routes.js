@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var User = require('../models/User');
 var BusinessUser = require('../models/BusinessUser');
+var Event = require('../models/Event');
 var BusinessProfileValidator = require('../BusinessProfileValidator');
 var MigrantProfileValidator = require('../MigrantProfileValidator');
 var qs = require('qs');
