@@ -56,7 +56,9 @@ class CreatEvent extends Component {
         dateStart: '',
         dateEnd:'',
         timeStart: '',
+        secondsStart: '',
         timeEnd: '',
+        secondsEnd: '',
         repeat: '', 
 
         //Errors
@@ -150,11 +152,10 @@ class CreatEvent extends Component {
             isError = true
         }
 
-         //CANT CREATE EVENT ON THE SAME DAY (TODAY)
         if (validator.isEmpty(this.state.dateStart)) {
             errors.dateStartError = "Start date is required";
             isError = true
-        } else if(!validator.isAfter(this.state.dateStart)) {
+        } else if(validator.isBefore(this.state.dateStart)) {
             errors.dateStartError = "Start date is invalid";
             isError = true;
         }
@@ -162,7 +163,7 @@ class CreatEvent extends Component {
         if (validator.isEmpty(this.state.dateEnd)) {
             errors.dateEndError  = "End date is required";
             isError = true
-        } else if(!validator.isAfter(this.state.dateEnd, this.state.dateStart)) {
+        } else if(validator.isBefore(this.state.dateEnd, this.state.dateStart)) {
             errors.dateEndError = "End date is invalid";
             isError = true;
         }
@@ -175,7 +176,10 @@ class CreatEvent extends Component {
         if (validator.isEmpty(this.state.timeEnd)) {
             errors.timeEndError = "End time is required";
             isError = true
-        } 
+        } else if (this.state.secondsEnd <= this.state.secondsStart) {
+            errors.timeEndError = "End time is invalid";
+            isError = true;
+        }
         
         this.setState({
             ...this.state,
@@ -193,6 +197,17 @@ class CreatEvent extends Component {
     }
 
     handleNext = () => {
+        //Converting start/end times to seconds of day for easier validation and storage
+        var startTimeHours = parseInt(this.state.timeStart.substring(0,2)) * 3600;
+        var startTimeMinutes = parseInt(this.state.timeStart.substring(3,5)) * 60;
+        var start = startTimeHours + startTimeMinutes;
+        var endTimeHours = parseInt(this.state.timeEnd.substring(0,2)) * 3600;
+        var endTimeMinutes =  parseInt(this.state.timeEnd.substring(3,5)) * 60;
+        var end = endTimeHours + endTimeMinutes;
+
+        this.state.secondsStart = start;
+        this.state.secondsEnd = end;
+
         let error = this.validate();
         if (!error) {
           this.createEvent(this);
@@ -209,7 +224,7 @@ class CreatEvent extends Component {
         return (
             <div>
                 <h3>Event Information</h3>
-                <form method="POST">
+                <form>
 
                     <label>Visibility: </label>
                     <select 
@@ -395,7 +410,7 @@ class CreatEvent extends Component {
                     placeholder={this.state.timeEndError} 
                     onChange={event => this.handleChange(event)}
                     error={this.state.timeEnd.length > 0}/>
-                    <label style={{color: 'red'}}>  {this.state.timeStartError}</label>
+                    <label style={{color: 'red'}}>  {this.state.timeEndError}</label>
                     <br></br>
                     <br></br>
 
