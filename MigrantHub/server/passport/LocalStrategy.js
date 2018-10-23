@@ -5,7 +5,6 @@ var strategy = new LocalStrategy(
 
     function(username, password, done) {
         User.findOne({ email: username }, (err, user) => {
-            console.log("");
             if (err) {
                 console.log("Error: ");
                 return done(err)
@@ -17,6 +16,9 @@ var strategy = new LocalStrategy(
                 return done(null, false, { message: 'Incorrect password' })
             } else {
                 console.log("Correct password");
+                if (user.type === "admin" && user.authorized === false) {
+                    return done(null, false, { message: 'Your admin account is not authorized yet' })
+                }
                 return done(null, user)
             }
         })
