@@ -130,4 +130,28 @@ module.exports = {
       res.send(errors);
     }
   },
+
+  // returnUser: function(req, res) {
+  //   if(req.user) {
+  //     var user = {
+  //       username: req.user.id,
+  //       type: req.user.type,
+  //       authenticated: true
+  //     }
+  //   } else {
+  //     var user = {
+  //       authenticated: false
+  //     }
+  //   }
+  //   res.send(user);
+  // }
+  returnUser: function(req, res) {
+    console.log('===== user!!======')
+    console.log(req.user)
+    if (req.user) {
+        res.json({ user: req.user })
+    } else {
+        res.json({ user: null })
+    }
+  }
 };

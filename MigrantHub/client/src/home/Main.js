@@ -6,6 +6,7 @@ import FriendPanel from '../components/FriendPanel/FriendPanel'
 import NavPanel from '../components/NavPanel/NavPanel'
 import Header from '../components/Header/Header'
 import Grid from '@material-ui/core/Grid';
+import Logout from '../components/Logout';
 
 const theme = createMuiTheme({
   palette: {
@@ -45,6 +46,7 @@ class Main extends Component {
     return (
       <MuiThemeProvider theme={theme}>
         <Header appLogo={this.state.appLogo} appName={this.state.appName} userName={this.state.userName} userPic={this.state.userPic} />
+        <Logout />
         <div className="App">
           <Grid container spacing={8}>
             <Grid item xs={3}>

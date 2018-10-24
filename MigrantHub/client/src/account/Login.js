@@ -20,6 +20,7 @@ import Checkbox from '@material-ui/core/Checkbox';
 import LockIcon from '@material-ui/icons/LockOutlined';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import HomeLayout from '../home/HomeLayout'
+import Auth from '../routes/Auth';
 
 import axios from 'axios';
 var qs = require('qs');
@@ -89,14 +90,11 @@ class Login extends Component {
         username: e.state.username,
         password: e.state.password,
       })).then(response => {
-        console.log('login response: ')
-        console.log(response)
         if (response.status === 200) {
-          // update App.js state
-
+          Auth.authenticate();
           this.setState({
             redirectTo: true,
-            redirectToURL: '/Main'
+            redirectToURL: '/main'
           })
         }
       }).catch(error => {

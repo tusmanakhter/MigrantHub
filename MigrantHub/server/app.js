@@ -23,7 +23,7 @@ app.use(bodyParser.urlencoded({limit: '50mb', extended: false}));
 
 app.use(
     expressSession({
-        secret: 'migrantHub',
+        secret: 'publication-biology',
         resave: false,
         saveUninitialized: false
     })
