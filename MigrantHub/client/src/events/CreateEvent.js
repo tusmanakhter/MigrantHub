@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import validator from 'validator';
 import withStyles from '@material-ui/core/styles/withStyles';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -14,6 +13,9 @@ import Typography from '@material-ui/core/Typography';
 
 import axios from 'axios';
 import { create } from 'jss';
+
+import axios from 'axios';
+var qs = require('qs');
 
 const visibilities = [
     { value: 'public', label: 'Public' },
@@ -45,11 +47,7 @@ const repeats = [
 ];
 
 class CreatEvent extends Component {
-    constructor(props){
-        super(props);
-        this.child = React.createRef();
-    }
-
+    
     state = {
         creator: '',
 
@@ -172,7 +170,7 @@ class CreatEvent extends Component {
         } else if (!validator.isLength(this.state.postalCode, {min:7, max:7})) {
             errors.postalCodeError = "Postal code is invalid";
             isError = true
-        }
+        } 
       
         if (validator.isEmpty(this.state.phoneNumber)) {
             errors.phoneNumberError = "Phone number is required";
@@ -180,7 +178,7 @@ class CreatEvent extends Component {
         } else if (!validator.isLength(this.state.phoneNumber, {min:14, max:14})) {
             errors.phoneNumberError = "Phone number is invalid";
             isError = true
-        }
+        } 
 
         if (validator.isEmpty(this.state.dateStart)) {
             errors.dateStartError = "Start date is required";
@@ -246,7 +244,30 @@ class CreatEvent extends Component {
 
     // Send event data in post body to add to mongodb
     createEvent(e) {
-
+        axios.post('/event/create',
+            qs.stringify({
+                creator: e.state.creator,
+                visibility: e.state.visibility,
+                eventName: e.state.eventName,
+                description: e.state.description,
+                address: e.state.address,
+                apartment: e.state.apartment,
+                city: e.state.city,
+                province: e.state.province,
+                postalCode: e.state.postalCode,
+                phoneNumber: e.state.phoneNumber,
+                dateStart: e.state.dateStart,
+                dateEnd:e.state.dateEnd,
+                timeStart: e.state.timeStart,
+                secondsStart: e.state.secondsStart,
+                timeEnd: e.state.timeEnd,
+                secondsEnd: e.state.secondsEnd,
+                repeat: e.state.repeat 
+            })).then(function (response) {
+            e.setState({
+                messageFromServer: response.data
+            });
+        });
     }
 
     render() {
@@ -303,7 +324,6 @@ class CreatEvent extends Component {
                     name="address" 
                     label="Address" 
                     value={this.state.address} 
-                    placeholder={this.state.addressError} 
                     onChange={event => this.handleChange(event)}
                     error={this.state.addressError.length > 0}/>
                     <label style={{color: 'red'}}>  {this.state.addressError}</label>
@@ -317,7 +337,6 @@ class CreatEvent extends Component {
                     name="apartment" 
                     label="Apartment" 
                     value={this.state.apartment} 
-                    placeholder={this.state.apartmentError} 
                     onChange={event => this.handleChange(event)}
                     error={this.state.apartmentError.length > 0}/>
                     <label style={{color: 'red'}}>  {this.state.apartmentError}</label>
@@ -329,7 +348,6 @@ class CreatEvent extends Component {
                     name="city" 
                     label="City" 
                     value={this.state.city} 
-                    placeholder={this.state.cityError} 
                     onChange={event => this.handleChange(event)}
                     error={this.state.cityError.length > 0}/>
                     <label style={{color: 'red'}}>  {this.state.cityError}</label>
@@ -342,7 +360,6 @@ class CreatEvent extends Component {
                     name="province" 
                     label="Province"
                     value={this.state.province} 
-                    placeholder={this.state.provinceError} 
                     onChange={event => this.handleChange(event)} 
                     error={this.state.provinceError.length > 0}>
                         {provinces.map(option => (
@@ -362,8 +379,6 @@ class CreatEvent extends Component {
                     name="postalCode" 
                     label="Postal Code" 
                     value={this.state.postalCode} 
-                    placeholder={this.state.postalCodeError}
-                    pattern="[/[a-zA-Z]/, /\d/, /[a-zA-Z]/, ' ', /\d/, /[a-zA-Z]/, /\d/]" 
                     onChange={event => this.handleChange(event)}
                     error={this.state.postalCodeError.length > 0}/>
                     <label style={{color: 'red'}}>  {this.state.postalCodeError}</label>
@@ -377,8 +392,7 @@ class CreatEvent extends Component {
                     name="phoneNumber" 
                     label="Phone Number" 
                     value={this.state.phoneNumber} 
-                    placeholder={this.state.phoneNumberError}
-                    pattern="['(', /[1-9]/, /\d/, /\d/, ')', ' ', /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/]" 
+                    placeholder="(123) 123-4567"
                     onChange={event => this.handleChange(event)}
                     error={this.state.phoneNumberError.length > 0}/>
                     <label style={{color: 'red'}}>  {this.state.phoneNumberError}</label>
@@ -392,7 +406,6 @@ class CreatEvent extends Component {
                     name="dateStart" 
                     label="Start Date"
                     value={this.state.dateStart} 
-                    placeholder={this.state.dateStartError} 
                     onChange={event => this.handleChange(event)}
                     error={this.state.dateStart.length > 0}/>
                     <label style={{color: 'red'}}>  {this.state.dateStartError}</label>
@@ -406,7 +419,6 @@ class CreatEvent extends Component {
                     name="dateEnd" 
                     label="End Date"
                     value={this.state.dateEnd} 
-                    placeholder={this.state.dateEndError} 
                     onChange={event => this.handleChange(event)}
                     error={this.state.dateEnd.length > 0}/>
                     <label style={{color: 'red'}}>  {this.state.dateEndError}</label>
@@ -420,7 +432,6 @@ class CreatEvent extends Component {
                     name="timeStart" 
                     label="Start Time"
                     value={this.state.timeStart} 
-                    placeholder={this.state.timeStartError}
                     onChange={event => this.handleChange(event)}
                     error={this.state.timeStart.length > 0}/>
                     <label style={{color: 'red'}}>  {this.state.timeStartError}</label>
@@ -434,7 +445,6 @@ class CreatEvent extends Component {
                     name="timeEnd" 
                     label="End Time"
                     value={this.state.timeEnd} 
-                    placeholder={this.state.timeEndError} 
                     onChange={event => this.handleChange(event)}
                     error={this.state.timeEnd.length > 0}/>
                     <label style={{color: 'red'}}>  {this.state.timeEndError}</label>
@@ -447,8 +457,7 @@ class CreatEvent extends Component {
                     name="repeat" 
                     label="Repeat"
                     value={this.state.repeat} 
-                    placeholder={this.state.repeatError} 
-                    onChange={event => this.handleChange(event)} fullWidth>
+                    onChange={event => this.handleChange(event)} >
                         {repeats.map(option => (
                         <option key={option.value} value={option.value}>
                             {option.label}
@@ -485,10 +494,6 @@ class CreatEvent extends Component {
         );
     }
 }
-
-CreatEvent.propTypes = {
-    classes: PropTypes.object.isRequired,
-  };
 
 export default (CreatEvent);
 

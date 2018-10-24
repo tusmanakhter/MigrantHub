@@ -1,5 +1,6 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
+
 var eventSchema = new Schema({
     _id: {type: String, required: true},
 
@@ -21,10 +22,9 @@ var eventSchema = new Schema({
     timeEnd: {type: String, required: true},
     secondsEnd: {type: Number, required: true},
     repeat: {type: String, required : true}, 
-
-
     
 }, { collection: 'Event' });
+
 module.exports = mongoose.model('Event', eventSchema);
 
 
