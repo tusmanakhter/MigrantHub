@@ -36,7 +36,7 @@ const BusinessAccountValidator = (businessObject) =>{
         errors += "{'\n'}Address is required and empty";
     }
     if (validator.matches(businessObject.postalCode, '[A - Za - z][0 - 9][A - Za - z] [0 - 9][A - Za - z][0 - 9]')) {
-        errors += "{'\n'}Postal is should be in the format A1B 2E3";
+        errors += "{'\n'}Postal code should be in the format A1B 2E3";
     }
     if (validator.isEmpty(businessObject.city)) {
         errors += "{'\n'}City is required and empty";
