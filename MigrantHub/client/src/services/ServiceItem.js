@@ -7,6 +7,7 @@ import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
+import ViewService from './ViewService';
 
 const styles = {
     card: {
@@ -21,9 +22,20 @@ class ServiceItem extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            open: false,
             scroll: 'paper',
         };
     }
+
+    handleClickOpen = () => {
+        this.setState({
+            open: true,
+        });
+    };
+
+    handleClose = () => {
+        this.setState({ open: false });
+    };
 
     render() {
         const { classes } = this.props;
@@ -49,9 +61,21 @@ class ServiceItem extends Component {
                     </CardContent>
                 </CardActionArea>
                 <CardActions>
-                    <Button size="small" color="primary">
+                    <Button size="small" color="primary" onClick={this.handleClickOpen}>
                         View Service
                     </Button>
+                    <ViewService
+                        open={this.state.open}
+                        scroll={this.state.scroll}
+                        onClose={this.handleClose}
+                        serviceTitle={this.props.serviceTitle}
+                        serviceImagePath={this.props.serviceImagePath}
+                        serviceDescription={this.props.serviceDescription}
+                        serviceSummary={this.props.serviceSummary}
+                        serviceLocation={this.props.serviceLocation}
+                        serviceDate={this.props.serviceDate}
+                        serviceHours={this.props.serviceHours}
+                    />
                 </CardActions>
             </Card>
         );
