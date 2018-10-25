@@ -8,11 +8,11 @@ module.exports = {
   createEvent: function(req, res) {
     let parsedObj = qs.parse(req.body);
     let errors = CreateEventValidator(parsedObj);
-
+    
     if (errors == "") {
       let event = new Event();
 
-      event.creator = parsedObj.creator;
+      event.creator = req.user._id;
       event.visibility = parsedObj.visibility;
       event.eventName = parsedObj.eventName;
       event.description = parsedObj.description;

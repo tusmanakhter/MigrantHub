@@ -2,15 +2,12 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var eventSchema = new Schema({
-    _id: {type: String, required: true},
-
-    creator: {},
-
+    creator: {type: String, required: true},
     visibility: {type: String, required : true},
     eventName: {type: String, required : true},
     description: {type: String, required : true},
     address: {type: String, required : true},
-    apartment: {type: String, required : true},
+    apartment: {type: String, required : false},
     city: {type: String, required : true},
     province: {type: String, required : true},
     postalCode: {type: String, required : true},

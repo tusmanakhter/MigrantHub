@@ -159,11 +159,6 @@ class CreatEvent extends Component {
             isError = true
         }
       
-        if (validator.isEmpty(this.state.province)) {
-            errors.provinceError = "Province is required";
-            isError = true
-        }
-      
         if (validator.isEmpty(this.state.postalCode)) {
             errors.postalCodeError = "Postal code is required";
             isError = true
@@ -236,6 +231,11 @@ class CreatEvent extends Component {
         this.state.secondsStart = start;
         this.state.secondsEnd = end;
 
+        //Making sure visibility, province and repeat are instantiated
+        if(this.state.visibility === '') this.state.visibility = 'public';
+        if(this.state.province === '') this.state.province = 'AB';
+        if(this.state.repeat === '') this.state.repeat = 'no';
+
         let error = this.validate();
         if (!error) {
           this.createEvent(this);
@@ -284,7 +284,7 @@ class CreatEvent extends Component {
                     value={this.state.visibility} 
                     onChange={event => this.handleChange(event)}>
                         {visibilities.map(option => (
-                        <option key={option.value} value={option.value}>
+                        <option key={option.value} value={option.value} >
                             {option.label}
                         </option>
                         ))}
