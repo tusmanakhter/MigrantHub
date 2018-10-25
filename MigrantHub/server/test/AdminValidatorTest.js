@@ -15,14 +15,12 @@ const emptyAdminAccount = {
 };
 
 
-describe('AdminAccountValidator()', function () {
+describe('admin account validator', function () {
     it('returns an empty string on valid admin account', function () {
         let errors = AdminAccountValidator(validAdminAccount);
         assert.equal("", errors);
     });
-});
 
-describe('AdminAccountValidator()', function () {
     it('returns errors on empty admin account', function () {
         var expectedErrors =
             "{'\n'}Email is required" +
