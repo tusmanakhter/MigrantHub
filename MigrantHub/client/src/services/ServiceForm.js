@@ -11,6 +11,9 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import Paper from '@material-ui/core/Paper';
 import MaskedInput from 'react-text-mask';
 import Header from '../components/Header/Header';
+import axios from 'axios';
+
+var qs = require('qs');
 
 const dayOfTheWeek = [
     { value: 'monday', label: 'Monday' },
@@ -141,6 +144,9 @@ class ServiceForm extends Component {
             addLocation: false,
             addServiceDate: false,
             serviceHoursCount: 0,
+
+            // Server response
+            messageFromServer: '',
         };
     }
 
@@ -186,7 +192,7 @@ class ServiceForm extends Component {
     }
 
     handleSubmit = () => {
-
+        this.createService(this);
     };
 
     handleEditSingleObject = (name, fieldName) => (event) => {
@@ -197,12 +203,44 @@ class ServiceForm extends Component {
         this.setState({ [name]: obj[name] });
     };
 
+    createService(e) {
+
+        let location = {};
+        if(this.state.addLocation) {
+            location = e.state.location
+        }
+        let serviceDate = {};
+        if(this.state.addServiceDate) {
+            serviceDate = e.state.serviceDate
+        }
+
+        axios.post('/services/create',qs.stringify({
+            location: location,
+            serviceHours: e.state.serviceHours,
+            serviceDate: serviceDate,
+            serviceTitle: e.state.serviceTitle,
+            serviceDescription: e.state.serviceDescription,
+            serviceSummary: e.state.serviceSummary,
+        })).then(response => {
+
+            console.log(response.status);
+
+        }).catch(error => {
+            e.setState({
+                messageFromServer: error.response.data
+            });
+        })
+    }
+
     render() {
         const { classes } = this.props;
 
         return (
             <React.Fragment>
                 <Header appName='Migrant Hub' />
+                {this.state.messageFromServer.split('\n').map((item, key) => {
+                    return <span key={key}>{item}<br/></span>
+                })}
                 <Typography variant="title" gutterBottom>
                     Create Service Form
                 </Typography>
