@@ -9,6 +9,7 @@ import Home from '../home/HomePage';
 import Login from '../account/Login';
 import TempError from '../account/TempError';
 import TempHome from '../account/TempHome';
+import ServiceForm from "../services/ServiceForm";
 
 export const Routes = () => (
   <Switch>
@@ -20,6 +21,7 @@ export const Routes = () => (
     <Route path="/login" component={Login} exact />
     <Route path="/temphome" component={TempHome} exact />
     <Route path="/temperror" component={TempError} exact />
+    <Route path="/serviceForm" component={ServiceForm} exact />
     <Route component={Error} />
   </Switch>
 );
