@@ -9,6 +9,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Button from '@material-ui/core/Button';
 import blue from '@material-ui/core/colors/blue';
+import GoogleMaps from "./GoogleMaps";
 
 const styles = {
     avatar: {
@@ -118,6 +119,11 @@ class ViewService extends Component {
                             </Grid>
                         )}
 
+                        {this.props.open && this.props.serviceLocation !== undefined &&(
+                            <GoogleMaps
+                                serviceLocation={this.props.serviceLocation}
+                            />
+                        )}
                     </DialogContent>
                     <DialogActions>
                         <Button onClick={this.handleClose} color="primary">
@@ -131,7 +137,7 @@ class ViewService extends Component {
 }
 
 ViewService.propTypes = {
-    classes: PropTypes.object.isRequired,
+    classes: PropTypes.object.isRequired
 };
 
 export default withStyles(styles)(ViewService);
