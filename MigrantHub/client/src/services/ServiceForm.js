@@ -397,7 +397,9 @@ class ServiceForm extends Component {
                     'Content-Type': 'multipart/form-data'
                 }
             }).then(response => {
-
+            e.setState({
+                messageFromServer: response.data
+            });
         }).catch(error => {
             e.setState({
                 messageFromServer: error.response.data
