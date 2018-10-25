@@ -55,4 +55,10 @@ module.exports = {
             res.status(400).send(errors);
         }
     },
+
+    viewServices : function (req, res) {
+        Services.find({}, function(err, services) {
+            res.send(services);
+        });
+    }
 };

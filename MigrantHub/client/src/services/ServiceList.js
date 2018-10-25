@@ -3,6 +3,7 @@ import ServiceItem from "./ServiceItem";
 import withStyles from '@material-ui/core/styles/withStyles';
 import Button from '@material-ui/core/Button';
 import Paper from '@material-ui/core/Paper';
+import axios from 'axios';
 import { Redirect } from 'react-router-dom'
 import Header from '../components/Header/Header';
 
@@ -23,6 +24,24 @@ class ServiceList extends Component {
             redirectToServiceForm: false,
         };
 
+        this.getData = this.getData.bind(this);
+    }
+
+    componentDidMount() {
+        this.getData(this);
+        console.log('olla');
+    }
+    componentWillReceiveProps(nextProps) {
+        this.getData(this);
+    }
+    getData(ev){
+        axios.get('/services/view/all')
+            .then(function(response) {
+                console.log(response.data)
+                ev.setState({items: response.data});
+            }).catch(error => {
+            console.log("Error retrieving all services.")
+        })
     }
 
     setRedirectToServiceForm = () => {

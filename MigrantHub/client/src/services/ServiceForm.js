@@ -166,6 +166,7 @@ class ServiceForm extends Component {
 
             // Server response
             messageFromServer: '',
+            redirectToAllServices : false,
         };
     }
 
@@ -241,6 +242,12 @@ class ServiceForm extends Component {
         obj[name][fieldName] = value;
         this.setState({ [name]: obj[name] });
     };
+
+    renderRedirectToAllServices = () => {
+        if (this.state.redirectToAllServices) {
+            return <Redirect to='/services' />
+        }
+    }
 
     validate = () => {
         let isError = false;
@@ -397,9 +404,14 @@ class ServiceForm extends Component {
                     'Content-Type': 'multipart/form-data'
                 }
             }).then(response => {
-            e.setState({
-                messageFromServer: response.data
-            });
+
+            console.log(response.status);
+            if (response.status === 200) {
+                this.setState({
+                    messageFromServer: response.data,
+                    redirectToAllServices: true
+                })
+            }
         }).catch(error => {
             e.setState({
                 messageFromServer: error.response.data
@@ -416,6 +428,7 @@ class ServiceForm extends Component {
                 {this.state.messageFromServer.split('\n').map((item, key) => {
                     return <span key={key}>{item}<br/></span>
                 })}
+                {this.renderRedirectToAllServices()}
                 <Typography variant="title" gutterBottom>
                     Create Service Form
                 </Typography>
