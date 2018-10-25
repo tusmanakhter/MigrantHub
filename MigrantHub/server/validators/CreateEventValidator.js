@@ -6,14 +6,10 @@ const CreateEventValidator = (businessObject) =>{
     let errors = "";
     if (validator.isEmpty(businessObject.eventName)) {
         errors += "\nEvent name is required";
-    } else if (!validator.isAlpha(businessObject.eventName)) {
-        errors += "\nEvent name is not valid";
-    }
+    } 
 
     if (validator.isEmpty(businessObject.description)) {
         errors += "\nDescription is required";
-    } else if (!validator.isAlpha(businessObject.description)) {
-        errors += "\nDescription is not valid";
     } else if (!validator.isLength(businessObject.description, {min:10})) {
         errors += "\nDescription must be at least 10 characters";
     }
@@ -24,9 +20,7 @@ const CreateEventValidator = (businessObject) =>{
   
     if (validator.isEmpty(businessObject.city)) {
         errors += "\nCity is required";
-    } else if (!validator.isAlpha(businessObject.city)) {
-        errors += "\nThis is not a valid city"
-    }
+    } 
   
     if (validator.isEmpty(businessObject.province)) {
         errors += "\nProvince is required";
