@@ -1,4 +1,4 @@
-var MigrantAccountValidator = require('../validators/MigrantAccountValidator');
+var MigrantAccountValidator = require('../../validators/MigrantAccountValidator');
 var chai = require('chai');
 var assert = chai.assert;
 
