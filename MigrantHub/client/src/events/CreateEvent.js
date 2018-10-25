@@ -130,16 +130,10 @@ class CreatEvent extends Component {
         if (validator.isEmpty(this.state.eventName)) {
             errors.eventNameError = "Event name is required";
             isError = true
-        } else if (!validator.isAlpha(this.state.eventName)) {
-            errors.eventNameError = "Event name is not valid";
-            isError = true
-        }
+        } 
 
         if (validator.isEmpty(this.state.description)) {
             errors.descriptionError = "Description is required";
-            isError = true
-        } else if (!validator.isAlpha(this.state.description)) {
-            errors.descriptionError = "Description is not valid";
             isError = true
         } else if (!validator.isLength(this.state.description, {min:10})) {
             errors.descriptionError = "Description must be at least 10 characters";
@@ -154,10 +148,7 @@ class CreatEvent extends Component {
         if (validator.isEmpty(this.state.city)) {
             errors.cityError = "City is required";
             isError = true
-        } else if (!validator.isAlpha(this.state.city)) {
-            errors.cityError = "This is not a valid city"
-            isError = true
-        }
+        } 
       
         if (validator.isEmpty(this.state.postalCode)) {
             errors.postalCodeError = "Postal code is required";
