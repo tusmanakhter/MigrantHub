@@ -9,9 +9,11 @@ import Button from '@material-ui/core/Button';
 import AddIcon from '@material-ui/icons/Add';
 import DeleteIcon from '@material-ui/icons/Delete';
 import Paper from '@material-ui/core/Paper';
+import validator from 'validator';
 import MaskedInput from 'react-text-mask';
 import Header from '../components/Header/Header';
 import axios from 'axios';
+import { Redirect } from 'react-router-dom'
 
 var FormData = require('form-data');
 var qs = require('qs');
@@ -126,6 +128,19 @@ class ServiceForm extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            serviceHoursError: [],
+            serviceDescriptionError: '',
+            serviceSummaryError: '',
+            serviceTitleError: '',
+            addressError: '',
+            apartmentError: '',
+            cityError: '',
+            provinceError: '',
+            postalCodeError: '',
+            phoneNumberError: '',
+            serviceImageError: '',
+            startDateError: '',
+            endDateError: '',
             serviceHours: [],
             serviceDate: {
                 startDate: '',
@@ -141,6 +156,7 @@ class ServiceForm extends Component {
             },
             serviceImage: null,
             serviceImageName: '',
+            titleError: '',
             serviceDescription: '',
             serviceSummary: '',
             serviceTitle: '',
@@ -212,7 +228,10 @@ class ServiceForm extends Component {
     }
 
     handleSubmit = () => {
-        this.createService(this);
+        let error = this.validate();
+        if (!error) {
+            this.createService(this);
+        }
     };
 
     handleEditSingleObject = (name, fieldName) => (event) => {
@@ -222,6 +241,130 @@ class ServiceForm extends Component {
         obj[name][fieldName] = value;
         this.setState({ [name]: obj[name] });
     };
+
+    validate = () => {
+        let isError = false;
+        const errors = {
+            serviceHoursError: [],
+            serviceTitleError: '',
+            serviceDescriptionError: '',
+            serviceSummaryError: '',
+            addressError: '',
+            apartmentError: '',
+            cityError: '',
+            provinceError: '',
+            postalCodeError: '',
+            phoneNumberError: '',
+            serviceImageError: '',
+            startDateError: '',
+            endDateError: '',
+        };
+
+        if (validator.isEmpty(this.state.serviceTitle)) {
+            errors.serviceTitleError = "Title is required";
+            isError = true
+        }
+        if (validator.isEmpty(this.state.serviceSummary)) {
+            errors.serviceSummaryError = "Service summary is required";
+            isError = true
+        }
+        if (validator.isEmpty(this.state.serviceDescription)) {
+            errors.serviceDescriptionError = "Service description is required";
+            isError = true
+        }
+        if(this.state.serviceImage !== null) {
+            if (!validator.matches(this.state.serviceImageName, '.(\.jpg|\.jpeg|\.png)$')) {
+                errors.serviceImageError = "Invalid image format. Should be either .jpg, .jpeg or .png";
+                isError = true
+            }
+        }
+
+        if(this.state.addServiceDate) {
+            let date = new Date();
+            let todaysDate= (date.getFullYear()+'-'+(date.getMonth()+1)+'-'+date.getDate());
+            if (validator.isEmpty(this.state.serviceDate.startDate)) {
+                errors.startDateError = "Start date is required";
+                isError = true
+            }else if(validator.isBefore(this.state.serviceDate.startDate, todaysDate)) {
+                errors.startDateError = "Start date is invalid";
+                isError = true;
+            }
+            if (validator.isEmpty(this.state.serviceDate.endDate)) {
+                errors.endDateError = "End date is required";
+                isError = true
+            }else if(validator.isBefore(this.state.serviceDate.endDate, this.state.serviceDate.startDate)) {
+                errors.endDateError = "End date should be after start date";
+                isError = true;
+            }
+        }
+
+        if(this.state.addLocation) {
+            if (validator.isEmpty(this.state.location.address)) {
+                errors.addressError = "Address is required";
+                isError = true
+            }
+
+            if (validator.isEmpty(this.state.location.city)) {
+                errors.cityError = "City is required";
+                isError = true
+            } else if (!validator.isAlpha(this.state.location.city)) {
+                errors.cityError = "This is not a valid city"
+                isError = true
+            }
+
+            if (validator.isEmpty(this.state.location.province)) {
+                errors.provinceError = "Province is required";
+                isError = true
+            }
+
+            if (validator.isEmpty(this.state.location.postalCode)) {
+                errors.postalCodeError = "Postal code is required";
+                isError = true
+            } else if (!validator.isLength(this.state.location.postalCode, {min: 7, max: 7})) {
+                errors.postalCodeError = "Postal code is invalid";
+                isError = true
+            }
+
+            if (validator.isEmpty(this.state.location.phoneNumber)) {
+                errors.phoneNumberError = "Phone number is required";
+                isError = true
+            } else if (!validator.isLength(this.state.location.phoneNumber, {min: 14, max: 14})) {
+                errors.phoneNumberError = "Phone number is invalid";
+                isError = true
+            }
+        }
+
+        this.state.serviceHours.forEach((member, index) => {
+            errors.serviceHoursError = errors.serviceHoursError.concat([JSON.parse(JSON.stringify(serviceHoursObject))]);
+
+            if (validator.isEmpty(member.startTime)) {
+                errors.serviceHoursError[index].startTime = "Start time is required";
+                isError = true
+            }
+            if (validator.isEmpty(member.endTime)) {
+                errors.serviceHoursError[index].endTime = "End time is required";
+                isError = true
+            }else if (member.endTime <= member.startTime) {
+                errors.serviceHoursError[index].endTime = "End time should be after start time";
+                isError = true;
+            }
+            if (validator.isEmpty(member.serviceDay)) {
+                errors.serviceHoursError[index].serviceDay = "Service day is required";
+                isError = true
+            }
+        });
+
+        this.setState({
+            ...this.state,
+            ...errors
+        })
+
+        return isError;
+    }
+
+    objectErrorText = (name, index, field) => {
+        return this.state[name][index] === undefined ? "" : this.state[name][index][field]
+    }
 
     createService(e) {
 
@@ -283,6 +426,8 @@ class ServiceForm extends Component {
                             value={this.serviceTitle}
                             onChange={event => this.handleChange(event)}
                             fullWidth
+                            helperText={this.state.serviceTitleError}
+                            error={this.state.serviceTitleError.length > 0}
                         />
                     </Grid>
                     <Grid item xs={12}>
@@ -293,6 +438,8 @@ class ServiceForm extends Component {
                             value={this.serviceSummary}
                             onChange={event => this.handleChange(event)}
                             fullWidth
+                            helperText={this.state.serviceSummaryError}
+                            error={this.state.serviceSummaryError.length > 0}
                         />
                     </Grid>
                     <Grid item xs={12}>
@@ -305,6 +452,8 @@ class ServiceForm extends Component {
                             fullWidth
                             multiline={true}
                             rows={12}
+                            helperText={this.state.serviceDescriptionError}
+                            error={this.state.serviceDescriptionError.length > 0}
                         />
                     </Grid>
                     <Grid item xs={12}>
@@ -315,6 +464,8 @@ class ServiceForm extends Component {
                             id="serviceImage"
                             type="file"
                             onChange={event => this.handleUploadImage(event)}
+                            helperText={this.state.serviceImageError}
+                            error={this.state.serviceImageError.length > 0}
                         />
                     </Grid>
                     <Grid item xs={12}>
@@ -342,6 +493,8 @@ class ServiceForm extends Component {
                                         className={classes.textField}
                                         onChange={this.handleEditSingleObject("serviceDate", "startDate")}
                                         fullWidth
+                                        helperText={this.state.startDateError}
+                                        error={this.state.startDateError.length > 0}
                                         InputLabelProps={{
                                             shrink: true,
                                         }}
@@ -357,6 +510,8 @@ class ServiceForm extends Component {
                                         className={classes.textField}
                                         onChange={this.handleEditSingleObject("serviceDate", "endDate")}
                                         fullWidth
+                                        helperText={this.state.endDateError}
+                                        error={this.state.endDateError.length > 0}
                                         InputLabelProps={{
                                             shrink: true,
                                         }}
@@ -389,6 +544,8 @@ class ServiceForm extends Component {
                                     value={this.state.location.address}
                                     onChange={this.handleEditSingleObject("location", "address")}
                                     fullWidth
+                                    helperText={this.state.addressError}
+                                    error={this.state.addressError.length > 0}
                                 />
                             </Grid>
                             <Grid item xs={6}>
@@ -400,6 +557,8 @@ class ServiceForm extends Component {
                                     value={this.state.location.apartment}
                                     onChange={this.handleEditSingleObject("location", "apartment")}
                                     fullWidth
+                                    helperText={this.state.apartmentError}
+                                    error={this.state.apartmentError.length > 0}
                                 />
                             </Grid>
                             <Grid item xs={6} sm={3}>
@@ -410,6 +569,8 @@ class ServiceForm extends Component {
                                     value={this.state.location.city}
                                     onChange={this.handleEditSingleObject("location", "city")}
                                     fullWidth
+                                    helperText={this.state.cityError}
+                                    error={this.state.cityError.length > 0}
                                 />
                             </Grid>
                             <Grid item xs={6} sm={3}>
@@ -422,6 +583,8 @@ class ServiceForm extends Component {
                                     className={classes.select}
                                     onChange={this.handleEditSingleObject("location", "province")}
                                     fullWidth
+                                    helperText={this.state.provinceError}
+                                    error={this.state.provinceError.length > 0}
                                 >
                                     {provinces.map(option => (
                                         <MenuItem key={option.value} value={option.value}>
@@ -441,6 +604,8 @@ class ServiceForm extends Component {
                                     InputProps={{
                                         inputComponent: PostalCodeMask,
                                     }}
+                                    helperText={this.state.postalCodeError}
+                                    error={this.state.postalCodeError.length > 0}
                                 />
                             </Grid>
                             <Grid item xs={6} sm={3}>
@@ -451,6 +616,8 @@ class ServiceForm extends Component {
                                     value={this.state.location.phoneNumber}
                                     onChange={this.handleEditSingleObject("location", "phoneNumber")}
                                     fullWidth
+                                    helperText={this.state.phoneNumberError}
+                                    error={this.state.phoneNumberError.length > 0}
                                     InputProps={{
                                         inputComponent: PhoneMask,
                                     }}
@@ -488,6 +655,8 @@ class ServiceForm extends Component {
                                                 value={member.serviceDay}
                                                 onChange={this.handleEditObject("serviceHours", index)}
                                                 className={classes.select}
+                                                helperText={this.objectErrorText("serviceHoursError", index, "serviceDay")}
+                                                error={this.objectErrorText("serviceHoursError", index, "serviceDay").length > 0}
                                                 fullWidth
                                             >
                                                 {dayOfTheWeek.map(option => (
@@ -507,6 +676,8 @@ class ServiceForm extends Component {
                                                 type="time"
                                                 defaultValue="08:30"
                                                 onChange={this.handleEditObject("serviceHours", index)}
+                                                helperText={this.objectErrorText("serviceHoursError", index, "startTime")}
+                                                error={this.objectErrorText("serviceHoursError", index, "startTime").length > 0}
                                                 fullWidth
                                                 InputLabelProps={{
                                                     shrink: true,
@@ -525,6 +696,8 @@ class ServiceForm extends Component {
                                                 className={classes.textField}
                                                 type="time"
                                                 onChange={this.handleEditObject("serviceHours", index)}
+                                                helperText={this.objectErrorText("serviceHoursError", index, "endTime")}
+                                                error={this.objectErrorText("serviceHoursError", index, "endTime").length > 0}
                                                 fullWidth
                                                 InputLabelProps={{
                                                     shrink: true,
