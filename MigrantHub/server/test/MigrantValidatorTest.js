@@ -208,14 +208,10 @@ const invalidNumbersMerchantProfileData = {
 
 describe('MigrantAccountValidator()', function () {
     it('Validates migrant profile data should return empty error string.', function () {
-
-        console.log("Error free profile data")
         let errors = MigrantAccountValidator(validMerchantProfileData);
         assert.equal(errors, "");
     });
-});
 
-describe('MigrantAccountValidator()', function () {
     it('Invalid migrant profile data should return a string with all the errors', function () {
 
         var expectedErrors =
@@ -264,25 +260,20 @@ describe('MigrantAccountValidator()', function () {
             "\nSettling duration is required and empty" +
             "\nJoining reason is required and empty";
 
-        console.log("Error profile data, caused by empty fields")
         let forcedErrors = MigrantAccountValidator(emptyMerchantProfileData);
         assert.equal(forcedErrors, expectedErrors);
     });
-});
 
-    describe('MigrantAccountValidator()', function () {
-        it('Invalid migrant profile data should return a string with all the errors', function () {
+    it('Invalid migrant profile data should return a string with all the errors', function () {
 
-            var expectedErrors =
-                "\nAge should be a valid number greater than 0." +
-                "\nFamily member's age should be a valid number greater than 0." +
-                "\nFamily member's age should be a valid number greater than 0." +
-                "\nFamily member's age should be a valid number greater than 0." +
-                "\nEmployment length is not valid"
+        var expectedErrors =
+            "\nAge should be a valid number greater than 0." +
+            "\nFamily member's age should be a valid number greater than 0." +
+            "\nFamily member's age should be a valid number greater than 0." +
+            "\nFamily member's age should be a valid number greater than 0." +
+            "\nEmployment length is not valid"
 
-            console.log("Error profile data, caused by empty fields");
-            let forcedErrors = MigrantAccountValidator(invalidNumbersMerchantProfileData);
-            console.log(forcedErrors);
-            assert.equal(forcedErrors, expectedErrors);
-        });
+        let forcedErrors = MigrantAccountValidator(invalidNumbersMerchantProfileData);
+        assert.equal(forcedErrors, expectedErrors);
+    });
 });
