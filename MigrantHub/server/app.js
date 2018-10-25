@@ -39,6 +39,8 @@ app.use( (req, res, next) => {
 
 app.use('/', router);
 
+app.use(express.static('uploads'))
+
 // MongoDB/Mongoose Connection
 var mongoDB = serverConfig.mongoURL;
 mongoose.Promise = global.Promise;

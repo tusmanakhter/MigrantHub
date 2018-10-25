@@ -22,6 +22,7 @@ var serviceSchema = new Schema({
         startTime: {type: String, required: false},
         endTime: {type: String, required: false}
     }],
+    serviceImagePath: { type: String, required: false },
     dateCreated: { type: Date, required: false }
 }, { collection: 'Services' });
 module.exports = mongoose.model('Services', serviceSchema);

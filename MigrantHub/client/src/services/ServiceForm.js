@@ -13,6 +13,7 @@ import MaskedInput from 'react-text-mask';
 import Header from '../components/Header/Header';
 import axios from 'axios';
 
+var FormData = require('form-data');
 var qs = require('qs');
 
 const dayOfTheWeek = [
@@ -138,6 +139,8 @@ class ServiceForm extends Component {
                 postalCode : '',
                 phoneNumber : '',
             },
+            serviceImage: null,
+            serviceImageName: '',
             serviceDescription: '',
             serviceSummary: '',
             serviceTitle: '',
@@ -191,6 +194,23 @@ class ServiceForm extends Component {
         });
     }
 
+    handleUploadImage = event => {
+
+        if(event.target.files[0] !== undefined) {
+            console.log("State: " + event.target.files[0]);
+
+            this.setState({
+                serviceImage: event.target.files[0],
+                serviceImageName: event.target.files[0].name,
+            });
+        }else{
+            this.setState({
+                serviceImage: null,
+                serviceImageName: '',
+            });
+        }
+    }
+
     handleSubmit = () => {
         this.createService(this);
     };
@@ -205,6 +225,10 @@ class ServiceForm extends Component {
 
     createService(e) {
 
+        let imageName = 'cameraDefault.png';
+        if(e.state.serviceImage !== null){
+            imageName = e.state.serviceImage.name
+        }
         let location = {};
         if(this.state.addLocation) {
             location = e.state.location
@@ -213,17 +237,23 @@ class ServiceForm extends Component {
         if(this.state.addServiceDate) {
             serviceDate = e.state.serviceDate
         }
-
-        axios.post('/services/create',qs.stringify({
+        let formData = new FormData();
+        formData.append('serviceImage', e.state.serviceImage);
+        formData.append('serviceDetails', qs.stringify({
             location: location,
             serviceHours: e.state.serviceHours,
             serviceDate: serviceDate,
             serviceTitle: e.state.serviceTitle,
             serviceDescription: e.state.serviceDescription,
             serviceSummary: e.state.serviceSummary,
-        })).then(response => {
-
-            console.log(response.status);
+            serviceImageName: imageName,
+        }));
+        axios.post('/services/create',formData,
+            {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            }).then(response => {
 
         }).catch(error => {
             e.setState({
@@ -275,6 +305,16 @@ class ServiceForm extends Component {
                             fullWidth
                             multiline={true}
                             rows={12}
+                        />
+                    </Grid>
+                    <Grid item xs={12}>
+                        <Typography variant="subheading" gutterBottom className={classes.row} align="left">
+                            Select image to upload (Optional)
+                        </Typography>
+                        <TextField
+                            id="serviceImage"
+                            type="file"
+                            onChange={event => this.handleUploadImage(event)}
                         />
                     </Grid>
                     <Grid item xs={12}>
