@@ -4,7 +4,7 @@ var User = require('./User');
 
 const options = {discriminatorKey: 'type'};
 
-var MigrantUser = User.discriminator('Migrant',
+var MigrantUser = User.discriminator('migrant',
 new Schema({
   firstName: {type: String, required: true},
   lastName: {type: String, required: true},

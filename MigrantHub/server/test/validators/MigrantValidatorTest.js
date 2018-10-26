@@ -1,221 +1,15 @@
-var MigrantAccountValidator = require('../../validators/MigrantAccountValidator');
+var MigrantAccountValidator = require('../validators/MigrantAccountValidator');
+var AccountFactory = require('./factories/AccountFactory');
 var chai = require('chai');
 var assert = chai.assert;
 
-const validMerchantProfileData = {
-    proficiencyExams : {
-        ielts : "false",
-        french : "true",
-        others : "Computer Programming"
-    },
-    languages : [
-        {
-            name : "French",
-            writingLevel : "beginner",
-            speakingLevel : "beginner"
-        }
-    ],
-    family : [
-        {
-            age : "14",
-            gender : "male",
-            relation : "brother",
-            relationshipStatus : "single"
-        },
-        {
-            age : "50",
-            gender : "female",
-            relation : "mother",
-            relationshipStatus : "married"
-        },
-        {
-            age : "51",
-            gender : "male",
-            relation : "father",
-            relationshipStatus : "married"
-        }
-    ],
-    workExperience : [
-        {
-            title : "Admin",
-            company : "Concordia",
-            years : "2"
-        }
-    ],
-    email : "lax@hotmail.com",
-    password : "$2a$10$U1yloqe8t2ultaLED/XXduPY/msYNk15aFEehh0eACXvStsDewHs2",
-    confirmPassword : "$2a$10$U1yloqe8t2ultaLED/XXduPY/msYNk15aFEehh0eACXvStsDewHs2",
-    firstName : "Lax",
-    lastName : "Test",
-    address : "1455 Boulevard de Maisonneuve O",
-    apartment : "",
-    city : "Montreal",
-    province : "QC",
-    postalCode : "H3G 1M8",
-    phoneNumber : "(514) 848-2424",
-    age : "22",
-    gender : "male",
-    nationality : "Canadian",
-    relationshipStatus : "single",
-    status : "citizen",
-    writingLevel : "intermediate",
-    speakingLevel : "intermediate",
-    motherTongue : "English",
-    educationLevel : "secondary",
-    jobStatus : "student",
-    lookingForJob : "false",
-    currentIncome : "15000",
-    settlingLocation : "LAVAL, QC",
-    settlingDuration : "15",
-    joiningReason : "help"
-};
-
-const emptyMerchantProfileData = {
-    proficiencyExams : {
-        ielts : "",
-        french : "",
-        others : ""
-    },
-    languages : [
-        {
-            name : "",
-            writingLevel : "",
-            speakingLevel : ""
-        }
-    ],
-    family : [
-        {
-            age : "",
-            gender : "",
-            relation : "",
-            relationshipStatus : ""
-        },
-        {
-            age : "",
-            gender : "",
-            relation : "",
-            relationshipStatus : ""
-        },
-        {
-            age : "",
-            gender : "",
-            relation : "",
-            relationshipStatus : ""
-        }
-    ],
-    workExperience : [
-        {
-            title : "",
-            company : "",
-            years : ""
-        }
-    ],
-    email : "",
-    password : "",
-    confirmPassword : "",
-    firstName : "",
-    lastName : "",
-    address : "",
-    apartment : "",
-    city : "",
-    province : "",
-    postalCode : "",
-    phoneNumber : "",
-    age : "",
-    gender : "",
-    nationality : "",
-    relationshipStatus : "",
-    status : "",
-    writingLevel : "",
-    speakingLevel : "",
-    motherTongue : "",
-    educationLevel : "",
-    jobStatus : "",
-    lookingForJob : "",
-    currentIncome : "",
-    settlingLocation : "",
-    settlingDuration : "",
-    joiningReason : ""
-};
-
-const invalidNumbersMerchantProfileData = {
-    proficiencyExams : {
-        ielts : "false",
-        french : "true",
-        others : "Computer Programming"
-    },
-    languages : [
-        {
-            name : "French",
-            writingLevel : "beginner",
-            speakingLevel : "beginner"
-        }
-    ],
-    family : [
-        {
-            age : "-14",
-            gender : "male",
-            relation : "brother",
-            relationshipStatus : "single"
-        },
-        {
-            age : "-8",
-            gender : "female",
-            relation : "mother",
-            relationshipStatus : "married"
-        },
-        {
-            age : "-51",
-            gender : "male",
-            relation : "father",
-            relationshipStatus : "married"
-        }
-    ],
-    workExperience : [
-        {
-            title : "Admin",
-            company : "Concordia",
-            years : "years"
-        }
-    ],
-    email : "lax@hotmail.com",
-    password : "$2a$10$U1yloqe8t2ultaLED/XXduPY/msYNk15aFEehh0eACXvStsDewHs2",
-    confirmPassword : "$2a$10$U1yloqe8t2ultaLED/XXduPY/msYNk15aFEehh0eACXvStsDewHs2",
-    firstName : "Lax",
-    lastName : "Test",
-    address : "1455 Boulevard de Maisonneuve O",
-    apartment : "",
-    city : "Montreal",
-    province : "QC",
-    postalCode : "H3G 1M8",
-    phoneNumber : "(514) 848-2424",
-    age : "-1",
-    gender : "male",
-    nationality : "Canadian",
-    relationshipStatus : "single",
-    status : "citizen",
-    writingLevel : "intermediate",
-    speakingLevel : "intermediate",
-    motherTongue : "English",
-    educationLevel : "secondary",
-    jobStatus : "student",
-    lookingForJob : "false",
-    currentIncome : "-15000",
-    settlingLocation : "LAVAL, QC",
-    settlingDuration : "invalid",
-    joiningReason : "help"
-};
 
 describe('MigrantAccountValidator()', function () {
     it('Validates migrant profile data should return empty error string.', function () {
-
-        console.log("Error free profile data")
-        let errors = MigrantAccountValidator(validMerchantProfileData);
-        assert.equal(errors, "");
+        let errors = MigrantAccountValidator(AccountFactory.validMigrantAccount());
+        assert.equal(errors, ""); 
     });
-});
 
-describe('MigrantAccountValidator()', function () {
     it('Invalid migrant profile data should return a string with all the errors', function () {
 
         var expectedErrors =
@@ -264,25 +58,20 @@ describe('MigrantAccountValidator()', function () {
             "\nSettling duration is required and empty" +
             "\nJoining reason is required and empty";
 
-        console.log("Error profile data, caused by empty fields")
-        let forcedErrors = MigrantAccountValidator(emptyMerchantProfileData);
+        let forcedErrors = MigrantAccountValidator(AccountFactory.emptyMigrantAccount());
         assert.equal(forcedErrors, expectedErrors);
     });
-});
 
-    describe('MigrantAccountValidator()', function () {
-        it('Invalid migrant profile data should return a string with all the errors', function () {
+    it('Invalid migrant profile data should return a string with all the errors', function () {
 
-            var expectedErrors =
-                "\nAge should be a valid number greater than 0." +
-                "\nFamily member's age should be a valid number greater than 0." +
-                "\nFamily member's age should be a valid number greater than 0." +
-                "\nFamily member's age should be a valid number greater than 0." +
-                "\nEmployment length is not valid"
+        var expectedErrors =
+            "\nAge should be a valid number greater than 0." +
+            "\nFamily member's age should be a valid number greater than 0." +
+            "\nFamily member's age should be a valid number greater than 0." +
+            "\nFamily member's age should be a valid number greater than 0." +
+            "\nEmployment length is not valid"
 
-            console.log("Error profile data, caused by empty fields");
-            let forcedErrors = MigrantAccountValidator(invalidNumbersMerchantProfileData);
-            console.log(forcedErrors);
-            assert.equal(forcedErrors, expectedErrors);
-        });
+        let forcedErrors = MigrantAccountValidator(AccountFactory.invalidNumbersMigrantAccount());
+        assert.equal(forcedErrors, expectedErrors);
+    });
 });
