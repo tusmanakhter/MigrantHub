@@ -31,9 +31,11 @@ class ServiceList extends Component {
         this.getData(this);
         console.log('olla');
     }
+
     componentWillReceiveProps(nextProps) {
         this.getData(this);
     }
+
     getData(ev){
         axios.get('/services/view/all')
             .then(function(response) {
@@ -51,7 +53,7 @@ class ServiceList extends Component {
     }
     renderRedirectToServiceForm = () => {
         if (this.state.redirectToServiceForm) {
-            return <Redirect to='/serviceForm' />
+            return <Redirect to='/services/create' />
         }
     }
 

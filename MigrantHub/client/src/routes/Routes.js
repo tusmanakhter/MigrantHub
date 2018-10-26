@@ -22,10 +22,9 @@ export const Routes = () => (
     <Route path="/login" component={Login} exact />
     <Route path="/temphome" component={TempHome} exact />
     <Route path="/temperror" component={TempError} exact />
-    <Route path="/serviceForm" component={ServiceForm} exact />
-      <Route path="/services" component={ServiceList} exact />
-
-      <Route component={Error} />
+    <Route path="/services/create" component={ServiceForm} exact />
+    <Route path="/services" component={ServiceList} exact />
+    <Route component={Error} />
   </Switch>
 );
 

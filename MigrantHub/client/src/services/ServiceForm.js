@@ -220,7 +220,7 @@ class ServiceForm extends Component {
                 serviceImage: event.target.files[0],
                 serviceImageName: event.target.files[0].name,
             });
-        }else{
+        } else{
             this.setState({
                 serviceImage: null,
                 serviceImageName: '',
@@ -292,14 +292,14 @@ class ServiceForm extends Component {
             if (validator.isEmpty(this.state.serviceDate.startDate)) {
                 errors.startDateError = "Start date is required";
                 isError = true
-            }else if(validator.isBefore(this.state.serviceDate.startDate, todaysDate)) {
+            } else if(validator.isBefore(this.state.serviceDate.startDate, todaysDate)) {
                 errors.startDateError = "Start date is invalid";
                 isError = true;
             }
             if (validator.isEmpty(this.state.serviceDate.endDate)) {
                 errors.endDateError = "End date is required";
                 isError = true
-            }else if(validator.isBefore(this.state.serviceDate.endDate, this.state.serviceDate.startDate)) {
+            } else if(validator.isBefore(this.state.serviceDate.endDate, this.state.serviceDate.startDate)) {
                 errors.endDateError = "End date should be after start date";
                 isError = true;
             }
@@ -310,7 +310,6 @@ class ServiceForm extends Component {
                 errors.addressError = "Address is required";
                 isError = true
             }
-
             if (validator.isEmpty(this.state.location.city)) {
                 errors.cityError = "City is required";
                 isError = true
@@ -318,12 +317,10 @@ class ServiceForm extends Component {
                 errors.cityError = "This is not a valid city"
                 isError = true
             }
-
             if (validator.isEmpty(this.state.location.province)) {
                 errors.provinceError = "Province is required";
                 isError = true
             }
-
             if (validator.isEmpty(this.state.location.postalCode)) {
                 errors.postalCodeError = "Postal code is required";
                 isError = true
@@ -331,7 +328,6 @@ class ServiceForm extends Component {
                 errors.postalCodeError = "Postal code is invalid";
                 isError = true
             }
-
             if (validator.isEmpty(this.state.location.phoneNumber)) {
                 errors.phoneNumberError = "Phone number is required";
                 isError = true

@@ -34,7 +34,6 @@ class ViewService extends Component {
     render() {
         const { classes, onClose, ...other } = this.props;
         return(
-
             <div>
                 <Dialog
                     open={this.props.open}
@@ -68,8 +67,6 @@ class ViewService extends Component {
                                 </Grid>
                             </Grid>
                         )}
-
-
                         {this.props.serviceHours.length>0 ? (
                             <Typography variant="h5" color="inherit" paragraph>
                                 <br/>Service Hours:
@@ -90,7 +87,6 @@ class ViewService extends Component {
                                 </Grid>
                             </Grid>
                         ))}
-
                         {this.props.serviceLocation !== undefined &&(
                             <Grid container spacing={12}>
                                 <Typography variant="h5" color="inherit" paragraph>
@@ -118,7 +114,6 @@ class ViewService extends Component {
                                 </Grid>
                             </Grid>
                         )}
-
                         {this.props.open && this.props.serviceLocation !== undefined &&(
                             <GoogleMaps
                                 serviceLocation={this.props.serviceLocation}
