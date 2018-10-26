@@ -8,6 +8,10 @@ var MigrantUser = User.discriminator('Migrant',
 new Schema({
   firstName: {type: String, required: true},
   lastName: {type: String, required: true},
+  friendsList:[{
+      //friendId: {type: mongoose.Schema.Types.ObjectId, ref: 'User'},
+      friendName: {type: String, default: ''}
+  }],
   address: {type: String, required: true},
   apartment: {type: String, required: false},
   city: {type: String, required: true},
