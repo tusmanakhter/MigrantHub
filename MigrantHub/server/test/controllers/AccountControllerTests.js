@@ -5,76 +5,11 @@ var Controller = require('../../controllers/accountController')
 var Admin = require('../../models/Admin')
 var MigrantUser = require('../../models/MigrantUser')
 var BusinessUser = require('../../models/BusinessUser')
+var AccountFactory = require('../factories/AccountFactory');
 
 describe('account controller migrant', function () {
   let req = {
-    body: {
-      proficiencyExams : {
-          ielts : "false",
-          french : "true",
-          others : "Computer Programming"
-      },
-      languages : [
-          {
-              name : "French",
-              writingLevel : "beginner",
-              speakingLevel : "beginner"
-          }
-      ],
-      family : [
-          {
-              age : "14",
-              gender : "male",
-              relation : "brother",
-              relationshipStatus : "single"
-          },
-          {
-              age : "50",
-              gender : "female",
-              relation : "mother",
-              relationshipStatus : "married"
-          },
-          {
-              age : "51",
-              gender : "male",
-              relation : "father",
-              relationshipStatus : "married"
-          }
-      ],
-      workExperience : [
-          {
-              title : "Admin",
-              company : "Concordia",
-              years : "2"
-          }
-      ],
-      email : "test@test.com",
-      password : "testtest",
-      confirmPassword : "testtest",
-      firstName : "test",
-      lastName : "test",
-      address : "1455 Boulevard de Maisonneuve O",
-      apartment : "",
-      city : "Montreal",
-      province : "QC",
-      postalCode : "H3G 1M8",
-      phoneNumber : "(514) 848-2424",
-      age : "22",
-      gender : "male",
-      nationality : "Canadian",
-      relationshipStatus : "single",
-      status : "citizen",
-      writingLevel : "intermediate",
-      speakingLevel : "intermediate",
-      motherTongue : "English",
-      educationLevel : "secondary",
-      jobStatus : "student",
-      lookingForJob : "false",
-      currentIncome : "15000",
-      settlingLocation : "LAVAL, QC",
-      settlingDuration : "15",
-      joiningReason : "help"
-    }
+    body: AccountFactory.validMigrantAccount()
   },
   error = new Error({ error: "err" }),
   res = {}, expectedResult;
@@ -104,25 +39,7 @@ describe('account controller migrant', function () {
 
 describe('account controller business', function () {
   let req = {
-    body: {
-      email : "test@test.com",
-      password : "testtest",
-      confirmPassword : "testtest",
-      firstName : "test",
-      lastName : "test",
-      address : "1455 Boulevard de Maisonneuve O",
-      apartment : "",
-      city : "Montreal",
-      province : "QC",
-      postalCode : "H3G 1M8",
-      phoneNumber : "(514) 848-2424",
-      corpId: '1112223',
-      organizationName: 'test',
-      orgType: 'test',
-      department: 'test',
-      serviceType: 'test',
-      description: 'test',
-    }
+    body: AccountFactory.validBusinessAccount()
   },
   error = new Error({ error: "err" }),
   res = {}, expectedResult;
@@ -152,11 +69,7 @@ describe('account controller business', function () {
 
 describe('account controller admin', function () {
   let req = {
-    body: {
-      email : "test@test.com",
-      password : "testtest",
-      confirmPassword : "testtest"
-    }
+    body: AccountFactory.validAdminAccount()
   },
   error = new Error({ error: "err" }),
   res = {}, expectedResult;

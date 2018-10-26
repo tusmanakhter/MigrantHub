@@ -3,10 +3,11 @@ var sinonTest = require('sinon-test');
 var test = sinonTest(sinon);
 var Controller = require('../../controllers/adminController')
 var Admin = require('../../models/Admin')
+var AccountFactory = require('../factories/AccountFactory');
 
 describe('admin controller', function () {
   let req = {
-    body: {}
+    body: AccountFactory.validAdminAccount()
   },
   error = new Error({ error: "err" }),
   res = {}, expectedResult;
