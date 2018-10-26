@@ -54,7 +54,7 @@ class Main extends Component {
               <div className="Main-feed"><h1>Welcome to your homepage {this.state.userName} ! :)</h1></div>
             </Grid>
             <Grid item xs={3}>
-              <div className="Panel">{this.state.friendPanelVisibility && <FriendPanel friends={this.state.friends} friendRequests={this.state.friendRequests} />}</div>
+              <div className="Panel">{this.state.friendPanelVisibility && <FriendPanel friends={this.state.friends} />}</div>
             </Grid>
           </Grid>
         </div>
