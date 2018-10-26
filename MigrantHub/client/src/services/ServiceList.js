@@ -29,20 +29,17 @@ class ServiceList extends Component {
 
     componentDidMount() {
         this.getData(this);
-        console.log('olla');
     }
 
     componentWillReceiveProps(nextProps) {
         this.getData(this);
     }
 
-    getData(ev){
+    getData(event){
         axios.get('/services/view/all')
             .then(function(response) {
-                console.log(response.data)
-                ev.setState({items: response.data});
+                event.setState({items: response.data});
             }).catch(error => {
-            console.log("Error retrieving all services.")
         })
     }
 

@@ -20,9 +20,6 @@ const GoogleMapWithMarker = compose(
 
             let geocoder = new google.maps.Geocoder()
 
-            console.log(this.props.serviceLocation);
-            console.log(this.props.userLocation);
-
             geocoder.geocode( { 'address':
             this.props.serviceLocation.address + ' ' +
             this.props.serviceLocation.apartment + ', ' +
@@ -30,8 +27,6 @@ const GoogleMapWithMarker = compose(
             this.props.serviceLocation.province + ' '  +
             this.props.serviceLocation.postalCode}, function(results1, status1) {
                 if (status1 == 'OK') {
-                    console.log('here result of geocoder', results1[0].geometry.location.lat());
-                    console.log('here result of geocoder', results1[0].geometry.location.lng());
                     this.setState({
                         lat: results1[0].geometry.location.lat(),
                         lng: results1[0].geometry.location.lng(),
@@ -39,7 +34,6 @@ const GoogleMapWithMarker = compose(
                     });
 
                 } else {
-                    console.log('Error fetching coordinates: ' + status1);
                 }
             }.bind(this));
         }

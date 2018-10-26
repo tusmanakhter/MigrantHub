@@ -214,8 +214,6 @@ class ServiceForm extends Component {
     handleUploadImage = event => {
 
         if(event.target.files[0] !== undefined) {
-            console.log("State: " + event.target.files[0]);
-
             this.setState({
                 serviceImage: event.target.files[0],
                 serviceImageName: event.target.files[0].name,
@@ -401,7 +399,6 @@ class ServiceForm extends Component {
                 }
             }).then(response => {
 
-            console.log(response.status);
             if (response.status === 200) {
                 this.setState({
                     messageFromServer: response.data,
