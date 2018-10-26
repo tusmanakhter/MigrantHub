@@ -1,5 +1,5 @@
-var MigrantAccountValidator = require('../validators/MigrantAccountValidator');
-var AccountFactory = require('./factories/AccountFactory');
+var MigrantAccountValidator = require('../../validators/MigrantAccountValidator');
+var AccountFactory = require('../factories/AccountFactory');
 var chai = require('chai');
 var assert = chai.assert;
 

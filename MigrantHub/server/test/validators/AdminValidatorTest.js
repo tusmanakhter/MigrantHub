@@ -1,5 +1,5 @@
-var AdminAccountValidator = require('../validators/AdminAccountValidator');
-var AccountFactory = require('./factories/AccountFactory');
+var AdminAccountValidator = require('../../validators/AdminAccountValidator');
+var AccountFactory = require('../factories/AccountFactory');
 var chai = require('chai');
 var assert = chai.assert;
 
