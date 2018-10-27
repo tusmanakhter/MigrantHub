@@ -58,12 +58,6 @@ class FriendPanel extends Component {
     );
   }
 
-  getInitialState() {
-    return {
-      addFriendTextValue: ""
-    }
-  }
-
   // handleAddFriendTextChange(e) {
   //   this.setState({
   //     // addFriendTextValue: e.target.value
@@ -71,10 +65,10 @@ class FriendPanel extends Component {
   // }
 
   handleAddFriend(event) {
-    console.log("printing")
-    axios.post('/friends/add',
+    axios.post('/friend/add',
       qs.stringify({
           //TODO make sure variables are being put in
+          _id: 1,
           requestTo: "test1@test.com",
           requestFrom: "test2@test.com",
           // requestTo: {this:state.addFriendTextValue},

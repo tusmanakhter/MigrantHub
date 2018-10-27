@@ -6,6 +6,7 @@ module.exports = {
         let parsedObj = qs.parse(req.body);
         let friendRequest = new FriendRequest();
 
+        friendRequest._id = parsedObj._id;
         friendRequest.requestFrom = parsedObj.requestFrom;
         friendRequest.requestTo = parsedObj.requestTo;
 
