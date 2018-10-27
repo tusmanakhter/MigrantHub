@@ -421,7 +421,11 @@ class EditMigrant extends Component {
   }
 
   handleSave = async () => {
+    let error = await this.validate();
+
+    if (!error) {
       this.updateAccount(this);
+    }
   };
 
   handleEditSingleObject = (name, fieldName) => (event) => {
@@ -622,108 +626,109 @@ console.log(error);
       joiningReasonError: '',
     };
 
-    if (validator.isEmpty(this.props.firstName)) {
+    if (validator.isEmpty(this.state.firstName)) {
       errors.firstNameError = "First name is required";
       isError = true
-    } else if (!validator.isAlpha(this.props.firstName)) {
+    
+    } else if (!validator.isAlpha(this.state.firstName)) {
       errors.firstNameError = "First name is not valid"
       isError = true
     }
 
-    if (validator.isEmpty(this.props.lastName)) {
+    if (validator.isEmpty(this.state.lastName)) {
       errors.lastNameError = "Last name is required";
       isError = true
-    } else if (!validator.isAlpha(this.props.lastName)) {
+    } else if (!validator.isAlpha(this.state.lastName)) {
       errors.lastNameError = "Last name is not valid"
       isError = true
     }
    
-    if (validator.isEmpty(this.props.address)) {
+    if (validator.isEmpty(this.state.address)) {
       errors.addressError = "Address is required";
       isError = true
     }
 
-    if (validator.isEmpty(this.props.city)) {
+    if (validator.isEmpty(this.state.city)) {
       errors.cityError = "City is required";
       isError = true
-    } else if (!validator.isAlpha(this.props.city)) {
+    } else if (!validator.isAlpha(this.state.city)) {
       errors.cityError = "This is not a valid city"
       isError = true
     }
 
-    if (validator.isEmpty(this.props.province)) {
+    if (validator.isEmpty(this.state.province)) {
       errors.provinceError = "Province is required";
       isError = true
     }
 
-    if (validator.isEmpty(this.props.postalCode)) {
+    if (validator.isEmpty(this.state.postalCode)) {
       errors.postalCodeError = "Postal code is required";
       isError = true
-    } else if (!validator.isLength(this.props.postalCode, {min:7, max:7})) {
+    } else if (!validator.isLength(this.state.postalCode, {min:7, max:7})) {
       errors.postalCodeError = "Postal code is invalid";
       isError = true
     }
 
-    if (validator.isEmpty(this.props.phoneNumber)) {
+    if (validator.isEmpty(this.state.phoneNumber)) {
       errors.phoneNumberError = "Phone number is required";
       isError = true
-    } else if (!validator.isLength(this.props.phoneNumber, {min:14, max:14})) {
+    } else if (!validator.isLength(this.state.phoneNumber, {min:14, max:14})) {
       errors.phoneNumberError = "Phone number is invalid";
       isError = true
     }
 
-    if (validator.isEmpty(this.props.educationLevel)) {
+    if (validator.isEmpty(this.state.educationLevel)) {
       errors.educationLevelError = "Education level is required";
       isError = true
     }
 
-    if (validator.isEmpty(this.props.age)) {
+    if (validator.isEmpty(this.state.age)) {
       errors.ageError = "Age is required";
       isError = true
     }
 
-    if (validator.isEmpty(this.props.gender)) {
+    if (validator.isEmpty(this.state.gender)) {
       errors.genderError = "Gender is required";
       isError = true
     }
    
-    if (validator.isEmpty(this.props.nationality)) {
+    if (validator.isEmpty(this.state.nationality)) {
       errors.nationalityError = "Nationality is required";
       isError = true
-    } else if (!validator.isAlpha(this.props.nationality)) {
+    } else if (!validator.isAlpha(this.state.nationality)) {
       errors.nationalityError = "This is not a valid nationality"
       isError = true
     }
 
-    if (validator.isEmpty(this.props.relationshipStatus)) {
+    if (validator.isEmpty(this.state.relationshipStatus)) {
       errors.relationshipStatusError = "Relationship status is required";
       isError = true
     } 
 
-    if (validator.isEmpty(this.props.status)) {
+    if (validator.isEmpty(this.state.status)) {
       errors.statusError = "Status is required";
       isError = true
     }
 
-    if (validator.isEmpty(this.props.motherTongue)) {
+    if (validator.isEmpty(this.state.motherTongue)) {
       errors.motherTongueError = "Mother tongue is required";
       isError = true
-    } else if (!validator.isAlpha(this.props.motherTongue)) {
+    } else if (!validator.isAlpha(this.state.motherTongue)) {
       errors.motherTongueError = "Mother tongue is not valid"
       isError = true
     }
 
-    if (validator.isEmpty(this.props.writingLevel)) {
+    if (validator.isEmpty(this.state.writingLevel)) {
       errors.writingLevelError = "Writing level is required";
       isError = true
     } 
 
-    if (validator.isEmpty(this.props.speakingLevel)) {
+    if (validator.isEmpty(this.state.speakingLevel)) {
       errors.speakingLevelError = "Speaking level is required";
       isError = true
     } 
 
-    this.props.languages.forEach((language, index) => {
+    this.state.languages.forEach((language, index) => {
       errors.languagesError = errors.languagesError.concat([JSON.parse(JSON.stringify(langObject))]);
       if (validator.isEmpty(language.name)) {
         errors.languagesError[index].name = "Language name is required";
@@ -743,7 +748,7 @@ console.log(error);
       } 
     });
 
-    this.props.family.forEach((member, index) => {
+    this.state.family.forEach((member, index) => {
       errors.familyError = errors.familyError.concat([JSON.parse(JSON.stringify(familyObject))]);
 
       if (validator.isEmpty(member.age)) {
@@ -767,17 +772,17 @@ console.log(error);
       } 
     });
 
-    if (validator.isEmpty(this.props.jobStatus)) {
+    if (validator.isEmpty(this.state.jobStatus)) {
       errors.jobStatusError = "Job status is required";
       isError = true
     }
 
-    if (validator.isEmpty(this.props.lookingForJob)) {
+    if (validator.isEmpty(this.state.lookingForJob)) {
       errors.lookingForJobError = "This field is required";
       isError = true
     }
 
-    this.props.workExperience.forEach((job, index) => {
+    this.state.workExperience.forEach((job, index) => {
       errors.workExperienceError = errors.workExperienceError.concat([JSON.parse(JSON.stringify(workObject))]);
 
       if (validator.isEmpty(job.title)) {
@@ -799,17 +804,17 @@ console.log(error);
       }
     });
 
-    if (validator.isEmpty(this.props.settlingLocation)) {
+    if (validator.isEmpty(this.state.settlingLocation)) {
       errors.settlingLocationError = "Settling location is required";
       isError = true
     }
 
-    if (validator.isEmpty(this.props.settlingDuration)) {
+    if (validator.isEmpty(this.state.settlingDuration)) {
       errors.settlingDurationError = "Settling duration is required";
       isError = true
     }
 
-    if (validator.isEmpty(this.props.joiningReason)) {
+    if (validator.isEmpty(this.state.joiningReason)) {
       errors.joiningReasonError = "Joining reason is required";
       isError = true
     }
