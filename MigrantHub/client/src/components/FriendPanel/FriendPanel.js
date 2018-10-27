@@ -46,8 +46,8 @@ class FriendPanel extends Component {
               id="outlined-name"
               label="User's Email"
               value=""
-              //TODO add handler
-              // onChange={this.handleChange('name')}
+              //value={this.state.addFriendTextValue}
+              // onChange={this.handleAddFriendTextChange('name')}
               margin="normal"
               variant="outlined"
             />
@@ -58,11 +58,27 @@ class FriendPanel extends Component {
     );
   }
 
+  getInitialState() {
+    return {
+      addFriendTextValue: ""
+    }
+  }
+
+  // handleAddFriendTextChange(e) {
+  //   this.setState({
+  //     // addFriendTextValue: e.target.value
+  //   });
+  // }
+
   handleAddFriend(event) {
+    console.log("printing")
     axios.post('/friends/add',
       qs.stringify({
-          requestTo: "",
-          requestFrom: "",
+          //TODO make sure variables are being put in
+          requestTo: "test1@test.com",
+          requestFrom: "test2@test.com",
+          // requestTo: {this:state.addFriendTextValue},
+          // requestFrom: req.session.passport.user._id,
       }).then(function (response) {})
     )
   }
