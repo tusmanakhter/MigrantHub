@@ -9,6 +9,7 @@ import Home from '../home/HomePage';
 import Login from '../account/Login';
 import TempError from '../account/TempError';
 import TempHome from '../account/TempHome';
+import EditMigrant from '../account/personal/EditMigrant';
 
 export const Routes = () => (
   <Switch>
@@ -20,8 +21,10 @@ export const Routes = () => (
     <Route path="/login" component={Login} exact />
     <Route path="/temphome" component={TempHome} exact />
     <Route path="/temperror" component={TempError} exact />
+    <Route path="/editmigrant" component={EditMigrant} exact />
     <Route component={Error} />
   </Switch>
+  
 );
 
 export default Routes;

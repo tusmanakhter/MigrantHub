@@ -130,4 +130,52 @@ module.exports = {
       res.send(errors);
     }
   },
-};
+
+  editUser: function(req, res) {
+    let parsedObj = qs.parse(req.body);
+
+    console.log(parsedObj.user);
+   
+   let errors = MigrantAccountValidator(parsedObj);
+
+    if (errors == "") {
+      let user = new User();
+      user.firstName = parsedObj.firstName;
+
+      user.updateOne(function (err) {
+        if (err) {
+          res.send("There was a error update user.");
+          // Todo: Should create with error
+          console.log(err)
+        } else {
+          res.send('User has been updated!');
+        }
+      });
+    } else {
+      res.send(errors);
+    }
+  
+  },
+  getUser: function(req, res) {
+
+    let email = req.session.passport.user._id;
+
+    console.log(email);
+
+    User.findOne({ email: email }, (err, user) => {
+      console.log(user);
+      if (err) {
+          console.log("Error: ");
+          res.status(500).send(err)
+      } else if (!user) {
+          console.log("User does not exist");
+          res.status(500).send('Incorrect email');
+      }  else {
+          console.log("Found user");
+          res.status(200).send(user)
+      }
+  })
+
+   
+  },
+}; 

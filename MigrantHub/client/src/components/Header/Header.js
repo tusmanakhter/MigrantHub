@@ -113,10 +113,10 @@ class Header extends Component {
     this.setState({ mobileMoreAnchorEl: null });
   };
 
-  handleEditProfile = event => {
+  handleEditMigrant = event => {
     this.setState({
       redirectTo: true,
-      redirectToURL: '/EditPersonal'
+      redirectToURL: '/editmigrant'
     })
   }
 
@@ -141,7 +141,7 @@ class Header extends Component {
       >
         <MenuItem onClick={this.handleClose}>Profile</MenuItem>
         <MenuItem onClick={this.handleClose}>My account</MenuItem>
-        <MenuItem onClick={this.handleEditProfile}>Edit Profile</MenuItem>
+        <MenuItem onClick={this.handleEditMigrant}>Edit Profile</MenuItem>
       </Menu>
     );
 
