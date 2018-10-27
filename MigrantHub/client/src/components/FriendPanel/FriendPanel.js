@@ -6,6 +6,9 @@ import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import yes from './yes.svg';
 import no from './no.svg';
+import axios from 'axios';
+
+var qs = require('qs');
 
 class FriendPanel extends Component {
   render(props) {
@@ -56,8 +59,12 @@ class FriendPanel extends Component {
   }
 
   handleAddFriend(event) {
-    
-
+    axios.post('/friends/add',
+      qs.stringify({
+          requestTo: "",
+          requestFrom: "",
+      }).then(function (response) {})
+    )
   }
 }
 
