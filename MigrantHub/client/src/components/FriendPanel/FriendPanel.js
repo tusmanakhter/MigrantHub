@@ -67,12 +67,9 @@ class FriendPanel extends Component {
   handleAddFriend(event) {
     axios.post('/friend/add',
       qs.stringify({
-          //TODO make sure variables are being put in
-          _id: 1,
+          //TODO read requestTo from input box
           requestTo: "test1@test.com",
-          requestFrom: "test2@test.com",
           // requestTo: {this:state.addFriendTextValue},
-          // requestFrom: req.session.passport.user._id,
       })
     );
   }
