@@ -51,7 +51,7 @@ class FriendPanel extends Component {
               margin="normal"
               variant="outlined"
             />
-            <Button variant="contained" color="primary" onclick={this.handleAddFriend}>Add Friend</Button>
+            <Button variant="contained" color="primary" onClick={this.handleAddFriend}>Add Friend</Button>
           </CardContent>
         </Card>
       </div>
@@ -79,8 +79,8 @@ class FriendPanel extends Component {
           requestFrom: "test2@test.com",
           // requestTo: {this:state.addFriendTextValue},
           // requestFrom: req.session.passport.user._id,
-      }).then(function (response) {})
-    )
+      })
+    );
   }
 }
 
