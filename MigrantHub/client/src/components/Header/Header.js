@@ -17,6 +17,8 @@ import MailIcon from '@material-ui/icons/Mail';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import { Redirect } from 'react-router-dom'
+import axios from 'axios';
+
 
 const styles = theme => ({
   root: {
@@ -114,6 +116,15 @@ class Header extends Component {
   };
 
   handleEditMigrant = event => {
+
+    /*
+    axios.get('/account/get/profile').then(function (response) {
+      let jsonObj = qs.parse(qs.stringify(response.data));
+
+
+    }).catch(function(error){
+*/
+    
     this.setState({
       redirectTo: true,
       redirectToURL: '/editmigrant'

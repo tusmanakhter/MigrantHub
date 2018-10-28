@@ -508,7 +508,7 @@ class EditMigrant extends Component {
   };
 
   updateAccount(e) {
-    axios.post('/account/edit/user',
+    axios.post('/account/edit/migrantuser',
     qs.stringify({
       email: e.state.email,
       password: e.state.password,
@@ -548,7 +548,7 @@ class EditMigrant extends Component {
 });}
 
 getAccount(e) {
-    axios.get('/account/get/profile').then(function (response) {
+    axios.get('/account/get/migrantprofile').then(function (response) {
 
       let jsonObj = qs.parse(qs.stringify(response.data));
 

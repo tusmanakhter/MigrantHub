@@ -131,7 +131,7 @@ module.exports = {
     }
   },
 
-  editUser: function(req, res) {
+  editMigrantUser: function(req, res) {
 
     User.findByIdAndUpdate(
       req.session.passport.user._id,
@@ -144,9 +144,10 @@ module.exports = {
         }
     )
   },
-  getUser: function(req, res) {
+  getMigrantUser: function(req, res) {
 
     let email = req.session.passport.user._id;
+    console.log(email);
     User.findOne({ email: email }, (err, user) => {
       if (err) {
           console.log("Error: ");
@@ -159,7 +160,37 @@ module.exports = {
           res.status(200).send(user)
       }
   })
+},
 
-   
+  getBusinessUser: function(req, res) {
+
+    let email = req.session.passport.user._id;
+    console.log(email);
+    BusinessUser.findOne({ email: email }, (err, user) => {
+      if (err) {
+          console.log("Error: ");
+          res.status(500).send(err)
+      } else if (!user) {
+          console.log("User does not exist");
+          res.status(500).send('Incorrect email');
+      }  else {
+          console.log("Found user");
+          res.status(200).send(user)
+      }
+  })
+},
+
+  editBusinessUser: function(req, res) {
+
+    BusinessUser.findByIdAndUpdate(
+      req.session.passport.user._id,
+      req.body,
+      {new: true},
+      (err, user) => {
+        // Handle any possible database errors
+            if (err) return res.status(500).send(err);
+            return res.send(user);
+        }
+    )
   },
 }; 
