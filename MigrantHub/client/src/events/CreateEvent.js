@@ -86,24 +86,6 @@ class CreatEvent extends Component {
         timeStartError: '',
         timeEndError: '',
         repeatError: '',
-        timeEnd: '',
-        secondsEnd: '',
-        repeat: '', 
-
-        //Errors
-        eventNameError: '',
-        descriptionError: '',
-        addressError: '',
-        apartmentError: '',
-        cityError: '',
-        provinceError: '',
-        postalCodeError: '',
-        phoneNumberError: '',
-        dateStartError: '',
-        dateEndError: '',
-        timeStartError: '',
-        timeEndError: '',
-        repeatError: '',
 
         // DB response
         messageFromServer: ''
@@ -343,6 +325,8 @@ class CreatEvent extends Component {
                     <br></br>
 
                     <label>City: </label>
+                    <input 
+                    type="text" 
                     id="city" 
                     name="city" 
                     label="City" 
@@ -457,22 +441,6 @@ class CreatEvent extends Component {
                     label="Repeat"
                     value={this.state.repeat} 
                     onChange={event => this.handleChange(event)} >
-                        {repeats.map(option => (
-                        <option key={option.value} value={option.value}>
-                            {option.label}
-                        </option>
-                        ))}
-                    <br></br>
-                    <br></br>
-
-                    <label>Repeat: </label>                   
-                    <select 
-                    id="repeat" 
-                    name="repeat" 
-                    label="Repeat"
-                    value={this.state.repeat} 
-                    placeholder={this.state.repeatError} 
-                    onChange={event => this.handleChange(event)} fullWidth>
                         {repeats.map(option => (
                         <option key={option.value} value={option.value}>
                             {option.label}
