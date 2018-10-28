@@ -5,52 +5,71 @@ var bcrypt = require('bcryptjs');
 
 
 module.exports = {
-  acceptFriendRequest: function(req, res) {
+  acceptFriendRequest: function (req, res) {
     let parsedObj = qs.parse(req.body);
-    User.update({ _id: req.user._id },{$push: {friendsList: {
-      friendName: parsedObj.requestFrom
-    }}}, function (err) {
-        if (err) {
-          res.send("There was a error accepting friend.");
-          console.log(err)
-          console.log("There was a error accepting friend.");
-        } else {
-          User.update({ _id: parsedObj.requestFrom },{$push: {friendsList: {
-            friendName: parsedObj.requestTo
-          }}}, function (err) {
+    User.update({ _id: req.user._id }, {
+      $push: {
+        friendsList: {
+          friendName: parsedObj.requestFrom
+        }
+      }
+    }, function (err) {
+      if (err) {
+        res.send("There was a error accepting friend.");
+        console.log(err)
+        console.log("There was a error accepting friend.");
+      } else {
+        User.update({ _id: parsedObj.requestFrom }, {
+          $push: {
+            friendsList: {
+              friendName: parsedObj.requestTo
+            }
+          }
+        }, function (err) {
+          if (err) {
+            res.send("There was error adding to your friend's list of friend.");
+            console.log(err)
+            console.log("There was error adding to your friend's list of friend.");
+          } else {
+            FriendRequest.findByIdAndDelete({ _id: parsedObj._id }, function (err) {
               if (err) {
-                res.send("There was error adding to your friend's list of friend.");
+                res.send("There was a error removing friend from requestfriend table.");
                 console.log(err)
-                console.log("There was error adding to your friend's list of friend.");
+                console.log("There was a error removing friend from requestfriend table.");
               } else {
-                FriendRequest.findByIdAndDelete({_id: parsedObj._id}, function(err) {
-                    if (err) {
-                        res.send("There was a error removing friend from requestfriend table.");
-                        console.log(err)
-                        console.log("There was a error removing friend from requestfriend table.");
-                      } else {
-                        res.send("Friend has been accepted and removed from request friend table");
-                        console.log("Friend has been accepted and removed from request friend table");
-                      }
-                });
+                res.send("Friend has been accepted and removed from request friend table");
+                console.log("Friend has been accepted and removed from request friend table");
               }
             });
-        }
-      })
+          }
+        });
+      }
+    })
   },
-  rejectFriendRequest: function(req, res) {
+  rejectFriendRequest: function (req, res) {
     let parsedObj = qs.parse(req.body);
     console.log(parsedObj);
-    
-    FriendRequest.findByIdAndDelete({_id: parsedObj._id}, function(err) {
+
+    FriendRequest.findByIdAndDelete({ _id: parsedObj._id }, function (err) {
       if (err) {
-          res.send("There was a error removing friend from requestfriend table.");
-          console.log(err)
-          console.log("There was a error removing friend from requestfriend table.");
-        } else {
-          res.send("FriendRequest has been removed from table");
-          console.log("FriendRequest has been removed from table");
-        }
+        res.send("There was a error removing friend from requestfriend table.");
+        console.log(err)
+        console.log("There was a error removing friend from requestfriend table.");
+      } else {
+        res.send("FriendRequest has been removed from table");
+        console.log("FriendRequest has been removed from table");
+      }
     });
+  },
+  getFriendsList: function (req, res) {
+    FriendList.find({}, 'friendList', function (err, friendListOfUser) {
+      if (err) {
+        res.send("No friends found")
+      }
+      else {
+        res.send(friendListOfUser);
+      }
+    })
   }
+
 };

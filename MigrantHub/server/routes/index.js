@@ -7,7 +7,7 @@ router.use('/admin', require('./admin'))
 router.use('/services', require('./services'));
 
 /* GET home page. */
-router.get('/', function(req, res, next) {
+router.get('/', function (req, res, next) {
   res.render('index', { title: 'Express' });
 });
 
