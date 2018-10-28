@@ -4,7 +4,7 @@ var User = require('./User');
 
 const options = {discriminatorKey: 'type'};
 
-var Admin = User.discriminator('Admin',
+var Admin = User.discriminator('admin',
 new Schema({
   authorized: {type: Boolean, required: true, default: false},
 }, options));

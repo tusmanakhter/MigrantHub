@@ -4,7 +4,7 @@ var User = require('./User');
 
 const options = {discriminatorKey: 'type'};
 
-var BusinessUser = User.discriminator('Business',
+var BusinessUser = User.discriminator('business',
 new Schema({
   corpId: {type: String, required: true},
   firstName: {type: String, required: true},
