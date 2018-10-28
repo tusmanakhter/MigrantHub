@@ -1,4 +1,4 @@
-var CreateEventValidator = require('../validators/CreateEventValidator');
+var CreateEventValidator = require('../../validators/CreateEventValidator');
 var chai = require('chai');
 var assert = chai.assert;
 
@@ -65,7 +65,6 @@ const invalidNumbersCreateEventData = {
 describe('CreateEventValidator()', function () {
     it('Validates create event data should return empty error string.', function () {
 
-        console.log("Error free profile data")
         let errors = CreateEventValidator(validCreateEventData);
         assert.equal(errors, "");
     });
@@ -89,7 +88,6 @@ describe('CreateEventValidator()', function () {
             "\nStart time is required" +
             "\nEnd time is required";
 
-        console.log("Error create event data, caused by empty fields")
         let forcedErrors = CreateEventValidator(emptyCreateEventData);
         assert.equal(forcedErrors, expectedErrors);
     });
@@ -108,9 +106,7 @@ describe('CreateEventValidator()', function () {
                 "\nEnd date is invalid" +
                 "\nEnd time is invalid";
 
-            console.log("Error create event data, caused by invalid fields");
             let forcedErrors = CreateEventValidator(invalidNumbersCreateEventData);
-            console.log(forcedErrors);
             assert.equal(forcedErrors, expectedErrors);
         });
 });

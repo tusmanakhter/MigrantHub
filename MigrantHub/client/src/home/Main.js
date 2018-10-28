@@ -35,7 +35,7 @@ class Main extends Component {
       { description: "Messages", link: "#" },
       { description: "Friends", link: "#" },
       { description: "Services", link: "/services" },
-      { description: "Create Event", link: "/CreateEvent" },
+      { description: "Create Event", link: "/createevent" },
     ],
     navPanelVisibility: true,
     friendPanelVisibility: true,

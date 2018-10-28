@@ -230,7 +230,7 @@ class CreatEvent extends Component {
             if (response.status === 200) {
                 // update App.js state
       
-                this.setState({
+                e.setState({
                   redirectTo: true,
                   redirectToURL: '/Main'
                 })
