@@ -8,35 +8,51 @@ import CardContent from '@material-ui/core/CardContent';
 import yes from './yes.svg';
 import no from './no.svg';
 import axios from 'axios';
+
 var qs = require('qs');
 class FriendPanel extends Component {
   constructor(props) {
     super(props);
     this.state = {
-        friendRequests: [],
+      addFriendTextValue: '',
+      friendRequests: [],
     };
+    this.getFriendRequests= this.getFriendRequests.bind(this);
 }
     acceptFriendRequest(event, _id, requestFromP, requestToP, index){
       event.handleDeleteRow(index)
-      axios.post('/friends/acceptFriendRequest',
+      axios.post('/friend/acceptFriendRequest',
           qs.stringify({
               _id: _id,
               requestFrom: requestFromP,
               requestTo: requestToP,
           })).then(function (response) {
         //call getFriendRequests() to update list
+        event.getFriendRequests(event);
       });
     }
 
     rejectFriendRequest(event, _id, index){
       event.handleDeleteRow(index)
-      axios.post('/friends/rejectFriendRequest',
+      axios.post('/friend/rejectFriendRequest',
           qs.stringify({
               _id: _id,
           })).then(function (response) {
       });
       //call getFriendRequests() to update list
+      event.getFriendRequests(event);
     }
+
+
+  getFriendRequests(ev){
+    axios.get('/friend/view')
+        .then(function(response) {
+            console.log(response.data)
+            ev.setState({friendRequests: response.data});
+        }).catch(error => {
+            console.log("Error retrieving all friends.")
+    })
+  }
 
     handleDeleteRow(index) {
       let rows = [...this.state.friendRequests]
@@ -45,6 +61,24 @@ class FriendPanel extends Component {
         friendRequests: rows
       })
     }
+
+    handleAddFriendTextChange(e) {
+      this.setState({
+        addFriendTextValue: e.target.value
+      });
+    }
+  
+    handleAddFriend() {
+      axios.post('/friend/add',
+        qs.stringify({ 
+          requestTo: this.state.addFriendTextValue 
+        })
+      );
+    }
+
+    componentDidMount() {
+      this.getFriendRequests(this);
+  }
 
     render(props) {
       return (
@@ -90,18 +124,17 @@ class FriendPanel extends Component {
               <TextField
                 id="outlined-name"
                 label="User's Email"
-                value=""
-                //TODO add handler
-                // onChange={this.handleChange('name')}
+                // value=""
+                value={this.state.addFriendTextValue}
+                onChange={ (event) => this.handleAddFriendTextChange(event) }
                 margin="normal"
                 variant="outlined"
               />
-              <Button variant="contained" color="primary">Add Friend</Button>
+              <Button variant="contained" color="primary" onClick={(event) => this.handleAddFriend(event)}>Add Friend</Button>
             </CardContent>
           </Card>
         </div>
       );
     }
   }
-
   export default FriendPanel;
