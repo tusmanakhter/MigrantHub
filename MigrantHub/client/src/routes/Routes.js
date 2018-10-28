@@ -27,7 +27,7 @@ export const Routes = () => (
     <Route path="/admin/dashboard" component={AdminDashboard} exact />
     <Route path="/services/create" component={ServiceForm} exact />
     <Route path="/services" component={ServiceList} exact />
-    <Route path="/createevent" component={CreateEvent} exact />
+    <Route path="/event/create" component={CreateEvent} exact />
     <Route component={Error} />
   </Switch>
 );

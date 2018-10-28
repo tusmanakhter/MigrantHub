@@ -64,15 +64,11 @@ const invalidNumbersCreateEventData = {
 
 describe('CreateEventValidator()', function () {
     it('Validates create event data should return empty error string.', function () {
-
         let errors = CreateEventValidator(validCreateEventData);
         assert.equal(errors, "");
     });
-});
 
-describe('CreateEventValidator()', function () {
     it('Invalid create event data should return a string with all the errors', function () {
-
         var expectedErrors =
             "\nEvent name is required" +
             "\nDescription is required" +
@@ -91,22 +87,19 @@ describe('CreateEventValidator()', function () {
         let forcedErrors = CreateEventValidator(emptyCreateEventData);
         assert.equal(forcedErrors, expectedErrors);
     });
-});
 
-    describe('CreateEventValidator()', function () {
-        it('Invalid create event data should return a string with all the errors', function () {
+    it('Invalid create event data should return a string with all the errors', function () {
+        var expectedErrors =
+            "\nDescription must be at least 10 characters" +
+            "\nPostal code is invalid" +
+            "\nPostal code should be in the format A1B 2E3" +
+            "\nPhone number is invalid" +
+            "\nPhone number should be in the format (123) 456-7890" +
+            "\nStart date is invalid" +
+            "\nEnd date is invalid" +
+            "\nEnd time is invalid";
 
-            var expectedErrors =
-                "\nDescription must be at least 10 characters" +
-                "\nPostal code is invalid" +
-                "\nPostal code should be in the format A1B 2E3" +
-                "\nPhone number is invalid" +
-                "\nPhone number should be in the format (123) 456-7890" +
-                "\nStart date is invalid" +
-                "\nEnd date is invalid" +
-                "\nEnd time is invalid";
-
-            let forcedErrors = CreateEventValidator(invalidNumbersCreateEventData);
-            assert.equal(forcedErrors, expectedErrors);
-        });
+        let forcedErrors = CreateEventValidator(invalidNumbersCreateEventData);
+        assert.equal(forcedErrors, expectedErrors);
+    });
 });
