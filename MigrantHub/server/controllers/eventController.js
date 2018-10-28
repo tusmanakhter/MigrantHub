@@ -1,7 +1,6 @@
 var Event = require('../models/Event');
 var CreateEventValidator = require('../validators/CreateEventValidator');
 var qs = require('qs');
-var bcrypt = require('bcryptjs');
 
 
 module.exports = {

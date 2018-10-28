@@ -9,15 +9,13 @@ var Event = require('../../models/Event');
 describe('Event controller', function () {
 
     let req = {
-            body: {
-                eventDetails: EventFactory.validCreateEventData()
-            },
-            user: {
-                _id: "test@test.com"
-            }
-        },
-        error = new Error({ error: "err" }),
-        res = {};
+        body: EventFactory.validCreateEventData(),
+        user: {
+            _id: "test@test.com"
+        }
+    },
+    error = new Error({ error: "err" }),
+    res = {};
 
     beforeEach(function () {
         status = stub();
@@ -32,7 +30,6 @@ describe('Event controller', function () {
         EventController.createEvent(req, res);
         assert.calledWith(Event.prototype.save);
         assert.calledWith(res.send, "Event has been added!");
-        assert.calledWith(res.status, 200);
     }));
 
     it('should return error message if error creating event', test(function () {
@@ -40,6 +37,5 @@ describe('Event controller', function () {
         EventController.createEvent(req, res);
         assert.calledWith(Event.prototype.save);
         assert.calledWith(res.send, "There was a error saving event.");
-        assert.calledWith(res.status, 400);
     }));
 });
