@@ -16,7 +16,6 @@ class FriendPanel extends Component {
     super(props);
     this.state = {
         addFriendTextValue: '',
-
     };
 }
 
@@ -27,12 +26,9 @@ class FriendPanel extends Component {
   }
 
   handleAddFriend() {
-    console.log(this.state.addFriendTextValue);
     axios.post('/friend/add',
-      qs.stringify({
-          //TODO read requestTo from input box
-          // requestTo: "test1@test.com",
-          requestTo: this.state.addFriendTextValue,
+      qs.stringify({ 
+        requestTo: this.state.addFriendTextValue 
       })
     );
   }
