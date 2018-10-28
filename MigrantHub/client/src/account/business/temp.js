@@ -78,6 +78,10 @@ class EditBusiness extends Component {
             postalCodeError: '',
             phoneNumberError: '',
             organizationNameError: '',
+            orgTypeError: '',
+            departmentError: '',
+            serviceTypeError: '',
+            descriptionError: '',
 
             firstName: '',
             lastName: '',
@@ -194,6 +198,10 @@ console.log(error);
       postalCodeError: '',
       phoneNumberError: '',
       organizationNameError: '',
+      orgTypeError: '',
+      departmentError: '',
+      serviceTypeError: '',
+      descriptionError: '',
     };
 
     if (validator.isEmpty(this.state.firstName)) {
@@ -248,6 +256,26 @@ console.log(error);
 
     if (validator.isEmpty(this.state.organizationName)) {
         errors.organizationNameError = "Organization name is required";
+        isError = true
+      }
+
+    if (validator.isEmpty(this.state.orgType)) {
+        errors.orgTypeError = "Organization Type is required";
+        isError = true
+      }
+    
+    if (validator.isEmpty(this.state.department)) {
+        errors.departmentError = "Department is required";
+        isError = true
+      }
+
+    if (validator.isEmpty(this.state.serviceType)) {
+        errors.serviceTypeError = "Service Type is required";
+        isError = true
+      }
+    
+    if (validator.isEmpty(this.state.description)) {
+        errors.descriptionError = "Description is required";
         isError = true
       }
 

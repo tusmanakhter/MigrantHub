@@ -143,11 +143,11 @@ module.exports = {
             return res.send(user);
         }
     )
+    
   },
   getMigrantUser: function(req, res) {
 
     let email = req.session.passport.user._id;
-    console.log(email);
     User.findOne({ email: email }, (err, user) => {
       if (err) {
           console.log("Error: ");
@@ -165,7 +165,6 @@ module.exports = {
   getBusinessUser: function(req, res) {
 
     let email = req.session.passport.user._id;
-    console.log(email);
     BusinessUser.findOne({ email: email }, (err, user) => {
       if (err) {
           console.log("Error: ");
