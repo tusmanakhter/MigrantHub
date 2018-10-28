@@ -59,8 +59,6 @@ module.exports = {
       let errors = await FriendRequestValidator(req.user._id, parsedObj.requestTo);
       
       if (errors == "") {
-          console.log("errors are empty");
-          console.log(errors);
           let friendRequest = new FriendRequest();
           
           friendRequest.requestFrom = req.user._id;
@@ -68,10 +66,10 @@ module.exports = {
 
           friendRequest.save(function (err) {
               if (err) {
-                  res.send('Unable to add friend. :( ')
+                  res.send('Yikes. Unable to add friend. :( ')
                   console.log(err)
               } else {
-                  res.send('Friend has been successfully added! :) ');
+                  res.send('Woohoo! The request has successfully been sent :) ');
               }
           });
       } else {
