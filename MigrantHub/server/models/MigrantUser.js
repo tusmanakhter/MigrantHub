@@ -9,7 +9,6 @@ new Schema({
   firstName: {type: String, required: true},
   lastName: {type: String, required: true},
   friendsList:[{
-      //friendId: {type: mongoose.Schema.Types.ObjectId, ref: 'User'},
       friendName: {type: String, default: ''}
   }],
   address: {type: String, required: true},

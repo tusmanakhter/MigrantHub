@@ -20,24 +20,6 @@ const FriendRequestValidator = (requestFrom, requestTo) =>{
     if (!validator.isEmail(requestTo)) {
         errors += "{'\n'}Inputted friend to add is not a valid email.";
     }
-
-    //do not allow duplicate friend requests
-    // var recordExists = FriendRequest.findOne({
-    //     requestFrom: requestFrom,
-    //     requestTo: requestTo
-    // });
-    // console.log(recordExists);
-    // if (recordExists) {
-    //     errors += "You have already sent this person a friend request.";
-    // } else {
-    //     recordExists = FriendRequest.findOne({
-    //         requestFrom: requestTo,
-    //         requestTo: requestFrom
-    //     });
-    //     if (recordExists) {
-    //         errors += "This person has already sent you a friend request.";
-    //     }
-    // }
     console.log(errors);
     return errors;
 };

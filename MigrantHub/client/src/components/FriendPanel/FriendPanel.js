@@ -27,9 +27,8 @@ class FriendPanel extends Component {
               requestFrom: requestFromP,
               requestTo: requestToP,
           })).then(function (response) {
-        //call getFriendRequests() to update list
-        event.getFriendRequests(event);
-      });
+            event.getFriendRequests(event);
+          });
     }
 
     rejectFriendRequest(event, _id, index){
@@ -38,9 +37,8 @@ class FriendPanel extends Component {
           qs.stringify({
               _id: _id,
           })).then(function (response) {
-      });
-      //call getFriendRequests() to update list
-      event.getFriendRequests(event);
+            event.getFriendRequests(event);
+          });
     }
 
 
@@ -78,7 +76,7 @@ class FriendPanel extends Component {
 
     componentDidMount() {
       this.getFriendRequests(this);
-  }
+    }
 
     render(props) {
       return (
