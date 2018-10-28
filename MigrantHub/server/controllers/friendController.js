@@ -7,7 +7,7 @@ module.exports = {
         let friendRequest = new FriendRequest();
         
         //TODO autoincrement _id
-        friendRequest._id = 3;
+        friendRequest._id = 5;
         friendRequest.requestFrom = req.user._id;
         friendRequest.requestTo = parsedObj.requestTo;
 

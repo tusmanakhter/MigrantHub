@@ -11,6 +11,32 @@ import axios from 'axios';
 var qs = require('qs');
 
 class FriendPanel extends Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+        addFriendTextValue: '',
+
+    };
+}
+
+  handleAddFriendTextChange(e) {
+    this.setState({
+      addFriendTextValue: e.target.value
+    });
+  }
+
+  handleAddFriend(event) {
+    console.log(event.state.addFriendTextValue);
+    axios.post('/friend/add',
+      qs.stringify({
+          //TODO read requestTo from input box
+          // requestTo: "test1@test.com",
+          requestTo: event.state.addFriendTextValue,
+      })
+    );
+  }
+
   render(props) {
     return (
       <div>
@@ -45,9 +71,9 @@ class FriendPanel extends Component {
             <TextField
               id="outlined-name"
               label="User's Email"
-              value=""
-              //value={this.state.addFriendTextValue}
-              // onChange={this.handleAddFriendTextChange('name')}
+              // value=""
+              value={this.state.addFriendTextValue}
+              onChange={ (event) => this.handleAddFriendTextChange(event) }
               margin="normal"
               variant="outlined"
             />
@@ -55,22 +81,6 @@ class FriendPanel extends Component {
           </CardContent>
         </Card>
       </div>
-    );
-  }
-
-  // handleAddFriendTextChange(e) {
-  //   this.setState({
-  //     // addFriendTextValue: e.target.value
-  //   });
-  // }
-
-  handleAddFriend(event) {
-    axios.post('/friend/add',
-      qs.stringify({
-          //TODO read requestTo from input box
-          requestTo: "test1@test.com",
-          // requestTo: {this:state.addFriendTextValue},
-      })
     );
   }
 }
