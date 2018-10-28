@@ -54,11 +54,13 @@ module.exports = {
         }
     });
   },
-    addFriend: function(req, res) {
+    addFriend: async function(req, res) {
       let parsedObj = qs.parse(req.body);
-      let errors = FriendRequestValidator(req.user._id, parsedObj.requestTo);
+      let errors = await FriendRequestValidator(req.user._id, parsedObj.requestTo);
       
       if (errors == "") {
+          console.log("errors are empty");
+          console.log(errors);
           let friendRequest = new FriendRequest();
           
           friendRequest.requestFrom = req.user._id;

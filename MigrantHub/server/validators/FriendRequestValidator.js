@@ -1,44 +1,63 @@
 var FriendRequest = require('../models/FriendRequest');
 var validator = require('validator');
 
-// Function to perform server-side validation of the friend request before sending to db.
-const FriendRequestValidator = (requestFrom, requestTo) =>{
+async function checkForDuplicateRecord(requestFrom, requestTo) {
+    // do not allow duplicate friend requests
     let errors = "";
-    console.log(requestFrom);
-    if (validator.equals(requestFrom, requestTo)) {
-        errors += "{'\n'}You cannot add yourself!";
+    try {
+        //check if already sent a friend request
+        let record = await FriendRequest.findOne({
+            requestFrom: requestFrom,
+            requestTo: requestTo
+        });
+        if (record) {
+            errors += "\nYou have already sent this person a friend request.";
+        } else {
+            //check if already received a friend request
+            record = await FriendRequest.findOne({
+                requestFrom: requestTo,
+                requestTo: requestFrom
+            });
+            if (record) {
+                errors += "\nYou have already received a friend request from this person.";
+            }
+        }
+        console.log(errors);
     }
-    if (validator.isEmpty(requestFrom)) {
-        errors += "{'\n'}Problem with your session. Please log in again.";
+    catch(e) {
+        errors += "{'\n'}Server Errors.";
     }
-    if (validator.isEmpty(requestTo)) {
-        errors += "{'\n'}Empty friend request. Please input an email.";
-    }
-    if (!validator.isEmail(requestFrom)) {
-        errors += "{'\n'}Problem with your session. Please log in again."
-    }
-    if (!validator.isEmail(requestTo)) {
-        errors += "{'\n'}Inputted friend to add is not a valid email.";
-    }
+    return errors
+}
 
-    //do not allow duplicate friend requests
-    // var recordExists = FriendRequest.findOne({
-    //     requestFrom: requestFrom,
-    //     requestTo: requestTo
-    // });
-    // console.log(recordExists);
-    // if (recordExists) {
-    //     errors += "You have already sent this person a friend request.";
-    // } else {
-    //     recordExists = FriendRequest.findOne({
-    //         requestFrom: requestTo,
-    //         requestTo: requestFrom
-    //     });
-    //     if (recordExists) {
-    //         errors += "This person has already sent you a friend request.";
-    //     }
-    // }
-    console.log(errors);
+
+// Function to perform server-side validation of the friend request before sending to db.
+// const FriendRequestValidator = (requestFrom, requestTo) => {
+async function FriendRequestValidator(requestFrom, requestTo) {
+    let errors = "";
+    // (async() => {
+        console.log(requestFrom);
+        if (validator.equals(requestFrom, requestTo)) {
+            errors = "\nYou cannot add yourself!";
+        }
+        if (validator.isEmpty(requestFrom)) {
+            errors += "\nProblem with your session. Please log in again.";
+        }
+        if (validator.isEmpty(requestTo)) {
+            errors += "\nEmpty friend request. Please input an email.";
+        }
+        if (!validator.isEmail(requestFrom)) {
+            errors += "\nProblem with your session. Please log in again."
+        }
+        if (!validator.isEmail(requestTo)) {
+            errors += "\nInputted friend to add is not a valid email.";
+        }
+
+        let duplicationErrors = await checkForDuplicateRecord(requestFrom, requestTo);
+        console.log('duplication errors: ' + duplicationErrors);
+        errors += duplicationErrors;
+        console.log(errors);
+    // })()
     return errors;
 };
 

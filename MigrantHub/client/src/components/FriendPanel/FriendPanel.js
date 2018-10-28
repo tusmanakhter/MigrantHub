@@ -15,9 +15,11 @@ class FriendPanel extends Component {
     super(props);
     this.state = {
       addFriendTextValue: '',
+      addFriendError: '',
       friendRequests: [],
     };
-    this.getFriendRequests= this.getFriendRequests.bind(this);
+    this.getFriendRequests = this.getFriendRequests.bind(this);
+    this.handleAddFriend = this.handleAddFriend.bind(this);
 }
     acceptFriendRequest(event, _id, requestFromP, requestToP, index){
       event.handleDeleteRow(index)
@@ -72,7 +74,13 @@ class FriendPanel extends Component {
       axios.post('/friend/add',
         qs.stringify({ 
           requestTo: this.state.addFriendTextValue 
-        })
+        }))
+        .then(function (response) {
+          console.log(response);
+          // this.setState = ({
+          //   addFriendError: response
+          // })
+        }
       );
     }
 
