@@ -62,14 +62,13 @@ module.exports = {
     });
   },
   getFriendsList: function (req, res) {
-    FriendList.find({}, 'friendList', function (err, friendListOfUser) {
+    User.findOne({ _id: req.user._id }, function (err, user) {
       if (err) {
         res.send("No friends found")
+        console.log(err)
+      } else {
+        res.send(user.friendsList);
       }
-      else {
-        res.send(friendListOfUser);
-      }
-    })
-  }
-
+    });
+  },
 };

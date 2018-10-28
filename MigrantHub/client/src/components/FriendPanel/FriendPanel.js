@@ -14,26 +14,23 @@ class FriendPanel extends Component {
     super(props);
     this.state = {
       friendRequests: [],
-      friendListFetch: []
+      friendsList: []
     };
+    this.getFriendsList = this.getFriendsList.bind(this);
   }
+
 
   componentDidMount() {
-    this.getData(this);
+    this.getFriendsList(this);
   }
 
-  componentWillReceiveProps(nextProps) {
-    this.getData(this);
-  }
-
-  getData(currentState) {
+  getFriendsList(ev) {
     axios.get('/friends/getFriendsList')
       .then(function (response) {
-        console.log("Loading friend list")
-        console.log(response.data)
-        currentState.setState({ friendListFetch: response.data });
+        console.log(response.data);
+        ev.setState({ friendsList: response.data });
       }).catch(error => {
-        console.log("Loading friend list error")
+        console.log("Loading friend list error.")
       })
   }
 
@@ -74,8 +71,8 @@ class FriendPanel extends Component {
           <CardContent>
             <p>Your list of friends:</p>
             <ul>
-              {this.state.friendListFetch.map(friend =>
-                <li key={friend.id}><img src={friend.pic} alt="profile pic" className="User-avatar" />{friend.name}</li>
+              {this.state.friendsList.map(request =>
+                <li key={request.friendName}><img src={request.pic} alt="profile pic" className="User-avatar" />{request.friendName}</li>
               )}
             </ul>
           </CardContent>
