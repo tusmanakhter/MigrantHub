@@ -6,8 +6,6 @@ module.exports = {
         let parsedObj = qs.parse(req.body);
         let friendRequest = new FriendRequest();
         
-        //TODO autoincrement _id
-        friendRequest._id = 5;
         friendRequest.requestFrom = req.user._id;
         friendRequest.requestTo = parsedObj.requestTo;
 
