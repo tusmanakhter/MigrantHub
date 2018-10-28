@@ -26,13 +26,13 @@ class FriendPanel extends Component {
     });
   }
 
-  handleAddFriend(event) {
-    console.log(event.state.addFriendTextValue);
+  handleAddFriend() {
+    console.log(this.state.addFriendTextValue);
     axios.post('/friend/add',
       qs.stringify({
           //TODO read requestTo from input box
           // requestTo: "test1@test.com",
-          requestTo: event.state.addFriendTextValue,
+          requestTo: this.state.addFriendTextValue,
       })
     );
   }
@@ -77,7 +77,7 @@ class FriendPanel extends Component {
               margin="normal"
               variant="outlined"
             />
-            <Button variant="contained" color="primary" onClick={this.handleAddFriend}>Add Friend</Button>
+            <Button variant="contained" color="primary" onClick={(event) => this.handleAddFriend(event)}>Add Friend</Button>
           </CardContent>
         </Card>
       </div>
