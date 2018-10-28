@@ -548,45 +548,42 @@ class EditMigrant extends Component {
 });}
 
 getAccount(e) {
-    console.log('olla2');
-
     axios.get('/account/get/profile').then(function (response) {
-        console.log(response);
-        console.log(response.data);
+
+      let jsonObj = qs.parse(qs.stringify(response.data));
 
         if(response.status===200){
-            console.log('here safe');
             e.setState({
-                email: response.data.email,
-                password: response.data.password,
-                confirmPassword: response.data.confirmPassword,
-                firstName: response.data.firstName,
-                lastName: response.data.lastName,
-                address: response.data.address,
-                apartment: response.data.apartment,
-                city: response.data.city,
-                province: response.data.province,
-                postalCode: response.data.postalCode,
-                phoneNumber: response.data.phoneNumber,
-                age: response.data.age,
-                gender: response.data.gender,
-                nationality: response.data.nationality,
-                relationshipStatus: response.data.relationshipStatus,
-                status: response.data.status,
-                languages: response.data.languages,
-                writingLevel: response.data.writingLevel,
-                speakingLevel: response.data.speakingLevel,
-                motherTongue: response.data.motherTongue,
-                family: response.data.family,
-                educationLevel: response.data.educationLevel,
+                email: jsonObj.email,
+                password: jsonObj.password,
+                confirmPassword: jsonObj.confirmPassword,
+                firstName: jsonObj.firstName,
+                lastName: jsonObj.lastName,
+                address: jsonObj.address,
+                apartment: jsonObj.apartment,
+                city: jsonObj.city,
+                province: jsonObj.province,
+                postalCode: jsonObj.postalCode,
+                phoneNumber: jsonObj.phoneNumber,
+                age: jsonObj.age,
+                gender: jsonObj.gender,
+                nationality: jsonObj.nationality,
+                relationshipStatus: jsonObj.relationshipStatus,
+                status: jsonObj.status,
+                languages: jsonObj.languages,
+                writingLevel: jsonObj.writingLevel,
+                speakingLevel: jsonObj.speakingLevel,
+                motherTongue: jsonObj.motherTongue,
+                family: jsonObj.family,
+                educationLevel: jsonObj.educationLevel,
                 proficiencyExams: response.data.proficiencyExams,
-                jobStatus: response.data.jobStatus,
-                lookingForJob: response.data.lookingForJob,
-                currentIncome: response.data.currentIncome,
-                workExperience: response.data.workExperience,
-                settlingLocation: response.data.settlingLocation,
-                settlingDuration: response.data.settlingDuration,
-                joiningReason: response.data.joiningReason
+                jobStatus: jsonObj.jobStatus,
+                lookingForJob: jsonObj.lookingForJob,
+                currentIncome: jsonObj.currentIncome,
+                workExperience: jsonObj.workExperience,
+                settlingLocation: jsonObj.settlingLocation,
+                settlingDuration: jsonObj.settlingDuration,
+                joiningReason: jsonObj.joiningReason
               })
         }
    
