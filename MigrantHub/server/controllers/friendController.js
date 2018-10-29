@@ -56,9 +56,9 @@ module.exports = {
   },
     addFriend: async function(req, res) {
       let parsedObj = qs.parse(req.body);
-      let errors = await FriendRequestValidator(req.user._id, parsedObj.requestTo);
+      let error = await FriendRequestValidator(req.user._id, parsedObj.requestTo);
       
-      if (errors == "") {
+      if (error == "") {
           let friendRequest = new FriendRequest();
           
           friendRequest.requestFrom = req.user._id;
@@ -66,14 +66,13 @@ module.exports = {
 
           friendRequest.save(function (err) {
               if (err) {
-                  res.send('Yikes. Unable to add friend. :( ')
-                  console.log(err)
+                  res.send({isError: true, message: 'Yikes. Unable to add friend. :( '});
               } else {
-                  res.send('Woohoo! The request has successfully been sent :) ');
+                  res.send({isError: false, message: 'Woohoo! The request has successfully been sent :) '});
               }
           });
       } else {
-          res.send(errors);
+          res.send({isError: true, message: error});
       }
   },
   viewFriends: function (req, res) {

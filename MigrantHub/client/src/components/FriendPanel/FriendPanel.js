@@ -15,11 +15,11 @@ class FriendPanel extends Component {
     super(props);
     this.state = {
       addFriendTextValue: '',
-      addFriendError: '',
+      addFriendError: false,
+      addFriendMessage: '',
       friendRequests: [],
     };
     this.getFriendRequests = this.getFriendRequests.bind(this);
-    this.handleAddFriend = this.handleAddFriend.bind(this);
 }
     acceptFriendRequest(event, _id, requestFromP, requestToP, index){
       event.handleDeleteRow(index)
@@ -70,16 +70,17 @@ class FriendPanel extends Component {
       });
     }
   
-    handleAddFriend() {
+    handleAddFriend = () => {
       axios.post('/friend/add',
         qs.stringify({ 
           requestTo: this.state.addFriendTextValue 
         }))
-        .then(function (response) {
+        .then((response) => {
           console.log(response);
-          // this.setState = ({
-          //   addFriendError: response
-          // })
+          this.setState ({
+            addFriendMessage: response.data.message,
+            addFriendError: response.data.isError
+          })
         }
       );
     }
@@ -130,15 +131,16 @@ class FriendPanel extends Component {
             <CardContent>
               <p>Add Friends:</p>
               <TextField
-                id="outlined-name"
-                label="User's Email"
-                // value=""
+                id="addFriendTextbox"
+                label="User Email"
                 value={this.state.addFriendTextValue}
                 onChange={ (event) => this.handleAddFriendTextChange(event) }
                 margin="normal"
                 variant="outlined"
+                helperText={this.state.addFriendMessage}
+                error={this.state.addFriendError}
               />
-              <Button variant="contained" color="primary" onClick={(event) => this.handleAddFriend(event)}>Add Friend</Button>
+              <Button variant="contained" color="primary" onClick={(event) => this.handleAddFriend()}>Add Friend</Button>
             </CardContent>
           </Card>
         </div>
