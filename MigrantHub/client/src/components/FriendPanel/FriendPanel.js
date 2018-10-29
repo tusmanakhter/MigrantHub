@@ -84,12 +84,6 @@ class FriendPanel extends Component {
     });
   }
 
-  handleAddFriendTextChange(e) {
-    this.setState({
-      addFriendTextValue: e.target.value
-    });
-  }
-
   handleAddFriend = () => {
     axios.post('/friend/add',
       qs.stringify({
