@@ -23,6 +23,11 @@ async function FriendRequestValidator(requestFrom, requestTo) {
                 let existingUserError = await checkForExistingUser(requestTo);
                 if (existingUserError) {
                     error = existingUserError;
+                } else {
+                    let existingFriendError = await checkForExistingFriend(requestFrom, requestTo);
+                    if (existingFriendError) {
+                        error = existingFriendError;
+                    }
                 }
             }
         }
@@ -40,6 +45,33 @@ async function checkForExistingUser(requestTo) {
         if (!record) {
             error = "\nEek! Inputted friend to add is not a valid user email.";
         }
+    }
+    catch(e) {
+        error = "\nEek! Server Errors.";
+    }
+    return error
+}
+
+//helper function: makes sure the added user isn't already a friend
+async function checkForExistingFriend(requestFrom, requestTo) {
+    console.log("checking for existing friend");
+    let error = "";
+    try {
+        //check if already sent a friend request
+        let record = await User.findOne({
+            _id: requestFrom
+        }, function (err, user) {
+            if (err) {
+                error = "\nEek! Server Errors.";
+            } else {
+                //TODO optimisation: change the storage of friends list into a schema
+                for (let i=0; i < user.friendsList.length; i ++) {
+                    if (user.friendsList[i].friendName === requestTo) {
+                        error = "\nHmm, it seems you're already friends with this person!";
+                      }
+                }
+            }
+          });
     }
     catch(e) {
         error = "\nEek! Server Errors.";

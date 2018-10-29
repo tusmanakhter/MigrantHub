@@ -5,7 +5,7 @@ var friendController = require('../controllers/friendController')
 router.post('/add', friendController.addFriend);
 router.post('/acceptFriendRequest', friendController.acceptFriendRequest);
 router.post('/rejectFriendRequest', friendController.rejectFriendRequest);
-router.get('/view', friendController.viewFriends);
+router.get('/getRequests', friendController.getFriendRequests);
 router.get('/getFriendsList', friendController.getFriendsList);
 
 module.exports = router;

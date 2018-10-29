@@ -83,7 +83,7 @@ module.exports = {
       res.send({ isError: true, message: error });
     }
   },
-  viewFriends: function (req, res) {
+  getFriendRequests: function (req, res) {
     FriendRequest.find({requestTo: req.user._id}, function(err, friends) {
       if (err) {
           res.send("There was a error saving friend.");

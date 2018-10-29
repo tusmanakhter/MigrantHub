@@ -61,7 +61,7 @@ class FriendPanel extends Component {
 
 
   getFriendRequests(ev) {
-    axios.get('/friend/view')
+    axios.get('/friend/getRequests')
       .then(function (response) {
         console.log(response.data)
         ev.setState({ friendRequests: response.data });
