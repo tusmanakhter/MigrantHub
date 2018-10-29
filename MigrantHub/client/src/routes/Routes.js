@@ -12,6 +12,7 @@ import TempHome from '../account/TempHome';
 import AdminDashboard from '../admin/AdminDashboard';
 import ServiceForm from "../services/ServiceForm";
 import ServiceList from "../services/ServiceList";
+import CreateEvent from "../events/CreateEvent";
 
 export const Routes = () => (
   <Switch>
@@ -26,6 +27,7 @@ export const Routes = () => (
     <Route path="/admin/dashboard" component={AdminDashboard} exact />
     <Route path="/services/create" component={ServiceForm} exact />
     <Route path="/services" component={ServiceList} exact />
+    <Route path="/event/create" component={CreateEvent} exact />
     <Route component={Error} />
   </Switch>
 );
