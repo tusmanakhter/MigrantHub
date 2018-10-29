@@ -143,7 +143,7 @@ class Header extends Component {
   }
   
   handleEdit = event => {
-console.log(this.state.type);
+    console.log(this.state.type);
     if(this.state.type === "migrant")
       this.setState({
         redirectTo: true,
