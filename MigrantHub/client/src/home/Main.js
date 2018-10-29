@@ -34,7 +34,8 @@ class Main extends Component {
       //TODO calculate what the options are, based on the type of user signed in
       { description: "Messages", link: "#" },
       { description: "Friends", link: "#" },
-      { description: "Services", link: "#" },
+      { description: "Services", link: "/services" },
+      { description: "Create Event", link: "/event/create" },
     ],
     navPanelVisibility: true,
     friendPanelVisibility: true,

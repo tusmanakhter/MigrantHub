@@ -52,8 +52,6 @@ module.exports = {
       user.save(function (err) {
         if (err) {
           res.send("There was a error saving user.");
-          // Todo: Should create with error
-          console.log(err)
         } else {
           res.send('User has been added!');
         }
@@ -93,8 +91,6 @@ module.exports = {
       businessuser.save(function (err) {
         if (err) {
           res.send("There was a error saving business user.");
-          // Todo: Should create with error
-          console.log(err)
         } else {
           res.send('Business user has been added!');
         }
@@ -120,8 +116,6 @@ module.exports = {
       admin.save(function (err) {
         if (err) {
           res.send("There was a error saving admin user.");
-          // Todo: Should create with error
-          console.log(err)
         } else {
           res.send('Admin user has been added!');
         }
