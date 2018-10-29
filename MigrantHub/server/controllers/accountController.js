@@ -164,7 +164,6 @@ module.exports = {
           res.status(500).send('Incorrect email');
       }  else {
           console.log("Found user");
-          console.log(user);
           res.status(200).send(user)
       }
   })
