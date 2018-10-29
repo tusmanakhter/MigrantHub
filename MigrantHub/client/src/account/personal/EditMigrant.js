@@ -550,9 +550,32 @@ class EditMigrant extends Component {
 getAccount(e) {
     axios.get('/account/get/migrantprofile').then(function (response) {
 
-      let jsonObj = qs.parse(qs.stringify(response.data));
-
         if(response.status===200){
+
+          let jsonObj = qs.parse(qs.stringify(response.data));
+
+          let tempLanguages;
+          let tempWorkExperience;
+          let tempFamily;
+    
+          if (jsonObj.languages !== undefined) {
+            tempLanguages = jsonObj.languages;
+          } else {
+            tempLanguages = [];
+          }
+    
+          if (jsonObj.workExperience !== undefined) {
+            tempWorkExperience = jsonObj.workExperience;
+          } else {
+            tempWorkExperience = [];
+          }
+    
+          if (jsonObj.family !== undefined){
+            tempFamily = jsonObj.family;
+          } else {
+            tempFamily = [];
+          }
+
             e.setState({
                 email: jsonObj.email,
                 password: jsonObj.password,
@@ -570,17 +593,17 @@ getAccount(e) {
                 nationality: jsonObj.nationality,
                 relationshipStatus: jsonObj.relationshipStatus,
                 status: jsonObj.status,
-                languages: jsonObj.languages,
+                languages: tempLanguages,
                 writingLevel: jsonObj.writingLevel,
                 speakingLevel: jsonObj.speakingLevel,
                 motherTongue: jsonObj.motherTongue,
-                family: jsonObj.family,
+                family: tempFamily,
                 educationLevel: jsonObj.educationLevel,
                 proficiencyExams: response.data.proficiencyExams,
                 jobStatus: jsonObj.jobStatus,
                 lookingForJob: jsonObj.lookingForJob,
                 currentIncome: jsonObj.currentIncome,
-                workExperience: jsonObj.workExperience,
+                workExperience: tempWorkExperience,
                 settlingLocation: jsonObj.settlingLocation,
                 settlingDuration: jsonObj.settlingDuration,
                 joiningReason: jsonObj.joiningReason
@@ -1144,6 +1167,7 @@ console.log(error);
             <AddIcon />
           </Button>
         </Grid>
+
         {this.state.languages.map((language, index) => (
           <React.Fragment key={index}>
           <Grid container spacing={24} item xs={12} sm={11}>

@@ -126,10 +126,23 @@ module.exports = {
   },
 
   editMigrantUser: function(req, res) {
+    let parsedObj = qs.parse(req.body);
 
+    if (parsedObj.languages === undefined) {
+      parsedObj.languages = [];
+    } 
+
+    if (parsedObj.workExperience === undefined) {
+      parsedObj.workExperience = [];
+    } 
+
+    if (parsedObj.family === undefined){
+      parsedObj.family = [];
+    } 
+    
     User.findByIdAndUpdate(
       req.session.passport.user._id,
-      req.body,
+      parsedObj,
       {new: true},
       (err, user) => {
         // Handle any possible database errors
@@ -177,7 +190,7 @@ module.exports = {
 
     BusinessUser.findByIdAndUpdate(
       req.session.passport.user._id,
-      req.body,
+      parsedObj,
       {new: true},
       (err, user) => {
         // Handle any possible database errors

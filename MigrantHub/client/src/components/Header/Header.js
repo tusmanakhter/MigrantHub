@@ -143,13 +143,13 @@ class Header extends Component {
   }
   
   handleEdit = event => {
-
-    if(this.state.type === "Migrant")
+console.log(this.state.type);
+    if(this.state.type === "migrant")
       this.setState({
         redirectTo: true,
         redirectToURL: '/editmigrant'
       })
-    else if(this.state.type === "Business") {
+    else if(this.state.type === "business") {
       this.setState({
         redirectTo: true,
         redirectToURL: '/editbusiness'
