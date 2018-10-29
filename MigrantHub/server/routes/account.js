@@ -10,7 +10,7 @@ router.post('/edit/migrantuser', accountController.editMigrantUser);
 router.post('/edit/businessuser', accountController.editBusinessUser);
 router.get('/get/migrantprofile', accountController.getMigrantUser);
 router.get('/get/businessprofile', accountController.getBusinessUser);
-
+router.get('/get/usertype', accountController.getUserType);
 
 router.post('/login', function (req, res, next) {
     next()
