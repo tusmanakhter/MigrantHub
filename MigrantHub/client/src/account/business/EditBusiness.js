@@ -98,9 +98,7 @@ class EditBusiness extends Component {
   }
 
   componentDidMount(){
-
     this.getAccount(this);
-    console.log(this.state.email);
   }
 
   componentWillReceiveProps(){
@@ -122,7 +120,6 @@ class EditBusiness extends Component {
   };
 
   updateAccount(e) {
-    console.log(e.state.firstName)
     axios.post('/account/edit/businessuser',
     qs.stringify({
       email: e.state.email,
@@ -178,7 +175,6 @@ class EditBusiness extends Component {
    
 }).catch(function(error){
 
-console.log(error);
 })
 };
 

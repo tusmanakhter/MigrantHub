@@ -138,12 +138,10 @@ class Header extends Component {
       }
       
     }).catch(function(error){
-      console.log(error);
       })
   }
   
   handleEdit = event => {
-    console.log(this.state.type);
     if(this.state.type === "migrant")
       this.setState({
         redirectTo: true,

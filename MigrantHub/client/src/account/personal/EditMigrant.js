@@ -401,7 +401,6 @@ class EditMigrant extends Component {
   componentDidMount(){
 
     this.getAccount(this);
-    console.log(this.state.email);
   }
 
   componentWillReceiveProps(){
@@ -610,10 +609,8 @@ getAccount(e) {
               })
         }
    
-}).catch(function(error){
-
-console.log(error);
-})
+}).catch(function(error){ 
+  })
 };
 
   validate = () => {
