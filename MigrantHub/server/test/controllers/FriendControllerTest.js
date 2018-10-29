@@ -6,7 +6,7 @@ var Controller = require('../../controllers/friendController')
 var MigrantUser = require('../../models/MigrantUser')
 var FriendRequest = require('../../models/FriendRequest')
 
-describe('account controller migrant', function () {
+describe('friend controller friend management', function () {
   let req = {
     body: {
       requestTo: "test@test.com",
@@ -16,9 +16,9 @@ describe('account controller migrant', function () {
     user: {
       _id: "test@test.com"
     },
-    friendsList: {
+    friendsList: [{
       friendName: "myfriend@test.com"
-    }
+    }],
   },
     error = new Error({ error: "err" }),
     res = {}, expectedResult;
@@ -54,5 +54,5 @@ describe('account controller migrant', function () {
     this.stub(MigrantUser, 'findOne').yields(null, expectedResult);
     Controller.getFriendsList(req, res);
     assert.calledWith(MigrantUser.findOne, { _id: "test@test.com" });
-  }))
+  }));
 });
