@@ -147,7 +147,7 @@ module.exports = {
       (err, user) => {
         // Handle any possible database errors
             if (err) return res.status(500).send(err);
-            return res.send(user);
+            return res.send("Updated Migrant User");
         }
     )
     
@@ -164,6 +164,7 @@ module.exports = {
           res.status(500).send('Incorrect email');
       }  else {
           console.log("Found user");
+          console.log(user);
           res.status(200).send(user)
       }
   })
@@ -187,6 +188,7 @@ module.exports = {
 },
 
   editBusinessUser: function(req, res) {
+    let parsedObj = qs.parse(req.body);
 
     BusinessUser.findByIdAndUpdate(
       req.session.passport.user._id,
@@ -195,7 +197,7 @@ module.exports = {
       (err, user) => {
         // Handle any possible database errors
             if (err) return res.status(500).send(err);
-            return res.send(user);
+            return res.send("Updated Business User");
         }
     )
   },
