@@ -192,4 +192,10 @@ module.exports = {
         }
     )
   },
+
+  getUserType: function(req, res) {
+
+    let type = req.user.type;
+    res.status(200).send(type)
+  },
 }; 

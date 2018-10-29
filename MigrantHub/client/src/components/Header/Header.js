@@ -19,7 +19,6 @@ import MoreIcon from '@material-ui/icons/MoreVert';
 import { Redirect } from 'react-router-dom'
 import axios from 'axios';
 
-
 const styles = theme => ({
   root: {
     width: '100%',
@@ -91,12 +90,26 @@ const styles = theme => ({
 });
 
 class Header extends Component {
-  state = {
-    anchorEl: null,
-    mobileMoreAnchorEl: null,
-    redirectTo: false,
-    redirectToURL: ''
-  };
+  constructor(props){
+    super(props);
+    this.state = {
+      anchorEl: null,
+      mobileMoreAnchorEl: null,
+      redirectTo: false,
+      redirectToURL: '',
+      type: ''
+    }
+
+    this.userType = this.userType.bind(this);
+  }
+
+  componentDidMount(){
+    this.userType(this);
+  }
+
+  componentWillReceiveProps(){
+    this.userType(this);
+  }
 
   handleProfileMenuOpen = event => {
     this.setState({ anchorEl: event.currentTarget });
@@ -115,20 +128,33 @@ class Header extends Component {
     this.setState({ mobileMoreAnchorEl: null });
   };
 
-  handleEditMigrant = event => {
+  userType(e){
+    axios.get('/account/get/usertype').then(function (response) {
 
-    /*
-    axios.get('/account/get/profile').then(function (response) {
-      let jsonObj = qs.parse(qs.stringify(response.data));
-
-
+      if(response.status===200){
+        e.setState({
+            type: response.data
+        })
+      }
+      
     }).catch(function(error){
-*/
-    
-    this.setState({
-      redirectTo: true,
-      redirectToURL: '/editmigrant'
-    })
+      console.log(error);
+      })
+  }
+  
+  handleEdit = event => {
+
+    if(this.state.type === "Migrant")
+      this.setState({
+        redirectTo: true,
+        redirectToURL: '/editmigrant'
+      })
+    else if(this.state.type === "Business") {
+      this.setState({
+        redirectTo: true,
+        redirectToURL: '/editbusiness'
+      })
+    }
   }
 
   render() {
@@ -152,7 +178,7 @@ class Header extends Component {
       >
         <MenuItem onClick={this.handleClose}>Profile</MenuItem>
         <MenuItem onClick={this.handleClose}>My account</MenuItem>
-        <MenuItem onClick={this.handleEditMigrant}>Edit Profile</MenuItem>
+        <MenuItem onClick={this.handleEdit}>Edit Profile</MenuItem>
       </Menu>
     );
 
