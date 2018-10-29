@@ -7,7 +7,7 @@ router.use('/services', require('./services'));
 router.use('/friend', require('./friend'))
 
 /* GET home page. */
-router.get('/', function(req, res, next) {
+router.get('/', function (req, res, next) {
   res.render('index', { title: 'Express' });
 });
 
