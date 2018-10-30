@@ -8,6 +8,9 @@ var MigrantUser = User.discriminator('migrant',
 new Schema({
   firstName: {type: String, required: true},
   lastName: {type: String, required: true},
+  friendsList:[{
+      friendName: {type: String, default: ''}
+  }],
   address: {type: String, required: true},
   apartment: {type: String, required: false},
   city: {type: String, required: true},
