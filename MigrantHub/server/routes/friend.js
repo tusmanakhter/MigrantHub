@@ -3,9 +3,9 @@ var router = express.Router();
 var friendController = require('../controllers/friendController')
 
 router.post('/add', friendController.addFriend);
-router.post('/acceptFriendRequest', friendController.acceptFriendRequest);
+router.post('/acceptfriendrequest', friendController.acceptFriendRequest);
 router.post('/rejectFriendRequest', friendController.rejectFriendRequest);
 router.get('/getRequests', friendController.getFriendRequests);
-router.get('/getFriendsList', friendController.getFriendsList);
+router.get('/getfriendslist', friendController.getFriendsList);
 
 module.exports = router;

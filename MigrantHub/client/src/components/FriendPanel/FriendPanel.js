@@ -25,19 +25,15 @@ class FriendPanel extends Component {
   }
 
   getFriendsList(ev) {
-    console.log("called functions");
-    axios.get('/friend/getFriendsList')
+    axios.get('/friend/getfriendslist')
       .then(function (response) {
-        console.log(response.data);
         ev.setState({ friendsList: response.data });
-      }).catch(error => {
-        console.log("Loading friend list error.")
-      })
+      }).catch(error => {})
   }
 
   acceptFriendRequest(event, _id, requestFromP, requestToP, index) {
     event.handleDeleteRow(index)
-    axios.post('/friend/acceptFriendRequest',
+    axios.post('/friend/acceptfriendrequest',
       qs.stringify({
         _id: _id,
         requestFrom: requestFromP,
@@ -50,7 +46,7 @@ class FriendPanel extends Component {
 
   rejectFriendRequest(event, _id, index) {
     event.handleDeleteRow(index)
-    axios.post('/friend/rejectFriendRequest',
+    axios.post('/friend/rejectfriendrequest',
       qs.stringify({
         _id: _id,
       })).then(function (response) {
@@ -61,13 +57,10 @@ class FriendPanel extends Component {
 
 
   getFriendRequests(ev) {
-    axios.get('/friend/getRequests')
+    axios.get('/friend/getrequests')
       .then(function (response) {
-        console.log(response.data)
         ev.setState({ friendRequests: response.data });
-      }).catch(error => {
-        console.log("Error retrieving all friends.")
-      })
+      }).catch(error => {})
   }
 
   handleDeleteRow(index) {
@@ -90,7 +83,6 @@ class FriendPanel extends Component {
         requestTo: this.state.addFriendTextValue
       }))
       .then((response) => {
-        console.log(response);
         this.setState({
           addFriendMessage: response.data.message,
           addFriendError: response.data.isError
