@@ -54,7 +54,6 @@ async function checkForExistingUser(requestTo) {
 
 //helper function: makes sure the added user isn't already a friend
 async function checkForExistingFriend(requestFrom, requestTo) {
-    console.log("checking for existing friend");
     let error = "";
     try {
         //check if already sent a friend request

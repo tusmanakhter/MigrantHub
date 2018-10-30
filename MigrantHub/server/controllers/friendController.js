@@ -17,8 +17,6 @@ module.exports = {
     }, function (err) {
       if (err) {
         res.send("There was a error accepting friend.");
-        console.log(err)
-        console.log("There was a error accepting friend.");
       } else {
         User.update({ _id: parsedObj.requestFrom }, {
           $push: {
@@ -29,17 +27,12 @@ module.exports = {
         }, function (err) {
           if (err) {
             res.send("There was error adding to your friend's list of friend.");
-            console.log(err)
-            console.log("There was error adding to your friend's list of friend.");
           } else {
             FriendRequest.findByIdAndDelete({ _id: parsedObj._id }, function (err) {
               if (err) {
                 res.send("There was a error removing friend from requestfriend table.");
-                console.log(err)
-                console.log("There was a error removing friend from requestfriend table.");
               } else {
                 res.send("Friend has been accepted and removed from request friend table");
-                console.log("Friend has been accepted and removed from request friend table");
               }
             });
           }
@@ -49,16 +42,12 @@ module.exports = {
   },
   rejectFriendRequest: function (req, res) {
     let parsedObj = qs.parse(req.body);
-    console.log(parsedObj);
 
     FriendRequest.findByIdAndDelete({ _id: parsedObj._id }, function (err) {
       if (err) {
         res.send("There was a error removing friend from requestfriend table.");
-        console.log(err)
-        console.log("There was a error removing friend from requestfriend table.");
       } else {
         res.send("FriendRequest has been removed from table");
-        console.log("FriendRequest has been removed from table");
       }
     });
   },
@@ -87,8 +76,6 @@ module.exports = {
     FriendRequest.find({requestTo: req.user._id}, function(err, friends) {
       if (err) {
           res.send("There was a error saving friend.");
-          // Todo: Should create with error
-          console.log(err)
         } else {
           res.send(friends);
         }
@@ -98,7 +85,6 @@ module.exports = {
     User.findOne({ _id: req.user._id }, function (err, user) {
       if (err) {
         res.send("No friends found")
-        console.log(err)
       } else {
         res.send(user.friendsList);
       }
