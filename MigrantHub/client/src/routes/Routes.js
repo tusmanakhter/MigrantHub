@@ -9,6 +9,8 @@ import Home from '../home/HomePage';
 import Login from '../account/Login';
 import TempError from '../account/TempError';
 import TempHome from '../account/TempHome';
+import EditMigrant from '../account/personal/EditMigrant';
+import EditBusiness from '../account/business/EditBusiness';
 import AdminDashboard from '../admin/AdminDashboard';
 import ServiceForm from "../services/ServiceForm";
 import ServiceList from "../services/ServiceList";
@@ -24,12 +26,15 @@ export const Routes = () => (
     <Route path="/login" component={Login} exact />
     <Route path="/temphome" component={TempHome} exact />
     <Route path="/temperror" component={TempError} exact />
+    <Route path="/editmigrant" component={EditMigrant} exact />
+    <Route path="/editbusiness" component={EditBusiness} exact />
     <Route path="/admin/dashboard" component={AdminDashboard} exact />
     <Route path="/services/create" component={ServiceForm} exact />
     <Route path="/services" component={ServiceList} exact />
     <Route path="/event/create" component={CreateEvent} exact />
     <Route component={Error} />
   </Switch>
+  
 );
 
 export default Routes;

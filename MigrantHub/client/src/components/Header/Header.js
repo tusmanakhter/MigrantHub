@@ -16,6 +16,8 @@ import AccountCircle from '@material-ui/icons/AccountCircle';
 import MailIcon from '@material-ui/icons/Mail';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import MoreIcon from '@material-ui/icons/MoreVert';
+import { Redirect } from 'react-router-dom'
+import axios from 'axios';
 
 const styles = theme => ({
   root: {
@@ -88,10 +90,26 @@ const styles = theme => ({
 });
 
 class Header extends Component {
-  state = {
-    anchorEl: null,
-    mobileMoreAnchorEl: null,
-  };
+  constructor(props){
+    super(props);
+    this.state = {
+      anchorEl: null,
+      mobileMoreAnchorEl: null,
+      redirectTo: false,
+      redirectToURL: '',
+      type: ''
+    }
+
+    this.userType = this.userType.bind(this);
+  }
+
+  componentDidMount(){
+    this.userType(this);
+  }
+
+  componentWillReceiveProps(){
+    this.userType(this);
+  }
 
   handleProfileMenuOpen = event => {
     this.setState({ anchorEl: event.currentTarget });
@@ -110,7 +128,39 @@ class Header extends Component {
     this.setState({ mobileMoreAnchorEl: null });
   };
 
+  userType(e){
+    axios.get('/account/get/usertype').then(function (response) {
+
+      if(response.status===200){
+        e.setState({
+            type: response.data
+        })
+      }
+      
+    }).catch(function(error){
+      })
+  }
+  
+  handleEdit = event => {
+    if(this.state.type === "migrant")
+      this.setState({
+        redirectTo: true,
+        redirectToURL: '/editmigrant'
+      })
+    else if(this.state.type === "business") {
+      this.setState({
+        redirectTo: true,
+        redirectToURL: '/editbusiness'
+      })
+    }
+  }
+
   render() {
+
+    if (this.state.redirectTo) {
+      return <Redirect to={this.state.redirectToURL} />
+    }
+
     const { anchorEl, mobileMoreAnchorEl } = this.state;
     const { classes } = this.props;
     const isMenuOpen = Boolean(anchorEl);
@@ -126,6 +176,7 @@ class Header extends Component {
       >
         <MenuItem onClick={this.handleClose}>Profile</MenuItem>
         <MenuItem onClick={this.handleClose}>My account</MenuItem>
+        <MenuItem onClick={this.handleEdit}>Edit Profile</MenuItem>
       </Menu>
     );
 
