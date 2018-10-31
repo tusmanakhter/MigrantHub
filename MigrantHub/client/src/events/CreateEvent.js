@@ -1,7 +1,20 @@
 import React, { Component } from 'react';
 import validator from 'validator';
-
+import TextField from '@material-ui/core/TextField';
+import Grid from '@material-ui/core/Grid';
+import Typography from '@material-ui/core/Typography';
+import PropTypes from 'prop-types';
+import withStyles from '@material-ui/core/styles/withStyles';
+import MenuItem from '@material-ui/core/MenuItem';
+import Button from '@material-ui/core/Button';
+import AddIcon from '@material-ui/icons/Add';
+import DeleteIcon from '@material-ui/icons/Delete';
+import Paper from '@material-ui/core/Paper';
+import MaskedInput from 'react-text-mask';
+import Header from '../components/Header/Header';
+import { Redirect } from 'react-router-dom'
 import axios from 'axios';
+
 var qs = require('qs');
 
 const visibilities = [
@@ -33,50 +46,137 @@ const repeats = [
     { value: 'year', label: 'Yearly' },
 ];
 
-class CreatEvent extends Component {
-    
-    state = {
-        creator: '',
+const styles = theme => ({
+    container: {
+        position: 'relative',
+    },
+    row: {
+        display: 'inline-block'
+    },
+    button: {
+        margin: theme.spacing.unit,
+    },
+    group: {
+        flexDirection: 'row'
+    },
+    formControl: {
+        textAlign: 'left'
+    },
+    select: {
+        textAlign: 'left'
+    },
+    paper: {
+        width: "100%",
+        marginTop: theme.spacing.unit,
+        marginBottom: theme.spacing.unit,
+        paddingTop: theme.spacing.unit * 2,
+        paddingBottom: theme.spacing.unit * 2,
+        paddingLeft: theme.spacing.unit * 2,
+        [theme.breakpoints.up(600 + theme.spacing.unit * 3 * 2)]: {
+            marginTop: theme.spacing.unit,
+            marginBottom: theme.spacing.unit,
+            paddingTop: theme.spacing.unit * 3,
+            paddingBottom: theme.spacing.unit * 3,
+            paddingLeft: theme.spacing.unit * 3,
+        },
+        layout: {
+            marginLeft: theme.spacing.unit,
+            marginRight: theme.spacing.unit,
+        },
+    },
+    timeContainer: {
+        display: 'flex',
+        flexWrap: 'wrap',
+    },
+    textField: {
+        marginLeft: theme.spacing.unit,
+        marginRight: theme.spacing.unit,
+        width: 200,
+    },
+    rightIcon: {
+        marginLeft: theme.spacing.unit,
+    },
+});
 
-        visibility: '',
-        eventName: '',
-        description: '',
+const PhoneMask = (props) => {
+    const { inputRef, ...other } = props;
 
-        //Event Location 
-        address: '',
-        apartment: '',
-        city: '',
-        province: '',
-        postalCode: '',
-        phoneNumber: '',
+    return (
+        <MaskedInput
+            {...other}
+            mask={['(', /[1-9]/, /\d/, /\d/, ')', ' ', /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/]}
+            placeholderChar={'\u2000'}
+            guide={false}
+        />
+    );
+}
 
-        //Event Time
-        dateStart: '',
-        dateEnd:'',
-        timeStart: '',
-        secondsStart: '',
-        timeEnd: '',
-        secondsEnd: '',
-        repeat: '', 
+const PostalCodeMask = (props) => {
+    const { inputRef, ...other } = props;
 
-        //Errors
-        eventNameError: '',
-        descriptionError: '',
-        addressError: '',
-        apartmentError: '',
-        cityError: '',
-        provinceError: '',
-        postalCodeError: '',
-        phoneNumberError: '',
-        dateStartError: '',
-        dateEndError: '',
-        timeStartError: '',
-        timeEndError: '',
-        repeatError: '',
+    return (
+        <MaskedInput
+            {...other}
+            mask={[/[a-zA-Z]/, /\d/, /[a-zA-Z]/, ' ', /\d/, /[a-zA-Z]/, /\d/]}
+            placeholderChar={'\u2000'}
+            guide={false}
+        />
+    );
+}
 
-        // DB response
-        messageFromServer: ''
-    }
+class CreateEvent extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            creator: '',
+
+            visibility: '',
+            eventName: '',
+            description: '',
+            eventImage: null,
+            eventImageName: '',
+
+            //Event Location 
+            location: {
+                address : '',
+                apartment : '',
+                city : '',
+                province : '',
+                postalCode : '',
+                phoneNumber : '',
+            },
+
+            //Event Time
+            dateStart: '',
+            dateEnd:'',
+            timeStart: '',
+            secondsStart: '',
+            timeEnd: '',
+            secondsEnd: '',
+            repeat: '', 
+
+            //Errors
+            eventNameError: '',
+            descriptionError: '',
+            addressError: '',
+            apartmentError: '',
+            cityError: '',
+            provinceError: '',
+            postalCodeError: '',
+            phoneNumberError: '',
+            dateStartError: '',
+            dateEndError: '',
+            timeStartError: '',
+            timeEndError: '',
+            repeatError: '',
+            eventImageError: '',
+
+
+            // DB response
+            messageFromServer: '',
+            redirectToAllEvents : false
+        };
+    }       
 
     validate = () => {
         let isError = false;
@@ -109,28 +209,28 @@ class CreatEvent extends Component {
             isError = true
         }
 
-        if (validator.isEmpty(this.state.address)) {
+        if (validator.isEmpty(this.state.location.address)) {
             errors.addressError = "Address is required";
             isError = true
         }
       
-        if (validator.isEmpty(this.state.city)) {
+        if (validator.isEmpty(this.state.location.city)) {
             errors.cityError = "City is required";
             isError = true
         } 
       
-        if (validator.isEmpty(this.state.postalCode)) {
+        if (validator.isEmpty(this.state.location.postalCode)) {
             errors.postalCodeError = "Postal code is required";
             isError = true
-        } else if (!validator.isLength(this.state.postalCode, {min:7, max:7})) {
+        } else if (!validator.isLength(this.state.location.postalCode, {min:7, max:7})) {
             errors.postalCodeError = "Postal code is invalid";
             isError = true
         } 
       
-        if (validator.isEmpty(this.state.phoneNumber)) {
+        if (validator.isEmpty(this.state.location.phoneNumber)) {
             errors.phoneNumberError = "Phone number is required";
             isError = true
-        } else if (!validator.isLength(this.state.phoneNumber, {min:14, max:14})) {
+        } else if (!validator.isLength(this.state.location.phoneNumber, {min:14, max:14})) {
             errors.phoneNumberError = "Phone number is invalid";
             isError = true
         } 
@@ -196,260 +296,346 @@ class CreatEvent extends Component {
         if(this.state.province === '') this.state.province = 'AB';
         if(this.state.repeat === '') this.state.repeat = 'no';
 
+        let imageName = 'cameraDefault.png';
+        if(this.state.eventImage !== null){
+            imageName = this.state.eventImage.name
+        }
+        else{
+            this.state.eventImageName = imageName;
+        }
+
         let error = this.validate();
         if (!error) {
           this.createEvent(this);
         }
     };
 
+    handleUploadImage = event => {
+
+        if(event.target.files[0] !== undefined) {
+            this.setState({
+                eventImage: event.target.files[0],
+                eventImageName: event.target.files[0].name,
+            });
+        } else{
+            this.setState({
+                eventImage: null,
+                eventImageName: '',
+            });
+        }
+    }
+
+    handleEditSingleObject = (name, fieldName) => (event) => {
+        let obj = {};
+        obj[name] = { ...this.state[name] };
+        let value = event.target.value;
+        obj[name][fieldName] = value;
+        this.setState({ [name]: obj[name] });
+    };
+
     // Send event data in post body to add to mongodb
     createEvent(e) {
-        axios.post('/event/create',
+        axios.post('/events/create',
             qs.stringify({
                 creator: e.state.creator,
                 visibility: e.state.visibility,
                 eventName: e.state.eventName,
                 description: e.state.description,
-                address: e.state.address,
-                apartment: e.state.apartment,
-                city: e.state.city,
-                province: e.state.province,
-                postalCode: e.state.postalCode,
-                phoneNumber: e.state.phoneNumber,
+                address: e.state.location.address,
+                apartment: e.state.location.apartment,
+                city: e.state.location.city,
+                province: e.state.location.province,
+                postalCode: e.state.locationpostalCode,
+                phoneNumber: e.state.location.phoneNumber,
                 dateStart: e.state.dateStart,
                 dateEnd:e.state.dateEnd,
                 timeStart: e.state.timeStart,
                 secondsStart: e.state.secondsStart,
                 timeEnd: e.state.timeEnd,
                 secondsEnd: e.state.secondsEnd,
-                repeat: e.state.repeat 
+                repeat: e.state.repeat,
+                eventImage: e.state.eventImage
             })).then(function (response) {
             e.setState({
                 messageFromServer: response.data
             });
-            if (response.status === 200) {
-                // update App.js state
-      
+            if (response.status === 200) {      
                 e.setState({
                   redirectTo: true,
-                  redirectToURL: '/Main'
+                  redirectToAllEvents: true
                 })
               }
         });
     }
 
+    renderRedirectToAllEvents = () => {
+        if (this.state.redirectToAllEvents) {
+            return <Redirect to='/events' />
+        }
+    }
+
     render() {
+        const { classes } = this.props;
 
         return (
-            <div>
-                <h3>Event Information</h3>
-                <form>
-
-                    <label>Visibility: </label>
-                    <select 
-                    id="visibility"
-                    name="visibility" 
-                    label="Visibility"
-                    value={this.state.visibility} 
-                    onChange={event => this.handleChange(event)}>
-                        {visibilities.map(option => (
-                        <option key={option.value} value={option.value} >
-                            {option.label}
-                        </option>
-                        ))}
-                    </select>
-                    <br></br>
-                    <br></br>
-
-                    <label>Event Name: </label>
-                    <input 
-                    type="text"
-                    id="eventName" 
-                    name="eventName" 
-                    label="Name"
-                    value={this.state.eventName} 
-                    onChange={event => this.handleChange(event)} 
-                    error={this.state.eventNameError.length > 0}/>
-                    <label style={{color: 'red'}}>  {this.state.eventNameError}</label>
-                    <br></br>
-                    <br></br>
-
-                    <label>Description: </label>
-                    <textarea 
-                    id="description" 
-                    name="description" 
-                    label="Description" 
-                    value={this.state.description}
-                    onChange={event => this.handleChange(event)} 
-                    error={this.state.descriptionError.length > 0}/>
-                    <label style={{color: 'red'}}>  {this.state.descriptionError}</label>
-                    <br></br>
-                    <br></br>
-
-                    <label>Address: </label>
-                    <input 
-                    type="text" 
-                    id="address" 
-                    name="address" 
-                    label="Address" 
-                    value={this.state.address} 
-                    onChange={event => this.handleChange(event)}
-                    error={this.state.addressError.length > 0}/>
-                    <label style={{color: 'red'}}>  {this.state.addressError}</label>
-                    <br></br>
-                    <br></br>
-
-                    <label>Apartment: </label>
-                    <input 
-                    type="text" 
-                    id="apartment" 
-                    name="apartment" 
-                    label="Apartment" 
-                    value={this.state.apartment} 
-                    onChange={event => this.handleChange(event)}
-                    error={this.state.apartmentError.length > 0}/>
-                    <label style={{color: 'red'}}>  {this.state.apartmentError}</label>
-                    <br></br>
-                    <br></br>
-
-                    <label>City: </label>
-                    <input 
-                    type="text" 
-                    id="city" 
-                    name="city" 
-                    label="City" 
-                    value={this.state.city} 
-                    onChange={event => this.handleChange(event)}
-                    error={this.state.cityError.length > 0}/>
-                    <label style={{color: 'red'}}>  {this.state.cityError}</label>
-                    <br></br>
-                    <br></br>
-
-                    <label>Province: </label>
-                    <select 
-                    id="province" 
-                    name="province" 
-                    label="Province"
-                    value={this.state.province} 
-                    onChange={event => this.handleChange(event)} 
-                    error={this.state.provinceError.length > 0}>
-                        {provinces.map(option => (
-                        <option key={option.value} value={option.value}>
-                            {option.label}
-                        </option>
-                        ))}
-                    </select>
-                    <label style={{color: 'red'}}>  {this.state.provinceError}</label>
-                    <br></br>
-                    <br></br>
-
-                    <label>Postal Code: </label>
-                    <input 
-                    type="text" 
-                    id="postalCode" 
-                    name="postalCode" 
-                    label="Postal Code" 
-                    value={this.state.postalCode} 
-                    onChange={event => this.handleChange(event)}
-                    error={this.state.postalCodeError.length > 0}/>
-                    <label style={{color: 'red'}}>  {this.state.postalCodeError}</label>
-                    <br></br>
-                    <br></br>
-                    
-                    <label>Phone Number: </label>
-                    <input 
-                    type="text" 
-                    id="phoneNumber" 
-                    name="phoneNumber" 
-                    label="Phone Number" 
-                    value={this.state.phoneNumber} 
-                    placeholder="(123) 123-4567"
-                    onChange={event => this.handleChange(event)}
-                    error={this.state.phoneNumberError.length > 0}/>
-                    <label style={{color: 'red'}}>  {this.state.phoneNumberError}</label>
-                    <br></br>
-                    <br></br>
-
-                    <label>Start Date: </label>
-                    <input 
-                    type="date" 
-                    id="dateStart" 
-                    name="dateStart" 
-                    label="Start Date"
-                    value={this.state.dateStart} 
-                    onChange={event => this.handleChange(event)}
-                    error={this.state.dateStart.length > 0}/>
-                    <label style={{color: 'red'}}>  {this.state.dateStartError}</label>
-                    <br></br>
-                    <br></br>
-
-                    <label>End Date: </label>
-                    <input 
-                    type="date" 
-                    id="dateEnd" 
-                    name="dateEnd" 
-                    label="End Date"
-                    value={this.state.dateEnd} 
-                    onChange={event => this.handleChange(event)}
-                    error={this.state.dateEnd.length > 0}/>
-                    <label style={{color: 'red'}}>  {this.state.dateEndError}</label>
-                    <br></br>
-                    <br></br>
-
-                    <label>Start Time: </label>
-                    <input 
-                    type="time" 
-                    id="timeStart" 
-                    name="timeStart" 
-                    label="Start Time"
-                    value={this.state.timeStart} 
-                    onChange={event => this.handleChange(event)}
-                    error={this.state.timeStart.length > 0}/>
-                    <label style={{color: 'red'}}>  {this.state.timeStartError}</label>
-                    <br></br>
-                    <br></br>
-
-                    <label>End Time: </label>
-                    <input 
-                    type="time" 
-                    id="timeEnd" 
-                    name="timeEnd" 
-                    label="End Time"
-                    value={this.state.timeEnd} 
-                    onChange={event => this.handleChange(event)}
-                    error={this.state.timeEnd.length > 0}/>
-                    <label style={{color: 'red'}}>  {this.state.timeEndError}</label>
-                    <br></br>
-                    <br></br>
-
-                    <label>Repeat: </label>                   
-                    <select 
-                    id="repeat" 
-                    name="repeat" 
-                    label="Repeat"
-                    value={this.state.repeat} 
-                    onChange={event => this.handleChange(event)} >
-                        {repeats.map(option => (
-                        <option key={option.value} value={option.value}>
-                            {option.label}
-                        </option>
-                        ))}
-                    </select>
-                    <br></br>
-                    <br></br>
-
-                    <input 
-                    type="button" 
-                    value="Create" 
-                    onClick={this.handleNext}/>
-                    <br></br>
-                    <br></br>
-
-                </form>
-            </div>
+            <React.Fragment>
+                <Header appName='Migrant Hub' />
+                {this.state.messageFromServer.split('\n').map((item, key) => {
+                    return <span key={key}>{item}<br/></span>
+                })}
+                {this.renderRedirectToAllEvents()}
+                <Typography variant="title" gutterBottom>
+                    Create Event Form
+                </Typography>
+                <Grid container spacing={24}>
+                    <Grid item xs={6}>
+                        <TextField 
+                            id="visibility"
+                            name="visibility" 
+                            label="Visibility"
+                            select
+                            className={classes.select}
+                            value={this.state.visibility} 
+                            onChange={event => this.handleChange(event)}
+                            fullWidth>
+                                {visibilities.map(option => (
+                                    <MenuItem key={option.value} value={option.value} >
+                                        {option.label}
+                                    </MenuItem>
+                                ))}
+                        </TextField>
+                    </Grid>
+                    <Grid item xs={6}>
+                        <TextField 
+                            id="repeat"
+                            name="repeat" 
+                            label="Repeat"
+                            select
+                            className={classes.select}
+                            value={this.state.repeat} 
+                            onChange={event => this.handleChange(event)}
+                            fullWidth>
+                                {repeats.map(option => (
+                                    <MenuItem key={option.value} value={option.value} >
+                                        {option.label}
+                                    </MenuItem>
+                                ))}
+                        </TextField>
+                    </Grid>
+                    <Grid item xs={12}>
+                        <TextField
+                            type="text"
+                            id="eventName" 
+                            name="eventName" 
+                            label="Event Name"
+                            value={this.state.eventName} 
+                            onChange={event => this.handleChange(event)} 
+                            helperText={this.state.eventNameError}
+                            error={this.state.eventNameError.length > 0}
+                            fullWidth
+                        />
+                    </Grid>
+                    <Grid item xs={12}>
+                        <TextField 
+                            id="description" 
+                            name="description" 
+                            label="Description" 
+                            value={this.state.description}
+                            onChange={event => this.handleChange(event)} 
+                            helperText={this.state.descriptionError}
+                            error={this.state.descriptionError.length > 0}
+                            fullWidth
+                        />
+                    </Grid>
+                    <Grid item xs={12}>
+                        <TextField 
+                            id="address" 
+                            name="address" 
+                            label="Address" 
+                            value={this.state.location.address} 
+                            onChange={this.handleEditSingleObject("location", "address")}
+                            helperText={this.state.addressError}
+                            error={this.state.addressError.length > 0}
+                            fullWidth
+                        />
+                    </Grid>
+                    <Grid item xs={12}>
+                        <TextField 
+                            id="apartment" 
+                            name="apartment" 
+                            label="Apartment" 
+                            value={this.state.location.apartment} 
+                            onChange={this.handleEditSingleObject("location", "apartment")}
+                            helperText={this.state.apartmentError}
+                            error={this.state.apartmentError.length > 0}
+                            fullWidth
+                        />
+                    </Grid>
+                    <Grid item xs={12}>
+                        <TextField 
+                            id="city" 
+                            name="city" 
+                            label="City" 
+                            value={this.state.location.city} 
+                            onChange={this.handleEditSingleObject("location", "city")}
+                            helperText={this.state.cityError}
+                            error={this.state.cityError.length > 0}
+                            fullWidth
+                        />
+                    </Grid>
+                    <Grid item xs={12}>
+                        <TextField 
+                            id="province" 
+                            name="province" 
+                            label="Province"
+                            select
+                            className={classes.select}
+                            value={this.state.location.province} 
+                            onChange={this.handleEditSingleObject("location", "province")}
+                            helperText={this.state.provinceError}
+                            error={this.state.provinceError.length > 0}
+                            fullWidth>
+                                {provinces.map(option => (
+                                    <MenuItem key={option.value} value={option.value} >
+                                        {option.label}
+                                    </MenuItem>
+                                ))}
+                        </TextField>
+                    </Grid>
+                    <Grid item xs={12}>
+                        <TextField 
+                            id="postalCode" 
+                            name="postalCode" 
+                            label="Postal Code" 
+                            value={this.state.location.postalCode} 
+                            onChange={this.handleEditSingleObject("location", "postalCode")}
+                            helperText={this.state.postalCodeError}
+                            error={this.state.postalCodeError.length > 0}
+                            InputProps={{
+                                inputComponent: PostalCodeMask,
+                            }}
+                            fullWidth
+                        />
+                    </Grid>
+                    <Grid item xs={12}>
+                        <TextField 
+                            id="phoneNumber" 
+                            name="phoneNumber" 
+                            label="Phone Number" 
+                            value={this.state.location.phoneNumber} 
+                            placeholder="(123) 123-4567"
+                            onChange={this.handleEditSingleObject("location", "phoneNumber")}
+                            helperText={this.state.phoneNumberError}
+                            error={this.state.phoneNumberError.length > 0}
+                            InputProps={{
+                                inputComponent: PhoneMask,
+                            }}
+                            fullWidth
+                        />
+                    </Grid>
+                    <Grid item xs={6}>
+                        <TextField 
+                            type="date" 
+                            id="dateStart" 
+                            name="dateStart" 
+                            label="Start Date"
+                            className={classes.textField}
+                            value={this.state.dateStart} 
+                            onChange={event => this.handleChange(event)}
+                            helperText={this.state.dateStartError}
+                            error={this.state.dateStartError.length > 0}
+                            InputLabelProps={{
+                                shrink: true,
+                            }}
+                            fullWidth
+                        />
+                    </Grid>
+                    <Grid item xs={6}>
+                        <TextField 
+                            type="date" 
+                            id="dateEnd" 
+                            name="dateEnd" 
+                            label="End Date"
+                            className={classes.textField}
+                            value={this.state.dateEnd} 
+                            onChange={event => this.handleChange(event)}
+                            helperText={this.state.dateEndError}
+                            error={this.state.dateEndError.length > 0}
+                            InputLabelProps={{
+                                shrink: true,
+                            }}
+                            fullWidth
+                        />
+                    </Grid>
+                    <Grid item xs={6}>
+                        <TextField
+                            id="timeStart" 
+                            name="timeStart" 
+                            className={classes.textField}
+                            label="Start Time"
+                            type="time"
+                            value={this.state.timeStart} 
+                            onChange={event => this.handleChange(event)}
+                            helperText={this.state.timeStartError}
+                            error={this.state.timeStartError.length > 0}
+                            fullWidth
+                            InputLabelProps={{
+                                shrink: true,
+                            }}
+                            inputProps={{
+                                step: 300,
+                            }}
+                        />
+                    </Grid>
+                    <Grid item xs={6}>
+                        <TextField
+                            id="timeEnd" 
+                            name="timeEnd" 
+                            className={classes.textField}
+                            label="End Time"
+                            type="time"
+                            value={this.state.timeEnd} 
+                            onChange={event => this.handleChange(event)}
+                            helperText={this.state.timeEndError}
+                            error={this.state.timeEndError.length > 0}
+                            fullWidth
+                            InputLabelProps={{
+                                shrink: true,
+                            }}
+                            inputProps={{
+                                step: 300,
+                            }}
+                        />
+                    </Grid>
+                    <Grid item xs={12}>
+                        <Typography variant="subheading" gutterBottom className={classes.row} align="left">
+                            Select image to upload (Optional)
+                        </Typography>
+                        <TextField
+                            id="ecentImage"
+                            type="file"
+                            onChange={event => this.handleUploadImage(event)}
+                            helperText={this.state.eventImageError}
+                            error={this.state.eventImageError.length > 0}
+                        />
+                    </Grid>
+                    <Button
+                        variant="contained"
+                        color="primary"
+                        onClick={this.handleNext}
+                        className={classes.button}
+                    >
+                        Create
+                    </Button>
+                </Grid>
+            </React.Fragment>
         );
     }
 }
 
-export default (CreatEvent);
+CreateEvent.propTypes = {
+    classes: PropTypes.object.isRequired,
+};
+
+export default withStyles(styles)(CreateEvent);
 

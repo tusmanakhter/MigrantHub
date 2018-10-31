@@ -14,6 +14,7 @@ import EditBusiness from '../account/business/EditBusiness';
 import AdminDashboard from '../admin/AdminDashboard';
 import ServiceForm from "../services/ServiceForm";
 import ServiceList from "../services/ServiceList";
+import EventList from "../events/EventList";
 import CreateEvent from "../events/CreateEvent";
 
 export const Routes = () => (
@@ -31,7 +32,8 @@ export const Routes = () => (
     <Route path="/admin/dashboard" component={AdminDashboard} exact />
     <Route path="/services/create" component={ServiceForm} exact />
     <Route path="/services" component={ServiceList} exact />
-    <Route path="/event/create" component={CreateEvent} exact />
+    <Route path="/events" component={EventList} exact />
+    <Route path="/events/create" component={CreateEvent} exact />
     <Route component={Error} />
   </Switch>
   
