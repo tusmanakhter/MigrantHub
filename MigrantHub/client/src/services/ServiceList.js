@@ -88,8 +88,9 @@ class ServiceList extends Component {
                 </Button>
                 <Paper className={classes.root} elevation={2}>
                     {
-                        this.state.items.map(function(item){
+                        this.state.items.map((item) => {
                             return <ServiceItem
+                                serviceId={item._id}
                                 serviceTitle={item.serviceTitle}
                                 serviceImagePath={item.serviceImagePath}
                                 serviceDescription={item.serviceDescription}
@@ -97,6 +98,8 @@ class ServiceList extends Component {
                                 serviceLocation={item.location}
                                 serviceDate={item.serviceDate}
                                 serviceHours={item.serviceHours}
+                                editMode={this.state.editMode}
+                                editOwner={this.state.editOwner}
                             ></ServiceItem>
                         })
                     }

@@ -67,4 +67,18 @@ module.exports = {
             res.send(services);
         });
     },
+
+    getServiceData : function (req, res) {
+        let query ={};
+
+        if(req.query._id !== '') {
+            query["_id"] = req.query._id;
+        }
+
+        Services.findOne(query, function(err, services) {
+            console.log(services);
+
+            res.send(services);
+        });
+    },
 };
