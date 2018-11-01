@@ -93,11 +93,12 @@ class Header extends Component {
   constructor(props){
     super(props);
     this.state = {
-      anchorEl: null,
-      mobileMoreAnchorEl: null,
-      redirectTo: false,
-      redirectToURL: '',
-      type: ''
+        anchorEl: null,
+        mobileMoreAnchorEl: null,
+        redirectTo: false,
+        redirectToURL: '',
+        redirectState: {},
+        type: ''
     }
 
       this.getUser = this.getUser.bind(this);
@@ -129,56 +130,56 @@ class Header extends Component {
   };
 
   getUser(event){
-      axios.get('/account/get/user').then(function (response) {
-          if(response.status===200){
-              event.setState({
-                  type: response.data.type,
-                  email: response.data.email,
-              })
-          }
-      }).catch(function(error){
-
-      })
-  }
-
-    handleMenuClick = event => {
-        if(event.target.id === 'editProfile'){
-            if(this.state.type === "migrant"){
-                this.setState({
-                    redirectTo: true,
-                    redirectToURL: '/editmigrant'
-                })
-            } else if(this.state.type === "business") {
-                this.setState({
-                    redirectTo: true,
-                    redirectToURL: '/editbusiness'
-                })
-            }
-        }else if(event.target.id === 'myServices'){
-            this.setState({
-                redirectTo: true,
-                redirectToURL: '/myservices',
-                redirectState: {
-                    editOwner: this.state.email,
-                    editMode: true,
-                }
-            })
-        }else if(event.target.id === 'main') {
-            this.setState({
-                redirectTo: true,
-                redirectToURL: '/main',
+    axios.get('/account/get/user').then(function (response) {
+        if(response.status===200){
+            event.setState({
+                type: response.data.type,
+                email: response.data.email,
             })
         }
+    }).catch(function(error){
+
+    })
+  }
+
+  handleMenuClick = event => {
+    if(event.target.id === 'editProfile'){
+        if(this.state.type === "migrant"){
+            this.setState({
+                redirectTo: true,
+                redirectToURL: '/editmigrant'
+            })
+        } else if(this.state.type === "business") {
+            this.setState({
+                redirectTo: true,
+                redirectToURL: '/editbusiness'
+            })
+        }
+    }else if(event.target.id === 'myServices'){
+        this.setState({
+            redirectTo: true,
+            redirectToURL: '/myservices',
+            redirectState: {
+                editOwner: this.state.email,
+                editMode: true,
+            }
+        })
+    }else if(event.target.id === 'main') {
+        this.setState({
+            redirectTo: true,
+            redirectToURL: '/main',
+        })
     }
+  }
 
   render() {
 
-      if (this.state.redirectTo) {
-          return (<Redirect to={{
-              pathname : this.state.redirectToURL,
-              state : this.state.redirectState
-          }} />)
-      }
+    if (this.state.redirectTo) {
+      return (<Redirect to={{
+          pathname : this.state.redirectToURL,
+          state : this.state.redirectState
+      }} />)
+    }
 
     const { anchorEl, mobileMoreAnchorEl } = this.state;
     const { classes } = this.props;

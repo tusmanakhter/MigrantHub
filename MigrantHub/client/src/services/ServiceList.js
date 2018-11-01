@@ -3,10 +3,9 @@ import ServiceItem from "./ServiceItem";
 import withStyles from '@material-ui/core/styles/withStyles';
 import Button from '@material-ui/core/Button';
 import Paper from '@material-ui/core/Paper';
-import axios from 'axios';
 import { Redirect } from 'react-router-dom'
 import Header from '../components/Header/Header';
-
+import axios from 'axios';
 var qs = require('qs');
 
 const styles = theme => ({
@@ -24,6 +23,8 @@ class ServiceList extends Component {
         this.state = {
             items: [],
             redirectToServiceForm: false,
+            editMode: '',
+            editOwner: '',
         };
 
         this.getData = this.getData.bind(this);
@@ -66,6 +67,7 @@ class ServiceList extends Component {
             redirectToServiceForm: true
         })
     }
+
     renderRedirectToServiceForm = () => {
         if (this.state.redirectToServiceForm) {
             return <Redirect to='/services/create' />
@@ -76,8 +78,9 @@ class ServiceList extends Component {
         const { classes } = this.props;
         return(
             <div>
+                <Header></Header>
+
                 {this.renderRedirectToServiceForm()}
-                <Header appName='Migrant Hub' />
                 <Button
                     variant="contained"
                     color="primary"

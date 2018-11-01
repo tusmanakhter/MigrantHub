@@ -37,16 +37,15 @@ module.exports = {
             services.location = parsedObj.location;
             services.serviceHours = parsedObj.serviceHours;
             if(parsedObj.serviceImageName === 'cameraDefault.png'){
-                services.serviceImagePath = ('/default/' +parsedObj.serviceImageName);
+                services.serviceImagePath = ('../default/' +parsedObj.serviceImageName);
             }else{
-                services.serviceImagePath = (req.user._id + "/services/" + parsedObj.serviceImageName);
+                services.serviceImagePath = ('../' + req.user._id + "/services/" + parsedObj.serviceImageName);
             }
             services.dateCreated = date;
             services.save(function (err) {
                 if (err) {
                     console.log(err)
                     res.status(400).send("There was a error creating service.");
-                    // Todo: Should create log with error
                 } else {
                     res.status(200).send('Service has been created!');
                 }
@@ -80,5 +79,56 @@ module.exports = {
 
             res.send(services);
         });
+    },
+
+    updateService: function(req, res) {
+
+        let parsedObj = qs.parse(req.body.serviceDetails);
+        let errors = ServiceValidator(parsedObj);
+
+        if (errors == "") {
+            console.log("here" + parsedObj.serviceTitle);
+            console.log("here" + parsedObj.serviceId);
+
+            if (parsedObj.location === undefined) {
+                parsedObj.location = {};
+            }
+            if (parsedObj.serviceDate === undefined) {
+                parsedObj.serviceDate = {};
+            }
+            if (parsedObj.serviceHours === undefined) {
+                parsedObj.serviceHours = [];
+            }
+
+            console.log("Server image path old" + parsedObj.serviceImagePath);
+            console.log("Server image path new" + '../' + req.user._id + "/services/" + parsedObj.serviceImageName);
+
+            console.log("uploads/" + parsedObj.serviceImagePath.toString().substring(3))
+
+            if ((parsedObj.serviceImagePath !== undefined) && (parsedObj.serviceImagePath !== ('../' + req.user._id + "/services/" + parsedObj.serviceImageName))) {
+                console.log("This is a new file.");
+                fs.remove("uploads/" + parsedObj.serviceImagePath.toString().substring(3), function (err) {
+                    if (err) {
+                        return res.status(404).send(err);
+                    }
+
+                    console.log('Old file removed!')
+                })
+            }
+
+            if (parsedObj.serviceImageName === 'cameraDefault.png') {
+                parsedObj.serviceImagePath = ('../default/' + parsedObj.serviceImageName);
+            } else {
+                parsedObj.serviceImagePath = ('../' + req.user._id + "/services/" + parsedObj.serviceImageName);
+            }
+
+            Services.findByIdAndUpdate({_id: parsedObj.serviceId}, parsedObj, {new: true}, (err) => {
+                    if (err) {
+                        return res.status(500).send(err);
+                    }
+                    return res.status(200).send("There was an error updating service.");
+                }
+            )
+        }
     },
 };

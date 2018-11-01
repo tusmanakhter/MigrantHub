@@ -126,7 +126,7 @@ const styles = theme => ({
         width: 400,
         length: 300,
 
-    },
+    }
 });
 class ServiceForm extends Component {
 
@@ -163,12 +163,14 @@ class ServiceForm extends Component {
             serviceImageName: '',
             serviceImagePath: '',
             tempServiceImagePath: '',
+            titleError: '',
             serviceDescription: '',
             serviceSummary: '',
             serviceTitle: '',
             addLocation: false,
             addServiceDate: false,
             serviceHoursCount: 0,
+            dataRetrieved: false,
 
             // Server response
             messageFromServer: '',
@@ -262,7 +264,9 @@ class ServiceForm extends Component {
 
     handleUpdate = () => {
         let error = this.validate();
-
+        if (!error) {
+            this.updateService(this);
+        }
     };
 
     handleEditSingleObject = (name, fieldName) => (event) => {
@@ -502,6 +506,8 @@ class ServiceForm extends Component {
             serviceSummary: e.state.serviceSummary,
             serviceImageName: imageName,
         }));
+        console.log(formData);
+
         axios.post('/services/create',formData,
             {
                 headers: {
@@ -519,6 +525,59 @@ class ServiceForm extends Component {
             e.setState({
                 messageFromServer: error.response.data
             });
+        })
+    }
+
+    updateService(e) {
+        let imageName = e.state.serviceImageName;
+
+        if(e.state.serviceImageName = ''){
+            imageName = 'cameraDefault.png';
+        }else if(e.state.serviceImage !== null){
+            imageName = e.state.serviceImage.name
+        }
+        let location = {};
+        if(this.state.addLocation) {
+            location = e.state.location
+        }
+        let serviceDate = {};
+        if(this.state.addServiceDate) {
+            serviceDate = e.state.serviceDate
+        }
+        console.log(e.state.serviceTitle);
+
+        let formData = new FormData();
+        formData.append('serviceImage', e.state.serviceImage);
+        formData.append('serviceDetails', qs.stringify({
+            location: location,
+            serviceHours: e.state.serviceHours,
+            serviceDate: serviceDate,
+            serviceTitle: e.state.serviceTitle,
+            serviceDescription: e.state.serviceDescription,
+            serviceSummary: e.state.serviceSummary,
+            serviceImageName: imageName,
+            serviceId: e.state.serviceId,
+            serviceImagePath: e.state.serviceImagePath,
+        }));
+        axios.post('/services/update',formData,
+            {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            }).then(response => {
+
+            if (response.status === 200) {
+                this.setState({
+                    messageFromServer: response.data,
+                    redirectToAllServices: true
+                })
+            }
+        }).catch(error => {
+
+            e.setState({
+                messageFromServer: error.response.data
+            });
+
         })
     }
 
