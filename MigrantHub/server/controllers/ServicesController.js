@@ -57,8 +57,14 @@ module.exports = {
     },
 
     viewServices : function (req, res) {
-        Services.find({}, function(err, services) {
+        let query ={};
+
+        if(req.query.editOwner !== '') {
+            console.log("EditOwner" + req.query.editOwner);
+            query["email"] = req.query.editOwner;
+        }
+        Services.find(query, function(err, services) {
             res.send(services);
         });
-    }
+    },
 };

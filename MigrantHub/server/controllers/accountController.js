@@ -201,9 +201,15 @@ module.exports = {
     )
   },
 
-  getUserType: function(req, res) {
-
-    let type = req.user.type;
-    res.status(200).send(type)
+  getUser: function(req, res) {
+      if(req.user){
+          let user = {
+              email: req.user._id,
+              type: req.user.type,
+          };
+          res.status(200).send(user)
+      }else{
+          res.status(404).send("Error retrieving user")
+      }
   },
 }; 

@@ -7,6 +7,8 @@ import axios from 'axios';
 import { Redirect } from 'react-router-dom'
 import Header from '../components/Header/Header';
 
+var qs = require('qs');
+
 const styles = theme => ({
     root: {
         ...theme.mixins.gutters(),
@@ -36,10 +38,26 @@ class ServiceList extends Component {
     }
 
     getData(event){
-        axios.get('/services/view/all')
-            .then(function(response) {
-                event.setState({items: response.data});
-            }).catch(error => {
+        let editOwnerEmail ='';
+        if(this.props.location.state){
+            console.log("Owner" + this.props.location.state  + " " + this.props.location.state.editOwner);
+            event.setState({
+                editMode: this.props.location.state.editMode,
+                editOwner: this.props.location.state.editOwner
+            });
+
+            editOwnerEmail=this.props.location.state.editOwner;
+        }
+        axios.get('/services/view/all/',{
+            params: {
+                editOwner: editOwnerEmail
+            }
+        }).then(function(response) {
+            event.setState({
+                items: response.data
+            });
+        }).catch(error => {
+
         })
     }
 
