@@ -21,11 +21,11 @@ const GoogleMapWithMarker = compose(
             let geocoder = new google.maps.Geocoder()
 
             geocoder.geocode( { 'address':
-            this.props.eventLocation.address + ' ' +
-            this.props.eventLocation.apartment + ', ' +
-            this.props.eventLocation.city + ', ' +
-            this.props.eventLocation.province + ' '  +
-            this.props.eventLocation.postalCode}, function(results1, status1) {
+            this.props.location.address + ' ' +
+            this.props.location.apartment + ', ' +
+            this.props.location.city + ', ' +
+            this.props.location.province + ' '  +
+            this.props.location.postalCode}, function(results1, status1) {
                 if (status1 == 'OK') {
                     this.setState({
                         lat: results1[0].geometry.location.lat(),
@@ -54,7 +54,7 @@ class GoogleMaps extends Component {
         return(
             <div>
                 <GoogleMapWithMarker
-                    eventLocation={this.props.eventLocation}
+                    location={this.props.location}
                 />
             </div>
         );

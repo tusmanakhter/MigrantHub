@@ -77,10 +77,10 @@ class EventList extends Component {
                                 eventImagePath={item.eventImagePath}
                                 description={item.description}
                                 location={item.location}
-                                startDate={item.startDate}
-                                endDate={item.endDate}
-                                startTime={item.startTime}
-                                endTime={item.endTime}
+                                dateStart={item.dateStart}
+                                dateEnd={item.dateEnd}
+                                timeStart={item.timeStart}
+                                timeEnd={item.timeEnd}
                             ></EventItem>
                         })
                     }

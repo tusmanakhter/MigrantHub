@@ -18,50 +18,50 @@ var multerStorage = multer.diskStorage({
 
 module.exports = {
 
-  upload : multer({ storage: multerStorage }),
+    upload : multer({ storage: multerStorage }),
 
-  createEvent: function(req, res) {
-    let parsedObj = qs.parse(req.body);
-    let errors = CreateEventValidator(parsedObj);
-    
-    if (errors == "") {
-      let event = new Event();
+    createEvent: function(req, res) {
+        let parsedObj = qs.parse(req.body);
+        let errors = CreateEventValidator(parsedObj);
+      
+        if (errors == "") {
+            let event = new Event();
 
-      event.creator = req.user._id;
-      event.visibility = parsedObj.visibility;
-      event.eventName = parsedObj.eventName;
-      event.description = parsedObj.description;
-      event.location = parsedObj.location;
-      event.dateStart = parsedObj.dateStart;
-      event.dateEnd = parsedObj.dateEnd;
-      event.timeStart = parsedObj.timeStart;
-      event.secondsStart = parsedObj.secondsStart;
-      event.timeEnd = parsedObj.timeEnd;
-      event.repeat = parsedObj.repeat;
-      event.secondsEnd = parsedObj.secondsEnd;
-      if(parsedObj.eventImageName === 'cameraDefault.png'){
-        event.eventImagePath = ('/default/' +parsedObj.eventImageName);
-      }else{
-          event.eventImagePath = (req.user._id + "/events/" + parsedObj.eventImageName);
-      }
+            event.creator = req.user._id;
+            event.visibility = parsedObj.visibility;
+            event.eventName = parsedObj.eventName;
+            event.description = parsedObj.description;
+            event.location = parsedObj.location;
+            event.dateStart = parsedObj.dateStart;
+            event.dateEnd = parsedObj.dateEnd;
+            event.timeStart = parsedObj.timeStart;
+            event.secondsStart = parsedObj.secondsStart;
+            event.timeEnd = parsedObj.timeEnd;
+            event.repeat = parsedObj.repeat;
+            event.secondsEnd = parsedObj.secondsEnd;
+            if(parsedObj.eventImageName === 'cameraDefault.png'){
+            event.eventImagePath = ('/default/' +parsedObj.eventImageName);
+            }else{
+                event.eventImagePath = (req.user._id + "/events/" + parsedObj.eventImageName);
+            }
 
-      event.save(function (err) {
-        if (err) {
-          res.send("There was a error saving event.");
-          // Todo: Should create with error
-          console.log(err)
+            event.save(function (err) {
+            if (err) {
+                res.send("There was a error saving event.");
+                // Todo: Should create with error
+                console.log(err)
+            } else {
+                res.send('Event has been added!');
+            }
+            });
         } else {
-          res.send('Event has been added!');
+        res.send(errors);
         }
-      });
-    } else {
-      res.send(errors);
-    }
-  },
+    },
 
-  viewEvents: function (req, res) {
-    Event.find({}, function(err, events) {
-        res.send(events);
-    });
-}
+    viewEvents: function (req, res) {
+        Event.find({}, function(err, events) {
+            res.send(events);
+        });
+    }
 };

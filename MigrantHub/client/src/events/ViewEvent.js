@@ -46,34 +46,34 @@ class ViewEvent extends Component {
                     <DialogTitle id="scroll-dialog-title">{this.props.eventName}</DialogTitle>
                     <DialogContent >
                         <Typography variant="h5" color="inherit" paragraph>
-                            Event Description:<br/><br/>{this.props.description}
+                            Description:<br/><br/>{this.props.description}
                         </Typography>
 
                         <Grid container spacing={12}>
                             <Typography variant="h5" color="inherit" paragraph>
-                                Event date:
+                                Date:
                             </Typography>
                             <Grid container spacing={12}>
                                 <Grid item xs={12}>
-                                    Start date: {this.props.startDate}
+                                    Start date: {this.props.dateStart.substring(0,10)}
                                 </Grid>
                                 <Grid item xs={12}>
-                                    End date: {this.props.endDate}
+                                    End date: {this.props.dateEnd.substring(0,10)}
                                 </Grid>
                             </Grid>
                         </Grid>
                     
                         <Typography variant="h5" color="inherit" paragraph>
-                            <br/>Event Hours:
+                            <br/>Time:
                         </Typography>
 
                         <Grid justify="center" container item xs>
                             <Grid container spacing={12}>
                                 <Grid item xs={6}>
-                                    Start time: {this.props.startTime}
+                                    Start time: {this.props.timeStart}
                                 </Grid>
                                 <Grid item xs={6}>
-                                    End time: {this.props.endTime}
+                                    End time: {this.props.timeEnd}
                                 </Grid>
                             </Grid>
                         </Grid>

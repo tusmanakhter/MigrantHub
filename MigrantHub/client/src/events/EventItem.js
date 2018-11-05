@@ -72,10 +72,10 @@ class EventItem extends Component {
                         eventImagePath={this.props.eventImagePath}
                         description={this.props.description}
                         location={this.props.location}
-                        startDate={this.props.startDate}
-                        endDate={this.props.endDate}
-                        startTime={this.props.startTime}
-                        endTime={this.props.endTime}
+                        dateStart={this.props.dateStart}
+                        dateEnd={this.props.dateEnd}
+                        timeStart={this.props.timeStart}
+                        timeEnd={this.props.timeEnd}
                     />
                 </CardActions>
             </Card>

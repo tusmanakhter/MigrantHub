@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import validator from 'validator';
 import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
@@ -7,13 +6,11 @@ import PropTypes from 'prop-types';
 import withStyles from '@material-ui/core/styles/withStyles';
 import MenuItem from '@material-ui/core/MenuItem';
 import Button from '@material-ui/core/Button';
-import AddIcon from '@material-ui/icons/Add';
-import DeleteIcon from '@material-ui/icons/Delete';
-import Paper from '@material-ui/core/Paper';
+import validator from 'validator';
 import MaskedInput from 'react-text-mask';
 import Header from '../components/Header/Header';
-import { Redirect } from 'react-router-dom'
 import axios from 'axios';
+import { Redirect } from 'react-router-dom'
 
 var qs = require('qs');
 
@@ -65,25 +62,6 @@ const styles = theme => ({
     select: {
         textAlign: 'left'
     },
-    paper: {
-        width: "100%",
-        marginTop: theme.spacing.unit,
-        marginBottom: theme.spacing.unit,
-        paddingTop: theme.spacing.unit * 2,
-        paddingBottom: theme.spacing.unit * 2,
-        paddingLeft: theme.spacing.unit * 2,
-        [theme.breakpoints.up(600 + theme.spacing.unit * 3 * 2)]: {
-            marginTop: theme.spacing.unit,
-            marginBottom: theme.spacing.unit,
-            paddingTop: theme.spacing.unit * 3,
-            paddingBottom: theme.spacing.unit * 3,
-            paddingLeft: theme.spacing.unit * 3,
-        },
-        layout: {
-            marginLeft: theme.spacing.unit,
-            marginRight: theme.spacing.unit,
-        },
-    },
     timeContainer: {
         display: 'flex',
         flexWrap: 'wrap',
@@ -133,6 +111,8 @@ class CreateEvent extends Component {
             visibility: '',
             eventName: '',
             description: '',
+
+            //Image
             eventImage: null,
             eventImageName: '',
 
@@ -170,7 +150,6 @@ class CreateEvent extends Component {
             timeEndError: '',
             repeatError: '',
             eventImageError: '',
-
 
             // DB response
             messageFromServer: '',
@@ -263,6 +242,13 @@ class CreateEvent extends Component {
             errors.timeEndError = "End time is invalid";
             isError = true;
         }
+
+        if(this.state.eventImage !== null) {
+            if (!validator.matches(this.state.eventImageName, '.(\.jpg|\.jpeg|\.png)$')) {
+                errors.eventImageError = "Invalid image format. Should be either .jpg, .jpeg or .png";
+                isError = true
+            }
+        }
         
         this.setState({
             ...this.state,
@@ -300,9 +286,8 @@ class CreateEvent extends Component {
         if(this.state.eventImage !== null){
             imageName = this.state.eventImage.name
         }
-        else{
-            this.state.eventImageName = imageName;
-        }
+
+        this.state.eventImageName = imageName;
 
         let error = this.validate();
         if (!error) {
@@ -335,18 +320,16 @@ class CreateEvent extends Component {
 
     // Send event data in post body to add to mongodb
     createEvent(e) {
+
+        let location = {};
+        location = e.state.location;
         axios.post('/events/create',
             qs.stringify({
                 creator: e.state.creator,
                 visibility: e.state.visibility,
                 eventName: e.state.eventName,
                 description: e.state.description,
-                address: e.state.location.address,
-                apartment: e.state.location.apartment,
-                city: e.state.location.city,
-                province: e.state.location.province,
-                postalCode: e.state.locationpostalCode,
-                phoneNumber: e.state.location.phoneNumber,
+                location: location,
                 dateStart: e.state.dateStart,
                 dateEnd:e.state.dateEnd,
                 timeStart: e.state.timeStart,
@@ -354,7 +337,8 @@ class CreateEvent extends Component {
                 timeEnd: e.state.timeEnd,
                 secondsEnd: e.state.secondsEnd,
                 repeat: e.state.repeat,
-                eventImage: e.state.eventImage
+                eventImage: e.state.eventImage,
+                eventImageName: e.state.eventImageName
             })).then(function (response) {
             e.setState({
                 messageFromServer: response.data
@@ -612,7 +596,7 @@ class CreateEvent extends Component {
                             Select image to upload (Optional)
                         </Typography>
                         <TextField
-                            id="ecentImage"
+                            id="eventImage"
                             type="file"
                             onChange={event => this.handleUploadImage(event)}
                             helperText={this.state.eventImageError}
