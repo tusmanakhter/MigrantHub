@@ -25,7 +25,6 @@ var eventSchema = new Schema({
     repeat: {type: String, required : true}, 
     eventImagePath: { type: String, required: false },
 
-    
 }, { collection: 'Event' });
 
 module.exports = mongoose.model('Event', eventSchema);

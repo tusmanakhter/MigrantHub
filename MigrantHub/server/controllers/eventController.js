@@ -21,7 +21,7 @@ module.exports = {
     upload : multer({ storage: multerStorage }),
 
     createEvent: function(req, res) {
-        let parsedObj = qs.parse(req.body);
+        let parsedObj = qs.parse(req.body.eventDetails);
         let errors = CreateEventValidator(parsedObj);
       
         if (errors == "") {

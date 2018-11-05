@@ -282,13 +282,6 @@ class CreateEvent extends Component {
         if(this.state.province === '') this.state.province = 'AB';
         if(this.state.repeat === '') this.state.repeat = 'no';
 
-        let imageName = 'cameraDefault.png';
-        if(this.state.eventImage !== null){
-            imageName = this.state.eventImage.name
-        }
-
-        this.state.eventImageName = imageName;
-
         let error = this.validate();
         if (!error) {
           this.createEvent(this);
@@ -323,23 +316,39 @@ class CreateEvent extends Component {
 
         let location = {};
         location = e.state.location;
-        axios.post('/events/create',
-            qs.stringify({
-                creator: e.state.creator,
-                visibility: e.state.visibility,
-                eventName: e.state.eventName,
-                description: e.state.description,
-                location: location,
-                dateStart: e.state.dateStart,
-                dateEnd:e.state.dateEnd,
-                timeStart: e.state.timeStart,
-                secondsStart: e.state.secondsStart,
-                timeEnd: e.state.timeEnd,
-                secondsEnd: e.state.secondsEnd,
-                repeat: e.state.repeat,
-                eventImage: e.state.eventImage,
-                eventImageName: e.state.eventImageName
-            })).then(function (response) {
+
+        let imageName = 'cameraDefault.png';
+        if(e.state.eventImage !== null){
+            imageName = e.state.eventImage.name
+        }
+
+        this.state.eventImageName = imageName;
+
+        let formData = new FormData();
+        formData.append('eventImage', e.state.eventImage);
+        formData.append('eventDetails',qs.stringify({
+            creator: e.state.creator,
+            visibility: e.state.visibility,
+            eventName: e.state.eventName,
+            description: e.state.description,
+            location: location,
+            dateStart: e.state.dateStart,
+            dateEnd:e.state.dateEnd,
+            timeStart: e.state.timeStart,
+            secondsStart: e.state.secondsStart,
+            timeEnd: e.state.timeEnd,
+            secondsEnd: e.state.secondsEnd,
+            repeat: e.state.repeat,
+            eventImage: e.state.eventImage,
+            eventImageName: imageName
+        }));
+
+        axios.post('/events/create', formData, 
+            {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            }).then(function (response) {
             e.setState({
                 messageFromServer: response.data
             });
