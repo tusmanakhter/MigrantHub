@@ -63,7 +63,11 @@ module.exports = {
             query["email"] = req.query.editOwner;
         }
         Services.find(query, function(err, services) {
-            res.send(services);
+            if (err) {
+                res.status(400).send("There was a error getting services.");
+            } else {
+                res.status(200).send(services);
+            }
         });
     },
 
@@ -75,20 +79,22 @@ module.exports = {
         }
 
         Services.findOne(query, function(err, services) {
-            console.log(services);
-
-            res.send(services);
+            if (err) {
+                res.status(400).send("There was a error getting services.");
+            } else {
+                res.status(200).send(services);
+            }
         });
     },
 
     updateService: function(req, res) {
 
+        let updateError = false;
+
         let parsedObj = qs.parse(req.body.serviceDetails);
         let errors = ServiceValidator(parsedObj);
 
         if (errors == "") {
-            console.log("here" + parsedObj.serviceTitle);
-            console.log("here" + parsedObj.serviceId);
 
             if (parsedObj.location === undefined) {
                 parsedObj.location = {};
@@ -100,19 +106,11 @@ module.exports = {
                 parsedObj.serviceHours = [];
             }
 
-            console.log("Server image path old" + parsedObj.serviceImagePath);
-            console.log("Server image path new" + '../' + req.user._id + "/services/" + parsedObj.serviceImageName);
-
-            console.log("uploads/" + parsedObj.serviceImagePath.toString().substring(3))
-
             if ((parsedObj.serviceImagePath !== undefined) && (parsedObj.serviceImagePath !== ('../' + req.user._id + "/services/" + parsedObj.serviceImageName))) {
-                console.log("This is a new file.");
                 fs.remove("uploads/" + parsedObj.serviceImagePath.toString().substring(3), function (err) {
                     if (err) {
-                        return res.status(404).send(err);
+                        updateError = true;
                     }
-
-                    console.log('Old file removed!')
                 })
             }
 
@@ -122,13 +120,18 @@ module.exports = {
                 parsedObj.serviceImagePath = ('../' + req.user._id + "/services/" + parsedObj.serviceImageName);
             }
 
-            Services.findByIdAndUpdate({_id: parsedObj.serviceId}, parsedObj, {new: true}, (err) => {
+            Services.findByIdAndUpdate({_id: parsedObj._id}, parsedObj, {new: true}, (err) => {
                     if (err) {
-                        return res.status(500).send(err);
+                        updateError = true;
                     }
-                    return res.status(200).send("There was an error updating service.");
                 }
             )
+
+            if (updateError) {
+                return res.status(400).send("There was an error updating service.");
+            }else{
+                return res.status(200).send("Service updated successfully.");
+            }
         }
     },
 };

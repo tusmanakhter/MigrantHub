@@ -556,7 +556,7 @@ class ServiceForm extends Component {
             serviceDescription: e.state.serviceDescription,
             serviceSummary: e.state.serviceSummary,
             serviceImageName: imageName,
-            serviceId: e.state.serviceId,
+            _id: e.state.serviceId,
             serviceImagePath: e.state.serviceImagePath,
         }));
         axios.post('/services/update',formData,
