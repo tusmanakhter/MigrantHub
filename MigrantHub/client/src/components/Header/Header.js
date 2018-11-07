@@ -172,14 +172,21 @@ class Header extends Component {
     }
   }
 
-  render() {
+    renderRedirectTo = () => {
+        if (this.state.redirectTo) {
+            this.setState({
+                redirectTo: false,
+                redirectToURL: '',
+            })
+            return (<Redirect to={{
+                pathname : this.state.redirectToURL,
+                state : this.state.redirectState
+            }} />)
 
-    if (this.state.redirectTo) {
-      return (<Redirect to={{
-          pathname : this.state.redirectToURL,
-          state : this.state.redirectState
-      }} />)
+        }
     }
+
+  render() {
 
     const { anchorEl, mobileMoreAnchorEl } = this.state;
     const { classes } = this.props;
@@ -236,6 +243,7 @@ class Header extends Component {
 
     return (
       <div className={classes.root}>
+          {this.renderRedirectTo()}
         <AppBar position="static">
           <Toolbar>
             <IconButton className={classes.menuButton} color="inherit" aria-label="Open drawer">

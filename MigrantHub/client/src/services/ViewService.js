@@ -36,7 +36,6 @@ class ViewService extends Component {
     };
 
     handleEdit = () => {
-        console.log(this.props.serviceId);
         this.setState({
             redirectTo: true,
             redirectToURL: '/services/create',

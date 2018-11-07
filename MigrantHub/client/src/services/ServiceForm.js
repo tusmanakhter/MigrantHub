@@ -287,14 +287,12 @@ class ServiceForm extends Component {
         if (!this.state.dataRetrieved) {
             let serviceId = '';
             if (this.props.location.state) {
-                console.log("Owner" + this.props.location.state + " " + this.props.location.state.serviceId);
                 event.setState({
                     editMode: this.props.location.state.editMode,
                     serviceId: this.props.location.state.serviceId,
                 });
                 serviceId = this.props.location.state.serviceId;
 
-                console.log(serviceId);
                 axios.get('/services/get/', {
                     params: {
                         _id: serviceId
@@ -304,7 +302,6 @@ class ServiceForm extends Component {
                     let locationExists = false;
                     let serviceDateExists = false;
                     let tempServiceHours = [];
-
                     let serviceDate = {
                         startDate: '',
                         endDate: '',
@@ -336,7 +333,6 @@ class ServiceForm extends Component {
                     let imagePath = parsedObj.serviceImagePath.split('/')
                     let imageName = imagePath[imagePath.length-1];
 
-
                     event.setState({
                         serviceTitle: parsedObj.serviceTitle,
                         serviceSummary: parsedObj.serviceSummary,
@@ -351,9 +347,6 @@ class ServiceForm extends Component {
                         serviceImageName: imageName,
                         dataRetrieved: true,
                     });
-                    console.log("Service date: " + event.state.serviceDate.startDate);
-                    console.log("Image name: " + event.state.serviceImageName);
-
                 }).catch(error => {
 
                 })
@@ -506,7 +499,6 @@ class ServiceForm extends Component {
             serviceSummary: e.state.serviceSummary,
             serviceImageName: imageName,
         }));
-        console.log(formData);
 
         axios.post('/services/create',formData,
             {
@@ -530,21 +522,22 @@ class ServiceForm extends Component {
 
     updateService(e) {
         let imageName = e.state.serviceImageName;
+        let location = {};
+        let serviceDate = {};
 
         if(e.state.serviceImageName = ''){
             imageName = 'cameraDefault.png';
         }else if(e.state.serviceImage !== null){
             imageName = e.state.serviceImage.name
         }
-        let location = {};
+
         if(this.state.addLocation) {
             location = e.state.location
         }
-        let serviceDate = {};
+
         if(this.state.addServiceDate) {
             serviceDate = e.state.serviceDate
         }
-        console.log(e.state.serviceTitle);
 
         let formData = new FormData();
         formData.append('serviceImage', e.state.serviceImage);
