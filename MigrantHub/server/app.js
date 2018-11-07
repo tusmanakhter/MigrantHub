@@ -33,7 +33,6 @@ app.use(passport.initialize())
 app.use(passport.session())
 
 app.use( (req, res, next) => {
-    console.log('Session created');
     return next();
 });
 

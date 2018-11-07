@@ -2,7 +2,6 @@ var FriendRequest = require('../models/FriendRequest');
 var FriendRequestValidator = require('../validators/FriendRequestValidator');
 var User = require('../models/MigrantUser');
 var qs = require('qs');
-var bcrypt = require('bcryptjs');
 
 
 module.exports = {
@@ -86,7 +85,11 @@ module.exports = {
       if (err) {
         res.send("No friends found")
       } else {
-        res.send(user.friendsList);
+        if (user == null) {
+          res.send([]);
+        } else {
+          res.send(user.friendsList);
+        }
       }
     });
   }

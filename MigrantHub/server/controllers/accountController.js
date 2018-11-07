@@ -165,8 +165,8 @@ module.exports = {
           console.log("Found user");
           res.status(200).send(user)
       }
-  })
-},
+   })
+  },
 
   getBusinessUser: function(req, res) {
 
@@ -182,8 +182,8 @@ module.exports = {
           console.log("Found user");
           res.status(200).send(user)
       }
-  })
-},
+    })
+  },
 
   editBusinessUser: function(req, res) {
     let parsedObj = qs.parse(req.body);
@@ -202,30 +202,15 @@ module.exports = {
 
   getUserType: function(req, res) {
 
-    let type = req.user.type;
-    res.status(200).send(type)
+      let type = req.user.type;
+      res.status(200).send(type)
   },
-  // returnUser: function(req, res) {
-  //   if(req.user) {
-  //     var user = {
-  //       username: req.user.id,
-  //       type: req.user.type,
-  //       authenticated: true
-  //     }
-  //   } else {
-  //     var user = {
-  //       authenticated: false
-  //     }
-  //   }
-  //   res.send(user);
-  // }
-  returnUser: function(req, res) {
-    console.log('===== user!!======')
-    console.log(req.user)
-    if (req.user) {
-        res.json({ user: req.user })
-    } else {
-        res.json({ user: null })
-    }
+
+  getUser: function(req, res) {
+      if (req.user) {
+          res.json({ user: req.user })
+      } else {
+          res.json({ user: null })
+      }
   },
 }; 

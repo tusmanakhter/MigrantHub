@@ -84,18 +84,24 @@ class Login extends Component {
   };
   // Send profile data in post body to add to mongodb
   sendLogin(e) {
-
     axios.post('/account/login',
       qs.stringify({
         username: e.state.username,
         password: e.state.password,
-      })).then(response => {
+      })).then(async response => {
         if (response.status === 200) {
-          Auth.authenticate();
-          this.setState({
-            redirectTo: true,
-            redirectToURL: '/main'
-          })
+          await Auth.authenticate();
+          if (response.data.type === "admin") {
+            this.setState({
+              redirectTo: true,
+              redirectToURL: '/admin/dashboard'
+            })
+          } else {
+            this.setState({
+              redirectTo: true,
+              redirectToURL: '/main'
+            })
+          }
         }
       }).catch(error => {
         console.log('login error: ')

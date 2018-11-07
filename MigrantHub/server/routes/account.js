@@ -3,7 +3,7 @@ var router = express.Router();
 var passport = require('passport')
 var accountController = require('../controllers/accountController')
 
-router.get('/', accountController.returnUser);
+router.get('/', accountController.getUser);
 router.post('/create/user', accountController.createUser);
 router.post('/create/business', accountController.createBusiness);
 router.post('/create/admin', accountController.createAdmin);
@@ -18,8 +18,6 @@ router.post('/login', function (req, res, next) {
   },
   passport.authenticate('local'),
   function (req, res) {
-    console.log('Logged in');
-    console.log(req.user)
     var user = {
       _id: req.user._id,
       type: req.user.type

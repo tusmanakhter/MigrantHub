@@ -5,11 +5,11 @@ import Auth from '../routes/Auth';
 import axios from 'axios';
 
 class Logout extends Component {
-  logout = (history) => {
+  logout = () => {
     axios.post('/account/logout').then(response => {
       if (response.status === 200) {
         Auth.unauthenticate();
-        history.push('/');
+        this.props.history.push('/');
       }
     })
   };
