@@ -1,7 +1,7 @@
 var validator = require('validator');
 
 // Function to perform server-side validation of the create event before sending to db.
-const CreateEventValidator = (businessObject) =>{
+function CreateEventValidator(businessObject) {
 
     let errors = "";
     if (validator.isEmpty(businessObject.eventName)) {
@@ -14,34 +14,37 @@ const CreateEventValidator = (businessObject) =>{
         errors += "\nDescription must be at least 10 characters";
     }
 
-    if (validator.isEmpty(businessObject.address)) {
-        errors += "\nAddress is required";
-    }
-  
-    if (validator.isEmpty(businessObject.city)) {
-        errors += "\nCity is required";
-    } 
-  
-    if (validator.isEmpty(businessObject.province)) {
-        errors += "\nProvince is required";
-    }
+    if(typeof businessObject.location !== 'undefined') {
 
-    if (validator.isEmpty(businessObject.postalCode)) {
-        errors += "\nPostal code is required";
-    } else if (!validator.isLength(businessObject.postalCode, {min:7, max:7})) {
-        errors += "\nPostal code is invalid";
-    }
-    if (!validator.matches(businessObject.postalCode, '[A-Za-z][0-9][A-Za-z] [0-9][A-Za-z][0-9]')) {
-        errors += "\nPostal code should be in the format A1B 2E3";
-    }
+        if (validator.isEmpty(businessObject.location.address)) {
+            errors += "\nAddress is required";
+        }
+    
+        if (validator.isEmpty(businessObject.location.city)) {
+            errors += "\nCity is required";
+        } 
+    
+        if (validator.isEmpty(businessObject.location.province)) {
+            errors += "\nProvince is required";
+        }
 
-    if (validator.isEmpty(businessObject.phoneNumber)) {
-        errors += "\nPhone number is required";
-    } else if (!validator.isLength(businessObject.phoneNumber, {min:14, max:14})) {
-        errors += "\nPhone number is invalid";
-    }
-    if (!validator.matches(businessObject.phoneNumber, '^[(][0-9]{3}[)] [0-9]{3}[-][0-9]{4}$')) {
-        errors += "\nPhone number should be in the format (123) 456-7890";
+        if (validator.isEmpty(businessObject.location.postalCode)) {
+            errors += "\nPostal code is required";
+        } else if (!validator.isLength(businessObject.location.postalCode, {min:7, max:7})) {
+            errors += "\nPostal code is invalid";
+        }
+        if (!validator.matches(businessObject.location.postalCode, '[A-Za-z][0-9][A-Za-z] [0-9][A-Za-z][0-9]')) {
+            errors += "\nPostal code should be in the format A1B 2E3";
+        }
+
+        if (validator.isEmpty(businessObject.location.phoneNumber)) {
+            errors += "\nPhone number is required";
+        } else if (!validator.isLength(businessObject.location.phoneNumber, {min:14, max:14})) {
+            errors += "\nPhone number is invalid";
+        }
+        if (!validator.matches(businessObject.location.phoneNumber, '^[(][0-9]{3}[)] [0-9]{3}[-][0-9]{4}$')) {
+            errors += "\nPhone number should be in the format (123) 456-7890";
+        }
     }
 
     if (validator.isEmpty(businessObject.dateStart)) {

@@ -9,7 +9,9 @@ var Event = require('../../models/Event');
 describe('Event controller', function () {
 
     let req = {
-        body: EventFactory.validCreateEventData(),
+        body: {
+            eventDetails: EventFactory.validCreateEventData()
+        },
         user: {
             _id: "test@test.com"
         }
