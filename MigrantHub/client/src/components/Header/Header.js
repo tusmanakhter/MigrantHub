@@ -93,22 +93,23 @@ class Header extends Component {
   constructor(props){
     super(props);
     this.state = {
-      anchorEl: null,
-      mobileMoreAnchorEl: null,
-      redirectTo: false,
-      redirectToURL: '',
-      type: ''
+        anchorEl: null,
+        mobileMoreAnchorEl: null,
+        redirectTo: false,
+        redirectToURL: '',
+        redirectState: {},
+        type: ''
     }
 
-    this.userType = this.userType.bind(this);
+      this.getUser = this.getUser.bind(this);
   }
 
   componentDidMount(){
-    this.userType(this);
+      this.getUser(this);
   }
 
   componentWillReceiveProps(){
-    this.userType(this);
+      this.getUser(this);
   }
 
   handleProfileMenuOpen = event => {
@@ -128,38 +129,64 @@ class Header extends Component {
     this.setState({ mobileMoreAnchorEl: null });
   };
 
-  userType(e){
-    axios.get('/account/get/usertype').then(function (response) {
-
-      if(response.status===200){
-        e.setState({
-            type: response.data
-        })
-      }
-      
+  getUser(event){
+    axios.get('/account/get/user').then(function (response) {
+        if(response.status===200){
+            event.setState({
+                type: response.data.type,
+                email: response.data.email,
+            })
+        }
     }).catch(function(error){
-      })
+
+    })
   }
-  
-  handleEdit = event => {
-    if(this.state.type === "migrant")
-      this.setState({
-        redirectTo: true,
-        redirectToURL: '/editmigrant'
-      })
-    else if(this.state.type === "business") {
-      this.setState({
-        redirectTo: true,
-        redirectToURL: '/editbusiness'
-      })
+
+  handleMenuClick = event => {
+    if(event.target.id === 'editProfile'){
+        if(this.state.type === "migrant"){
+            this.setState({
+                redirectTo: true,
+                redirectToURL: '/editmigrant'
+            })
+        } else if(this.state.type === "business") {
+            this.setState({
+                redirectTo: true,
+                redirectToURL: '/editbusiness'
+            })
+        }
+    }else if(event.target.id === 'myServices'){
+        this.setState({
+            redirectTo: true,
+            redirectToURL: '/myservices',
+            redirectState: {
+                editOwner: this.state.email,
+                editMode: true,
+            }
+        })
+    }else if(event.target.id === 'main') {
+        this.setState({
+            redirectTo: true,
+            redirectToURL: '/main',
+        })
     }
   }
+
+    renderRedirectTo = () => {
+        if (this.state.redirectTo) {
+            this.setState({
+                redirectTo: false,
+                redirectToURL: '',
+            })
+            return (<Redirect to={{
+                pathname : this.state.redirectToURL,
+                state : this.state.redirectState
+            }} />)
+
+        }
+    }
 
   render() {
-
-    if (this.state.redirectTo) {
-      return <Redirect to={this.state.redirectToURL} />
-    }
 
     const { anchorEl, mobileMoreAnchorEl } = this.state;
     const { classes } = this.props;
@@ -176,7 +203,8 @@ class Header extends Component {
       >
         <MenuItem onClick={this.handleClose}>Profile</MenuItem>
         <MenuItem onClick={this.handleClose}>My account</MenuItem>
-        <MenuItem onClick={this.handleEdit}>Edit Profile</MenuItem>
+        <MenuItem id="editProfile" onClick={this.handleMenuClick}>Edit Profile</MenuItem>
+        <MenuItem id="myServices" onClick={this.handleMenuClick}>My Services</MenuItem>
       </Menu>
     );
 
@@ -215,14 +243,17 @@ class Header extends Component {
 
     return (
       <div className={classes.root}>
+          {this.renderRedirectTo()}
         <AppBar position="static">
           <Toolbar>
             <IconButton className={classes.menuButton} color="inherit" aria-label="Open drawer">
               <MenuIcon />
             </IconButton>
-            <Typography className={classes.title} variant="h6" color="inherit" noWrap>
-              MigrantHub
-            </Typography>
+            <IconButton color="inherit">
+              <Typography id="main" onClick={this.handleMenuClick} className={classes.title} variant="title" color="inherit" noWrap>
+                MigrantHub
+              </Typography>
+            </IconButton>
             <div className={classes.search}>
               <div className={classes.searchIcon}>
                 <SearchIcon />

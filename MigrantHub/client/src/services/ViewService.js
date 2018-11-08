@@ -10,6 +10,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import Button from '@material-ui/core/Button';
 import blue from '@material-ui/core/colors/blue';
 import GoogleMaps from "./GoogleMaps";
+import { Redirect } from 'react-router-dom'
 
 const styles = {
     avatar: {
@@ -24,6 +25,9 @@ class ViewService extends Component {
         super(props);
         this.state = {
             isMarkerShown: true,
+            redirectTo: false,
+            redirectToURL: '',
+            redirectState: {},
         };
     }
 
@@ -31,10 +35,30 @@ class ViewService extends Component {
         this.props.onClose();
     };
 
+    handleEdit = () => {
+        this.setState({
+            redirectTo: true,
+            redirectToURL: '/services/create',
+            redirectState: {
+                editMode: true,
+                serviceId: this.props.serviceId
+            }
+        })
+    };
+
     render() {
         const { classes, onClose, ...other } = this.props;
+
+        if (this.state.redirectTo) {
+            return (<Redirect to={{
+                pathname : this.state.redirectToURL,
+                state : this.state.redirectState
+            }} />)
+        }
+
         return(
             <div>
+
                 <Dialog
                     open={this.props.open}
                     onClose={this.handleClose}
@@ -121,6 +145,11 @@ class ViewService extends Component {
                         )}
                     </DialogContent>
                     <DialogActions>
+                        {this.props.editMode &&
+                        <Button onClick={this.handleEdit} color="primary">
+                            Edit
+                        </Button>
+                        }
                         <Button onClick={this.handleClose} color="primary">
                             Cancel
                         </Button>

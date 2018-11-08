@@ -122,6 +122,11 @@ const styles = theme => ({
     rightIcon: {
         marginLeft: theme.spacing.unit,
     },
+    img: {
+        width: 400,
+        length: 300,
+
+    }
 });
 class ServiceForm extends Component {
 
@@ -156,6 +161,8 @@ class ServiceForm extends Component {
             },
             serviceImage: null,
             serviceImageName: '',
+            serviceImagePath: '',
+            tempServiceImagePath: '',
             titleError: '',
             serviceDescription: '',
             serviceSummary: '',
@@ -163,11 +170,27 @@ class ServiceForm extends Component {
             addLocation: false,
             addServiceDate: false,
             serviceHoursCount: 0,
+            dataRetrieved: false,
 
             // Server response
             messageFromServer: '',
             redirectToAllServices : false,
         };
+        if(this.props.location.state) {
+            this.getData = this.getData.bind(this);
+        }
+    }
+
+    componentDidMount() {
+        if(this.props.location.state) {
+            this.getData(this);
+        }
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if(this.props.location.state) {
+            this.getData(this);
+        }
     }
 
     handleAddObject = (name, object) => {
@@ -213,15 +236,21 @@ class ServiceForm extends Component {
 
     handleUploadImage = event => {
 
+        if(this.state.tempServiceImagePath !== '' ){
+            URL.revokeObjectURL(this.state.tempServiceImagePath)
+        }
+
         if(event.target.files[0] !== undefined) {
             this.setState({
                 serviceImage: event.target.files[0],
                 serviceImageName: event.target.files[0].name,
+                tempServiceImagePath: window.URL.createObjectURL(event.target.files[0]),
             });
         } else{
             this.setState({
                 serviceImage: null,
                 serviceImageName: '',
+                tempServiceImagePath: '',
             });
         }
     }
@@ -230,6 +259,13 @@ class ServiceForm extends Component {
         let error = this.validate();
         if (!error) {
             this.createService(this);
+        }
+    };
+
+    handleUpdate = () => {
+        let error = this.validate();
+        if (!error) {
+            this.updateService(this);
         }
     };
 
@@ -244,6 +280,77 @@ class ServiceForm extends Component {
     renderRedirectToAllServices = () => {
         if (this.state.redirectToAllServices) {
             return <Redirect to='/services' />
+        }
+    }
+
+    getData(event){
+        if (!this.state.dataRetrieved) {
+            let serviceId = '';
+            if (this.props.location.state) {
+                event.setState({
+                    editMode: this.props.location.state.editMode,
+                    serviceId: this.props.location.state.serviceId,
+                });
+                serviceId = this.props.location.state.serviceId;
+
+                axios.get('/services/get/', {
+                    params: {
+                        _id: serviceId
+                    }
+                }).then(function (response) {
+                    let parsedObj = qs.parse(qs.stringify(response.data));
+                    let locationExists = false;
+                    let serviceDateExists = false;
+                    let tempServiceHours = [];
+                    let serviceDate = {
+                        startDate: '',
+                        endDate: '',
+                    };
+                    let location = {
+                        address: '',
+                        apartment: '',
+                        city: '',
+                        province: '',
+                        postalCode: '',
+                        phoneNumber: '',
+                    };
+
+                    if (parsedObj.serviceHours !== undefined) {
+                        tempServiceHours = parsedObj.serviceHours;
+                    }
+                    if (parsedObj.location !== undefined) {
+                        locationExists = true;
+                        location = parsedObj.location;
+                    }
+                    if (parsedObj.serviceDate !== undefined) {
+                        serviceDateExists = true;
+                        serviceDate = {
+                            startDate: parsedObj.serviceDate.startDate.toString().substring(0, 10),
+                            endDate: parsedObj.serviceDate.endDate.toString().substring(0, 10),
+                        }
+                    }
+
+                    let imagePath = parsedObj.serviceImagePath.split('/')
+                    let imageName = imagePath[imagePath.length-1];
+
+                    event.setState({
+                        serviceTitle: parsedObj.serviceTitle,
+                        serviceSummary: parsedObj.serviceSummary,
+                        serviceDescription: parsedObj.serviceDescription,
+                        serviceDate: serviceDate,
+                        location: location,
+                        serviceHours: tempServiceHours,
+                        addLocation: locationExists,
+                        addServiceDate: serviceDateExists,
+                        serviceImagePath: parsedObj.serviceImagePath,
+                        tempServiceImagePath: parsedObj.serviceImagePath,
+                        serviceImageName: imageName,
+                        dataRetrieved: true,
+                    });
+                }).catch(error => {
+
+                })
+            }
         }
     }
 
@@ -370,8 +477,8 @@ class ServiceForm extends Component {
     createService(e) {
 
         let imageName = 'cameraDefault.png';
-        if(e.state.serviceImage !== null){
-            imageName = e.state.serviceImage.name
+        if(e.state.serviceImageName !== ''){
+            imageName = e.state.serviceImageName
         }
         let location = {};
         if(this.state.addLocation) {
@@ -392,6 +499,7 @@ class ServiceForm extends Component {
             serviceSummary: e.state.serviceSummary,
             serviceImageName: imageName,
         }));
+
         axios.post('/services/create',formData,
             {
                 headers: {
@@ -412,12 +520,66 @@ class ServiceForm extends Component {
         })
     }
 
+    updateService(e) {
+        let imageName = e.state.serviceImageName;
+        let location = {};
+        let serviceDate = {};
+
+        if(e.state.serviceImageName = ''){
+            imageName = 'cameraDefault.png';
+        }else if(e.state.serviceImage !== null){
+            imageName = e.state.serviceImage.name
+        }
+
+        if(this.state.addLocation) {
+            location = e.state.location
+        }
+
+        if(this.state.addServiceDate) {
+            serviceDate = e.state.serviceDate
+        }
+
+        let formData = new FormData();
+        formData.append('serviceImage', e.state.serviceImage);
+        formData.append('serviceDetails', qs.stringify({
+            location: location,
+            serviceHours: e.state.serviceHours,
+            serviceDate: serviceDate,
+            serviceTitle: e.state.serviceTitle,
+            serviceDescription: e.state.serviceDescription,
+            serviceSummary: e.state.serviceSummary,
+            serviceImageName: imageName,
+            _id: e.state.serviceId,
+            serviceImagePath: e.state.serviceImagePath,
+        }));
+        axios.post('/services/update',formData,
+            {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            }).then(response => {
+
+            if (response.status === 200) {
+                this.setState({
+                    messageFromServer: response.data,
+                    redirectToAllServices: true
+                })
+            }
+        }).catch(error => {
+
+            e.setState({
+                messageFromServer: error.response.data
+            });
+
+        })
+    }
+
     render() {
         const { classes } = this.props;
 
         return (
             <React.Fragment>
-                <Header appName='Migrant Hub' />
+                <Header />
                 {this.state.messageFromServer.split('\n').map((item, key) => {
                     return <span key={key}>{item}<br/></span>
                 })}
@@ -431,7 +593,7 @@ class ServiceForm extends Component {
                             id="serviceTitle"
                             name="serviceTitle"
                             label="Service Title"
-                            value={this.serviceTitle}
+                            value={this.state.serviceTitle}
                             onChange={event => this.handleChange(event)}
                             fullWidth
                             helperText={this.state.serviceTitleError}
@@ -443,7 +605,7 @@ class ServiceForm extends Component {
                             id="serviceSummary"
                             name="serviceSummary"
                             label="Service Summary"
-                            value={this.serviceSummary}
+                            value={this.state.serviceSummary}
                             onChange={event => this.handleChange(event)}
                             fullWidth
                             helperText={this.state.serviceSummaryError}
@@ -455,7 +617,7 @@ class ServiceForm extends Component {
                             id="serviceDescription"
                             name="serviceDescription"
                             label="Service Description"
-                            value={this.serviceDescription}
+                            value={this.state.serviceDescription}
                             onChange={event => this.handleChange(event)}
                             fullWidth
                             multiline={true}
@@ -465,16 +627,28 @@ class ServiceForm extends Component {
                         />
                     </Grid>
                     <Grid item xs={12}>
-                        <Typography variant="subheading" gutterBottom className={classes.row} align="left">
-                            Select image to upload (Optional)
-                        </Typography>
-                        <TextField
-                            id="serviceImage"
-                            type="file"
-                            onChange={event => this.handleUploadImage(event)}
-                            helperText={this.state.serviceImageError}
-                            error={this.state.serviceImageError.length > 0}
-                        />
+                        <Grid container spacing={24}>
+                            <Grid item xs={12}>
+                                <img
+                                    src={this.state.tempServiceImagePath}
+                                    alt={this.state.tempServiceImagePath}
+                                    className={classes.img}/>
+                            </Grid>
+                            <Grid item xs={12}>
+                                <Typography variant="subheading" gutterBottom className={classes.row} align="left">
+                                    Select image to upload (Optional) <br /><br />
+                                </Typography>
+                            </Grid>
+                            <Grid item xs={12}>
+                                <TextField
+                                    id="serviceImage"
+                                    type="file"
+                                    onChange={event => this.handleUploadImage(event)}
+                                    helperText={this.state.serviceImageError}
+                                    error={this.state.serviceImageError.length > 0}
+                                />
+                            </Grid>
+                        </Grid>
                     </Grid>
                     <Grid item xs={12}>
                         <Typography variant="subheading" gutterBottom className={classes.row} align="left">
@@ -727,14 +901,25 @@ class ServiceForm extends Component {
                             </Paper>
                         </React.Fragment>
                     ))}
-                    <Button
-                        variant="contained"
-                        color="primary"
-                        onClick={this.handleSubmit}
-                        className={classes.button}
-                    >
-                        Create
-                    </Button>
+                    {!this.state.editMode ? (
+                        <Button
+                            variant="contained"
+                            color="primary"
+                            onClick={this.handleSubmit}
+                            className={classes.button}
+                        >
+                            Create
+                        </Button>
+                    ) :(
+                        <Button
+                            variant="contained"
+                            color="primary"
+                            onClick={this.handleUpdate}
+                            className={classes.button}
+                        >
+                            Edit
+                        </Button>
+                    )}
                 </Grid>
             </React.Fragment>
         );

@@ -68,6 +68,7 @@ class ServiceItem extends Component {
                         open={this.state.open}
                         scroll={this.state.scroll}
                         onClose={this.handleClose}
+                        serviceId={this.props.serviceId}
                         serviceTitle={this.props.serviceTitle}
                         serviceImagePath={this.props.serviceImagePath}
                         serviceDescription={this.props.serviceDescription}
@@ -75,6 +76,8 @@ class ServiceItem extends Component {
                         serviceLocation={this.props.serviceLocation}
                         serviceDate={this.props.serviceDate}
                         serviceHours={this.props.serviceHours}
+                        editMode={this.props.editMode}
+                        editOwner={this.props.editOwner}
                     />
                 </CardActions>
             </Card>

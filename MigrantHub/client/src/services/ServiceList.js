@@ -3,9 +3,10 @@ import ServiceItem from "./ServiceItem";
 import withStyles from '@material-ui/core/styles/withStyles';
 import Button from '@material-ui/core/Button';
 import Paper from '@material-ui/core/Paper';
-import axios from 'axios';
 import { Redirect } from 'react-router-dom'
 import Header from '../components/Header/Header';
+import axios from 'axios';
+var qs = require('qs');
 
 const styles = theme => ({
     root: {
@@ -22,6 +23,8 @@ class ServiceList extends Component {
         this.state = {
             items: [],
             redirectToServiceForm: false,
+            editMode: '',
+            editOwner: '',
         };
 
         this.getData = this.getData.bind(this);
@@ -36,10 +39,25 @@ class ServiceList extends Component {
     }
 
     getData(event){
-        axios.get('/services/view/all')
-            .then(function(response) {
-                event.setState({items: response.data});
-            }).catch(error => {
+        let editOwnerEmail ='';
+        if(this.props.location.state){
+            event.setState({
+                editMode: this.props.location.state.editMode,
+                editOwner: this.props.location.state.editOwner
+            });
+
+            editOwnerEmail=this.props.location.state.editOwner;
+        }
+        axios.get('/services/view/all/',{
+            params: {
+                editOwner: editOwnerEmail
+            }
+        }).then(function(response) {
+            event.setState({
+                items: response.data
+            });
+        }).catch(error => {
+
         })
     }
 
@@ -48,6 +66,7 @@ class ServiceList extends Component {
             redirectToServiceForm: true
         })
     }
+
     renderRedirectToServiceForm = () => {
         if (this.state.redirectToServiceForm) {
             return <Redirect to='/services/create' />
@@ -58,8 +77,9 @@ class ServiceList extends Component {
         const { classes } = this.props;
         return(
             <div>
+                <Header></Header>
+
                 {this.renderRedirectToServiceForm()}
-                <Header appName='Migrant Hub' />
                 <Button
                     variant="contained"
                     color="primary"
@@ -70,8 +90,9 @@ class ServiceList extends Component {
                 </Button>
                 <Paper className={classes.root} elevation={2}>
                     {
-                        this.state.items.map(function(item){
+                        this.state.items.map((item) => {
                             return <ServiceItem
+                                serviceId={item._id}
                                 serviceTitle={item.serviceTitle}
                                 serviceImagePath={item.serviceImagePath}
                                 serviceDescription={item.serviceDescription}
@@ -79,6 +100,8 @@ class ServiceList extends Component {
                                 serviceLocation={item.location}
                                 serviceDate={item.serviceDate}
                                 serviceHours={item.serviceHours}
+                                editMode={this.state.editMode}
+                                editOwner={this.state.editOwner}
                             ></ServiceItem>
                         })
                     }

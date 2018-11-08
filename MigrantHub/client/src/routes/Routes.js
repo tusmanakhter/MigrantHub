@@ -32,6 +32,7 @@ export const Routes = () => (
     <Route path="/services/create" component={ServiceForm} exact />
     <Route path="/services" component={ServiceList} exact />
     <Route path="/event/create" component={CreateEvent} exact />
+    <Route path="/myservices" component={ServiceList} exact />
     <Route component={Error} />
   </Switch>
   
