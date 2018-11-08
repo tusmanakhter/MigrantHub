@@ -1,6 +1,7 @@
-var express = require('express');
-var router = express.Router();
-var servicesController = require('../controllers/servicesController');
+const express = require('express');
+
+const router = express.Router();
+const servicesController = require('../controllers/ServicesController');
 
 router.post('/create', servicesController.upload.single('serviceImage'), servicesController.createService);
 router.post('/update', servicesController.upload.single('serviceImage'), servicesController.updateService);
