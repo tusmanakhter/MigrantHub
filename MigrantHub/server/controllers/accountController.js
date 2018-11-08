@@ -213,4 +213,31 @@ module.exports = {
           res.json({ user: null })
       }
   },
+
+  ensureUser: function(req, res, next) {
+    if (req.session.passport != undefined) {
+      if (req.session.passport.user != undefined)
+        return next();
+    } else {
+      res.status(403).send("You are not authorized for this");
+    }
+  },
+
+  ensureRole: function ensureRole(type) {
+    return function(req, res, next) {
+      if (req.session.passport.user.type === type) {
+          return next();
+      } else {
+        res.status(403).send("You are not authorized for this");
+      }
+    }
+  },
+
+  ensureOwner: function(req, res, next) {
+    if (req.session.passport.user._id === req.body.id) {
+        return next();
+    } else {
+        res.status(403).send("You are not authorized for this");
+    }
+  },
 }; 
