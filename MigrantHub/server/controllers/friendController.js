@@ -72,13 +72,23 @@ module.exports = {
       res.send({ isError: true, message: error });
     }
   },
-  getFriendRequests: function (req, res) {
-    FriendRequest.find({requestTo: req.user._id}, function(err, friends) {
+  unfriend: function (req, res) {
+    let parsedObj = qs.parse(req.user);
+    User.findByIdAndDelete({ _id: parsedObj._id }, { $pull: { 'friendsList.friendName': res._id } }, function (err) {
       if (err) {
-          res.send("There was a error saving friend.");
-        } else {
-          res.send(friends);
-        }
+        res.send("Unable to unfriend this user");
+      } else {
+        res.send("The user has been removed from your friends list");
+      }
+    });
+  },
+  getFriendRequests: function (req, res) {
+    FriendRequest.find({ requestTo: req.user._id }, function (err, friends) {
+      if (err) {
+        res.send("There was a error saving friend.");
+      } else {
+        res.send(friends);
+      }
     });
   },
   getFriendsList: function (req, res) {

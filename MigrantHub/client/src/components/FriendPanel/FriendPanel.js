@@ -5,6 +5,8 @@ import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
+import IconButton from '@material-ui/core/IconButton';
+import PersonAddDisabled from '@material-ui/icons/PersonAddDisabled';
 import yes from './yes.svg';
 import no from './no.svg';
 import axios from 'axios';
@@ -28,7 +30,7 @@ class FriendPanel extends Component {
     axios.get('/friend/getfriendslist')
       .then(function (response) {
         ev.setState({ friendsList: response.data });
-      }).catch(error => {})
+      }).catch(error => { })
   }
 
   acceptFriendRequest(event, _id, requestFromP, requestToP, index) {
@@ -60,7 +62,7 @@ class FriendPanel extends Component {
     axios.get('/friend/getrequests')
       .then(function (response) {
         ev.setState({ friendRequests: response.data });
-      }).catch(error => {})
+      }).catch(error => { })
   }
 
   handleDeleteRow(index) {
@@ -91,6 +93,23 @@ class FriendPanel extends Component {
       );
   }
 
+  unfriend(event, _id, index) {
+    event.handleUnfriendRow(index)
+    axios.post('/friend/unfriend',
+      qs.stringify({
+        _id: _id,
+      })).then(function (response) {
+      });
+  }
+
+  handleUnfriendRow(index) {
+    let rows = [...this.state.friendsList]
+    rows.splice(index, 1)
+    this.setState({
+      friendsList: rows
+    })
+  }
+
   componentDidMount() {
     this.getFriendRequests(this);
     this.getFriendsList(this);
@@ -103,8 +122,23 @@ class FriendPanel extends Component {
           <CardContent>
             <p>Your list of friends:</p>
             <ul>
-              {this.state.friendsList.map(request =>
-                <li key={request.friendName}><img src={request.pic} alt="profile pic" className="User-avatar" />{request.friendName}</li>
+              {this.state.friendsList.map((list, index) =>
+                <li key={list.friendName}>
+                  <img src={list.pic} alt="profile pic" className="User-avatar" />
+                  {list.friendName}
+                  <IconButton onClick={() => { this.unfriend(this, list._id, index) }} aria-label="Delete">
+                    <PersonAddDisabled fontSize="small" />
+                  </IconButton>
+                  <Grid container spacing={24}>
+                    <Grid item xs={12} sm={4}
+                      id="friendRequest"
+                      name="friendRequest"
+                      value={list.requestFrom}
+                      fullWidth
+                    >
+                    </Grid>
+                  </Grid>
+                </li>
               )}
             </ul>
           </CardContent>
