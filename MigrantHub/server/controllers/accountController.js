@@ -124,7 +124,6 @@ module.exports = {
       res.send(errors);
     }
   },
-
   editMigrantUser: function(req, res) {
     let parsedObj = qs.parse(req.body);
 
@@ -166,8 +165,8 @@ module.exports = {
           console.log("Found user");
           res.status(200).send(user)
       }
-  })
-},
+   })
+  },
 
   getBusinessUser: function(req, res) {
 
@@ -183,8 +182,8 @@ module.exports = {
           console.log("Found user");
           res.status(200).send(user)
       }
-  })
-},
+    })
+  },
 
   editBusinessUser: function(req, res) {
     let parsedObj = qs.parse(req.body);
@@ -211,5 +210,41 @@ module.exports = {
       }else{
           res.status(404).send("Error retrieving user")
       }
+  getUserType: function(req, res) {
+  },
+
+  getUser: function(req, res) {
+      if (req.user) {
+          res.json({ user: req.user })
+      } else {
+          res.json({ user: null })
+      }
+  },
+
+  ensureUser: function(req, res, next) {
+    if (req.session.passport != undefined) {
+      if (req.session.passport.user != undefined)
+        return next();
+    } else {
+      res.status(403).send("You are not authorized for this");
+    }
+  },
+
+  ensureRole: function ensureRole(type) {
+    return function(req, res, next) {
+      if (req.session.passport.user.type === type) {
+          return next();
+      } else {
+        res.status(403).send("You are not authorized for this");
+      }
+    }
+  },
+
+  ensureOwner: function(req, res, next) {
+    if (req.session.passport.user._id === req.body.id) {
+        return next();
+    } else {
+        res.status(403).send("You are not authorized for this");
+    }
   },
 }; 

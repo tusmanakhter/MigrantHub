@@ -3,18 +3,14 @@ var LocalStrategy = require('./localStrategy')
 var User = require('../models/User');
 
 passport.serializeUser((user, done) => {
-    console.log('Serialize User called')
-    console.log('---------')
-    done(null, { _id: user._id })
+    done(null, { _id: user._id, type: user.type })
 })
 
-passport.deserializeUser((id, done) => {
-    console.log('Deserialize User called')
+passport.deserializeUser((user, done) => {
     User.findOne(
-        { _id: id },
-        'username',
+        { _id: user._id },
+        { type: true },
         (err, user) => {
-            console.log('--------------')
             done(null, user)
         }
     )

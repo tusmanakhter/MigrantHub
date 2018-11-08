@@ -20,6 +20,7 @@ import Checkbox from '@material-ui/core/Checkbox';
 import LockIcon from '@material-ui/icons/LockOutlined';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import HomeLayout from '../home/HomeLayout'
+import Auth from '../routes/Auth';
 
 import axios from 'axios';
 var qs = require('qs');
@@ -83,21 +84,24 @@ class Login extends Component {
   };
   // Send profile data in post body to add to mongodb
   sendLogin(e) {
-
     axios.post('/account/login',
       qs.stringify({
         username: e.state.username,
         password: e.state.password,
-      })).then(response => {
-        console.log('login response: ')
-        console.log(response)
+      })).then(async response => {
         if (response.status === 200) {
-          // update App.js state
-
-          this.setState({
-            redirectTo: true,
-            redirectToURL: '/Main'
-          })
+          await Auth.authenticate();
+          if (response.data.type === "admin") {
+            this.setState({
+              redirectTo: true,
+              redirectToURL: '/admin/dashboard'
+            })
+          } else {
+            this.setState({
+              redirectTo: true,
+              redirectToURL: '/main'
+            })
+          }
         }
       }).catch(error => {
         console.log('login error: ')
