@@ -62,6 +62,7 @@ module.exports = {
             console.log("EditOwner" + req.query.editOwner);
             query["email"] = req.query.editOwner;
         }
+        query["deleted"] = false;
         Services.find(query, function(err, services) {
             if (err) {
                 res.status(400).send("There was a error getting services.");
@@ -76,6 +77,7 @@ module.exports = {
 
         if(req.query._id !== '') {
             query["_id"] = req.query._id;
+            query["deleted"] = false;
         }
 
         Services.findOne(query, function(err, services) {
@@ -132,6 +134,22 @@ module.exports = {
             }else{
                 return res.status(200).send("Service updated successfully.");
             }
+        }
+    },
+
+    deleteService: function(req, res) {   
+        let deleteError = false;
+        Services.updateOne({_id: req.params.id}, { deleted: true, deletedDate: Date.now() }, (err) => {
+                if (err) {
+                    deleteError = true;
+                }
+            }
+        );
+
+        if (deleteError) {
+            return res.status(400).send("There was an error deleting service.");
+        } else {
+            return res.status(200).send("Service deleted successfully.");
         }
     },
 };

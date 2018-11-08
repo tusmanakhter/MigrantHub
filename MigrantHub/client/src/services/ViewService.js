@@ -10,7 +10,8 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import Button from '@material-ui/core/Button';
 import blue from '@material-ui/core/colors/blue';
 import GoogleMaps from "./GoogleMaps";
-import { Redirect } from 'react-router-dom'
+import { Redirect } from 'react-router-dom';
+import axios from 'axios';
 
 const styles = {
     avatar: {
@@ -44,6 +45,15 @@ class ViewService extends Component {
                 serviceId: this.props.serviceId
             }
         })
+    };
+
+    handleDelete = () => {
+        axios.delete('/services/' + this.props.serviceId)
+        .then(response => {
+            if (response.status === 200) {
+                this.handleClose();
+            }
+        });
     };
 
     render() {
@@ -146,9 +156,14 @@ class ViewService extends Component {
                     </DialogContent>
                     <DialogActions>
                         {this.props.editMode &&
-                        <Button onClick={this.handleEdit} color="primary">
-                            Edit
-                        </Button>
+                        <React.Fragment>
+                            <Button onClick={this.handleDelete} color="secondary">
+                                Delete
+                            </Button>
+                            <Button onClick={this.handleEdit} color="primary">
+                                Edit
+                            </Button>
+                        </React.Fragment>
                         }
                         <Button onClick={this.handleClose} color="primary">
                             Cancel
