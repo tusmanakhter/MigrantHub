@@ -339,7 +339,7 @@ class CreateEvent extends Component {
       } = this.state;
 
       let tempImageName = 'cameraDefault.png';
-      if (eventImage !== '') {
+      if (eventImage !== null) {
         tempImageName = eventImage.name;
       }
 
