@@ -23,7 +23,7 @@ app.use(bodyParser.urlencoded({limit: '50mb', extended: false}));
 
 app.use(
     expressSession({
-        secret: 'migrantHub',
+        secret: 'publication-biology',
         resave: false,
         saveUninitialized: false
     })
@@ -33,7 +33,6 @@ app.use(passport.initialize())
 app.use(passport.session())
 
 app.use( (req, res, next) => {
-    console.log('Session created');
     return next();
 });
 

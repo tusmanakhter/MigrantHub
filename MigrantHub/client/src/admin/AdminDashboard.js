@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import '../App.css';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
+import Logout from '../components/Logout';
 import axios from 'axios';
 
 class AdminDashboard extends Component {
@@ -28,6 +29,7 @@ class AdminDashboard extends Component {
   render() {
     return (
       <React.Fragment>
+        <Logout />
         <Grid container spacing={8}>
           {this.state.users.map((user, index) => ( 
             <React.Fragment key={index}>

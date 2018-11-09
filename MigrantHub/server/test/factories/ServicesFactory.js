@@ -5,8 +5,8 @@ module.exports.validServiceData = function() {
         serviceSummary : "In reasonable compliment favourable is connection dispatched in terminated.",
         serviceDescription : "Way nor furnished sir procuring therefore but. Warmth far manner myself active are cannot called.",
         serviceDate : {
-            startDate : "2018-11-01",
-            endDate : "2019-02-01"
+            startDate : "2020-11-01",
+            endDate : "2021-02-01"
         },
         location : {
             address : "1455 Boulevard de Maisonneuve O",
@@ -62,8 +62,8 @@ module.exports.invalidServiceData = function() {
         serviceSummary : "In reasonable compliment favourable is connection dispatched in terminated.",
         serviceDescription : "Way nor furnished sir procuring therefore but. Warmth far manner myself active are cannot called.",
         serviceDate : {
-            startDate : "2018-11-01",
-            endDate : "2019-02-01"
+            startDate : "2020-11-01",
+            endDate : "2021-02-01"
         },
         location : {
             address : "1455 Boulevard de Maisonneuve O",
