@@ -31,9 +31,7 @@ function MigrantAccountValidator(migrantObject) {
   if (validator.isEmpty(migrantObject.address)) {
     errors += '\nAddress is required and empty';
   }
-  if (!validator.matches(migrantObject.postalCode, '[A-Za-z][0-9][A-Za-z] [0-9][A-Za-z][0-9]')) {
-    errors += '\nPostal is should be in the format A1B 2E3';
-  }
+
   if (validator.isEmpty(migrantObject.city)) {
     errors += '\nCity is required and empty';
   } else if (!validator.isAlpha(migrantObject.city)) {
@@ -46,19 +44,19 @@ function MigrantAccountValidator(migrantObject) {
     errors += '\nPostal code is required and empty';
   } else if (!validator.isLength(migrantObject.postalCode, { min: 7, max: 7 })) {
     errors += '\nPostal code is invalid';
+  }else if(!validator.matches(migrantObject.postalCode, '[A-Za-z][0-9][A-Za-z] [0-9][A-Za-z][0-9]')) {
+      errors += '\nPostal is should be in the format A1B 2E3';
   }
   if (validator.isEmpty(migrantObject.phoneNumber)) {
     errors += '\nPhone number is required and empty';
   } else if (!validator.isLength(migrantObject.phoneNumber, { min: 14, max: 14 })) {
     errors += '\nPhone number is invalid';
-  }
-  if (!validator.matches(migrantObject.phoneNumber, '[(][0-9]{3}[)][ ][0-9]{3}[-][0-9]{4}')) {
+  }else if (!validator.matches(migrantObject.phoneNumber, '[(][0-9]{3}[)][ ][0-9]{3}[-][0-9]{4}')) {
     errors += '\nPhone number should be in the format (123) 456-7890';
   }
   if (validator.isEmpty(migrantObject.age)) {
     errors += '\nAge is required and empty';
-  }
-  if (!Number.isInteger(migrantObject.age) && migrantObject.age < 0) {
+  }else if (!Number.isInteger(migrantObject.age) && migrantObject.age < 0) {
     errors += '\nAge should be a valid number greater than 0.';
   }
   if (validator.isEmpty(migrantObject.gender)) {
@@ -105,8 +103,7 @@ function MigrantAccountValidator(migrantObject) {
     migrantObject.family.forEach((member) => {
       if (validator.isEmpty(member.age)) {
         errors += '\nFamily member age is required and empty';
-      }
-      if (!Number.isInteger(member.age) && member.age < 0) {
+      }else if (!Number.isInteger(member.age) && member.age < 0) {
         errors += "\nFamily member's age should be a valid number greater than 0.";
       }
       if (validator.isEmpty(member.gender)) {
