@@ -8,6 +8,8 @@ import { Redirect } from 'react-router-dom';
 import EventItem from './EventItem';
 import Header from '../components/Header/Header';
 
+var qs = require('qs');
+
 const styles = theme => ({
   root: {
     ...theme.mixins.gutters(),
@@ -22,6 +24,8 @@ class EventList extends Component {
     this.state = {
       items: [],
       redirectToCreateEvent: false,
+      editMode: '',
+      editOwner: '',
     };
 
     this.getData = this.getData.bind(this);
@@ -36,13 +40,28 @@ class EventList extends Component {
     this.getData(this);
   }
 
-  getData() {
-    axios.get('/events/view/all')
-      .then((response) => {
-        this.setState({
-          items: response.data,
+  getData(event) {
+    let editOwnerEmail ='';
+    if(this.props.location.state){
+        console.log("Owner" + this.props.location.state  + " " + this.props.location.state.editOwner);
+        event.setState({
+            editMode: this.props.location.state.editMode,
+            editOwner: this.props.location.state.editOwner
         });
-      });
+
+        editOwnerEmail=this.props.location.state.editOwner;
+    }
+    axios.get('/events/view/all/',{
+        params: {
+            editOwner: editOwnerEmail
+        }
+    }).then(function(response) {
+        event.setState({
+            items: response.data
+        });
+    }).catch(error => {
+
+    })
   }
 
     setRedirectToCreateEvent = () => {
@@ -61,7 +80,7 @@ class EventList extends Component {
 
     render() {
       const { classes } = this.props;
-      const { items } = this.state;
+      const { items, editMode, editOwner } = this.state;
 
       return (
         <div>
@@ -79,6 +98,7 @@ class EventList extends Component {
             {
             items.map(item => (
               <EventItem
+                eventId={item._id}
                 eventName={item.eventName}
                 eventImagePath={item.eventImagePath}
                 description={item.description}
@@ -87,6 +107,8 @@ class EventList extends Component {
                 dateEnd={item.dateEnd}
                 timeStart={item.timeStart}
                 timeEnd={item.timeEnd}
+                editMode={editMode}
+                editOwner={editOwner}
               />
             ))
           }

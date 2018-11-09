@@ -55,6 +55,7 @@ class Routes extends Component {
         <Route path="/events/create" component={CreateEvent} exact />
         <Route path="/myservices" component={ServiceList} exact />
         <Route path="/events" component={EventList} exact />
+        <Route path="/myevents" component={EventList} exact />
         <Route component={Error} />
       </Switch>
     );

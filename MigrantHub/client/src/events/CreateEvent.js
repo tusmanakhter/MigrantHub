@@ -115,6 +115,8 @@ class CreateEvent extends Component {
       // Image
       eventImage: null,
       eventImageName: '',
+      eventImagePath: '',
+      tempEventImagePath: '',
 
       // Event Location
       location: {
@@ -155,6 +157,83 @@ class CreateEvent extends Component {
       messageFromServer: '',
       redirectToAllEvents: false,
     };
+
+    const { location } = this.props;
+    if (location.state) {
+      this.getData = this.getData.bind(this);
+    }
+  }
+
+  componentDidMount() {
+    const { location } = this.props;
+    if (location.state) {
+      this.getData(this);
+    }
+  }
+
+  componentWillReceiveProps() {
+    const { location } = this.props;
+    if (location.state) {
+      this.getData(this);
+    }
+  }
+
+  getData() {
+    const { dataRetrieved } = this.state;
+    const { location } = this.props;
+    const { state } = location;
+    const { editMode, eventId } = state;
+
+    if (!dataRetrieved) {
+      this.setState({
+        editMode,
+        eventId,
+      });
+
+      axios.get('/events/get/', {
+        params: {
+          _id: eventId,
+        },
+      }).then((response) => {
+        const parsedObj = qs.parse(qs.stringify(response.data));
+        let locationExists = false;
+        console.log(parsedObj);
+        let tempLocation = {
+          address: '',
+          apartment: '',
+          city: '',
+          province: '',
+          postalCode: '',
+          phoneNumber: '',
+        };
+
+        if (parsedObj.location !== undefined) {
+          locationExists = true;
+          tempLocation = parsedObj.location;
+        }
+
+        const imagePath = parsedObj.eventImagePath.split('/');
+        const imageName = imagePath[imagePath.length - 1];
+
+        this.setState({
+          visibility: parsedObj.visibility,
+          eventName: parsedObj.eventName,
+          description: parsedObj.description,
+          location: tempLocation,
+          dateStart: parsedObj.dateStart,
+          dateEnd: parsedObj.dateEnd,
+          secondsStart: parsedObj.secondsStart,
+          timeEnd: parsedObj.timeEnd,
+          secondsEnd: parsedObj.secondsEnd,
+          repeat: parsedObj.repeat,
+          addLocation: locationExists,
+          serviceImagePath: parsedObj.serviceImagePath,
+          tempServiceImagePath: parsedObj.serviceImagePath,
+          serviceImageName: imageName,
+          dataRetrieved: true,
+        });
+      });
+    }
   }
 
     validate = () => {
@@ -263,10 +342,39 @@ class CreateEvent extends Component {
       return isError;
     }
 
+    handleAddObject = (name, object) => {
+      this.state.serviceHoursCount += 1;
+      this.setState({
+        [name]: this.state[name].concat([object]),
+      });
+    }
+
+    handleRemoveObject = (name, index) => {
+      this.state.serviceHoursCount -= 1;
+      this.setState({
+        [name]: this.state[name].filter((s, _index) => _index !== index),
+      });
+    }
+
+    handleEditObject= (name, index) => (event) => {
+      this.setState({
+        [name]: this.state[name].map((s, _index) => {
+          if (_index !== index) return s;
+          return { ...s, [event.target.name]: event.target.value };
+        }),
+      });
+    }
+
     handleChange = (event) => {
       this.setState({
         [event.target.name]: event.target.value,
       });
+    }
+
+    handleAddLocation = () => {
+      this.setState(prevState => ({
+        addLocation: !prevState.addLocation,
+      }));
     }
 
     handleNext = () => {
@@ -310,18 +418,40 @@ class CreateEvent extends Component {
     };
 
     handleUploadImage = (event) => {
+      const { tempEventImagePath } = this.state;
+
+      if (tempEventImagePath !== '') {
+        URL.revokeObjectURL(tempEventImagePath);
+      }
+
       if (event.target.files[0] !== undefined) {
         this.setState({
           eventImage: event.target.files[0],
           eventImageName: event.target.files[0].name,
+          tempEventImagePath: window.URL.createObjectURL(event.target.files[0]),
         });
       } else {
         this.setState({
           eventImage: null,
           eventImageName: '',
+          tempEventImagePath: '',
         });
       }
     }
+
+    handleSubmit = () => {
+      const error = this.validate();
+      if (!error) {
+        this.createService();
+      }
+    };
+
+    handleUpdate = () => {
+      const error = this.validate();
+      if (!error) {
+        this.updateService();
+      }
+    };
 
     handleEditSingleObject = (name, fieldName) => (event) => {
       const obj = {};
@@ -334,13 +464,19 @@ class CreateEvent extends Component {
     // Send event data in post body to add to mongodb
     createEvent = () => {
       const {
-        creator, visibility, eventName, description, location,
+        creator, visibility, eventName, description, location, addLocation,
         dateStart, dateEnd, timeStart, secondsStart, timeEnd, secondsEnd, repeat, eventImage,
       } = this.state;
 
+      let tempLocation = {};
       let tempImageName = 'cameraDefault.png';
+
       if (eventImage !== '') {
         tempImageName = eventImage.name;
+      }
+
+      if (addLocation) {
+        tempLocation = location;
       }
 
       const formData = new FormData();
@@ -350,7 +486,7 @@ class CreateEvent extends Component {
         visibility,
         eventName,
         description,
-        location,
+        location: tempLocation,
         dateStart,
         dateEnd,
         timeStart,
@@ -368,15 +504,16 @@ class CreateEvent extends Component {
             'Content-Type': 'multipart/form-data',
           },
         }).then((response) => {
-        this.setState({
-          messageFromServer: response.data,
-        });
         if (response.status === 200) {
           this.setState({
-            redirectTo: true,
+            messageFromServer: response.data,
             redirectToAllEvents: true,
           });
         }
+      }).catch((error) => {
+        this.setState({
+          messageFromServer: error.response.data,
+        });
       });
     }
 
@@ -387,12 +524,70 @@ class CreateEvent extends Component {
       }
     }
 
+    updateEvent = () => {
+      const {
+        eventId, visibility, eventName, description, location, addLocation,
+        dateStart, dateEnd, timeStart, secondsStart, timeEnd, secondsEnd, repeat, eventImage,
+      } = this.state;
+
+      let tempLocation = {};
+      let tempImageName = 'cameraDefault.png';
+
+      if (eventImage !== '') {
+        tempImageName = eventImage.name;
+      }
+
+      if (addLocation) {
+        tempLocation = location;
+      }
+
+      const formData = new FormData();
+      formData.append('eventImage', eventImage);
+      formData.append('eventDetails', qs.stringify({
+        visibility,
+        eventName,
+        description,
+        location: tempLocation,
+        dateStart,
+        dateEnd,
+        timeStart,
+        secondsStart,
+        timeEnd,
+        secondsEnd,
+        repeat,
+        _id: eventId,
+        eventImage,
+        eventImageName: tempImageName,
+      }));
+
+      axios.post('/events/update', formData,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        }).then((response) => {
+        this.setState({
+          messageFromServer: response.data,
+        });
+        if (response.status === 200) {
+          this.setState({
+            redirectTo: true,
+            redirectToAllEvents: true,
+          });
+        }
+      }).catch((error) => {
+        this.setState({
+          messageFromServer: error.response.data,
+        });
+      });
+    }
+
     render() {
       const {
         visibility, eventName, description, location, dateStart,
         dateEnd, timeStart, timeEnd, repeat, eventNameError, descriptionError,
         addressError, apartmentError, cityError, provinceError, postalCodeError,
-        phoneNumberError, dateStartError, dateEndError, timeStartError, timeEndError,
+        phoneNumberError, dateStartError, dateEndError, timeStartError, timeEndError, tempServiceImagePath,
         eventImageError, messageFromServer,
       } = this.state;
       const { classes } = this.props;
@@ -632,17 +827,26 @@ class CreateEvent extends Component {
                 }}
               />
             </Grid>
-            <Grid item xs={12}>
-              <Typography variant="subheading" gutterBottom className={classes.row} align="left">
-                    Select image to upload (Optional)
-              </Typography>
-              <TextField
-                id="eventImage"
-                type="file"
-                onChange={event => this.handleUploadImage(event)}
-                helperText={eventImageError}
-                error={eventImageError.length > 0}
-              />
+            <Grid container spacing={24}>
+              <Grid item xs={12}>
+                  <img
+                    src={tempServiceImagePath}
+                    alt={tempServiceImagePath}
+                    className={classes.img}
+                  />
+              </Grid>
+              <Grid item xs={12}>
+                <Typography variant="subheading" gutterBottom className={classes.row} align="left">
+                      Select image to upload (Optional)
+                </Typography>
+                <TextField
+                  id="eventImage"
+                  type="file"
+                  onChange={event => this.handleUploadImage(event)}
+                  helperText={eventImageError}
+                  error={eventImageError.length > 0}
+                />
+              </Grid>
             </Grid>
             <Button
               variant="contained"
@@ -660,6 +864,8 @@ class CreateEvent extends Component {
 
 CreateEvent.propTypes = {
   classes: PropTypes.shape({}).isRequired,
+  location: PropTypes.shape({}).isRequired,
+  editMode: PropTypes.bool.isRequired,
 };
 
 export default withStyles(styles)(CreateEvent);

@@ -56,7 +56,29 @@ module.exports = {
     }
   },
 
+  getEventData(req, res) {
+    const query = {};
+
+    if (req.query._id !== '') {
+      query._id = req.query._id;
+    }
+
+    Event.findOne(query, (err, events) => {
+      console.log(events);
+      if (err) {
+        return res.status(400).send('There was a error getting event.');
+      }
+      return res.status(200).send(events);
+    });
+  },
+
   viewEvents(req, res) {
+    let query ={};
+
+    if(req.query.editOwner !== '') {
+        console.log("EditOwner" + req.query.editOwner);
+        query["email"] = req.query.editOwner;
+    }
     Event.find({}, (err, events) => res.send(events));
   },
 };

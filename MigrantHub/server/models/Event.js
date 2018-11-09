@@ -24,7 +24,7 @@ const eventSchema = new Schema({
   secondsEnd: { type: Number, required: true },
   repeat: { type: String, required: true },
   eventImagePath: { type: String, required: false },
-
+  dateCreated: { type: Date, required: false },
 }, { collection: 'Event' });
 
 module.exports = mongoose.model('Event', eventSchema);
