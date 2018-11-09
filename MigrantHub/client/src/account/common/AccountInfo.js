@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import withStyles from '@material-ui/core/styles/withStyles';
 import TextField from '@material-ui/core/TextField';
-import Input from '@material-ui/core/Input'
+import Input from '@material-ui/core/Input';
 import InputLabel from '@material-ui/core/InputLabel';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import IconButton from '@material-ui/core/IconButton';
@@ -14,14 +14,14 @@ import Typography from '@material-ui/core/Typography';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import validator from 'validator';
 
-const styles = theme => ({});
+const styles = ({});
 
 class AccountInfo extends Component {
   state = {
     showPassword: false,
-    emailError: "",
-    passwordError: "",
-    confirmPasswordError: "",
+    emailError: '',
+    passwordError: '',
+    confirmPasswordError: '',
   }
 
   handleClickShowPassword = () => {
@@ -29,125 +29,137 @@ class AccountInfo extends Component {
   };
 
   validate = () => {
+    const { email, password, confirmPassword } = this.props;
+
     let isError = false;
     const errors = {
-      emailError: "",
-      passwordError: "",
-      confirmPasswordError: "",
+      emailError: '',
+      passwordError: '',
+      confirmPasswordError: '',
     };
 
-    if (validator.isEmpty(this.props.email)) {
-      errors.emailError = "Email is required";
-      isError = true
-    } else if (!validator.isEmail(this.props.email)) {
-      errors.emailError = "Email is not valid"
-      isError = true
+    if (validator.isEmpty(email)) {
+      errors.emailError = 'Email is required';
+      isError = true;
+    } else if (!validator.isEmail(email)) {
+      errors.emailError = 'Email is not valid';
+      isError = true;
     }
 
-    if (validator.isEmpty(this.props.password)) {
-      errors.passwordError = "Password is required"
-      isError = true
-    } else if (validator.isEmpty(this.props.confirmPassword)) {
-      errors.confirmPasswordError = "Confirm your password"
-      isError = true
-    } else if (!validator.equals(this.props.password, this.props.confirmPassword)) {
-      errors.passwordError = "Passwords do not match"
-      errors.confirmPasswordError = "Passwords do not match"
-      isError = true
-    } else if (!validator.isLength(this.props.password, {min: 8})) {
-      errors.passwordError = "Password must be atleast 8 characters"
-      errors.confirmPasswordError = "Password must be atleast 8 characters"
-      isError = true
+    if (validator.isEmpty(password)) {
+      errors.passwordError = 'Password is required';
+      isError = true;
+    } else if (validator.isEmpty(confirmPassword)) {
+      errors.confirmPasswordError = 'Confirm your password';
+      isError = true;
+    } else if (!validator.equals(password, confirmPassword)) {
+      errors.passwordError = 'Passwords do not match';
+      errors.confirmPasswordError = 'Passwords do not match';
+      isError = true;
+    } else if (!validator.isLength(password, { min: 8 })) {
+      errors.passwordError = 'Password must be atleast 8 characters';
+      errors.confirmPasswordError = 'Password must be atleast 8 characters';
+      isError = true;
     }
 
-    this.setState({
-      ...this.state,
-      ...errors
-    })
-    
+    this.setState(prevState => ({
+      ...prevState,
+      ...errors,
+    }));
+
     return isError;
   }
 
   render() {
-    const handleChange = this.props.handleChange;
-    const email = this.props.email;
-    const password = this.props.password;
-    const confirmPassword = this.props.confirmPassword;
+    const {
+      email, password, confirmPassword, handleChange,
+    } = this.props;
+    const {
+      showPassword, passwordError, emailError, confirmPasswordError,
+    } = this.state;
 
     return (
       <React.Fragment>
         <Typography variant="title" gutterBottom>
-        Account Information
+                  Account Information
         </Typography>
         <Grid container spacing={24}>
           <Grid item xs={12}>
-            <TextField 
-                id="email"
-                name="email"
-                label="Email"
-                value={email}
-                onChange={event => handleChange(event)}
-                fullWidth
-                helperText={this.state.emailError}
-                error={this.state.emailError.length > 0}
+            <TextField
+              id="email"
+              name="email"
+              label="Email"
+              value={email}
+              onChange={event => handleChange(event)}
+              fullWidth
+              helperText={emailError}
+              error={emailError.length > 0}
             />
-           </Grid>
-           <Grid item xs={12} sm={6}>
+          </Grid>
+          <Grid item xs={12} sm={6}>
             <FormControl margin="normal" fullWidth>
-              <InputLabel htmlFor="password"
-              error={this.state.passwordError.length > 0}>Password</InputLabel>
+              <InputLabel
+                htmlFor="password"
+                error={passwordError.length > 0}
+              >
+Password
+              </InputLabel>
               <Input
                 name="password"
-                type={this.state.showPassword ? 'text' : 'password'}
+                type={showPassword ? 'text' : 'password'}
                 value={password}
                 onChange={event => handleChange(event)}
-                error={this.state.passwordError.length > 0}
-                endAdornment={
+                error={passwordError.length > 0}
+                endAdornment={(
                   <InputAdornment position="end">
                     <IconButton
                       aria-label="Toggle password visibility"
                       onClick={this.handleClickShowPassword}
                     >
-                      {this.state.showPassword ? <VisibilityOff /> : <Visibility />}
+                      {showPassword ? <VisibilityOff /> : <Visibility />}
                     </IconButton>
                   </InputAdornment>
-                }
+)}
               />
               <FormHelperText
-                error={this.state.passwordError.length > 0}
+                error={passwordError.length > 0}
               >
-                {this.state.passwordError}
+                {passwordError}
               </FormHelperText>
             </FormControl>
-           </Grid>
-           <Grid item xs={12} sm={6}>
+          </Grid>
+          <Grid item xs={12} sm={6}>
             <FormControl margin="normal" fullWidth>
-              <InputLabel htmlFor="password"
-              error={this.state.confirmPasswordError.length > 0 || this.state.passwordError.length > 0}>Confirm Password</InputLabel>
+              <InputLabel
+                htmlFor="password"
+                error={confirmPasswordError.length > 0 || passwordError.length > 0}
+              >
+                              Confirm Password
+              </InputLabel>
               <Input
                 name="confirmPassword"
-                type={this.state.showPassword ? 'text' : 'password'}
+                type={showPassword ? 'text' : 'password'}
                 value={confirmPassword}
                 onChange={event => handleChange(event)}
-                error={this.state.confirmPasswordError.length > 0 || this.state.passwordError.length > 0}
-                endAdornment={
+                error={confirmPasswordError.length > 0 || passwordError.length > 0}
+                endAdornment={(
                   <InputAdornment position="end">
                     <IconButton
                       aria-label="Toggle password visibility"
                       onClick={this.handleClickShowPassword}
                     >
-                      {this.state.showPassword ? <VisibilityOff /> : <Visibility />}
+                      {showPassword ? <VisibilityOff /> : <Visibility />}
                     </IconButton>
                   </InputAdornment>
-                }
+)}
               />
               <FormHelperText
-                error={this.state.confirmPasswordError.length > 0 || this.state.passwordError.length > 0}
+                error={confirmPasswordError.length > 0 || passwordError.length > 0}
               >
-                {this.state.confirmPasswordError}
+                {confirmPasswordError}
               </FormHelperText>
             </FormControl>
-           </Grid>
+          </Grid>
         </Grid>
       </React.Fragment>
     );
@@ -155,7 +167,11 @@ class AccountInfo extends Component {
 }
 
 AccountInfo.propTypes = {
-  classes: PropTypes.object.isRequired,
+  email: PropTypes.string.isRequired,
+  password: PropTypes.string.isRequired,
+  confirmPassword: PropTypes.string.isRequired,
+  handleChange: PropTypes.func.isRequired,
+
 };
 
 export default withStyles(styles)(AccountInfo);

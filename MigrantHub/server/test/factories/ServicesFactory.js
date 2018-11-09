@@ -1,12 +1,13 @@
 module.exports.validServiceData = function() {
     return {
+        _id: "5bda52305ccfd051484ea790",
         email : "test@hotmail.com",
         serviceTitle : "My First Service",
         serviceSummary : "In reasonable compliment favourable is connection dispatched in terminated.",
         serviceDescription : "Way nor furnished sir procuring therefore but. Warmth far manner myself active are cannot called.",
         serviceDate : {
-            startDate : "2018-11-01",
-            endDate : "2019-02-01"
+            startDate : "2020-11-01",
+            endDate : "2021-02-01"
         },
         location : {
             address : "1455 Boulevard de Maisonneuve O",
@@ -62,8 +63,8 @@ module.exports.invalidServiceData = function() {
         serviceSummary : "In reasonable compliment favourable is connection dispatched in terminated.",
         serviceDescription : "Way nor furnished sir procuring therefore but. Warmth far manner myself active are cannot called.",
         serviceDate : {
-            startDate : "2018-11-01",
-            endDate : "2019-02-01"
+            startDate : "2022-11-01",
+            endDate : "2024-02-01"
         },
         location : {
             address : "1455 Boulevard de Maisonneuve O",

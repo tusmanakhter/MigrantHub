@@ -5,14 +5,14 @@ import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import validator from 'validator';
-import IdApi from './IdApi';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import IdApi from './IdApi';
 
 const styles = theme => ({});
 
 class IdInfo extends Component {
   state = {
-    corpIdError: "",
+    corpIdError: '',
     loading: false,
   }
 
@@ -23,25 +23,25 @@ class IdInfo extends Component {
     };
 
     if (validator.isEmpty(this.props.corpId)) {
-      errors.corpIdError = "Corporation Id is required";
-      isError = true
+      errors.corpIdError = 'Corporation Id is required';
+      isError = true;
     } else if (!validator.isNumeric(this.props.corpId)) {
-      errors.corpIdError = "Please enter 7-digit"
-      isError = true
+      errors.corpIdError = 'Please enter 7-digit';
+      isError = true;
     } else {
       this.setState({ loading: true });
-      let validId = await IdApi.checkCorpId(this.props.corpId);
+      const validId = await IdApi.checkCorpId(this.props.corpId);
       this.setState({ loading: false });
       if (!validId) {
-        errors.corpIdError = "ID entered is invalid"
+        errors.corpIdError = 'ID entered is invalid';
         isError = true;
       }
     }
 
     this.setState({
       ...this.state,
-      ...errors
-    })
+      ...errors,
+    });
 
     return isError;
   }
@@ -55,9 +55,13 @@ class IdInfo extends Component {
         <Typography variant="title" gutterBottom>
           Corporation ID Verification
         </Typography>
-        <i><small>"A corporation number is the number assigned to a corporation by Corporations Canada.
+        <i>
+          <small>
+"A corporation number is the number assigned to a corporation by Corporations Canada.
           It is usually a 7-digit number. Find the corporation number on the corporation’s Certificate of Incorporation, Amalgamation or Continuance.
-          Or access Corporations Canada online database of federal corporations or by contacting Corporations Canada directly."</small></i>
+          Or access Corporations Canada online database of federal corporations or by contacting Corporations Canada directly."
+          </small>
+        </i>
         <i><strong><small>- Goverment Of Canada</small></strong></i>
         <Grid container spacing={24}>
           <Grid item xs={12}>
@@ -73,12 +77,14 @@ class IdInfo extends Component {
             />
           </Grid>
         </Grid>
-        {this.state.loading ? <div>
-          <br />
-          <CircularProgress />
-          <br />
-          <p>Please wait while we verify your ID</p>
-        </div> : ""
+        {this.state.loading ? (
+          <div>
+            <br />
+            <CircularProgress />
+            <br />
+            <p>Please wait while we verify your ID</p>
+          </div>
+        ) : ''
         }
       </React.Fragment>
     );

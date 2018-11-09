@@ -1,8 +1,8 @@
 import React from 'react';
-import App from './App';
-
 import { shallow } from 'enzyme';
+import LanguageInfo from '../../account/personal/LanguageInfo';
+
 
 it('renders without crashing', () => {
-  shallow(<App />);
+  shallow(<LanguageInfo />);
 });
