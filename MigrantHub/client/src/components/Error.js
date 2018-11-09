@@ -1,11 +1,9 @@
-import React from "react";
+import React from 'react';
 
-const Error = () => {
-    return (
-        <div>
-            <p> Error: Path does not exist :) </p>
-        </div>
-    );
-};
+const Error = () => (
+  <div>
+    <p> Error: Path does not exist :) </p>
+  </div>
+);
 
 export default Error;

@@ -1,8 +1,8 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import withStyles from '@material-ui/core/styles/withStyles';
 import TextField from '@material-ui/core/TextField';
-import Input from '@material-ui/core/Input'
+import Input from '@material-ui/core/Input';
 import InputLabel from '@material-ui/core/InputLabel';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import IconButton from '@material-ui/core/IconButton';
@@ -11,7 +11,7 @@ import VisibilityOff from '@material-ui/icons/VisibilityOff';
 import FormControl from '@material-ui/core/FormControl';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
-import { Redirect } from 'react-router-dom'
+import { Redirect } from 'react-router-dom';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -19,11 +19,12 @@ import Paper from '@material-ui/core/Paper';
 import Checkbox from '@material-ui/core/Checkbox';
 import LockIcon from '@material-ui/icons/LockOutlined';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
-import HomeLayout from '../home/HomeLayout'
+import axios from 'axios';
+import HomeLayout from '../home/HomeLayout';
 import Auth from '../routes/Auth';
 
-import axios from 'axios';
-var qs = require('qs');
+
+const qs = require('qs');
 
 const styles = theme => ({
   layout: {
@@ -58,14 +59,10 @@ const styles = theme => ({
 });
 
 class Login extends Component {
-
   state = {
     showPassword: false,
-    loggedIn: false,
-    username: null,
-    password: null,
     redirectTo: false,
-    redirectToURL: ''
+    redirectToURL: '',
 
   }
 
@@ -73,50 +70,50 @@ class Login extends Component {
     this.setState(state => ({ showPassword: !state.showPassword }));
   };
 
-  handleChange = event => {
+  handleChange = (event) => {
     this.setState({
-      [event.target.name]: event.target.value
-    })
+      [event.target.name]: event.target.value,
+    });
   }
 
   handleSubmit = () => {
     this.sendLogin(this);
   };
+
   // Send profile data in post body to add to mongodb
   sendLogin(e) {
     axios.post('/account/login',
       qs.stringify({
         username: e.state.username,
         password: e.state.password,
-      })).then(async response => {
-        if (response.status === 200) {
-          await Auth.authenticate();
-          if (response.data.type === "admin") {
-            this.setState({
-              redirectTo: true,
-              redirectToURL: '/admin/dashboard'
-            })
-          } else {
-            this.setState({
-              redirectTo: true,
-              redirectToURL: '/main'
-            })
-          }
+      })).then(async (response) => {
+      if (response.status === 200) {
+        await Auth.authenticate();
+        if (response.data.type === 'admin') {
+          this.setState({
+            redirectTo: true,
+            redirectToURL: '/admin/dashboard',
+          });
+        } else {
+          this.setState({
+            redirectTo: true,
+            redirectToURL: '/main',
+          });
         }
-      }).catch(error => {
-        console.log('login error: ')
-        console.log(error);
-        this.setState({
-          redirectTo: true,
-          redirectToURL: '/TempError'
-        })
-      })
+      }
+    }).catch((error) => {
+      console.log('login error: ');
+      console.log(error);
+      this.setState({
+        redirectTo: true,
+        redirectToURL: '/TempError',
+      });
+    });
   }
 
   render() {
-
     if (this.state.redirectTo) {
-      return <Redirect to={this.state.redirectToURL} />
+      return <Redirect to={this.state.redirectToURL} />;
     }
     const { classes } = this.props;
 
@@ -136,65 +133,65 @@ class Login extends Component {
                 <LockIcon />
               </Avatar>
               <form className={classes.form}>
-              <Grid container>
-                <Grid item xs={12}>
-                  <TextField
-                    id="username"
-                    name="username"
-                    label="Email"
-                    value={username}
-                    onChange={event => this.handleChange(event)}
-                    fullWidth
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <FormControl margin="normal" fullWidth>
-                    <InputLabel htmlFor="password">Password</InputLabel>
-                    <Input
-                      name="password"
-                      type={this.state.showPassword ? 'text' : 'password'}
-                      value={password}
+                <Grid container>
+                  <Grid item xs={12}>
+                    <TextField
+                      id="username"
+                      name="username"
+                      label="Email"
+                      value={username}
                       onChange={event => this.handleChange(event)}
-                      endAdornment={
-                        <InputAdornment position="end">
-                          <IconButton
-                            aria-label="Toggle password visibility"
-                            onClick={this.handleClickShowPassword}
-                          >
-                            {this.state.showPassword ? <VisibilityOff /> : <Visibility />}
-                          </IconButton>
-                        </InputAdornment>
-                      }
+                      fullWidth
                     />
-                  </FormControl>
-                </Grid>
-                <Grid item xs={12}>
-                  <FormControlLabel
-                    control={<Checkbox value="remember" color="primary" />}
-                    label="Remember me"
-                  />
-                </Grid>
-                <Button
-                  fullWidth
-                  variant="contained"
-                  color="primary"
-                  onClick={this.handleSubmit}
-                  className={classes.submit}
-                >
+                  </Grid>
+                  <Grid item xs={12}>
+                    <FormControl margin="normal" fullWidth>
+                      <InputLabel htmlFor="password">Password</InputLabel>
+                      <Input
+                        name="password"
+                        type={this.state.showPassword ? 'text' : 'password'}
+                        value={password}
+                        onChange={event => this.handleChange(event)}
+                        endAdornment={(
+                          <InputAdornment position="end">
+                            <IconButton
+                              aria-label="Toggle password visibility"
+                              onClick={this.handleClickShowPassword}
+                            >
+                              {this.state.showPassword ? <VisibilityOff /> : <Visibility />}
+                            </IconButton>
+                          </InputAdornment>
+)}
+                      />
+                    </FormControl>
+                  </Grid>
+                  <Grid item xs={12}>
+                    <FormControlLabel
+                      control={<Checkbox value="remember" color="primary" />}
+                      label="Remember me"
+                    />
+                  </Grid>
+                  <Button
+                    fullWidth
+                    variant="contained"
+                    color="primary"
+                    onClick={this.handleSubmit}
+                    className={classes.submit}
+                  >
                   Sign in
-                </Button>
-              </Grid>
+                  </Button>
+                </Grid>
               </form>
             </Paper>
           </main>
         </HomeLayout>
       </React.Fragment>
-    )
+    );
   }
 }
 
 Login.propTypes = {
-  classes: PropTypes.object.isRequired,
+  classes: PropTypes.shape({}).isRequired,
 };
 
 export default withStyles(styles)(Login);

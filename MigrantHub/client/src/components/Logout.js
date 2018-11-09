@@ -1,17 +1,19 @@
 import React, { Component } from 'react';
-import { withRouter } from "react-router-dom";
+import PropTypes from 'prop-types';
+import { withRouter } from 'react-router-dom';
 import Button from '@material-ui/core/Button';
-import Auth from '../routes/Auth';
 import axios from 'axios';
+import Auth from '../routes/Auth';
 
 class Logout extends Component {
   logout = () => {
-    axios.post('/account/logout').then(response => {
+    axios.post('/account/logout').then((response) => {
       if (response.status === 200) {
         Auth.unauthenticate();
-        this.props.history.push('/');
+        const { history } = this.props;
+        history.push('/');
       }
-    })
+    });
   };
 
   render() {
@@ -21,8 +23,10 @@ class Logout extends Component {
           Logout
         </Button>
       </React.Fragment>
-    )
+    );
   }
 }
-
+Logout.propTypes = {
+  history: PropTypes.shape({}).isRequired,
+};
 export default withRouter(Logout);

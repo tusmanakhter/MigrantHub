@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import TextField from '@material-ui/core/TextField';
 import MenuItem from '@material-ui/core/MenuItem';
 import Grid from '@material-ui/core/Grid';
@@ -7,8 +8,8 @@ import validator from 'validator';
 
 const organizationTypes = [
   { value: 'FDRL', label: 'Federal' },
-  { value: 'NGOV', label: "Non-governmental" },
-  { value: 'PROV', label: "Provincial" }
+  { value: 'NGOV', label: 'Non-governmental' },
+  { value: 'PROV', label: 'Provincial' },
 ];
 
 class AboutInfo extends Component {
@@ -31,32 +32,29 @@ class AboutInfo extends Component {
     };
 
     if (validator.isEmpty(this.props.organizationName)) {
-      errors.organizationNameError = "Organization name is required";
-      isError = true
+      errors.organizationNameError = 'Organization name is required';
+      isError = true;
     }
 
     this.setState({
       ...this.state,
-      ...errors
-    })
+      ...errors,
+    });
 
     return isError;
   }
 
   render() {
-
-    const handleChange = this.props.handleChange;
-    const organizationName = this.props.organizationName;
-    const orgType = this.props.orgType;
-    const department = this.props.department;
-    const serviceType = this.props.serviceType;
-    const description = this.props.description;
+    const { organizationNameError } = this.state;
+    const {
+      handleChange, organizationName, orgType, department, serviceType, description,
+    } = this.props;
 
     return (
       <React.Fragment>
         <Typography variant="title" gutterBottom>
-          About
-      </Typography>
+              About
+        </Typography>
         <Grid container spacing={24}>
           <Grid item xs={12} sm={6}>
             <TextField
@@ -66,8 +64,8 @@ class AboutInfo extends Component {
               value={organizationName}
               onChange={event => handleChange(event)}
               fullWidth
-              helperText={this.state.organizationNameError}
-              error={this.state.organizationNameError.length > 0}
+              helperText={organizationNameError}
+              error={organizationNameError.length > 0}
             />
           </Grid>
           <Grid item xs={12} sm={6}>
@@ -122,4 +120,12 @@ class AboutInfo extends Component {
   }
 }
 
+AboutInfo.propTypes = {
+  handleChange: PropTypes.func.isRequired,
+  organizationName: PropTypes.string.isRequired,
+  orgType: PropTypes.string.isRequired,
+  department: PropTypes.string.isRequired,
+  serviceType: PropTypes.string.isRequired,
+  description: PropTypes.string.isRequired,
+};
 export default AboutInfo;

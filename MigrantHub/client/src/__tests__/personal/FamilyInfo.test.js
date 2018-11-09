@@ -1,7 +1,7 @@
 import React from 'react';
+import { shallow } from 'enzyme';
 import FamilyInfo from '../../personal/FamilyInfo';
 
-import { shallow } from 'enzyme';
 
 it('renders without crashing', () => {
   shallow(<FamilyInfo />);

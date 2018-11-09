@@ -1,8 +1,8 @@
 import React from 'react';
-import LanguageInfo from '../../personal/LanguageInfo';
-
 import { shallow } from 'enzyme';
+import IdInfo from '../../business/IdInfo';
+
 
 it('renders without crashing', () => {
-  shallow(<LanguageInfo />);
+  shallow(<IdInfo />);
 });

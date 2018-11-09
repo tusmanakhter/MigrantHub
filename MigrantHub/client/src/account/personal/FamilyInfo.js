@@ -31,38 +31,40 @@ const relations = [
   { value: 'father', label: 'Father' },
   { value: 'brother', label: 'Brother' },
   { value: 'sister', label: 'Sister' },
-]
+];
 
 const relationshipStatus = [
   { value: 'married', label: 'Married' },
   { value: 'single', label: 'Single' },
   { value: 'divorced', label: 'Divorced' },
   { value: 'widowed', label: 'Widowed' },
-]
+];
 
-const familyObject = { age: '', gender: '', relation: '', relationshipStatus: '' };
+const familyObject = {
+  age: '', gender: '', relation: '', relationshipStatus: '',
+};
 
 const styles = theme => ({
   container: {
     position: 'relative',
   },
   row: {
-    display: 'inline-block'
+    display: 'inline-block',
   },
   button: {
     margin: theme.spacing.unit,
   },
   group: {
-    flexDirection: 'row'
+    flexDirection: 'row',
   },
   formControl: {
-    textAlign: 'left'
+    textAlign: 'left',
   },
   select: {
-    textAlign: 'left'
+    textAlign: 'left',
   },
   paper: {
-    width: "100%",
+    width: '100%',
     marginTop: theme.spacing.unit,
     marginBottom: theme.spacing.unit,
     paddingTop: theme.spacing.unit * 2,
@@ -75,11 +77,11 @@ const styles = theme => ({
       paddingBottom: theme.spacing.unit * 3,
       paddingLeft: theme.spacing.unit * 3,
     },
-  layout: {
-    marginLeft: theme.spacing.unit,
-    marginRight: theme.spacing.unit,
+    layout: {
+      marginLeft: theme.spacing.unit,
+      marginRight: theme.spacing.unit,
+    },
   },
-  }
 });
 class FamilyInfo extends Component {
   state = {
@@ -87,181 +89,195 @@ class FamilyInfo extends Component {
   }
 
   validate = () => {
+    const { family } = this.props;
     let isError = false;
     const errors = {
       familyError: [],
     };
 
-    this.props.family.forEach((member, index) => {
+    family.forEach((member, index) => {
       errors.familyError = errors.familyError.concat([JSON.parse(JSON.stringify(familyObject))]);
 
       if (validator.isEmpty(member.age)) {
-        errors.familyError[index].age = "Age is required";
-        isError = true
-      } 
+        errors.familyError[index].age = 'Age is required';
+        isError = true;
+      }
 
       if (validator.isEmpty(member.gender)) {
-        errors.familyError[index].gender = "Gender is required";
-        isError = true
-      } 
+        errors.familyError[index].gender = 'Gender is required';
+        isError = true;
+      }
 
       if (validator.isEmpty(member.relationshipStatus)) {
-        errors.familyError[index].relationshipStatus = "Relationship status is required";
-        isError = true
-      } 
-  
+        errors.familyError[index].relationshipStatus = 'Relationship status is required';
+        isError = true;
+      }
+
       if (validator.isEmpty(member.relation)) {
-        errors.familyError[index].relation = "Relation is required";
-        isError = true
-      } 
+        errors.familyError[index].relation = 'Relation is required';
+        isError = true;
+      }
     });
 
-    this.setState({
-      ...this.state,
-      ...errors
-    })
-    
+    this.setState(prevState => ({
+      ...prevState,
+      ...errors,
+    }));
+
     return isError;
   }
 
-  objectErrorText = (name, index, field) => {
-    return this.state[name][index] === undefined ? "" : this.state[name][index][field] 
-  }
+  objectErrorText = (name, index, field) => (this.state[name][index] === undefined ? '' : this.state[name][index][field])
 
   render() {
-    const { classes } = this.props;
-
-    const handleAddObject= this.props.handleAddObject;
-    const handleRemoveObject= this.props.handleRemoveObject;
-    const handleEditObject= this.props.handleEditObject;
-    const family = this.props.family;
+    const {
+      classes, handleAddObject, handleRemoveObject, handleEditObject, family,
+    } = this.props;
 
     return (
       <React.Fragment>
-      <Typography variant="title" gutterBottom>
-        Family Information
-      </Typography>
-      <Grid container spacing={24}>
-        <Grid item xs={12}>
-          <Typography variant="subheading" gutterBottom className={classes.row}>
-          Add family member
-          </Typography>
-          <Button variant="fab" mini color="secondary" 
-                  aria-label="Add" 
-                  onClick={event => handleAddObject("family", familyObject)}
-                  className={classes.button}>
-            <AddIcon />
-          </Button>
-        </Grid>
-        {family.map((member, index) => (
-          <React.Fragment key={index}>
-          <Paper className={classes.paper}>
-          <Typography variant="subheading" align="left" gutterBottom>
-          Member {index+1}
-          </Typography>
-          <Grid justify="center" alignItems="center" container item xs>
-            <Grid container spacing={24} item xs={11}>
-              <Grid item xs={12} sm={4}>
-                <TextField 
-                  id="age"
-                  name="age"
-                  label="Age"
-                  value={member.age}
-                  type="number"
-                  onChange={handleEditObject("family", index)}
-                  helperText={this.objectErrorText("familyError", index, "age")}
-                  error={this.objectErrorText("familyError", index, "age").length > 0}
-                  fullWidth
-                  InputProps={{
-                    endAdornment: <InputAdornment position="end">years</InputAdornment>
-                  }}
-                />
-              </Grid>
-              <Grid item xs={12} sm={4}>
-                <TextField
-                  id="relationshipStatus"
-                  name="relationshipStatus"
-                  select
-                  label="Relationship Status"
-                  value={member.relationshipStatus}
-                  onChange={handleEditObject("family", index)}
-                  className={classes.select}
-                  helperText={this.objectErrorText("familyError", index, "relationshipStatus")}
-                  error={this.objectErrorText("familyError", index, "relationshipStatus").length > 0}
-                  fullWidth
-                >
-                  {relationshipStatus.map(option => (
-                    <MenuItem key={option.value} value={option.value}>
-                      {option.label}
-                    </MenuItem>
-                  ))}
-                </TextField>
-              </Grid>
-              <Grid item xs={12} sm={4}>
-                <TextField
-                  id="relation"
-                  name="relation"
-                  select
-                  label="Relation to you"
-                  value={member.relation}
-                  onChange={handleEditObject("family", index)}
-                  className={classes.select}
-                  helperText={this.objectErrorText("familyError", index, "relation")}
-                  error={this.objectErrorText("familyError", index, "relation").length > 0}
-                  fullWidth
-                >
-                  {relations.map(option => (
-                    <MenuItem key={option.value} value={option.value}>
-                      {option.label}
-                    </MenuItem>
-                  ))}
-                </TextField>
-              </Grid>
-              <Grid item xs={12}>
-                <FormControl component="fieldset" fullWidth className={classes.formControl}>
-                  <FormLabel component="legend" 
-                  error={this.objectErrorText("familyError", index, "gender").length > 0}>Gender</FormLabel>
-                  <RadioGroup
-                    aria-label="Gender"
-                    id="gender"
-                    name="gender"
-                    className={classes.group}
-                    value={member.gender}
-                    onChange={handleEditObject("family", index)}
-                  >
-                    {gender.map(option => (
-                      <FormControlLabel key={option.value} value={option.value} control={<Radio />} label={option.label}>
-                        {option.label}
-                      </FormControlLabel>
-                    ))}
-                  </RadioGroup>
-                  <FormHelperText
-                      error={this.objectErrorText("familyError", index, "gender").length > 0}
-                    >
-                      {this.objectErrorText("familyError", index, "gender")}
-                  </FormHelperText>
-                </FormControl>
-              </Grid>
-            </Grid>
-            <Grid item xs={1}>
-            <Button variant="fab" mini aria-label="Delete" 
-                    onClick={(event) => handleRemoveObject("family", index, event)}
-                    className={classes.button}>
-              <DeleteIcon />
+        <Typography variant="title" gutterBottom>
+              Family Information
+        </Typography>
+        <Grid container spacing={24}>
+          <Grid item xs={12}>
+            <Typography variant="subheading" gutterBottom className={classes.row}>
+                  Add family member
+            </Typography>
+            <Button
+              variant="fab"
+              mini
+              color="secondary"
+              aria-label="Add"
+              onClick={event => handleAddObject('family', familyObject)}
+              className={classes.button}
+            >
+              <AddIcon />
             </Button>
-            </Grid>   
           </Grid>
-          </Paper>
-          </React.Fragment>
-          ))} 
-      </Grid>
+          {family.map((member, index) => (
+            <React.Fragment key={index}>
+              <Paper className={classes.paper}>
+                <Typography variant="subheading" align="left" gutterBottom>
+                          Member
+                  {' '}
+                  {index + 1}
+                </Typography>
+                <Grid justify="center" alignItems="center" container item xs>
+                  <Grid container spacing={24} item xs={11}>
+                    <Grid item xs={12} sm={4}>
+                      <TextField
+                        id="age"
+                        name="age"
+                        label="Age"
+                        value={member.age}
+                        type="number"
+                        onChange={handleEditObject('family', index)}
+                        helperText={this.objectErrorText('familyError', index, 'age')}
+                        error={this.objectErrorText('familyError', index, 'age').length > 0}
+                        fullWidth
+                        InputProps={{
+                          endAdornment: <InputAdornment position="end">years</InputAdornment>,
+                        }}
+                      />
+                    </Grid>
+                    <Grid item xs={12} sm={4}>
+                      <TextField
+                        id="relationshipStatus"
+                        name="relationshipStatus"
+                        select
+                        label="Relationship Status"
+                        value={member.relationshipStatus}
+                        onChange={handleEditObject('family', index)}
+                        className={classes.select}
+                        helperText={this.objectErrorText('familyError', index, 'relationshipStatus')}
+                        error={this.objectErrorText('familyError', index, 'relationshipStatus').length > 0}
+                        fullWidth
+                      >
+                        {relationshipStatus.map(option => (
+                          <MenuItem key={option.value} value={option.value}>
+                            {option.label}
+                          </MenuItem>
+                        ))}
+                      </TextField>
+                    </Grid>
+                    <Grid item xs={12} sm={4}>
+                      <TextField
+                        id="relation"
+                        name="relation"
+                        select
+                        label="Relation to you"
+                        value={member.relation}
+                        onChange={handleEditObject('family', index)}
+                        className={classes.select}
+                        helperText={this.objectErrorText('familyError', index, 'relation')}
+                        error={this.objectErrorText('familyError', index, 'relation').length > 0}
+                        fullWidth
+                      >
+                        {relations.map(option => (
+                          <MenuItem key={option.value} value={option.value}>
+                            {option.label}
+                          </MenuItem>
+                        ))}
+                      </TextField>
+                    </Grid>
+                    <Grid item xs={12}>
+                      <FormControl component="fieldset" fullWidth className={classes.formControl}>
+                        <FormLabel
+                          component="legend"
+                          error={this.objectErrorText('familyError', index, 'gender').length > 0}
+                        >
+Gender
+                        </FormLabel>
+                        <RadioGroup
+                          aria-label="Gender"
+                          id="gender"
+                          name="gender"
+                          className={classes.group}
+                          value={member.gender}
+                          onChange={handleEditObject('family', index)}
+                        >
+                          {gender.map(option => (
+                            <FormControlLabel key={option.value} value={option.value} control={<Radio />} label={option.label}>
+                              {option.label}
+                            </FormControlLabel>
+                          ))}
+                        </RadioGroup>
+                        <FormHelperText
+                          error={this.objectErrorText('familyError', index, 'gender').length > 0}
+                        >
+                          {this.objectErrorText('familyError', index, 'gender')}
+                        </FormHelperText>
+                      </FormControl>
+                    </Grid>
+                  </Grid>
+                  <Grid item xs={1}>
+                    <Button
+                      variant="fab"
+                      mini
+                      aria-label="Delete"
+                      onClick={event => handleRemoveObject('family', index, event)}
+                      className={classes.button}
+                    >
+                      <DeleteIcon />
+                    </Button>
+                  </Grid>
+                </Grid>
+              </Paper>
+            </React.Fragment>
+          ))}
+        </Grid>
       </React.Fragment>
     );
   }
 }
 
 FamilyInfo.propTypes = {
-  classes: PropTypes.object.isRequired,
+  classes: PropTypes.shape({}).isRequired,
+  handleAddObject: PropTypes.func.isRequired,
+  handleRemoveObject: PropTypes.func.isRequired,
+  handleEditObject: PropTypes.func.isRequired,
+  family: PropTypes.shape({}).isRequired,
 };
 
 export default withStyles(styles)(FamilyInfo);

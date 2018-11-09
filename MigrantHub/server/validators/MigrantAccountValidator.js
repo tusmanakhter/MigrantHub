@@ -31,7 +31,7 @@ function MigrantAccountValidator(migrantObject) {
   if (validator.isEmpty(migrantObject.address)) {
     errors += '\nAddress is required and empty';
   }
-  if (validator.matches(migrantObject.postalCode, '[A - Za - z][0 - 9][A - Za - z] [0 - 9][A - Za - z][0 - 9]')) {
+  if (!validator.matches(migrantObject.postalCode, '[A-Za-z][0-9][A-Za-z] [0-9][A-Za-z][0-9]')) {
     errors += '\nPostal is should be in the format A1B 2E3';
   }
   if (validator.isEmpty(migrantObject.city)) {
@@ -52,7 +52,7 @@ function MigrantAccountValidator(migrantObject) {
   } else if (!validator.isLength(migrantObject.phoneNumber, { min: 14, max: 14 })) {
     errors += '\nPhone number is invalid';
   }
-  if (validator.matches(migrantObject.phoneNumber, '[(][0-9]{3}[)][ ][0-9]{3}[-][0-9]{4}')) {
+  if (!validator.matches(migrantObject.phoneNumber, '[(][0-9]{3}[)][ ][0-9]{3}[-][0-9]{4}')) {
     errors += '\nPhone number should be in the format (123) 456-7890';
   }
   if (validator.isEmpty(migrantObject.age)) {

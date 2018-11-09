@@ -3,51 +3,52 @@ import axios from 'axios';
 const auth = {
   authenticate() {
     return new Promise((resolve) => {
-      axios.get('/account/').then(response => {
-        var user = {}
+      axios.get('/account/').then((response) => {
+        let user = {};
         if (response.data.user) {
-          user = { 
+          user = {
             authenticated: true,
             username: response.data.user._id,
-            type: response.data.user.type
-          }
+            type: response.data.user.type,
+          };
         } else {
-          user = { 
+          user = {
             authenticated: false,
             username: null,
-            type: null
-          }
+            type: null,
+          };
         }
         localStorage.setItem('user', JSON.stringify(user));
-        resolve("done");
+        resolve('done');
       }).catch((err) => {
         console.log('Error fetching authorized user.');
+        console.log(err);
       });
     });
   },
   unauthenticate() {
-    var user = { 
+    const user = {
       authenticated: false,
       username: null,
-      type: null
-    }
+      type: null,
+    };
     localStorage.setItem('user', JSON.stringify(user));
   },
   isAuthenticated(type) {
-    var user = JSON.parse(localStorage.getItem('user'));
-    switch(type) {
+    const user = JSON.parse(localStorage.getItem('user'));
+    switch (type) {
       case 'admin':
-        return user.type === 'admin' && user.authenticated
+        return user.type === 'admin' && user.authenticated;
       case 'migrant':
-        return user.type === 'migrant' && user.authenticated
+        return user.type === 'migrant' && user.authenticated;
       case 'business':
-        return user.type === 'business' && user.authenticated
+        return user.type === 'business' && user.authenticated;
       case 'user':
-        return user.authenticated
+        return user.authenticated;
       default:
         return false;
     }
-  }
-}
+  },
+};
 
 export default auth;

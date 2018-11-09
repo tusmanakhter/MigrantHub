@@ -1,8 +1,8 @@
 import React from 'react';
-import CreateEvent from './CreateEvent';
-
 import { shallow } from 'enzyme';
+import AboutInfo from '../../business/AboutInfo';
+
 
 it('renders without crashing', () => {
-  shallow(<CreateEvent />);
+  shallow(<AboutInfo />);
 });
