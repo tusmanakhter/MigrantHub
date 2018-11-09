@@ -147,9 +147,9 @@ module.exports = {
         );
 
         if (deleteError) {
-            return res.status(400).send("There was an error deleting service.");
+            res.status(400).send("There was an error deleting service.");
         } else {
-            return res.status(200).send("Service deleted successfully.");
+            res.status(200).send("Service deleted successfully.");
         }
     },
 };
