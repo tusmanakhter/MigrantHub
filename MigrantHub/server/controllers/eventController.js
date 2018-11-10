@@ -82,7 +82,13 @@ module.exports = {
         query["email"] = req.query.editOwner;
     }
     query["deleted"] = false;
-    Event.find({}, (err, events) => res.send(events));
+    Event.find(query, function(err, events) {
+      if (err) {
+          res.status(400).send("There was a error getting events.");
+      } else {
+          res.status(200).send(events);
+      }
+  });
   },
 
   updateEvent(req, res) {
@@ -133,9 +139,9 @@ module.exports = {
       );
 
       if (deleteError) {
-          return res.status(400).send("There was an error deleting event.");
+          res.status(400).send("There was an error deleting event.");
       } else {
-          return res.status(200).send("Event deleted successfully.");
+          res.status(200).send("Event deleted successfully.");
       }
   },
 };
