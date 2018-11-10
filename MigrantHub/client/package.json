@@ -10,12 +10,15 @@
     "axios": "^0.18.0",
     "canada": "^0.1.0",
     "country-data": "0.0.31",
+    "dotenv": "^6.1.0",
     "form-data": "^2.3.3",
+    "http-proxy-middleware": "^0.19.0",
     "lodash": "^4.17.11",
     "mdbreact": "^4.8.1",
     "prop-types": "^15.6.2",
     "qs": "^6.5.2",
     "react": "^16.5.2",
+    "react-app-polyfill": "^0.1.3",
     "react-autosuggest": "^9.4.2",
     "react-dom": "^16.5.2",
     "react-google-maps": "^9.4.5",
@@ -23,7 +26,7 @@
     "react-number-format": "^3.6.2",
     "react-router": "^4.3.1",
     "react-router-dom": "^4.3.1",
-    "react-scripts": "1.1.5",
+    "react-scripts": "2.1.1",
     "react-text-mask": "^5.4.3",
     "react-transition-group": "^2.5.0",
     "recompose": "^0.30.0",
@@ -33,20 +36,25 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test --env=jsdom",
+    "test": "react-scripts test",
     "eject": "react-scripts eject",
     "lint": "eslint .",
     "lint-fix": "eslint . --fix"
   },
-  "proxy": "http://server:5000",
   "devDependencies": {
     "enzyme": "^3.7.0",
     "enzyme-adapter-react-16": "^1.6.0",
-    "eslint": "^5.3.0",
+    "eslint": "^5.6.0",
     "eslint-config-airbnb": "^17.1.0",
     "eslint-plugin-import": "^2.14.0",
     "eslint-plugin-jsx-a11y": "^6.1.1",
     "eslint-plugin-react": "^7.11.0",
     "react-test-renderer": "^16.5.2"
-  }
+  },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ]
 }
