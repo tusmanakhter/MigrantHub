@@ -223,7 +223,7 @@ class SignUp extends Component {
                     Welcome to MigrantHub.
                 </Typography>
                   <Typography variant="subheading">
-                    Check email for activation.
+                    You may now login.
                 </Typography>
                 </React.Fragment>
               ) : (

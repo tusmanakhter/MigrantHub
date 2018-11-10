@@ -47,7 +47,7 @@ class Routes extends Component {
           <Route path="/temperror" component={TempError} exact />
           <Route path="/editmigrant" component={EditMigrant} exact />
           <Route path="/editbusiness" component={EditBusiness} exact />
-          <ProtectedRoute path="/admin/dashboard" component={AdminDashboard} type='admin' exact />
+          <ProtectedRoute path="/admin/dashboard" component={AdminDashboard} type='admin' />
           <Route path="/services/create" component={ServiceForm} exact />
           <Route path="/services" component={ServiceList} exact />
           <Route path="/event/create" component={CreateEvent} exact />

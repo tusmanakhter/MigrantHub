@@ -4,7 +4,7 @@ var bcrypt = require('bcryptjs');
 var strategy = new LocalStrategy(
 
     function(username, password, done) {
-        User.findOne({ email: username }, (err, user) => {
+        User.findOne({ email: username, deleted: false }, (err, user) => {
             if (err) {
                 return done(err)
             } else if (!user) {
