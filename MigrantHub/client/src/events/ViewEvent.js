@@ -11,6 +11,7 @@ import Button from '@material-ui/core/Button';
 import blue from '@material-ui/core/colors/blue';
 import { Redirect } from 'react-router-dom';
 import GoogleMaps from '../components/GoogleMaps/GoogleMaps';
+import axios from 'axios';
 
 const styles = {
   avatar: {
@@ -29,6 +30,10 @@ class ViewEvent extends Component {
     };
   }
 
+  handleClose = () => {
+    this.props.onClose();
+  };
+
   handleEdit = () => {
     const { eventId } = this.props;
     this.setState({
@@ -40,6 +45,15 @@ class ViewEvent extends Component {
       },
     });
   }
+
+  handleDelete = () => {
+    axios.delete('/events/' + this.props.eventId)
+    .then(response => {
+        if (response.status === 200) {
+            this.handleClose();
+        }
+    });
+  };
 
   render() {
     const {
@@ -162,11 +176,16 @@ Location:
             )}
           </DialogContent>
           <DialogActions>
-            {editMode && (
-            <Button onClick={this.handleEdit} color="primary">
-                  Edit
-            </Button>
-            )}
+            {this.props.editMode &&
+              <React.Fragment>
+                  <Button onClick={this.handleDelete} color="secondary">
+                      Delete
+                  </Button>
+                  <Button onClick={this.handleEdit} color="primary">
+                      Edit
+                  </Button>
+              </React.Fragment>
+              }
             <Button onClick={onClose} color="primary">
               Cancel
             </Button>
@@ -178,6 +197,7 @@ Location:
 }
 
 ViewEvent.propTypes = {
+  eventId: PropTypes.string.isRequired,
   eventName: PropTypes.string.isRequired,
   description: PropTypes.string.isRequired,
   dateStart: PropTypes.string.isRequired,

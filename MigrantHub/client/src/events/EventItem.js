@@ -42,7 +42,7 @@ class EventItem extends Component {
 
     render() {
       const {
-        classes, eventName, eventImagePath, description, location, dateStart,
+        classes, eventId, eventName, eventImagePath, description, location, dateStart,
         dateEnd, timeStart, timeEnd, editMode, editOwner,
       } = this.props;
       const { open, scroll } = this.state;
@@ -75,6 +75,7 @@ class EventItem extends Component {
               open={open}
               scroll={scroll}
               onClose={this.handleClose}
+              eventId={eventId}
               eventName={eventName}
               eventImagePath={eventImagePath}
               description={description}
@@ -94,6 +95,7 @@ class EventItem extends Component {
 
 EventItem.propTypes = {
   classes: PropTypes.shape({}).isRequired,
+  eventId: PropTypes.string.isRequired,
   eventName: PropTypes.string.isRequired,
   eventImagePath: PropTypes.string.isRequired,
   description: PropTypes.string.isRequired,

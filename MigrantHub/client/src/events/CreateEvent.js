@@ -107,7 +107,7 @@ class CreateEvent extends Component {
     super(props);
     this.state = {
       creator: '',
-
+      eventId: '',
       visibility: '',
       eventName: '',
       description: '',
@@ -196,22 +196,6 @@ class CreateEvent extends Component {
         },
       }).then((response) => {
         const parsedObj = qs.parse(qs.stringify(response.data));
-        let locationExists = false;
-        console.log(parsedObj);
-        let tempLocation = {
-          address: '',
-          apartment: '',
-          city: '',
-          province: '',
-          postalCode: '',
-          phoneNumber: '',
-        };
-
-        if (parsedObj.location !== undefined) {
-          locationExists = true;
-          tempLocation = parsedObj.location;
-        }
-
         const imagePath = parsedObj.eventImagePath.split('/');
         const imageName = imagePath[imagePath.length - 1];
 
@@ -219,14 +203,14 @@ class CreateEvent extends Component {
           visibility: parsedObj.visibility,
           eventName: parsedObj.eventName,
           description: parsedObj.description,
-          location: tempLocation,
-          dateStart: parsedObj.dateStart,
-          dateEnd: parsedObj.dateEnd,
+          location: parsedObj.location,
+          dateStart: parsedObj.dateStart.toString().substring(0,10),
+          dateEnd: parsedObj.dateEnd.toString().substring(0,10),
           secondsStart: parsedObj.secondsStart,
+          timeStart: parsedObj.timeStart,
           timeEnd: parsedObj.timeEnd,
           secondsEnd: parsedObj.secondsEnd,
           repeat: parsedObj.repeat,
-          addLocation: locationExists,
           serviceImagePath: parsedObj.serviceImagePath,
           tempServiceImagePath: parsedObj.serviceImagePath,
           serviceImageName: imageName,
@@ -272,6 +256,7 @@ class CreateEvent extends Component {
         isError = true;
       }
 
+    
       if (validator.isEmpty(location.address)) {
         errors.addressError = 'Address is required';
         isError = true;
@@ -297,7 +282,7 @@ class CreateEvent extends Component {
         errors.phoneNumberError = 'Phone number is invalid';
         isError = true;
       }
-
+      
       if (validator.isEmpty(dateStart)) {
         errors.dateStartError = 'Start date is required';
         isError = true;
@@ -342,6 +327,8 @@ class CreateEvent extends Component {
       return isError;
     }
 
+    objectErrorText = (name, index, field) => (this.state[name][index] === undefined ? '' : this.state[name][index][field])
+
     handleAddObject = (name, object) => {
       this.state.serviceHoursCount += 1;
       this.setState({
@@ -371,13 +358,7 @@ class CreateEvent extends Component {
       });
     }
 
-    handleAddLocation = () => {
-      this.setState(prevState => ({
-        addLocation: !prevState.addLocation,
-      }));
-    }
-
-    handleNext = () => {
+    handleSubmit = () => {
       const {
         timeStart, timeEnd, visibility, province, repeat,
       } = this.state;
@@ -397,7 +378,6 @@ class CreateEvent extends Component {
       if (visibility === '') {
         this.setState({
           visibility: 'public',
-          secondsEnd: end,
         });
       }
       if (province === '') {
@@ -439,17 +419,10 @@ class CreateEvent extends Component {
       }
     }
 
-    handleSubmit = () => {
-      const error = this.validate();
-      if (!error) {
-        this.createService();
-      }
-    };
-
     handleUpdate = () => {
       const error = this.validate();
       if (!error) {
-        this.updateService();
+        this.updateEvent();
       }
     };
 
@@ -464,21 +437,15 @@ class CreateEvent extends Component {
     // Send event data in post body to add to mongodb
     createEvent = () => {
       const {
-        creator, visibility, eventName, description, location, addLocation,
+        creator, visibility, eventName, description, location,
         dateStart, dateEnd, timeStart, secondsStart, timeEnd, secondsEnd, repeat, eventImage,
       } = this.state;
 
-      let tempLocation = {};
       let tempImageName = 'cameraDefault.png';
-
-      if (eventImage !== '') {
+      if (eventImage !== null) {
         tempImageName = eventImage.name;
       }
-
-      if (addLocation) {
-        tempLocation = location;
-      }
-
+      
       const formData = new FormData();
       formData.append('eventImage', eventImage);
       formData.append('eventDetails', qs.stringify({
@@ -486,7 +453,7 @@ class CreateEvent extends Component {
         visibility,
         eventName,
         description,
-        location: tempLocation,
+        location,
         dateStart,
         dateEnd,
         timeStart,
@@ -504,16 +471,15 @@ class CreateEvent extends Component {
             'Content-Type': 'multipart/form-data',
           },
         }).then((response) => {
+        this.setState({
+          messageFromServer: response.data,
+        });
         if (response.status === 200) {
           this.setState({
-            messageFromServer: response.data,
+            redirectTo: true,
             redirectToAllEvents: true,
           });
         }
-      }).catch((error) => {
-        this.setState({
-          messageFromServer: error.response.data,
-        });
       });
     }
 
@@ -526,19 +492,14 @@ class CreateEvent extends Component {
 
     updateEvent = () => {
       const {
-        eventId, visibility, eventName, description, location, addLocation,
-        dateStart, dateEnd, timeStart, secondsStart, timeEnd, secondsEnd, repeat, eventImage,
+        eventId, visibility, eventName, description, location,
+        dateStart, dateEnd, timeStart, secondsStart, timeEnd, secondsEnd, repeat, eventImageName, eventImage,
       } = this.state;
 
-      let tempLocation = {};
       let tempImageName = 'cameraDefault.png';
 
       if (eventImage !== '') {
-        tempImageName = eventImage.name;
-      }
-
-      if (addLocation) {
-        tempLocation = location;
+        tempImageName = eventImageName;
       }
 
       const formData = new FormData();
@@ -547,7 +508,7 @@ class CreateEvent extends Component {
         visibility,
         eventName,
         description,
-        location: tempLocation,
+        location,
         dateStart,
         dateEnd,
         timeStart,
@@ -588,7 +549,7 @@ class CreateEvent extends Component {
         dateEnd, timeStart, timeEnd, repeat, eventNameError, descriptionError,
         addressError, apartmentError, cityError, provinceError, postalCodeError,
         phoneNumberError, dateStartError, dateEndError, timeStartError, timeEndError, tempServiceImagePath,
-        eventImageError, messageFromServer,
+        eventImageError, messageFromServer, editMode,
       } = this.state;
       const { classes } = this.props;
       return (
@@ -848,14 +809,25 @@ class CreateEvent extends Component {
                 />
               </Grid>
             </Grid>
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={this.handleNext}
-              className={classes.button}
-            >
-                  Create
-            </Button>
+            {!editMode ? (
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={this.handleSubmit}
+                className={classes.button}
+              >
+                            Create
+              </Button>
+            ) : (
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={this.handleUpdate}
+                className={classes.button}
+              >
+                            Edit
+              </Button>
+            )}
           </Grid>
         </React.Fragment>
       );

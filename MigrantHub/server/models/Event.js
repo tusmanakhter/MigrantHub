@@ -25,6 +25,8 @@ const eventSchema = new Schema({
   repeat: { type: String, required: true },
   eventImagePath: { type: String, required: false },
   dateCreated: { type: Date, required: false },
+  deleted: { type: Boolean, default: false},
+  deletedDate: {type: Date, default: null}
 }, { collection: 'Event' });
 
 module.exports = mongoose.model('Event', eventSchema);
