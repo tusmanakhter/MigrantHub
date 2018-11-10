@@ -24,12 +24,12 @@ import Paper from '@material-ui/core/Paper';
 import Autosuggest from 'react-autosuggest';
 import match from 'autosuggest-highlight/match';
 import parse from 'autosuggest-highlight/parse';
-import {languages as languagesData} from 'country-data'
+import { languages as languagesData } from 'country-data';
 import deburr from 'lodash/deburr';
 import NumberFormat from 'react-number-format';
-import {cities} from 'canada'
+import { cities } from 'canada';
 
-var qs = require('qs');
+const qs = require('qs');
 
 const provinces = [
   { value: 'AB', label: 'Alberta' },
@@ -44,7 +44,7 @@ const provinces = [
   { value: 'PE', label: 'Prince Edward Island' },
   { value: 'QC', label: 'Quebec' },
   { value: 'SK', label: 'Saskatchewan' },
-  { value: 'YT', label: 'Yukon' }
+  { value: 'YT', label: 'Yukon' },
 ];
 
 const PhoneMask = (props) => {
@@ -58,7 +58,7 @@ const PhoneMask = (props) => {
       guide={false}
     />
   );
-}
+};
 
 const PostalCodeMask = (props) => {
   const { inputRef, ...other } = props;
@@ -71,7 +71,7 @@ const PostalCodeMask = (props) => {
       guide={false}
     />
   );
-}
+};
 
 const educationLevels = [
   { value: 'earlyChildhood', label: 'Early childhood' },
@@ -81,15 +81,15 @@ const educationLevels = [
   { value: 'trade', label: 'Trade/Vocational School' },
   { value: 'bachelors', label: 'Bachelors' },
   { value: 'masters', label: 'Mastors' },
-  { value: 'doctorate', label: 'Ph.D/Doctorate' }
+  { value: 'doctorate', label: 'Ph.D/Doctorate' },
 ];
 
 const proficiencyExaminations = [
   { value: 'ielts', label: 'IELTS' },
-  { value: 'french', label: 'French' }
-]
+  { value: 'french', label: 'French' },
+];
 
-const gender = [
+const genderOptions = [
   { value: 'male', label: 'Male' },
   { value: 'female', label: 'Female' },
   { value: 'other', label: 'Other' },
@@ -102,22 +102,24 @@ const relations = [
   { value: 'father', label: 'Father' },
   { value: 'brother', label: 'Brother' },
   { value: 'sister', label: 'Sister' },
-]
+];
 
-const relationshipStatus = [
+const relationshipStatusOptions = [
   { value: 'married', label: 'Married' },
   { value: 'single', label: 'Single' },
   { value: 'divorced', label: 'Divorced' },
   { value: 'widowed', label: 'Widowed' },
-]
+];
 
-const familyObject = { age: '', gender: '', relation: '', relationshipStatus: '' };
+const familyObject = {
+  age: '', gender: '', relation: '', relationshipStatus: '',
+};
 
 const statuses = [
   { value: 'immigrant', label: 'Immigrant' },
   { value: 'refugee', label: 'Refugee' },
   { value: 'resident', label: 'Permanent Resident' },
-  { value: 'citizen', label: 'Citizen' }
+  { value: 'citizen', label: 'Citizen' },
 ];
 
 const languageLevels = [
@@ -127,18 +129,18 @@ const languageLevels = [
   { value: 'advanced', label: 'Advanced' },
 ];
 
-const languages = languagesData.all.filter(word => !(/\d/.test(word.name)))
+const languagesList = languagesData.all.filter(word => !(/\d/.test(word.name)));
 
-const getSuggestions = value => {
+const getSuggestions = (value) => {
   const inputValue = deburr(value.trim()).toLowerCase();
   const inputLength = inputValue.length;
   let count = 0;
 
-  return inputLength === 0 ? [] : languages.filter(language => {
+  return inputLength === 0 ? [] : languagesList.filter((language) => {
     const keep = count < 5 && language.name.slice(0, inputLength).toLowerCase() === inputValue;
-    
+
     if (keep) {
-      count++;
+      count += 1;
     }
 
     return keep;
@@ -154,36 +156,36 @@ const renderSuggestion = (suggestion, { query, isHighlighted }) => {
   return (
     <MenuItem selected={isHighlighted} component="div">
       <div>
-        {parts.map((part, index) => {
-          return part.highlight ? (
-            <span key={String(index)} style={{ fontWeight: 500 }}>
-              {part.text}
-            </span>
-          ) : (
-            <strong key={String(index)} style={{ fontWeight: 300 }}>
-              {part.text}
-            </strong>
-          );
-        })}
+        {parts.map((part, index) => (part.highlight ? (
+          <span key={String(index)} style={{ fontWeight: 500 }}>
+            {part.text}
+          </span>
+        ) : (
+          <strong key={String(index)} style={{ fontWeight: 300 }}>
+            {part.text}
+          </strong>
+        )))}
       </div>
     </MenuItem>
   );
 };
 
-const renderInputComponent = inputProps => {
-  const { classes, inputRef = () => {}, ref, ...other } = inputProps;
+const renderInputComponent = (inputProps) => {
+  const {
+    classes, inputRef = () => {}, ref, ...other
+  } = inputProps;
 
   return (
     <TextField
       fullWidth
       InputProps={{
-        inputRef: node => {
+        inputRef: (node) => {
           ref(node);
           inputRef(node);
         },
         classes: {
-          input: classes.input
-        }
+          input: classes.input,
+        },
       }}
       {...other}
     />
@@ -196,13 +198,13 @@ const jobStatuses = [
   { value: 'fulltime', label: 'Full Time' },
   { value: 'parttime', label: 'Part Time' },
   { value: 'unemployed', label: 'Unemployed' },
-  { value: 'student', label: 'Student' }
-]
+  { value: 'student', label: 'Student' },
+];
 
 const lookingForJobOptions = [
   { value: 'true', label: 'Yes' },
   { value: 'false', label: 'No' },
-]
+];
 
 const workObject = { title: '', company: '', years: '' };
 
@@ -212,61 +214,59 @@ const IncomeMask = (props) => {
   return (
     <NumberFormat
       {...other}
-      onValueChange={values => {
+      onValueChange={(values) => {
         onChange({
-            target: {
-              name: props.name,
-              value: values.value,
-            },
+          target: {
+            name: props.name,
+            value: values.value,
+          },
         });
       }}
-      thousandSeparator={true} 
-      prefix={'$'}
+      thousandSeparator
+      prefix="$"
     />
   );
-}
+};
 
 const joiningReasons = [
   { value: 'help', label: 'Help' },
-  { value: 'findJob', label: 'Find Job' }
-]
+  { value: 'findJob', label: 'Find Job' },
+];
 
-const getSuggestionsCity = value => {
+const getSuggestionsCity = (value) => {
   const inputValue = deburr(value.trim()).toLowerCase();
   const inputLength = inputValue.length;
   let count = 0;
 
-  return inputLength === 0 ? [] : cities.filter(city => {
-    const keep = count < 5 && (city[0] + ", " + city[1]).slice(0, inputLength).toLowerCase() === inputValue;
-    
+  return inputLength === 0 ? [] : cities.filter((city) => {
+    const keep = count < 5 && (`${city[0]}, ${city[1]}`).slice(0, inputLength).toLowerCase() === inputValue;
+
     if (keep) {
-      count++;
+      count += 1;
     }
 
     return keep;
   });
 };
 
-const getSuggestionValueCity = suggestion => (suggestion[0] + ", " + suggestion[1]);
+const getSuggestionValueCity = suggestion => (`${suggestion[0]}, ${suggestion[1]}`);
 
 const renderSuggestionCity = (suggestion, { query, isHighlighted }) => {
-  const matches = match((suggestion[0] + ", " + suggestion[1]), query);
-  const parts = parse((suggestion[0] + ", " + suggestion[1]), matches);
+  const matches = match((`${suggestion[0]}, ${suggestion[1]}`), query);
+  const parts = parse((`${suggestion[0]}, ${suggestion[1]}`), matches);
 
   return (
     <MenuItem selected={isHighlighted} component="div">
       <div>
-        {parts.map((part, index) => {
-          return part.highlight ? (
-            <span key={String(index)} style={{ fontWeight: 500 }}>
-              {part.text}
-            </span>
-          ) : (
-            <strong key={String(index)} style={{ fontWeight: 300 }}>
-              {part.text}
-            </strong>
-          );
-        })}
+        {parts.map((part, index) => (part.highlight ? (
+          <span key={String(index)} style={{ fontWeight: 500 }}>
+            {part.text}
+          </span>
+        ) : (
+          <strong key={String(index)} style={{ fontWeight: 300 }}>
+            {part.text}
+          </strong>
+        )))}
       </div>
     </MenuItem>
   );
@@ -274,25 +274,25 @@ const renderSuggestionCity = (suggestion, { query, isHighlighted }) => {
 
 const styles = theme => ({
   select: {
-    textAlign: 'left'
+    textAlign: 'left',
   },
   group: {
-    flexDirection: 'row'
+    flexDirection: 'row',
   },
   formControl: {
-    textAlign: 'left'
+    textAlign: 'left',
   },
   container: {
     position: 'relative',
   },
   row: {
-    display: 'inline-block'
+    display: 'inline-block',
   },
   button: {
     margin: theme.spacing.unit,
   },
   paper: {
-    width: "100%",
+    width: '100%',
     marginTop: theme.spacing.unit,
     marginBottom: theme.spacing.unit,
     paddingTop: theme.spacing.unit * 2,
@@ -305,10 +305,11 @@ const styles = theme => ({
       paddingBottom: theme.spacing.unit * 3,
       paddingLeft: theme.spacing.unit * 3,
     },
-  layout: {
-    marginLeft: theme.spacing.unit,
-    marginRight: theme.spacing.unit,
-  },},
+    layout: {
+      marginLeft: theme.spacing.unit,
+      marginRight: theme.spacing.unit,
+    },
+  },
   suggestionsContainerOpen: {
     position: 'absolute',
     zIndex: 1,
@@ -326,101 +327,156 @@ const styles = theme => ({
   },
 });
 class EditMigrant extends Component {
-    constructor(props){
-        super(props);
-        this.state = {
-            firstNameError: '',
-            lastNameError: '',
-            addressError: '',
-            apartmentError: '',
-            cityError: '',
-            provinceError: '',
-            postalCodeError: '',
-            phoneNumberError: '',
-            ageError: '',
-            genderError: '',
-            nationalityError: '',
-            relationshipStatusError: '',
-            statusError: '',
-            suggestions: [],
-            languagesError: [],
-            writingLevelError: '',
-            speakingLevelError: '',
-            motherTongueError: '',
-            educationLevelError: '',
-            familyError: [],
-            jobStatusError: '',
-            lookingForJobError: '',
-            workExperienceError: [],
-            suggestionsCity: [],
-            settlingLocationError: '',
-            settlingDurationError: '',
-            joiningReasonError: '',
+  constructor(props) {
+    super(props);
+    this.state = {
+      firstNameError: '',
+      lastNameError: '',
+      addressError: '',
+      apartmentError: '',
+      cityError: '',
+      provinceError: '',
+      postalCodeError: '',
+      phoneNumberError: '',
+      ageError: '',
+      genderError: '',
+      nationalityError: '',
+      relationshipStatusError: '',
+      statusError: '',
+      suggestions: [],
+      languagesError: [],
+      writingLevelError: '',
+      speakingLevelError: '',
+      motherTongueError: '',
+      educationLevelError: '',
+      familyError: [],
+      jobStatusError: '',
+      lookingForJobError: '',
+      workExperienceError: [],
+      suggestionsCity: [],
+      settlingLocationError: '',
+      settlingDurationError: '',
+      joiningReasonError: '',
 
-            email: '',
-            password: '',
-            confirmPassword: '',
-            firstName: '',
-            lastName: '',
-            address: '',
-            apartment: '',
-            city: '',
-            province: '',
-            postalCode: '',
-            phoneNumber: '',
-            age: '',
-            gender: '',
-            nationality: '',
-            relationshipStatus: '',
-            status: '',
-            languages: [],
-            writingLevel: '',
-            speakingLevel: '',
-            motherTongue: '',
-            family: [],
-            educationLevel: '',
-            proficiencyExams: {
-              ielts: false,
-              french: false,
-              others: '',
-            },
-            jobStatus: '',
-            lookingForJob: '',
-            currentIncome: '',
-            workExperience: [],
-            settlingLocation: '',
-            settlingDuration: '',
-            joiningReason: '',
-          }
+      email: '',
+      password: '',
+      confirmPassword: '',
+      firstName: '',
+      lastName: '',
+      address: '',
+      apartment: '',
+      city: '',
+      province: '',
+      postalCode: '',
+      phoneNumber: '',
+      age: '',
+      gender: '',
+      nationality: '',
+      relationshipStatus: '',
+      status: '',
+      languages: [],
+      writingLevel: '',
+      speakingLevel: '',
+      motherTongue: '',
+      family: [],
+      educationLevel: '',
+      proficiencyExams: {
+        ielts: false,
+        french: false,
+        others: '',
+      },
+      jobStatus: '',
+      lookingForJob: '',
+      currentIncome: '',
+      workExperience: [],
+      settlingLocation: '',
+      settlingDuration: '',
+      joiningReason: '',
+    };
 
-          //this.getAccount(this);
-          this.getAccount = this.getAccount.bind(this);
+    // this.getAccount(this);
+    this.getAccount = this.getAccount.bind(this);
+  }
 
-    }
-
-  componentDidMount(){
-
+  componentDidMount() {
     this.getAccount(this);
   }
 
-  componentWillReceiveProps(){
+  componentWillReceiveProps() {
     this.getAccount(this);
   }
 
-  handleChange = event => {
+  getAccount() {
+    axios.get('/account/get/migrantprofile').then((response) => {
+      if (response.status === 200) {
+        const jsonObj = qs.parse(qs.stringify(response.data));
+
+        let tempLanguages;
+        let tempWorkExperience;
+        let tempFamily;
+
+        if (jsonObj.languages !== undefined) {
+          tempLanguages = jsonObj.languages;
+        } else {
+          tempLanguages = [];
+        }
+
+        if (jsonObj.workExperience !== undefined) {
+          tempWorkExperience = jsonObj.workExperience;
+        } else {
+          tempWorkExperience = [];
+        }
+
+        if (jsonObj.family !== undefined) {
+          tempFamily = jsonObj.family;
+        } else {
+          tempFamily = [];
+        }
+
+        this.setState({
+          email: jsonObj.email,
+          password: jsonObj.password,
+          confirmPassword: jsonObj.confirmPassword,
+          firstName: jsonObj.firstName,
+          lastName: jsonObj.lastName,
+          address: jsonObj.address,
+          apartment: jsonObj.apartment,
+          city: jsonObj.city,
+          province: jsonObj.province,
+          postalCode: jsonObj.postalCode,
+          phoneNumber: jsonObj.phoneNumber,
+          age: jsonObj.age,
+          gender: jsonObj.gender,
+          nationality: jsonObj.nationality,
+          relationshipStatus: jsonObj.relationshipStatus,
+          status: jsonObj.status,
+          languages: tempLanguages,
+          writingLevel: jsonObj.writingLevel,
+          speakingLevel: jsonObj.speakingLevel,
+          motherTongue: jsonObj.motherTongue,
+          family: tempFamily,
+          educationLevel: jsonObj.educationLevel,
+          proficiencyExams: response.data.proficiencyExams,
+          jobStatus: jsonObj.jobStatus,
+          lookingForJob: jsonObj.lookingForJob,
+          currentIncome: jsonObj.currentIncome,
+          workExperience: tempWorkExperience,
+          settlingLocation: jsonObj.settlingLocation,
+          settlingDuration: jsonObj.settlingDuration,
+          joiningReason: jsonObj.joiningReason,
+        });
+      }
+    });
+  }
+
+  handleChange = (event) => {
     this.setState({
-      [event.target.name]: event.target.value
-    })
-  }
-
-  handleChangeExams = (name) => (event) => {
-    let proficiencyExams = { ...this.state.proficiencyExams };
-    proficiencyExams[name] = event.target.checked;
-    this.setState({ proficiencyExams });
+      [event.target.name]: event.target.value,
+    });
   }
 
   handleSave = async () => {
-    let error = await this.validate();
+    const error = await this.validate();
 
     if (!error) {
       this.updateAccount(this);
@@ -428,12 +484,14 @@ class EditMigrant extends Component {
   };
 
   handleEditSingleObject = (name, fieldName) => (event) => {
-    let obj = {};
+    const obj = {};
     obj[name] = { ...this.state[name] };
-    let value = ((event.target.type === 'checkbox') ? event.target.checked :
-      event.target.value);
+    const value = ((event.target.type === 'checkbox') ? event.target.checked
+      : event.target.value);
     obj[name][fieldName] = value;
-    this.setState({ [name]: obj[name] });
+    this.setState({
+      [name]: obj[name],
+    });
   }
 
   handleAddObject = (name, object) => {
@@ -466,9 +524,7 @@ class EditMigrant extends Component {
     });
   }
 
-  objectErrorText = (name, index, field) => {
-    return this.state[name][index] === undefined ? "" : this.state[name][index][field] 
-  }
+  objectErrorText = (name, index, field) => (this.state[name][index] === undefined ? '' : this.state[name][index][field])
 
   handleSuggestionsFetchRequested = ({ value }) => {
     this.setState({
@@ -478,7 +534,7 @@ class EditMigrant extends Component {
 
   handleSuggestionsClearRequested = () => {
     this.setState({
-      suggestions: []
+      suggestions: [],
     });
   };
 
@@ -496,7 +552,7 @@ class EditMigrant extends Component {
 
   handleSuggestionsClearRequestedCity = () => {
     this.setState({
-      suggestions: []
+      suggestions: [],
     });
   };
 
@@ -506,114 +562,16 @@ class EditMigrant extends Component {
     });
   };
 
-  updateAccount(e) {
-    axios.post('/account/edit/migrantuser',
-    qs.stringify({
-      email: e.state.email,
-      password: e.state.password,
-      confirmPassword: e.state.confirmPassword,
-      firstName: e.state.firstName,
-      lastName: e.state.lastName,
-      address: e.state.address,
-      apartment: e.state.apartment,
-      city: e.state.city,
-      province: e.state.province,
-      postalCode: e.state.postalCode,
-      phoneNumber: e.state.phoneNumber,
-      age: e.state.age,
-      gender: e.state.gender,
-      nationality: e.state.nationality,
-      relationshipStatus: e.state.relationshipStatus,
-      status: e.state.status,
-      languages: e.state.languages,
-      writingLevel: e.state.writingLevel,
-      speakingLevel: e.state.speakingLevel,
-      motherTongue: e.state.motherTongue,
-      family: e.state.family,
-      educationLevel: e.state.educationLevel,
-      proficiencyExams: e.state.proficiencyExams,
-      jobStatus: e.state.jobStatus,
-      lookingForJob: e.state.lookingForJob,
-      currentIncome: e.state.currentIncome,
-      workExperience: e.state.workExperience,
-      settlingLocation: e.state.settlingLocation,
-      settlingDuration: e.state.settlingDuration,
-      joiningReason: e.state.joiningReason
-
-    })).then(function (response) {
-    e.setState({
-        messageFromServer: response.data
-    });
-});}
-
-getAccount(e) {
-    axios.get('/account/get/migrantprofile').then(function (response) {
-
-        if(response.status===200){
-
-          let jsonObj = qs.parse(qs.stringify(response.data));
-
-          let tempLanguages;
-          let tempWorkExperience;
-          let tempFamily;
-    
-          if (jsonObj.languages !== undefined) {
-            tempLanguages = jsonObj.languages;
-          } else {
-            tempLanguages = [];
-          }
-    
-          if (jsonObj.workExperience !== undefined) {
-            tempWorkExperience = jsonObj.workExperience;
-          } else {
-            tempWorkExperience = [];
-          }
-    
-          if (jsonObj.family !== undefined){
-            tempFamily = jsonObj.family;
-          } else {
-            tempFamily = [];
-          }
-
-            e.setState({
-                email: jsonObj.email,
-                password: jsonObj.password,
-                confirmPassword: jsonObj.confirmPassword,
-                firstName: jsonObj.firstName,
-                lastName: jsonObj.lastName,
-                address: jsonObj.address,
-                apartment: jsonObj.apartment,
-                city: jsonObj.city,
-                province: jsonObj.province,
-                postalCode: jsonObj.postalCode,
-                phoneNumber: jsonObj.phoneNumber,
-                age: jsonObj.age,
-                gender: jsonObj.gender,
-                nationality: jsonObj.nationality,
-                relationshipStatus: jsonObj.relationshipStatus,
-                status: jsonObj.status,
-                languages: tempLanguages,
-                writingLevel: jsonObj.writingLevel,
-                speakingLevel: jsonObj.speakingLevel,
-                motherTongue: jsonObj.motherTongue,
-                family: tempFamily,
-                educationLevel: jsonObj.educationLevel,
-                proficiencyExams: response.data.proficiencyExams,
-                jobStatus: jsonObj.jobStatus,
-                lookingForJob: jsonObj.lookingForJob,
-                currentIncome: jsonObj.currentIncome,
-                workExperience: tempWorkExperience,
-                settlingLocation: jsonObj.settlingLocation,
-                settlingDuration: jsonObj.settlingDuration,
-                joiningReason: jsonObj.joiningReason
-              })
-        }
-   
-}).catch(function(error){ 
-  })
-};
+  objectErrorText = (name, index, field) => (this.state[name][index] === undefined ? '' : this.state[name][index][field])
 
   validate = () => {
+    const {
+      firstName, lastName, address, city, province, postalCode, phoneNumber, age, gender,
+      nationality, relationshipStatus, status, languages, writingLevel, speakingLevel,
+      motherTongue, family, educationLevel, jobStatus, lookingForJob, workExperience,
+      settlingLocation, settlingDuration, joiningReason,
+    } = this.state;
+
     let isError = false;
     const errors = {
       firstNameError: '',
@@ -643,217 +601,277 @@ getAccount(e) {
       joiningReasonError: '',
     };
 
-    if (validator.isEmpty(this.state.firstName)) {
-      errors.firstNameError = "First name is required";
-      isError = true
-    
-    } else if (!validator.isAlpha(this.state.firstName)) {
-      errors.firstNameError = "First name is not valid"
-      isError = true
+    if (validator.isEmpty(firstName)) {
+      errors.firstNameError = 'First name is required';
+      isError = true;
+    } else if (!validator.isAlpha(firstName)) {
+      errors.firstNameError = 'First name is not valid';
+      isError = true;
     }
 
-    if (validator.isEmpty(this.state.lastName)) {
-      errors.lastNameError = "Last name is required";
-      isError = true
-    } else if (!validator.isAlpha(this.state.lastName)) {
-      errors.lastNameError = "Last name is not valid"
-      isError = true
-    }
-   
-    if (validator.isEmpty(this.state.address)) {
-      errors.addressError = "Address is required";
-      isError = true
+    if (validator.isEmpty(lastName)) {
+      errors.lastNameError = 'Last name is required';
+      isError = true;
+    } else if (!validator.isAlpha(lastName)) {
+      errors.lastNameError = 'Last name is not valid';
+      isError = true;
     }
 
-    if (validator.isEmpty(this.state.city)) {
-      errors.cityError = "City is required";
-      isError = true
-    } else if (!validator.isAlpha(this.state.city)) {
-      errors.cityError = "This is not a valid city"
-      isError = true
+    if (validator.isEmpty(address)) {
+      errors.addressError = 'Address is required';
+      isError = true;
     }
 
-    if (validator.isEmpty(this.state.province)) {
-      errors.provinceError = "Province is required";
-      isError = true
+    if (validator.isEmpty(city)) {
+      errors.cityError = 'City is required';
+      isError = true;
+    } else if (!validator.isAlpha(city)) {
+      errors.cityError = 'This is not a valid city';
+      isError = true;
     }
 
-    if (validator.isEmpty(this.state.postalCode)) {
-      errors.postalCodeError = "Postal code is required";
-      isError = true
-    } else if (!validator.isLength(this.state.postalCode, {min:7, max:7})) {
-      errors.postalCodeError = "Postal code is invalid";
-      isError = true
+    if (validator.isEmpty(province)) {
+      errors.provinceError = 'Province is required';
+      isError = true;
     }
 
-    if (validator.isEmpty(this.state.phoneNumber)) {
-      errors.phoneNumberError = "Phone number is required";
-      isError = true
-    } else if (!validator.isLength(this.state.phoneNumber, {min:14, max:14})) {
-      errors.phoneNumberError = "Phone number is invalid";
-      isError = true
+    if (validator.isEmpty(postalCode)) {
+      errors.postalCodeError = 'Postal code is required';
+      isError = true;
+    } else if (!validator.isLength(postalCode, { min: 7, max: 7 })) {
+      errors.postalCodeError = 'Postal code is invalid';
+      isError = true;
     }
 
-    if (validator.isEmpty(this.state.educationLevel)) {
-      errors.educationLevelError = "Education level is required";
-      isError = true
+    if (validator.isEmpty(phoneNumber)) {
+      errors.phoneNumberError = 'Phone number is required';
+      isError = true;
+    } else if (!validator.isLength(phoneNumber, { min: 14, max: 14 })) {
+      errors.phoneNumberError = 'Phone number is invalid';
+      isError = true;
     }
 
-    if (validator.isEmpty(this.state.age)) {
-      errors.ageError = "Age is required";
-      isError = true
+    if (validator.isEmpty(educationLevel)) {
+      errors.educationLevelError = 'Education level is required';
+      isError = true;
     }
 
-    if (validator.isEmpty(this.state.gender)) {
-      errors.genderError = "Gender is required";
-      isError = true
-    }
-   
-    if (validator.isEmpty(this.state.nationality)) {
-      errors.nationalityError = "Nationality is required";
-      isError = true
-    } else if (!validator.isAlpha(this.state.nationality)) {
-      errors.nationalityError = "This is not a valid nationality"
-      isError = true
+    if (validator.isEmpty(age)) {
+      errors.ageError = 'Age is required';
+      isError = true;
     }
 
-    if (validator.isEmpty(this.state.relationshipStatus)) {
-      errors.relationshipStatusError = "Relationship status is required";
-      isError = true
-    } 
-
-    if (validator.isEmpty(this.state.status)) {
-      errors.statusError = "Status is required";
-      isError = true
+    if (validator.isEmpty(gender)) {
+      errors.genderError = 'Gender is required';
+      isError = true;
     }
 
-    if (validator.isEmpty(this.state.motherTongue)) {
-      errors.motherTongueError = "Mother tongue is required";
-      isError = true
-    } else if (!validator.isAlpha(this.state.motherTongue)) {
-      errors.motherTongueError = "Mother tongue is not valid"
-      isError = true
+    if (validator.isEmpty(nationality)) {
+      errors.nationalityError = 'Nationality is required';
+      isError = true;
+    } else if (!validator.isAlpha(nationality)) {
+      errors.nationalityError = 'This is not a valid nationality';
+      isError = true;
     }
 
-    if (validator.isEmpty(this.state.writingLevel)) {
-      errors.writingLevelError = "Writing level is required";
-      isError = true
-    } 
+    if (validator.isEmpty(relationshipStatus)) {
+      errors.relationshipStatusError = 'Relationship status is required';
+      isError = true;
+    }
 
-    if (validator.isEmpty(this.state.speakingLevel)) {
-      errors.speakingLevelError = "Speaking level is required";
-      isError = true
-    } 
+    if (validator.isEmpty(status)) {
+      errors.statusError = 'Status is required';
+      isError = true;
+    }
 
-    this.state.languages.forEach((language, index) => {
-      errors.languagesError = errors.languagesError.concat([JSON.parse(JSON.stringify(langObject))]);
+    if (validator.isEmpty(motherTongue)) {
+      errors.motherTongueError = 'Mother tongue is required';
+      isError = true;
+    } else if (!validator.isAlpha(motherTongue)) {
+      errors.motherTongueError = 'Mother tongue is not valid';
+      isError = true;
+    }
+
+    if (validator.isEmpty(writingLevel)) {
+      errors.writingLevelError = 'Writing level is required';
+      isError = true;
+    }
+
+    if (validator.isEmpty(speakingLevel)) {
+      errors.speakingLevelError = 'Speaking level is required';
+      isError = true;
+    }
+
+    languages.forEach((language, index) => {
+      errors.languagesError = errors.languagesError.concat([JSON.parse(
+        JSON.stringify(langObject),
+      )]);
       if (validator.isEmpty(language.name)) {
-        errors.languagesError[index].name = "Language name is required";
-        isError = true
+        errors.languagesError[index].name = 'Language name is required';
+        isError = true;
       } else if (!validator.isAlpha(language.name)) {
-        errors.languagesError[index].name = "Language name is not valid"
-        isError = true
+        errors.languagesError[index].name = 'Language name is not valid';
+        isError = true;
       }
       if (validator.isEmpty(language.writingLevel)) {
-        errors.languagesError[index].writingLevel = "Writing level is required";
-        isError = true
-      } 
-  
+        errors.languagesError[index].writingLevel = 'Writing level is required';
+        isError = true;
+      }
+
       if (validator.isEmpty(language.speakingLevel)) {
-        errors.languagesError[index].speakingLevel = "Speaking level is required";
-        isError = true
-      } 
+        errors.languagesError[index].speakingLevel = 'Speaking level is required';
+        isError = true;
+      }
     });
 
-    this.state.family.forEach((member, index) => {
+    family.forEach((member, index) => {
       errors.familyError = errors.familyError.concat([JSON.parse(JSON.stringify(familyObject))]);
 
       if (validator.isEmpty(member.age)) {
-        errors.familyError[index].age = "Age is required";
-        isError = true
-      } 
+        errors.familyError[index].age = 'Age is required';
+        isError = true;
+      }
 
       if (validator.isEmpty(member.gender)) {
-        errors.familyError[index].gender = "Gender is required";
-        isError = true
-      } 
+        errors.familyError[index].gender = 'Gender is required';
+        isError = true;
+      }
 
       if (validator.isEmpty(member.relationshipStatus)) {
-        errors.familyError[index].relationshipStatus = "Relationship status is required";
-        isError = true
-      } 
-  
+        errors.familyError[index].relationshipStatus = 'Relationship status is required';
+        isError = true;
+      }
+
       if (validator.isEmpty(member.relation)) {
-        errors.familyError[index].relation = "Relation is required";
-        isError = true
-      } 
+        errors.familyError[index].relation = 'Relation is required';
+        isError = true;
+      }
     });
 
-    if (validator.isEmpty(this.state.jobStatus)) {
-      errors.jobStatusError = "Job status is required";
-      isError = true
+    if (validator.isEmpty(jobStatus)) {
+      errors.jobStatusError = 'Job status is required';
+      isError = true;
     }
 
-    if (validator.isEmpty(this.state.lookingForJob)) {
-      errors.lookingForJobError = "This field is required";
-      isError = true
+    if (validator.isEmpty(lookingForJob)) {
+      errors.lookingForJobError = 'This field is required';
+      isError = true;
     }
 
-    this.state.workExperience.forEach((job, index) => {
-      errors.workExperienceError = errors.workExperienceError.concat([JSON.parse(JSON.stringify(workObject))]);
+    workExperience.forEach((job, index) => {
+      errors.workExperienceError = errors.workExperienceError.concat([JSON.parse(
+        JSON.stringify(workObject),
+      )]);
 
       if (validator.isEmpty(job.title)) {
-        errors.workExperienceError[index].title = "Title is required";
-        isError = true
+        errors.workExperienceError[index].title = 'Title is required';
+        isError = true;
       } else if (!validator.isAlpha(job.title)) {
-        errors.workExperienceError[index].title = "Title is not valid";
-        isError = true
-      } 
+        errors.workExperienceError[index].title = 'Title is not valid';
+        isError = true;
+      }
 
       if (validator.isEmpty(job.company)) {
-        errors.workExperienceError[index].company = "Company is required";
-        isError = true
+        errors.workExperienceError[index].company = 'Company is required';
+        isError = true;
       }
 
       if (validator.isEmpty(job.years)) {
-        errors.workExperienceError[index].years = "Employment length is required";
-        isError = true
+        errors.workExperienceError[index].years = 'Employment length is required';
+        isError = true;
       }
     });
 
-    if (validator.isEmpty(this.state.settlingLocation)) {
-      errors.settlingLocationError = "Settling location is required";
-      isError = true
+    if (validator.isEmpty(settlingLocation)) {
+      errors.settlingLocationError = 'Settling location is required';
+      isError = true;
     }
 
-    if (validator.isEmpty(this.state.settlingDuration)) {
-      errors.settlingDurationError = "Settling duration is required";
-      isError = true
+    if (validator.isEmpty(settlingDuration)) {
+      errors.settlingDurationError = 'Settling duration is required';
+      isError = true;
     }
 
-    if (validator.isEmpty(this.state.joiningReason)) {
-      errors.joiningReasonError = "Joining reason is required";
-      isError = true
+    if (validator.isEmpty(joiningReason)) {
+      errors.joiningReasonError = 'Joining reason is required';
+      isError = true;
     }
 
-    this.setState({
-      ...this.state,
-      ...errors
-    })
-    
+    this.setState(prevState => ({
+      ...prevState,
+      ...errors,
+    }));
+
     return isError;
   }
 
-  objectErrorText = (name, index, field) => {
-    return this.state[name][index] === undefined ? "" : this.state[name][index][field] 
+  updateAccount(e) {
+    const {
+      email, password, confirmPassword, firstName, lastName, address, apartment, city, province,
+      postalCode, phoneNumber, age, gender, nationality, relationshipStatus, status,
+      languages, writingLevel, speakingLevel, motherTongue, family, educationLevel,
+      proficiencyExams, jobStatus, lookingForJob, currentIncome, workExperience,
+      settlingLocation, settlingDuration, joiningReason,
+    } = this.state;
+
+    axios.post('/account/edit/migrantuser',
+      qs.stringify({
+        email,
+        password,
+        confirmPassword,
+        firstName,
+        lastName,
+        address,
+        apartment,
+        city,
+        province,
+        postalCode,
+        phoneNumber,
+        age,
+        gender,
+        nationality,
+        relationshipStatus,
+        status,
+        languages,
+        writingLevel,
+        speakingLevel,
+        motherTongue,
+        family,
+        educationLevel,
+        proficiencyExams,
+        jobStatus,
+        lookingForJob,
+        currentIncome,
+        workExperience,
+        settlingLocation,
+        settlingDuration,
+        joiningReason,
+
+      })).then((response) => {
+      e.setState({
+        messageFromServer: response.data,
+      });
+    });
   }
 
   render() {
+    const {
+      firstNameError, lastNameError, addressError, apartmentError, cityError,
+      provinceError, postalCodeError, phoneNumberError, ageError, genderError, nationalityError,
+      relationshipStatusError, statusError, writingLevelError, speakingLevelError,
+      motherTongueError, educationLevelError, jobStatusError, lookingForJobError,
+      settlingLocationError, settlingDurationError, joiningReasonError, firstName, lastName,
+      address, apartment, city, province, postalCode, phoneNumber, age, gender, nationality,
+      relationshipStatus, status, languages, writingLevel, speakingLevel, motherTongue,
+      family, educationLevel, proficiencyExams, jobStatus, lookingForJob, currentIncome,
+      workExperience, settlingLocation, settlingDuration, joiningReason, suggestions,
+      suggestionsCity,
+    } = this.state;
     const { classes } = this.props;
 
     const autosuggestProps = {
       renderInputComponent,
-      suggestions: this.state.suggestions,
+      suggestions,
       onSuggestionsFetchRequested: this.handleSuggestionsFetchRequested,
       onSuggestionsClearRequested: this.handleSuggestionsClearRequested,
       getSuggestionValue,
@@ -862,7 +880,7 @@ getAccount(e) {
 
     const autosuggestCityProps = {
       renderInputComponent,
-      suggestions: this.state.suggestionsCity,
+      suggestions: suggestionsCity,
       onSuggestionsFetchRequested: this.handleSuggestionsFetchRequestedCity,
       onSuggestionsClearRequested: this.handleSuggestionsClearRequestedCity,
       getSuggestionValueCity,
@@ -871,751 +889,784 @@ getAccount(e) {
 
     return (
       <React.Fragment>
-      <Typography variant="title" gutterBottom>
-        Contact Information
-      </Typography>
-      <Grid container spacing={24}>
-        <Grid item xs={12} sm={6}>
-          <TextField
-            id="firstName" 
-            name="firstName"
-            label="First Name"
-            value={this.state.firstName}
-            onChange={event => this.handleChange(event) }
-            fullWidth
-            helperText={this.state.firstNameError}
-            error={this.state.firstNameError.length > 0}
-          />
-        </Grid>
-        <Grid item xs={12} sm={6}>
-          <TextField
-            id="lastName" 
-            name="lastName"
-            label="Last Name"
-            value={this.state.lastName}
-            onChange={event => this.handleChange(event) }
-            fullWidth
-            helperText={this.state.lastNameError}
-            error={this.state.lastNameError.length > 0}
-          />
-        </Grid>
-        <Grid item xs={12}>
-          <TextField
-            id="address" 
-            name="address"
-            label="Street Address"
-            placeholder="Street and number"
-            value={this.state.address}
-            onChange={event => this.handleChange(event) }
-            fullWidth
-            helperText={this.state.addressError}
-            error={this.state.addressError.length > 0}
-          />
-        </Grid>
-        <Grid item xs={12}>
-          <TextField
-            id="apartment" 
-            name="apartment"
-            label="Apartment"
-            placeholder="Apartment, suite, unit, building, floor, etc."
-            value={this.state.apartment}
-            onChange={event => this.handleChange(event) }
-            fullWidth
-            helperText={this.state.apartmentError}
-            error={this.state.apartmentError.length > 0}
-          />
-        </Grid>
-        <Grid item xs={12} sm={6}>
-          <TextField
-            id="city" 
-            name="city"
-            label="City"
-            value={this.state.city}
-            onChange={event => this.handleChange(event) }
-            fullWidth
-            helperText={this.state.cityError}
-            error={this.state.cityError.length > 0}
-          />
-        </Grid>
-        <Grid item xs={12} sm={6}>
-          <TextField
-            id="province"
-            name="province"
-            select
-            label="Province/Territory"
-            value={this.state.province}
-            className={classes.select}
-            onChange={event => this.handleChange(event) }
-            fullWidth
-            helperText={this.state.provinceError}
-            error={this.state.provinceError.length > 0}
-          >
-            {provinces.map(option => (
-              <MenuItem key={option.value} value={option.value}>
-                {option.label}
-              </MenuItem>
-            ))}
-          </TextField>
-        </Grid>
-        <Grid item xs={12} sm={6}>
-          <TextField
-            id="postalCode" 
-            name="postalCode"
-            label="Postal Code"
-            value={this.state.postalCode}
-            onChange={event => this.handleChange(event) }
-            fullWidth
-            InputProps={{
-              inputComponent: PostalCodeMask,
-            }}
-            helperText={this.state.postalCodeError}
-            error={this.state.postalCodeError.length > 0}
-          />
-        </Grid>
-        <Grid item xs={12} sm={6}>
-          <TextField
-            id="phoneNumber"
-            name="phoneNumber"
-            label="Phone Number"
-            value={this.state.phoneNumber}
-            onChange={event => this.handleChange(event) }
-            fullWidth
-            helperText={this.state.phoneNumberError}
-            error={this.state.phoneNumberError.length > 0}
-            InputProps={{
-              inputComponent: PhoneMask,
-            }}
-          />
-        </Grid>
-      </Grid>
-      <Typography variant="title" gutterBottom>
-        Personal Information
-      </Typography>
-      <Grid container spacing={24}>
-        <Grid item xs={12} sm={3}>
-          <TextField 
-            id="age"
-            name="age"
-            label="Age"
-            value={this.state.age}
-            type="number"
-            onChange={ event => this.handleChange(event)}
-            fullWidth
-            helperText={this.state.ageError}
-            error={this.state.ageError.length > 0}
-            InputProps={{
-              endAdornment: <InputAdornment position="end">years</InputAdornment>
-            }}
-          />
-        </Grid>
-        <Grid item xs={12} sm={5}>
-          <TextField
-            id="nationality" 
-            name="nationality"
-            label="Nationality"
-            value={this.state.nationality}
-            onChange={ event => this.handleChange(event)}
-            fullWidth
-            helperText={this.state.nationalityError}
-            error={this.state.nationalityError.length > 0}
-          />
-        </Grid>
-        <Grid item xs={12} sm={4}>
-          <FormControl component="fieldset" fullWidth className={classes.formControl}>
-            <FormLabel component="legend" error={this.state.genderError.length > 0}>Gender</FormLabel>
-            <RadioGroup
-              aria-label="Gender"
-              id="gender"
-              name="gender"
-              className={classes.group}
-              value={this.state.gender}
-              onChange={ event => this.handleChange(event)}
+        <Typography variant="title" gutterBottom>
+                Contact Information
+        </Typography>
+        <Grid container spacing={24}>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              id="firstName"
+              name="firstName"
+              label="First Name"
+              value={firstName}
+              onChange={event => this.handleChange(event)}
+              fullWidth
+              helperText={firstNameError}
+              error={firstNameError.length > 0}
+            />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              id="lastName"
+              name="lastName"
+              label="Last Name"
+              value={lastName}
+              onChange={event => this.handleChange(event)}
+              fullWidth
+              helperText={lastNameError}
+              error={lastNameError.length > 0}
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <TextField
+              id="address"
+              name="address"
+              label="Street Address"
+              placeholder="Street and number"
+              value={address}
+              onChange={event => this.handleChange(event)}
+              fullWidth
+              helperText={addressError}
+              error={addressError.length > 0}
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <TextField
+              id="apartment"
+              name="apartment"
+              label="Apartment"
+              placeholder="Apartment, suite, unit, building, floor, etc."
+              value={apartment}
+              onChange={event => this.handleChange(event)}
+              fullWidth
+              helperText={apartmentError}
+              error={apartmentError.length > 0}
+            />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              id="city"
+              name="city"
+              label="City"
+              value={city}
+              onChange={event => this.handleChange(event)}
+              fullWidth
+              helperText={cityError}
+              error={cityError.length > 0}
+            />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              id="province"
+              name="province"
+              select
+              label="Province/Territory"
+              value={province}
+              className={classes.select}
+              onChange={event => this.handleChange(event)}
+              fullWidth
+              helperText={provinceError}
+              error={provinceError.length > 0}
             >
-              {gender.map(option => (
-                <FormControlLabel key={option.value} value={option.value} control={<Radio />} label={option.label}>
+              {provinces.map(option => (
+                <MenuItem key={option.value} value={option.value}>
                   {option.label}
-                </FormControlLabel>
+                </MenuItem>
               ))}
-            </RadioGroup>
-            <FormHelperText
-                error={this.state.genderError.length > 0}
-              >
-                {this.state.genderError}
-            </FormHelperText>
-          </FormControl>
-        </Grid>
-        <Grid item xs={12} sm={6}>
-          <TextField
-            id="status"
-            name="status"
-            select
-            label="Status"
-            value={this.state.status}
-            onChange={event => this.handleChange(event)}
-            className={classes.select}
-            fullWidth
-            helperText={this.state.statusError}
-            error={this.state.statusError.length > 0}
-          >
-            {statuses.map(option => (
-              <MenuItem key={option.value} value={option.value}>
-                {option.label}
-              </MenuItem>
-            ))}
-          </TextField>
-        </Grid>
-        <Grid item xs={12} sm={6}>
-          <TextField
-            id="relationshipStatus"
-            name="relationshipStatus"
-            select
-            label="Relationship Status"
-            value={this.state.relationshipStatus}
-            onChange={event => this.handleChange(event)}
-            className={classes.select}
-            fullWidth
-            helperText={this.state.relationshipStatusError}
-            error={this.state.relationshipStatusError.length > 0}
-          >
-            {relationshipStatus.map(option => (
-              <MenuItem key={option.value} value={option.value}>
-                {option.label}
-              </MenuItem>
-            ))}
-          </TextField>
-        </Grid>
-      </Grid>
-      <Typography variant="title" gutterBottom>
-      Language Information
-      </Typography>
-      <Grid container spacing={24}>
-        <Grid item xs={12} sm={4}>
-          <Autosuggest
-            {...autosuggestProps}
-            inputProps={{
-              classes,
-              label: 'Mother Tongue',
-              value: this.state.motherTongue,
-              onChange: this.handleAutoSuggestChange('motherTongue'),
-              helperText: this.state.motherTongueError,
-              error: this.state.motherTongueError.length > 0,
-            }}
-            theme={{
-              container: classes.container,
-              suggestionsContainerOpen: classes.suggestionsContainerOpen,
-              suggestionsList: classes.suggestionsList,
-              suggestion: classes.suggestion,
-            }}
-            renderSuggestionsContainer={options => (
-              <Paper {...options.containerProps} square>
-                {options.children}
-              </Paper>
-            )}
-          />
-        </Grid>
-        <Grid item xs={12} sm={4}>
-          <TextField
-            id="writingLevel"
-            name="writingLevel"
-            select
-            label="Writing Level"
-            value={this.state.writingLevel}
-            onChange={event => this.handleChange(event)}
-            fullWidth
-            className={classes.select}
-            helperText={this.state.writingLevelError}
-            error={this.state.writingLevelError.length > 0}
-          >
-            {languageLevels.map(option => (
-              <MenuItem key={option.value} value={option.value}>
-                {option.label}
-              </MenuItem>
-            ))}
-          </TextField>
-        </Grid>
-        <Grid item xs={12} sm={4}>
-          <TextField
-            id="speakingLevel"
-            name="speakingLevel"
-            select
-            label="Speaking Level"
-            value={this.state.speakingLevel}
-            onChange={event => this.handleChange(event)}
-            className={classes.select}
-            fullWidth
-            helperText={this.state.speakingLevelError}
-            error={this.state.speakingLevelError.length > 0}
-          >
-            {languageLevels.map(option => (
-              <MenuItem key={option.value} value={option.value}>
-                {option.label}
-              </MenuItem>
-            ))}
-          </TextField>
-        </Grid>
-        <Grid item xs={12}>
-          <Typography variant="subheading" gutterBottom className={classes.row}>
-          Add another language
-          </Typography>
-          <Button variant="fab" mini color="secondary" 
-                  aria-label="Add" 
-                  onClick={event => this.handleAddObject("languages", langObject)}
-                  className={classes.button}>
-            <AddIcon />
-          </Button>
-        </Grid>
-
-        {this.state.languages.map((language, index) => (
-          <React.Fragment key={index}>
-          <Grid container spacing={24} item xs={12} sm={11}>
-            <Grid item xs={12} sm={4}>
-              <Autosuggest
-                  {...autosuggestProps}
-                  inputProps={{
-                    classes,
-                    value: language.name,
-                    label: "Language",
-                    onChange: this.handleEditObjectAutosuggest("languages", "name", index),
-                    helperText: this.objectErrorText("languagesError", index, "name"),
-                    error: this.objectErrorText("languagesError", index, "name").length > 0,
-                  }}
-                  theme={{
-                    container: classes.container,
-                    suggestionsContainerOpen: classes.suggestionsContainerOpen,
-                    suggestionsList: classes.suggestionsList,
-                    suggestion: classes.suggestion,
-                  }}
-                  renderSuggestionsContainer={options => (
-                    <Paper {...options.containerProps} square>
-                      {options.children}
-                    </Paper>
-                  )}
-              />
-            </Grid>
-            <Grid item xs={12} sm={4}>
-              <TextField
-                id="writingLevel"
-                name="writingLevel"
-                select
-                label="Writing Level"
-                value={language.writingLevel}
-                onChange={this.handleEditObject("languages", index)}
-                className={classes.select}
-                fullWidth
-                helperText={this.objectErrorText("languagesError", index, "writingLevel")}
-                error={this.objectErrorText("languagesError", index, "writingLevel").length > 0}
-              >
-                {languageLevels.map(option => (
-                  <MenuItem key={option.value} value={option.value}>
-                    {option.label}
-                  </MenuItem>
-                ))}
-              </TextField>
-            </Grid>
-            <Grid item xs={12} sm={4}>
-              <TextField
-                id="speakingLevel"
-                name="speakingLevel"
-                select
-                label="Speaking Level"
-                value={language.speakingLevel}
-                onChange={this.handleEditObject("languages", index)}
-                className={classes.select}
-                fullWidth
-                helperText={this.objectErrorText("languagesError", index, "speakingLevel")}
-                error={this.objectErrorText("languagesError", index, "speakingLevel").length > 0}
-              >
-                {languageLevels.map(option => (
-                  <MenuItem key={option.value} value={option.value}>
-                    {option.label}
-                  </MenuItem>
-                ))}
-              </TextField>
-            </Grid>
+            </TextField>
           </Grid>
-          <Grid item xs={12} sm={1}>
-          <Button variant="fab" mini aria-label="Delete" 
-                  onClick={(event) => this.handleRemoveObject("languages", index, event)}
-                  className={classes.button}>
-            <DeleteIcon />
-          </Button>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              id="postalCode"
+              name="postalCode"
+              label="Postal Code"
+              value={postalCode}
+              onChange={event => this.handleChange(event)}
+              fullWidth
+              InputProps={{
+                inputComponent: PostalCodeMask,
+              }}
+              helperText={postalCodeError}
+              error={postalCodeError.length > 0}
+            />
           </Grid>
-          </React.Fragment>
-          ))} 
-      </Grid>
-      <Typography variant="title" gutterBottom>
-        Family Information
-      </Typography>
-      <Grid container spacing={24}>
-        <Grid item xs={12}>
-          <Typography variant="subheading" gutterBottom className={classes.row}>
-          Add family member
-          </Typography>
-          <Button variant="fab" mini color="secondary" 
-                  aria-label="Add" 
-                  onClick={event => this.handleAddObject("family", familyObject)}
-                  className={classes.button}>
-            <AddIcon />
-          </Button>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              id="phoneNumber"
+              name="phoneNumber"
+              label="Phone Number"
+              value={phoneNumber}
+              onChange={event => this.handleChange(event)}
+              fullWidth
+              helperText={phoneNumberError}
+              error={phoneNumberError.length > 0}
+              InputProps={{
+                inputComponent: PhoneMask,
+              }}
+            />
+          </Grid>
         </Grid>
-      {this.state.family.map((member, index) => (
-          <React.Fragment key={index}>
-          <Paper className={classes.paper}>
-          <Typography variant="subheading" align="left" gutterBottom>
-          Member {index+1}
-          </Typography>
-          <Grid justify="center" alignItems="center" container item xs>
-            <Grid container spacing={24} item xs={11}>
-              <Grid item xs={12} sm={4}>
-                <TextField 
-                  id="age"
-                  name="age"
-                  label="Age"
-                  value={member.age}
-                  type="number"
-                  onChange={this.handleEditObject("family", index)}
-                  helperText={this.objectErrorText("familyError", index, "age")}
-                  error={this.objectErrorText("familyError", index, "age").length > 0}
-                  fullWidth
-                  InputProps={{
-                    endAdornment: <InputAdornment position="end">years</InputAdornment>
-                  }}
-                />
-              </Grid>
-              <Grid item xs={12} sm={4}>
-                <TextField
-                  id="relationshipStatus"
-                  name="relationshipStatus"
-                  select
-                  label="Relationship Status"
-                  value={member.relationshipStatus}
-                  onChange={this.handleEditObject("family", index)}
-                  className={classes.select}
-                  helperText={this.objectErrorText("familyError", index, "relationshipStatus")}
-                  error={this.objectErrorText("familyError", index, "relationshipStatus").length > 0}
-                  fullWidth
-                >
-                  {relationshipStatus.map(option => (
-                    <MenuItem key={option.value} value={option.value}>
-                      {option.label}
-                    </MenuItem>
-                  ))}
-                </TextField>
-              </Grid>
-              <Grid item xs={12} sm={4}>
-                <TextField
-                  id="relation"
-                  name="relation"
-                  select
-                  label="Relation to you"
-                  value={member.relation}
-                  onChange={this.handleEditObject("family", index)}
-                  className={classes.select}
-                  helperText={this.objectErrorText("familyError", index, "relation")}
-                  error={this.objectErrorText("familyError", index, "relation").length > 0}
-                  fullWidth
-                >
-                  {relations.map(option => (
-                    <MenuItem key={option.value} value={option.value}>
-                      {option.label}
-                    </MenuItem>
-                  ))}
-                </TextField>
-              </Grid>
-              <Grid item xs={12}>
-                <FormControl component="fieldset" fullWidth className={classes.formControl}>
-                  <FormLabel component="legend" 
-                  error={this.objectErrorText("familyError", index, "gender").length > 0}>Gender</FormLabel>
-                  <RadioGroup
-                    aria-label="Gender"
-                    id="gender"
-                    name="gender"
-                    className={classes.group}
-                    value={member.gender}
-                    onChange={this.handleEditObject("family", index)}
-                  >
-                    {gender.map(option => (
-                      <FormControlLabel key={option.value} value={option.value} control={<Radio />} label={option.label}>
-                        {option.label}
-                      </FormControlLabel>
-                    ))}
-                  </RadioGroup>
-                  <FormHelperText
-                      error={this.objectErrorText("familyError", index, "gender").length > 0}
-                    >
-                      {this.objectErrorText("familyError", index, "gender")}
-                  </FormHelperText>
-                </FormControl>
-              </Grid>
-            </Grid>
-            <Grid item xs={1}>
-            <Button variant="fab" mini aria-label="Delete" 
-                    onClick={(event) => this.handleRemoveObject("family", index, event)}
-                    className={classes.button}>
-              <DeleteIcon />
+        <Typography variant="title" gutterBottom>
+                Personal Information
+        </Typography>
+        <Grid container spacing={24}>
+          <Grid item xs={12} sm={3}>
+            <TextField
+              id="age"
+              name="age"
+              label="Age"
+              value={age}
+              type="number"
+              onChange={event => this.handleChange(event)}
+              fullWidth
+              helperText={ageError}
+              error={ageError.length > 0}
+              InputProps={{
+                endAdornment: <InputAdornment position="end">years</InputAdornment>,
+              }}
+            />
+          </Grid>
+          <Grid item xs={12} sm={5}>
+            <TextField
+              id="nationality"
+              name="nationality"
+              label="Nationality"
+              value={nationality}
+              onChange={event => this.handleChange(event)}
+              fullWidth
+              helperText={nationalityError}
+              error={nationalityError.length > 0}
+            />
+          </Grid>
+          <Grid item xs={12} sm={4}>
+            <FormControl component="fieldset" fullWidth className={classes.formControl}>
+              <FormLabel component="legend" error={genderError.length > 0}>Gender</FormLabel>
+              <RadioGroup
+                aria-label="Gender"
+                id="gender"
+                name="gender"
+                className={classes.group}
+                value={gender}
+                onChange={event => this.handleChange(event)}
+              >
+                {genderOptions.map(option => (
+                  <FormControlLabel key={option.value} value={option.value} control={<Radio />} label={option.label}>
+                    {option.label}
+                  </FormControlLabel>
+                ))}
+              </RadioGroup>
+              <FormHelperText
+                error={genderError.length > 0}
+              >
+                {genderError}
+              </FormHelperText>
+            </FormControl>
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              id="status"
+              name="status"
+              select
+              label="Status"
+              value={status}
+              onChange={event => this.handleChange(event)}
+              className={classes.select}
+              fullWidth
+              helperText={statusError}
+              error={statusError.length > 0}
+            >
+              {statuses.map(option => (
+                <MenuItem key={option.value} value={option.value}>
+                  {option.label}
+                </MenuItem>
+              ))}
+            </TextField>
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              id="relationshipStatus"
+              name="relationshipStatus"
+              select
+              label="Relationship Status"
+              value={relationshipStatus}
+              onChange={event => this.handleChange(event)}
+              className={classes.select}
+              fullWidth
+              helperText={relationshipStatusError}
+              error={relationshipStatusError.length > 0}
+            >
+              {relationshipStatusOptions.map(option => (
+                <MenuItem key={option.value} value={option.value}>
+                  {option.label}
+                </MenuItem>
+              ))}
+            </TextField>
+          </Grid>
+        </Grid>
+        <Typography variant="title" gutterBottom>
+                Language Information
+        </Typography>
+        <Grid container spacing={24}>
+          <Grid item xs={12} sm={4}>
+            <Autosuggest
+              {...autosuggestProps}
+              inputProps={{
+                classes,
+                label: 'Mother Tongue',
+                value: motherTongue,
+                onChange: this.handleAutoSuggestChange('motherTongue'),
+                helperText: motherTongueError,
+                error: motherTongueError.length > 0,
+              }}
+              theme={{
+                container: classes.container,
+                suggestionsContainerOpen: classes.suggestionsContainerOpen,
+                suggestionsList: classes.suggestionsList,
+                suggestion: classes.suggestion,
+              }}
+              renderSuggestionsContainer={options => (
+                <Paper {...options.containerProps} square>
+                  {options.children}
+                </Paper>
+              )}
+            />
+          </Grid>
+          <Grid item xs={12} sm={4}>
+            <TextField
+              id="writingLevel"
+              name="writingLevel"
+              select
+              label="Writing Level"
+              value={writingLevel}
+              onChange={event => this.handleChange(event)}
+              fullWidth
+              className={classes.select}
+              helperText={writingLevelError}
+              error={writingLevelError.length > 0}
+            >
+              {languageLevels.map(option => (
+                <MenuItem key={option.value} value={option.value}>
+                  {option.label}
+                </MenuItem>
+              ))}
+            </TextField>
+          </Grid>
+          <Grid item xs={12} sm={4}>
+            <TextField
+              id="speakingLevel"
+              name="speakingLevel"
+              select
+              label="Speaking Level"
+              value={speakingLevel}
+              onChange={event => this.handleChange(event)}
+              className={classes.select}
+              fullWidth
+              helperText={speakingLevelError}
+              error={speakingLevelError.length > 0}
+            >
+              {languageLevels.map(option => (
+                <MenuItem key={option.value} value={option.value}>
+                  {option.label}
+                </MenuItem>
+              ))}
+            </TextField>
+          </Grid>
+          <Grid item xs={12}>
+            <Typography variant="subheading" gutterBottom className={classes.row}>
+                    Add another language
+            </Typography>
+            <Button
+              variant="fab"
+              mini
+              color="secondary"
+              aria-label="Add"
+              onClick={event => this.handleAddObject('languages', langObject)}
+              className={classes.button}
+            >
+              <AddIcon />
             </Button>
-            </Grid>   
           </Grid>
-          </Paper>
-          </React.Fragment>
+
+          {languages.map((language, index) => (
+            <React.Fragment key={index}>
+              <Grid container spacing={24} item xs={12} sm={11}>
+                <Grid item xs={12} sm={4}>
+                  <Autosuggest
+                    {...autosuggestProps}
+                    inputProps={{
+                      classes,
+                      value: language.name,
+                      label: 'Language',
+                      onChange: this.handleEditObjectAutosuggest('languages', 'name', index),
+                      helperText: this.objectErrorText('languagesError', index, 'name'),
+                      error: this.objectErrorText('languagesError', index, 'name').length > 0,
+                    }}
+                    theme={{
+                      container: classes.container,
+                      suggestionsContainerOpen: classes.suggestionsContainerOpen,
+                      suggestionsList: classes.suggestionsList,
+                      suggestion: classes.suggestion,
+                    }}
+                    renderSuggestionsContainer={options => (
+                      <Paper {...options.containerProps} square>
+                        {options.children}
+                      </Paper>
+                    )}
+                  />
+                </Grid>
+                <Grid item xs={12} sm={4}>
+                  <TextField
+                    id="writingLevel"
+                    name="writingLevel"
+                    select
+                    label="Writing Level"
+                    value={language.writingLevel}
+                    onChange={this.handleEditObject('languages', index)}
+                    className={classes.select}
+                    fullWidth
+                    helperText={this.objectErrorText('languagesError', index, 'writingLevel')}
+                    error={this.objectErrorText('languagesError', index, 'writingLevel').length > 0}
+                  >
+                    {languageLevels.map(option => (
+                      <MenuItem key={option.value} value={option.value}>
+                        {option.label}
+                      </MenuItem>
+                    ))}
+                  </TextField>
+                </Grid>
+                <Grid item xs={12} sm={4}>
+                  <TextField
+                    id="speakingLevel"
+                    name="speakingLevel"
+                    select
+                    label="Speaking Level"
+                    value={language.speakingLevel}
+                    onChange={this.handleEditObject('languages', index)}
+                    className={classes.select}
+                    fullWidth
+                    helperText={this.objectErrorText('languagesError', index, 'speakingLevel')}
+                    error={this.objectErrorText('languagesError', index, 'speakingLevel').length > 0}
+                  >
+                    {languageLevels.map(option => (
+                      <MenuItem key={option.value} value={option.value}>
+                        {option.label}
+                      </MenuItem>
+                    ))}
+                  </TextField>
+                </Grid>
+              </Grid>
+              <Grid item xs={12} sm={1}>
+                <Button
+                  variant="fab"
+                  mini
+                  aria-label="Delete"
+                  onClick={event => this.handleRemoveObject('languages', index, event)}
+                  className={classes.button}
+                >
+                  <DeleteIcon />
+                </Button>
+              </Grid>
+            </React.Fragment>
           ))}
-          </Grid>
-      <Typography variant="title" gutterBottom>
-        Education Information
-      </Typography>
-      <Grid container spacing={24}>
-        <Grid item xs={12}>
-          <TextField
-            name="educationLevel"
-            select
-            label="Education Level"
-            value={this.state.educationLevel}
-            onChange={event => this.handleChange(event) }
-            className={classes.select}
-            fullWidth
-            helperText={this.state.educationLevelError}
-            error={this.state.educationLevelError.length > 0}
-          >
-            {educationLevels.map(option => (
-              <MenuItem key={option.value} value={option.value}>
-                {option.label}
-              </MenuItem>
-            ))}
-          </TextField>
         </Grid>
-        <Grid item xs={3} s={3}>
-          <FormControl component="fieldset" fullWidth className={classes.formControl}>
-            <FormLabel component="legend">Proficiency Exams</FormLabel>
-            <FormGroup className={classes.group} name="proficiencyExams">
-              {proficiencyExaminations.map(option => (
+        <Typography variant="title" gutterBottom>
+                Family Information
+        </Typography>
+        <Grid container spacing={24}>
+          <Grid item xs={12}>
+            <Typography variant="subheading" gutterBottom className={classes.row}>
+                    Add family member
+            </Typography>
+            <Button
+              variant="fab"
+              mini
+              color="secondary"
+              aria-label="Add"
+              onClick={event => this.handleAddObject('family', familyObject)}
+              className={classes.button}
+            >
+              <AddIcon />
+            </Button>
+          </Grid>
+          {family.map((member, index) => (
+            <React.Fragment key={index}>
+              <Paper className={classes.paper}>
+                <Typography variant="subheading" align="left" gutterBottom>
+                            Member
+                  {' '}
+                  {index + 1}
+                </Typography>
+                <Grid justify="center" alignItems="center" container item xs>
+                  <Grid container spacing={24} item xs={11}>
+                    <Grid item xs={12} sm={4}>
+                      <TextField
+                        id="age"
+                        name="age"
+                        label="Age"
+                        value={member.age}
+                        type="number"
+                        onChange={this.handleEditObject('family', index)}
+                        helperText={this.objectErrorText('familyError', index, 'age')}
+                        error={this.objectErrorText('familyError', index, 'age').length > 0}
+                        fullWidth
+                        InputProps={{
+                          endAdornment: <InputAdornment position="end">years</InputAdornment>,
+                        }}
+                      />
+                    </Grid>
+                    <Grid item xs={12} sm={4}>
+                      <TextField
+                        id="relationshipStatus"
+                        name="relationshipStatus"
+                        select
+                        label="Relationship Status"
+                        value={member.relationshipStatus}
+                        onChange={this.handleEditObject('family', index)}
+                        className={classes.select}
+                        helperText={this.objectErrorText('familyError', index, 'relationshipStatus')}
+                        error={this.objectErrorText('familyError', index, 'relationshipStatus').length > 0}
+                        fullWidth
+                      >
+                        {relationshipStatusOptions.map(option => (
+                          <MenuItem key={option.value} value={option.value}>
+                            {option.label}
+                          </MenuItem>
+                        ))}
+                      </TextField>
+                    </Grid>
+                    <Grid item xs={12} sm={4}>
+                      <TextField
+                        id="relation"
+                        name="relation"
+                        select
+                        label="Relation to you"
+                        value={member.relation}
+                        onChange={this.handleEditObject('family', index)}
+                        className={classes.select}
+                        helperText={this.objectErrorText('familyError', index, 'relation')}
+                        error={this.objectErrorText('familyError', index, 'relation').length > 0}
+                        fullWidth
+                      >
+                        {relations.map(option => (
+                          <MenuItem key={option.value} value={option.value}>
+                            {option.label}
+                          </MenuItem>
+                        ))}
+                      </TextField>
+                    </Grid>
+                    <Grid item xs={12}>
+                      <FormControl component="fieldset" fullWidth className={classes.formControl}>
+                        <FormLabel
+                          component="legend"
+                          error={this.objectErrorText('familyError', index, 'gender').length > 0}
+                        >
+Gender
+                        </FormLabel>
+                        <RadioGroup
+                          aria-label="Gender"
+                          id="gender"
+                          name="gender"
+                          className={classes.group}
+                          value={member.gender}
+                          onChange={this.handleEditObject('family', index)}
+                        >
+                          {genderOptions.map(option => (
+                            <FormControlLabel key={option.value} value={option.value} control={<Radio />} label={option.label}>
+                              {option.label}
+                            </FormControlLabel>
+                          ))}
+                        </RadioGroup>
+                        <FormHelperText
+                          error={this.objectErrorText('familyError', index, 'gender').length > 0}
+                        >
+                          {this.objectErrorText('familyError', index, 'gender')}
+                        </FormHelperText>
+                      </FormControl>
+                    </Grid>
+                  </Grid>
+                  <Grid item xs={1}>
+                    <Button
+                      variant="fab"
+                      mini
+                      aria-label="Delete"
+                      onClick={event => this.handleRemoveObject('family', index, event)}
+                      className={classes.button}
+                    >
+                      <DeleteIcon />
+                    </Button>
+                  </Grid>
+                </Grid>
+              </Paper>
+            </React.Fragment>
+          ))}
+        </Grid>
+        <Typography variant="title" gutterBottom>
+                Education Information
+        </Typography>
+        <Grid container spacing={24}>
+          <Grid item xs={12}>
+            <TextField
+              name="educationLevel"
+              select
+              label="Education Level"
+              value={educationLevel}
+              onChange={event => this.handleChange(event)}
+              className={classes.select}
+              fullWidth
+              helperText={educationLevelError}
+              error={educationLevelError.length > 0}
+            >
+              {educationLevels.map(option => (
+                <MenuItem key={option.value} value={option.value}>
+                  {option.label}
+                </MenuItem>
+              ))}
+            </TextField>
+          </Grid>
+          <Grid item xs={3} s={3}>
+            <FormControl component="fieldset" fullWidth className={classes.formControl}>
+              <FormLabel component="legend">Proficiency Exams</FormLabel>
+              <FormGroup className={classes.group} name="proficiencyExams">
+                {proficiencyExaminations.map(option => (
                   <FormControlLabel
                     key={option.value}
-                    control={
+                    control={(
                       <Checkbox
                         name={option.value}
-                        checked={this.state.proficiencyExams[option.value]}
-                        onChange={this.handleEditSingleObject("proficiencyExams", option.value)}
+                        checked={proficiencyExams[option.value]}
+                        onChange={this.handleEditSingleObject('proficiencyExams', option.value)}
                       />
-                    }
+)}
                     label={option.label}
                   />
                 ))}
-            </FormGroup>
-          </FormControl>
+              </FormGroup>
+            </FormControl>
+          </Grid>
+          <Grid item xs={9} s={9}>
+            <TextField
+              id="others"
+              name="others"
+              label="Others"
+              value={proficiencyExams.others}
+              onChange={this.handleEditSingleObject('proficiencyExams', 'others')}
+              fullWidth
+            />
+          </Grid>
         </Grid>
-        <Grid item xs={9} s={9}>
-          <TextField
-            id="others" 
-            name="others"
-            label="Others"
-            value={this.state.proficiencyExams.others}
-            onChange={this.handleEditSingleObject("proficiencyExams", "others")}
-            fullWidth
-          />
-        </Grid>
-      </Grid>
-      <Typography variant="title" gutterBottom>
-        Employment Information
-      </Typography>
-      <Grid container spacing={24}>
-        <Grid item xs={12} sm={4}>
-          <TextField
-            name="jobStatus"
-            select
-            label="Job Status"
-            value={this.state.jobStatus}
-            onChange={event => this.handleChange(event)}
-            className={classes.select}
-            fullWidth
-            helperText={this.state.jobStatusError}
-            error={this.state.jobStatusError.length > 0}
-          >
-            {jobStatuses.map(option => (
-              <MenuItem key={option.value} value={option.value}>
-                {option.label}
-              </MenuItem>
-            ))}
-          </TextField>
-        </Grid>
-        <Grid item xs={12} sm={4}>
-          <TextField 
+        <Typography variant="title" gutterBottom>
+                Employment Information
+        </Typography>
+        <Grid container spacing={24}>
+          <Grid item xs={12} sm={4}>
+            <TextField
+              name="jobStatus"
+              select
+              label="Job Status"
+              value={jobStatus}
+              onChange={event => this.handleChange(event)}
+              className={classes.select}
+              fullWidth
+              helperText={jobStatusError}
+              error={jobStatusError.length > 0}
+            >
+              {jobStatuses.map(option => (
+                <MenuItem key={option.value} value={option.value}>
+                  {option.label}
+                </MenuItem>
+              ))}
+            </TextField>
+          </Grid>
+          <Grid item xs={12} sm={4}>
+            <TextField
               name="currentIncome"
               label="Current Income (Optional)"
-              value={this.state.currentIncome}
-              onChange={ event => this.handleChange(event)}
+              value={currentIncome}
+              onChange={event => this.handleChange(event)}
               fullWidth
               InputProps={{
                 inputComponent: IncomeMask,
               }}
-          />
-        </Grid>
-        <Grid item xs={12} sm={4}>
-          <FormControl component="fieldset" fullWidth className={classes.formControl}>
-            <FormLabel component="legend" error={this.state.lookingForJobError.length > 0}>Looking for a job?</FormLabel>
-            <RadioGroup
-              aria-label="Looking for a job?"
-              id="lookingForJob"
-              name="lookingForJob"
-              className={classes.group}
-              value={this.state.lookingForJob}
-              onChange={ event => this.handleChange(event) }
-            >
-              {lookingForJobOptions.map(option => (
-                <FormControlLabel key={option.value} value={option.value} control={<Radio />} label={option.label}>
-                  {option.label}
-                </FormControlLabel>
-              ))}
-            </RadioGroup>
-            <FormHelperText
-                error={this.state.lookingForJobError.length > 0}
+            />
+          </Grid>
+          <Grid item xs={12} sm={4}>
+            <FormControl component="fieldset" fullWidth className={classes.formControl}>
+              <FormLabel component="legend" error={lookingForJobError.length > 0}>Looking for a job?</FormLabel>
+              <RadioGroup
+                aria-label="Looking for a job?"
+                id="lookingForJob"
+                name="lookingForJob"
+                className={classes.group}
+                value={lookingForJob}
+                onChange={event => this.handleChange(event)}
               >
-                {this.state.lookingForJobError}
-            </FormHelperText>
-          </FormControl>
-        </Grid>
-        <Grid item xs={12}>
-          <Typography variant="subheading" gutterBottom className={classes.row}>
-          Add work experience
-          </Typography>
-          <Button variant="fab" mini color="secondary" 
-                  aria-label="Add" 
-                  onClick={event => this.handleAddObject("workExperience", workObject)}
-                  className={classes.button}>
-            <AddIcon />
-          </Button>
-        </Grid>
-        {this.state.workExperience.map((work, index) => (
-          <React.Fragment key={index}>
-          <Grid container spacing={24} item xs={12} sm={11}>
-            <Grid item xs={12} sm={4}>
-              <TextField 
-                id="title"
-                name="title"
-                label="Title"
-                value={work.title}
-                onChange={this.handleEditObject("workExperience", index)}
-                helperText={this.objectErrorText("workExperienceError", index, "title")}
-                error={this.objectErrorText("workExperienceError", index, "title").length > 0}
-                fullWidth
-              />
-            </Grid>
-            <Grid item xs={12} sm={4}>
-              <TextField 
-                id="company"
-                name="company"
-                label="Company"
-                value={work.company}
-                onChange={this.handleEditObject("workExperience", index)}
-                helperText={this.objectErrorText("workExperienceError", index, "company")}
-                error={this.objectErrorText("workExperienceError", index, "company").length > 0}
-                fullWidth
-              />
-            </Grid>
-            <Grid item xs={12} sm={4}>
-              <TextField 
-                id="years"
-                name="years"
-                label="Employment length"
-                value={work.years}
-                onChange={this.handleEditObject("workExperience", index)}
-                helperText={this.objectErrorText("workExperienceError", index, "years")}
-                error={this.objectErrorText("workExperienceError", index, "years").length > 0}
-                fullWidth
-                type="number"
-                InputProps={{
-                  endAdornment: <InputAdornment position="end">years</InputAdornment>
-                }}
-              />
-            </Grid>
+                {lookingForJobOptions.map(option => (
+                  <FormControlLabel key={option.value} value={option.value} control={<Radio />} label={option.label}>
+                    {option.label}
+                  </FormControlLabel>
+                ))}
+              </RadioGroup>
+              <FormHelperText
+                error={lookingForJobError.length > 0}
+              >
+                {lookingForJobError}
+              </FormHelperText>
+            </FormControl>
           </Grid>
-          <Grid item xs={12} sm={1}>
-          <Button variant="fab" mini aria-label="Delete" 
-                  onClick={(event) => this.handleRemoveObject("workExperience", index, event)}
-                  className={classes.button}>
-            <DeleteIcon />
-          </Button>
+          <Grid item xs={12}>
+            <Typography variant="subheading" gutterBottom className={classes.row}>
+                    Add work experience
+            </Typography>
+            <Button
+              variant="fab"
+              mini
+              color="secondary"
+              aria-label="Add"
+              onClick={event => this.handleAddObject('workExperience', workObject)}
+              className={classes.button}
+            >
+              <AddIcon />
+            </Button>
           </Grid>
-          </React.Fragment>
+          {workExperience.map((work, index) => (
+            <React.Fragment key={index}>
+              <Grid container spacing={24} item xs={12} sm={11}>
+                <Grid item xs={12} sm={4}>
+                  <TextField
+                    id="title"
+                    name="title"
+                    label="Title"
+                    value={work.title}
+                    onChange={this.handleEditObject('workExperience', index)}
+                    helperText={this.objectErrorText('workExperienceError', index, 'title')}
+                    error={this.objectErrorText('workExperienceError', index, 'title').length > 0}
+                    fullWidth
+                  />
+                </Grid>
+                <Grid item xs={12} sm={4}>
+                  <TextField
+                    id="company"
+                    name="company"
+                    label="Company"
+                    value={work.company}
+                    onChange={this.handleEditObject('workExperience', index)}
+                    helperText={this.objectErrorText('workExperienceError', index, 'company')}
+                    error={this.objectErrorText('workExperienceError', index, 'company').length > 0}
+                    fullWidth
+                  />
+                </Grid>
+                <Grid item xs={12} sm={4}>
+                  <TextField
+                    id="years"
+                    name="years"
+                    label="Employment length"
+                    value={work.years}
+                    onChange={this.handleEditObject('workExperience', index)}
+                    helperText={this.objectErrorText('workExperienceError', index, 'years')}
+                    error={this.objectErrorText('workExperienceError', index, 'years').length > 0}
+                    fullWidth
+                    type="number"
+                    InputProps={{
+                      endAdornment: <InputAdornment position="end">years</InputAdornment>,
+                    }}
+                  />
+                </Grid>
+              </Grid>
+              <Grid item xs={12} sm={1}>
+                <Button
+                  variant="fab"
+                  mini
+                  aria-label="Delete"
+                  onClick={event => this.handleRemoveObject('workExperience', index, event)}
+                  className={classes.button}
+                >
+                  <DeleteIcon />
+                </Button>
+              </Grid>
+            </React.Fragment>
           ))}
-      </Grid>  
-      <Typography variant="title" gutterBottom>
-      Other Information
-      </Typography>
-      <Grid container spacing={24}>
-        <Grid item xs={12} sm={6}>
-          <Autosuggest
-            {...autosuggestCityProps}
-            inputProps={{
-              classes,
-              label: 'Settling Location',
-              value: this.state.settlingLocation,
-              onChange: this.handleAutoSuggestChange('settlingLocation'),
-              helperText: this.state.settlingLocationError,
-              error: this.state.settlingLocationError.length > 0,
-            }}
-            theme={{
-              container: classes.container,
-              suggestionsContainerOpen: classes.suggestionsContainerOpen,
-              suggestionsList: classes.suggestionsList,
-              suggestion: classes.suggestion,
-            }}
-            renderSuggestionsContainer={options => (
-              <Paper {...options.containerProps} square>
-                {options.children}
-              </Paper>
-            )}
-          />
         </Grid>
-        <Grid item xs={12} sm={6}>
-          <TextField 
-            id="settlingDuration"
-            name="settlingDuration"
-            label="Settling Duration"
-            value={this.state.settlingDuration}
-            onChange={ event => this.handleChange(event)}
-            fullWidth
-            type="number"
-            helperText={this.state.settlingDurationError}
-            error={this.state.settlingDurationError.length > 0}
-            InputProps={{
-              endAdornment: <InputAdornment position="end">years</InputAdornment>
-            }}
-          />
+        <Typography variant="title" gutterBottom>
+                Other Information
+        </Typography>
+        <Grid container spacing={24}>
+          <Grid item xs={12} sm={6}>
+            <Autosuggest
+              {...autosuggestCityProps}
+              inputProps={{
+                classes,
+                label: 'Settling Location',
+                value: settlingLocation,
+                onChange: this.handleAutoSuggestChange('settlingLocation'),
+                helperText: settlingLocationError,
+                error: settlingLocationError.length > 0,
+              }}
+              theme={{
+                container: classes.container,
+                suggestionsContainerOpen: classes.suggestionsContainerOpen,
+                suggestionsList: classes.suggestionsList,
+                suggestion: classes.suggestion,
+              }}
+              renderSuggestionsContainer={options => (
+                <Paper {...options.containerProps} square>
+                  {options.children}
+                </Paper>
+              )}
+            />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              id="settlingDuration"
+              name="settlingDuration"
+              label="Settling Duration"
+              value={settlingDuration}
+              onChange={event => this.handleChange(event)}
+              fullWidth
+              type="number"
+              helperText={settlingDurationError}
+              error={settlingDurationError.length > 0}
+              InputProps={{
+                endAdornment: <InputAdornment position="end">years</InputAdornment>,
+              }}
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <TextField
+              id="joiningReason"
+              name="joiningReason"
+              select
+              label="Reason for joining"
+              value={joiningReason}
+              onChange={event => this.handleChange(event)}
+              className={classes.select}
+              fullWidth
+              helperText={joiningReasonError}
+              error={joiningReasonError.length > 0}
+            >
+              {joiningReasons.map(option => (
+                <MenuItem key={option.value} value={option.value}>
+                  {option.label}
+                </MenuItem>
+              ))}
+            </TextField>
+          </Grid>
         </Grid>
-        <Grid item xs={12}>
-          <TextField
-            id="joiningReason"
-            name="joiningReason"
-            select
-            label="Reason for joining"
-            value={this.state.joiningReason}
-            onChange={event => this.handleChange(event)}
-            className={classes.select}
-            fullWidth
-            helperText={this.state.joiningReasonError}
-            error={this.state.joiningReasonError.length > 0}
-          >
-            {joiningReasons.map(option => (
-              <MenuItem key={option.value} value={option.value}>
-                {option.label}
-              </MenuItem>
-            ))}
-          </TextField>
-        </Grid>
-      </Grid>
-          <Button 
-            variant="contained"
-            color="primary"
-            onClick={this.handleSave} className={classes.button}>
-            Save
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={this.handleSave}
+          className={classes.button}
+        >
+                Save
         </Button>
       </React.Fragment>
     );
   }
 }
 
+
 EditMigrant.propTypes = {
-  classes: PropTypes.object.isRequired,
+  classes: PropTypes.shape({}).isRequired,
 };
 
 export default withStyles(styles)(EditMigrant);

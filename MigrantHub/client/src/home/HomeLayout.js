@@ -1,15 +1,18 @@
-import React, { Component } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import HomeHeader from './HomeHeader';
 
-class HomeLayout extends Component {
-  render() {
-    return(
-      <React.Fragment>
-        <HomeHeader />
-        { this.props.children }
-      </React.Fragment>
-    );
-}
-}
+const HomeLayout = (props) => {
+  const { children } = props;
 
+  return (
+    <React.Fragment>
+      <HomeHeader />
+      { children }
+    </React.Fragment>
+  );
+};
+HomeLayout.propTypes = {
+  children: PropTypes.shape({}).isRequired,
+};
 export default HomeLayout;
