@@ -60,5 +60,11 @@ module.exports = {
         Services.find({}, function(err, services) {
             res.send(services);
         });
+    },
+
+    searchServices : function (req, res) {
+        Services.find({}, function(err, services) {
+            res.send(services);
+        });
     }
 };
