@@ -29,7 +29,9 @@ class FriendPanel extends Component {
   getFriendsList(ev) {
     axios.get('/friend/getfriendslist')
       .then(function (response) {
-        ev.setState({ friendsList: response.data });
+        if (response.data) {
+          ev.setState({ friendsList: response.data[0].friendsList });
+        }
       }).catch(error => { })
   }
 
@@ -41,7 +43,6 @@ class FriendPanel extends Component {
         requestFrom: requestFromP,
         requestTo: requestToP,
       })).then(function (response) {
-        //call getFriendRequests() to update list
         event.getFriendRequests(event);
       });
   }
@@ -53,7 +54,6 @@ class FriendPanel extends Component {
         _id: _id,
       })).then(function (response) {
       });
-    //call getFriendRequests() to update list
     event.getFriendRequests(event);
   }
 
@@ -93,11 +93,11 @@ class FriendPanel extends Component {
       );
   }
 
-  unfriend(event, _id, index) {
+  unfriend(event, friendid, index) {
     event.handleUnfriendRow(index)
     axios.post('/friend/unfriend',
       qs.stringify({
-        _id: _id,
+        friendId: friendid,
       })).then(function (response) {
       });
   }
@@ -123,10 +123,10 @@ class FriendPanel extends Component {
             <p>Your list of friends:</p>
             <ul>
               {this.state.friendsList.map((list, index) =>
-                <li key={list.friendName}>
+                <li key={list.friend_id}>
                   <img src={list.pic} alt="profile pic" className="User-avatar" />
-                  {list.friendName}
-                  <IconButton onClick={() => { this.unfriend(this, list._id, index) }} aria-label="Delete">
+                  {list.friend_id}
+                  <IconButton onClick={() => { this.unfriend(this, list.friend_id, index) }} aria-label="Delete">
                     <PersonAddDisabled fontSize="small" />
                   </IconButton>
                   <Grid container spacing={24}>
