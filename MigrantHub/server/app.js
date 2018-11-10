@@ -17,9 +17,21 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.json({limit: '50mb'}));
 app.use(bodyParser.urlencoded({limit: '50mb', extended: false}));
+
+if (process.env.NODE_ENV == "production") {
+  app.use(express.static(path.join(__dirname, '../client/build')));
+  // The "catchall" handler: for any request that doesn't
+  // match one above, send back React's index.html file.
+  app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, '../client/build/index.html'));
+  });
+} else {
+  app.use(express.static(path.join(__dirname, 'public')));
+}
+
+app.use('/api', router);
 
 app.use(
     expressSession({
@@ -37,7 +49,6 @@ app.use( (req, res, next) => {
     return next();
 });
 
-app.use('/', router);
 
 app.use(express.static('uploads'))
 

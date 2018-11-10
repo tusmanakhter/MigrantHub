@@ -1,0 +1,19 @@
+version: '3'
+services:
+  server:
+    build: .
+    ports:
+      - "80:5000"
+    restart: always
+    depends_on:
+      - db
+    environment:
+      NODE_ENV: production
+      PORT: 5000
+  db:
+    image: mongo:latest
+    restart: always
+    volumes:
+      - dbdata:/data/db
+volumes:
+  dbdata:

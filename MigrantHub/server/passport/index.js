@@ -1,5 +1,5 @@
 var passport = require('passport')
-var LocalStrategy = require('./localStrategy')
+var LocalStrategy = require('./LocalStrategy')
 var User = require('../models/User');
 
 passport.serializeUser((user, done) => {
