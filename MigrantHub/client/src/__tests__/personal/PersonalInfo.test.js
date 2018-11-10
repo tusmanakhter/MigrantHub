@@ -1,8 +1,8 @@
 import React from 'react';
-import OtherInfo from '../../personal/OtherInfo';
-
 import { shallow } from 'enzyme';
+import PersonalInfo from '../../account/personal/PersonalInfo';
+
 
 it('renders without crashing', () => {
-  shallow(<OtherInfo />);
+  shallow(<PersonalInfo />);
 });

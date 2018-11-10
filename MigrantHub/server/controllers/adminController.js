@@ -1,13 +1,12 @@
-var Admin = require('../models/Admin');
+const Admin = require('../models/Admin');
 
 module.exports = {
-  getUnapprovedAdmins: function(req, res) {
-    Admin.find({ authorized: false }, 'email', function (err, users) {
+  getUnapprovedAdmins(req, res) {
+    Admin.find({ authorized: false }, 'email', (err, users) => {
       if (err) {
-        res.send("There was an error finding unnaproved admins");
-      } else {
-        res.send(users);
+        return res.send('There was an error finding unnaproved admins');
       }
+      return res.send(users);
     });
-  }
+  },
 };

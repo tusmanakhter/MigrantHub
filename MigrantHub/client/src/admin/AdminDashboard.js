@@ -3,12 +3,14 @@ import '../App.css';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import axios from 'axios';
+import Logout from '../components/Logout';
 
 class AdminDashboard extends Component {
   constructor(props) {
     super(props);
-
-    this.state = {users: []};
+    this.state = {
+      users: [],
+    };
   }
 
   componentDidMount() {
@@ -16,20 +18,23 @@ class AdminDashboard extends Component {
   }
 
   getUsers() {
-    axios.get('/admin/accounts/unapproved').then(response => {
+    axios.get('/admin/accounts/unapproved').then((response) => {
       if (response.status === 200) {
         this.setState({
-          users: response.data
-        })
+          users: response.data,
+        });
       }
-    })
+    });
   }
 
   render() {
+    const { users } = this.state;
+
     return (
       <React.Fragment>
+        <Logout />
         <Grid container spacing={8}>
-          {this.state.users.map((user, index) => ( 
+          {users.map((user, index) => (
             <React.Fragment key={index}>
               <Grid item xs={3}>
                 <Paper>
