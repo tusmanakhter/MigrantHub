@@ -20,9 +20,6 @@ const auth = {
         }
         localStorage.setItem('user', JSON.stringify(user));
         resolve('done');
-      }).catch((err) => {
-        console.log('Error fetching authorized user.');
-        console.log(err);
       });
     });
   },

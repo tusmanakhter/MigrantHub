@@ -54,7 +54,7 @@ class SignUpBusiness extends Component {
       case 3:
         return (
           <AboutInfo
-            ref={this.child}
+            innerRef={this.child}
             handleChange={this.handleChange}
             organizationName={organizationName}
             orgType={orgType}
@@ -120,9 +120,6 @@ class SignUpBusiness extends Component {
 
 SignUpBusiness.propTypes = {
   classes: PropTypes.shape({}).isRequired,
-  handleAddObject: PropTypes.func.isRequired,
-  handleRemoveObject: PropTypes.func.isRequired,
-  handleEditObject: PropTypes.func.isRequired,
   family: PropTypes.shape({}).isRequired,
 };
 

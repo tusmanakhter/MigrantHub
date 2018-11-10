@@ -8,7 +8,7 @@ import validator from 'validator';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import IdApi from './IdApi';
 
-const styles = theme => ({});
+const styles = ({});
 
 class IdInfo extends Component {
   state = {
@@ -17,20 +17,22 @@ class IdInfo extends Component {
   }
 
   validate = async () => {
+    const { corpId } = this.props;
+
     let isError = false;
     const errors = {
       corpIdError: '',
     };
 
-    if (validator.isEmpty(this.props.corpId)) {
+    if (validator.isEmpty(corpId)) {
       errors.corpIdError = 'Corporation Id is required';
       isError = true;
-    } else if (!validator.isNumeric(this.props.corpId)) {
+    } else if (!validator.isNumeric(corpId)) {
       errors.corpIdError = 'Please enter 7-digit';
       isError = true;
     } else {
       this.setState({ loading: true });
-      const validId = await IdApi.checkCorpId(this.props.corpId);
+      const validId = await IdApi.checkCorpId(corpId);
       this.setState({ loading: false });
       if (!validId) {
         errors.corpIdError = 'ID entered is invalid';
@@ -39,7 +41,6 @@ class IdInfo extends Component {
     }
 
     this.setState({
-      ...this.state,
       ...errors,
     });
 
@@ -47,8 +48,8 @@ class IdInfo extends Component {
   }
 
   render() {
-    const handleChange = this.props.handleChange;
-    const corpId = this.props.corpId;
+    const { corpId, handleChange } = this.props;
+    const { corpIdError, loading } = this.state;
 
     return (
       <React.Fragment>
@@ -72,12 +73,12 @@ class IdInfo extends Component {
               value={corpId}
               onChange={event => handleChange(event)}
               fullWidth
-              helperText={this.state.corpIdError}
-              error={this.state.corpIdError.length > 0}
+              helperText={corpIdError}
+              error={corpIdError.length > 0}
             />
           </Grid>
         </Grid>
-        {this.state.loading ? (
+        {loading ? (
           <div>
             <br />
             <CircularProgress />
@@ -92,7 +93,9 @@ class IdInfo extends Component {
 }
 
 IdInfo.propTypes = {
-  classes: PropTypes.object.isRequired,
+  classes: PropTypes.shape({}).isRequired,
+  handleChange: PropTypes.func.isRequired,
+  corpId: PropTypes.number.isRequired,
 };
 
 export default withStyles(styles)(IdInfo);
