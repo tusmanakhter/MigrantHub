@@ -24,9 +24,10 @@ const eventSchema = new Schema({
   secondsEnd: { type: Number, required: true },
   repeat: { type: String, required: true },
   eventImagePath: { type: String, required: false },
-  dateCreated: { type: Date, required: false },
-  deleted: { type: Boolean, default: false},
-  deletedDate: {type: Date, default: null}
+  dateCreated: { type: Date, required: true },
+  deleted: { type: Boolean, default: false },
+  deletedDate: { type: Date, default: null },
+  lastEditDate: { type: Date, default: null },
 }, { collection: 'Event' });
 
 module.exports = mongoose.model('Event', eventSchema);

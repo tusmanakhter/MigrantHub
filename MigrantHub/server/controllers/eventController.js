@@ -6,7 +6,6 @@ const Event = require('../models/Event');
 
 const multerStorage = multer.diskStorage({
   destination(req, file, cb) {
-    console.log(req.session);
     const path = `uploads/${req.session.passport.user._id}/events/`;
     fs.ensureDirSync(path);
     cb(null, path);
@@ -66,7 +65,6 @@ module.exports = {
     }
 
     Event.findOne(query, (err, events) => {
-      console.log(events);
       if (err) {
         return res.status(400).send('There was a error getting event.');
       }
@@ -78,8 +76,7 @@ module.exports = {
     let query ={};
 
     if(req.query.editOwner !== '') {
-        console.log("EditOwner" + req.query.editOwner);
-        query["email"] = req.query.editOwner;
+        query["creator"] = req.query.editOwner;
     }
     query["deleted"] = false;
     Event.find(query, function(err, events) {

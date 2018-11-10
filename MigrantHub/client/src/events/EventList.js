@@ -43,7 +43,6 @@ class EventList extends Component {
   getData(event) {
     let editOwnerEmail ='';
     if(this.props.location.state){
-        console.log("Owner" + this.props.location.state  + " " + this.props.location.state.editOwner);
         event.setState({
             editMode: this.props.location.state.editMode,
             editOwner: this.props.location.state.editOwner

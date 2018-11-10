@@ -107,6 +107,7 @@ class CreateEvent extends Component {
     super(props);
     this.state = {
       creator: '',
+      dateCreated: '',
       eventId: '',
       visibility: '',
       eventName: '',
@@ -437,7 +438,7 @@ class CreateEvent extends Component {
     // Send event data in post body to add to mongodb
     createEvent = () => {
       const {
-        creator, visibility, eventName, description, location,
+        creator, dateCreated, visibility, eventName, description, location,
         dateStart, dateEnd, timeStart, secondsStart, timeEnd, secondsEnd, repeat, eventImage,
       } = this.state;
 
@@ -445,11 +446,17 @@ class CreateEvent extends Component {
       if (eventImage !== null) {
         tempImageName = eventImage.name;
       }
+
+      const date = new Date();
+      const todaysDate = (`${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`);
+
+      this.state.dateCreated = todaysDate;
       
       const formData = new FormData();
       formData.append('eventImage', eventImage);
       formData.append('eventDetails', qs.stringify({
         creator,
+        dateCreated,
         visibility,
         eventName,
         description,
@@ -502,6 +509,11 @@ class CreateEvent extends Component {
         tempImageName = eventImageName;
       }
 
+      const date = new Date();
+      const todaysDate = (`${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`);
+
+      let lastEditDate = todaysDate;
+
       const formData = new FormData();
       formData.append('eventImage', eventImage);
       formData.append('eventDetails', qs.stringify({
@@ -516,6 +528,7 @@ class CreateEvent extends Component {
         timeEnd,
         secondsEnd,
         repeat,
+        lastEditDate,
         _id: eventId,
         eventImage,
         eventImageName: tempImageName,

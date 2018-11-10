@@ -84,14 +84,14 @@ describe('Event controller', function () {
     it('should return events if no error retrieving all events', test(function () {
         this.stub(Event, 'find').yields(null);
         EventController.viewEvents(req, res);
-        assert.calledWith(Event.find, { email: "test@test.com", deleted: false });
+        assert.calledWith(Event.find, { creator: "test@test.com", deleted: false });
         assert.calledWith(res.status, 200);
     }));
 
     it('should return error events if error retrieving all events', test(function () {
         this.stub(Event, 'find').yields(error);
         EventController.viewEvents(req, res);
-        assert.calledWith(Event.find, { email: "test@test.com", deleted: false });
+        assert.calledWith(Event.find, { creator: "test@test.com", deleted: false });
         assert.calledWith(res.send, "There was a error getting events.");
         assert.calledWith(res.status, 400);
     }));
