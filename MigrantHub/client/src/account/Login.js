@@ -22,7 +22,7 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import axios from 'axios';
 import HomeLayout from '../home/HomeLayout';
 import Auth from '../routes/Auth';
-
+import FeatureAuthentication from '../toggle/FeatureAuthentication';
 
 const qs = require('qs');
 
@@ -89,10 +89,11 @@ class Login extends Component {
       })).then(async (response) => {
       if (response.status === 200) {
         await Auth.authenticate();
+        await FeatureAuthentication.authenticateFeatures();
         if (response.data.type === 'admin') {
           this.setState({
-            redirectTo: true,
-            redirectToURL: '/admin/dashboard',
+              redirectTo: true,
+              redirectToURL: '/admin/dashboard',
           });
         } else {
           this.setState({

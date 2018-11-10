@@ -4,12 +4,13 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
-
 const expressSession = require('express-session');
 const router = require('./routes/index');
-
 const serverConfig = require('./config');
 const passport = require('./passport');
+const fflip = require('fflip');
+const FFlipExpressIntegration = require('fflip-express');
+const fflipConfig = require('./fflip_config');
 
 const app = express();
 
@@ -28,11 +29,12 @@ app.use(
     saveUninitialized: false,
   }),
 );
+fflip.config(fflipConfig);
+var fflipExpress = new FFlipExpressIntegration(fflip);
+app.use(fflipExpress.middleware);
 
 app.use(passport.initialize());
 app.use(passport.session());
-
-app.use((req, res, next) => next());
 
 app.use('/', router);
 

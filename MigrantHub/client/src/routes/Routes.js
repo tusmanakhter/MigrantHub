@@ -18,6 +18,7 @@ import ServiceList from '../services/ServiceList';
 import EventList from '../events/EventList';
 import CreateEvent from '../events/CreateEvent';
 import Auth from './Auth';
+import FeatureAuthentication from '../toggle/FeatureAuthentication';
 
 class Routes extends Component {
   state = {
@@ -25,8 +26,10 @@ class Routes extends Component {
   }
 
   async componentDidMount() {
-    await Auth.authenticate();
-    this.setState({
+      await Auth.authenticate();
+      await FeatureAuthentication.authenticateFeatures();
+
+      this.setState({
       isLoading: false,
     });
   }

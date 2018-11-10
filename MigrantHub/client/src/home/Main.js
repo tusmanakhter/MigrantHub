@@ -7,6 +7,7 @@ import FriendPanel from '../components/FriendPanel/FriendPanel';
 import NavPanel from '../components/NavPanel/NavPanel';
 import Header from '../components/Header/Header';
 import Logout from '../components/Logout';
+import WelcomePage from "../account/WelcomePage/WelcomePage";
 
 const theme = createMuiTheme({
   palette: {
@@ -60,12 +61,7 @@ class Main extends Component {
               </Grid>
               <Grid item xs={6}>
                 <div className="Main-feed">
-                  <h1>
-                                    Welcome to your homepage
-                    {userName}
-                    {' '}
-                                    ! :)
-                  </h1>
+                    <WelcomePage />
                 </div>
               </Grid>
               <Grid item xs={3}>

@@ -299,7 +299,6 @@ class Header extends Component {
                   <AccountCircle />
                   <div>
                     <Typography id="main" className={classes.title} variant="subheading"  color="inherit" noWrap>
-                        {console.log(firstName)}
                         {firstName + ' ' + lastName}
                     </Typography>
                   </div>

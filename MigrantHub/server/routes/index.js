@@ -8,6 +8,7 @@ router.use('/admin', accountController.ensureUser, accountController.ensureRole(
 router.use('/services', require('./services'));
 router.use('/friend', accountController.ensureUser, accountController.ensureRole('migrant'), require('./friend'));
 router.use('/events', require('./events'));
+router.use('/feature', require('./feature'));
 
 /* GET home page. */
 router.get('/', (req, res, next) => {
