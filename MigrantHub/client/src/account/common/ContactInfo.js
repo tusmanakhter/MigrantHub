@@ -50,7 +50,7 @@ const PostalCodeMask = (props) => {
   );
 };
 
-const styles = theme => ({
+const styles = ({
   select: {
     textAlign: 'left',
   },
@@ -277,7 +277,7 @@ class ContactInfo extends Component {
 }
 
 ContactInfo.propTypes = {
-  classes: PropTypes.object.isRequired,
+  classes: PropTypes.shape({}).isRequired,
   handleChange: PropTypes.func.isRequired,
   firstName: PropTypes.string.isRequired,
   lastName: PropTypes.string.isRequired,

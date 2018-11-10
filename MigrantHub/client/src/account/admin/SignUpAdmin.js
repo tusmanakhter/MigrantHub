@@ -9,15 +9,17 @@ const qs = require('qs');
 
 class SignUpAdmin extends Component {
   getStepContent(step) {
+    const { email, password, confirmPassword } = this.state;
+
     switch (step) {
       case 0:
         return (
           <AccountInfo
             innerRef={this.child}
             handleChange={this.handleChange}
-            email={this.state.email}
-            password={this.state.password}
-            confirmPassword={this.state.confirmPassword}
+            email={email}
+            password={password}
+            confirmPassword={confirmPassword}
           />
         );
       default:

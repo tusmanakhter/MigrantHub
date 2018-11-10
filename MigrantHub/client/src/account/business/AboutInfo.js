@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import withStyles from '@material-ui/core/styles/withStyles';
 import TextField from '@material-ui/core/TextField';
 import MenuItem from '@material-ui/core/MenuItem';
 import Grid from '@material-ui/core/Grid';
@@ -12,6 +13,11 @@ const organizationTypes = [
   { value: 'PROV', label: 'Provincial' },
 ];
 
+const styles = ({
+  select: {
+    textAlign: 'left',
+  },
+});
 class AboutInfo extends Component {
   state = {
     organizationNameError: '',
@@ -24,20 +30,43 @@ class AboutInfo extends Component {
   validate = () => {
     let isError = false;
     const errors = {
-      organizationName: '',
-      orgType: '',
-      department: '',
-      serviceType: '',
-      description: '',
+      organizationNameError: '',
+      orgTypeError: '',
+      departmentError: '',
+      serviceTypeError: '',
+      descriptionError: '',
     };
 
-    if (validator.isEmpty(this.props.organizationName)) {
+    const {
+      organizationName, orgType, department, serviceType, description,
+    } = this.props;
+
+    if (validator.isEmpty(organizationName)) {
       errors.organizationNameError = 'Organization name is required';
       isError = true;
     }
 
+    if (validator.isEmpty(orgType)) {
+      errors.orgTypeError = 'Organization type is required';
+      isError = true;
+    }
+
+    if (validator.isEmpty(department)) {
+      errors.departmentError = 'Organization department is required';
+      isError = true;
+    }
+
+    if (validator.isEmpty(serviceType)) {
+      errors.serviceTypeError = 'Organization service type is required';
+      isError = true;
+    }
+
+    if (validator.isEmpty(description)) {
+      errors.descriptionError = 'Organization description is required';
+      isError = true;
+    }
+
     this.setState({
-      ...this.state,
       ...errors,
     });
 
@@ -45,9 +74,11 @@ class AboutInfo extends Component {
   }
 
   render() {
-    const { organizationNameError } = this.state;
     const {
-      handleChange, organizationName, orgType, department, serviceType, description,
+      organizationNameError, orgTypeError, departmentError, serviceTypeError, descriptionError,
+    } = this.state;
+    const {
+      classes, handleChange, organizationName, orgType, department, serviceType, description,
     } = this.props;
 
     return (
@@ -72,10 +103,14 @@ class AboutInfo extends Component {
             <TextField
               id="orgType"
               name="orgType"
+              select
               label="Organization Type"
+              className={classes.select}
               value={orgType}
               onChange={event => handleChange(event)}
               fullWidth
+              helperText={orgTypeError}
+              error={orgTypeError.length > 0}
             >
               {organizationTypes.map(option => (
                 <MenuItem key={option.value} value={option.value}>
@@ -92,6 +127,8 @@ class AboutInfo extends Component {
               value={department}
               onChange={event => handleChange(event)}
               fullWidth
+              helperText={departmentError}
+              error={departmentError.length > 0}
             />
           </Grid>
           <Grid item xs={12} sm={6}>
@@ -102,6 +139,8 @@ class AboutInfo extends Component {
               value={serviceType}
               onChange={event => handleChange(event)}
               fullWidth
+              helperText={serviceTypeError}
+              error={serviceTypeError.length > 0}
             />
           </Grid>
           <Grid item xs={12}>
@@ -112,6 +151,8 @@ class AboutInfo extends Component {
               value={description}
               onChange={event => handleChange(event)}
               fullWidth
+              helperText={descriptionError}
+              error={descriptionError.length > 0}
             />
           </Grid>
         </Grid>
@@ -121,6 +162,7 @@ class AboutInfo extends Component {
 }
 
 AboutInfo.propTypes = {
+  classes: PropTypes.shape({}).isRequired,
   handleChange: PropTypes.func.isRequired,
   organizationName: PropTypes.string.isRequired,
   orgType: PropTypes.string.isRequired,
@@ -128,4 +170,5 @@ AboutInfo.propTypes = {
   serviceType: PropTypes.string.isRequired,
   description: PropTypes.string.isRequired,
 };
-export default AboutInfo;
+
+export default withStyles(styles)(AboutInfo);

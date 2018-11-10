@@ -199,6 +199,8 @@ module.exports = {
       const user = {
         email: req.user._id,
         type: req.user.type,
+        firstName: req.user.firstName,
+        lastName: req.user.lastName,
       };
       return res.status(200).send(user);
     }

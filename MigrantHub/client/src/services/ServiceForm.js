@@ -589,13 +589,13 @@ class ServiceForm extends Component {
     }
 
     render() {
-      const { classes, editMode } = this.props;
+      const { classes } = this.props;
       const {
         serviceTitleError, serviceDescriptionError, serviceSummaryError, addressError,
         apartmentError, cityError, provinceError, postalCodeError, phoneNumberError,
         serviceImageError, startDateError, endDateError, serviceTitle, serviceSummary,
         serviceDescription, tempServiceImagePath, serviceHours, serviceDate, location,
-        addLocation, addServiceDate, serviceHoursCount, messageFromServer,
+        addLocation, addServiceDate, serviceHoursCount, messageFromServer, editMode,
       } = this.state;
 
       return (
@@ -972,7 +972,6 @@ class ServiceForm extends Component {
 ServiceForm.propTypes = {
   classes: PropTypes.shape({}).isRequired,
   location: PropTypes.shape({}).isRequired,
-  editMode: PropTypes.bool.isRequired,
 };
 
 export default withStyles(styles)(ServiceForm);

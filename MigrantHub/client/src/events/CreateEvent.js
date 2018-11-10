@@ -364,11 +364,11 @@ class CreateEvent extends Component {
       } = this.state;
 
       // Converting start/end times to seconds of day for easier validation and storage
-      const startTimeHours = parseInt(timeStart.substring(0, 2)) * 3600;
-      const startTimeMinutes = parseInt(timeStart.substring(3, 5)) * 60;
+      const startTimeHours = parseInt(timeStart.substring(0, 2), 10) * 3600;
+      const startTimeMinutes = parseInt(timeStart.substring(3, 5), 10) * 60;
       const start = startTimeHours + startTimeMinutes;
-      const endTimeHours = parseInt(timeEnd.substring(0, 2)) * 3600;
-      const endTimeMinutes = parseInt(timeEnd.substring(3, 5)) * 60;
+      const endTimeHours = parseInt(timeEnd.substring(0, 2), 10) * 3600;
+      const endTimeMinutes = parseInt(timeEnd.substring(3, 5), 10) * 60;
       const end = endTimeHours + endTimeMinutes;
       this.setState({
         secondsStart: start,

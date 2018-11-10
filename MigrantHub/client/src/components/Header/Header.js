@@ -100,6 +100,9 @@ class Header extends Component {
       redirectState: {},
       type: '',
       email: '',
+      dataRetrieved: false,
+      firstName: '',
+      lastName: '',
     };
 
     this.getUser = this.getUser.bind(this);
@@ -114,14 +117,20 @@ class Header extends Component {
   }
 
   getUser() {
-    axios.get('/account/get/user').then((response) => {
-      if (response.status === 200) {
-        this.setState({
-          type: response.data.type,
-          email: response.data.email,
-        });
-      }
-    });
+    const { dataRetrieved } = this.state;
+    if (!dataRetrieved) {
+      axios.get('/account/get/user').then((response) => {
+        if (response.status === 200) {
+          this.setState({
+              type: response.data.type,
+              email: response.data.email,
+              firstName: response.data.firstName,
+              lastName: response.data.lastName,
+              dataRetrieved: true,
+          });
+        }
+      });
+    }
   }
 
   handleProfileMenuOpen = (event) => {
@@ -143,7 +152,6 @@ class Header extends Component {
 
   handleMenuClick = (event) => {
     const { type, email } = this.state;
-
     if (event.target.id === 'editProfile') {
       if (type === 'migrant') {
         this.setState({
@@ -201,7 +209,7 @@ class Header extends Component {
     }
 
     render() {
-      const { anchorEl, mobileMoreAnchorEl } = this.state;
+      const { anchorEl, mobileMoreAnchorEl, firstName, lastName } = this.state;
       const { classes } = this.props;
       const isMenuOpen = Boolean(anchorEl);
       const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
@@ -299,6 +307,12 @@ class Header extends Component {
                   color="inherit"
                 >
                   <AccountCircle />
+                  <div>
+                    <Typography id="main" className={classes.title} variant="subheading"  color="inherit" noWrap>
+                        {console.log(firstName)}
+                        {firstName + ' ' + lastName}
+                    </Typography>
+                  </div>
                 </IconButton>
               </div>
               <div className={classes.sectionMobile}>
