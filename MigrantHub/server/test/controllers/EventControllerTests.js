@@ -95,4 +95,20 @@ describe('Event controller', function () {
         assert.calledWith(res.send, "There was a error getting events.");
         assert.calledWith(res.status, 400);
     }));
+
+    it('should delete a event', test(function () {
+        this.stub(Event, 'updateOne').yields(null);
+        EventController.deleteEvent(req, res);
+        assert.calledWith(Event.updateOne, { _id: "5bda52305ccfd051484ea790" }, { deleted: true, deletedDate: Date.now() });
+        assert.calledWith(res.send, "Event deleted successfully.");
+        assert.calledWith(res.status, 200);
+    }));
+
+    it('should not delete event on error', test(function () {
+        this.stub(Event, 'updateOne').yields(error);
+        EventController.deleteEvent(req, res);
+        assert.calledWith(Event.updateOne, { _id: "5bda52305ccfd051484ea790" }, { deleted: true, deletedDate: Date.now() });
+        assert.calledWith(res.send, "There was an error deleting event.");
+        assert.calledWith(res.status, 400);
+    }));
 });
