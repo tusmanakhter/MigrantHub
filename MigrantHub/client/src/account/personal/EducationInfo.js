@@ -20,24 +20,24 @@ const educationLevels = [
   { value: 'trade', label: 'Trade/Vocational School' },
   { value: 'bachelors', label: 'Bachelors' },
   { value: 'masters', label: 'Mastors' },
-  { value: 'doctorate', label: 'Ph.D/Doctorate' }
+  { value: 'doctorate', label: 'Ph.D/Doctorate' },
 ];
 
 const proficiencyExaminations = [
   { value: 'ielts', label: 'IELTS' },
-  { value: 'french', label: 'French' }
-]
+  { value: 'french', label: 'French' },
+];
 
-const styles = theme => ({
+const styles = ({
   group: {
-    flexDirection: 'row'
+    flexDirection: 'row',
   },
   formControl: {
-    textAlign: 'left'
+    textAlign: 'left',
   },
   select: {
-    textAlign: 'left'
-  }
+    textAlign: 'left',
+  },
 });
 
 class EducationInfo extends Component {
@@ -46,101 +46,99 @@ class EducationInfo extends Component {
   }
 
   validate = () => {
+    const { educationLevel } = this.props;
     let isError = false;
     const errors = {
       educationLevelError: '',
     };
 
-    if (validator.isEmpty(this.props.educationLevel)) {
-      errors.educationLevelError = "Education level is required";
-      isError = true
+    if (validator.isEmpty(educationLevel)) {
+      errors.educationLevelError = 'Education level is required';
+      isError = true;
     }
 
-    this.setState({
-      ...this.state,
-      ...errors
-    })
-    
+    this.setState(prevState => ({
+      ...prevState,
+      ...errors,
+    }));
+
     return isError;
-  }
-  
-  handleChangeExams = (name) => (event) => {
-    let proficiencyExams = { ...this.state.proficiencyExams };
-    proficiencyExams[name] = event.target.checked;
-    this.setState({ proficiencyExams });
   }
 
   render() {
-    const { classes } = this.props;
-
-    const handleChange = this.props.handleChange;
-    const handleEditSingleObject = this.props.handleEditSingleObject;
-    const educationLevel = this.props.educationLevel;
-    const proficiencyExams = this.props.proficiencyExams;
+    const {
+      classes, handleChange, handleEditSingleObject, educationLevel, proficiencyExams,
+    } = this.props;
+    const { educationLevelError } = this.state;
 
     return (
       <React.Fragment>
-      <Typography variant="title" gutterBottom>
-        Education Information
-      </Typography>
-      <Grid container spacing={24}>
-        <Grid item xs={12}>
-          <TextField
-            name="educationLevel"
-            select
-            label="Education Level"
-            value={educationLevel}
-            onChange={event => handleChange(event)}
-            className={classes.select}
-            fullWidth
-            helperText={this.state.educationLevelError}
-            error={this.state.educationLevelError.length > 0}
-          >
-            {educationLevels.map(option => (
-              <MenuItem key={option.value} value={option.value}>
-                {option.label}
-              </MenuItem>
-            ))}
-          </TextField>
-        </Grid>
-        <Grid item xs={3} s={3}>
-          <FormControl component="fieldset" fullWidth className={classes.formControl}>
-            <FormLabel component="legend">Proficiency Exams</FormLabel>
-            <FormGroup className={classes.group} name="proficiencyExams">
-              {proficiencyExaminations.map(option => (
+        <Typography variant="title" gutterBottom>
+              Education Information
+        </Typography>
+        <Grid container spacing={24}>
+          <Grid item xs={12}>
+            <TextField
+              name="educationLevel"
+              select
+              label="Education Level"
+              value={educationLevel}
+              onChange={event => handleChange(event)}
+              className={classes.select}
+              fullWidth
+              helperText={educationLevelError}
+              error={educationLevelError.length > 0}
+            >
+              {educationLevels.map(option => (
+                <MenuItem key={option.value} value={option.value}>
+                  {option.label}
+                </MenuItem>
+              ))}
+            </TextField>
+          </Grid>
+          <Grid item xs={3} s={3}>
+            <FormControl component="fieldset" fullWidth className={classes.formControl}>
+              <FormLabel component="legend">Proficiency Exams</FormLabel>
+              <FormGroup className={classes.group} name="proficiencyExams">
+                {proficiencyExaminations.map(option => (
                   <FormControlLabel
                     key={option.value}
-                    control={
+                    control={(
                       <Checkbox
                         name={option.value}
                         checked={proficiencyExams[option.value]}
-                        onChange={handleEditSingleObject("proficiencyExams", option.value)}
+                        onChange={handleEditSingleObject('proficiencyExams', option.value)}
                       />
-                    }
+)}
                     label={option.label}
                   />
                 ))}
-            </FormGroup>
-          </FormControl>
+              </FormGroup>
+            </FormControl>
+          </Grid>
+          <Grid item xs={9} s={9}>
+            <TextField
+              id="others"
+              name="others"
+              label="Others"
+              value={proficiencyExams.others}
+              onChange={handleEditSingleObject('proficiencyExams', 'others')}
+              fullWidth
+            />
+          </Grid>
         </Grid>
-        <Grid item xs={9} s={9}>
-          <TextField
-            id="others" 
-            name="others"
-            label="Others"
-            value={proficiencyExams.others}
-            onChange={handleEditSingleObject("proficiencyExams", "others")}
-            fullWidth
-          />
-        </Grid>
-      </Grid>
       </React.Fragment>
     );
   }
 }
 
 EducationInfo.propTypes = {
-  classes: PropTypes.object.isRequired,
+  classes: PropTypes.shape({}).isRequired,
+  handleChange: PropTypes.func.isRequired,
+  handleEditSingleObject: PropTypes.func.isRequired,
+  educationLevel: PropTypes.string.isRequired,
+  proficiencyExams: PropTypes.shape({}).isRequired,
+
 };
 
 export default withStyles(styles)(EducationInfo);
