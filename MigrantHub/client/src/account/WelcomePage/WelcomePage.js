@@ -4,7 +4,7 @@ import Features from '../../toggle/Features';
 import WelcomePageDefault from './default/WelcomePageDefault';
 import WelcomePageVariationA from './variationA/WelcomePageVariationA';
 
-class ContactInfo extends Component {
+class WelcomePage extends Component {
     render() {
         const variation = FeatureAuthentication.validFeature(Features.MigrantContact);
         if (variation) {
@@ -14,4 +14,4 @@ class ContactInfo extends Component {
     }
 }
 
-export default ContactInfo;
+export default WelcomePage;
