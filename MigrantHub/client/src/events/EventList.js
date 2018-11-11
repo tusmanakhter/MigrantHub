@@ -37,7 +37,7 @@ class EventList extends Component {
   }
 
   getData() {
-    axios.get('/events/view/all')
+    axios.get('/api/events/view/all')
       .then((response) => {
         this.setState({
           items: response.data,

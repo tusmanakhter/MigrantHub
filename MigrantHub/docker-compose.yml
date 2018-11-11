@@ -1,0 +1,32 @@
+version: '3'
+services:
+  server:
+    build:
+      context: ./server/
+    command: /usr/app/node_modules/.bin/nodemon --legacy-watch bin/www
+    volumes:
+      - ./server/:/usr/app
+    ports:
+      - "5000:5000"
+    depends_on:
+      - db
+    environment:
+      - NODE_ENV=development
+  client:
+    build:
+      context: ./client/
+    command: npm start
+    volumes:
+      - ./client/:/usr/app
+    ports:
+      - "3000:3000"
+    depends_on:
+      - server
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+  db:
+     image: mongo:latest
+     volumes:
+       - dbdata:/data/db
+volumes:
+  dbdata:

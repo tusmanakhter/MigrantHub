@@ -29,7 +29,7 @@ class SignUpAdmin extends Component {
 
   // Send profile data in post body to add to mongodb
   createAccount(e) {
-    axios.post('/account/create/admin',
+    axios.post('/api/account/create/admin',
       qs.stringify({
         email: e.state.email,
         password: e.state.password,
