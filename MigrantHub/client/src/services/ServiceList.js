@@ -103,6 +103,7 @@ class ServiceList extends Component {
                   serviceHours={item.serviceHours}
                   editMode={editMode}
                   editOwner={editOwner}
+                  getData={this.getData}
                 />
               ))
           }
