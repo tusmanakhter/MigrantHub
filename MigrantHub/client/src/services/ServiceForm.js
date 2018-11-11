@@ -207,7 +207,7 @@ class ServiceForm extends Component {
         serviceId,
       });
 
-      axios.get('/services/get/', {
+      axios.get('/api/services/get/', {
         params: {
           _id: serviceId,
         },
@@ -514,7 +514,7 @@ class ServiceForm extends Component {
         serviceImageName: tempImageName,
       }));
 
-      axios.post('/services/create', formData,
+      axios.post('/api/services/create', formData,
         {
           headers: {
             'Content-Type': 'multipart/form-data',
@@ -569,7 +569,7 @@ class ServiceForm extends Component {
         _id: serviceId,
         serviceImagePath,
       }));
-      axios.post('/services/update', formData,
+      axios.post('/api/services/update', formData,
         {
           headers: {
             'Content-Type': 'multipart/form-data',

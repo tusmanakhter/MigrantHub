@@ -472,7 +472,7 @@ class CreateEvent extends Component {
         eventImageName: tempImageName,
       }));
 
-      axios.post('/events/create', formData,
+      axios.post('/api/events/create', formData,
         {
           headers: {
             'Content-Type': 'multipart/form-data',
