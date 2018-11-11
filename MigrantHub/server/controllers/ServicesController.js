@@ -3,6 +3,7 @@ const multer = require('multer');
 const fs = require('fs-extra');
 const ServiceValidator = require('../validators/ServiceValidator');
 const Services = require('../models/Services');
+const ReviewService = require('../models/ReviewService');
 
 const multerStorage = multer.diskStorage({
   destination(req, file, cb) {
@@ -124,5 +125,32 @@ module.exports = {
       return res.status(200).send('Service updated successfully.');
     }
     return res.status(400).send('There was an error updating service.');
+  },
+
+  createServiceReview(req, res) {
+    const parsedObj = qs.parse(req.body);
+    console.log('serviceId: ' + parsedObj.serviceId);
+    console.log('rating: ' + parsedObj.rating);
+    console.log('comment: ' + parsedObj.comment);
+    // const date = new Date();
+
+    //TODO validation
+    // const errors = ServiceValidator(parsedObj);
+
+    // if (errors === '') {
+      const reviewService = new ReviewService();
+      reviewService.user = req.user;
+      reviewService.serviceId = parsedObj.serviceId;
+      reviewService.rating = parsedObj.rating;
+      reviewService.comment = parsedObj.comment;
+      reviewService.save((err) => {
+        if (err) {
+          return res.status(400).send('There was a error creating the review.');
+        }
+        return res.status(200).send('Service has been created!');
+      });
+    // } else {
+    //   return res.status(400).send('There was a error creating service.');
+    // }
   },
 };

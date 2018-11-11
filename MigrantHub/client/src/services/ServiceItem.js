@@ -8,7 +8,6 @@ import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
-import StarRatingComponent from 'react-star-rating-component';
 import ViewService from './ViewService';
 import ViewReviews from './ViewReviews';
 
@@ -28,8 +27,7 @@ class ServiceItem extends Component {
     this.state = {
       openService: false,
       openReviews: false,
-      scroll: 'paper',
-      rating: 0
+      scroll: 'paper'
     };
   }
 
@@ -52,16 +50,12 @@ class ServiceItem extends Component {
       });
     };
 
-    onStarClick(nextValue, prevValue, name) {
-      this.setState({rating: nextValue});
-    }
-
     render() {
       const {
         classes, serviceId, serviceTitle, serviceSummary, serviceDescription,
         serviceImagePath, serviceLocation, serviceDate, serviceHours, editMode, editOwner,
       } = this.props;
-      const { openService, openReviews, scroll, rating } = this.state;
+      const { openService, openReviews, scroll } = this.state;
       return (
         <Card className={classes.card}>
           <CardActionArea>
@@ -89,15 +83,6 @@ class ServiceItem extends Component {
             <Button size="small" color="primary" onClick={this.handleViewReviews}>
                         View Reviews
             </Button>
-            <div>
-            <h2>Rating from state: {rating}</h2>
-            <StarRatingComponent 
-              name="rate1" 
-              starCount={10}
-              value={rating}
-              onStarClick={this.onStarClick.bind(this)}
-            />
-            </div>
             <ViewService
               open={openService}
               scroll={scroll}
@@ -119,14 +104,7 @@ class ServiceItem extends Component {
               onClose={this.handleClose}
               serviceId={serviceId}
               serviceTitle={serviceTitle}
-              // serviceImagePath={serviceImagePath}
-              // serviceDescription={serviceDescription}
-              // serviceSummary={serviceSummary}
-              // serviceLocation={serviceLocation}
-              // serviceDate={serviceDate}
-              // serviceHours={serviceHours}
               editMode={editMode}
-              // editOwner={editOwner}
             />
           </CardActions>
         </Card>
