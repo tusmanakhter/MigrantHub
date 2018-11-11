@@ -162,7 +162,7 @@ module.exports = {
   },
 
   ensureOwner(req, res, next) {
-    if (req.session.passport.user._id === req.body.id) {
+    if (req.session.passport.user._id === req.params.id) {
       return next();
     }
     return res.status(403).send('You are not authorized for this');
