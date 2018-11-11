@@ -17,29 +17,31 @@ class DeletedAdmin extends Component {
   }
 
   getUsers() {
-    axios.get('/admins/deleted').then(response => {
+    axios.get('/api/admins/deleted').then((response) => {
       if (response.status === 200) {
         this.setState({
-          users: response.data
-        })
+          users: response.data,
+        });
       }
-    })
+    });
   }
 
   handleReactivate = (id) => {
-    axios.put('/admins/' + id + '/reactivate')
-    .then(response => {
+    axios.put('/api/admins/' + id + '/reactivate')
+      .then((response) => {
         if (response.status === 200) {
           this.getUsers();
         }
-    });
+      });
   };
 
   render() {
+    const { users } = this.state;
+
     return (
       <React.Fragment>
         <Grid container spacing={8}>
-          {this.state.users.map((user, index) => ( 
+          {users.map((user, index) => (
             <React.Fragment key={index}>
               <Grid item xs={3}>
                 <Paper>

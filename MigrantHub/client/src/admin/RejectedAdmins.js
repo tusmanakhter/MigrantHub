@@ -17,29 +17,31 @@ class RejectedAdmin extends Component {
   }
 
   getUsers() {
-    axios.get('/admins/rejected').then(response => {
+    axios.get('/api/admins/rejected').then((response) => {
       if (response.status === 200) {
         this.setState({
-          users: response.data
-        })
+          users: response.data,
+        });
       }
-    })
+    });
   }
 
   handleAccept = (id) => {
-    axios.put('/admins/' + id + '/approve')
-    .then(response => {
+    axios.put('/api/admins/' + id + '/approve')
+      .then((response) => {
         if (response.status === 200) {
           this.getUsers();
         }
-    });
+      });
   };
 
   render() {
+    const { users } = this.state;
+
     return (
       <React.Fragment>
         <Grid container spacing={8}>
-          {this.state.users.map((user, index) => ( 
+          {users.map((user, index) => (
             <React.Fragment key={index}>
               <Grid item xs={3}>
                 <Paper>

@@ -17,38 +17,40 @@ class UnapprovedAdmin extends Component {
   }
 
   getUsers() {
-    axios.get('/admins/unapproved').then(response => {
+    axios.get('/api/admins/unapproved').then((response) => {
       if (response.status === 200) {
         this.setState({
-          users: response.data
-        })
+          users: response.data,
+        });
       }
-    })
+    });
   }
 
   handleAccept = (id) => {
-    axios.put('/admins/' + id + '/approve')
-    .then(response => {
+    axios.put('/api/admins/' + id + '/approve')
+      .then((response) => {
         if (response.status === 200) {
           this.getUsers();
         }
-    });
+      });
   };
 
   handleReject = (id) => {
-    axios.put('/admins/' + id + '/reject')
-    .then(response => {
+    axios.put('/api/admins/' + id + '/reject')
+      .then((response) => {
         if (response.status === 200) {
           this.getUsers();
         }
-    });
+      });
   };
 
   render() {
+    const { users } = this.state;
+
     return (
       <React.Fragment>
         <Grid container spacing={8}>
-          {this.state.users.map((user, index) => ( 
+          {users.map((user, index) => (
             <React.Fragment key={index}>
               <Grid item xs={3}>
                 <Paper>

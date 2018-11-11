@@ -17,29 +17,31 @@ class CurrentAdmins extends Component {
   }
 
   getUsers() {
-    axios.get('/admins/').then(response => {
+    axios.get('/api/admins/').then((response) => {
       if (response.status === 200) {
         this.setState({
-          users: response.data
-        })
+          users: response.data,
+        });
       }
-    })
+    });
   }
 
   handleDelete = (id) => {
-    axios.delete('/admins/' + id)
-    .then(response => {
+    axios.delete('/api/admins/' + id)
+      .then((response) => {
         if (response.status === 200) {
           this.getUsers();
         }
-    });
+      });
   };
 
   render() {
+    const { users } = this.state;
+
     return (
       <React.Fragment>
         <Grid container spacing={8}>
-          {this.state.users.map((user, index) => ( 
+          {users.map((user, index) => (
             <React.Fragment key={index}>
               <Grid item xs={3}>
                 <Paper>

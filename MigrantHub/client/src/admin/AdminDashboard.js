@@ -7,6 +7,7 @@ import { Route } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import '../App.css';
 import Logout from '../components/Logout';
+import AdminMain from './AdminMain';
 import CurrentAdmins from './CurrentAdmins';
 import RejectedAdmins from './RejectedAdmins';
 import DeletedAdmins from './DeletedAdmins';
@@ -55,10 +56,13 @@ class AdminDashboard extends Component {
                   </DropdownMenu>
                 </Dropdown>
               </NavItem>
+              <NavItem>
+                <Logout />
+              </NavItem>
             </NavbarNav>
           </Collapse>
         </Navbar>
-        <Logout />
+        <Route path={`${match.url}/`} component={AdminMain} exact />
         <Route path={`${match.url}/admins`} component={CurrentAdmins} exact />
         <Route path={`${match.url}/admins/deleted`} component={DeletedAdmins} exact />
         <Route path={`${match.url}/admins/rejected`} component={RejectedAdmins} exact />
