@@ -57,7 +57,7 @@ class SignUp extends Component {
     password: '',
     confirmPassword: '',
 
-    //Id Info
+    // Id Info
     corpId: '',
 
     // Contact Info
@@ -91,21 +91,21 @@ class SignUp extends Component {
     motherTongue: '',
 
     // Family Info
-    family : [],
+    family: [],
 
     // Education Info
     educationLevel: '',
     proficiencyExams: {
       ielts: '',
       french: '',
-      others: ''
+      others: '',
     },
 
     // Employment Info
     jobStatus: '',
     lookingForJob: '',
-    currentIncome: '', //optional
-    workExperience: [], //optional
+    currentIncome: '', // optional
+    workExperience: [], // optional
 
     // Other Info
     settlingLocation: '',
@@ -113,14 +113,15 @@ class SignUp extends Component {
     joiningReason: '',
 
     // DB response
-    messageFromServer: ''
+    messageFromServer: '',
   }
 
   sendStep = this.props.steps.length
+
   getStepContent = this.props.getStepContent
 
   handleNext = async () => {
-    let error = await this.child.current.validate();
+    const error = await this.child.current.validate();
     if (!error) {
       this.setState(state => ({
         activeStep: state.activeStep + 1,
@@ -143,10 +144,10 @@ class SignUp extends Component {
     });
   };
 
-  handleChange = event => {
+  handleChange = (event) => {
     this.setState({
-      [event.target.name]: event.target.value
-    })
+      [event.target.name]: event.target.value,
+    });
   }
 
   handleAutoSuggestChange = name => (event, { newValue }) => {
@@ -155,17 +156,28 @@ class SignUp extends Component {
     });
   };
 
-  handleAddObject = (name, object) => {
-    this.setState({
-      [name]: this.state[name].concat([object]),
-    });
-  }
+    handleAddObject = (name, object) => {
+      this.state.serviceHoursCount += 1;
+      this.setState({
+        [name]: this.state[name].concat([object]),
+      });
+    }
 
-  handleRemoveObject = (name, index) => {
-    this.setState({
-      [name]: this.state[name].filter((s, _index) => _index !== index),
-    });
-  }
+    handleRemoveObject = (name, index) => {
+      this.state.serviceHoursCount -= 1;
+      this.setState({
+        [name]: this.state[name].filter((s, _index) => _index !== index),
+      });
+    }
+
+    handleEditObject= (name, index) => (event) => {
+      this.setState({
+        [name]: this.state[name].map((s, _index) => {
+          if (_index !== index) return s;
+          return { ...s, [event.target.name]: event.target.value };
+        }),
+      });
+    }
 
   handleEditObjectAutosuggest = (name, fieldName, index) => (event, { newValue }) => {
     this.setState({
@@ -176,20 +188,11 @@ class SignUp extends Component {
     });
   }
 
-  handleEditObject = (name, index) => (event) => {
-    this.setState({
-      [name]: this.state[name].map((s, _index) => {
-        if (_index !== index) return s;
-        return { ...s, [event.target.name]: event.target.value };
-      }),
-    });
-  }
-
   handleEditSingleObject = (name, fieldName) => (event) => {
-    let obj = {};
+    const obj = {};
     obj[name] = { ...this.state[name] };
-    let value = ((event.target.type === 'checkbox') ? event.target.checked :
-      event.target.value);
+    const value = ((event.target.type === 'checkbox') ? event.target.checked
+      : event.target.value);
     obj[name][fieldName] = value;
     this.setState({ [name]: obj[name] });
   }
@@ -201,14 +204,17 @@ class SignUp extends Component {
     return (
       <React.Fragment>
         <CssBaseline />
-        {this.state.messageFromServer.split('\n').map((item, key) => {
-              return <span key={key}>{item}<br/></span>
-        })}
+        {this.state.messageFromServer.split('\n').map((item, key) => (
+          <span key={key}>
+            {item}
+            <br />
+          </span>
+        ))}
         <main className={classes.layout}>
           <Paper className={classes.paper}>
             <Typography variant="display1" align="center">
               Sign Up
-          </Typography>
+            </Typography>
             <Stepper activeStep={activeStep} className={classes.stepper}>
               {this.props.steps.map(label => (
                 <Step key={label}>
@@ -221,31 +227,31 @@ class SignUp extends Component {
                 <React.Fragment>
                   <Typography variant="headline" gutterBottom>
                     Welcome to MigrantHub.
-                </Typography>
+                  </Typography>
                   <Typography variant="subheading">
                     Check email for activation.
-                </Typography>
+                  </Typography>
                 </React.Fragment>
               ) : (
-                  <React.Fragment>
-                    {this.getStepContent(activeStep)}
-                    <div className={classes.buttons}>
-                      {activeStep !== 0 && (
-                        <Button onClick={this.handleBack} className={classes.button}>
+                <React.Fragment>
+                  {this.getStepContent(activeStep)}
+                  <div className={classes.buttons}>
+                    {activeStep !== 0 && (
+                    <Button onClick={this.handleBack} className={classes.button}>
                           Back
                     </Button>
-                      )}
-                      <Button
-                        variant="contained"
-                        color="primary"
-                        onClick={this.handleNext}
-                        className={classes.button}
-                      >
-                        {activeStep === this.props.steps.length - 1 ? 'Sign Up' : 'Next'}
-                      </Button>
-                    </div>
-                  </React.Fragment>
-                )}
+                    )}
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      onClick={this.handleNext}
+                      className={classes.button}
+                    >
+                      {activeStep === this.props.steps.length - 1 ? 'Sign Up' : 'Next'}
+                    </Button>
+                  </div>
+                </React.Fragment>
+              )}
             </React.Fragment>
           </Paper>
         </main>

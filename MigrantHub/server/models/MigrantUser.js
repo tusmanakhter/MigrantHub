@@ -1,6 +1,5 @@
-var mongoose = require('mongoose');
-var Schema = mongoose.Schema;
-var User = require('./User');
+const { Schema } = require('mongoose');
+const User = require('./User');
 
 const options = { discriminatorKey: 'type' };
 
@@ -22,7 +21,7 @@ var MigrantUser = User.discriminator('migrant',
     languages: [{
       name: { type: String, required: false },
       writingLevel: { type: String, required: false },
-      speakingLevel: { type: String, required: false }
+      speakingLevel: { type: String, required: false },
     }],
     writingLevel: { type: String, required: true },
     speakingLevel: { type: String, required: true },
@@ -31,13 +30,13 @@ var MigrantUser = User.discriminator('migrant',
       age: { type: Number, min: 0, required: true },
       gender: { type: String, required: true },
       relationshipStatus: { type: String, required: true },
-      relation: { type: String, required: true }
+      relation: { type: String, required: true },
     }],
     educationLevel: { type: String, required: true },
     proficiencyExams: {
       ielts: { type: Boolean, required: false },
       french: { type: Boolean, required: false },
-      others: { type: String, required: false }
+      others: { type: String, required: false },
     },
     jobStatus: { type: String, required: true },
     lookingForJob: { type: String, required: true },
@@ -52,7 +51,7 @@ var MigrantUser = User.discriminator('migrant',
     joiningReason: { type: String, required: true },
     friendsList: [{
       friend_id: { type: String, default: '' },
-      isFriend: { type: Boolean, default: true }
+      isFriend: { type: Boolean, default: true },
     }]
   }, options));
 

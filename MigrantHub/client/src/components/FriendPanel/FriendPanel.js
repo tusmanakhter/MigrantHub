@@ -7,11 +7,12 @@ import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import IconButton from '@material-ui/core/IconButton';
 import PersonAddDisabled from '@material-ui/icons/PersonAddDisabled';
+import axios from 'axios';
 import yes from './yes.svg';
 import no from './no.svg';
-import axios from 'axios';
 
-var qs = require('qs');
+const qs = require('qs');
+
 class FriendPanel extends Component {
   constructor(props) {
     super(props);
@@ -20,7 +21,7 @@ class FriendPanel extends Component {
       addFriendError: false,
       addFriendMessage: '',
       friendRequests: [],
-      friendsList: []
+      friendsList: [],
     };
     this.getFriendRequests = this.getFriendRequests.bind(this);
     this.getFriendsList = this.getFriendsList.bind(this);
@@ -28,69 +29,69 @@ class FriendPanel extends Component {
 
   getFriendsList(ev) {
     axios.get('/friend/getfriendslist')
-      .then(function (response) {
+      .then((response) => {
         if (response.data) {
           ev.setState({ friendsList: response.data[0].friendsList });
         }
-      }).catch(error => { })
+      }).catch((error) => { })
   }
 
   acceptFriendRequest(event, _id, requestFromP, requestToP, index) {
-    event.handleDeleteRow(index)
+    event.handleDeleteRow(index);
     axios.post('/friend/acceptfriendrequest',
       qs.stringify({
-        _id: _id,
+        _id,
         requestFrom: requestFromP,
         requestTo: requestToP,
-      })).then(function (response) {
+      })).then((response) => {
+        // call getFriendRequests() to update list
         event.getFriendRequests(event);
       });
   }
 
   rejectFriendRequest(event, _id, index) {
-    event.handleDeleteRow(index)
+    event.handleDeleteRow(index);
     axios.post('/friend/rejectfriendrequest',
       qs.stringify({
-        _id: _id,
-      })).then(function (response) {
+        _id,
+      })).then((response) => {
       });
+    // call getFriendRequests() to update list
     event.getFriendRequests(event);
   }
 
-
   getFriendRequests(ev) {
     axios.get('/friend/getrequests')
-      .then(function (response) {
+      .then((response) => {
         ev.setState({ friendRequests: response.data });
-      }).catch(error => { })
+      }).catch((error) => { });
   }
 
   handleDeleteRow(index) {
-    let rows = [...this.state.friendRequests]
-    rows.splice(index, 1)
+    const rows = [...this.state.friendRequests];
+    rows.splice(index, 1);
     this.setState({
-      friendRequests: rows
-    })
+      friendRequests: rows,
+    });
   }
 
   handleAddFriendTextChange(e) {
     this.setState({
-      addFriendTextValue: e.target.value
+      addFriendTextValue: e.target.value,
     });
   }
 
   handleAddFriend = () => {
     axios.post('/friend/add',
       qs.stringify({
-        requestTo: this.state.addFriendTextValue
+        requestTo: this.state.addFriendTextValue,
       }))
       .then((response) => {
         this.setState({
           addFriendMessage: response.data.message,
-          addFriendError: response.data.isError
-        })
-      }
-      );
+          addFriendError: response.data.isError,
+        });
+      });
   }
 
   unfriend(event, friendid, index) {
@@ -152,15 +153,17 @@ class FriendPanel extends Component {
                   <img src={request.pic} alt="profile pic" className="User-avatar" />
                   {request.requestFrom}
                   <Grid container spacing={24}>
-                    <Grid item xs={12} sm={4}
+                    <Grid
+                      item
+                      xs={12}
+                      sm={4}
                       id="friendRequest"
                       name="friendRequest"
                       value={request.requestFrom}
                       fullWidth
-                    >
-                    </Grid>
-                    <Button onClick={() => { this.acceptFriendRequest(this, request._id, request.requestFrom, request.requestTo, index) }} variant="contained" color="primary"><img src={yes} alt="yes" /></Button>
-                    <Button onClick={() => { this.rejectFriendRequest(this, request._id, index) }} variant="contained" color="primary"><img src={no} alt="no" /></Button>
+                    />
+                    <Button onClick={() => { this.acceptFriendRequest(this, request._id, request.requestFrom, request.requestTo, index); }} variant="contained" color="primary"><img src={yes} alt="yes" /></Button>
+                    <Button onClick={() => { this.rejectFriendRequest(this, request._id, index); }} variant="contained" color="primary"><img src={no} alt="no" /></Button>
                   </Grid>
                 </li>
               ))}
@@ -174,13 +177,13 @@ class FriendPanel extends Component {
               id="addFriendTextbox"
               label="User Email"
               value={this.state.addFriendTextValue}
-              onChange={(event) => this.handleAddFriendTextChange(event)}
+              onChange={event => this.handleAddFriendTextChange(event)}
               margin="normal"
               variant="outlined"
               helperText={this.state.addFriendMessage}
               error={this.state.addFriendError}
             />
-            <Button variant="contained" color="primary" onClick={(event) => this.handleAddFriend()}>Add Friend</Button>
+            <Button variant="contained" color="primary" onClick={event => this.handleAddFriend()}>Add Friend</Button>
           </CardContent>
         </Card>
       </div>

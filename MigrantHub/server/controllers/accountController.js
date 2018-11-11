@@ -1,22 +1,22 @@
-var User = require('../models/MigrantUser');
-var BusinessUser = require('../models/BusinessUser');
-var Admin = require('../models/Admin');
-var BusinessAccountValidator = require('../validators/BusinessAccountValidator');
-var MigrantAccountValidator = require('../validators/MigrantAccountValidator');
-var AdminAccountValidator = require('../validators/AdminAccountValidator');
-var qs = require('qs');
-var bcrypt = require('bcryptjs');
+const qs = require('qs');
+const bcrypt = require('bcryptjs');
+const User = require('../models/MigrantUser');
+const BusinessUser = require('../models/BusinessUser');
+const Admin = require('../models/Admin');
+const BusinessAccountValidator = require('../validators/BusinessAccountValidator');
+const MigrantAccountValidator = require('../validators/MigrantAccountValidator');
+const AdminAccountValidator = require('../validators/AdminAccountValidator');
 
 
 module.exports = {
-  createUser: function(req, res) {
-    let parsedObj = qs.parse(req.body);
-    let errors = MigrantAccountValidator(parsedObj);
+  createUser(req, res) {
+    const parsedObj = qs.parse(req.body);
+    const errors = MigrantAccountValidator(parsedObj);
 
-    if (errors == "") {
-      let user = new User();
-      let salt = bcrypt.genSaltSync(10);
-      let hash = bcrypt.hashSync(parsedObj.password, salt);
+    if (errors === '') {
+      const user = new User();
+      const salt = bcrypt.genSaltSync(10);
+      const hash = bcrypt.hashSync(parsedObj.password, salt);
 
       user._id = parsedObj.email;
       user.email = parsedObj.email;
@@ -49,26 +49,25 @@ module.exports = {
       user.settlingLocation = parsedObj.settlingLocation;
       user.settlingDuration = parsedObj.settlingDuration;
       user.joiningReason = parsedObj.joiningReason;
-      user.save(function (err) {
+      user.save((err) => {
         if (err) {
-          res.send("There was a error saving user.");
-        } else {
-          res.send('User has been added!');
+          return res.send('There was a error saving user.');
         }
+        return res.send('User has been added!');
       });
     } else {
-      res.send(errors);
+      return res.send(errors);
     }
   },
 
-  createBusiness: function(req, res) {
-    let parsedObj = qs.parse(req.body);
-    let errors = BusinessAccountValidator(parsedObj);
+  createBusiness(req, res) {
+    const parsedObj = qs.parse(req.body);
+    const errors = BusinessAccountValidator(parsedObj);
 
-    if (errors == "") {
-      let businessuser = new BusinessUser();
-      let salt = bcrypt.genSaltSync(10);
-      let hash = bcrypt.hashSync(parsedObj.password, salt);
+    if (errors === '') {
+      const businessuser = new BusinessUser();
+      const salt = bcrypt.genSaltSync(10);
+      const hash = bcrypt.hashSync(parsedObj.password, salt);
 
       businessuser._id = parsedObj.email;
       businessuser.email = parsedObj.email;
@@ -88,122 +87,156 @@ module.exports = {
       businessuser.department = parsedObj.department;
       businessuser.serviceType = parsedObj.serviceType;
       businessuser.description = parsedObj.description;
-      businessuser.save(function (err) {
+      businessuser.save((err) => {
         if (err) {
-          res.send("There was a error saving business user.");
-        } else {
-          res.send('Business user has been added!');
+          return res.send('There was a error saving business user.');
         }
+        return res.send('Business user has been added!');
       });
     } else {
-      res.send(errors);
+      return res.send(errors);
     }
   },
 
-  createAdmin: function(req, res) {
-    let parsedObj = qs.parse(req.body);
-    let errors = AdminAccountValidator(parsedObj);
+  createAdmin(req, res) {
+    const parsedObj = qs.parse(req.body);
+    const errors = AdminAccountValidator(parsedObj);
 
-    if (errors == "") {
-      let admin = new Admin();
-      let salt = bcrypt.genSaltSync(10);
-      let hash = bcrypt.hashSync(parsedObj.password, salt);
+    if (errors === '') {
+      const admin = new Admin();
+      const salt = bcrypt.genSaltSync(10);
+      const hash = bcrypt.hashSync(parsedObj.password, salt);
 
       admin._id = parsedObj.email;
       admin.email = parsedObj.email;
       admin.password = hash;
 
-      admin.save(function (err) {
+      admin.save((err) => {
         if (err) {
-          res.send("There was a error saving admin user.");
-        } else {
-          res.send('Admin user has been added!');
+          return res.send('There was a error saving admin user.');
         }
+        return res.send('Admin user has been added!');
       });
     } else {
-      res.send(errors);
+      return res.send(errors);
     }
   },
-
-  editMigrantUser: function(req, res) {
-    let parsedObj = qs.parse(req.body);
+  editMigrantUser(req, res) {
+    const parsedObj = qs.parse(req.body);
 
     if (parsedObj.languages === undefined) {
       parsedObj.languages = [];
-    } 
+    }
 
     if (parsedObj.workExperience === undefined) {
       parsedObj.workExperience = [];
-    } 
+    }
 
-    if (parsedObj.family === undefined){
+    if (parsedObj.family === undefined) {
       parsedObj.family = [];
-    } 
-    
+    }
+
     User.findByIdAndUpdate(
       req.session.passport.user._id,
       parsedObj,
-      {new: true},
-      (err, user) => {
+      { new: true },
+      (err) => {
         // Handle any possible database errors
-            if (err) return res.status(500).send(err);
-            return res.send("Updated Migrant User");
-        }
-    )
-    
+        if (err) return res.status(500).send(err);
+        return res.send('Updated Migrant User');
+      },
+    );
   },
-  getMigrantUser: function(req, res) {
-
-    let email = req.session.passport.user._id;
-    User.findOne({ email: email }, (err, user) => {
+  getMigrantUser(req, res) {
+    const email = req.session.passport.user._id;
+    User.findOne({ email }, (err, user) => {
       if (err) {
-          console.log("Error: ");
-          res.status(500).send(err)
-      } else if (!user) {
-          console.log("User does not exist");
-          res.status(500).send('Incorrect email');
-      }  else {
-          console.log("Found user");
-          res.status(200).send(user)
+        console.log('Error: ');
+        return res.status(500).send(err);
+      } if (!user) {
+        console.log('User does not exist');
+        return res.status(500).send('Incorrect email');
       }
-  })
-},
+      console.log('Found user');
+      return res.status(200).send(user);
+    });
+  },
 
-  getBusinessUser: function(req, res) {
-
-    let email = req.session.passport.user._id;
-    BusinessUser.findOne({ email: email }, (err, user) => {
+  getBusinessUser(req, res) {
+    const email = req.session.passport.user._id;
+    BusinessUser.findOne({ email }, (err, user) => {
       if (err) {
-          console.log("Error: ");
-          res.status(500).send(err)
-      } else if (!user) {
-          console.log("User does not exist");
-          res.status(500).send('Incorrect email');
-      }  else {
-          console.log("Found user");
-          res.status(200).send(user)
+        console.log('Error: ');
+        return res.status(500).send(err);
+      } if (!user) {
+        console.log('User does not exist');
+        return res.status(500).send('Incorrect email');
       }
-  })
-},
+      console.log('Found user');
+      return res.status(200).send(user);
+    });
+  },
 
-  editBusinessUser: function(req, res) {
-    let parsedObj = qs.parse(req.body);
+  editBusinessUser(req, res) {
+    const parsedObj = qs.parse(req.body);
 
     BusinessUser.findByIdAndUpdate(
       req.session.passport.user._id,
       parsedObj,
-      {new: true},
-      (err, user) => {
+      { new: true },
+      (err) => {
         // Handle any possible database errors
-            if (err) return res.status(500).send(err);
-            return res.send("Updated Business User");
+        if (err) {
+          return res.status(500).send(err);
         }
-    )
+        return res.send('Updated Business User');
+      },
+    );
   },
 
-  getUserType: function(req, res) {
-
-    let type = req.user.type;
-    res.status(200).send(type)
+  getUserType(req, res) {
+    if (req.user) {
+      const user = {
+        email: req.user._id,
+        type: req.user.type,
+        firstName: req.user.firstName,
+        lastName: req.user.lastName,
+      };
+      return res.status(200).send(user);
+    }
+    return res.status(404).send('Error retrieving user');
   },
-}; 
+
+  getUser(req, res) {
+    if (req.user) {
+      res.json({ user: req.user });
+    } else {
+      res.json({ user: null });
+    }
+  },
+
+  ensureUser(req, res, next) {
+    if (req.session.passport !== undefined) {
+      if (req.session.passport.user !== undefined) {
+        return next();
+      }
+      return res.status(403).send('You are not authorized for this');
+    }
+  },
+
+  ensureRole: function ensureRole(type) {
+    return function (req, res, next) {
+      if (req.session.passport.user.type === type) {
+        return next();
+      }
+      return res.status(403).send('You are not authorized for this');
+    };
+  },
+
+  ensureOwner(req, res, next) {
+    if (req.session.passport.user._id === req.body.id) {
+      return next();
+    }
+    return res.status(403).send('You are not authorized for this');
+  },
+};
