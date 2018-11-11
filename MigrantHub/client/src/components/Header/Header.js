@@ -151,34 +151,41 @@ class Header extends Component {
   };
 
   handleMenuClick = (event) => {
-    const { type, email } = this.state;
-    if (event.target.id === 'editProfile') {
-      if (type === 'migrant') {
-        this.setState({
-          redirectTo: true,
-          redirectToURL: '/editmigrant',
-        });
-      } else if (type === 'business') {
-        this.setState({
-          redirectTo: true,
-          redirectToURL: '/editbusiness',
-        });
+      const {type, email} = this.state;
+      if (event.target.id === 'editProfile') {
+          if (type === 'migrant') {
+              this.setState({
+                  redirectTo: true,
+                  redirectToURL: '/editmigrant',
+              });
+          } else if (type === 'business') {
+              this.setState({
+                  redirectTo: true,
+                  redirectToURL: '/editbusiness',
+              });
+          }
+      } else if (event.target.id === 'myServices') {
+          this.setState({
+              redirectTo: true,
+              redirectToURL: '/myservices',
+              redirectState: {
+                  editOwner: email,
+                  editMode: true,
+              },
+          });
+      } else if (event.target.id === 'main') {
+          if (type === 'migrant') {
+              this.setState({
+                  redirectTo: true,
+                  redirectToURL: '/main',
+              });
+          } else if (type === 'business') {
+              this.setState({
+                  redirectTo: true,
+                  redirectToURL: '/businessmain',
+              });
+          }
       }
-    } else if (event.target.id === 'myServices') {
-      this.setState({
-        redirectTo: true,
-        redirectToURL: '/myservices',
-        redirectState: {
-          editOwner: email,
-          editMode: true,
-        },
-      });
-    } else if (event.target.id === 'main') {
-      this.setState({
-        redirectTo: true,
-        redirectToURL: '/main',
-      });
-    }
   }
 
     renderRedirectTo = () => {

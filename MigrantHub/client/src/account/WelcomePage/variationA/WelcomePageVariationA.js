@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 
-class ContactInfoVariationA extends Component {
+class WelcomePageVariationA extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -25,7 +25,7 @@ class ContactInfoVariationA extends Component {
     getUser() {
         const { dataRetrieved } = this.state;
         if (!dataRetrieved) {
-            axios.get('/account/get/user').then((response) => {
+            axios.get('/api/account/get/user').then((response) => {
                 if (response.status === 200) {
                     this.setState({
                         email: response.data.email,
@@ -49,4 +49,4 @@ class ContactInfoVariationA extends Component {
     }
 }
 
-export default ContactInfoVariationA;
+export default WelcomePageVariationA;

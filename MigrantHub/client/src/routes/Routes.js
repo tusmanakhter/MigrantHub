@@ -44,6 +44,7 @@ class Routes extends Component {
       <Switch>
         <Route path="/" component={Home} exact />
         <ProtectedRoute path="/main" component={Main} type="migrant" exact />
+        <ProtectedRoute path="/businessmain" component={Main} type="business" exact />
         <Route path="/signup/business" component={SignUpBusiness} exact />
         <Route path="/signup/user" component={SignUpMigrant} exact />
         <Route path="/signup/admin" component={SignUpAdmin} exact />

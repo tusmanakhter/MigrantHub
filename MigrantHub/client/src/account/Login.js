@@ -95,12 +95,17 @@ class Login extends Component {
               redirectTo: true,
               redirectToURL: '/admin/dashboard',
           });
-        } else {
+        } else if(response.data.type === 'business') {
           this.setState({
             redirectTo: true,
-            redirectToURL: '/main',
+            redirectToURL: '/businessmain',
           });
-        }
+        } else {
+              this.setState({
+                  redirectTo: true,
+                  redirectToURL: '/main',
+              });
+          }
       }
     }).catch((error) => {
       console.log('login error: ');

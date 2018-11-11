@@ -3,7 +3,7 @@ import axios from 'axios';
 const FeatureAuthentication = {
     authenticateFeatures () {
         return new Promise((resolve) => {
-            axios.get('/feature/enabled').then((response) => {
+            axios.get('/api/feature/enabled').then((response) => {
                 let features = {};
                 if (response.data.features) {
                     features = response.data.features;
