@@ -18,7 +18,7 @@ class AdminDashboard extends Component {
   }
 
   getUsers() {
-    axios.get('/admin/accounts/unapproved').then((response) => {
+    axios.get('/api/admin/accounts/unapproved').then((response) => {
       if (response.status === 200) {
         this.setState({
           users: response.data,

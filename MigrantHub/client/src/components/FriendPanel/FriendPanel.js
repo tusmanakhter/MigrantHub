@@ -31,7 +31,7 @@ class FriendPanel extends Component {
   }
 
   getFriendsList(ev) {
-    axios.get('/friend/getfriendslist')
+    axios.get('/api/friend/getfriendslist')
     .then((response) => {
         ev.setState({ friendsList: response.data });
     }).catch((error) => {});
@@ -39,7 +39,7 @@ class FriendPanel extends Component {
 
   acceptFriendRequest(event, _id, requestFromP, requestToP, index) {
     event.handleDeleteRow(index);
-    axios.post('/friend/acceptfriendrequest',
+    axios.post('/api/friend/acceptfriendrequest',
       qs.stringify({
           _id,
           requestFrom: requestFromP,
@@ -52,7 +52,7 @@ class FriendPanel extends Component {
 
   rejectFriendRequest(event, _id, index) {
     event.handleDeleteRow(index);
-    axios.post('/friend/rejectfriendrequest',
+    axios.post('/api/friend/rejectfriendrequest',
         qs.stringify({
             _id,
         })).then((response) => {
@@ -63,7 +63,7 @@ class FriendPanel extends Component {
 
 
   getFriendRequests(ev) {
-    axios.get('/friend/getrequests')
+    axios.get('/api/friend/getrequests')
     .then((response) => {
         ev.setState({ friendRequests: response.data });
     }).catch((error) => {});
@@ -84,7 +84,7 @@ class FriendPanel extends Component {
   }
 
   handleAddFriend = () => {
-    axios.post('/friend/add',
+    axios.post('/api/friend/add',
       qs.stringify({
         requestTo: this.state.addFriendTextValue,
       }))

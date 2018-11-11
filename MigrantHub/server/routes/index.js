@@ -10,9 +10,4 @@ router.use('/friend', accountController.ensureUser, accountController.ensureRole
 router.use('/events', require('./events'));
 router.use('/feature', require('./feature'));
 
-/* GET home page. */
-router.get('/', (req, res, next) => {
-  res.render('index', { title: 'Express' });
-});
-
 module.exports = router;

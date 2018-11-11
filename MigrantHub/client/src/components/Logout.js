@@ -8,7 +8,7 @@ import FeatureAuthentication from '../toggle/FeatureAuthentication';
 
 class Logout extends Component {
   logout = () => {
-    axios.post('/account/logout').then((response) => {
+    axios.post('/api/account/logout').then((response) => {
       if (response.status === 200) {
         Auth.unauthenticate();
         FeatureAuthentication.unAuthenticateFeatures();
