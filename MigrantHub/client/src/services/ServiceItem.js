@@ -8,9 +8,9 @@ import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
+import StarRatingComponent from 'react-star-rating-component';
 import ViewService from './ViewService';
 import ViewReviews from './ViewReviews';
-import StarRatingComponent from 'react-star-rating-component';
 
 
 const styles = {
@@ -27,6 +27,7 @@ class ServiceItem extends Component {
     super(props);
     this.state = {
       openService: false,
+      openReviews: false,
       scroll: 'paper',
       rating: 0
     };
@@ -34,7 +35,7 @@ class ServiceItem extends Component {
 
     handleViewReviews = () => {
       this.setState({
-        openService: true,
+        openReviews: true,
       });
     };
 
@@ -45,7 +46,10 @@ class ServiceItem extends Component {
     };
 
     handleClose = () => {
-      this.setState({ openService: false });
+      this.setState({ 
+        openService: false,
+        openReviews: false
+      });
     };
 
     onStarClick(nextValue, prevValue, name) {
@@ -57,7 +61,7 @@ class ServiceItem extends Component {
         classes, serviceId, serviceTitle, serviceSummary, serviceDescription,
         serviceImagePath, serviceLocation, serviceDate, serviceHours, editMode, editOwner,
       } = this.props;
-      const { openService, scroll, rating } = this.state;
+      const { openService, openReviews, scroll, rating } = this.state;
       return (
         <Card className={classes.card}>
           <CardActionArea>
@@ -110,19 +114,19 @@ class ServiceItem extends Component {
               editOwner={editOwner}
             />
             <ViewReviews
-              open={openService}
+              open={openReviews}
               scroll={scroll}
               onClose={this.handleClose}
               serviceId={serviceId}
               serviceTitle={serviceTitle}
-              serviceImagePath={serviceImagePath}
-              serviceDescription={serviceDescription}
-              serviceSummary={serviceSummary}
-              serviceLocation={serviceLocation}
-              serviceDate={serviceDate}
-              serviceHours={serviceHours}
+              // serviceImagePath={serviceImagePath}
+              // serviceDescription={serviceDescription}
+              // serviceSummary={serviceSummary}
+              // serviceLocation={serviceLocation}
+              // serviceDate={serviceDate}
+              // serviceHours={serviceHours}
               editMode={editMode}
-              editOwner={editOwner}
+              // editOwner={editOwner}
             />
           </CardActions>
         </Card>

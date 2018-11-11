@@ -19,7 +19,7 @@ const styles = {
   },
 };
 
-class ViewService extends Component {
+class ViewReviews extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -42,10 +42,7 @@ class ViewService extends Component {
   }
 
   render() {
-    const {
-      serviceTitle, serviceSummary, serviceDescription, serviceLocation, serviceDate,
-      serviceHours, open, scroll, editMode, onClose,
-    } = this.props;
+    const { serviceTitle, open, scroll, editMode, onClose } = this.props;
     const { redirectTo, redirectToURL, redirectState } = this.state;
 
     if (redirectTo) {
@@ -75,16 +72,16 @@ class ViewService extends Component {
                           Service Summary:
               <br />
               <br />
-              {serviceSummary}
+              {serviceTitle}
             </Typography>
             <Typography variant="h5" color="inherit" paragraph>
                           Service Description:
               <br />
               <br />
-              {serviceDescription}
+              {serviceTitle}
             </Typography>
 
-            {serviceDate !== undefined && (
+            {serviceTitle !== undefined && (
             <Grid container spacing={12}>
               <Typography variant="h5" color="inherit" paragraph>
                                   Service date:
@@ -93,86 +90,20 @@ class ViewService extends Component {
                 <Grid item xs={12}>
                                       Start date:
                   {' '}
-                  {serviceDate.startDate.substring(0, 10)}
+                  {serviceTitle}
                 </Grid>
                 <Grid item xs={12}>
                                       End date:
                   {' '}
-                  {serviceDate.endDate.substring(0, 10)}
+                  {serviceTitle}
                 </Grid>
               </Grid>
             </Grid>
             )}
-            {serviceHours.length > 0 ? (
-              <Typography variant="h5" color="inherit" paragraph>
-                <br />
-Service Hours:
-              </Typography>
-            ) : ''}
-            {serviceHours.map(item => (
-              <Grid justify="center" container item xs>
-                <Grid container spacing={6}>
-                  <Grid item xs={2}>
-                    {item.serviceDay}
-                  </Grid>
-                  <Grid item xs={2}>
-                                      Start time:
-                    {' '}
-                    {item.startTime}
-                  </Grid>
-                  <Grid item xs={2}>
-                                      End time:
-                    {' '}
-                    {item.endTime}
-                  </Grid>
-                </Grid>
-              </Grid>
-            ))}
-            {serviceLocation !== undefined && (
-            <Grid container spacing={12}>
-              <Typography variant="h5" color="inherit" paragraph>
-                <br />
-Location:
-              </Typography>
-              <Grid container spacing={12}>
-                <Grid item xs={12}>
-                                      Address:
-                  {' '}
-                  {serviceLocation.address}
-                </Grid>
-                <Grid item xs={12}>
-                                      Apartment:
-                  {' '}
-                  {serviceLocation.apartment}
-                </Grid>
-                <Grid item xs={12}>
-                                      City:
-                  {' '}
-                  {serviceLocation.city}
-                </Grid>
-                <Grid item xs={12}>
-                                      Province:
-                  {' '}
-                  {serviceLocation.province}
-                </Grid>
-                <Grid item xs={12}>
-                                      Postal Code:
-                  {' '}
-                  {serviceLocation.postalCode}
-                </Grid>
-                <Grid item xs={12}>
-                                      Phone Number:
-                  {' '}
-                  {serviceLocation.phoneNumber}
-                </Grid>
-              </Grid>
-            </Grid>
-            )}
-            {open && serviceLocation !== undefined && (
-            <GoogleMaps
-              location={serviceLocation}
-            />
-            )}
+            {serviceTitle}
+            {serviceTitle}
+            {serviceTitle}
+            {open && serviceTitle}
           </DialogContent>
           <DialogActions>
             {editMode && (
@@ -190,32 +121,13 @@ Location:
   }
 }
 
-ViewService.propTypes = {
+ViewReviews.propTypes = {
   serviceId: PropTypes.string.isRequired,
   serviceTitle: PropTypes.string.isRequired,
-  serviceSummary: PropTypes.string.isRequired,
-  serviceDescription: PropTypes.string.isRequired,
-  serviceDate: PropTypes.shape({
-    startDate: PropTypes.string.isRequired,
-    endDate: PropTypes.string.isRequired,
-  }).isRequired,
-  serviceLocation: PropTypes.shape({
-    address: PropTypes.string.isRequired,
-    apartment: PropTypes.string.isRequired,
-    city: PropTypes.string.isRequired,
-    province: PropTypes.string.isRequired,
-    postalCode: PropTypes.string.isRequired,
-    phoneNumber: PropTypes.string.isRequired,
-  }).isRequired,
-  serviceHours: PropTypes.shape([{
-    serviceDay: PropTypes.string.isRequired,
-    startTime: PropTypes.string.isRequired,
-    endTime: PropTypes.string.isRequired,
-  }]).isRequired,
   scroll: PropTypes.string.isRequired,
   open: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
   editMode: PropTypes.bool.isRequired,
 };
 
-export default withStyles(styles)(ViewService);
+export default withStyles(styles)(ViewReviews);
