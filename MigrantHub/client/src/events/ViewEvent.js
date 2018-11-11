@@ -47,7 +47,7 @@ class ViewEvent extends Component {
   }
 
   handleDelete = () => {
-    axios.delete('/events/' + this.props.eventId)
+    axios.delete('/api/events/' + this.props.eventId)
     .then(response => {
         if (response.status === 200) {
             this.handleClose();
