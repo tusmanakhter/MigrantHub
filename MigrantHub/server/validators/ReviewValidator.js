@@ -36,7 +36,6 @@ async function ReviewValidator(reviewObject) {
         _id: user
       });
       if (record) {
-        console.log('record type: ' + record.type);
         if (record.type !== 'migrant') {
           error = 'Only migrants can post reviews.';
         }
@@ -46,7 +45,6 @@ async function ReviewValidator(reviewObject) {
     } catch (e) {
       error = 'Server Errors. Please log out and back in and try again.';
     }
-    console.log('error is: ' + error);
     return error;
   }
 
@@ -58,10 +56,7 @@ async function ReviewValidator(reviewObject) {
         user: user,
         serviceId: serviceId
       });
-      console.log('found an existing record:');
-      console.log(record);
       if (record) {
-        console.log('ur review already exists');
         error = 'Your review for this service already exists.';
       }
     } catch (e) {

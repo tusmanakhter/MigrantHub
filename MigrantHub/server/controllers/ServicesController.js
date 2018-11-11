@@ -45,12 +45,12 @@ module.exports = {
       services.dateCreated = date;
       services.save((err) => {
         if (err) {
-          return res.status(400).send('There was a error creating service.');
+          return res.status(400).send('There was an error creating service.');
         }
         return res.status(200).send('Service has been created!');
       });
     } else {
-      return res.status(400).send('There was a error creating service.');
+      return res.status(400).send('There was an error creating service.');
     }
   },
 
@@ -62,7 +62,7 @@ module.exports = {
     }
     Services.find(query, (err, services) => {
       if (err) {
-        return res.status(400).send('There was a error getting services.');
+        return res.status(400).send('There was an error getting services.');
       }
       return res.status(200).send(services);
     });
@@ -77,7 +77,7 @@ module.exports = {
 
     Services.findOne(query, (err, services) => {
       if (err) {
-        return res.status(400).send('There was a error getting services.');
+        return res.status(400).send('There was an error getting services.');
       }
       return res.status(200).send(services);
     });
@@ -142,12 +142,24 @@ module.exports = {
       reviewService.comment = parsedObj.comment;
       reviewService.save((err) => {
         if (err) {
-          return res.send({addReviewMessage: 'There was a error creating the review.' + err, addReviewError: true});
+          return res.send({addReviewMessage: 'There was an error creating the review.' + err, addReviewError: true});
         }
         return res.send({addReviewMessage: 'Service has been created!', addReviewError: false});
       });
     } else {
       return res.send({addReviewMessage: errors, addReviewError: true});
     }
+  },
+  async getServiceReviews(req, res) {
+    if (req.serviceId !== '') {
+      var serviceId = req.serviceId;
+    }
+    ReviewService.find(serviceId, (err, reviews) => {
+      if (err) {
+        return res.send('There was an error getting services.');
+      }
+      console.log(reviews);
+      return res.send(reviews);
+    });
   },
 };

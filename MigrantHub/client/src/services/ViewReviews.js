@@ -9,6 +9,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Button from '@material-ui/core/Button';
 import blue from '@material-ui/core/colors/blue';
+import Grid from '@material-ui/core/Grid';
 import { Redirect } from 'react-router-dom';
 import StarRatingComponent from 'react-star-rating-component';
 import axios from 'axios';
@@ -47,13 +48,6 @@ class ViewReviews extends Component {
     });
   }
 
-  handlePostReview = () => {
-    const error = this.validate();
-    if (!error) {
-      this.createServiceReview();
-    }
-  };
-
   handleStarClick(nextValue, prevValue, name) {
     this.setState({ rating: nextValue });
   }
@@ -64,13 +58,7 @@ class ViewReviews extends Component {
     });
   }
 
-  validate = () => {
-    //TODO validation
-    let isError = false;
-    return isError;
-  }
-
-  createServiceReview = () => {
+  handlePostReview = () => {
     axios.post('/services/review',
       qs.stringify({
         serviceId: this.props.serviceId,
@@ -111,31 +99,42 @@ class ViewReviews extends Component {
         >
           <DialogTitle id="scroll-dialog-title">{serviceTitle}</DialogTitle>
           <DialogContent>
-            <h2>Your Review:</h2>
-            <Typography variant="h5" color="inherit" paragraph>
-              Rating:
-              <div>
-                <StarRatingComponent 
-                  name="rate" 
-                  starCount={5}
-                  value={rating}
-                  onStarClick={this.handleStarClick.bind(this)}
+          <Typography variant="h5" color="inherit" paragraph>
+            <u>Your Review:</u>
+            <Grid container alignItems="center" spacing={0}>
+              <Grid item xs={1}>
+                  <div>
+                    <br></br>
+                    <StarRatingComponent 
+                      name="rate" 
+                      starCount={5}
+                      value={rating}
+                      onStarClick={this.handleStarClick.bind(this)}
+                    />
+                  </div>
+              </Grid>
+              <Grid item xs={8}>
+                <TextField
+                  id="comment"
+                  name="comment"
+                  label="Comment"
+                  multiline
+                  rows="3"
+                  value={comment}
+                  onChange={event => this.handleChange(event)}
+                  fullWidth
+                  helperText={addReviewMessage}
+                  error={addReviewError}
                 />
-              </div>
-            </Typography>
-            <TextField
-                id="comment"
-                name="comment"
-                label="Your Comment:"
-                value={comment}
-                onChange={event => this.handleChange(event)}
-                fullWidth
-                helperText={addReviewMessage}
-                error={addReviewError}
-              />
-            <Button onClick={this.handlePostReview} color="primary">
-              Post Review
-            </Button>
+              </Grid>
+              <Grid item xs={2}>
+                <Button onClick={this.handlePostReview} color="primary">
+                  Post Review
+                </Button>
+              </Grid>
+            </Grid>
+          </Typography>
+          <hr></hr>
           </DialogContent>
           <DialogActions>
             {editMode && (

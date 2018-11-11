@@ -10,6 +10,8 @@ import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import ViewService from './ViewService';
 import ViewReviews from './ViewReviews';
+import axios from 'axios';
+import qs from 'qs';
 
 
 const styles = {
@@ -27,89 +29,103 @@ class ServiceItem extends Component {
     this.state = {
       openService: false,
       openReviews: false,
+      currentReviewSet: [],
       scroll: 'paper'
     };
   }
 
-    handleViewReviews = () => {
+  handleViewReviews = () => {
+    this.getReviews(this);
+    this.setState({
+      openReviews: true,
+    });
+  };
+
+  getReviews = () => {
+    axios.get('/services/reviews',
+      qs.stringify({
+        serviceId: this.props.serviceId
+    }))
+    .then((response) => {
       this.setState({
-        openReviews: true,
+        currentReviewSet: response.data.reviews
       });
-    };
+    });
+  }
 
-    handleClickOpen = () => {
-      this.setState({
-        openService: true,
-      });
-    };
+  handleClickOpen = () => {
+    this.setState({
+      openService: true,
+    });
+  };
 
-    handleClose = () => {
-      this.setState({ 
-        openService: false,
-        openReviews: false
-      });
-    };
+  handleClose = () => {
+    this.setState({ 
+      openService: false,
+      openReviews: false
+    });
+  };
 
-    render() {
-      const {
-        classes, serviceId, serviceTitle, serviceSummary, serviceDescription,
-        serviceImagePath, serviceLocation, serviceDate, serviceHours, editMode, editOwner,
-      } = this.props;
-      const { openService, openReviews, scroll } = this.state;
-      return (
-        <Card className={classes.card}>
-          <CardActionArea>
-            <CardMedia
-              component="img"
-              alt={serviceTitle}
-              className={classes.media}
-              height="200"
-              src={serviceImagePath}
-              title={serviceTitle}
-            />
-            <CardContent>
-              <Typography gutterBottom variant="headline" component="h2">
-                {serviceTitle}
-              </Typography>
-              <Typography component="p">
-                {serviceSummary}
-              </Typography>
-            </CardContent>
-          </CardActionArea>
-          <CardActions>
-            <Button size="small" color="primary" onClick={this.handleClickOpen}>
-                        View Service
-            </Button>
-            <Button size="small" color="primary" onClick={this.handleViewReviews}>
-                        View Reviews
-            </Button>
-            <ViewService
-              open={openService}
-              scroll={scroll}
-              onClose={this.handleClose}
-              serviceId={serviceId}
-              serviceTitle={serviceTitle}
-              serviceImagePath={serviceImagePath}
-              serviceDescription={serviceDescription}
-              serviceSummary={serviceSummary}
-              serviceLocation={serviceLocation}
-              serviceDate={serviceDate}
-              serviceHours={serviceHours}
-              editMode={editMode}
-              editOwner={editOwner}
-            />
-            <ViewReviews
-              open={openReviews}
-              scroll={scroll}
-              onClose={this.handleClose}
-              serviceId={serviceId}
-              serviceTitle={serviceTitle}
-              editMode={editMode}
-            />
-          </CardActions>
-        </Card>
-      );
-    }
+  render() {
+    const {
+      classes, serviceId, serviceTitle, serviceSummary, serviceDescription,
+      serviceImagePath, serviceLocation, serviceDate, serviceHours, editMode, editOwner,
+    } = this.props;
+    const { openService, openReviews, scroll } = this.state;
+    return (
+      <Card className={classes.card}>
+        <CardActionArea>
+          <CardMedia
+            component="img"
+            alt={serviceTitle}
+            className={classes.media}
+            height="200"
+            src={serviceImagePath}
+            title={serviceTitle}
+          />
+          <CardContent>
+            <Typography gutterBottom variant="headline" component="h2">
+              {serviceTitle}
+            </Typography>
+            <Typography component="p">
+              {serviceSummary}
+            </Typography>
+          </CardContent>
+        </CardActionArea>
+        <CardActions>
+          <Button size="small" color="primary" onClick={this.handleClickOpen}>
+                      View Service
+          </Button>
+          <Button size="small" color="primary" onClick={this.handleViewReviews}>
+                      Reviews
+          </Button>
+          <ViewService
+            open={openService}
+            scroll={scroll}
+            onClose={this.handleClose}
+            serviceId={serviceId}
+            serviceTitle={serviceTitle}
+            serviceImagePath={serviceImagePath}
+            serviceDescription={serviceDescription}
+            serviceSummary={serviceSummary}
+            serviceLocation={serviceLocation}
+            serviceDate={serviceDate}
+            serviceHours={serviceHours}
+            editMode={editMode}
+            editOwner={editOwner}
+          />
+          <ViewReviews
+            open={openReviews}
+            scroll={scroll}
+            onClose={this.handleClose}
+            serviceId={serviceId}
+            serviceTitle={serviceTitle}
+            editMode={editMode}
+          />
+        </CardActions>
+      </Card>
+    );
+  }
 }
 
 ServiceItem.propTypes = {
