@@ -121,78 +121,6 @@ module.exports = {
       return res.send(errors);
     }
   },
-  editMigrantUser(req, res) {
-    const parsedObj = qs.parse(req.body);
-
-    if (parsedObj.languages === undefined) {
-      parsedObj.languages = [];
-    }
-
-    if (parsedObj.workExperience === undefined) {
-      parsedObj.workExperience = [];
-    }
-
-    if (parsedObj.family === undefined) {
-      parsedObj.family = [];
-    }
-
-    User.findByIdAndUpdate(
-      req.session.passport.user._id,
-      parsedObj,
-      { new: true },
-      (err) => {
-        // Handle any possible database errors
-        if (err) return res.status(500).send(err);
-        return res.send('Updated Migrant User');
-      },
-    );
-  },
-  getMigrantUser(req, res) {
-    const email = req.session.passport.user._id;
-    User.findOne({ email }, (err, user) => {
-      if (err) {
-        console.log('Error: ');
-        return res.status(500).send(err);
-      } if (!user) {
-        console.log('User does not exist');
-        return res.status(500).send('Incorrect email');
-      }
-      console.log('Found user');
-      return res.status(200).send(user);
-    });
-  },
-
-  getBusinessUser(req, res) {
-    const email = req.session.passport.user._id;
-    BusinessUser.findOne({ email }, (err, user) => {
-      if (err) {
-        console.log('Error: ');
-        return res.status(500).send(err);
-      } if (!user) {
-        console.log('User does not exist');
-        return res.status(500).send('Incorrect email');
-      }
-      console.log('Found user');
-      return res.status(200).send(user);
-    });
-  },
-
-  editBusinessUser(req, res) {
-    const parsedObj = qs.parse(req.body);
-
-    BusinessUser.findByIdAndUpdate(
-      req.session.passport.user._id,
-      parsedObj,
-      { new: true },
-      (err) => {
-        // Handle any possible database errors
-        if (err) {
-          return res.status(500).send(err);
-        }
-        return res.send('Updated Business User');
-      },
-    );
-  },
 
   getUserType(req, res) {
     if (req.user) {
@@ -220,12 +148,12 @@ module.exports = {
       if (req.session.passport.user !== undefined) {
         return next();
       }
-      return res.status(403).send('You are not authorized for this');
     }
+    return res.status(403).send('You are not authorized for this');
   },
 
   ensureRole: function ensureRole(type) {
-    return function (req, res, next) {
+    return function checkUser(req, res, next) {
       if (req.session.passport.user.type === type) {
         return next();
       }

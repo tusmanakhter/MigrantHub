@@ -3,7 +3,7 @@ import axios from 'axios';
 const auth = {
   authenticate() {
     return new Promise((resolve) => {
-      axios.get('/api/account/').then((response) => {
+      axios.get('/api/accounts/').then((response) => {
         let user = {};
         if (response.data.user) {
           user = {

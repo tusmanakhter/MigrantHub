@@ -119,7 +119,7 @@ class Header extends Component {
   getUser() {
     const { dataRetrieved } = this.state;
     if (!dataRetrieved) {
-      axios.get('/api/account/get/user').then((response) => {
+      axios.get('/api/accounts/get/user').then((response) => {
         if (response.status === 200) {
           this.setState({
               type: response.data.type,
