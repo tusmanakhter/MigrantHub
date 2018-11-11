@@ -9,13 +9,13 @@ describe('admin controller', function () {
   let req = {
     body: AccountFactory.validAdminAccount()
   },
-  error = new Error({ error: "err" }),
-  res = {}, expectedResult;
+    error = new Error({ error: "err" }),
+    res = {}, expectedResult;
 
   beforeEach(function () {
     res = {
-        send: sinon.spy(),
-        status: sinon.stub().returns({ end: sinon.spy() })
+      send: sinon.spy(),
+      status: sinon.stub().returns({ end: sinon.spy() })
     };
     expectedResult = [{}, {}, {}]
   });
@@ -31,6 +31,6 @@ describe('admin controller', function () {
     this.stub(Admin, 'find').yields(error);
     Controller.getUnapprovedAdmins(req, res);
     sinon.assert.calledWith(Admin.find, { authorized: false });
-    sinon.assert.calledWith(res.send , "There was an error finding unnaproved admins");
+    sinon.assert.calledWith(res.send, "There was an error finding unnaproved admins");
   }));
 });

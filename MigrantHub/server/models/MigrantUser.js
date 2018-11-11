@@ -3,7 +3,7 @@ const User = require('./User');
 
 const options = { discriminatorKey: 'type' };
 
-var MigrantUser = User.discriminator('migrant',
+const MigrantUser = User.discriminator('migrant',
   new Schema({
     firstName: { type: String, required: true },
     lastName: { type: String, required: true },
@@ -52,7 +52,7 @@ var MigrantUser = User.discriminator('migrant',
     friendsList: [{
       friend_id: { type: String, default: '' },
       isFriend: { type: Boolean, default: true },
-    }]
+    }],
   }, options));
 
 module.exports = MigrantUser;

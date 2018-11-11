@@ -27,6 +27,11 @@ class FriendPanel extends Component {
     this.getFriendsList = this.getFriendsList.bind(this);
   }
 
+  componentDidMount() {
+    this.getFriendRequests(this);
+    this.getFriendsList(this);
+  }
+
   getFriendsList(ev) {
     axios.get('/friend/getfriendslist')
       .then((response) => {
@@ -36,18 +41,7 @@ class FriendPanel extends Component {
       }).catch((error) => { })
   }
 
-  acceptFriendRequest(event, _id, requestFromP, requestToP, index) {
-    event.handleDeleteRow(index);
-    axios.post('/friend/acceptfriendrequest',
-      qs.stringify({
-        _id,
-        requestFrom: requestFromP,
-        requestTo: requestToP,
-      })).then((response) => {
-        // call getFriendRequests() to update list
-        event.getFriendRequests(event);
-      });
-  }
+
 
   rejectFriendRequest(event, _id, index) {
     event.handleDeleteRow(index);
@@ -81,6 +75,19 @@ class FriendPanel extends Component {
     });
   }
 
+  acceptFriendRequest(event, _id, requestFromP, requestToP, index) {
+    event.handleDeleteRow(index);
+    axios.post('/friend/acceptfriendrequest',
+      qs.stringify({
+        _id,
+        requestFrom: requestFromP,
+        requestTo: requestToP,
+      })).then((response) => {
+        // call getFriendRequests() to update list
+        event.getFriendRequests(event);
+      });
+  }
+
   handleAddFriend = () => {
     axios.post('/friend/add',
       qs.stringify({
@@ -104,19 +111,16 @@ class FriendPanel extends Component {
   }
 
   handleUnfriendRow(index) {
-    let rows = [...this.state.friendsList]
-    rows.splice(index, 1)
+    const rows = [...this.state.friendsList]
+    rows.splice(index, 1);
     this.setState({
-      friendsList: rows
-    })
+      friendsList: rows,
+    });
   }
 
-  componentDidMount() {
-    this.getFriendRequests(this);
-    this.getFriendsList(this);
-  }
 
-  render(props) {
+
+  render() {
     return (
       <div>
         <Card className="Card-friend-panel">
@@ -139,8 +143,7 @@ class FriendPanel extends Component {
                     >
                     </Grid>
                   </Grid>
-                </li>
-              )}
+                </li>)}
             </ul>
           </CardContent>
         </Card>

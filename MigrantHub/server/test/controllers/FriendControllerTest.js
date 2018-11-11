@@ -1,10 +1,10 @@
-var { spy, stub, assert } = require('sinon');
-var sinon = require('sinon');
-var sinonTest = require('sinon-test');
-var test = sinonTest(sinon);
-var Controller = require('../../controllers/friendController')
-var MigrantUser = require('../../models/MigrantUser')
-var FriendRequest = require('../../models/FriendRequest')
+let { spy, stub, assert } = require('sinon');
+let sinon = require('sinon');
+let sinonTest = require('sinon-test');
+let test = sinonTest(sinon);
+let Controller = require('../../controllers/friendController');
+let MigrantUser = require('../../models/MigrantUser');
+let FriendRequest = require('../../models/FriendRequest');
 
 describe('friend controller friend management', function () {
   let req = {
@@ -17,7 +17,8 @@ describe('friend controller friend management', function () {
       _id: "test@test.com"
     },
     friendsList: [{
-      friendName: "myfriend@test.com"
+      friend_id: "testFrom@test.com",
+      isFriend: true,
     }],
   },
     error = new Error({ error: "err" }),
