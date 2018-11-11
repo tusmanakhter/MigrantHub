@@ -40,22 +40,24 @@ class EventList extends Component {
     this.getData(this);
   }
 
-  getData(event) {
+  getData() {
+    const { location } = this.props;
+
     let editOwnerEmail ='';
-    if(this.props.location.state){
-        event.setState({
-            editMode: this.props.location.state.editMode,
-            editOwner: this.props.location.state.editOwner
+    if(location.state){
+        this.setState({
+            editMode: location.state.editMode,
+            editOwner: location.state.editOwner
         });
 
-        editOwnerEmail=this.props.location.state.editOwner;
+        editOwnerEmail=location.state.editOwner;
     }
-    axios.get('/events/view/all/',{
+    axios.get('/api/events/view/all/',{
         params: {
             editOwner: editOwnerEmail
         }
-    }).then(function(response) {
-        event.setState({
+    }).then((response) => {
+        this.setState({
             items: response.data
         });
     }).catch(error => {
