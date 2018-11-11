@@ -53,11 +53,16 @@ module.exports = {
   },
 
   viewServices(req, res) {
-    const query = {};
+    let query = {};
 
     if (req.query.editOwner !== '') {
       query.email = req.query.editOwner;
-    }
+    } else if (req.query.search !== '') {
+      let searchQuery = req.query.searchQuery;
+      const regex = new RegExp(searchQuery.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"), 'gi');
+      query = {$or:[{serviceTitle: regex}, {serviceSummary: regex}]};
+    }   
+
     Services.find(query, (err, services) => {
       if (err) {
         return res.status(400).send('There was a error getting services.');
@@ -126,9 +131,20 @@ module.exports = {
     return res.status(400).send('There was an error updating service.');
   },
 
-  searchServices : function (req, res) {
-    Services.find({}, function(err, services) {
-        res.send(services);
-    })
+  searchServices(req, res) {
+    const query = {};
+    const temp = "job";
+    //const regex = new RegExp(escapeRegex(req.query.search), 'gi');
+    const regex = new RegExp(temp.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"), 'gi');
+
+    if (req.query.editOwner !== '') {
+      query.email = req.query.editOwner;
+    }
+    Services.find({$or:[{serviceTitle: regex}, {serviceSummary: regex}]}, (err, services) => {
+      if (err) {
+        return res.status(400).send('There was a error getting services.');
+      }
+      return res.status(200).send(services);
+    });
   }
 };

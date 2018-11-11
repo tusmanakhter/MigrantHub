@@ -24,34 +24,47 @@ class ServiceList extends Component {
       redirectToServiceForm: false,
       editMode: '',
       editOwner: '',
+      searchMode: false
     };
 
     this.getData = this.getData.bind(this);
   }
 
-  componentDidMount() {
-    this.getData(this);
+  componentDidMount(props) {
+    this.getData(this, props);
   }
 
-  componentWillReceiveProps() {
-    this.getData(this);
+  componentWillReceiveProps(props) {
+    this.getData(this, props);
   }
 
-  getData() {
-    const { location } = this.props;
+  getData(event, props=this.props) {
+    const { location } = props;
+    const { searchMode } = this.state;
     let editOwnerEmail = '';
+    let searchQuery = '';
 
     if (location.state) {
+      if (location.state.editMode) {
       this.setState({
         editMode: location.state.editMode,
         editOwner: location.state.editOwner,
       });
 
       editOwnerEmail = location.state.editOwner;
+      } else if(location.state.searchMode) {
+        this.setState({
+          searchMode: searchMode,
+        });
+        searchQuery = location.state.searchQuery;
+      }
     }
+
     axios.get('/services/view/all/', {
       params: {
         editOwner: editOwnerEmail,
+        searchQuery: searchQuery,
+        search: true
       },
     }).then((response) => {
       this.setState({

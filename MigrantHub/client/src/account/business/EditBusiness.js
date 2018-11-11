@@ -9,6 +9,7 @@ import MaskedInput from 'react-text-mask';
 import validator from 'validator';
 import Button from '@material-ui/core/Button';
 import axios from 'axios';
+import Header from '../../components/Header/Header';
 
 const qs = require('qs');
 
@@ -273,6 +274,7 @@ class EditBusiness extends Component {
 
     return (
       <React.Fragment>
+        <Header />
         <Typography variant="title" gutterBottom>
               Contact Information
         </Typography>

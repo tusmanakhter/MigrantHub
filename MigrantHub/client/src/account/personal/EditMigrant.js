@@ -28,6 +28,7 @@ import { languages as languagesData } from 'country-data';
 import deburr from 'lodash/deburr';
 import NumberFormat from 'react-number-format';
 import { cities } from 'canada';
+import Header from '../../components/Header/Header';
 
 const qs = require('qs');
 
@@ -889,6 +890,7 @@ class EditMigrant extends Component {
 
     return (
       <React.Fragment>
+        <Header />
         <Typography variant="title" gutterBottom>
                 Contact Information
         </Typography>

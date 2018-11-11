@@ -114,7 +114,6 @@ class Header extends Component {
       searchError: '',
       searchTypeError: '',
       redirectState: {},
-      type: '',
       email: '',
       dataRetrieved: false,
       firstName: '',
@@ -195,6 +194,7 @@ class Header extends Component {
         redirectToURL: '/main',
       });
     }
+    this.handleMenuClose();
   }
 
   handleChange = event => {
@@ -206,7 +206,6 @@ class Header extends Component {
   handleSearch = async () => {
     let error = await this.validate();
     if (!error) {
-      console.log(this.state.searchType);
       if(this.state.searchType === "SERV")
       {
         this.sendSearchServices(this);
@@ -214,10 +213,16 @@ class Header extends Component {
     }
   };
 
-  sendSearchServices(e) {
+  sendSearchServices(e) { 
           this.setState({
             redirectTo: true,
-            redirectToURL: '/searchservices'
+            redirectToURL: '/services',
+            redirectState: {
+              editOwner: '',
+              editMode: false,
+              searchQuery: this.state.search,
+              searchMode: true
+            }
           })
   }
 
@@ -395,7 +400,6 @@ class Header extends Component {
                   <AccountCircle />
                   <div>
                     <Typography id="main" className={classes.title} variant="subheading"  color="inherit" noWrap>
-                        {console.log(firstName)}
                         {firstName + ' ' + lastName}
                     </Typography>
                   </div>
