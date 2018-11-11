@@ -9,6 +9,9 @@ import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import ViewService from './ViewService';
+import ViewReviews from './ViewReviews';
+import StarRatingComponent from 'react-star-rating-component';
+
 
 const styles = {
   card: {
@@ -23,27 +26,38 @@ class ServiceItem extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      open: false,
+      openService: false,
       scroll: 'paper',
+      rating: 0
     };
   }
 
+    handleViewReviews = () => {
+      this.setState({
+        openService: true,
+      });
+    };
+
     handleClickOpen = () => {
       this.setState({
-        open: true,
+        openService: true,
       });
     };
 
     handleClose = () => {
-      this.setState({ open: false });
+      this.setState({ openService: false });
     };
+
+    onStarClick(nextValue, prevValue, name) {
+      this.setState({rating: nextValue});
+    }
 
     render() {
       const {
         classes, serviceId, serviceTitle, serviceSummary, serviceDescription,
         serviceImagePath, serviceLocation, serviceDate, serviceHours, editMode, editOwner,
       } = this.props;
-      const { open, scroll } = this.state;
+      const { openService, scroll, rating } = this.state;
       return (
         <Card className={classes.card}>
           <CardActionArea>
@@ -68,8 +82,35 @@ class ServiceItem extends Component {
             <Button size="small" color="primary" onClick={this.handleClickOpen}>
                         View Service
             </Button>
+            <Button size="small" color="primary" onClick={this.handleViewReviews}>
+                        View Reviews
+            </Button>
+            <div>
+            <h2>Rating from state: {rating}</h2>
+            <StarRatingComponent 
+              name="rate1" 
+              starCount={10}
+              value={rating}
+              onStarClick={this.onStarClick.bind(this)}
+            />
+            </div>
             <ViewService
-              open={open}
+              open={openService}
+              scroll={scroll}
+              onClose={this.handleClose}
+              serviceId={serviceId}
+              serviceTitle={serviceTitle}
+              serviceImagePath={serviceImagePath}
+              serviceDescription={serviceDescription}
+              serviceSummary={serviceSummary}
+              serviceLocation={serviceLocation}
+              serviceDate={serviceDate}
+              serviceHours={serviceHours}
+              editMode={editMode}
+              editOwner={editOwner}
+            />
+            <ViewReviews
+              open={openService}
               scroll={scroll}
               onClose={this.handleClose}
               serviceId={serviceId}

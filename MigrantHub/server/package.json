@@ -22,6 +22,7 @@
     "express": "^4.16.4",
     "express-session": "^1.15.6",
     "fs-extra": "^7.0.0",
+    "material-ui-rating": "^2.0.0",
     "mongoose": "^5.3.5",
     "mongoose-auto-increment": "^5.0.1",
     "morgan": "~1.9.0",
