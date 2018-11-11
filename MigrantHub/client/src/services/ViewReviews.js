@@ -50,7 +50,7 @@ class ViewReviews extends Component {
   handlePostReview = () => {
     const error = this.validate();
     if (!error) {
-      this.createService();
+      this.createServiceReview();
     }
   };
 
@@ -70,7 +70,7 @@ class ViewReviews extends Component {
     return isError;
   }
 
-  createService = () => {
+  createServiceReview = () => {
     axios.post('/services/review',
       qs.stringify({
         serviceId: this.props.serviceId,

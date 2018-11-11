@@ -1,6 +1,6 @@
 const validator = require('validator');
 
-// Function to perform server-side validation of the create migrant account before sending to db.
+// Function to perform server-side validation of services before sending to db.
 function serviceValidator(serviceObject) {
   let errors = '';
 

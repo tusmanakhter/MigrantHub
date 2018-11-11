@@ -2,6 +2,7 @@ const qs = require('qs');
 const multer = require('multer');
 const fs = require('fs-extra');
 const ServiceValidator = require('../validators/ServiceValidator');
+const ReviewValidator = require('../validators/ReviewValidator');
 const Services = require('../models/Services');
 const ReviewService = require('../models/ReviewService');
 
@@ -127,17 +128,13 @@ module.exports = {
     return res.status(400).send('There was an error updating service.');
   },
 
-  createServiceReview(req, res) {
-    const parsedObj = qs.parse(req.body);
-    console.log('serviceId: ' + parsedObj.serviceId);
-    console.log('rating: ' + parsedObj.rating);
-    console.log('comment: ' + parsedObj.comment);
-    // const date = new Date();
+  async createServiceReview(req, res) {
+    var parsedObj = qs.parse(req.body);
+    parsedObj.user = req.user._id;
 
-    //TODO validation
-    // const errors = ServiceValidator(parsedObj);
+    const errors = await ReviewValidator(parsedObj);
 
-    // if (errors === '') {
+    if (errors === '') {
       const reviewService = new ReviewService();
       reviewService.user = req.user;
       reviewService.serviceId = parsedObj.serviceId;
@@ -145,12 +142,12 @@ module.exports = {
       reviewService.comment = parsedObj.comment;
       reviewService.save((err) => {
         if (err) {
-          return res.status(400).send('There was a error creating the review.');
+          return res.send({addReviewMessage: 'There was a error creating the review.' + err, addReviewError: true});
         }
-        return res.status(200).send('Service has been created!');
+        return res.send({addReviewMessage: 'Service has been created!', addReviewError: false});
       });
-    // } else {
-    //   return res.status(400).send('There was a error creating service.');
-    // }
+    } else {
+      return res.send({addReviewMessage: errors, addReviewError: true});
+    }
   },
 };
