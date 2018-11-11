@@ -106,7 +106,8 @@ class EditBusiness extends Component {
   }
 
   getAccount(e) {
-    axios.get('/api/account/get/businessprofile').then((response) => {
+    const user = JSON.parse(localStorage.getItem('user'));
+    axios.get('/api/businesses/' + user.username).then((response) => {
       const jsonObj = qs.parse(qs.stringify(response.data));
 
       if (response.status === 200) {
@@ -234,7 +235,7 @@ class EditBusiness extends Component {
       city, province, postalCode, phoneNumber, organizationName, orgType,
       department, serviceType, description,
     } = this.state;
-    axios.post('/api/account/edit/businessuser',
+    axios.put('/api/businesses/' + email,
       qs.stringify({
         email,
         corpId,
