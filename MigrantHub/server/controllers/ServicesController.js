@@ -63,6 +63,8 @@ module.exports = {
       query = {$or:[{serviceTitle: regex}, {serviceSummary: regex}]};
     }   
 
+    query.deleted = false;
+
     Services.find(query, (err, services) => {
       if (err) {
         return res.status(400).send('There was a error getting services.');
@@ -77,6 +79,7 @@ module.exports = {
     if (req.query._id !== '') {
       query._id = req.query._id;
     }
+    query.deleted = false;
 
     Services.findOne(query, (err, services) => {
       if (err) {
@@ -129,6 +132,21 @@ module.exports = {
       return res.status(200).send('Service updated successfully.');
     }
     return res.status(400).send('There was an error updating service.');
-  }
-  
+  },
+
+  deleteService(req, res) {
+    let deleteError = false;
+    Services.updateOne({ _id: req.params.id },
+      { deleted: true, deletedDate: Date.now() }, (err) => {
+        if (err) {
+          deleteError = true;
+        }
+      });
+
+    if (deleteError) {
+      res.status(400).send('There was an error deleting service.');
+    } else {
+      res.status(200).send('Service deleted successfully.');
+    }
+  },
 };

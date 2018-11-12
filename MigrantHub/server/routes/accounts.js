@@ -8,10 +8,6 @@ router.get('/', accountController.getUser);
 router.post('/create/user', accountController.createUser);
 router.post('/create/business', accountController.createBusiness);
 router.post('/create/admin', accountController.createAdmin);
-router.post('/edit/migrantuser', accountController.editMigrantUser);
-router.post('/edit/businessuser', accountController.editBusinessUser);
-router.get('/get/migrantprofile', accountController.getMigrantUser);
-router.get('/get/businessprofile', accountController.getBusinessUser);
 router.get('/get/user', accountController.getUserType);
 
 router.post('/login', (req, res, next) => {

@@ -134,7 +134,7 @@ class Header extends Component {
   getUser() {
     const { dataRetrieved } = this.state;
     if (!dataRetrieved) {
-      axios.get('/account/get/user').then((response) => {
+      axios.get('/api/accounts/get/user').then((response) => {
         if (response.status === 200) {
           this.setState({
               type: response.data.type,
@@ -183,6 +183,15 @@ class Header extends Component {
       this.setState({
         redirectTo: true,
         redirectToURL: '/myservices',
+        redirectState: {
+          editOwner: email,
+          editMode: true,
+        },
+      });
+    } else if (event.target.id === 'myEvents') {
+      this.setState({
+        redirectTo: true,
+        redirectToURL: '/myevents',
         redirectState: {
           editOwner: email,
           editMode: true,
@@ -287,6 +296,7 @@ class Header extends Component {
           <MenuItem onClick={this.handleClose}>My account</MenuItem>
           <MenuItem id="editProfile" onClick={this.handleMenuClick}>Edit Profile</MenuItem>
           <MenuItem id="myServices" onClick={this.handleMenuClick}>My Services</MenuItem>
+          <MenuItem id="myEvents" onClick={this.handleMenuClick}>My Events</MenuItem>
         </Menu>
       );
 

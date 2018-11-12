@@ -75,7 +75,7 @@ class SignUpBusiness extends Component {
       city, province, postalCode, phoneNumber, organizationName, orgType,
       department, serviceType, description,
     } = event.state;
-    axios.post('/account/create/business',
+    axios.post('/api/accounts/create/business',
       qs.stringify({
         email,
         corpId,

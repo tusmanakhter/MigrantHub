@@ -40,7 +40,7 @@ class ServiceItem extends Component {
 
     render() {
       const {
-        classes, serviceId, serviceTitle, serviceSummary, serviceDescription,
+        classes, serviceId, serviceTitle, serviceSummary, serviceDescription, getData,
         serviceImagePath, serviceLocation, serviceDate, serviceHours, editMode, editOwner,
       } = this.props;
       const { open, scroll } = this.state;
@@ -82,6 +82,7 @@ class ServiceItem extends Component {
               serviceHours={serviceHours}
               editMode={editMode}
               editOwner={editOwner}
+              getData={getData}
             />
           </CardActions>
         </Card>
@@ -115,6 +116,7 @@ ServiceItem.propTypes = {
   }]).isRequired,
   editOwner: PropTypes.string.isRequired,
   editMode: PropTypes.bool.isRequired,
+  getData: PropTypes.func.isRequired,
 };
 
 export default withStyles(styles)(ServiceItem);
