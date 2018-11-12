@@ -62,12 +62,8 @@ module.exports = {
   },
 
   createBusiness(req, res) {
-    const errors = validationResult(req);
     const parsedObj = qs.parse(req.body);
-
-    if (!errors.isEmpty()) {
-      res.status(422).json({ errors: errors.array() });
-    }
+    const errors = BusinessAccountValidator(parsedObj);
 
     if (errors === '') {
       const businessuser = new BusinessUser();
