@@ -10,9 +10,10 @@ import InputAdornment from '@material-ui/core/InputAdornment';
 import Paper from '@material-ui/core/Paper';
 import validator from 'validator';
 import { joiningReasons } from '../../lib/SignUpConstants';
-import { renderInputComponent, handleSuggestionsClearRequested } from '../../helpers/Autosuggest';
-import { renderSuggestion, getSuggestionValue, getSuggestions } from '../../helpers/AutoSuggestCity';
-  
+import { renderInputComponent } from '../../helpers/Autosuggest';
+import { renderSuggestion, getSuggestionValue,
+  handleSuggestionsClearRequested, handleSuggestionsFetchRequested } from '../../helpers/AutoSuggestCity';
+
 
 const styles = theme => ({
   container: {
@@ -47,10 +48,11 @@ class OtherInfo extends Component {
   constructor(props) {
     super(props);
     this.handleSuggestionsClearRequested = handleSuggestionsClearRequested.bind(this);
+    this.handleSuggestionsFetchRequested = handleSuggestionsFetchRequested.bind(this);
   }
 
   state = {
-    suggestions: [],
+    citySuggestions: [],
     settlingLocationError: '',
     settlingDurationError: '',
     joiningReasonError: '',
@@ -88,29 +90,17 @@ class OtherInfo extends Component {
     return isError;
   }
 
-  handleSuggestionsFetchRequested = ({ value }) => {
-    this.setState({
-      suggestions: getSuggestions(value),
-    });
-  };
-
-  handleAutoSuggestChange = name => (event, { newValue }) => {
-    this.setState({
-      [name]: newValue,
-    });
-  };
-
   render() {
     const {
       classes, handleChange, handleAutoSuggestChange, settlingLocation, settlingDuration,
       joiningReason,
     } = this.props;
     const {
-      suggestions, settlingLocationError, settlingDurationError, joiningReasonError,
+      citySuggestions, settlingLocationError, settlingDurationError, joiningReasonError,
     } = this.state;
     const autosuggestProps = {
       renderInputComponent,
-      suggestions,
+      suggestions: citySuggestions,
       onSuggestionsFetchRequested: this.handleSuggestionsFetchRequested,
       onSuggestionsClearRequested: this.handleSuggestionsClearRequested,
       getSuggestionValue,

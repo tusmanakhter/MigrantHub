@@ -256,7 +256,7 @@ FamilyInfo.propTypes = {
   handleAddObject: PropTypes.func.isRequired,
   handleRemoveObject: PropTypes.func.isRequired,
   handleEditObject: PropTypes.func.isRequired,
-  family: PropTypes.shape({}).isRequired,
+  family: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
 };
 
 export default withStyles(styles)(FamilyInfo);

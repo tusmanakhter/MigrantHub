@@ -1,4 +1,3 @@
-
 import React from 'react';
 import TextField from '@material-ui/core/TextField';
 
@@ -19,12 +18,6 @@ export function handleEditObjectAutosuggest(name, fieldName, index) {
       }),
     });
   };
-}
-
-export function handleSuggestionsClearRequested() {
-  this.setState({
-    suggestions: [],
-  });
 }
 
 export const renderInputComponent = (inputProps) => {

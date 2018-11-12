@@ -13,8 +13,9 @@ import Autosuggest from 'react-autosuggest';
 import validator from 'validator';
 import { objectErrorText } from '../../helpers/Object';
 import { languageLevels, langObject } from '../../lib/SignUpConstants';
-import { renderInputComponent, handleSuggestionsClearRequested } from '../../helpers/Autosuggest';
-import { renderSuggestion, getSuggestionValue, getSuggestions } from '../../helpers/AutoSuggestLang';
+import { renderInputComponent } from '../../helpers/Autosuggest';
+import { renderSuggestion, getSuggestionValue,
+  handleSuggestionsClearRequested, handleSuggestionsFetchRequested } from '../../helpers/AutoSuggestLang';
 
 const styles = theme => ({
   container: {
@@ -50,10 +51,11 @@ class LanguageInfo extends Component {
     super(props);
     this.objectErrorText = objectErrorText.bind(this);
     this.handleSuggestionsClearRequested = handleSuggestionsClearRequested.bind(this);
+    this.handleSuggestionsFetchRequested = handleSuggestionsFetchRequested.bind(this);
   }
 
   state = {
-    suggestions: [],
+    langSuggestions: [],
     languagesError: [],
     writingLevelError: '',
     speakingLevelError: '',
@@ -120,12 +122,6 @@ class LanguageInfo extends Component {
     return isError;
   }
 
-  handleSuggestionsFetchRequested = ({ value }) => {
-    this.setState({
-      suggestions: getSuggestions(value),
-    });
-  };
-
   render() {
     const {
       classes, handleChange, handleAutoSuggestChange, handleAddObject, handleRemoveObject,
@@ -133,11 +129,11 @@ class LanguageInfo extends Component {
       motherTongue,
     } = this.props;
     const {
-      suggestions, writingLevelError, speakingLevelError, motherTongueError,
+      langSuggestions, writingLevelError, speakingLevelError, motherTongueError,
     } = this.state;
     const autosuggestProps = {
       renderInputComponent,
-      suggestions,
+      suggestions: langSuggestions,
       onSuggestionsFetchRequested: this.handleSuggestionsFetchRequested,
       onSuggestionsClearRequested: this.handleSuggestionsClearRequested,
       getSuggestionValue,
@@ -324,7 +320,7 @@ LanguageInfo.propTypes = {
   handleRemoveObject: PropTypes.func.isRequired,
   handleEditObjectAutosuggest: PropTypes.func.isRequired,
   handleEditObject: PropTypes.func.isRequired,
-  languages: PropTypes.shape({}).isRequired,
+  languages: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   writingLevel: PropTypes.string.isRequired,
   speakingLevel: PropTypes.string.isRequired,
   motherTongue: PropTypes.string.isRequired,

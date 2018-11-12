@@ -1,23 +1,13 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import withStyles from '@material-ui/core/styles/withStyles';
-import TextField from '@material-ui/core/TextField';
-import MenuItem from '@material-ui/core/MenuItem';
-import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
-import validator from 'validator';
 import Button from '@material-ui/core/Button';
 import axios from 'axios';
-import { provinces } from '../../lib/SignUpConstants';
-import { PhoneMask, PostalCodeMask } from '../../lib/Masks';
+import ContactInfo from '../common/ContactInfo';
+import AboutInfo from './AboutInfo';
+import { handleChange } from '../../helpers/Forms';
 
 const qs = require('qs');
-
-const organizationTypes = [
-  { value: 'FDRL', label: 'Federal' },
-  { value: 'NGOV', label: 'Non-governmental' },
-  { value: 'PROV', label: 'Provincial' },
-];
 
 const styles = ({
   select: {
@@ -28,16 +18,6 @@ class EditBusiness extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      firstNameError: '',
-      lastNameError: '',
-      addressError: '',
-      apartmentError: '',
-      cityError: '',
-      provinceError: '',
-      postalCodeError: '',
-      phoneNumberError: '',
-      organizationNameError: '',
-
       firstName: '',
       lastName: '',
       address: '',
@@ -53,7 +33,11 @@ class EditBusiness extends Component {
       description: '',
     };
 
+    this.contactChild = React.createRef();
+    this.aboutChild = React.createRef();
+
     this.getAccount = this.getAccount.bind(this);
+    this.handleChange = handleChange.bind(this);
   }
 
   componentDidMount() {
@@ -101,91 +85,15 @@ class EditBusiness extends Component {
     }
   };
 
-  handleChange = (event) => {
-    this.setState({
-      [event.target.name]: event.target.value,
-    });
-  }
+  validate = async () => {
+    const contactError = await this.contactChild.current.validate();
+    const aboutError = await this.aboutChild.current.validate();
 
-  validate = () => {
-    const {
-      firstName, lastName, address,
-      city, province, postalCode, phoneNumber, organizationName,
-    } = this.state;
-
-    let isError = false;
-    const errors = {
-      firstNameError: '',
-      lastNameError: '',
-      addressError: '',
-      apartmentError: '',
-      cityError: '',
-      provinceError: '',
-      postalCodeError: '',
-      phoneNumberError: '',
-      organizationNameError: '',
-    };
-
-    if (validator.isEmpty(firstName)) {
-      errors.firstNameError = 'First name is required';
-      isError = true;
-    } else if (!validator.isAlpha(firstName)) {
-      errors.firstNameError = 'First name is not valid';
-      isError = true;
+    const errors = [contactError, aboutError];
+    if (errors.indexOf(true) > -1) {
+      return true;
     }
-
-    if (validator.isEmpty(lastName)) {
-      errors.lastNameError = 'Last name is required';
-      isError = true;
-    } else if (!validator.isAlpha(lastName)) {
-      errors.lastNameError = 'Last name is not valid';
-      isError = true;
-    }
-
-    if (validator.isEmpty(address)) {
-      errors.addressError = 'Address is required';
-      isError = true;
-    }
-
-    if (validator.isEmpty(city)) {
-      errors.cityError = 'City is required';
-      isError = true;
-    } else if (!validator.isAlpha(city)) {
-      errors.cityError = 'This is not a valid city';
-      isError = true;
-    }
-
-    if (validator.isEmpty(province)) {
-      errors.provinceError = 'Province is required';
-      isError = true;
-    }
-
-    if (validator.isEmpty(postalCode)) {
-      errors.postalCodeError = 'Postal code is required';
-      isError = true;
-    } else if (!validator.isLength(postalCode, { min: 7, max: 7 })) {
-      errors.postalCodeError = 'Postal code is invalid';
-      isError = true;
-    }
-
-    if (validator.isEmpty(phoneNumber)) {
-      errors.phoneNumberError = 'Phone number is required';
-      isError = true;
-    } else if (!validator.isLength(phoneNumber, { min: 14, max: 14 })) {
-      errors.phoneNumberError = 'Phone number is invalid';
-      isError = true;
-    }
-
-    if (validator.isEmpty(organizationName)) {
-      errors.organizationNameError = 'Organization name is required';
-      isError = true;
-    }
-
-    this.setState({
-      ...errors,
-    });
-
-    return isError;
+    return false;
   }
 
   updateAccount() {
@@ -226,193 +134,32 @@ class EditBusiness extends Component {
 
     const {
       firstName, lastName, address, apartment, city, province, postalCode, phoneNumber,
-      organizationName, department, orgType, firstNameError,
-      lastNameError, addressError, apartmentError, cityError, provinceError,
-      postalCodeError, phoneNumberError, organizationNameError, serviceType, description,
+      organizationName, department, orgType, serviceType, description,
     } = this.state;
 
     return (
       <React.Fragment>
-        <Typography variant="title" gutterBottom>
-              Contact Information
-        </Typography>
-        <Grid container spacing={24}>
-          <Grid item xs={12} sm={6}>
-            <TextField
-              id="firstName"
-              name="firstName"
-              label="First Name"
-              value={firstName}
-              onChange={event => this.handleChange(event)}
-              fullWidth
-              helperText={firstNameError}
-              error={firstNameError.length > 0}
-            />
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <TextField
-              id="lastName"
-              name="lastName"
-              label="Last Name"
-              value={lastName}
-              onChange={event => this.handleChange(event)}
-              fullWidth
-              helperText={lastNameError}
-              error={lastNameError.length > 0}
-            />
-          </Grid>
-          <Grid item xs={12}>
-            <TextField
-              id="address"
-              name="address"
-              label="Street Address"
-              placeholder="Street and number"
-              value={address}
-              onChange={event => this.handleChange(event)}
-              fullWidth
-              helperText={addressError}
-              error={addressError.length > 0}
-            />
-          </Grid>
-          <Grid item xs={12}>
-            <TextField
-              id="apartment"
-              name="apartment"
-              label="Apartment"
-              placeholder="Apartment, suite, unit, building, floor, etc."
-              value={apartment}
-              onChange={event => this.handleChange(event)}
-              fullWidth
-              helperText={apartmentError}
-              error={apartmentError.length > 0}
-            />
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <TextField
-              id="city"
-              name="city"
-              label="City"
-              value={city}
-              onChange={event => this.handleChange(event)}
-              fullWidth
-              helperText={cityError}
-              error={cityError.length > 0}
-            />
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <TextField
-              id="province"
-              name="province"
-              select
-              label="Province/Territory"
-              value={province}
-              className={classes.select}
-              onChange={event => this.handleChange(event)}
-              fullWidth
-              helperText={provinceError}
-              error={provinceError.length > 0}
-            >
-              {provinces.map(option => (
-                <MenuItem key={option.value} value={option.value}>
-                  {option.label}
-                </MenuItem>
-              ))}
-            </TextField>
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <TextField
-              id="postalCode"
-              name="postalCode"
-              label="Postal Code"
-              value={postalCode}
-              onChange={event => this.handleChange(event)}
-              fullWidth
-              InputProps={{
-                inputComponent: PostalCodeMask,
-              }}
-              helperText={postalCodeError}
-              error={postalCodeError.length > 0}
-            />
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <TextField
-              id="phoneNumber"
-              name="phoneNumber"
-              label="Phone Number"
-              value={phoneNumber}
-              onChange={event => this.handleChange(event)}
-              fullWidth
-              helperText={phoneNumberError}
-              error={phoneNumberError.length > 0}
-              InputProps={{
-                inputComponent: PhoneMask,
-              }}
-            />
-          </Grid>
-        </Grid>
-        <Typography variant="title" gutterBottom>
-              About
-        </Typography>
-        <Grid container spacing={24}>
-          <Grid item xs={12} sm={6}>
-            <TextField
-              id="organizationName"
-              name="organizationName"
-              label="Name of organization"
-              value={organizationName}
-              onChange={event => this.handleChange(event)}
-              fullWidth
-              helperText={organizationNameError}
-              error={organizationNameError.length > 0}
-            />
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <TextField
-              id="orgType"
-              name="orgType"
-              label="Organization Type"
-              value={orgType}
-              onChange={event => this.handleChange(event)}
-              fullWidth
-            >
-              {organizationTypes.map(option => (
-                <MenuItem key={option.value} value={option.value}>
-                  {option.label}
-                </MenuItem>
-              ))}
-            </TextField>
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <TextField
-              id="department"
-              name="department"
-              label="Name of the department"
-              value={department}
-              onChange={event => this.handleChange(event)}
-              fullWidth
-            />
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <TextField
-              id="serviceType"
-              name="serviceType"
-              label="Type of service"
-              value={serviceType}
-              onChange={event => this.handleChange(event)}
-              fullWidth
-            />
-          </Grid>
-          <Grid item xs={12}>
-            <TextField
-              id="description"
-              name="description"
-              label="Description"
-              value={description}
-              onChange={event => this.handleChange(event)}
-              fullWidth
-            />
-          </Grid>
-        </Grid>
+        <ContactInfo
+          innerRef={this.contactChild}
+          handleChange={this.handleChange}
+          firstName={firstName}
+          lastName={lastName}
+          address={address}
+          apartment={apartment}
+          city={city}
+          province={province}
+          postalCode={postalCode}
+          phoneNumber={phoneNumber}
+        />
+        <AboutInfo
+          innerRef={this.aboutChild}
+          handleChange={this.handleChange}
+          organizationName={organizationName}
+          orgType={orgType}
+          department={department}
+          serviceType={serviceType}
+          description={description}
+        />
         <Button
           variant="contained"
           color="primary"

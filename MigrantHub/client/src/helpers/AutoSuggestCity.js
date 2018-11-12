@@ -1,5 +1,3 @@
-
-
 import React from 'react';
 import match from 'autosuggest-highlight/match';
 import parse from 'autosuggest-highlight/parse';
@@ -45,3 +43,15 @@ export const renderSuggestion = (suggestion, { query, isHighlighted }) => {
     </MenuItem>
   );
 };
+
+export function handleSuggestionsFetchRequested({ value }) {
+  this.setState({
+    citySuggestions: getSuggestions(value),
+  });
+}
+
+export function handleSuggestionsClearRequested() {
+  this.setState({
+    citySuggestions: [],
+  });
+}

@@ -258,7 +258,7 @@ EmploymentInfo.propTypes = {
   jobStatus: PropTypes.string.isRequired,
   lookingForJob: PropTypes.string.isRequired,
   currentIncome: PropTypes.string.isRequired,
-  workExperience: PropTypes.shape({}).isRequired,
+  workExperience: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
 };
 
 export default withStyles(styles)(EmploymentInfo);

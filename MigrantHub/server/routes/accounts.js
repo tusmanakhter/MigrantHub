@@ -3,12 +3,10 @@ const express = require('express');
 const router = express.Router();
 const passport = require('passport');
 const accountController = require('../controllers/accountController');
-const { validateBusiness } = require('../middleware/validationMiddleware');
-
 
 router.get('/', accountController.getUser);
 router.post('/create/user', accountController.createUser);
-router.post('/create/business', validateBusiness, accountController.createBusiness);
+router.post('/create/business', accountController.createBusiness);
 router.post('/create/admin', accountController.createAdmin);
 router.get('/get/user', accountController.getUserType);
 

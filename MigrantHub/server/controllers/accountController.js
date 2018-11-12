@@ -1,6 +1,5 @@
 const qs = require('qs');
 const bcrypt = require('bcryptjs');
-const { validationResult } = require('express-validator/check');
 const User = require('../models/MigrantUser');
 const BusinessUser = require('../models/BusinessUser');
 const Admin = require('../models/Admin');

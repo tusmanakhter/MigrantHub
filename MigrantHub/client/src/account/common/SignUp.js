@@ -8,6 +8,7 @@ import Step from '@material-ui/core/Step';
 import StepLabel from '@material-ui/core/StepLabel';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
+import { handleChange } from '../../helpers/Forms';
 import { handleAutoSuggestChange, handleEditObjectAutosuggest } from '../../helpers/Autosuggest';
 import { handleAddObject, handleEditObject, handleEditSingleObject, handleRemoveObject } from '../../helpers/Object';
 
@@ -49,6 +50,7 @@ class SignUp extends Component {
   constructor(props) {
     super(props);
     this.child = React.createRef();
+    this.handleChange = handleChange.bind(this);
     this.handleAutoSuggestChange = handleAutoSuggestChange.bind(this);
     this.handleEditObjectAutosuggest = handleEditObjectAutosuggest.bind(this);
     this.handleAddObject = handleAddObject.bind(this);
@@ -151,12 +153,6 @@ class SignUp extends Component {
       activeStep: 0,
     });
   };
-
-  handleChange = (event) => {
-    this.setState({
-      [event.target.name]: event.target.value,
-    });
-  }
 
   render() {
     const { classes } = this.props;
