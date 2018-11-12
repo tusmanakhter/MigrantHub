@@ -4,11 +4,6 @@ const validator = require('validator');
 const BusinessAccountValidator = (businessObject) => {
   let errors = '';
 
-  if (validator.isEmpty(businessObject.email)) {
-    errors += "{'\n'}Email is required";
-  } else if (!validator.isEmail(businessObject.email)) {
-    errors += "{'\n'}Email is not valid";
-  }
   if (validator.isEmpty(businessObject.corpId)) {
     errors += "{'\n'}Corporation ID is required";
   }
