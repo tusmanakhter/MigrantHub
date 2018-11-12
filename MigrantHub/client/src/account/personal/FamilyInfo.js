@@ -17,32 +17,8 @@ import InputAdornment from '@material-ui/core/InputAdornment';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import Paper from '@material-ui/core/Paper';
 import validator from 'validator';
-
-const gender = [
-  { value: 'male', label: 'Male' },
-  { value: 'female', label: 'Female' },
-  { value: 'other', label: 'Other' },
-];
-
-const relations = [
-  { value: 'daughter', label: 'Daughter' },
-  { value: 'son', label: 'Son' },
-  { value: 'mother', label: 'Mother' },
-  { value: 'father', label: 'Father' },
-  { value: 'brother', label: 'Brother' },
-  { value: 'sister', label: 'Sister' },
-];
-
-const relationshipStatus = [
-  { value: 'married', label: 'Married' },
-  { value: 'single', label: 'Single' },
-  { value: 'divorced', label: 'Divorced' },
-  { value: 'widowed', label: 'Widowed' },
-];
-
-const familyObject = {
-  age: '', gender: '', relation: '', relationshipStatus: '',
-};
+import { objectErrorText } from '../../helpers/Object';
+import { genders, relations, relationshipStatuses, familyObject } from '../../lib/SignUpConstants';
 
 const styles = theme => ({
   container: {
@@ -84,6 +60,11 @@ const styles = theme => ({
   },
 });
 class FamilyInfo extends Component {
+  constructor(props) {
+    super(props);
+    this.objectErrorText = objectErrorText.bind(this);
+  }
+
   state = {
     familyError: [],
   }
@@ -126,8 +107,6 @@ class FamilyInfo extends Component {
 
     return isError;
   }
-
-  objectErrorText = (name, index, field) => (this.state[name][index] === undefined ? '' : this.state[name][index][field])
 
   render() {
     const {
@@ -194,7 +173,7 @@ class FamilyInfo extends Component {
                         error={this.objectErrorText('familyError', index, 'relationshipStatus').length > 0}
                         fullWidth
                       >
-                        {relationshipStatus.map(option => (
+                        {relationshipStatuses.map(option => (
                           <MenuItem key={option.value} value={option.value}>
                             {option.label}
                           </MenuItem>
@@ -237,7 +216,7 @@ Gender
                           value={member.gender}
                           onChange={handleEditObject('family', index)}
                         >
-                          {gender.map(option => (
+                          {genders.map(option => (
                             <FormControlLabel key={option.value} value={option.value} control={<Radio />} label={option.label}>
                               {option.label}
                             </FormControlLabel>

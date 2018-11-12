@@ -5,7 +5,6 @@ import TextField from '@material-ui/core/TextField';
 import MenuItem from '@material-ui/core/MenuItem';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
-import MaskedInput from 'react-text-mask';
 import validator from 'validator';
 import Button from '@material-ui/core/Button';
 import axios from 'axios';
@@ -22,255 +21,21 @@ import InputAdornment from '@material-ui/core/InputAdornment';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import Paper from '@material-ui/core/Paper';
 import Autosuggest from 'react-autosuggest';
-import match from 'autosuggest-highlight/match';
-import parse from 'autosuggest-highlight/parse';
-import { languages as languagesData } from 'country-data';
-import deburr from 'lodash/deburr';
-import NumberFormat from 'react-number-format';
-import { cities } from 'canada';
+import { PhoneMask, PostalCodeMask, IncomeMask } from '../../lib/Masks';
+import { handleAutoSuggestChange, handleEditObjectAutosuggest, renderInputComponent,
+  handleSuggestionsClearRequested } from '../../helpers/Autosuggest';
+import { renderSuggestion as renderSuggestionLanguage,
+  getSuggestionValue as getSuggestionValueLanguage,
+  getSuggestions as getSuggestionsLanguage } from '../../helpers/AutoSuggestLang';
+import { renderSuggestion as renderSuggestionCity, 
+  getSuggestionValue as getSuggestionValueCity,
+  getSuggestions as getSuggestionsCity } from '../../helpers/AutoSuggestCity';
+import { handleAddObject, handleEditObject, handleEditSingleObject, handleRemoveObject, objectErrorText } from '../../helpers/Object';
+import { provinces, educationLevels, proficiencyExaminations, genders, relations,
+  relationshipStatuses, familyObject, statuses, languageLevels, langObject,
+  jobStatuses, lookingForJobOptions, workObject, joiningReasons } from '../../lib/SignUpConstants';
 
 const qs = require('qs');
-
-const provinces = [
-  { value: 'AB', label: 'Alberta' },
-  { value: 'BC', label: 'British Columbia' },
-  { value: 'MB', label: 'Manitoba' },
-  { value: 'NB', label: 'New Brunswick' },
-  { value: 'NL', label: 'Newfoundland and Labrador' },
-  { value: 'NS', label: 'Nova Scotia' },
-  { value: 'NT', label: 'Northwest Territories' },
-  { value: 'NU', label: 'Nunavut' },
-  { value: 'ON', label: 'Ontario' },
-  { value: 'PE', label: 'Prince Edward Island' },
-  { value: 'QC', label: 'Quebec' },
-  { value: 'SK', label: 'Saskatchewan' },
-  { value: 'YT', label: 'Yukon' },
-];
-
-const PhoneMask = (props) => {
-  const { inputRef, ...other } = props;
-
-  return (
-    <MaskedInput
-      {...other}
-      mask={['(', /[1-9]/, /\d/, /\d/, ')', ' ', /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/]}
-      placeholderChar={'\u2000'}
-      guide={false}
-    />
-  );
-};
-
-const PostalCodeMask = (props) => {
-  const { inputRef, ...other } = props;
-
-  return (
-    <MaskedInput
-      {...other}
-      mask={[/[a-zA-Z]/, /\d/, /[a-zA-Z]/, ' ', /\d/, /[a-zA-Z]/, /\d/]}
-      placeholderChar={'\u2000'}
-      guide={false}
-    />
-  );
-};
-
-const educationLevels = [
-  { value: 'earlyChildhood', label: 'Early childhood' },
-  { value: 'elementary', label: 'Elementary' },
-  { value: 'intermediate', label: 'Intermediate' },
-  { value: 'secondary', label: 'High School/Secondary' },
-  { value: 'trade', label: 'Trade/Vocational School' },
-  { value: 'bachelors', label: 'Bachelors' },
-  { value: 'masters', label: 'Mastors' },
-  { value: 'doctorate', label: 'Ph.D/Doctorate' },
-];
-
-const proficiencyExaminations = [
-  { value: 'ielts', label: 'IELTS' },
-  { value: 'french', label: 'French' },
-];
-
-const genderOptions = [
-  { value: 'male', label: 'Male' },
-  { value: 'female', label: 'Female' },
-  { value: 'other', label: 'Other' },
-];
-
-const relations = [
-  { value: 'daughter', label: 'Daughter' },
-  { value: 'son', label: 'Son' },
-  { value: 'mother', label: 'Mother' },
-  { value: 'father', label: 'Father' },
-  { value: 'brother', label: 'Brother' },
-  { value: 'sister', label: 'Sister' },
-];
-
-const relationshipStatusOptions = [
-  { value: 'married', label: 'Married' },
-  { value: 'single', label: 'Single' },
-  { value: 'divorced', label: 'Divorced' },
-  { value: 'widowed', label: 'Widowed' },
-];
-
-const familyObject = {
-  age: '', gender: '', relation: '', relationshipStatus: '',
-};
-
-const statuses = [
-  { value: 'immigrant', label: 'Immigrant' },
-  { value: 'refugee', label: 'Refugee' },
-  { value: 'resident', label: 'Permanent Resident' },
-  { value: 'citizen', label: 'Citizen' },
-];
-
-const languageLevels = [
-  { value: 'none', label: 'None' },
-  { value: 'beginner', label: 'Beginner' },
-  { value: 'intermediate', label: 'Intermediate' },
-  { value: 'advanced', label: 'Advanced' },
-];
-
-const languagesList = languagesData.all.filter(word => !(/\d/.test(word.name)));
-
-const getSuggestions = (value) => {
-  const inputValue = deburr(value.trim()).toLowerCase();
-  const inputLength = inputValue.length;
-  let count = 0;
-
-  return inputLength === 0 ? [] : languagesList.filter((language) => {
-    const keep = count < 5 && language.name.slice(0, inputLength).toLowerCase() === inputValue;
-
-    if (keep) {
-      count += 1;
-    }
-
-    return keep;
-  });
-};
-
-const getSuggestionValue = suggestion => suggestion.name;
-
-const renderSuggestion = (suggestion, { query, isHighlighted }) => {
-  const matches = match(suggestion.name, query);
-  const parts = parse(suggestion.name, matches);
-
-  return (
-    <MenuItem selected={isHighlighted} component="div">
-      <div>
-        {parts.map((part, index) => (part.highlight ? (
-          <span key={String(index)} style={{ fontWeight: 500 }}>
-            {part.text}
-          </span>
-        ) : (
-          <strong key={String(index)} style={{ fontWeight: 300 }}>
-            {part.text}
-          </strong>
-        )))}
-      </div>
-    </MenuItem>
-  );
-};
-
-const renderInputComponent = (inputProps) => {
-  const {
-    classes, inputRef = () => {}, ref, ...other
-  } = inputProps;
-
-  return (
-    <TextField
-      fullWidth
-      InputProps={{
-        inputRef: (node) => {
-          ref(node);
-          inputRef(node);
-        },
-        classes: {
-          input: classes.input,
-        },
-      }}
-      {...other}
-    />
-  );
-};
-
-const langObject = { name: '', writingLevel: '', speakingLevel: '' };
-
-const jobStatuses = [
-  { value: 'fulltime', label: 'Full Time' },
-  { value: 'parttime', label: 'Part Time' },
-  { value: 'unemployed', label: 'Unemployed' },
-  { value: 'student', label: 'Student' },
-];
-
-const lookingForJobOptions = [
-  { value: 'true', label: 'Yes' },
-  { value: 'false', label: 'No' },
-];
-
-const workObject = { title: '', company: '', years: '' };
-
-const IncomeMask = (props) => {
-  const { inputRef, onChange, ...other } = props;
-
-  return (
-    <NumberFormat
-      {...other}
-      onValueChange={(values) => {
-        onChange({
-          target: {
-            name: props.name,
-            value: values.value,
-          },
-        });
-      }}
-      thousandSeparator
-      prefix="$"
-    />
-  );
-};
-
-const joiningReasons = [
-  { value: 'help', label: 'Help' },
-  { value: 'findJob', label: 'Find Job' },
-];
-
-const getSuggestionsCity = (value) => {
-  const inputValue = deburr(value.trim()).toLowerCase();
-  const inputLength = inputValue.length;
-  let count = 0;
-
-  return inputLength === 0 ? [] : cities.filter((city) => {
-    const keep = count < 5 && (`${city[0]}, ${city[1]}`).slice(0, inputLength).toLowerCase() === inputValue;
-
-    if (keep) {
-      count += 1;
-    }
-
-    return keep;
-  });
-};
-
-const getSuggestionValueCity = suggestion => (`${suggestion[0]}, ${suggestion[1]}`);
-
-const renderSuggestionCity = (suggestion, { query, isHighlighted }) => {
-  const matches = match((`${suggestion[0]}, ${suggestion[1]}`), query);
-  const parts = parse((`${suggestion[0]}, ${suggestion[1]}`), matches);
-
-  return (
-    <MenuItem selected={isHighlighted} component="div">
-      <div>
-        {parts.map((part, index) => (part.highlight ? (
-          <span key={String(index)} style={{ fontWeight: 500 }}>
-            {part.text}
-          </span>
-        ) : (
-          <strong key={String(index)} style={{ fontWeight: 300 }}>
-            {part.text}
-          </strong>
-        )))}
-      </div>
-    </MenuItem>
-  );
-};
 
 const styles = theme => ({
   select: {
@@ -396,6 +161,14 @@ class EditMigrant extends Component {
 
     // this.getAccount(this);
     this.getAccount = this.getAccount.bind(this);
+    this.handleAutoSuggestChange = handleAutoSuggestChange.bind(this);
+    this.handleEditObjectAutosuggest = handleEditObjectAutosuggest.bind(this);
+    this.handleAddObject = handleAddObject.bind(this);
+    this.handleEditObject = handleEditObject.bind(this);
+    this.handleEditSingleObject = handleEditSingleObject.bind(this);
+    this.handleRemoveObject = handleRemoveObject.bind(this);
+    this.objectErrorText = objectErrorText.bind(this);
+    this.handleSuggestionsClearRequested = handleSuggestionsClearRequested.bind(this);
   }
 
   componentDidMount() {
@@ -484,64 +257,9 @@ class EditMigrant extends Component {
     }
   };
 
-  handleEditSingleObject = (name, fieldName) => (event) => {
-    const obj = {};
-    obj[name] = { ...this.state[name] };
-    const value = ((event.target.type === 'checkbox') ? event.target.checked
-      : event.target.value);
-    obj[name][fieldName] = value;
-    this.setState({
-      [name]: obj[name],
-    });
-  }
-
-  handleAddObject = (name, object) => {
-    this.setState({
-      [name]: this.state[name].concat([object]),
-    });
-  }
-
-  handleRemoveObject = (name, index) => {
-    this.setState({
-      [name]: this.state[name].filter((s, _index) => _index !== index),
-    });
-  }
-
-  handleEditObjectAutosuggest = (name, fieldName, index) => (event, { newValue }) => {
-    this.setState({
-      [name]: this.state[name].map((s, _index) => {
-        if (_index !== index) return s;
-        return { ...s, [fieldName]: newValue };
-      }),
-    });
-  }
-
-  handleEditObject = (name, index) => (event) => {
-    this.setState({
-      [name]: this.state[name].map((s, _index) => {
-        if (_index !== index) return s;
-        return { ...s, [event.target.name]: event.target.value };
-      }),
-    });
-  }
-
-  objectErrorText = (name, index, field) => (this.state[name][index] === undefined ? '' : this.state[name][index][field])
-
   handleSuggestionsFetchRequested = ({ value }) => {
     this.setState({
-      suggestions: getSuggestions(value),
-    });
-  };
-
-  handleSuggestionsClearRequested = () => {
-    this.setState({
-      suggestions: [],
-    });
-  };
-
-  handleAutoSuggestChange = name => (event, { newValue }) => {
-    this.setState({
-      [name]: newValue,
+      suggestions: getSuggestionsLanguage(value),
     });
   };
 
@@ -550,20 +268,6 @@ class EditMigrant extends Component {
       suggestions: getSuggestionsCity(value),
     });
   };
-
-  handleSuggestionsClearRequestedCity = () => {
-    this.setState({
-      suggestions: [],
-    });
-  };
-
-  handleAutoSuggestChange = name => (event, { newValue }) => {
-    this.setState({
-      [name]: newValue,
-    });
-  };
-
-  objectErrorText = (name, index, field) => (this.state[name][index] === undefined ? '' : this.state[name][index][field])
 
   validate = () => {
     const {
@@ -875,17 +579,17 @@ class EditMigrant extends Component {
       suggestions,
       onSuggestionsFetchRequested: this.handleSuggestionsFetchRequested,
       onSuggestionsClearRequested: this.handleSuggestionsClearRequested,
-      getSuggestionValue,
-      renderSuggestion,
+      getSuggestionValue: getSuggestionValueLanguage,
+      renderSuggestion: renderSuggestionLanguage,
     };
 
     const autosuggestCityProps = {
       renderInputComponent,
       suggestions: suggestionsCity,
       onSuggestionsFetchRequested: this.handleSuggestionsFetchRequestedCity,
-      onSuggestionsClearRequested: this.handleSuggestionsClearRequestedCity,
-      getSuggestionValueCity,
-      renderSuggestionCity,
+      onSuggestionsClearRequested: this.handleSuggestionsClearRequested,
+      getSuggestionValue: getSuggestionValueCity,
+      renderSuggestions: renderSuggestionCity,
     };
 
     return (
@@ -1050,7 +754,7 @@ class EditMigrant extends Component {
                 value={gender}
                 onChange={event => this.handleChange(event)}
               >
-                {genderOptions.map(option => (
+                {genders.map(option => (
                   <FormControlLabel key={option.value} value={option.value} control={<Radio />} label={option.label}>
                     {option.label}
                   </FormControlLabel>
@@ -1096,7 +800,7 @@ class EditMigrant extends Component {
               helperText={relationshipStatusError}
               error={relationshipStatusError.length > 0}
             >
-              {relationshipStatusOptions.map(option => (
+              {relationshipStatuses.map(option => (
                 <MenuItem key={option.value} value={option.value}>
                   {option.label}
                 </MenuItem>
@@ -1328,7 +1032,7 @@ class EditMigrant extends Component {
                         error={this.objectErrorText('familyError', index, 'relationshipStatus').length > 0}
                         fullWidth
                       >
-                        {relationshipStatusOptions.map(option => (
+                        {relationshipStatuses.map(option => (
                           <MenuItem key={option.value} value={option.value}>
                             {option.label}
                           </MenuItem>
@@ -1371,7 +1075,7 @@ Gender
                           value={member.gender}
                           onChange={this.handleEditObject('family', index)}
                         >
-                          {genderOptions.map(option => (
+                          {genders.map(option => (
                             <FormControlLabel key={option.value} value={option.value} control={<Radio />} label={option.label}>
                               {option.label}
                             </FormControlLabel>

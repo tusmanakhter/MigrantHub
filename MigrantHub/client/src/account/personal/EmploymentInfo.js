@@ -16,41 +16,9 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import validator from 'validator';
-import NumberFormat from 'react-number-format';
-
-const jobStatuses = [
-  { value: 'fulltime', label: 'Full Time' },
-  { value: 'parttime', label: 'Part Time' },
-  { value: 'unemployed', label: 'Unemployed' },
-  { value: 'student', label: 'Student' },
-];
-
-const lookingForJobOptions = [
-  { value: 'true', label: 'Yes' },
-  { value: 'false', label: 'No' },
-];
-
-const workObject = { title: '', company: '', years: '' };
-
-const IncomeMask = (props) => {
-  const { inputRef, onChange, ...other } = props;
-
-  return (
-    <NumberFormat
-      {...other}
-      onValueChange={(values) => {
-        onChange({
-          target: {
-            name: props.name,
-            value: values.value,
-          },
-        });
-      }}
-      thousandSeparator
-      prefix="$"
-    />
-  );
-};
+import { IncomeMask } from '../../lib/Masks';
+import { objectErrorText } from '../../helpers/Object';
+import { jobStatuses, lookingForJobOptions, workObject } from '../../lib/SignUpConstants';
 
 const styles = theme => ({
   container: {
@@ -73,6 +41,11 @@ const styles = theme => ({
   },
 });
 class EmploymentInfo extends Component {
+  constructor(props) {
+    super(props);
+    this.objectErrorText = objectErrorText.bind(this);
+  }
+
   state = {
     jobStatusError: '',
     lookingForJobError: '',
@@ -129,8 +102,6 @@ class EmploymentInfo extends Component {
 
     return isError;
   }
-
-  objectErrorText = (name, index, field) => (this.state[name][index] === undefined ? '' : this.state[name][index][field])
 
   render() {
     const {

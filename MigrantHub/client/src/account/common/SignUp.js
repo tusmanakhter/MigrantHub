@@ -8,6 +8,8 @@ import Step from '@material-ui/core/Step';
 import StepLabel from '@material-ui/core/StepLabel';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
+import { handleAutoSuggestChange, handleEditObjectAutosuggest } from '../../helpers/Autosuggest';
+import { handleAddObject, handleEditObject, handleEditSingleObject, handleRemoveObject } from '../../helpers/Object';
 
 const styles = theme => ({
   layout: {
@@ -47,6 +49,12 @@ class SignUp extends Component {
   constructor(props) {
     super(props);
     this.child = React.createRef();
+    this.handleAutoSuggestChange = handleAutoSuggestChange.bind(this);
+    this.handleEditObjectAutosuggest = handleEditObjectAutosuggest.bind(this);
+    this.handleAddObject = handleAddObject.bind(this);
+    this.handleEditObject = handleEditObject.bind(this);
+    this.handleEditSingleObject = handleEditSingleObject.bind(this);
+    this.handleRemoveObject = handleRemoveObject.bind(this);
   }
 
   state = {
@@ -148,53 +156,6 @@ class SignUp extends Component {
     this.setState({
       [event.target.name]: event.target.value,
     });
-  }
-
-  handleAutoSuggestChange = name => (event, { newValue }) => {
-    this.setState({
-      [name]: newValue,
-    });
-  };
-
-    handleAddObject = (name, object) => {
-      this.state.serviceHoursCount += 1;
-      this.setState({
-        [name]: this.state[name].concat([object]),
-      });
-    }
-
-    handleRemoveObject = (name, index) => {
-      this.state.serviceHoursCount -= 1;
-      this.setState({
-        [name]: this.state[name].filter((s, _index) => _index !== index),
-      });
-    }
-
-    handleEditObject= (name, index) => (event) => {
-      this.setState({
-        [name]: this.state[name].map((s, _index) => {
-          if (_index !== index) return s;
-          return { ...s, [event.target.name]: event.target.value };
-        }),
-      });
-    }
-
-  handleEditObjectAutosuggest = (name, fieldName, index) => (event, { newValue }) => {
-    this.setState({
-      [name]: this.state[name].map((s, _index) => {
-        if (_index !== index) return s;
-        return { ...s, [fieldName]: newValue };
-      }),
-    });
-  }
-
-  handleEditSingleObject = (name, fieldName) => (event) => {
-    const obj = {};
-    obj[name] = { ...this.state[name] };
-    const value = ((event.target.type === 'checkbox') ? event.target.checked
-      : event.target.value);
-    obj[name][fieldName] = value;
-    this.setState({ [name]: obj[name] });
   }
 
   render() {

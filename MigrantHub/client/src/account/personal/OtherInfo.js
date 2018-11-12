@@ -8,77 +8,11 @@ import Typography from '@material-ui/core/Typography';
 import Autosuggest from 'react-autosuggest';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import Paper from '@material-ui/core/Paper';
-import match from 'autosuggest-highlight/match';
-import parse from 'autosuggest-highlight/parse';
-import { cities } from 'canada';
-import deburr from 'lodash/deburr';
 import validator from 'validator';
-
-const joiningReasons = [
-  { value: 'help', label: 'Help' },
-  { value: 'findJob', label: 'Find Job' },
-];
-
-const getSuggestions = (value) => {
-  const inputValue = deburr(value.trim()).toLowerCase();
-  const inputLength = inputValue.length;
-  let count = 0;
-
-  return inputLength === 0 ? [] : cities.filter((city) => {
-    const keep = count < 5 && (`${city[0]}, ${city[1]}`).slice(0, inputLength).toLowerCase() === inputValue;
-
-    if (keep) {
-      count += 1;
-    }
-
-    return keep;
-  });
-};
-
-const getSuggestionValue = suggestion => (`${suggestion[0]}, ${suggestion[1]}`);
-
-const renderSuggestion = (suggestion, { query, isHighlighted }) => {
-  const matches = match((`${suggestion[0]}, ${suggestion[1]}`), query);
-  const parts = parse((`${suggestion[0]}, ${suggestion[1]}`), matches);
-
-  return (
-    <MenuItem selected={isHighlighted} component="div">
-      <div>
-        {parts.map((part, index) => (part.highlight ? (
-          <span key={String(index)} style={{ fontWeight: 500 }}>
-            {part.text}
-          </span>
-        ) : (
-          <strong key={String(index)} style={{ fontWeight: 300 }}>
-            {part.text}
-          </strong>
-        )))}
-      </div>
-    </MenuItem>
-  );
-};
-
-const renderInputComponent = (inputProps) => {
-  const {
-    classes, inputRef = () => {}, ref, ...other
-  } = inputProps;
-
-  return (
-    <TextField
-      fullWidth
-      InputProps={{
-        inputRef: (node) => {
-          ref(node);
-          inputRef(node);
-        },
-        classes: {
-          input: classes.input,
-        },
-      }}
-      {...other}
-    />
-  );
-};
+import { joiningReasons } from '../../lib/SignUpConstants';
+import { renderInputComponent, handleSuggestionsClearRequested } from '../../helpers/Autosuggest';
+import { renderSuggestion, getSuggestionValue, getSuggestions } from '../../helpers/AutoSuggestCity';
+  
 
 const styles = theme => ({
   container: {
@@ -110,6 +44,11 @@ const styles = theme => ({
   },
 });
 class OtherInfo extends Component {
+  constructor(props) {
+    super(props);
+    this.handleSuggestionsClearRequested = handleSuggestionsClearRequested.bind(this);
+  }
+
   state = {
     suggestions: [],
     settlingLocationError: '',
@@ -152,12 +91,6 @@ class OtherInfo extends Component {
   handleSuggestionsFetchRequested = ({ value }) => {
     this.setState({
       suggestions: getSuggestions(value),
-    });
-  };
-
-  handleSuggestionsClearRequested = () => {
-    this.setState({
-      suggestions: [],
     });
   };
 

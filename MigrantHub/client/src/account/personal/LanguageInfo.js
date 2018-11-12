@@ -10,83 +10,11 @@ import Button from '@material-ui/core/Button';
 import AddIcon from '@material-ui/icons/Add';
 import DeleteIcon from '@material-ui/icons/Delete';
 import Autosuggest from 'react-autosuggest';
-import match from 'autosuggest-highlight/match';
-import parse from 'autosuggest-highlight/parse';
-import { languages as languagesData } from 'country-data';
-import deburr from 'lodash/deburr';
 import validator from 'validator';
-
-const languageLevels = [
-  { value: 'none', label: 'None' },
-  { value: 'beginner', label: 'Beginner' },
-  { value: 'intermediate', label: 'Intermediate' },
-  { value: 'advanced', label: 'Advanced' },
-];
-
-const languagesList = languagesData.all.filter(word => !(/\d/.test(word.name)));
-
-const getSuggestions = (value) => {
-  const inputValue = deburr(value.trim()).toLowerCase();
-  const inputLength = inputValue.length;
-  let count = 0;
-
-  return inputLength === 0 ? [] : languagesList.filter((language) => {
-    const keep = count < 5 && language.name.slice(0, inputLength).toLowerCase() === inputValue;
-
-    if (keep) {
-      count += 1;
-    }
-
-    return keep;
-  });
-};
-
-const getSuggestionValue = suggestion => suggestion.name;
-
-const renderSuggestion = (suggestion, { query, isHighlighted }) => {
-  const matches = match(suggestion.name, query);
-  const parts = parse(suggestion.name, matches);
-
-  return (
-    <MenuItem selected={isHighlighted} component="div">
-      <div>
-        {parts.map((part, index) => (part.highlight ? (
-          <span key={String(index)} style={{ fontWeight: 500 }}>
-            {part.text}
-          </span>
-        ) : (
-          <strong key={String(index)} style={{ fontWeight: 300 }}>
-            {part.text}
-          </strong>
-        )))}
-      </div>
-    </MenuItem>
-  );
-};
-
-const renderInputComponent = (inputProps) => {
-  const {
-    classes, inputRef = () => {}, ref, ...other
-  } = inputProps;
-
-  return (
-    <TextField
-      fullWidth
-      InputProps={{
-        inputRef: (node) => {
-          ref(node);
-          inputRef(node);
-        },
-        classes: {
-          input: classes.input,
-        },
-      }}
-      {...other}
-    />
-  );
-};
-
-const langObject = { name: '', writingLevel: '', speakingLevel: '' };
+import { objectErrorText } from '../../helpers/Object';
+import { languageLevels, langObject } from '../../lib/SignUpConstants';
+import { renderInputComponent, handleSuggestionsClearRequested } from '../../helpers/Autosuggest';
+import { renderSuggestion, getSuggestionValue, getSuggestions } from '../../helpers/AutoSuggestLang';
 
 const styles = theme => ({
   container: {
@@ -118,6 +46,12 @@ const styles = theme => ({
   },
 });
 class LanguageInfo extends Component {
+  constructor(props) {
+    super(props);
+    this.objectErrorText = objectErrorText.bind(this);
+    this.handleSuggestionsClearRequested = handleSuggestionsClearRequested.bind(this);
+  }
+
   state = {
     suggestions: [],
     languagesError: [],
@@ -186,17 +120,9 @@ class LanguageInfo extends Component {
     return isError;
   }
 
-  objectErrorText = (name, index, field) => (this.state[name][index] === undefined ? '' : this.state[name][index][field])
-
   handleSuggestionsFetchRequested = ({ value }) => {
     this.setState({
       suggestions: getSuggestions(value),
-    });
-  };
-
-  handleSuggestionsClearRequested = () => {
-    this.setState({
-      suggestions: [],
     });
   };
 
