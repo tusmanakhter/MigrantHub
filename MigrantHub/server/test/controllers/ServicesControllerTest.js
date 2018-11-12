@@ -43,7 +43,7 @@ describe('Service controller', function () {
         this.stub(Services.prototype, 'save').yields(error);
         ServicesController.createService(req, res);
         assert.calledWith(Services.prototype.save);
-        assert.calledWith(res.send, "There was a error creating service.");
+        assert.calledWith(res.send, "There was an error creating service.");
         assert.calledWith(res.status, 400);
     }));
 
@@ -74,7 +74,7 @@ describe('Service controller', function () {
         this.stub(Services, 'findOne').yields(error);
         ServicesController.getServiceData(req, res);
         assert.calledWith(Services.findOne, { _id: "5bda52305ccfd051484ea790" });
-        assert.calledWith(res.send, "There was a error getting services.");
+        assert.calledWith(res.send, "There was an error getting services.");
         assert.calledWith(res.status, 400);
     }));
 
@@ -89,7 +89,7 @@ describe('Service controller', function () {
         this.stub(Services, 'find').yields(error);
         ServicesController.viewServices(req, res);
         assert.calledWith(Services.find, { email: "test@test.com" });
-        assert.calledWith(res.send, "There was a error getting services.");
+        assert.calledWith(res.send, "There was an error getting services.");
         assert.calledWith(res.status, 400);
     }));
 });
