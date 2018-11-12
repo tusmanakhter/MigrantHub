@@ -1,12 +1,84 @@
 const Admin = require('../models/Admin');
 
 module.exports = {
-  getUnapprovedAdmins(req, res) {
-    Admin.find({ authorized: false }, 'email', (err, users) => {
+  getAdmins(req, res) {
+    Admin.find({ authorized: true, rejected: false, deleted: false }, 'email', (err, users) => {
       if (err) {
-        return res.send('There was an error finding unnaproved admins');
+        res.status(500).send('There was an error finding admins');
+      } else {
+        res.status(200).send(users);
       }
-      return res.send(users);
+    });
+  },
+
+  getDeletedAdmins(req, res) {
+    Admin.find({ deleted: true }, 'email', (err, users) => {
+      if (err) {
+        res.status(500).send('There was an error finding deleted admins');
+      } else {
+        res.status(200).send(users);
+      }
+    });
+  },
+
+  getRejectedAdmins(req, res) {
+    Admin.find({ authorized: false, rejected: true }, 'email', (err, users) => {
+      if (err) {
+        res.status(500).send('There was an error finding rejected admins');
+      } else {
+        res.status(200).send(users);
+      }
+    });
+  },
+
+  getUnapprovedAdmins(req, res) {
+    Admin.find({ authorized: false, rejected: false, deleted: false }, 'email', (err, users) => {
+      if (err) {
+        res.status(500).send('There was an error finding unnaproved admins');
+      } else {
+        res.status(200).send(users);
+      }
+    });
+  },
+
+  reactivateAdmin(req, res) {
+    Admin.updateOne({ _id: req.params.id }, { deleted: false, deletedDate: null }, (err) => {
+      if (err) {
+        res.status(500).send('There was an error reactivating admin.');
+      } else {
+        res.status(200).send('Admin reactivated successfully.');
+      }
+    });
+  },
+
+  approveAdmin(req, res) {
+    Admin.updateOne({ _id: req.params.id },
+      { authorized: true, rejected: false, rejectedDate: null }, (err) => {
+        if (err) {
+          res.status(500).send('There was an error approving admin.');
+        } else {
+          res.status(200).send('Admin approved successfully.');
+        }
+      });
+  },
+
+  rejectAdmin(req, res) {
+    Admin.updateOne({ _id: req.params.id }, { rejected: true, rejectedDate: Date.now() }, (err) => {
+      if (err) {
+        res.status(500).send('There was an error rejecting admin.');
+      } else {
+        res.status(200).send('Admin rejected successfully.');
+      }
+    });
+  },
+
+  deleteAdmin(req, res) {
+    Admin.updateOne({ _id: req.params.id }, { deleted: true, deletedDate: Date.now() }, (err) => {
+      if (err) {
+        res.status(500).send('There was an error deleting admin.');
+      } else {
+        res.status(200).send('Admin deleted successfully.');
+      }
     });
   },
 };

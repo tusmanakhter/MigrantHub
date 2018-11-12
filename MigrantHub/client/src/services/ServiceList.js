@@ -49,7 +49,7 @@ class ServiceList extends Component {
 
       editOwnerEmail = location.state.editOwner;
     }
-    axios.get('/services/view/all/', {
+    axios.get('/api/services/view/all/', {
       params: {
         editOwner: editOwnerEmail,
       },
@@ -103,6 +103,7 @@ class ServiceList extends Component {
                   serviceHours={item.serviceHours}
                   editMode={editMode}
                   editOwner={editOwner}
+                  getData={this.getData}
                 />
               ))
           }

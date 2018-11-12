@@ -11,6 +11,7 @@ import Button from '@material-ui/core/Button';
 import blue from '@material-ui/core/colors/blue';
 import { Redirect } from 'react-router-dom';
 import GoogleMaps from '../components/GoogleMaps/GoogleMaps';
+import axios from 'axios';
 
 const styles = {
   avatar: {
@@ -40,6 +41,17 @@ class ViewService extends Component {
       },
     });
   }
+
+  handleDelete = () => {
+    const { serviceId, onClose, getData } = this.props;
+    axios.delete('/api/services/' + serviceId)
+      .then((response) => {
+        if (response.status === 200) {
+          onClose();
+          getData();
+        }
+      });
+  };
 
   render() {
     const {
@@ -176,9 +188,14 @@ Location:
           </DialogContent>
           <DialogActions>
             {editMode && (
-            <Button onClick={this.handleEdit} color="primary">
+            <React.Fragment>
+              <Button onClick={this.handleDelete} color="secondary">
+                  Delete
+              </Button>
+              <Button onClick={this.handleEdit} color="primary">
                   Edit
-            </Button>
+              </Button>
+            </React.Fragment>
             )}
             <Button onClick={onClose} color="primary">
               Cancel
@@ -216,6 +233,7 @@ ViewService.propTypes = {
   open: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
   editMode: PropTypes.bool.isRequired,
+  getData: PropTypes.func.isRequired,
 };
 
 export default withStyles(styles)(ViewService);

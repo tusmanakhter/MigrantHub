@@ -143,7 +143,7 @@ class SignUpMigrant extends Component {
       event.state.proficiencyExams.ielts = 'false';
     }
 
-    axios.post('/account/create/user',
+    axios.post('/api/accounts/create/user',
       qs.stringify({
         email,
         password,
