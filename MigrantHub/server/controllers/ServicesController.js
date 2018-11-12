@@ -129,22 +129,6 @@ module.exports = {
       return res.status(200).send('Service updated successfully.');
     }
     return res.status(400).send('There was an error updating service.');
-  },
-
-  searchServices(req, res) {
-    const query = {};
-    const temp = "job";
-    //const regex = new RegExp(escapeRegex(req.query.search), 'gi');
-    const regex = new RegExp(temp.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"), 'gi');
-
-    if (req.query.editOwner !== '') {
-      query.email = req.query.editOwner;
-    }
-    Services.find({$or:[{serviceTitle: regex}, {serviceSummary: regex}]}, (err, services) => {
-      if (err) {
-        return res.status(400).send('There was a error getting services.');
-      }
-      return res.status(200).send(services);
-    });
   }
+  
 };
