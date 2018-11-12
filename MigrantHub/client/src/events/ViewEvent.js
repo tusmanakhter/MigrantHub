@@ -9,7 +9,9 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Button from '@material-ui/core/Button';
 import blue from '@material-ui/core/colors/blue';
+import { Redirect } from 'react-router-dom';
 import GoogleMaps from '../components/GoogleMaps/GoogleMaps';
+import axios from 'axios';
 
 const styles = {
   avatar: {
@@ -22,14 +24,53 @@ class ViewEvent extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      redirectTo: false,
+      redirectToURL: '',
+      redirectState: {},
     };
   }
+
+  handleClose = () => {
+    this.props.onClose();
+  };
+
+  handleEdit = () => {
+    const { eventId } = this.props;
+    this.setState({
+      redirectTo: true,
+      redirectToURL: '/events/create',
+      redirectState: {
+        editMode: true,
+        eventId,
+      },
+    });
+  }
+
+  handleDelete = () => {
+    axios.delete('/api/events/' + this.props.eventId)
+    .then(response => {
+        if (response.status === 200) {
+            this.handleClose();
+        }
+    });
+  };
 
   render() {
     const {
       eventName, description, dateStart, dateEnd, timeStart, timeEnd,
-      location, open, scroll, onClose,
+      location, open, scroll, editMode, onClose,
     } = this.props;
+    const { redirectTo, redirectToURL, redirectState } = this.state;
+
+    if (redirectTo) {
+      return (
+        <Redirect to={{
+          pathname: redirectToURL,
+          state: redirectState,
+        }}
+        />
+      );
+    }
 
     return (
       <div>
@@ -135,6 +176,16 @@ Location:
             )}
           </DialogContent>
           <DialogActions>
+            {this.props.editMode &&
+              <React.Fragment>
+                  <Button onClick={this.handleDelete} color="secondary">
+                      Delete
+                  </Button>
+                  <Button onClick={this.handleEdit} color="primary">
+                      Edit
+                  </Button>
+              </React.Fragment>
+              }
             <Button onClick={onClose} color="primary">
               Cancel
             </Button>
@@ -146,6 +197,7 @@ Location:
 }
 
 ViewEvent.propTypes = {
+  eventId: PropTypes.string.isRequired,
   eventName: PropTypes.string.isRequired,
   description: PropTypes.string.isRequired,
   dateStart: PropTypes.string.isRequired,
@@ -163,5 +215,6 @@ ViewEvent.propTypes = {
   scroll: PropTypes.string.isRequired,
   open: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
+  editMode: PropTypes.bool.isRequired,
 };
 export default withStyles(styles)(ViewEvent);
