@@ -407,7 +407,8 @@ class EditMigrant extends Component {
   }
 
   getAccount() {
-    axios.get('/account/get/migrantprofile').then((response) => {
+    const user = JSON.parse(localStorage.getItem('user'));
+    axios.get('/api/migrants/' + user.username).then((response) => {
       if (response.status === 200) {
         const jsonObj = qs.parse(qs.stringify(response.data));
 
@@ -814,7 +815,7 @@ class EditMigrant extends Component {
       settlingLocation, settlingDuration, joiningReason,
     } = this.state;
 
-    axios.post('/account/edit/migrantuser',
+    axios.put('/api/migrants/' + email,
       qs.stringify({
         email,
         password,

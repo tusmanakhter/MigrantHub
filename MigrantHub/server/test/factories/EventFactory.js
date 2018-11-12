@@ -1,5 +1,6 @@
 module.exports.validCreateEventData = function() {
     return {
+        _id: "5bda52305ccfd051484ea790",
         creator: 'alex@alex.alex',
         visibility: 'public',
         eventName: 'My Awesome Event',

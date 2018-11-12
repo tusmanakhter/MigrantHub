@@ -7,6 +7,7 @@ router.post('/create', servicesController.upload.single('serviceImage'), service
 router.post('/update', servicesController.upload.single('serviceImage'), servicesController.updateService);
 router.post('/review', servicesController.createServiceReview);
 router.get('/reviews', servicesController.getServiceReviews);
+router.delete('/:id', servicesController.deleteService);
 router.get('/view/all/', servicesController.viewServices);
 router.get('/get/', servicesController.getServiceData);
 

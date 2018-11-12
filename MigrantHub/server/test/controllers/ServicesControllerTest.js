@@ -18,6 +18,9 @@ describe('Service controller', function () {
             query: {
                 _id: "5bda52305ccfd051484ea790",
                 editOwner: "test@test.com"
+            },
+            params: {
+                id: "5bda52305ccfd051484ea790"
             }
         },
         error = new Error({ error: "err" }),
@@ -66,7 +69,7 @@ describe('Service controller', function () {
     it('should return services if no error retrieving service data', test(function () {
         this.stub(Services, 'findOne').yields(null);
         ServicesController.getServiceData(req, res);
-        assert.calledWith(Services.findOne, { _id: "5bda52305ccfd051484ea790" });
+        assert.calledWith(Services.findOne, { _id: "5bda52305ccfd051484ea790", deleted: false });
         assert.calledWith(res.status, 200);
     }));
 
@@ -81,7 +84,7 @@ describe('Service controller', function () {
     it('should return services if no error retrieving all services', test(function () {
         this.stub(Services, 'find').yields(null);
         ServicesController.viewServices(req, res);
-        assert.calledWith(Services.find, { email: "test@test.com" });
+        assert.calledWith(Services.find, { email: "test@test.com", deleted: false });
         assert.calledWith(res.status, 200);
     }));
 
@@ -90,6 +93,22 @@ describe('Service controller', function () {
         ServicesController.viewServices(req, res);
         assert.calledWith(Services.find, { email: "test@test.com" });
         assert.calledWith(res.send, "There was an error getting services.");
+        assert.calledWith(res.status, 400);
+    }));
+
+    it('should delete a service', test(function () {
+        this.stub(Services, 'updateOne').yields(null);
+        ServicesController.deleteService(req, res);
+        assert.calledWith(Services.updateOne, { _id: "5bda52305ccfd051484ea790" }, { deleted: true, deletedDate: Date.now() });
+        assert.calledWith(res.send, "Service deleted successfully.");
+        assert.calledWith(res.status, 200);
+    }));
+
+    it('should not delete service on error', test(function () {
+        this.stub(Services, 'updateOne').yields(error);
+        ServicesController.deleteService(req, res);
+        assert.calledWith(Services.updateOne, { _id: "5bda52305ccfd051484ea790" }, { deleted: true, deletedDate: Date.now() });
+        assert.calledWith(res.send, "There was an error deleting service.");
         assert.calledWith(res.status, 400);
     }));
 });

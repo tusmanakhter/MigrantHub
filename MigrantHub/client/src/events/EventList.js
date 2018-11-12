@@ -8,6 +8,8 @@ import { Redirect } from 'react-router-dom';
 import EventItem from './EventItem';
 import Header from '../components/Header/Header';
 
+var qs = require('qs');
+
 const styles = theme => ({
   root: {
     ...theme.mixins.gutters(),
@@ -22,6 +24,8 @@ class EventList extends Component {
     this.state = {
       items: [],
       redirectToCreateEvent: false,
+      editMode: '',
+      editOwner: '',
     };
 
     this.getData = this.getData.bind(this);
@@ -37,12 +41,28 @@ class EventList extends Component {
   }
 
   getData() {
-    axios.get('/events/view/all')
-      .then((response) => {
+    const { location } = this.props;
+
+    let editOwnerEmail ='';
+    if(location.state){
         this.setState({
-          items: response.data,
+            editMode: location.state.editMode,
+            editOwner: location.state.editOwner
         });
-      });
+
+        editOwnerEmail=location.state.editOwner;
+    }
+    axios.get('/api/events/view/all/',{
+        params: {
+            editOwner: editOwnerEmail
+        }
+    }).then((response) => {
+        this.setState({
+            items: response.data
+        });
+    }).catch(error => {
+
+    })
   }
 
     setRedirectToCreateEvent = () => {
@@ -61,7 +81,7 @@ class EventList extends Component {
 
     render() {
       const { classes } = this.props;
-      const { items } = this.state;
+      const { items, editMode, editOwner } = this.state;
 
       return (
         <div>
@@ -79,6 +99,7 @@ class EventList extends Component {
             {
             items.map(item => (
               <EventItem
+                eventId={item._id}
                 eventName={item.eventName}
                 eventImagePath={item.eventImagePath}
                 description={item.description}
@@ -87,6 +108,8 @@ class EventList extends Component {
                 dateEnd={item.dateEnd}
                 timeStart={item.timeStart}
                 timeEnd={item.timeEnd}
+                editMode={editMode}
+                editOwner={editOwner}
               />
             ))
           }

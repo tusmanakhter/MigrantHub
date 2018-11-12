@@ -82,7 +82,7 @@ class Login extends Component {
 
   // Send profile data in post body to add to mongodb
   sendLogin(e) {
-    axios.post('/account/login',
+    axios.post('/api/accounts/login',
       qs.stringify({
         username: e.state.username,
         password: e.state.password,

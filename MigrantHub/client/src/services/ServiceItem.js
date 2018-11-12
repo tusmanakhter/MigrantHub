@@ -45,6 +45,7 @@ class ServiceItem extends Component {
     });
   };
 
+<<<<<<< HEAD
   handleClose = () => {
     this.setState({ 
       openService: false,
@@ -54,7 +55,7 @@ class ServiceItem extends Component {
 
   render() {
     const {
-      classes, serviceId, serviceTitle, serviceSummary, serviceDescription,
+      classes, serviceId, serviceTitle, serviceSummary, serviceDescription, getData,
       serviceImagePath, serviceLocation, serviceDate, serviceHours, editMode, editOwner,
     } = this.props;
     const { openService, openReviews, scroll} = this.state;
@@ -99,6 +100,7 @@ class ServiceItem extends Component {
             serviceHours={serviceHours}
             editMode={editMode}
             editOwner={editOwner}
+            getData={getData}
           />
           <ViewReviews
             open={openReviews}
@@ -140,6 +142,7 @@ ServiceItem.propTypes = {
   }]).isRequired,
   editOwner: PropTypes.string.isRequired,
   editMode: PropTypes.bool.isRequired,
+  getData: PropTypes.func.isRequired,
 };
 
 export default withStyles(styles)(ServiceItem);
