@@ -29,29 +29,15 @@ class ServiceItem extends Component {
     this.state = {
       openService: false,
       openReviews: false,
-      currentReviewSet: [],
       scroll: 'paper'
     };
   }
 
   handleViewReviews = () => {
-    this.getReviews(this);
-    this.setState({
-      openReviews: true,
-    });
+        this.setState({
+          openReviews: true
+        });
   };
-
-  getReviews = () => {
-    axios.get('/services/reviews',
-      qs.stringify({
-        serviceId: this.props.serviceId
-    }))
-    .then((response) => {
-      this.setState({
-        currentReviewSet: response.data.reviews
-      });
-    });
-  }
 
   handleClickOpen = () => {
     this.setState({
@@ -71,7 +57,7 @@ class ServiceItem extends Component {
       classes, serviceId, serviceTitle, serviceSummary, serviceDescription,
       serviceImagePath, serviceLocation, serviceDate, serviceHours, editMode, editOwner,
     } = this.props;
-    const { openService, openReviews, scroll } = this.state;
+    const { openService, openReviews, scroll} = this.state;
     return (
       <Card className={classes.card}>
         <CardActionArea>

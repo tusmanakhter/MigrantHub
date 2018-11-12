@@ -33,7 +33,29 @@ class ViewReviews extends Component {
       comment: '',
       addReviewMessage: '',
       addReviewError: false,
+      currentReviewSet: []
     };
+  }
+
+  componentDidMount() {
+    this.getReviews();
+  };
+
+  getReviews = () => {
+    var reviews
+    //get all reviews for the service
+    axios.get('/services/reviews',
+      qs.stringify({
+        serviceId: this.props.serviceId
+    }))
+    .then((response) => {
+      reviews = response.data
+      if (reviews) {
+        this.setState({
+          currentReviewSet: reviews
+        })
+      }
+    });
   }
 
   handleEdit = () => {
@@ -59,23 +81,23 @@ class ViewReviews extends Component {
   }
 
   handlePostReview = () => {
-    axios.post('/services/review',
-      qs.stringify({
-        serviceId: this.props.serviceId,
-        rating: this.state.rating,
-        comment: this.state.comment
-      }))
-      .then((response) => {
-        this.setState({
-          addReviewMessage: response.data.addReviewMessage,
-          addReviewError: response.data.addReviewError,
-        });
+    axios.post('/services/review', qs.stringify({
+      serviceId: this.props.serviceId,
+      rating: this.state.rating,
+      comment: this.state.comment
+    }))
+    .then((response) => {
+      this.setState({
+        addReviewMessage: response.data.addReviewMessage,
+        addReviewError: response.data.addReviewError,
       });
+      this.getReviews();
+    })
   }
 
   render() {
     const { serviceTitle, open, scroll, editMode, onClose } = this.props;
-    const { redirectTo, redirectToURL, redirectState, rating, comment, addReviewMessage, addReviewError } = this.state;
+    const { redirectTo, redirectToURL, redirectState, rating, comment, addReviewMessage, addReviewError, currentReviewSet } = this.state;
 
     if (redirectTo) {
       return (
@@ -99,48 +121,86 @@ class ViewReviews extends Component {
         >
           <DialogTitle id="scroll-dialog-title">{serviceTitle}</DialogTitle>
           <DialogContent>
-          <Typography variant="h5" color="inherit" paragraph>
-            <u>Your Review:</u>
-            <Grid container alignItems="center" spacing={0}>
-              <Grid item xs={1}>
-                  <div>
-                    <br></br>
-                    <StarRatingComponent 
-                      name="rate" 
-                      starCount={5}
-                      value={rating}
-                      onStarClick={this.handleStarClick.bind(this)}
+            <div style={{backgroundColor: "#F0F0F0"}}><div style={{margin: "20px"}}>
+              <br></br>
+              <Typography variant="h5" color="inherit" paragraph>
+                <u>Your Review:</u>
+                <Grid container alignItems="center" spacing={8}>
+                  <Grid item xs={1}>
+                    <div>
+                      <br></br>
+                      <StarRatingComponent 
+                        name="rate" 
+                        starCount={5}
+                        value={rating}
+                        onStarClick={this.handleStarClick.bind(this)}
+                      />
+                    </div>
+                  </Grid>
+                  <Grid item xs={8}>
+                    <TextField
+                      id="comment"
+                      name="comment"
+                      label="Comment"
+                      multiline
+                      rows="3"
+                      value={comment}
+                      onChange={event => this.handleChange(event)}
+                      fullWidth
+                      helperText={addReviewMessage}
+                      error={addReviewError}
                     />
-                  </div>
-              </Grid>
-              <Grid item xs={8}>
-                <TextField
-                  id="comment"
-                  name="comment"
-                  label="Comment"
-                  multiline
-                  rows="3"
-                  value={comment}
-                  onChange={event => this.handleChange(event)}
-                  fullWidth
-                  helperText={addReviewMessage}
-                  error={addReviewError}
-                />
-              </Grid>
-              <Grid item xs={2}>
-                <Button onClick={this.handlePostReview} color="primary">
-                  Post Review
-                </Button>
-              </Grid>
-            </Grid>
-          </Typography>
-          <hr></hr>
+                  </Grid>
+                  <Grid item xs={2}>
+                    <br></br>
+                    <Button onClick={this.handlePostReview} color="primary">
+                      Post Review
+                    </Button>
+                  </Grid>
+                </Grid>
+              </Typography>
+              <br></br>
+            </div></div>
+            <hr></hr>
+            <div style={{margin: "20px"}}>
+              {
+                currentReviewSet.map(function(review) {
+                  return (
+                    <div>
+                      <Grid container alignItems="center" spacing={8}>
+                        <Grid item xs={1}>
+                            <div>
+                              <StarRatingComponent 
+                                name="rate" 
+                                editing={false}
+                                starCount={5}
+                                value={review.rating}
+                              />
+                            </div>
+                        </Grid>
+                        <Grid item xs={8}>
+                          <Typography variant="h5" color="inherit" paragraph>
+                            {review.comment}
+                          </Typography>
+                        </Grid>
+                        <Grid item xs={3}>
+                          <Typography variant="h5" color="inherit" paragraph>
+                            <p>{review.time}</p>
+                          </Typography>
+                        </Grid>
+                      </Grid>
+                      <hr></hr>
+                    </div>
+                  )
+                })
+              }
+            </div>
           </DialogContent>
           <DialogActions>
             {editMode && (
-            <Button onClick={this.handleEdit} color="primary">
-                  Edit
-            </Button>
+              <Button onClick={this.handleEdit} color="primary">
+                    Edit
+              </Button>
             )}
             <Button onClick={onClose} color="primary">
               Cancel
@@ -158,7 +218,7 @@ ViewReviews.propTypes = {
   scroll: PropTypes.string.isRequired,
   open: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
-  editMode: PropTypes.bool.isRequired,
+  editMode: PropTypes.bool.isRequired
 };
 
 export default withStyles(styles)(ViewReviews);
