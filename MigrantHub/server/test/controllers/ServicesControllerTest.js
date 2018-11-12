@@ -141,14 +141,14 @@ describe('Service controller search', function () {
     it('should return services if no error retrieving searched services', test(function () {
         this.stub(Services, 'find').yields(null);
         ServicesController.viewServices(req, res);
-        assert.calledWith(Services.find, { '$or': [ { serviceTitle: /test/gi }, { serviceSummary: /test/gi } ] });
+        assert.calledWith(Services.find, { '$or': [ { serviceTitle: /test/gi }, { serviceSummary: /test/gi } ], deleted: false });
         assert.calledWith(res.status, 200);
     }));
 
     it('should return error message if error retrieving searched services', test(function () {
         this.stub(Services, 'find').yields(error);
         ServicesController.viewServices(req, res);
-        assert.calledWith(Services.find, { '$or': [ { serviceTitle: /test/gi }, { serviceSummary: /test/gi } ] });
+        assert.calledWith(Services.find, { '$or': [ { serviceTitle: /test/gi }, { serviceSummary: /test/gi }], deleted: false });
         assert.calledWith(res.status, 400);
     }));
 });
