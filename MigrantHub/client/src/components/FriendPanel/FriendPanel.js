@@ -32,11 +32,11 @@ class FriendPanel extends Component {
     this.getFriendsList(this);
   }
 
-  getFriendsList(ev) {
+  getFriendsList(event) {
     axios.get('/api/friend/getfriendslist')
       .then((response) => {
         if (response.data) {
-          ev.setState({ friendsList: response.data[0].friendsList });
+          event.setState({ friendsList: response.data[0].friendsList });
         }
       }).catch((error) => { });
   }
@@ -53,10 +53,10 @@ class FriendPanel extends Component {
     event.getFriendRequests(event);
   }
 
-  getFriendRequests(ev) {
+  getFriendRequests(event) {
     axios.get('/api/friend/getrequests')
       .then((response) => {
-        ev.setState({ friendRequests: response.data });
+        event.setState({ friendRequests: response.data });
       }).catch((error) => { });
   }
 
@@ -68,9 +68,9 @@ class FriendPanel extends Component {
     });
   }
 
-  handleAddFriendTextChange(e) {
+  handleAddFriendTextChange(event) {
     this.setState({
-      addFriendTextValue: e.target.value,
+      addFriendTextValue: event.target.value,
     });
   }
 
