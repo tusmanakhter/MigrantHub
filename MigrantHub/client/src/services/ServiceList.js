@@ -24,7 +24,7 @@ class ServiceList extends Component {
       redirectToServiceForm: false,
       editMode: '',
       editOwner: '',
-      searchMode: false
+      searchMode: false,
     };
 
     this.getData = this.getData.bind(this);
@@ -38,7 +38,7 @@ class ServiceList extends Component {
     this.getData(this, props);
   }
 
-  getData(event, props=this.props) {
+  getData(event, props = this.props) {
     const { location } = props;
     const { searchMode } = this.state;
     let editOwnerEmail = '';
@@ -46,13 +46,13 @@ class ServiceList extends Component {
 
     if (location.state) {
       if (location.state.editMode) {
-      this.setState({
-        editMode: location.state.editMode,
-        editOwner: location.state.editOwner,
-      });
+        this.setState({
+          editMode: location.state.editMode,
+          editOwner: location.state.editOwner,
+        });
 
-      editOwnerEmail = location.state.editOwner;
-      } else if(location.state.searchMode) {
+        editOwnerEmail = location.state.editOwner;
+      } else if (location.state.searchMode) {
         this.setState({
           searchMode: searchMode,
         });

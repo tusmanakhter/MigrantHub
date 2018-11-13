@@ -223,16 +223,16 @@ class Header extends Component {
   };
 
   sendSearchServices(e) { 
-          this.setState({
-            redirectTo: true,
-            redirectToURL: '/services',
-            redirectState: {
-              editOwner: '',
-              editMode: false,
-              searchQuery: this.state.search,
-              searchMode: true
-            }
-          })
+    this.setState({
+      redirectTo: true,
+      redirectToURL: '/services',
+      redirectState: {
+        editOwner: '',
+        editMode: false,
+        searchQuery: this.state.search,
+        searchMode: true
+      }
+    })
   }
 
   validate = () => {

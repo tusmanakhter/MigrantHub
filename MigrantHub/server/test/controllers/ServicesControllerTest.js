@@ -116,20 +116,21 @@ describe('Service controller', function () {
 describe('Service controller search', function () {
 
     let req = {
-            body: {
-                serviceDetails: ServicesFactory.validServiceData()
-            },
-            user: {
-                _id: "test@test.com"
-            },
-            query: {
-                search: true,
-                searchQuery: 'test',
-                editOwner: ''
-            }
+        body: {
+            serviceDetails: ServicesFactory.validServiceData()
         },
-        error = new Error({ error: "err" }),
-        res = {};
+        user: {
+            _id: "test@test.com"
+        },
+        query: {
+            search: true,
+            searchQuery: 'test',
+            editOwner: ''
+        }
+    },
+   
+    error = new Error({ error: "err" }),
+    res = {};
 
     beforeEach(function () {
         status = stub();
