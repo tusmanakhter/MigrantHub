@@ -104,8 +104,8 @@ module.exports = {
         return res.send('Unable to unfriend this user');
       }
     });
-    User.update({ _id: parsedObj.friendId, 'friendsList.friend_id': req.user._id }, { $set: { 'friendsList.$.state': 'unfriended', 'friendsList.$.lastUpdate': Date.now() } }, (err2) => {
-      if (err2) {
+    User.update({ _id: parsedObj.friendId, 'friendsList.friend_id': req.user._id }, { $set: { 'friendsList.$.state': 'unfriended', 'friendsList.$.lastUpdate': Date.now() } }, (err) => {
+      if (err) {
         return res.send('Unable to unfriend this user');
       }
       return res.send('User has been removed from your friend list');
