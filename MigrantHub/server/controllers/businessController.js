@@ -4,7 +4,7 @@ const BusinessUser = require('../models/BusinessUser');
 
 module.exports = {
   getBusinessUser(req, res) {
-    const email = req.session.passport.user._id;
+    const email = req.user._id;
     BusinessUser.findOne({ email }, (err, user) => {
       if (err) {
         return res.status(500).send(err);
@@ -19,7 +19,7 @@ module.exports = {
     const parsedObj = qs.parse(req.body);
 
     BusinessUser.findByIdAndUpdate(
-      req.session.passport.user._id,
+      req.user._id,
       parsedObj,
       { new: true },
       (err) => {

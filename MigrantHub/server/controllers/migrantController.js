@@ -4,7 +4,7 @@ const MigrantUser = require('../models/MigrantUser');
 
 module.exports = {
   getMigrantUser(req, res) {
-    const email = req.session.passport.user._id;
+    const email = req.user._id;
     MigrantUser.findOne({ email }, (err, user) => {
       if (err) {
         return res.status(500).send(err);
@@ -31,7 +31,7 @@ module.exports = {
     }
 
     MigrantUser.findByIdAndUpdate(
-      req.session.passport.user._id,
+      req.user._id,
       parsedObj,
       { new: true },
       (err) => {
