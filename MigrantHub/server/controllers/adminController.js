@@ -2,7 +2,9 @@ const Admin = require('../models/Admin');
 
 module.exports = {
   getAdmins(req, res) {
-    Admin.find({ authorized: true, rejected: false, deleted: false }, 'email', (err, users) => {
+    Admin.find({
+      _id: { $ne: req.user._id }, authorized: true, rejected: false, deleted: false,
+    }, 'email', (err, users) => {
       if (err) {
         res.status(500).send('There was an error finding admins');
       } else {
@@ -42,13 +44,14 @@ module.exports = {
   },
 
   reactivateAdmin(req, res) {
-    Admin.updateOne({ _id: req.params.id }, { deleted: false, deletedDate: null }, (err) => {
-      if (err) {
-        res.status(500).send('There was an error reactivating admin.');
-      } else {
-        res.status(200).send('Admin reactivated successfully.');
-      }
-    });
+    Admin.updateOne({ _id: req.params.id },
+      { authorized: true, deleted: false, deletedDate: null }, (err) => {
+        if (err) {
+          res.status(500).send('There was an error reactivating admin.');
+        } else {
+          res.status(200).send('Admin reactivated successfully.');
+        }
+      });
   },
 
   approveAdmin(req, res) {
@@ -73,12 +76,17 @@ module.exports = {
   },
 
   deleteAdmin(req, res) {
-    Admin.updateOne({ _id: req.params.id }, { deleted: true, deletedDate: Date.now() }, (err) => {
-      if (err) {
-        res.status(500).send('There was an error deleting admin.');
-      } else {
-        res.status(200).send('Admin deleted successfully.');
-      }
-    });
+    if (req.user._id === req.params.id) {
+      res.status(500).send('You cannot delete yourself.');
+    }
+
+    Admin.updateOne({ _id: req.params.id },
+      { authorized: false, deleted: true, deletedDate: Date.now() }, (err) => {
+        if (err) {
+          res.status(500).send('There was an error deleting admin.');
+        } else {
+          res.status(200).send('Admin deleted successfully.');
+        }
+      });
   },
 };
