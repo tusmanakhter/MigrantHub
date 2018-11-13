@@ -44,10 +44,11 @@ class ViewReviews extends Component {
   getReviews = () => {
     var reviews
     //get all reviews for the service
-    axios.get('/api/services/reviews',
-      qs.stringify({
-        serviceId: this.props.serviceId
-    }))
+    axios.get('/api/services/reviews', {
+      params: {
+        serviceId: this.props.serviceId,
+      },
+    })
     .then((response) => {
       reviews = response.data
       if (reviews) {

@@ -1,5 +1,6 @@
 const validator = require('validator');
 const User = require('../models/User');
+const Service = require('../models/Services');
 const ReviewService = require('../models/ReviewService');
 
 // Function to perform server-side validation of reviews before sending to db.
@@ -20,6 +21,12 @@ async function ReviewValidator(reviewObject) {
   const migrantUserError = await checkIfMigrantUser(reviewObject.user);
   if (migrantUserError) {
     error = migrantUserError;
+  }
+
+  //make sure the user isn't reviewing their own service
+  const ownerReviewError = await checkForOwnerReview(reviewObject.user, reviewObject.serviceId);
+  if (ownerReviewError) {
+    error = ownerReviewError;
   }
 
   //make sure the user hasn't already reviewed this service
@@ -48,6 +55,23 @@ async function ReviewValidator(reviewObject) {
     return error;
   }
 
+  // helper function: makes sure the user isn't the owner of the service
+  async function checkForOwnerReview(user, serviceId) {
+    let error = '';
+    try {
+      const record = await Service.findOne({
+        email: user,
+        _id: serviceId
+      });
+      if (record) {
+        error = 'You cannot review your own service.';
+      }
+    } catch (e) {
+      error = 'Server Errors. Please log out and back in and try again.';
+    }
+    return error;
+  }
+
   // helper function: makes sure the user hasn't already reviewed this service
   async function checkForExistingReview(user, serviceId) {
     let error = '';
@@ -64,6 +88,7 @@ async function ReviewValidator(reviewObject) {
     }
     return error;
   }
+
   return error;
 }
 

@@ -8,7 +8,6 @@ const ReviewService = require('../models/ReviewService');
 
 const multerStorage = multer.diskStorage({
   destination(req, file, cb) {
-    console.log(req.session);
     const path = `uploads/${req.session.passport.user._id}/services/`;
     fs.ensureDirSync(path);
     cb(null, path);
@@ -163,17 +162,14 @@ module.exports = {
         if (err) {
           return res.send({addReviewMessage: 'There was an error creating the review.' + err, addReviewError: true});
         }
-        return res.send({addReviewMessage: 'Service has been created!', addReviewError: false});
+        return res.send({addReviewMessage: 'Review has been created!', addReviewError: false});
       });
     } else {
       return res.send({addReviewMessage: errors, addReviewError: true});
     }
   },
   async getServiceReviews(req, res) {
-    if (req.serviceId !== '') {
-      var serviceId = req.serviceId;
-    }
-    ReviewService.find(serviceId, (err, reviews) => {
+    ReviewService.find(req.query, (err, reviews) => {
       if (err) {
         return res.send('There was an error getting services.');
       }
