@@ -4,6 +4,7 @@ import SignUpMigrant from '../account/personal/SignUpMigrant';
 import SignUpBusiness from '../account/business/SignUpBusiness';
 import SignUpAdmin from '../account/admin/SignUpAdmin';
 import Main from '../home/Main';
+import BusinessMain from '../home/BusinessMain';
 import Error from '../components/Error';
 import Home from '../home/HomePage';
 import Login from '../account/Login';
@@ -41,6 +42,7 @@ class Routes extends Component {
       <Switch>
         <Route path="/" component={Home} exact />
         <ProtectedRoute path="/main" component={Main} type="migrant" exact />
+        <ProtectedRoute path="/businessmain" component={BusinessMain} type="business" exact />
         <Route path="/signup/business" component={SignUpBusiness} exact />
         <Route path="/signup/user" component={SignUpMigrant} exact />
         <Route path="/signup/admin" component={SignUpAdmin} exact />
