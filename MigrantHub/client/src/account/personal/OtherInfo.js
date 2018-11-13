@@ -8,77 +8,12 @@ import Typography from '@material-ui/core/Typography';
 import Autosuggest from 'react-autosuggest';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import Paper from '@material-ui/core/Paper';
-import match from 'autosuggest-highlight/match';
-import parse from 'autosuggest-highlight/parse';
-import { cities } from 'canada';
-import deburr from 'lodash/deburr';
 import validator from 'validator';
+import { joiningReasons } from '../../lib/SignUpConstants';
+import { renderInputComponent } from '../../helpers/Autosuggest';
+import { renderSuggestion, getSuggestionValue,
+  handleSuggestionsClearRequested, handleSuggestionsFetchRequested } from '../../helpers/AutoSuggestCity';
 
-const joiningReasons = [
-  { value: 'help', label: 'Help' },
-  { value: 'findJob', label: 'Find Job' },
-];
-
-const getSuggestions = (value) => {
-  const inputValue = deburr(value.trim()).toLowerCase();
-  const inputLength = inputValue.length;
-  let count = 0;
-
-  return inputLength === 0 ? [] : cities.filter((city) => {
-    const keep = count < 5 && (`${city[0]}, ${city[1]}`).slice(0, inputLength).toLowerCase() === inputValue;
-
-    if (keep) {
-      count += 1;
-    }
-
-    return keep;
-  });
-};
-
-const getSuggestionValue = suggestion => (`${suggestion[0]}, ${suggestion[1]}`);
-
-const renderSuggestion = (suggestion, { query, isHighlighted }) => {
-  const matches = match((`${suggestion[0]}, ${suggestion[1]}`), query);
-  const parts = parse((`${suggestion[0]}, ${suggestion[1]}`), matches);
-
-  return (
-    <MenuItem selected={isHighlighted} component="div">
-      <div>
-        {parts.map((part, index) => (part.highlight ? (
-          <span key={String(index)} style={{ fontWeight: 500 }}>
-            {part.text}
-          </span>
-        ) : (
-          <strong key={String(index)} style={{ fontWeight: 300 }}>
-            {part.text}
-          </strong>
-        )))}
-      </div>
-    </MenuItem>
-  );
-};
-
-const renderInputComponent = (inputProps) => {
-  const {
-    classes, inputRef = () => {}, ref, ...other
-  } = inputProps;
-
-  return (
-    <TextField
-      fullWidth
-      InputProps={{
-        inputRef: (node) => {
-          ref(node);
-          inputRef(node);
-        },
-        classes: {
-          input: classes.input,
-        },
-      }}
-      {...other}
-    />
-  );
-};
 
 const styles = theme => ({
   container: {
@@ -110,8 +45,14 @@ const styles = theme => ({
   },
 });
 class OtherInfo extends Component {
+  constructor(props) {
+    super(props);
+    this.handleSuggestionsClearRequested = handleSuggestionsClearRequested.bind(this);
+    this.handleSuggestionsFetchRequested = handleSuggestionsFetchRequested.bind(this);
+  }
+
   state = {
-    suggestions: [],
+    citySuggestions: [],
     settlingLocationError: '',
     settlingDurationError: '',
     joiningReasonError: '',
@@ -149,35 +90,17 @@ class OtherInfo extends Component {
     return isError;
   }
 
-  handleSuggestionsFetchRequested = ({ value }) => {
-    this.setState({
-      suggestions: getSuggestions(value),
-    });
-  };
-
-  handleSuggestionsClearRequested = () => {
-    this.setState({
-      suggestions: [],
-    });
-  };
-
-  handleAutoSuggestChange = name => (event, { newValue }) => {
-    this.setState({
-      [name]: newValue,
-    });
-  };
-
   render() {
     const {
       classes, handleChange, handleAutoSuggestChange, settlingLocation, settlingDuration,
       joiningReason,
     } = this.props;
     const {
-      suggestions, settlingLocationError, settlingDurationError, joiningReasonError,
+      citySuggestions, settlingLocationError, settlingDurationError, joiningReasonError,
     } = this.state;
     const autosuggestProps = {
       renderInputComponent,
-      suggestions,
+      suggestions: citySuggestions,
       onSuggestionsFetchRequested: this.handleSuggestionsFetchRequested,
       onSuggestionsClearRequested: this.handleSuggestionsClearRequested,
       getSuggestionValue,
