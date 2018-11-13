@@ -3,7 +3,6 @@ import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import logo from '../logo.svg';
 import '../App.css';
-import FriendPanel from '../components/FriendPanel/FriendPanel';
 import NavPanel from '../components/NavPanel/NavPanel';
 import Header from '../components/Header/Header';
 import Logout from '../components/Logout';
@@ -15,7 +14,7 @@ const theme = createMuiTheme({
   },
 });
 
-class Main extends Component {
+class BusinessMain extends Component {
     state = {
       appName: 'Migrant Hub',
       appLogo: logo,
@@ -24,15 +23,12 @@ class Main extends Component {
         { description: 'Services', link: '/services' },
         { description: 'Events', link: '/events' },
       ],
-      navPanelVisibility: true,
-      friendPanelVisibility: true,
+      navPanelVisibility: true
     };
 
     render() {
       const {
-        appLogo, appName, userPic, navPanelVisibility,
-        navOptions, friendPanelVisibility, friends,
-      } = this.state;
+        appLogo, appName, userPic, navPanelVisibility, navOptions } = this.state;
 
       return (
         <MuiThemeProvider theme={theme}>
@@ -54,9 +50,6 @@ class Main extends Component {
                   </h1>
                 </div>
               </Grid>
-              <Grid item xs={3}>
-                <div className="Panel">{friendPanelVisibility && <FriendPanel />}</div>
-              </Grid>
             </Grid>
           </div>
         </MuiThemeProvider>
@@ -64,4 +57,4 @@ class Main extends Component {
     }
 }
 
-export default Main;
+export default BusinessMain;

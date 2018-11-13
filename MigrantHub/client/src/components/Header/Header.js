@@ -198,10 +198,17 @@ class Header extends Component {
         },
       });
     } else if (event.target.id === 'main') {
-      this.setState({
-        redirectTo: true,
-        redirectToURL: '/main',
-      });
+      if (type === 'migrant') {
+        this.setState({
+            redirectTo: true,
+            redirectToURL: '/main',
+        });
+      } else if (type === 'business') {
+        this.setState({
+            redirectTo: true,
+            redirectToURL: '/businessmain',
+        });
+      }
     }
     this.handleMenuClose();
   }
