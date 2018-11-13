@@ -11,22 +11,7 @@ import Checkbox from '@material-ui/core/Checkbox';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import validator from 'validator';
-
-const educationLevels = [
-  { value: 'earlyChildhood', label: 'Early childhood' },
-  { value: 'elementary', label: 'Elementary' },
-  { value: 'intermediate', label: 'Intermediate' },
-  { value: 'secondary', label: 'High School/Secondary' },
-  { value: 'trade', label: 'Trade/Vocational School' },
-  { value: 'bachelors', label: 'Bachelors' },
-  { value: 'masters', label: 'Mastors' },
-  { value: 'doctorate', label: 'Ph.D/Doctorate' },
-];
-
-const proficiencyExaminations = [
-  { value: 'ielts', label: 'IELTS' },
-  { value: 'french', label: 'French' },
-];
+import { educationLevels, proficiencyExaminations } from '../../lib/SignUpConstants';
 
 const styles = ({
   group: {
