@@ -7,9 +7,6 @@ const MigrantUser = User.discriminator('migrant',
   new Schema({
     firstName: { type: String, required: true },
     lastName: { type: String, required: true },
-    friendsList: [{
-      friendName: { type: String, default: '' },
-    }],
     address: { type: String, required: true },
     apartment: { type: String, required: false },
     city: { type: String, required: true },
@@ -52,6 +49,11 @@ const MigrantUser = User.discriminator('migrant',
     settlingLocation: { type: String, required: true },
     settlingDuration: { type: Number, required: true },
     joiningReason: { type: String, required: true },
+    friendsList: [{
+      friend_id: { type: String, default: '' },
+      state: { type: String, enum: ['waiting', 'accepted', 'rejected', 'unfriended'], default: '' },
+      lastUpdate: { type: Date, default: Date.now },
+    }],
   }, options));
 
 module.exports = MigrantUser;

@@ -5,6 +5,8 @@ import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
+import IconButton from '@material-ui/core/IconButton';
+import PersonAddDisabled from '@material-ui/icons/PersonAddDisabled';
 import axios from 'axios';
 import yes from './yes.svg';
 import no from './no.svg';
@@ -30,43 +32,30 @@ class FriendPanel extends Component {
     this.getFriendsList(this);
   }
 
-  getFriendsList(ev) {
+  getFriendsList(event) {
     axios.get('/api/friend/getfriendslist')
-    .then((response) => {
-        ev.setState({ friendsList: response.data });
-    }).catch((error) => {});
-  }
-
-  acceptFriendRequest(event, _id, requestFromP, requestToP, index) {
-    event.handleDeleteRow(index);
-    axios.post('/api/friend/acceptfriendrequest',
-      qs.stringify({
-          _id,
-          requestFrom: requestFromP,
-          requestTo: requestToP,
-      })).then((response) => {
-      // call getFriendRequests() to update list
-      event.getFriendRequests(event);
-    });
+      .then((response) => {
+        if (response.data) {
+          event.setState({ friendsList: response.data[0].friendsList });
+        }
+      }).catch((error) => { });
   }
 
   rejectFriendRequest(event, _id, index) {
     event.handleDeleteRow(index);
     axios.post('/api/friend/rejectfriendrequest',
-        qs.stringify({
-            _id,
-        })).then((response) => {
-    });
-    // call getFriendRequests() to update list
-    event.getFriendRequests(event);
+      qs.stringify({
+        _id,
+      })).then((response) => {
+      });
+    event.getFriendRequests(event); //to update friend request list
   }
 
-
-  getFriendRequests(ev) {
+  getFriendRequests(event) {
     axios.get('/api/friend/getrequests')
-    .then((response) => {
-        ev.setState({ friendRequests: response.data });
-    }).catch((error) => {});
+      .then((response) => {
+        event.setState({ friendRequests: response.data });
+      }).catch((error) => { });
   }
 
   handleDeleteRow(index) {
@@ -77,10 +66,23 @@ class FriendPanel extends Component {
     });
   }
 
-  handleAddFriendTextChange(e) {
+  handleAddFriendTextChange(event) {
     this.setState({
-      addFriendTextValue: e.target.value,
+      addFriendTextValue: event.target.value,
     });
+  }
+
+  acceptFriendRequest(event, _id, requestFromP, requestToP, index) {
+    event.handleDeleteRow(index);
+    axios.post('/api/friend/acceptfriendrequest',
+      qs.stringify({
+        _id,
+        requestFrom: requestFromP,
+        requestTo: requestToP,
+      })).then((response) => {
+        event.getFriendsList(event); // to update friends list list
+        event.getFriendRequests(event); // to update friend request list
+      });
   }
 
   handleAddFriend = () => {
@@ -96,17 +98,49 @@ class FriendPanel extends Component {
       });
   }
 
-  render(props) {
+  unfriend(event, friendid, index) {
+    event.handleUnfriendRow(index);
+    axios.post('/api/friend/unfriend',
+      qs.stringify({
+        friendId: friendid,
+      })).then((response) => {
+      });
+  }
+
+  handleUnfriendRow(index) {
+    const rows = [...this.state.friendsList];
+    rows.splice(index, 1);
+    this.setState({
+      friendsList: rows,
+    });
+  }
+
+
+  render() {
     return (
       <div>
         <Card className="Card-friend-panel">
           <CardContent>
             <p>Your list of friends:</p>
             <ul>
-              {this.state.friendsList.map(request => (
-                <li key={request.friendName}>
-                  <img src={request.pic} alt="profile pic" className="User-avatar" />
-                  {request.friendName}
+              {this.state.friendsList.map((list, index) => (
+                <li key={list.friend_id}>
+                  <img src={list.pic} alt="profile pic" className="User-avatar" />
+                  {list.friend_id}
+                  <IconButton onClick={() => { this.unfriend(this, list.friend_id, index); }} aria-label="Delete">
+                    <PersonAddDisabled fontSize="small" />
+                  </IconButton>
+                  <Grid container spacing={24}>
+                    <Grid
+                      item
+                      xs={12}
+                      sm={4}
+                      id="friendRequest"
+                      name="friendRequest"
+                      value={list.requestFrom}
+                      fullWidth
+                    />
+                  </Grid>
                 </li>
               ))}
             </ul>
@@ -117,23 +151,23 @@ class FriendPanel extends Component {
             <p>Your friend requests:</p>
             <ul>
               {this.state.friendRequests.map((request, index) => (
-                  <li key={request.id}>
-                    <img src={request.pic} alt="profile pic" className="User-avatar" />
-                    {request.requestFrom}
-                    <Grid container spacing={24}>
-                      <Grid
-                        item
-                        xs={12}
-                        sm={4}
-                        id="friendRequest"
-                        name="friendRequest"
-                        value={request.requestFrom}
-                        fullWidth
-                      />
-                      <Button onClick={() => { this.acceptFriendRequest(this, request._id, request.requestFrom, request.requestTo, index); }} variant="contained" color="primary"><img src={yes} alt="yes" /></Button>
-                      <Button onClick={() => { this.rejectFriendRequest(this, request._id, index); }} variant="contained" color="primary"><img src={no} alt="no" /></Button>
-                    </Grid>
-                  </li>
+                <li key={request.id}>
+                  <img src={request.pic} alt="profile pic" className="User-avatar" />
+                  {request.requestFrom}
+                  <Grid container spacing={24}>
+                    <Grid
+                      item
+                      xs={12}
+                      sm={4}
+                      id="friendRequest"
+                      name="friendRequest"
+                      value={request.requestFrom}
+                      fullWidth
+                    />
+                    <Button onClick={() => { this.acceptFriendRequest(this, request._id, request.requestFrom, request.requestTo, index); }} variant="contained" color="primary"><img src={yes} alt="yes" /></Button>
+                    <Button onClick={() => { this.rejectFriendRequest(this, request._id, index); }} variant="contained" color="primary"><img src={no} alt="no" /></Button>
+                  </Grid>
+                </li>
               ))}
             </ul>
           </CardContent>
