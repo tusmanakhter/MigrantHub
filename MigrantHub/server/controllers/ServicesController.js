@@ -53,11 +53,16 @@ module.exports = {
   },
 
   viewServices(req, res) {
-    const query = {};
+    let query = {};
 
     if (req.query.editOwner !== '') {
       query.email = req.query.editOwner;
-    }
+    } else if (req.query.search !== '') {
+      let searchQuery = req.query.searchQuery;
+      const regex = new RegExp(searchQuery.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"), 'gi');
+      query = {$or:[{serviceTitle: regex}, {serviceSummary: regex}]};
+    }   
+
     query.deleted = false;
 
     Services.find(query, (err, services) => {

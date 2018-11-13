@@ -7,32 +7,17 @@ import withStyles from '@material-ui/core/styles/withStyles';
 import MenuItem from '@material-ui/core/MenuItem';
 import Button from '@material-ui/core/Button';
 import validator from 'validator';
-import MaskedInput from 'react-text-mask';
 import axios from 'axios';
 import { Redirect } from 'react-router-dom';
 import Header from '../components/Header/Header';
+import { provinces } from '../lib/SignUpConstants';
+import { PhoneMask, PostalCodeMask } from '../lib/Masks';
 
 const qs = require('qs');
 
 const visibilities = [
   { value: 'public', label: 'Public' },
   { value: 'private', label: 'Private' },
-];
-
-const provinces = [
-  { value: 'AB', label: 'Alberta' },
-  { value: 'BC', label: 'British Columbia' },
-  { value: 'MB', label: 'Manitoba' },
-  { value: 'NB', label: 'New Brunswick' },
-  { value: 'NL', label: 'Newfoundland and Labrador' },
-  { value: 'NS', label: 'Nova Scotia' },
-  { value: 'NT', label: 'Northwest Territories' },
-  { value: 'NU', label: 'Nunavut' },
-  { value: 'ON', label: 'Ontario' },
-  { value: 'PE', label: 'Prince Edward Island' },
-  { value: 'QC', label: 'Quebec' },
-  { value: 'SK', label: 'Saskatchewan' },
-  { value: 'YT', label: 'Yukon' },
 ];
 
 const repeats = [
@@ -75,32 +60,6 @@ const styles = theme => ({
     marginLeft: theme.spacing.unit,
   },
 });
-
-const PhoneMask = (props) => {
-  const { inputRef, ...other } = props;
-
-  return (
-    <MaskedInput
-      {...other}
-      mask={['(', /[1-9]/, /\d/, /\d/, ')', ' ', /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/]}
-      placeholderChar={'\u2000'}
-      guide={false}
-    />
-  );
-};
-
-const PostalCodeMask = (props) => {
-  const { inputRef, ...other } = props;
-
-  return (
-    <MaskedInput
-      {...other}
-      mask={[/[a-zA-Z]/, /\d/, /[a-zA-Z]/, ' ', /\d/, /[a-zA-Z]/, /\d/]}
-      placeholderChar={'\u2000'}
-      guide={false}
-    />
-  );
-};
 
 class CreateEvent extends Component {
   constructor(props) {
@@ -421,6 +380,38 @@ class CreateEvent extends Component {
     }
 
     handleUpdate = () => {
+      const {
+        timeStart, timeEnd, visibility, province, repeat,
+      } = this.state;
+
+      // Converting start/end times to seconds of day for easier validation and storage
+      const startTimeHours = parseInt(timeStart.substring(0, 2), 10) * 3600;
+      const startTimeMinutes = parseInt(timeStart.substring(3, 5), 10) * 60;
+      const start = startTimeHours + startTimeMinutes;
+      const endTimeHours = parseInt(timeEnd.substring(0, 2), 10) * 3600;
+      const endTimeMinutes = parseInt(timeEnd.substring(3, 5), 10) * 60;
+      const end = endTimeHours + endTimeMinutes;
+      this.setState({
+        secondsStart: start,
+        secondsEnd: end,
+      });
+      // Making sure visibility, province and repeat are instantiated
+      if (visibility === '') {
+        this.setState({
+          visibility: 'public',
+        });
+      }
+      if (province === '') {
+        this.setState({
+          province: 'AB',
+        });
+      }
+      if (repeat === '') {
+        this.setState({
+          repeat: 'no',
+        });
+      }
+
       const error = this.validate();
       if (!error) {
         this.updateEvent();
