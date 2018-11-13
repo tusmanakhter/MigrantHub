@@ -2,10 +2,8 @@ const { logger, formatMessage } = require('../config/winston');
 
 module.exports = {
   ensureUser(req, res, next) {
-    if (req.session.passport !== undefined) {
-      if (req.session.passport.user !== undefined) {
-        return next();
-      }
+    if (req.user !== undefined) {
+      return next();
     }
     logger.error(formatMessage(req.ip, req.method, req.originalUrl, req.httpVersion,
         '403' , req.referer,'accountController.ensureOwner', 'Unauthorized user(user not logged in'));
@@ -14,7 +12,7 @@ module.exports = {
 
   ensureRole: function ensureRole(type) {
     return function checkUser(req, res, next) {
-      if (req.session.passport.user.type === type) {
+      if (req.user.type === type) {
         return next();
       }
       logger.error(formatMessage(req.ip, req.method, req.originalUrl, req.httpVersion,
@@ -24,7 +22,7 @@ module.exports = {
   },
 
   ensureOwner(req, res, next) {
-    if (req.session.passport.user._id === req.params.id) {
+    if (req.user._id === req.params.id) {
       return next();
     }
     logger.error(formatMessage(req.ip, req.method, req.originalUrl, req.httpVersion,

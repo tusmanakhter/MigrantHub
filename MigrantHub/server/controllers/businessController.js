@@ -4,7 +4,7 @@ const { logger, formatMessage } = require('../config/winston');
 
 module.exports = {
   getBusinessUser(req, res) {
-    const email = req.session.passport.user._id;
+    const email = req.user._id;
     BusinessUser.findOne({ email }, (err, user) => {
       if (err) {
           logger.error(formatMessage(req.ip, req.method, req.originalUrl, req.httpVersion,
@@ -21,7 +21,7 @@ module.exports = {
     const parsedObj = qs.parse(req.body);
 
     BusinessUser.findByIdAndUpdate(
-      req.session.passport.user._id,
+      req.user._id,
       parsedObj,
       { new: true },
       (err) => {
