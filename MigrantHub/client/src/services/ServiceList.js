@@ -63,7 +63,7 @@ class ServiceList extends Component {
       params: {
         editOwner: editOwnerEmail,
         searchQuery: searchQuery,
-        search: true
+        search: searchMode,
       },
     }).then((response) => {
       this.setState({

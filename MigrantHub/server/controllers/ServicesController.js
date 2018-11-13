@@ -6,7 +6,6 @@ const Services = require('../models/Services');
 
 const multerStorage = multer.diskStorage({
   destination(req, file, cb) {
-    console.log(req.session);
     const path = `uploads/${req.session.passport.user._id}/services/`;
     fs.ensureDirSync(path);
     cb(null, path);
@@ -36,9 +35,9 @@ module.exports = {
       services.location = parsedObj.location;
       services.serviceHours = parsedObj.serviceHours;
       if (parsedObj.serviceImageName === 'cameraDefault.png') {
-        services.serviceImagePath = (`../default/${parsedObj.serviceImageName}`);
+        services.serviceImagePath = (`../uploads/default/${parsedObj.serviceImageName}`);
       } else {
-        services.serviceImagePath = (`../${req.user._id}/services/${parsedObj.serviceImageName}`);
+        services.serviceImagePath = (`../uploads/${req.user._id}/services/${parsedObj.serviceImageName}`);
       }
       services.dateCreated = date;
       services.save((err) => {
@@ -53,15 +52,16 @@ module.exports = {
   },
 
   viewServices(req, res) {
+    const { editOwner, searchQuery, search } = req.query;
     let query = {};
 
-    if (req.query.editOwner !== '') {
-      query.email = req.query.editOwner;
-    } else if (req.query.search !== '') {
-      let searchQuery = req.query.searchQuery;
-      const regex = new RegExp(searchQuery.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"), 'gi');
-      query = {$or:[{serviceTitle: regex}, {serviceSummary: regex}]};
-    }   
+    if (editOwner !== '') {
+      query.email = editOwner;
+    } else if (search !== '') {
+      const tempSearchQuery = searchQuery;
+      const regex = new RegExp(tempSearchQuery.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&'), 'gi');
+      query = { $or: [{ serviceTitle: regex }, { serviceSummary: regex }] };
+    }
 
     query.deleted = false;
 
@@ -106,8 +106,8 @@ module.exports = {
         parsedObj.serviceHours = [];
       }
 
-      if ((parsedObj.serviceImagePath !== undefined) && (parsedObj.serviceImagePath !== (`../${req.user._id}/services/${parsedObj.serviceImageName}`))) {
-        fs.remove(`uploads/${parsedObj.serviceImagePath.toString().substring(3)}`, (err) => {
+      if ((parsedObj.serviceImagePath !== undefined) && (parsedObj.serviceImagePath !== (`../uploads/${req.user._id}/services/${parsedObj.serviceImageName}`))) {
+        fs.remove(`${parsedObj.serviceImagePath.toString().substring(3)}`, (err) => {
           if (err) {
             updateError = true;
           }
@@ -115,9 +115,9 @@ module.exports = {
       }
 
       if (parsedObj.serviceImageName === 'cameraDefault.png') {
-        parsedObj.serviceImagePath = (`../default/${parsedObj.serviceImageName}`);
+        parsedObj.serviceImagePath = (`../uploads/default/${parsedObj.serviceImageName}`);
       } else {
-        parsedObj.serviceImagePath = (`../${req.user._id}/services/${parsedObj.serviceImageName}`);
+        parsedObj.serviceImagePath = (`../uploads/${req.user._id}/services/${parsedObj.serviceImageName}`);
       }
 
       Services.findByIdAndUpdate({ _id: parsedObj._id }, parsedObj, { new: true }, (err) => {

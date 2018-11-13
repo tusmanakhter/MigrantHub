@@ -40,9 +40,9 @@ module.exports = {
       event.repeat = parsedObj.repeat;
       event.secondsEnd = parsedObj.secondsEnd;
       if (parsedObj.eventImageName === 'cameraDefault.png') {
-        event.eventImagePath = (`/default/${parsedObj.eventImageName}`);
+        event.eventImagePath = (`../uploads/default/${parsedObj.eventImageName}`);
       } else {
-        event.eventImagePath = (`${req.user._id}/events/${parsedObj.eventImageName}`);
+        event.eventImagePath = (`../uploads/${req.user._id}/events/${parsedObj.eventImageName}`);
       }
       event.dateCreated = date;
       event.save((err) => {
@@ -60,8 +60,8 @@ module.exports = {
     const query = {};
 
     if (req.query._id !== '') {
-      query["_id"]= req.query._id;
-      query["deleted"] = false;
+      query._id = req.query._id;
+      query.deleted = false;
     }
 
     Event.findOne(query, (err, events) => {
@@ -73,19 +73,19 @@ module.exports = {
   },
 
   viewEvents(req, res) {
-    let query ={};
+    const query = {};
 
-    if(req.query.editOwner !== '') {
-        query["creator"] = req.query.editOwner;
+    if (req.query.editOwner !== '') {
+      query.creator = req.query.editOwner;
     }
-    query["deleted"] = false;
-    Event.find(query, function(err, events) {
+    query.deleted = false;
+    Event.find(query, (err, events) => {
       if (err) {
-          res.status(400).send("There was a error getting events.");
+        res.status(400).send('There was a error getting events.');
       } else {
-          res.status(200).send(events);
+        res.status(200).send(events);
       }
-  });
+    });
   },
 
   updateEvent(req, res) {
@@ -99,8 +99,8 @@ module.exports = {
         parsedObj.location = {};
       }
 
-      if ((parsedObj.eventImagePath !== undefined) && (parsedObj.eventImagePath !== (`../${req.user._id}/events/${parsedObj.eventImageName}`))) {
-        fs.remove(`uploads/${parsedObj.eventImagePath.toString().substring(3)}`, (err) => {
+      if ((parsedObj.eventImagePath !== undefined) && (parsedObj.eventImagePath !== (`../uploads/${req.user._id}/events/${parsedObj.eventImageName}`))) {
+        fs.remove(`${parsedObj.eventImagePath.toString().substring(3)}`, (err) => {
           if (err) {
             updateError = true;
           }
@@ -108,9 +108,9 @@ module.exports = {
       }
 
       if (parsedObj.eventImageName === 'cameraDefault.png') {
-        parsedObj.eventImageName = (`../default/${parsedObj.eventImageName}`);
+        parsedObj.eventImageName = (`../uploads/default/${parsedObj.eventImageName}`);
       } else {
-        parsedObj.eventImagePath = (`../${req.user._id}/events/${parsedObj.eventImageName}`);
+        parsedObj.eventImagePath = (`../uploads/${req.user._id}/events/${parsedObj.eventImageName}`);
       }
 
       Event.findByIdAndUpdate({ _id: parsedObj._id }, parsedObj, { new: true }, (err) => {
@@ -126,19 +126,18 @@ module.exports = {
     }
     return res.status(400).send('There was an error updating Event.');
   },
-    deleteEvent: function(req, res) {   
-      let deleteError = false;
-      Event.updateOne({_id: req.params.id}, { deleted: true, deletedDate: Date.now() }, (err) => {
-              if (err) {
-                  deleteError = true;
-              }
-          }
-      );
-
-      if (deleteError) {
-          res.status(400).send("There was an error deleting event.");
-      } else {
-          res.status(200).send("Event deleted successfully.");
+  deleteEvent(req, res) {
+    let deleteError = false;
+    Event.updateOne({ _id: req.params.id }, { deleted: true, deletedDate: Date.now() }, (err) => {
+      if (err) {
+        deleteError = true;
       }
+    });
+
+    if (deleteError) {
+      res.status(400).send('There was an error deleting event.');
+    } else {
+      res.status(200).send('Event deleted successfully.');
+    }
   },
 };

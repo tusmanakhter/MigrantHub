@@ -45,11 +45,9 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.use('/api', router);
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 app.use((req, res, next) => next());
-
-
-app.use(express.static('uploads'));
 
 // MongoDB/Mongoose Connection
 const { db: { host, port, name } } = serverConfig;
