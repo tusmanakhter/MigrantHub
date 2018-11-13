@@ -6,7 +6,6 @@ import '../App.css';
 import FriendPanel from '../components/FriendPanel/FriendPanel';
 import NavPanel from '../components/NavPanel/NavPanel';
 import Header from '../components/Header/Header';
-import Logout from '../components/Logout';
 
 const theme = createMuiTheme({
   palette: {
@@ -41,7 +40,6 @@ class Main extends Component {
             appName={appName}
             userPic={userPic}
           />
-          <Logout />
           <div className="App">
             <Grid container spacing={8}>
               <Grid item xs={3}>

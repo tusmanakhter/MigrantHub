@@ -52,6 +52,9 @@ class PersonalInfo extends Component {
     if (validator.isEmpty(age)) {
       errors.ageError = 'Age is required';
       isError = true;
+    } else if (!validator.isInt(age, {min: 1, max: 100})){
+      errors.ageError = 'Age is not valid';
+      isError = true;
     }
 
     if (validator.isEmpty(gender)) {
