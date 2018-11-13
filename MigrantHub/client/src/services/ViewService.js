@@ -10,8 +10,8 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import Button from '@material-ui/core/Button';
 import blue from '@material-ui/core/colors/blue';
 import { Redirect } from 'react-router-dom';
-import GoogleMaps from '../components/GoogleMaps/GoogleMaps';
 import axios from 'axios';
+import GoogleMaps from '../components/GoogleMaps/GoogleMaps';
 
 const styles = {
   avatar: {
@@ -55,7 +55,7 @@ class ViewService extends Component {
 
   render() {
     const {
-      serviceTitle, serviceSummary, serviceDescription, serviceLocation, serviceDate,
+      classes, serviceTitle, serviceSummary, serviceDescription, serviceLocation, serviceDate,
       serviceHours, open, scroll, editMode, onClose,
     } = this.props;
     const { redirectTo, redirectToURL, redirectState } = this.state;
@@ -81,18 +81,12 @@ class ViewService extends Component {
           fullWidth
           maxWidth="150"
         >
-          <DialogTitle id="scroll-dialog-title">{serviceTitle}</DialogTitle>
+          <DialogTitle id="scroll-dialog-title" variant="title" align="center">{serviceTitle}</DialogTitle>
           <DialogContent>
-            <Typography variant="h5" color="inherit" paragraph>
-                          Service Summary:
-              <br />
-              <br />
+            <Typography variant="body2" color="inherit" paragraph align="center">
               {serviceSummary}
             </Typography>
-            <Typography variant="h5" color="inherit" paragraph>
-                          Service Description:
-              <br />
-              <br />
+            <Typography variant="body1" color="inherit" paragraph align="center">
               {serviceDescription}
             </Typography>
 

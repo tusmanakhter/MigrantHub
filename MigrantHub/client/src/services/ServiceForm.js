@@ -9,6 +9,7 @@ import Button from '@material-ui/core/Button';
 import AddIcon from '@material-ui/icons/Add';
 import DeleteIcon from '@material-ui/icons/Delete';
 import Paper from '@material-ui/core/Paper';
+import Checkbox from '@material-ui/core/Checkbox';
 import validator from 'validator';
 import axios from 'axios';
 import { Redirect } from 'react-router-dom';
@@ -121,6 +122,7 @@ class ServiceForm extends Component {
       serviceImageName: '',
       serviceImagePath: '',
       tempServiceImagePath: '',
+      setDefaultImage: false,
       serviceDescription: '',
       serviceSummary: '',
       serviceTitle: '',
@@ -496,6 +498,7 @@ class ServiceForm extends Component {
       const {
         serviceId, serviceTitle, serviceSummary, serviceDescription, serviceHours, serviceDate,
         location, addLocation, addServiceDate, serviceImageName, serviceImage, serviceImagePath,
+        setDefaultImage,
       } = this.state;
 
       let tempImageName = serviceImageName;
@@ -506,6 +509,10 @@ class ServiceForm extends Component {
         tempImageName = 'cameraDefault.png';
       } else if (serviceImage !== null) {
         tempImageName = serviceImage.name;
+      }
+
+      if (setDefaultImage) {
+        tempImageName = 'cameraDefault.png';
       }
 
       if (addLocation) {
@@ -555,6 +562,7 @@ class ServiceForm extends Component {
         serviceImageError, startDateError, endDateError, serviceTitle, serviceSummary,
         serviceDescription, tempServiceImagePath, serviceHours, serviceDate, location,
         addLocation, addServiceDate, serviceHoursCount, messageFromServer, editMode,
+        setDefaultImage,
       } = this.state;
 
       return (
@@ -625,6 +633,17 @@ class ServiceForm extends Component {
                     <br />
                     <br />
                   </Typography>
+                </Grid>
+                <Grid item xs={12}>
+                  {editMode ? (
+                    <Checkbox
+                      id="setDefaultImage"
+                      name="setDefaultImage"
+                      value={setDefaultImage}
+                      onChange={event => this.handleChange(event)}
+                    />
+                  ) : (<br />) }
+                    Set to default picture
                 </Grid>
                 <Grid item xs={12}>
                   <TextField

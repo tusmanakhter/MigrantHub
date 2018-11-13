@@ -82,18 +82,15 @@ class ViewEvent extends Component {
           fullWidth
           maxWidth="150"
         >
-          <DialogTitle id="scroll-dialog-title">{eventName}</DialogTitle>
+          <DialogTitle variant="title" id="scroll-dialog-title" align="center">{eventName}</DialogTitle>
           <DialogContent>
-            <Typography variant="h5" color="inherit" paragraph>
-                        Description:
-              <br />
-              <br />
+            <Typography color="inherit" paragraph align="center" variant="body1">
               {description}
             </Typography>
 
             <Grid container spacing={12}>
               <Typography variant="h5" color="inherit" paragraph>
-                            Date:
+                            Event Date:
               </Typography>
               <Grid container spacing={12}>
                 <Grid item xs={12}>
@@ -111,7 +108,7 @@ class ViewEvent extends Component {
 
             <Typography variant="h5" color="inherit" paragraph>
               <br />
-Time:
+Event Time:
             </Typography>
 
             <Grid justify="center" container item xs>
@@ -197,6 +194,7 @@ Location:
 }
 
 ViewEvent.propTypes = {
+  classes: PropTypes.shape({}).isRequired,
   eventId: PropTypes.string.isRequired,
   eventName: PropTypes.string.isRequired,
   description: PropTypes.string.isRequired,

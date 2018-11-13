@@ -108,7 +108,7 @@ module.exports = {
       }
 
       if (parsedObj.eventImageName === 'cameraDefault.png') {
-        parsedObj.eventImageName = (`../uploads/default/${parsedObj.eventImageName}`);
+        parsedObj.eventImagePath = (`../uploads/default/${parsedObj.eventImageName}`);
       } else {
         parsedObj.eventImagePath = (`../uploads/${req.user._id}/events/${parsedObj.eventImageName}`);
       }
