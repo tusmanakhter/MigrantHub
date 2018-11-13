@@ -10,8 +10,8 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import Button from '@material-ui/core/Button';
 import blue from '@material-ui/core/colors/blue';
 import { Redirect } from 'react-router-dom';
-import GoogleMaps from '../components/GoogleMaps/GoogleMaps';
 import axios from 'axios';
+import GoogleMaps from '../components/GoogleMaps/GoogleMaps';
 
 const styles = {
   avatar: {
@@ -49,16 +49,16 @@ class ViewEvent extends Component {
   handleDelete = () => {
     axios.delete('/api/events/' + this.props.eventId)
     .then(response => {
-        if (response.status === 200) {
-            this.handleClose();
-        }
+      if (response.status === 200) {
+        this.handleClose();
+      }
     });
   };
 
   render() {
     const {
       eventName, description, dateStart, dateEnd, timeStart, timeEnd,
-      location, open, scroll, editMode, onClose,
+      location, open, scroll, onClose,
     } = this.props;
     const { redirectTo, redirectToURL, redirectState } = this.state;
 

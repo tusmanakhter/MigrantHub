@@ -1,7 +1,7 @@
 const qs = require('qs');
 const multer = require('multer');
 const fs = require('fs-extra');
-const CreateEventValidator = require('../validators/CreateEventValidator');
+const EventValidator = require('../validators/EventValidator');
 const Event = require('../models/Event');
 
 const multerStorage = multer.diskStorage({
@@ -22,7 +22,7 @@ module.exports = {
   createEvent(req, res) {
     const parsedObj = qs.parse(req.body.eventDetails);
     const date = new Date();
-    const errors = CreateEventValidator(parsedObj);
+    const errors = EventValidator(parsedObj);
 
     if (errors === '') {
       const event = new Event();
@@ -92,7 +92,7 @@ module.exports = {
     let updateError = false;
 
     const parsedObj = qs.parse(req.body.eventDetails);
-    const errors = CreateEventValidator(parsedObj);
+    const errors = EventValidator(parsedObj);
 
     if (errors === '') {
       if (parsedObj.location === undefined) {

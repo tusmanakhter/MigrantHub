@@ -15,7 +15,7 @@ const styles = {
     width: '100%',
   },
   media: {
-    objectFit: 'fill',
+    objectFit: 'contain',
   },
 };
 
@@ -55,6 +55,7 @@ class EventItem extends Component {
               alt={eventName}
               className={classes.media}
               height="200"
+              width="300"
               src={eventImagePath}
               title={eventName}
             />

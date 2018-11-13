@@ -47,6 +47,25 @@ const styles = theme => ({
   select: {
     textAlign: 'left',
   },
+  paper: {
+    width: '100%',
+    marginTop: theme.spacing.unit,
+    marginBottom: theme.spacing.unit,
+    paddingTop: theme.spacing.unit * 2,
+    paddingBottom: theme.spacing.unit * 2,
+    paddingLeft: theme.spacing.unit * 2,
+    [theme.breakpoints.up(600 + theme.spacing.unit * 3 * 2)]: {
+      marginTop: theme.spacing.unit,
+      marginBottom: theme.spacing.unit,
+      paddingTop: theme.spacing.unit * 3,
+      paddingBottom: theme.spacing.unit * 3,
+      paddingLeft: theme.spacing.unit * 3,
+    },
+    layout: {
+      marginLeft: theme.spacing.unit,
+      marginRight: theme.spacing.unit,
+    },
+  },
   timeContainer: {
     display: 'flex',
     flexWrap: 'wrap',
@@ -59,9 +78,14 @@ const styles = theme => ({
   rightIcon: {
     marginLeft: theme.spacing.unit,
   },
+  img: {
+    width: 400,
+    length: 300,
+
+  },
 });
 
-class CreateEvent extends Component {
+class EventForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -164,16 +188,16 @@ class CreateEvent extends Component {
           eventName: parsedObj.eventName,
           description: parsedObj.description,
           location: parsedObj.location,
-          dateStart: parsedObj.dateStart.toString().substring(0,10),
-          dateEnd: parsedObj.dateEnd.toString().substring(0,10),
+          dateStart: parsedObj.dateStart.toString().substring(0, 10),
+          dateEnd: parsedObj.dateEnd.toString().substring(0, 10),
           secondsStart: parsedObj.secondsStart,
           timeStart: parsedObj.timeStart,
           timeEnd: parsedObj.timeEnd,
           secondsEnd: parsedObj.secondsEnd,
           repeat: parsedObj.repeat,
-          serviceImagePath: parsedObj.serviceImagePath,
-          tempServiceImagePath: parsedObj.serviceImagePath,
-          serviceImageName: imageName,
+          eventImagePath: parsedObj.eventImagePath,
+          tempEventImagePath: parsedObj.eventImagePath,
+          eventImageName: imageName,
           dataRetrieved: true,
         });
       });
@@ -216,7 +240,6 @@ class CreateEvent extends Component {
         isError = true;
       }
 
-    
       if (validator.isEmpty(location.address)) {
         errors.addressError = 'Address is required';
         isError = true;
@@ -242,7 +265,7 @@ class CreateEvent extends Component {
         errors.phoneNumberError = 'Phone number is invalid';
         isError = true;
       }
-      
+
       if (validator.isEmpty(dateStart)) {
         errors.dateStartError = 'Start date is required';
         isError = true;
@@ -287,6 +310,7 @@ class CreateEvent extends Component {
       return isError;
     }
 
+/*
     objectErrorText = (name, index, field) => (this.state[name][index] === undefined ? '' : this.state[name][index][field])
 
     handleAddObject = (name, object) => {
@@ -311,6 +335,7 @@ class CreateEvent extends Component {
         }),
       });
     }
+*/
 
     handleChange = (event) => {
       this.setState({
@@ -491,19 +516,26 @@ class CreateEvent extends Component {
     updateEvent = () => {
       const {
         eventId, visibility, eventName, description, location,
-        dateStart, dateEnd, timeStart, secondsStart, timeEnd, secondsEnd, repeat, eventImageName, eventImage,
+        dateStart, dateEnd, timeStart, secondsStart, timeEnd, secondsEnd, repeat,
+        eventImageName, eventImage, eventImagePath,
       } = this.state;
 
-      let tempImageName = 'cameraDefault.png';
+      let tempImageName = eventImageName;
 
-      if (eventImage !== '') {
-        tempImageName = eventImageName;
+      // if (eventImage !== '') {
+      //  tempImageName = eventImageName;
+      // }
+
+      if (eventImageName === '') {
+        tempImageName = 'cameraDefault.png';
+      } else if (eventImage !== null) {
+        tempImageName = eventImage.name;
       }
 
       const date = new Date();
       const todaysDate = (`${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`);
 
-      let lastEditDate = todaysDate;
+      const lastEditDate = todaysDate;
 
       const formData = new FormData();
       formData.append('eventImage', eventImage);
@@ -521,7 +553,7 @@ class CreateEvent extends Component {
         repeat,
         lastEditDate,
         _id: eventId,
-        eventImage,
+        eventImagePath,
         eventImageName: tempImageName,
       }));
 
@@ -552,7 +584,7 @@ class CreateEvent extends Component {
         visibility, eventName, description, location, dateStart,
         dateEnd, timeStart, timeEnd, repeat, eventNameError, descriptionError,
         addressError, apartmentError, cityError, provinceError, postalCodeError,
-        phoneNumberError, dateStartError, dateEndError, timeStartError, timeEndError, tempServiceImagePath,
+        phoneNumberError, dateStartError, dateEndError, timeStartError, timeEndError, tempEventImagePath,
         eventImageError, messageFromServer, editMode,
       } = this.state;
       const { classes } = this.props;
@@ -794,11 +826,11 @@ class CreateEvent extends Component {
             </Grid>
             <Grid container spacing={24}>
               <Grid item xs={12}>
-                  <img
-                    src={tempServiceImagePath}
-                    alt={tempServiceImagePath}
-                    className={classes.img}
-                  />
+                <img
+                  src={tempEventImagePath}
+                  alt={tempEventImagePath}
+                  className={classes.img}
+                />
               </Grid>
               <Grid item xs={12}>
                 <Typography variant="subheading" gutterBottom className={classes.row} align="left">
@@ -838,10 +870,9 @@ class CreateEvent extends Component {
     }
 }
 
-CreateEvent.propTypes = {
+EventForm.propTypes = {
   classes: PropTypes.shape({}).isRequired,
   location: PropTypes.shape({}).isRequired,
-  editMode: PropTypes.bool.isRequired,
 };
 
-export default withStyles(styles)(CreateEvent);
+export default withStyles(styles)(EventForm);

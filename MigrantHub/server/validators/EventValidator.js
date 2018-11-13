@@ -1,7 +1,7 @@
 const validator = require('validator');
 
 // Function to perform server-side validation of the create event before sending to db.
-function CreateEventValidator(businessObject) {
+function EventValidator(businessObject) {
   let errors = '';
   if (validator.isEmpty(businessObject.eventName)) {
     errors += '\nEvent name is required';
@@ -70,4 +70,4 @@ function CreateEventValidator(businessObject) {
   return errors;
 }
 
-module.exports = CreateEventValidator;
+module.exports = EventValidator;

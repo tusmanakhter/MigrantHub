@@ -16,7 +16,7 @@ import ProtectedRoute from './ProtectedRoutes';
 import ServiceForm from '../services/ServiceForm';
 import ServiceList from '../services/ServiceList';
 import EventList from '../events/EventList';
-import CreateEvent from '../events/CreateEvent';
+import EventForm from '../events/EventForm';
 import Auth from './Auth';
 
 class Routes extends Component {
@@ -52,7 +52,7 @@ class Routes extends Component {
         <ProtectedRoute path="/admin/dashboard" component={AdminDashboard} type="admin" />
         <Route path="/services/create" component={ServiceForm} exact />
         <Route path="/services" component={ServiceList} exact />
-        <Route path="/events/create" component={CreateEvent} exact />
+        <Route path="/events/create" component={EventForm} exact />
         <Route path="/myservices" component={ServiceList} exact />
         <Route path="/events" component={EventList} exact />
         <Route path="/myevents" component={EventList} exact />
