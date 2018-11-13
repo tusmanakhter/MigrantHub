@@ -4,7 +4,10 @@ var sinonTest = require('sinon-test');
 var test = sinonTest(sinon);
 var ServicesController = require('../../controllers/ServicesController')
 var ServicesFactory = require('../factories/ServicesFactory');
+var ReviewServiceFactory = require('../factories/ReviewServiceFactory');
 var Services = require('../../models/Services');
+var ReviewService = require('../../models/ReviewService');
+var User = require('../../models/User');
 
 describe('Service controller', function () {
 
@@ -76,7 +79,7 @@ describe('Service controller', function () {
     it('should return error message if error retrieving service data', test(function () {
         this.stub(Services, 'findOne').yields(error);
         ServicesController.getServiceData(req, res);
-        assert.calledWith(Services.findOne, { _id: "5bda52305ccfd051484ea790" });
+        assert.calledWith(Services.findOne, { _id: "5bda52305ccfd051484ea790", deleted: false });
         assert.calledWith(res.send, "There was an error getting services.");
         assert.calledWith(res.status, 400);
     }));
@@ -91,7 +94,7 @@ describe('Service controller', function () {
     it('should return error message if error retrieving all services', test(function () {
         this.stub(Services, 'find').yields(error);
         ServicesController.viewServices(req, res);
-        assert.calledWith(Services.find, { email: "test@test.com" });
+        assert.calledWith(Services.find, { email: "test@test.com", deleted: false });
         assert.calledWith(res.send, "There was an error getting services.");
         assert.calledWith(res.status, 400);
     }));
@@ -111,4 +114,41 @@ describe('Service controller', function () {
         assert.calledWith(res.send, "There was an error deleting service.");
         assert.calledWith(res.status, 400);
     }));
+});
+
+describe('Service controller for reviews', function () {
+
+    let req = {
+            serviceId: "5be7c2e218d96e03298b71c3",
+            body: {
+                serviceDetails: ReviewServiceFactory.validReviewData()
+            },
+            user: {
+                _id: "test@test.com"
+            },
+        },
+        error = new Error({ error: "err" }),
+        res = {};
+
+    beforeEach(function () {
+        status = stub();
+        send = spy();
+        res = { send, status };
+        status.returns(res);
+    });
+
+    it('should return error message if error finding reviews', test(function () {
+        this.stub(ReviewService, 'find').yields(error);
+        ServicesController.getServiceReviews(req, res);
+        assert.calledWith(ReviewService.find);
+        assert.calledWith(res.send, "There was an error getting services.");
+    }));
+
+    it('should find the reviews with no error', test(function () {
+        this.stub(ReviewService, 'find').yields(null);
+        ServicesController.getServiceReviews(req, res);
+        assert.calledWith(ReviewService.find);
+        assert.calledWith(res.send);
+    }));
+
 });
