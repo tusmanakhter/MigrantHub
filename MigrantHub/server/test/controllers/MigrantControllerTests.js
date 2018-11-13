@@ -9,13 +9,9 @@ var AccountFactory = require('../factories/AccountFactory');
 describe('migrant controller', function () {
   let req = {
     body: AccountFactory.validMigrantAccount(),
-  session: {
-    passport:{
-      user:{
-        _id: "test@test.com"
-      }
-    }
-  }
+    user:{
+      _id: "test@test.com"
+    },
   },
   res = {}, expectedResult;
   

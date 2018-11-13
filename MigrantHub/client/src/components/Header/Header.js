@@ -8,6 +8,7 @@ import InputBase from '@material-ui/core/InputBase';
 import Badge from '@material-ui/core/Badge';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
+import Logout from '../Logout';
 import { fade } from '@material-ui/core/styles/colorManipulator';
 import { withStyles } from '@material-ui/core/styles';
 import MenuIcon from '@material-ui/icons/Menu';
@@ -200,10 +201,17 @@ class Header extends Component {
         },
       });
     } else if (event.target.id === 'main') {
-      this.setState({
-        redirectTo: true,
-        redirectToURL: '/main',
-      });
+      if (type === 'migrant') {
+        this.setState({
+            redirectTo: true,
+            redirectToURL: '/main',
+        });
+      } else if (type === 'business') {
+        this.setState({
+            redirectTo: true,
+            redirectToURL: '/businessmain',
+        });
+      }
     }
     this.handleMenuClose();
   }
@@ -416,6 +424,7 @@ class Header extends Component {
                     </Typography>
                   </div>
                 </IconButton>
+                <Logout />
               </div>
               <div className={classes.sectionMobile}>
                 <IconButton aria-haspopup="true" onClick={this.handleMobileMenuOpen} color="inherit">

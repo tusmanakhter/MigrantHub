@@ -11,7 +11,10 @@ describe('admin controller', function () {
     body: AccountFactory.validAdminAccount(),
     params: {
       id: "test@test.com",
-    }
+    },
+    user:{
+      _id: "test@test.com"
+    },
   },
   error = new Error({ error: "err" }),
   res = {}, expectedResult;
@@ -27,7 +30,7 @@ describe('admin controller', function () {
   it('should return array of current admins or empty', test(function () {
     this.stub(Admin, 'find').yields(null, expectedResult);
     Controller.getAdmins(req, res);
-    assert.calledWith(Admin.find, { authorized: true, rejected: false, deleted: false });
+    assert.calledWith(Admin.find, { _id: { $ne: "test@test.com" }, authorized: true, rejected: false, deleted: false });
     assert.calledWith(res.send, sinon.match.array);
     assert.calledWith(res.status, 200);
   }));
@@ -35,7 +38,7 @@ describe('admin controller', function () {
   it('should return error message on current admins error', test(function () {
     this.stub(Admin, 'find').yields(error);
     Controller.getAdmins(req, res);
-    assert.calledWith(Admin.find, { authorized: true, rejected: false, deleted: false });
+    assert.calledWith(Admin.find, { _id: { $ne: "test@test.com" }, authorized: true, rejected: false, deleted: false });
     assert.calledWith(res.send, "There was an error finding admins");
     assert.calledWith(res.status, 500);
   }));
@@ -91,7 +94,7 @@ describe('admin controller', function () {
   it('should reactivate an admin', test(function () {
     this.stub(Admin, 'updateOne').yields(null);
     Controller.reactivateAdmin(req, res);
-    assert.calledWith(Admin.updateOne, { _id: "test@test.com" }, { deleted: false, deletedDate: null });
+    assert.calledWith(Admin.updateOne, { _id: "test@test.com" }, { authorized: true, deleted: false, deletedDate: null });
     assert.calledWith(res.send, "Admin reactivated successfully.");
     assert.calledWith(res.status, 200);
   }));
@@ -99,7 +102,7 @@ describe('admin controller', function () {
   it('should not reactivate admin on error', test(function () {
     this.stub(Admin, 'updateOne').yields(error);
     Controller.reactivateAdmin(req, res);
-    assert.calledWith(Admin.updateOne, { _id: "test@test.com" }, { deleted: false, deletedDate: null });
+    assert.calledWith(Admin.updateOne, { _id: "test@test.com" }, { authorized: true, deleted: false, deletedDate: null });
     assert.calledWith(res.send, "There was an error reactivating admin.");
     assert.calledWith(res.status, 500);
   }));
@@ -139,7 +142,7 @@ describe('admin controller', function () {
   it('should delete an admin', test(function () {
     this.stub(Admin, 'updateOne').yields(null);
     Controller.deleteAdmin(req, res);
-    assert.calledWith(Admin.updateOne, { _id: "test@test.com" }, { deleted: true, deletedDate: Date.now() });
+    assert.calledWith(Admin.updateOne, { _id: "test@test.com" }, { authorized: false, deleted: true, deletedDate: Date.now() });
     assert.calledWith(res.send, "Admin deleted successfully.");
     assert.calledWith(res.status, 200);
   }));
@@ -147,7 +150,7 @@ describe('admin controller', function () {
   it('should not delete admin on error', test(function () {
     this.stub(Admin, 'updateOne').yields(error);
     Controller.deleteAdmin(req, res);
-    assert.calledWith(Admin.updateOne, { _id: "test@test.com" }, { deleted: true, deletedDate: Date.now() });
+    assert.calledWith(Admin.updateOne, { _id: "test@test.com" }, { authorized: false, deleted: true, deletedDate: Date.now() });
     assert.calledWith(res.send, "There was an error deleting admin.");
     assert.calledWith(res.status, 500);
   }));

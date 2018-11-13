@@ -1,7 +1,7 @@
 const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
-const logger = require('morgan');
+const morgan = require('morgan');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 
@@ -10,12 +10,12 @@ const router = require('./routes/index');
 
 const serverConfig = require('./config');
 const passport = require('./passport');
+const { logger, formatMessage} = require('./config/winston');
 
 const app = express();
 
 require('dotenv').config();
 
-app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
@@ -29,8 +29,10 @@ if (process.env.NODE_ENV === 'production') {
   app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, '../client/build/index.html'));
   });
+  app.use(morgan(':remote-addr [:date[clf]] ":method :url HTTP/:http-version" :status ":referrer"', { stream: logger.streamProd }));
 } else {
-  app.use(express.static(path.join(__dirname, 'public')));
+    app.use(express.static(path.join(__dirname, 'public')));
+    app.use(morgan(':remote-addr [:date[clf]] ":method :url HTTP/:http-version" :status ":referrer"', { stream: logger.streamDev }));
 }
 
 app.use(
@@ -47,7 +49,22 @@ app.use(passport.session());
 app.use('/api', router);
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
-app.use((req, res, next) => next());
+app.use((err, req, res, next) => {
+    if (process.env.NODE_ENV === 'production') {
+        if(err){
+            logger.info(formatMessage(req.ip, req.method, req.originalUrl, req.httpVersion, err.status, req.referer,'-', err.message));
+        }else{
+            logger.info(formatMessage(req.ip, req.method, req.originalUrl, req.httpVersion, req.statusCode, req.referer,'-', '-'));
+        }
+    } else {
+        if(err){
+            logger.debug(formatMessage(req.ip, req.method, req.originalUrl, req.httpVersion, err.status, req.referer,'-', err.message));
+        }else{
+            logger.debug(formatMessage(req.ip, req.method, req.originalUrl, req.httpVersion, req.statusCode, req.referer,'-', '-'));
+        }
+    }
+    next();
+});
 
 // MongoDB/Mongoose Connection
 const { db: { host, port, name } } = serverConfig;

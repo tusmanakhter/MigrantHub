@@ -2,7 +2,10 @@ const qs = require('qs');
 const multer = require('multer');
 const fs = require('fs-extra');
 const ServiceValidator = require('../validators/ServiceValidator');
+const ReviewValidator = require('../validators/ReviewValidator');
 const Services = require('../models/Services');
+const ReviewService = require('../models/ReviewService');
+const { logger, formatMessage } = require('../config/winston');
 
 const multerStorage = multer.diskStorage({
   destination(req, file, cb) {
@@ -42,12 +45,16 @@ module.exports = {
       services.dateCreated = date;
       services.save((err) => {
         if (err) {
-          return res.status(400).send('There was a error creating service.');
+            logger.error(formatMessage(req.ip, req.method, req.originalUrl, req.httpVersion,
+                err.status, req.referer,'servicesController.createService' , err.message));
+          return res.status(400).send('There was an error creating service.');
         }
         return res.status(200).send('Service has been created!');
       });
     } else {
-      return res.status(400).send('There was a error creating service.');
+        logger.error(formatMessage(req.ip, req.method, req.originalUrl, req.httpVersion,
+            '500' , req.referer,'servicesController.createService: ServiceValidator' , errors));
+        return res.status(400).send('There was an error creating service.');
     }
   },
 
@@ -67,7 +74,9 @@ module.exports = {
 
     Services.find(query, (err, services) => {
       if (err) {
-        return res.status(400).send('There was a error getting services.');
+          logger.error(formatMessage(req.ip, req.method, req.originalUrl, req.httpVersion,
+              err.status, req.referer,'servicesController.viewServices' , err.message));
+        return res.status(400).send('There was an error getting services.');
       }
       return res.status(200).send(services);
     });
@@ -83,7 +92,9 @@ module.exports = {
 
     Services.findOne(query, (err, services) => {
       if (err) {
-        return res.status(400).send('There was a error getting services.');
+          logger.error(formatMessage(req.ip, req.method, req.originalUrl, req.httpVersion,
+              err.status, req.referer,'servicesController.getServiceData' , err.message));
+        return res.status(400).send('There was an error getting services.');
       }
       return res.status(200).send(services);
     });
@@ -109,6 +120,8 @@ module.exports = {
       if ((parsedObj.serviceImagePath !== undefined) && (parsedObj.serviceImagePath !== (`../uploads/${req.user._id}/services/${parsedObj.serviceImageName}`))) {
         fs.remove(`${parsedObj.serviceImagePath.toString().substring(3)}`, (err) => {
           if (err) {
+            logger.error(formatMessage(req.ip, req.method, req.originalUrl, req.httpVersion,
+                err.status, req.referer,'servicesController.updateService: removeImage' , err.message));
             updateError = true;
           }
         });
@@ -122,6 +135,8 @@ module.exports = {
 
       Services.findByIdAndUpdate({ _id: parsedObj._id }, parsedObj, { new: true }, (err) => {
         if (err) {
+          logger.error(formatMessage(req.ip, req.method, req.originalUrl, req.httpVersion,
+              err.status, req.referer,'servicesController.updateService' , err.message));
           updateError = true;
         }
       });
@@ -131,6 +146,8 @@ module.exports = {
       }
       return res.status(200).send('Service updated successfully.');
     }
+    logger.error(formatMessage(req.ip, req.method, req.originalUrl, req.httpVersion,
+        '400', req.referer,'servicesController.updateService' , errors));
     return res.status(400).send('There was an error updating service.');
   },
 
@@ -139,6 +156,8 @@ module.exports = {
     Services.updateOne({ _id: req.params.id },
       { deleted: true, deletedDate: Date.now() }, (err) => {
         if (err) {
+          logger.error(formatMessage(req.ip, req.method, req.originalUrl, req.httpVersion,
+              err.status, req.referer,'servicesController.deleteService' , err.message));
           deleteError = true;
         }
       });
@@ -148,5 +167,36 @@ module.exports = {
     } else {
       res.status(200).send('Service deleted successfully.');
     }
+  },
+
+  async createServiceReview(req, res) {
+    var parsedObj = qs.parse(req.body);
+    parsedObj.user = req.user._id;
+
+    const errors = await ReviewValidator(parsedObj);
+
+    if (errors === '') {
+      const reviewService = new ReviewService();
+      reviewService.user = req.user;
+      reviewService.serviceId = parsedObj.serviceId;
+      reviewService.rating = parsedObj.rating;
+      reviewService.comment = parsedObj.comment;
+      reviewService.save((err) => {
+        if (err) {
+          return res.send({addReviewMessage: 'There was an error creating the review.' + err, addReviewError: true});
+        }
+        return res.send({addReviewMessage: 'Review has been created!', addReviewError: false});
+      });
+    } else {
+      return res.send({addReviewMessage: errors, addReviewError: true});
+    }
+  },
+  async getServiceReviews(req, res) {
+    ReviewService.find(req.query, (err, reviews) => {
+      if (err) {
+        return res.send('There was an error getting services.');
+      }
+      return res.send(reviews);
+    });
   },
 };

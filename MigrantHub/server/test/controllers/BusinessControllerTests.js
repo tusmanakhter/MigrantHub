@@ -9,13 +9,9 @@ var AccountFactory = require('../factories/AccountFactory');
 describe('business controller', function () {
   let req = {
     body: AccountFactory.validBusinessAccount(),
-  session: {
-    passport:{
-      user:{
-        _id: "test@test.com"
-      }
-    }
-  }
+    user:{
+      _id: "test@test.com"
+    },
   },
   res = {}, expectedResult;
   
