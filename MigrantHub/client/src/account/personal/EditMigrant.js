@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import withStyles from '@material-ui/core/styles/withStyles';
 import Button from '@material-ui/core/Button';
 import axios from 'axios';
+import Header from '../../components/Header/Header';
 import ContactInfo from '../common/ContactInfo';
 import PersonalInfo from './PersonalInfo';
 import LanguageInfo from './LanguageInfo';
@@ -238,6 +239,7 @@ class EditMigrant extends Component {
 
     return (
       <React.Fragment>
+        <Header />
         <ContactInfo
           innerRef={this.contactChild}
           handleChange={this.handleChange}
