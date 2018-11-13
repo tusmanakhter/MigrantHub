@@ -44,8 +44,7 @@ class ServiceItem extends Component {
       openService: true,
     });
   };
-
-<<<<<<< HEAD
+  
   handleClose = () => {
     this.setState({ 
       openService: false,

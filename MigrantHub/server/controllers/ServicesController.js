@@ -177,7 +177,6 @@ module.exports = {
       if (err) {
         return res.send('There was an error getting services.');
       }
-      console.log(reviews);
       return res.send(reviews);
     });
   },
