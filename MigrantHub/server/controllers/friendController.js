@@ -20,6 +20,7 @@ module.exports = {
             $push: {
               friendsList: {
                 friend_id: parsedObj.requestFrom,
+                lastUpdate: Date.now(),
               },
             },
           }, (updateUserError) => {
@@ -30,6 +31,7 @@ module.exports = {
               $push: {
                 friendsList: {
                   friend_id: parsedObj.requestTo,
+                  lastUpdate: Date.now(),
                 },
               },
             }, (updateFriendError) => {
@@ -46,12 +48,12 @@ module.exports = {
             });
           });
         } else {
-          User.update({ _id: req.user._id, 'friendsList.friend_id': parsedObj.requestFrom }, { $set: { 'friendsList.$.isFriend': true } }, (updateUserStateError) => {
+          User.update({ _id: req.user._id, 'friendsList.friend_id': parsedObj.requestFrom }, { $set: { 'friendsList.$.state': 'accepted', 'friendsList.$.lastUpdate': Date.now() } }, (updateUserStateError) => {
             if (updateUserStateError) {
               return res.send('Unable to unfriend this user');
             }
           });
-          User.update({ _id: parsedObj.requestFrom, 'friendsList.friend_id': parsedObj.requestTo }, { $set: { 'friendsList.$.isFriend': true } }, (updateStateError) => {
+          User.update({ _id: parsedObj.requestFrom, 'friendsList.friend_id': parsedObj.requestTo }, { $set: { 'friendsList.$.state': 'accepted', 'friendsList.$.lastUpdate': Date.now() } }, (updateStateError) => {
             if (updateStateError) {
               return res.send('Unable to unfriend this user');
             }
@@ -95,12 +97,12 @@ module.exports = {
   },
   unfriend(req, res) {
     const parsedObj = qs.parse(req.body);
-    User.update({ _id: req.user._id, 'friendsList.friend_id': parsedObj.friendId }, { $set: { 'friendsList.$.isFriend': false } }, (err) => {
+    User.update({ _id: req.user._id, 'friendsList.friend_id': parsedObj.friendId }, { $set: { 'friendsList.$.state': 'unfriended', 'friendsList.$.lastUpdate': Date.now() } }, (err) => {
       if (err) {
         return res.send('Unable to unfriend this user');
       }
     });
-    User.update({ _id: parsedObj.friendId, 'friendsList.friend_id': req.user._id }, { $set: { 'friendsList.$.isFriend': false } }, (err2) => {
+    User.update({ _id: parsedObj.friendId, 'friendsList.friend_id': req.user._id }, { $set: { 'friendsList.$.state': 'unfriended', 'friendsList.$.lastUpdate': Date.now() } }, (err2) => {
       if (err2) {
         return res.send('Unable to unfriend this user');
       }
@@ -124,7 +126,7 @@ module.exports = {
             $filter: {
               input: '$friendsList',
               as: 'friends',
-              cond: { $eq: ['$$friends.isFriend', true] },
+              cond: { $eq: ['$$friends.state', 'accepted'] },
             },
           },
         },

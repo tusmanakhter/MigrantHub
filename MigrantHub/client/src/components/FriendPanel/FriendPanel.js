@@ -38,9 +38,8 @@ class FriendPanel extends Component {
         if (response.data) {
           ev.setState({ friendsList: response.data[0].friendsList });
         }
-      }).catch((error) => { })
+      }).catch((error) => { });
   }
-
 
 
   rejectFriendRequest(event, _id, index) {
@@ -102,22 +101,21 @@ class FriendPanel extends Component {
   }
 
   unfriend(event, friendid, index) {
-    event.handleUnfriendRow(index)
+    event.handleUnfriendRow(index);
     axios.post('/api/friend/unfriend',
       qs.stringify({
         friendId: friendid,
-      })).then(function (response) {
+      })).then((response) => {
       });
   }
 
   handleUnfriendRow(index) {
-    const rows = [...this.state.friendsList]
+    const rows = [...this.state.friendsList];
     rows.splice(index, 1);
     this.setState({
       friendsList: rows,
     });
   }
-
 
 
   render() {
@@ -127,23 +125,26 @@ class FriendPanel extends Component {
           <CardContent>
             <p>Your list of friends:</p>
             <ul>
-              {this.state.friendsList.map((list, index) =>
+              {this.state.friendsList.map((list, index) => (
                 <li key={list.friend_id}>
                   <img src={list.pic} alt="profile pic" className="User-avatar" />
                   {list.friend_id}
-                  <IconButton onClick={() => { this.unfriend(this, list.friend_id, index) }} aria-label="Delete">
+                  <IconButton onClick={() => { this.unfriend(this, list.friend_id, index); }} aria-label="Delete">
                     <PersonAddDisabled fontSize="small" />
                   </IconButton>
                   <Grid container spacing={24}>
-                    <Grid item xs={12} sm={4}
+                    <Grid
+                      item
+                      xs={12}
+                      sm={4}
                       id="friendRequest"
                       name="friendRequest"
                       value={list.requestFrom}
                       fullWidth
-                    >
-                    </Grid>
+                    />
                   </Grid>
-                </li>)}
+                </li>
+              ))}
             </ul>
           </CardContent>
         </Card>

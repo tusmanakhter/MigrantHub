@@ -51,7 +51,8 @@ const MigrantUser = User.discriminator('migrant',
     joiningReason: { type: String, required: true },
     friendsList: [{
       friend_id: { type: String, default: '' },
-      isFriend: { type: Boolean, default: true },
+      state: { type: String, enum: ['waiting', 'accepted', 'rejected', 'unfriended'], default: '' },
+      lastUpdate: { type: Date, default: Date.now },
     }],
   }, options));
 
