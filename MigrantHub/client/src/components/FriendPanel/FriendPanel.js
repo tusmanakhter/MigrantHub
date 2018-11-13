@@ -32,15 +32,14 @@ class FriendPanel extends Component {
     this.getFriendsList(this);
   }
 
-  getFriendsList(ev) {
+  getFriendsList(event) {
     axios.get('/api/friend/getfriendslist')
       .then((response) => {
         if (response.data) {
-          ev.setState({ friendsList: response.data[0].friendsList });
+          event.setState({ friendsList: response.data[0].friendsList });
         }
       }).catch((error) => { });
   }
-
 
   rejectFriendRequest(event, _id, index) {
     event.handleDeleteRow(index);
@@ -49,14 +48,13 @@ class FriendPanel extends Component {
         _id,
       })).then((response) => {
       });
-    // call getFriendRequests() to update list
-    event.getFriendRequests(event);
+    event.getFriendRequests(event); //to update friend request list
   }
 
-  getFriendRequests(ev) {
+  getFriendRequests(event) {
     axios.get('/api/friend/getrequests')
       .then((response) => {
-        ev.setState({ friendRequests: response.data });
+        event.setState({ friendRequests: response.data });
       }).catch((error) => { });
   }
 
@@ -82,8 +80,8 @@ class FriendPanel extends Component {
         requestFrom: requestFromP,
         requestTo: requestToP,
       })).then((response) => {
-        // call getFriendRequests() to update list
-        event.getFriendRequests(event);
+        event.getFriendsList(event); // to update friends list list
+        event.getFriendRequests(event); // to update friend request list
       });
   }
 
