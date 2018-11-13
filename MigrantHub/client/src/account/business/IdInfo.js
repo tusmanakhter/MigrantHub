@@ -58,12 +58,15 @@ class IdInfo extends Component {
         </Typography>
         <i>
           <small>
-"A corporation number is the number assigned to a corporation by Corporations Canada.
-          It is usually a 7-digit number. Find the corporation number on the corporation’s Certificate of Incorporation, Amalgamation or Continuance.
-          Or access Corporations Canada online database of federal corporations or by contacting Corporations Canada directly."
+            A corporation number is the number assigned to a corporation by Corporations Canada.
+            It is usually a 7-digit number.
+            Find the corporation number on the corporation’s Certificate of Incorporation,
+            Amalgamation or Continuance.
+            Or access Corporations Canada online database of federal corporations
+             or by contacting Corporations Canada directly.
           </small>
         </i>
-        <i><strong><small>- Goverment Of Canada</small></strong></i>
+        <i><b><small>- Goverment Of Canada</small></b></i>
         <Grid container spacing={24}>
           <Grid item xs={12}>
             <TextField
