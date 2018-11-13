@@ -20,6 +20,7 @@ module.exports = {
             $push: {
               friendsList: {
                 friend_id: parsedObj.requestFrom,
+                state: 'accepted',
                 lastUpdate: Date.now(),
               },
             },
@@ -31,6 +32,7 @@ module.exports = {
               $push: {
                 friendsList: {
                   friend_id: parsedObj.requestTo,
+                  state: 'accepted',
                   lastUpdate: Date.now(),
                 },
               },

@@ -41,7 +41,6 @@ class FriendPanel extends Component {
       }).catch((error) => { });
   }
 
-
   rejectFriendRequest(event, _id, index) {
     event.handleDeleteRow(index);
     axios.post('/api/friend/rejectfriendrequest',
@@ -49,8 +48,7 @@ class FriendPanel extends Component {
         _id,
       })).then((response) => {
       });
-    // call getFriendRequests() to update list
-    event.getFriendRequests(event);
+    event.getFriendRequests(event); //to update friend request list
   }
 
   getFriendRequests(event) {
@@ -82,8 +80,8 @@ class FriendPanel extends Component {
         requestFrom: requestFromP,
         requestTo: requestToP,
       })).then((response) => {
-        // call getFriendRequests() to update list
-        event.getFriendRequests(event);
+        event.getFriendsList(event); // to update friends list list
+        event.getFriendRequests(event); // to update friend request list
       });
   }
 
