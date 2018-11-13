@@ -14,5 +14,7 @@ env:
   - CODECOV_TOKEN=229d2013-1dfc-4b1a-8606-a2fc3464d58d
 jobs:
   include:
-    - script: cd MigrantHub/client && npm install && npm run coverage && codecov
-    - script: cd MigrantHub/server && npm install && npm run coverage && codecov
+    - script: cd MigrantHub/client && npm install && npm run coverage
+      name: "Unit test client"
+    - script: cd MigrantHub/server && npm install && npm run coverage && npm run lint && codecov
+      name: "Unit test server"
