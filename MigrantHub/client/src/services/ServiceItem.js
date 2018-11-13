@@ -9,6 +9,10 @@ import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import ViewService from './ViewService';
+import ViewReviews from './ViewReviews';
+import axios from 'axios';
+import qs from 'qs';
+
 
 const styles = {
   card: {
@@ -23,71 +27,92 @@ class ServiceItem extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      open: false,
-      scroll: 'paper',
+      openService: false,
+      openReviews: false,
+      scroll: 'paper'
     };
   }
 
-    handleClickOpen = () => {
-      this.setState({
-        open: true,
-      });
-    };
+  handleViewReviews = () => {
+        this.setState({
+          openReviews: true
+        });
+  };
 
-    handleClose = () => {
-      this.setState({ open: false });
-    };
+  handleClickOpen = () => {
+    this.setState({
+      openService: true,
+    });
+  };
+  
+  handleClose = () => {
+    this.setState({ 
+      openService: false,
+      openReviews: false
+    });
+  };
 
-    render() {
-      const {
-        classes, serviceId, serviceTitle, serviceSummary, serviceDescription, getData,
-        serviceImagePath, serviceLocation, serviceDate, serviceHours, editMode, editOwner,
-      } = this.props;
-      const { open, scroll } = this.state;
-      return (
-        <Card className={classes.card}>
-          <CardActionArea>
-            <CardMedia
-              component="img"
-              alt={serviceTitle}
-              className={classes.media}
-              height="200"
-              src={serviceImagePath}
-              title={serviceTitle}
-            />
-            <CardContent>
-              <Typography gutterBottom variant="headline" component="h2">
-                {serviceTitle}
-              </Typography>
-              <Typography component="p">
-                {serviceSummary}
-              </Typography>
-            </CardContent>
-          </CardActionArea>
-          <CardActions>
-            <Button size="small" color="primary" onClick={this.handleClickOpen}>
-                        View Service
-            </Button>
-            <ViewService
-              open={open}
-              scroll={scroll}
-              onClose={this.handleClose}
-              serviceId={serviceId}
-              serviceTitle={serviceTitle}
-              serviceImagePath={serviceImagePath}
-              serviceDescription={serviceDescription}
-              serviceSummary={serviceSummary}
-              serviceLocation={serviceLocation}
-              serviceDate={serviceDate}
-              serviceHours={serviceHours}
-              editMode={editMode}
-              editOwner={editOwner}
-              getData={getData}
-            />
-          </CardActions>
-        </Card>
-      );
-    }
+  render() {
+    const {
+      classes, serviceId, serviceTitle, serviceSummary, serviceDescription, getData,
+      serviceImagePath, serviceLocation, serviceDate, serviceHours, editMode, editOwner,
+    } = this.props;
+    const { openService, openReviews, scroll} = this.state;
+    return (
+      <Card className={classes.card}>
+        <CardActionArea>
+          <CardMedia
+            component="img"
+            alt={serviceTitle}
+            className={classes.media}
+            height="200"
+            src={serviceImagePath}
+            title={serviceTitle}
+          />
+          <CardContent>
+            <Typography gutterBottom variant="headline" component="h2">
+              {serviceTitle}
+            </Typography>
+            <Typography component="p">
+              {serviceSummary}
+            </Typography>
+          </CardContent>
+        </CardActionArea>
+        <CardActions>
+          <Button size="small" color="primary" onClick={this.handleClickOpen}>
+                      View Service
+          </Button>
+          <Button size="small" color="primary" onClick={this.handleViewReviews}>
+                      Reviews
+          </Button>
+          <ViewService
+            open={openService}
+            scroll={scroll}
+            onClose={this.handleClose}
+            serviceId={serviceId}
+            serviceTitle={serviceTitle}
+            serviceImagePath={serviceImagePath}
+            serviceDescription={serviceDescription}
+            serviceSummary={serviceSummary}
+            serviceLocation={serviceLocation}
+            serviceDate={serviceDate}
+            serviceHours={serviceHours}
+            editMode={editMode}
+            editOwner={editOwner}
+            getData={getData}
+          />
+          <ViewReviews
+            open={openReviews}
+            scroll={scroll}
+            onClose={this.handleClose}
+            serviceId={serviceId}
+            serviceTitle={serviceTitle}
+            editMode={editMode}
+          />
+        </CardActions>
+      </Card>
+    );
+  }
 }
 
 ServiceItem.propTypes = {
