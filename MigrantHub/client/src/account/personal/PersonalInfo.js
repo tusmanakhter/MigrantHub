@@ -13,26 +13,7 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import validator from 'validator';
-
-const statuses = [
-  { value: 'immigrant', label: 'Immigrant' },
-  { value: 'refugee', label: 'Refugee' },
-  { value: 'resident', label: 'Permanent Resident' },
-  { value: 'citizen', label: 'Citizen' },
-];
-
-const genders = [
-  { value: 'male', label: 'Male' },
-  { value: 'female', label: 'Female' },
-  { value: 'other', label: 'Other' },
-];
-
-const relationshipStatuses = [
-  { value: 'married', label: 'Married' },
-  { value: 'single', label: 'Single' },
-  { value: 'divorced', label: 'Divorced' },
-  { value: 'widowed', label: 'Widowed' },
-];
+import { statuses, genders, relationshipStatuses } from '../../lib/SignUpConstants';
 
 const styles = ({
   group: {
@@ -70,6 +51,9 @@ class PersonalInfo extends Component {
 
     if (validator.isEmpty(age)) {
       errors.ageError = 'Age is required';
+      isError = true;
+    } else if (!validator.isInt(age, {min: 1, max: 100})){
+      errors.ageError = 'Age is not valid';
       isError = true;
     }
 

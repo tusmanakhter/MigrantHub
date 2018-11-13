@@ -1,10 +1,10 @@
-var { spy, stub, assert } = require('sinon');
-var sinon = require('sinon');
-var sinonTest = require('sinon-test');
-var test = sinonTest(sinon);
-var Controller = require('../../controllers/friendController')
-var MigrantUser = require('../../models/MigrantUser')
-var FriendRequest = require('../../models/FriendRequest')
+let { spy, stub, assert } = require('sinon');
+let sinon = require('sinon');
+let sinonTest = require('sinon-test');
+let test = sinonTest(sinon);
+let Controller = require('../../controllers/friendController');
+let MigrantUser = require('../../models/MigrantUser');
+let FriendRequest = require('../../models/FriendRequest');
 
 describe('friend controller friend management', function () {
   let req = {
@@ -14,10 +14,18 @@ describe('friend controller friend management', function () {
       _id: "5bd33cb2e43f7f17bbe8422d"
     },
     user: {
-      _id: "test@test.com"
+      _id: "test@test.com",
+      _id2: "testFrom@test.com",
     },
     friendsList: [{
-      friendName: "myfriend@test.com"
+      friend_id: "testFrom@test.com",
+      state: 'accepted',
+      lastUpdate: Date.now(),
+    },
+    {
+      friend_id: "test1@test.com",
+      state: 'unfriended',
+      lastUpdate: Date.now(),
     }],
   },
     error = new Error({ error: "err" }),
@@ -40,19 +48,27 @@ describe('friend controller friend management', function () {
 
   it('should accept a friend request', test(function () {
     expectedResult = req.body
+    this.stub(MigrantUser, 'findOne').yields(null, expectedResult, req.user._id);
     this.stub(MigrantUser, 'update').yields(null, expectedResult, req.user._id);
     this.stub(FriendRequest, 'findByIdAndDelete').yields(req._id);
     Controller.acceptFriendRequest(req, res);
-    assert.calledWith(MigrantUser.update, { _id: "test@test.com" });
-    assert.calledWith(MigrantUser.update, { _id: "testFrom@test.com" });
+    assert.calledWith(MigrantUser.findOne, { _id: req.user._id, friendsList: { $elemMatch: { friend_id: expectedResult.requestFrom } } });
+    assert.calledWith(MigrantUser.update, { _id: req.user._id, 'friendsList.friend_id': expectedResult.requestFrom }, { $set: { 'friendsList.$.state': 'accepted', 'friendsList.$.lastUpdate': Date.now() } });
+    assert.calledWith(MigrantUser.update, { _id: req.user._id2, 'friendsList.friend_id': expectedResult.requestTo }, { $set: { 'friendsList.$.state': 'accepted', 'friendsList.$.lastUpdate': Date.now() } });
     assert.calledWith(FriendRequest.findByIdAndDelete, { _id: "5bd33cb2e43f7f17bbe8422d" });
-    assert.calledWith(res.send, "Friend has been accepted and removed from request friend table");
   }));
 
   it('should list all accepted friends', test(function () {
     expectedResult = req.friendsList
-    this.stub(MigrantUser, 'findOne').yields(null, expectedResult);
+    this.stub(MigrantUser, 'aggregate').yields(null, expectedResult, req.user._id);
     Controller.getFriendsList(req, res);
-    assert.calledWith(MigrantUser.findOne, { _id: "test@test.com" });
+    assert.calledWith(MigrantUser.aggregate, ([{ $match: { _id: req.user._id } }, { $project: { friendsList: { $filter: { input: '$friendsList', as: 'friends', cond: { $eq: ['$$friends.state', 'accepted'] } } } } }]));
+  }));
+
+  it('should set to change state once user unfriends', test(function () {
+    expectedResult = req.friendsList
+    this.stub(MigrantUser, 'update').yields(null, expectedResult, req.user._id);
+    Controller.unfriend(req, res);
+    assert.calledWith(MigrantUser.update, { _id: req.user._id, 'friendsList.friend_id': expectedResult.friend_id }, { $set: { 'friendsList.$.state': 'unfriended', 'friendsList.$.lastUpdate': Date.now() } });
   }));
 });

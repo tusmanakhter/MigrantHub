@@ -94,10 +94,15 @@ class Login extends Component {
             redirectTo: true,
             redirectToURL: '/admin/dashboard',
           });
-        } else {
+        } else if(response.data.type === 'migrant') {
+            this.setState({
+                redirectTo: true,
+                redirectToURL: '/main',
+            });
+        } else if(response.data.type === 'business') {
           this.setState({
             redirectTo: true,
-            redirectToURL: '/main',
+            redirectToURL: '/businessmain',
           });
         }
       }

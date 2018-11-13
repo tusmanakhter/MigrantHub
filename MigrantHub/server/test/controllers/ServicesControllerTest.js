@@ -116,6 +116,47 @@ describe('Service controller', function () {
     }));
 });
 
+describe('Service controller search', function () {
+
+    let req = {
+        body: {
+            serviceDetails: ServicesFactory.validServiceData()
+        },
+        user: {
+            _id: "test@test.com"
+        },
+        query: {
+            search: true,
+            searchQuery: 'test',
+            editOwner: ''
+        }
+    },
+   
+    error = new Error({ error: "err" }),
+    res = {};
+  
+    beforeEach(function () {
+        status = stub();
+        send = spy();
+        res = { send, status };
+        status.returns(res);
+    });
+  
+    it('should return services if no error retrieving searched services', test(function () {
+        this.stub(Services, 'find').yields(null);
+        ServicesController.viewServices(req, res);
+        assert.calledWith(Services.find, { '$or': [ { serviceTitle: /test/gi }, { serviceSummary: /test/gi } ], deleted: false });
+        assert.calledWith(res.status, 200);
+    }));
+
+    it('should return error message if error retrieving searched services', test(function () {
+        this.stub(Services, 'find').yields(error);
+        ServicesController.viewServices(req, res);
+        assert.calledWith(Services.find, { '$or': [ { serviceTitle: /test/gi }, { serviceSummary: /test/gi }], deleted: false });
+        assert.calledWith(res.status, 400);
+    }));
+});
+
 describe('Service controller for reviews', function () {
 
     let req = {
@@ -136,7 +177,7 @@ describe('Service controller for reviews', function () {
         res = { send, status };
         status.returns(res);
     });
-
+  
     it('should return error message if error finding reviews', test(function () {
         this.stub(ReviewService, 'find').yields(error);
         ServicesController.getServiceReviews(req, res);
@@ -150,5 +191,4 @@ describe('Service controller for reviews', function () {
         assert.calledWith(ReviewService.find);
         assert.calledWith(res.send);
     }));
-
 });

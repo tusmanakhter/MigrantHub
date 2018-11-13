@@ -6,12 +6,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import validator from 'validator';
-
-const organizationTypes = [
-  { value: 'FDRL', label: 'Federal' },
-  { value: 'NGOV', label: 'Non-governmental' },
-  { value: 'PROV', label: 'Provincial' },
-];
+import { organizationTypes } from '../../lib/SignUpConstants';
 
 const styles = ({
   select: {

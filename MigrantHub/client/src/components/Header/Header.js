@@ -8,6 +8,7 @@ import InputBase from '@material-ui/core/InputBase';
 import Badge from '@material-ui/core/Badge';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
+import Logout from '../Logout';
 import { fade } from '@material-ui/core/styles/colorManipulator';
 import { withStyles } from '@material-ui/core/styles';
 import MenuIcon from '@material-ui/icons/Menu';
@@ -18,6 +19,17 @@ import NotificationsIcon from '@material-ui/icons/Notifications';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import { Redirect } from 'react-router-dom';
 import axios from 'axios';
+import Button from '@material-ui/core/Button';
+import TextField from '@material-ui/core/TextField';
+import validator from 'validator';
+
+var qs = require('qs');
+
+const searchType = [
+  { value: 'FRND', label: 'Friends' },
+  { value: 'SERV', label: "Services" },
+  { value: 'EVNT', label: "Events" }
+];
 
 const styles = theme => ({
   root: {
@@ -97,8 +109,12 @@ class Header extends Component {
       mobileMoreAnchorEl: null,
       redirectTo: false,
       redirectToURL: '',
-      redirectState: {},
       type: '',
+      search: '',
+      searchType: '',
+      searchError: '',
+      searchTypeError: '',
+      redirectState: {},
       email: '',
       dataRetrieved: false,
       firstName: '',
@@ -183,11 +199,73 @@ class Header extends Component {
         },
       });
     } else if (event.target.id === 'main') {
-      this.setState({
-        redirectTo: true,
-        redirectToURL: '/main',
-      });
+      if (type === 'migrant') {
+        this.setState({
+            redirectTo: true,
+            redirectToURL: '/main',
+        });
+      } else if (type === 'business') {
+        this.setState({
+            redirectTo: true,
+            redirectToURL: '/businessmain',
+        });
+      }
     }
+    this.handleMenuClose();
+  }
+
+  handleChange = event => {
+    this.setState({
+      [event.target.name]: event.target.value
+    })
+  }
+
+  handleSearch = async () => {
+    let error = await this.validate();
+    if (!error) {
+      if(this.state.searchType === "SERV")
+      {
+        this.sendSearchServices(this);
+      }
+    }
+  };
+
+  sendSearchServices(e) { 
+    this.setState({
+      redirectTo: true,
+      redirectToURL: '/services',
+      redirectState: {
+        editOwner: '',
+        editMode: false,
+        searchQuery: this.state.search,
+        searchMode: true
+      }
+    })
+  }
+
+  validate = () => {
+    let isError = false;
+    const errors = {
+      searchError: '',
+      searchTypeError: '',
+    };
+
+    if (validator.isEmpty(this.state.search)) {
+      errors.searchError = "Search is required";
+      isError = true
+    }
+
+    if (validator.isEmpty(this.state.searchType)) {
+      errors.searchTypeError = "Search Type is required";
+      isError = true
+    }
+
+    this.setState({
+      ...this.state,
+      ...errors
+    })
+    
+    return isError;
   }
 
     renderRedirectTo = () => {
@@ -277,17 +355,48 @@ class Header extends Component {
                 </Typography>
               </IconButton>
               <div className={classes.search}>
-                <div className={classes.searchIcon}>
-                  <SearchIcon />
-                </div>
-                <InputBase
-                  placeholder="Search…"
-                  classes={{
-                    root: classes.inputRoot,
-                    input: classes.inputInput,
-                  }}
-                />
+              <div className={classes.searchIcon}>
+                <SearchIcon />
               </div>
+              <InputBase
+                id="search" 
+                name="search"
+                placeholder="Search…"
+                value={this.state.search}
+                onChange={event => this.handleChange(event)}
+                helperText={this.state.searchError}
+                error={this.state.searchError.length > 0}
+                classes={{
+                  root: classes.inputRoot,
+                  input: classes.inputInput,
+                }}
+              />
+            </div>
+            <TextField
+            id="searchType"
+            name="searchType"
+            style = {{width: 200}}
+            defaultValue = {searchType[0]}
+            select
+            value={this.state.searchType}
+            className={classes.select}
+            onChange={event => this.handleChange(event)}
+            helperText={this.state.searchTypeError}
+            error={this.state.searchTypeError.length > 0}
+          >
+            {searchType.map(option => (
+              <MenuItem key={option.value} value={option.value}>
+                {option.label}
+              </MenuItem>
+            ))}
+          </TextField>
+            <Button 
+              variant="contained"
+              color="primary"
+              onClick={this.handleSearch} 
+              className={classes.button}>
+              Search
+            </Button>
               <div className={classes.grow} />
               <div className={classes.sectionDesktop}>
                 <IconButton color="inherit">
@@ -309,11 +418,11 @@ class Header extends Component {
                   <AccountCircle />
                   <div>
                     <Typography id="main" className={classes.title} variant="subheading"  color="inherit" noWrap>
-                        {console.log(firstName)}
                         {firstName + ' ' + lastName}
                     </Typography>
                   </div>
                 </IconButton>
+                <Logout />
               </div>
               <div className={classes.sectionMobile}>
                 <IconButton aria-haspopup="true" onClick={this.handleMobileMenuOpen} color="inherit">

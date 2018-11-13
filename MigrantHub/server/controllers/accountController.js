@@ -6,7 +6,7 @@ const Admin = require('../models/Admin');
 const BusinessAccountValidator = require('../validators/BusinessAccountValidator');
 const MigrantAccountValidator = require('../validators/MigrantAccountValidator');
 const AdminAccountValidator = require('../validators/AdminAccountValidator');
-
+const { logger, formatMessage } = require('../config/winston');
 
 module.exports = {
   createUser(req, res) {
@@ -51,12 +51,16 @@ module.exports = {
       user.joiningReason = parsedObj.joiningReason;
       user.save((err) => {
         if (err) {
-          return res.send('There was a error saving user.');
+            logger.error(formatMessage(req.ip, req.method, req.originalUrl, req.httpVersion,
+                err.status, req.referer,'accountController.createUser', err.message));
+            return res.send('There was a error saving user.');
         }
         return res.send('User has been added!');
       });
     } else {
-      return res.send(errors);
+        logger.error(formatMessage(req.ip, req.method, req.originalUrl, req.httpVersion,
+            '500', req.referer,'accountController.createUser:  MigrantAccountValidator', errors));
+        return res.send(errors);
     }
   },
 
@@ -89,12 +93,16 @@ module.exports = {
       businessuser.description = parsedObj.description;
       businessuser.save((err) => {
         if (err) {
-          return res.send('There was a error saving business user.');
+            logger.error(formatMessage(req.ip, req.method, req.originalUrl, req.httpVersion,
+                err.status, req.referer, 'accountController.createBusiness', err.message));
+            return res.send('There was a error saving business user.');
         }
         return res.send('Business user has been added!');
       });
     } else {
-      return res.send(errors);
+        logger.error(formatMessage(req.ip, req.method, req.originalUrl, req.httpVersion,
+            '500', req.referer, 'accountController.createBusiness: BusinessAccountValidator', errors));
+        return res.send(errors);
     }
   },
 
@@ -113,11 +121,15 @@ module.exports = {
 
       admin.save((err) => {
         if (err) {
-          return res.send('There was a error saving admin user.');
+            logger.error(formatMessage(req.ip, req.method, req.originalUrl, req.httpVersion,
+                err.status, req.referer, 'accountController.createAdmin', err.message));
+            return res.send('There was a error saving admin user.');
         }
         return res.send('Admin user has been added!');
       });
     } else {
+        logger.error(formatMessage(req.ip, req.method, req.originalUrl, req.httpVersion,
+            '500', req.referer,'accountController.createAdmin: AdminAccountValidator' , errors));
       return res.send(errors);
     }
   },
@@ -132,6 +144,9 @@ module.exports = {
       };
       return res.status(200).send(user);
     }
+
+    logger.error(formatMessage(req.ip, req.method, req.originalUrl, req.httpVersion,
+        '404', req.referer, 'accountController.getUserType', 'Get user from session failed'));
     return res.status(404).send('Error retrieving user');
   },
 
@@ -139,32 +154,9 @@ module.exports = {
     if (req.user) {
       res.json({ user: req.user });
     } else {
-      res.json({ user: null });
+        logger.error(formatMessage(req.ip, req.method, req.originalUrl, req.httpVersion,
+            '404', req.referer, 'accountController.getUser', 'Get user from session failed'));
+        res.json({ user: null });
     }
-  },
-
-  ensureUser(req, res, next) {
-    if (req.session.passport !== undefined) {
-      if (req.session.passport.user !== undefined) {
-        return next();
-      }
-    }
-    return res.status(403).send('You are not authorized for this');
-  },
-
-  ensureRole: function ensureRole(type) {
-    return function checkUser(req, res, next) {
-      if (req.session.passport.user.type === type) {
-        return next();
-      }
-      return res.status(403).send('You are not authorized for this');
-    };
-  },
-
-  ensureOwner(req, res, next) {
-    if (req.session.passport.user._id === req.params.id) {
-      return next();
-    }
-    return res.status(403).send('You are not authorized for this');
   },
 };
