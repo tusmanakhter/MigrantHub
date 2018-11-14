@@ -1,6 +1,7 @@
 # MigrantHub 
 
 [![Build Status](https://travis-ci.com/tusmanakhter/MigrantHub.svg?token=sqXGdzNfzU7pHTYXmixg&branch=master)](https://travis-ci.com/tusmanakhter/MigrantHub)
+[![codecov](https://codecov.io/gh/tusmanakhter/MigrantHub/branch/master/graph/badge.svg?token=kATMr7KfoK)](https://codecov.io/gh/tusmanakhter/MigrantHub)
 
 ## Goal 
 
