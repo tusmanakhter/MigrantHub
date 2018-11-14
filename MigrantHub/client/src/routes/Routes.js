@@ -13,7 +13,8 @@ import TempHome from '../account/TempHome';
 import EditMigrant from '../account/personal/EditMigrant';
 import EditBusiness from '../account/business/EditBusiness';
 import AdminDashboard from '../admin/AdminDashboard';
-import ProtectedRoute from './ProtectedRoutes';
+import ProtectedRoute from './ProtectedRoute';
+import UnprotectedRoute from './UnprotectedRoute';
 import ServiceForm from '../services/ServiceForm';
 import ServiceList from '../services/ServiceList';
 import EventList from '../events/EventList';
@@ -40,13 +41,13 @@ class Routes extends Component {
     }
     return (
       <Switch>
-        <Route path="/" component={Home} exact />
+        <UnprotectedRoute path="/" component={Home} exact />
         <ProtectedRoute path="/main" component={Main} type="migrant" exact />
         <ProtectedRoute path="/businessmain" component={BusinessMain} type="business" exact />
-        <Route path="/signup/business" component={SignUpBusiness} exact />
-        <Route path="/signup/user" component={SignUpMigrant} exact />
-        <Route path="/signup/admin" component={SignUpAdmin} exact />
-        <Route path="/login" component={Login} exact />
+        <UnprotectedRoute path="/signup/business" component={SignUpBusiness} exact />
+        <UnprotectedRoute path="/signup/user" component={SignUpMigrant} exact />
+        <UnprotectedRoute path="/signup/admin" component={SignUpAdmin} exact />
+        <UnprotectedRoute path="/login" component={Login} exact />
         <Route path="/temphome" component={TempHome} exact />
         <Route path="/temperror" component={TempError} exact />
         <ProtectedRoute path="/editmigrant" component={EditMigrant} type="migrant" exact />
