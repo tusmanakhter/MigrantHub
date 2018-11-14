@@ -46,22 +46,22 @@ async function checkForExistingFriend(requestFrom, requestTo) {
 
 // helper function: checks if user is a migrant
 async function checkForMigrantUser(requestTo) {
-  let checkError = '';
+  let error = '';
   try {
     const record = await User.findOne({
       _id: requestTo,
     });
     if (record) {
       if (record.type !== 'migrant') {
-        checkError = 'Not a valid user. Try again.';
+        error = 'Not a valid user. Try again.';
       }
     } else {
-      checkError = 'Error validating user.';
+      error = 'Error validating user.';
     }
   } catch (e) {
-    checkError = 'Server Errors.';
+    error = 'Server Errors.';
   }
-  return checkError;
+  return error;
 }
 
 // helper function: checks for duplicate friend requests
@@ -122,7 +122,7 @@ async function FriendRequestValidator(requestFrom, requestTo) {
             error = existingMigrantError;
           }
         }
-      } 
+      }
     }
   }
   return error;
