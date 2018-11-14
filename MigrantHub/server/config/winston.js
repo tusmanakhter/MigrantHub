@@ -1,8 +1,9 @@
 const appRoot = require('app-root-path');
-const {
-  createLogger, format, transports } = require('winston');
+const { createLogger, format, transports } = require('winston');
 
-const { combine, timestamp, printf, colorize } = format;
+const {
+  combine, timestamp, printf, colorize,
+} = format;
 
 // Logger formatter
 const formatMessage = (ip, method, url, httpVersion, status, referrer, customMessage, errorMessage) => `${ip} "${method} ${url} HTTP/${httpVersion}" ${status} ${referrer} "${customMessage}" "${errorMessage}"`;
