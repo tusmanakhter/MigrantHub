@@ -38,43 +38,44 @@ module.exports = {
       services.location = parsedObj.location;
       services.serviceHours = parsedObj.serviceHours;
       if (parsedObj.serviceImageName === 'cameraDefault.png') {
-          services.serviceImagePath = (`../default/${parsedObj.serviceImageName}`);
+        services.serviceImagePath = (`../uploads/default/${parsedObj.serviceImageName}`);
       } else {
-          services.serviceImagePath = (`../${req.user._id}/services/${parsedObj.serviceImageName}`);
+        services.serviceImagePath = (`../uploads/${req.user._id}/services/${parsedObj.serviceImageName}`);
       }
       services.dateCreated = date;
       services.save((err) => {
         if (err) {
-            logger.error(formatMessage(req.ip, req.method, req.originalUrl, req.httpVersion,
-                err.status, req.referer,'servicesController.createService' , err.message));
+          logger.error(formatMessage(req.ip, req.method, req.originalUrl, req.httpVersion,
+            err.status, req.referer, 'servicesController.createService', err.message));
           return res.status(400).send('There was an error creating service.');
         }
         return res.status(200).send('Service has been created!');
       });
     } else {
-        logger.error(formatMessage(req.ip, req.method, req.originalUrl, req.httpVersion,
-            '500' , req.referer,'servicesController.createService: ServiceValidator' , errors));
-        return res.status(400).send('There was an error creating service.');
+      logger.error(formatMessage(req.ip, req.method, req.originalUrl, req.httpVersion,
+        '500', req.referer, 'servicesController.createService: ServiceValidator', errors));
+      return res.status(400).send('There was an error creating service.');
     }
   },
 
   viewServices(req, res) {
+    const { editOwner, searchQuery, search } = req.query;
     let query = {};
 
-    if (req.query.editOwner !== '') {
-      query.email = req.query.editOwner;
-    } else if (req.query.search !== '') {
-      let searchQuery = req.query.searchQuery;
-      const regex = new RegExp(searchQuery.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"), 'gi');
-      query = {$or:[{serviceTitle: regex}, {serviceSummary: regex}]};
-    }   
+    if (editOwner !== '') {
+      query.email = editOwner;
+    } else if (search !== '') {
+      const tempSearchQuery = searchQuery;
+      const regex = new RegExp(tempSearchQuery.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&'), 'gi');
+      query = { $or: [{ serviceTitle: regex }, { serviceSummary: regex }] };
+    }
 
     query.deleted = false;
 
     Services.find(query, (err, services) => {
       if (err) {
-          logger.error(formatMessage(req.ip, req.method, req.originalUrl, req.httpVersion,
-              err.status, req.referer,'servicesController.viewServices' , err.message));
+        logger.error(formatMessage(req.ip, req.method, req.originalUrl, req.httpVersion,
+          err.status, req.referer, 'servicesController.viewServices', err.message));
         return res.status(400).send('There was an error getting services.');
       }
       return res.status(200).send(services);
@@ -91,8 +92,8 @@ module.exports = {
 
     Services.findOne(query, (err, services) => {
       if (err) {
-          logger.error(formatMessage(req.ip, req.method, req.originalUrl, req.httpVersion,
-              err.status, req.referer,'servicesController.getServiceData' , err.message));
+        logger.error(formatMessage(req.ip, req.method, req.originalUrl, req.httpVersion,
+          err.status, req.referer, 'servicesController.getServiceData', err.message));
         return res.status(400).send('There was an error getting services.');
       }
       return res.status(200).send(services);
@@ -116,26 +117,26 @@ module.exports = {
         parsedObj.serviceHours = [];
       }
 
-      if ((parsedObj.serviceImagePath !== undefined) && (parsedObj.serviceImagePath !== (`../${req.user._id}/services/${parsedObj.serviceImageName}`))) {
-        fs.remove(`uploads/${parsedObj.serviceImagePath.toString().substring(3)}`, (err) => {
+      if ((parsedObj.serviceImagePath !== undefined) && (parsedObj.serviceImagePath !== (`../uploads/${req.user._id}/services/${parsedObj.serviceImageName}`))) {
+        fs.remove(`${parsedObj.serviceImagePath.toString().substring(3)}`, (err) => {
           if (err) {
             logger.error(formatMessage(req.ip, req.method, req.originalUrl, req.httpVersion,
-                err.status, req.referer,'servicesController.updateService: removeImage' , err.message));
+              err.status, req.referer, 'servicesController.updateService: removeImage', err.message));
             updateError = true;
           }
         });
       }
 
       if (parsedObj.serviceImageName === 'cameraDefault.png') {
-        parsedObj.serviceImagePath = (`../default/${parsedObj.serviceImageName}`);
+        parsedObj.serviceImagePath = (`../uploads/default/${parsedObj.serviceImageName}`);
       } else {
-        parsedObj.serviceImagePath = (`../${req.user._id}/services/${parsedObj.serviceImageName}`);
+        parsedObj.serviceImagePath = (`../uploads/${req.user._id}/services/${parsedObj.serviceImageName}`);
       }
 
       Services.findByIdAndUpdate({ _id: parsedObj._id }, parsedObj, { new: true }, (err) => {
         if (err) {
           logger.error(formatMessage(req.ip, req.method, req.originalUrl, req.httpVersion,
-              err.status, req.referer,'servicesController.updateService' , err.message));
+            err.status, req.referer, 'servicesController.updateService', err.message));
           updateError = true;
         }
       });
@@ -146,7 +147,7 @@ module.exports = {
       return res.status(200).send('Service updated successfully.');
     }
     logger.error(formatMessage(req.ip, req.method, req.originalUrl, req.httpVersion,
-        '400', req.referer,'servicesController.updateService' , errors));
+      '400', req.referer, 'servicesController.updateService', errors));
     return res.status(400).send('There was an error updating service.');
   },
 
@@ -156,7 +157,7 @@ module.exports = {
       { deleted: true, deletedDate: Date.now() }, (err) => {
         if (err) {
           logger.error(formatMessage(req.ip, req.method, req.originalUrl, req.httpVersion,
-              err.status, req.referer,'servicesController.deleteService' , err.message));
+            err.status, req.referer, 'servicesController.deleteService', err.message));
           deleteError = true;
         }
       });
@@ -169,7 +170,7 @@ module.exports = {
   },
 
   async createServiceReview(req, res) {
-    var parsedObj = qs.parse(req.body);
+    const parsedObj = qs.parse(req.body);
     parsedObj.user = req.user._id;
 
     const errors = await ReviewValidator(parsedObj);
@@ -182,12 +183,12 @@ module.exports = {
       reviewService.comment = parsedObj.comment;
       reviewService.save((err) => {
         if (err) {
-          return res.send({addReviewMessage: 'There was an error creating the review.' + err, addReviewError: true});
+          return res.send({ addReviewMessage: `There was an error creating the review.${err}`, addReviewError: true });
         }
-        return res.send({addReviewMessage: 'Review has been created!', addReviewError: false});
+        return res.send({ addReviewMessage: 'Review has been created!', addReviewError: false });
       });
     } else {
-      return res.send({addReviewMessage: errors, addReviewError: true});
+      return res.send({ addReviewMessage: errors, addReviewError: true });
     }
   },
   async getServiceReviews(req, res) {

@@ -1,11 +1,11 @@
-var CreateEventValidator = require('../../validators/CreateEventValidator');
+var EventValidator = require('../../validators/EventValidator');
 var chai = require('chai');
 var assert = chai.assert;
 var EventFactory = require('../factories/EventFactory');
 
-describe('CreateEventValidator()', function () {
+describe('EventValidator()', function () {
     it('Validates create event data should return empty error string.', function () {
-        let errors = CreateEventValidator(EventFactory.validCreateEventData());
+        let errors = EventValidator(EventFactory.validCreateEventData());
         assert.equal(errors, "");
     });
 
@@ -25,7 +25,7 @@ describe('CreateEventValidator()', function () {
             "\nStart time is required" +
             "\nEnd time is required";
 
-        let forcedErrors = CreateEventValidator(EventFactory.emptyCreateEventData());
+        let forcedErrors = EventValidator(EventFactory.emptyCreateEventData());
         assert.equal(forcedErrors, expectedErrors);
     });
 
@@ -40,7 +40,7 @@ describe('CreateEventValidator()', function () {
             "\nEnd date is invalid" +
             "\nEnd time is invalid";
 
-        let forcedErrors = CreateEventValidator(EventFactory.invalidNumbersCreateEventData());
+        let forcedErrors = EventValidator(EventFactory.invalidNumbersCreateEventData());
         assert.equal(forcedErrors, expectedErrors);
     });
 });

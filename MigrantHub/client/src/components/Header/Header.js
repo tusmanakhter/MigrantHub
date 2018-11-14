@@ -187,6 +187,8 @@ class Header extends Component {
         redirectState: {
           editOwner: email,
           editMode: true,
+          searchQuery: '',
+          searchMode: false,
         },
       });
     } else if (event.target.id === 'myEvents') {

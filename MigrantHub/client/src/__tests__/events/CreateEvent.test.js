@@ -1,8 +1,8 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import CreateEvent from '../../events/CreateEvent';
+import EventForm from '../../events/EventForm';
 
 
 it('renders without crashing', () => {
-  shallow(<CreateEvent />);
+  shallow(<EventForm />);
 });

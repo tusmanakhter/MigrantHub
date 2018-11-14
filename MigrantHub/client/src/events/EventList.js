@@ -8,8 +8,6 @@ import { Redirect } from 'react-router-dom';
 import EventItem from './EventItem';
 import Header from '../components/Header/Header';
 
-var qs = require('qs');
-
 const styles = theme => ({
   root: {
     ...theme.mixins.gutters(),
@@ -23,7 +21,7 @@ class EventList extends Component {
     super(props);
     this.state = {
       items: [],
-      redirectToCreateEvent: false,
+      redirectToEventForm: false,
       editMode: '',
       editOwner: '',
     };
@@ -43,38 +41,36 @@ class EventList extends Component {
   getData() {
     const { location } = this.props;
 
-    let editOwnerEmail ='';
-    if(location.state){
-        this.setState({
-            editMode: location.state.editMode,
-            editOwner: location.state.editOwner
-        });
+    let editOwnerEmail = '';
+    if (location.state) {
+      this.setState({
+        editMode: location.state.editMode,
+        editOwner: location.state.editOwner,
+      });
 
-        editOwnerEmail=location.state.editOwner;
+      editOwnerEmail = location.state.editOwner;
     }
-    axios.get('/api/events/view/all/',{
-        params: {
-            editOwner: editOwnerEmail
-        }
+    axios.get('/api/events/view/all/', {
+      params: {
+        editOwner: editOwnerEmail,
+      },
     }).then((response) => {
-        this.setState({
-            items: response.data
-        });
-    }).catch(error => {
-
-    })
+      this.setState({
+        items: response.data,
+      });
+    });
   }
 
-    setRedirectToCreateEvent = () => {
+    setRedirectToEventForm = () => {
       this.setState({
-        redirectToCreateEvent: true,
+        redirectToEventForm: true,
       });
     }
 
-    renderRedirectToCreateEvent = () => {
-      const { redirectToCreateEvent } = this.state;
+    renderRedirectToEventForm = () => {
+      const { redirectToEventForm } = this.state;
 
-      if (redirectToCreateEvent) {
+      if (redirectToEventForm) {
         return <Redirect to="/events/create" />;
       }
     }
@@ -85,13 +81,13 @@ class EventList extends Component {
 
       return (
         <div>
-          {this.renderRedirectToCreateEvent()}
+          {this.renderRedirectToEventForm()}
           <Header appName="Migrant Hub" />
           <Button
             variant="contained"
             color="primary"
             className={classes.button}
-            onClick={this.setRedirectToCreateEvent}
+            onClick={this.setRedirectToEventForm}
           >
             Create Event
           </Button>

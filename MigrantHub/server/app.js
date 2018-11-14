@@ -10,7 +10,7 @@ const router = require('./routes/index');
 
 const serverConfig = require('./config');
 const passport = require('./passport');
-const { logger, formatMessage} = require('./config/winston');
+const { logger, formatMessage } = require('./config/winston');
 
 const app = express();
 
@@ -31,8 +31,8 @@ if (process.env.NODE_ENV === 'production') {
   });
   app.use(morgan(':remote-addr [:date[clf]] ":method :url HTTP/:http-version" :status ":referrer"', { stream: logger.streamProd }));
 } else {
-    app.use(express.static(path.join(__dirname, 'public')));
-    app.use(morgan(':remote-addr [:date[clf]] ":method :url HTTP/:http-version" :status ":referrer"', { stream: logger.streamDev }));
+  app.use(express.static(path.join(__dirname, 'public')));
+  app.use(morgan(':remote-addr [:date[clf]] ":method :url HTTP/:http-version" :status ":referrer"', { stream: logger.streamDev }));
 }
 
 app.use(
@@ -47,25 +47,22 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.use('/api', router);
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 app.use((err, req, res, next) => {
-    if (process.env.NODE_ENV === 'production') {
-        if(err){
-            logger.info(formatMessage(req.ip, req.method, req.originalUrl, req.httpVersion, err.status, req.referer,'-', err.message));
-        }else{
-            logger.info(formatMessage(req.ip, req.method, req.originalUrl, req.httpVersion, req.statusCode, req.referer,'-', '-'));
-        }
+  if (process.env.NODE_ENV === 'production') {
+    if (err) {
+      logger.info(formatMessage(req.ip, req.method, req.originalUrl, req.httpVersion, err.status, req.referer, '-', err.message));
     } else {
-        if(err){
-            logger.debug(formatMessage(req.ip, req.method, req.originalUrl, req.httpVersion, err.status, req.referer,'-', err.message));
-        }else{
-            logger.debug(formatMessage(req.ip, req.method, req.originalUrl, req.httpVersion, req.statusCode, req.referer,'-', '-'));
-        }
+      logger.info(formatMessage(req.ip, req.method, req.originalUrl, req.httpVersion, req.statusCode, req.referer, '-', '-'));
     }
-    next();
+  } else if (err) {
+    logger.debug(formatMessage(req.ip, req.method, req.originalUrl, req.httpVersion, err.status, req.referer, '-', err.message));
+  } else {
+    logger.debug(formatMessage(req.ip, req.method, req.originalUrl, req.httpVersion, req.statusCode, req.referer, '-', '-'));
+  }
+  next();
 });
-
-app.use(express.static('/api/uploads'));
 
 // MongoDB/Mongoose Connection
 const { db: { host, port, name } } = serverConfig;

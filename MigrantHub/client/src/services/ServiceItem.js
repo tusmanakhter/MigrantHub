@@ -19,7 +19,7 @@ const styles = {
     width: '100%',
   },
   media: {
-    objectFit: 'fill',
+    objectFit: 'contain',
   },
 };
 

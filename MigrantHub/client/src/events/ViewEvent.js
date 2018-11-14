@@ -10,8 +10,8 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import Button from '@material-ui/core/Button';
 import blue from '@material-ui/core/colors/blue';
 import { Redirect } from 'react-router-dom';
-import GoogleMaps from '../components/GoogleMaps/GoogleMaps';
 import axios from 'axios';
+import GoogleMaps from '../components/GoogleMaps/GoogleMaps';
 
 const styles = {
   avatar: {
@@ -49,16 +49,16 @@ class ViewEvent extends Component {
   handleDelete = () => {
     axios.delete('/api/events/' + this.props.eventId)
     .then(response => {
-        if (response.status === 200) {
-            this.handleClose();
-        }
+      if (response.status === 200) {
+        this.handleClose();
+      }
     });
   };
 
   render() {
     const {
       eventName, description, dateStart, dateEnd, timeStart, timeEnd,
-      location, open, scroll, editMode, onClose,
+      location, open, scroll, onClose,
     } = this.props;
     const { redirectTo, redirectToURL, redirectState } = this.state;
 
@@ -82,18 +82,15 @@ class ViewEvent extends Component {
           fullWidth
           maxWidth="150"
         >
-          <DialogTitle id="scroll-dialog-title">{eventName}</DialogTitle>
+          <DialogTitle variant="title" id="scroll-dialog-title" align="center">{eventName}</DialogTitle>
           <DialogContent>
-            <Typography variant="h5" color="inherit" paragraph>
-                        Description:
-              <br />
-              <br />
+            <Typography color="inherit" paragraph align="center" variant="body1">
               {description}
             </Typography>
 
             <Grid container spacing={12}>
               <Typography variant="h5" color="inherit" paragraph>
-                            Date:
+                            Event Date:
               </Typography>
               <Grid container spacing={12}>
                 <Grid item xs={12}>
@@ -111,7 +108,7 @@ class ViewEvent extends Component {
 
             <Typography variant="h5" color="inherit" paragraph>
               <br />
-Time:
+Event Time:
             </Typography>
 
             <Grid justify="center" container item xs>
@@ -197,6 +194,7 @@ Location:
 }
 
 ViewEvent.propTypes = {
+  classes: PropTypes.shape({}).isRequired,
   eventId: PropTypes.string.isRequired,
   eventName: PropTypes.string.isRequired,
   description: PropTypes.string.isRequired,
