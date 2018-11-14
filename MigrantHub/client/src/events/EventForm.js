@@ -250,6 +250,9 @@ class EventForm extends Component {
     if (validator.isEmpty(location.city)) {
       errors.cityError = 'City is required';
       isError = true;
+    } else if (validator.isNumeric(location.city)) {
+      errors.cityError = 'City is invalid';
+      isError = true;
     }
 
     if (validator.isEmpty(location.postalCode)) {
@@ -292,7 +295,7 @@ class EventForm extends Component {
     if (validator.isEmpty(timeEnd)) {
       errors.timeEndError = 'End time is required';
       isError = true;
-    } else if (secondsEnd <= secondsStart) {
+    } else if (parseInt(secondsEnd) <= parseInt(secondsStart)) {
       errors.timeEndError = 'End time is invalid';
       isError = true;
     }

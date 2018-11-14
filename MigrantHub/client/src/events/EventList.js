@@ -30,16 +30,16 @@ class EventList extends Component {
   }
 
 
-  componentDidMount() {
-    this.getData(this);
+  componentDidMount(props) {
+    this.getData(this, props);
   }
 
-  componentWillReceiveProps() {
-    this.getData(this);
+  componentWillReceiveProps(props) {
+    this.getData(this, props);
   }
 
-  getData() {
-    const { location } = this.props;
+  getData(event, props = this.props) {
+    const { location } = props;
 
     let editOwnerEmail = '';
     if (location.state) {

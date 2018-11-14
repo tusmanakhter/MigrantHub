@@ -32,6 +32,7 @@ describe('EventValidator()', function () {
     it('Invalid create event data should return a string with all the errors', function () {
         var expectedErrors =
             "\nDescription must be at least 10 characters" +
+            "\nCity is invalid" +
             "\nPostal code is invalid" +
             "\nPostal code should be in the format A1B 2E3" +
             "\nPhone number is invalid" +

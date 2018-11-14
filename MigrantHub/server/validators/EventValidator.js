@@ -20,6 +20,8 @@ function EventValidator(businessObject) {
 
     if (validator.isEmpty(businessObject.location.city)) {
       errors += '\nCity is required';
+    } else if (validator.isNumeric(businessObject.location.city)) {
+      errors += '\nCity is invalid';
     }
 
     if (validator.isEmpty(businessObject.location.province)) {
