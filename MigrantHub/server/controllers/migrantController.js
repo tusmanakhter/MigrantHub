@@ -7,9 +7,8 @@ module.exports = {
     const email = req.user._id;
     MigrantUser.findOne({ email }, (err, user) => {
       if (err) {
-          logger.error(formatMessage(req.ip, req.method, req.originalUrl, req.httpVersion,
-              err.status, req.referer, 'accountController.getMigrantUser', err.message));
-          return res.status(500).send(err);
+        logger.error(formatMessage(req.ip, req.method, req.originalUrl, req.httpVersion,
+          err.status, req.referer, 'accountController.getMigrantUser', err.message));
         return res.status(500).send(err);
       } if (!user) {
         return res.status(500).send('Incorrect email');
@@ -40,12 +39,11 @@ module.exports = {
       (err) => {
         // Handle any possible database errors
         if (err) {
-            logger.error(formatMessage(req.ip, req.method, req.originalUrl, req.httpVersion,
-                err.status, req.referer,'accountController.editMigrantUser' , err.message));
+          logger.error(formatMessage(req.ip, req.method, req.originalUrl, req.httpVersion,
+            err.status, req.referer, 'accountController.editMigrantUser', err.message));
           return res.status(500).send(err);
-        }else {
-            return res.send('Updated Migrant User');
         }
+        return res.send('Updated Migrant User');
       },
     );
   },

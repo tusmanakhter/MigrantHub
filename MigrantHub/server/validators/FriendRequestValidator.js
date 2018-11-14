@@ -31,7 +31,7 @@ async function checkForExistingFriend(requestFrom, requestTo) {
         error = '\nEek! Server Errors.';
       } else {
         // TODO optimisation: change the storage of friends list into a schema
-        for (let i = 0; i < user.friendsList.length; i++) {
+        for (let i = 0; i < user.friendsList.length; i += 1) {
           if ((user.friendsList[i].friend_id === requestTo) && (user.friendsList[i].state === 'accepted')) {
             error = "\nHmm, it seems you're already friends with this person!";
           }

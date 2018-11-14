@@ -17,76 +17,77 @@ async function ReviewValidator(reviewObject) {
     error = '\nError. Please log out and back in and try again.';
   }
 
-  //make sure user is a migrant
+  // helper function: checks if user exists in migrant table
+  async function checkIfMigrantUser(user) {
+    let checkError = '';
+    try {
+      const record = await User.findOne({
+        _id: user,
+      });
+      if (record) {
+        if (record.type !== 'migrant') {
+          checkError = 'Only migrants can post reviews.';
+        }
+      } else {
+        checkError = 'Error validating user. Please log out and back in and try again.';
+      }
+    } catch (e) {
+      checkError = 'Server Errors. Please log out and back in and try again.';
+    }
+    return checkError;
+  }
+
+  // helper function: makes sure the user isn't the owner of the service
+  async function checkForOwnerReview(user, serviceId) {
+    let checkError = '';
+    try {
+      const record = await Service.findOne({
+        email: user,
+        _id: serviceId,
+      });
+      if (record) {
+        checkError = 'You cannot review your own service.';
+      }
+    } catch (e) {
+      checkError = 'Server Errors. Please log out and back in and try again.';
+    }
+    return checkError;
+  }
+
+  // helper function: makes sure the user hasn't already reviewed this service
+  async function checkForExistingReview(user, serviceId) {
+    let checkError = '';
+    try {
+      const record = await ReviewService.findOne({
+        user,
+        serviceId,
+      });
+      if (record) {
+        checkError = 'Your review for this service already exists.';
+      }
+    } catch (e) {
+      checkError = 'Server Errors. Please log out and back in and try again.';
+    }
+    return checkError;
+  }
+
+  // make sure user is a migrant
   const migrantUserError = await checkIfMigrantUser(reviewObject.user);
   if (migrantUserError) {
     error = migrantUserError;
   }
 
-  //make sure the user isn't reviewing their own service
+  // make sure the user isn't reviewing their own service
   const ownerReviewError = await checkForOwnerReview(reviewObject.user, reviewObject.serviceId);
   if (ownerReviewError) {
     error = ownerReviewError;
   }
 
-  //make sure the user hasn't already reviewed this service
-  const existingReviewError = await checkForExistingReview(reviewObject.user, reviewObject.serviceId);
+  // make sure the user hasn't already reviewed this service
+  const existingReviewError = await checkForExistingReview(reviewObject.user,
+    reviewObject.serviceId);
   if (existingReviewError) {
     error = existingReviewError;
-  }
-
-  // helper function: checks if user exists in migrant table
-  async function checkIfMigrantUser(user) {
-    let error = '';
-    try {
-      const record = await User.findOne({
-        _id: user
-      });
-      if (record) {
-        if (record.type !== 'migrant') {
-          error = 'Only migrants can post reviews.';
-        }
-      } else {
-        error = 'Error validating user. Please log out and back in and try again.';
-      }
-    } catch (e) {
-      error = 'Server Errors. Please log out and back in and try again.';
-    }
-    return error;
-  }
-
-  // helper function: makes sure the user isn't the owner of the service
-  async function checkForOwnerReview(user, serviceId) {
-    let error = '';
-    try {
-      const record = await Service.findOne({
-        email: user,
-        _id: serviceId
-      });
-      if (record) {
-        error = 'You cannot review your own service.';
-      }
-    } catch (e) {
-      error = 'Server Errors. Please log out and back in and try again.';
-    }
-    return error;
-  }
-
-  // helper function: makes sure the user hasn't already reviewed this service
-  async function checkForExistingReview(user, serviceId) {
-    let error = '';
-    try {
-      const record = await ReviewService.findOne({
-        user: user,
-        serviceId: serviceId
-      });
-      if (record) {
-        error = 'Your review for this service already exists.';
-      }
-    } catch (e) {
-      error = 'Server Errors. Please log out and back in and try again.';
-    }
-    return error;
   }
 
   return error;

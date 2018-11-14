@@ -45,16 +45,16 @@ module.exports = {
       services.dateCreated = date;
       services.save((err) => {
         if (err) {
-            logger.error(formatMessage(req.ip, req.method, req.originalUrl, req.httpVersion,
-                err.status, req.referer,'servicesController.createService' , err.message));
+          logger.error(formatMessage(req.ip, req.method, req.originalUrl, req.httpVersion,
+            err.status, req.referer, 'servicesController.createService', err.message));
           return res.status(400).send('There was an error creating service.');
         }
         return res.status(200).send('Service has been created!');
       });
     } else {
-        logger.error(formatMessage(req.ip, req.method, req.originalUrl, req.httpVersion,
-            '500' , req.referer,'servicesController.createService: ServiceValidator' , errors));
-        return res.status(400).send('There was an error creating service.');
+      logger.error(formatMessage(req.ip, req.method, req.originalUrl, req.httpVersion,
+        '500', req.referer, 'servicesController.createService: ServiceValidator', errors));
+      return res.status(400).send('There was an error creating service.');
     }
   },
 
@@ -74,8 +74,8 @@ module.exports = {
 
     Services.find(query, (err, services) => {
       if (err) {
-          logger.error(formatMessage(req.ip, req.method, req.originalUrl, req.httpVersion,
-              err.status, req.referer,'servicesController.viewServices' , err.message));
+        logger.error(formatMessage(req.ip, req.method, req.originalUrl, req.httpVersion,
+          err.status, req.referer, 'servicesController.viewServices', err.message));
         return res.status(400).send('There was an error getting services.');
       }
       return res.status(200).send(services);
@@ -92,8 +92,8 @@ module.exports = {
 
     Services.findOne(query, (err, services) => {
       if (err) {
-          logger.error(formatMessage(req.ip, req.method, req.originalUrl, req.httpVersion,
-              err.status, req.referer,'servicesController.getServiceData' , err.message));
+        logger.error(formatMessage(req.ip, req.method, req.originalUrl, req.httpVersion,
+          err.status, req.referer, 'servicesController.getServiceData', err.message));
         return res.status(400).send('There was an error getting services.');
       }
       return res.status(200).send(services);
@@ -121,7 +121,7 @@ module.exports = {
         fs.remove(`${parsedObj.serviceImagePath.toString().substring(3)}`, (err) => {
           if (err) {
             logger.error(formatMessage(req.ip, req.method, req.originalUrl, req.httpVersion,
-                err.status, req.referer,'servicesController.updateService: removeImage' , err.message));
+              err.status, req.referer, 'servicesController.updateService: removeImage', err.message));
             updateError = true;
           }
         });
@@ -136,7 +136,7 @@ module.exports = {
       Services.findByIdAndUpdate({ _id: parsedObj._id }, parsedObj, { new: true }, (err) => {
         if (err) {
           logger.error(formatMessage(req.ip, req.method, req.originalUrl, req.httpVersion,
-              err.status, req.referer,'servicesController.updateService' , err.message));
+            err.status, req.referer, 'servicesController.updateService', err.message));
           updateError = true;
         }
       });
@@ -147,7 +147,7 @@ module.exports = {
       return res.status(200).send('Service updated successfully.');
     }
     logger.error(formatMessage(req.ip, req.method, req.originalUrl, req.httpVersion,
-        '400', req.referer,'servicesController.updateService' , errors));
+      '400', req.referer, 'servicesController.updateService', errors));
     return res.status(400).send('There was an error updating service.');
   },
 
@@ -157,7 +157,7 @@ module.exports = {
       { deleted: true, deletedDate: Date.now() }, (err) => {
         if (err) {
           logger.error(formatMessage(req.ip, req.method, req.originalUrl, req.httpVersion,
-              err.status, req.referer,'servicesController.deleteService' , err.message));
+            err.status, req.referer, 'servicesController.deleteService', err.message));
           deleteError = true;
         }
       });
@@ -170,7 +170,7 @@ module.exports = {
   },
 
   async createServiceReview(req, res) {
-    var parsedObj = qs.parse(req.body);
+    const parsedObj = qs.parse(req.body);
     parsedObj.user = req.user._id;
 
     const errors = await ReviewValidator(parsedObj);
@@ -183,12 +183,12 @@ module.exports = {
       reviewService.comment = parsedObj.comment;
       reviewService.save((err) => {
         if (err) {
-          return res.send({addReviewMessage: 'There was an error creating the review.' + err, addReviewError: true});
+          return res.send({ addReviewMessage: `There was an error creating the review.${err}`, addReviewError: true });
         }
-        return res.send({addReviewMessage: 'Review has been created!', addReviewError: false});
+        return res.send({ addReviewMessage: 'Review has been created!', addReviewError: false });
       });
     } else {
-      return res.send({addReviewMessage: errors, addReviewError: true});
+      return res.send({ addReviewMessage: errors, addReviewError: true });
     }
   },
   async getServiceReviews(req, res) {
