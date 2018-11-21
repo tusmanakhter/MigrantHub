@@ -20,6 +20,7 @@ import ServiceList from '../services/ServiceList';
 import EventList from '../events/EventList';
 import EventForm from '../events/EventForm';
 import Auth from './Auth';
+import UsersList from '../account/common/UsersList';
 
 class Routes extends Component {
   state = {
@@ -59,6 +60,7 @@ class Routes extends Component {
         <Route path="/myservices" component={ServiceList} exact />
         <Route path="/events" component={EventList} exact />
         <Route path="/myevents" component={EventList} exact />
+        <Route path="/users" component={UsersList} exact />
         <Route component={Error} />
       </Switch>
     );
