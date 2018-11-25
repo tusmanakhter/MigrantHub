@@ -20,7 +20,7 @@ import ServiceList from '../services/ServiceList';
 import EventList from '../events/EventList';
 import EventForm from '../events/EventForm';
 import Auth from './Auth';
-import UsersList from '../account/common/UsersList';
+import UsersList from '../People/UsersList';
 
 class Routes extends Component {
   state = {
