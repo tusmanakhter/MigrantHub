@@ -32,8 +32,18 @@ class ServiceList extends Component {
     this.getData(this, props);
   }
 
-  getData() {
+  getData(event, props = this.props) {
+    const { location } = props;
+    let searchQuery = '';
+
+    if (location.state) {
+      searchQuery = location.state.searchQuery;
+    }
+
     axios.get('/api/friend/viewusers', {
+      params: {
+        searchQuery: searchQuery,
+      },
     }).then((response) => {
       this.setState({
         items: response.data,

@@ -170,7 +170,14 @@ module.exports = {
   },
 
   viewUsers(req, res) {
-    User.find({}, (err, users) => {
+    const { searchQuery } = req.query;
+    let query = {};
+
+    const tempSearchQuery = searchQuery;
+    const regex = new RegExp(tempSearchQuery.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&'), 'gi');
+    query = { $or: [{ firstName: regex }, { lastName: regex }] };
+
+    User.find(query, (err, users) => {
       if (err) {
         logger.error(formatMessage(req.ip, req.method, req.originalUrl, req.httpVersion,
           err.status, req.referer, 'accountController.viewUsers', err.message));
