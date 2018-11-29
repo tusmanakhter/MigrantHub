@@ -177,6 +177,8 @@ module.exports = {
     const regex = new RegExp(tempSearchQuery.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&'), 'gi');
     query = { $or: [{ firstName: regex }, { lastName: regex }] };
 
+    query.deleted = false;
+
     User.find(query, (err, users) => {
       if (err) {
         logger.error(formatMessage(req.ip, req.method, req.originalUrl, req.httpVersion,
