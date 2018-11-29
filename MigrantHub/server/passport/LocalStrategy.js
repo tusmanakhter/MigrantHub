@@ -3,9 +3,10 @@ const bcrypt = require('bcryptjs');
 const User = require('../models/User');
 const { logger, formatMessage } = require('../config/winston');
 
-const strategy = new LocalStrategy({ passReqToCallback: true },
+const localStrategy = new LocalStrategy({ passReqToCallback: true },
   ((req, username, password, done) => {
     User.findOne({ email: username }, (err, user) => {
+      console.log(user);
       if (err) {
         logger.error(formatMessage(req.ip, req.method, req.originalUrl, req.httpVersion,
           err.status, req.referer, 'LocalStrategy - Authenticate User', err.message));
@@ -16,7 +17,7 @@ const strategy = new LocalStrategy({ passReqToCallback: true },
           '404', req.referer, 'LocalStrategy - Authenticate User', 'Invalid user login attempt'));
         return done(null, false, { message: 'Incorrect email' });
       }
-      if (!bcrypt.compareSync(password, user.password)) {
+      if (!bcrypt.compareSync(password, user.localAuthentication.password)) {
         logger.error(formatMessage(req.ip, req.method, req.originalUrl, req.httpVersion,
           '403', req.referer, 'LocalStrategy - Authenticate User', 'Invalid password login attempt'));
         return done(null, false, { message: 'Incorrect password' });
@@ -27,7 +28,7 @@ const strategy = new LocalStrategy({ passReqToCallback: true },
         return done(null, false, { message: 'Your admin account is not authorized yet' });
       }
       return done(null, user);
-    });
+    }).select('localAuthentication');
   }));
 
-module.exports = strategy;
+module.exports = localStrategy;

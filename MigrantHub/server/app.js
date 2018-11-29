@@ -8,7 +8,7 @@ const bodyParser = require('body-parser');
 const expressSession = require('express-session');
 const router = require('./routes/index');
 
-const serverConfig = require('./config');
+const { dbConfig } = require('./config');
 const passport = require('./passport');
 const { logger, formatMessage } = require('./config/winston');
 
@@ -65,7 +65,7 @@ app.use((err, req, res, next) => {
 });
 
 // MongoDB/Mongoose Connection
-const { db: { host, port, name } } = serverConfig;
+const { db: { host, port, name } } = dbConfig;
 const connectionString = `mongodb://${host}:${port}/${name}`;
 mongoose.Promise = global.Promise;
 mongoose.connect(connectionString, (error) => {

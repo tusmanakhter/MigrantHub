@@ -22,7 +22,7 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import axios from 'axios';
 import HomeLayout from '../home/HomeLayout';
 import Auth from '../routes/Auth';
-
+import FacebookLogin from 'react-facebook-login';
 
 const qs = require('qs');
 
@@ -76,45 +76,68 @@ class Login extends Component {
     });
   }
 
-  handleSubmit = () => {
-    this.sendLogin(this);
-  };
+    handleSubmit = () => {
+        this.sendLogin(this);
+    };
 
-  // Send profile data in post body to add to mongodb
-  sendLogin(e) {
-    axios.post('/api/accounts/login',
-      qs.stringify({
-        username: e.state.username,
-        password: e.state.password,
-      })).then(async (response) => {
-      if (response.status === 200) {
-        await Auth.authenticate();
-        if (response.data.type === 'admin') {
-          this.setState({
-            redirectTo: true,
-            redirectToURL: '/admin/dashboard',
-          });
-        } else if(response.data.type === 'migrant') {
+    // Send profile data in post body to add to mongodb
+    sendLogin(e) {
+        axios.post('/api/accounts/login',
+            qs.stringify({
+                username: e.state.username,
+                password: e.state.password,
+            })).then(async (response) => {
+            if (response.status === 200) {
+                await Auth.authenticate();
+                if (response.data.type === 'admin') {
+                    this.setState({
+                        redirectTo: true,
+                        redirectToURL: '/admin/dashboard',
+                    });
+                } else if(response.data.type === 'migrant') {
+                    this.setState({
+                        redirectTo: true,
+                        redirectToURL: '/main',
+                    });
+                } else if(response.data.type === 'business') {
+                    this.setState({
+                        redirectTo: true,
+                        redirectToURL: '/businessmain',
+                    });
+                }
+            }
+        }).catch((error) => {
             this.setState({
                 redirectTo: true,
-                redirectToURL: '/main',
+                redirectToURL: '/TempError',
             });
-        } else if(response.data.type === 'business') {
-          this.setState({
-            redirectTo: true,
-            redirectToURL: '/businessmain',
-          });
-        }
-      }
-    }).catch((error) => {
-      console.log('login error: ');
-      console.log(error);
-      this.setState({
-        redirectTo: true,
-        redirectToURL: '/TempError',
-      });
-    });
-  }
+        });
+    }
+
+    // Send profile data in post body to add to mongodb /api/accounts/auth/facebook
+    facebookAuthenticationLogin = (reply) => {
+        axios.post('/api/accounts/auth/facebook',
+            qs.stringify({
+                access_token: reply.accessToken,
+            })).then(async (response) => {
+            if (response.status === 200) {
+                await Auth.authenticate();
+                if (response.data.type === 'migrant') {
+                    this.setState({
+                        redirectTo: true,
+                        redirectToURL: '/main',
+                    });
+                }
+            }
+
+        }).catch((error) => {
+            this.setState({
+                redirectTo: true,
+                redirectToURL: '/TempError',
+            });
+
+        });
+    };
 
   render() {
     if (this.state.redirectTo) {
@@ -176,15 +199,24 @@ class Login extends Component {
                       label="Remember me"
                     />
                   </Grid>
-                  <Button
-                    fullWidth
-                    variant="contained"
-                    color="primary"
-                    onClick={this.handleSubmit}
-                    className={classes.submit}
-                  >
-                  Sign in
-                  </Button>
+                    <Grid item xs={12}>
+                        <Button
+                            fullWidth
+                            variant="contained"
+                            color="primary"
+                            onClick={this.handleSubmit}
+                            className={classes.submit}>
+                            Sign in
+                        </Button>
+                    </Grid>
+                    <Grid item xs={12}>
+                        <FacebookLogin
+                            size="small"
+                            appId={process.env.REACT_APP_FACEBOOK_APP_ID}
+                            autoLoad={false}
+                            fields="name, email"
+                            callback={this.facebookAuthenticationLogin} />
+                    </Grid>
                 </Grid>
               </form>
             </Paper>
