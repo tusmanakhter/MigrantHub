@@ -186,6 +186,11 @@ class Header extends Component {
                   redirectTo: true,
                   redirectToURL: '/migrant/profile',
               });
+          } else if (type === 'business') {
+              this.setState({
+                  redirectTo: true,
+                  redirectToURL: '/business/profile',
+              });
           }
       } else if (event.target.id === 'myServices') {
       this.setState({
