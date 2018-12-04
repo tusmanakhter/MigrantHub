@@ -10,11 +10,7 @@ import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import ViewService from './ViewService';
 import ViewReviews from './ViewReviews';
-import ServiceShare from './ServiceShare';
-import { Link, Route } from 'react-router-dom'
-import axios from 'axios';
-import qs from 'qs';
-
+import { Link } from 'react-router-dom'
 
 const styles = {
   card: {
