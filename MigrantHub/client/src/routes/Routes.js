@@ -19,6 +19,7 @@ import ServiceForm from '../services/ServiceForm';
 import ServiceList from '../services/ServiceList';
 import EventList from '../events/EventList';
 import EventForm from '../events/EventForm';
+import ServiceShare from '../services/ServiceShare';
 import Auth from './Auth';
 
 class Routes extends Component {
@@ -55,6 +56,7 @@ class Routes extends Component {
         <ProtectedRoute path="/admin/dashboard" component={AdminDashboard} type="admin" />
         <Route path="/services/create" component={ServiceForm} exact />
         <Route path="/services" component={ServiceList} exact />
+        <Route path="/services/share/:id" render={(props) => <ServiceShare serviceId={props.match.params.id} />} />
         <Route path="/events/create" component={EventForm} exact />
         <Route path="/myservices" component={ServiceList} exact />
         <Route path="/events" component={EventList} exact />
