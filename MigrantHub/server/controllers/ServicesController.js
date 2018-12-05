@@ -171,15 +171,14 @@ module.exports = {
   },
 
   async deleteReview(req, res) {
-    console.log("req.user._id: " + req.user._id)
     //fetch the review in question
     const review = await ReviewService.findOne({_id: req.params.id});
 
     //make sure the user has the right to delete the review
     const user = await User.findOne({_id: req.user._id,});
     if (user) {
+      //only author of the review or an admin can delete
       if (user.type === 'migrant') {
-        console.log('migrant and review id is: ' + review.user)
         if (req.user._id !== review.user) {
           return res.status(400). send('You can only delete this review if you are the author or an admin.')
         }

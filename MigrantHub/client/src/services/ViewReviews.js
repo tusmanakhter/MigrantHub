@@ -102,7 +102,6 @@ class ViewReviews extends Component {
         if (response.status === 200) {
           this.getReviews();
         }
-        console.log(response.data)
       });
   };
 
@@ -201,7 +200,7 @@ class ViewReviews extends Component {
                         </Grid>
                         <Grid item xs={1}>
                           <Button size="small" color="secondary" onClick={() => {this.handleDeleteReview(review._id)}}>
-                            Delete {review._id}
+                            Delete
                           </Button>
                         </Grid>
                       </Grid>
