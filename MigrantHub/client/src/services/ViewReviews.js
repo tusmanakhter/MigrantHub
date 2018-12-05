@@ -102,6 +102,7 @@ class ViewReviews extends Component {
         if (response.status === 200) {
           this.getReviews();
         }
+        console.log(response.data)
       });
   };
 

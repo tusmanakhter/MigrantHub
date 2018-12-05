@@ -3,6 +3,7 @@ const multer = require('multer');
 const fs = require('fs-extra');
 const ServiceValidator = require('../validators/ServiceValidator');
 const ReviewValidator = require('../validators/ReviewValidator');
+const User = require('../models/User');
 const Services = require('../models/Services');
 const ReviewService = require('../models/ReviewService');
 const { logger, formatMessage } = require('../config/winston');
@@ -170,7 +171,24 @@ module.exports = {
   },
 
   async deleteReview(req, res) {
-    console.log("yo, deleting review")
+    console.log("req.user._id: " + req.user._id)
+    //fetch the review in question
+    const review = await ReviewService.findOne({_id: req.params.id});
+
+    //make sure the user has the right to delete the review
+    const user = await User.findOne({_id: req.user._id,});
+    if (user) {
+      if (user.type === 'migrant') {
+        console.log('migrant and review id is: ' + review.user)
+        if (req.user._id !== review.user) {
+          return res.status(400). send('You can only delete this review if you are the author or an admin.')
+        }
+      } else if (user.type !== 'admin') {
+        return res.status(400). send('You can only delete this review if you are the author or an admin.')
+      }
+    } else {
+      return res.status(400). send('Please log out and log back in.')
+    }
     ReviewService.deleteOne({ _id: req.params.id }, function(err) {
       if (err) {
         return res.status(400).send('There was an error deleting service: ' + e);
