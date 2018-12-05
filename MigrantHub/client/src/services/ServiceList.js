@@ -82,7 +82,6 @@ class ServiceList extends Component {
     });
   }
 
-
   setRedirectToServiceForm = () => {
     this.setState({
       redirectToServiceForm: true,
