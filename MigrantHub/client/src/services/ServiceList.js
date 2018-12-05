@@ -28,14 +28,17 @@ class ServiceList extends Component {
     };
 
     this.getData = this.getData.bind(this);
+    this.getUser = this.getUser.bind(this);
   }
 
   componentDidMount(props) {
     this.getData(this, props);
+    this.getUser();
   }
 
   componentWillReceiveProps(props) {
     this.getData(this, props);
+    this.getUser();
   }
 
   getData(event, props = this.props) {
@@ -72,6 +75,13 @@ class ServiceList extends Component {
     });
   }
 
+  getUser() {
+    const user = JSON.parse(localStorage.getItem('user'));
+    this.setState({
+      type: user.type,
+    });
+  }
+
   setRedirectToServiceForm = () => {
     this.setState({
       redirectToServiceForm: true,
@@ -87,19 +97,25 @@ class ServiceList extends Component {
 
     render() {
       const { classes } = this.props;
-      const { items, editMode, editOwner } = this.state;
+      const { items, editMode, editOwner, type } = this.state;
       return (
         <div>
-          <Header />
-          {this.renderRedirectToServiceForm()}
-          <Button
-            variant="contained"
-            color="primary"
-            className={classes.button}
-            onClick={this.setRedirectToServiceForm}
-          >
-            Create Service
-          </Button>
+          { type !== 'admin'
+            && (
+            <React.Fragment>
+              <Header />
+              {this.renderRedirectToServiceForm()}
+              <Button
+                variant="contained"
+                color="primary"
+                className={classes.button}
+                onClick={this.setRedirectToServiceForm}
+              >
+                Create Service 
+              </Button>
+            </React.Fragment>
+            )
+          }
           <Paper className={classes.root} elevation={2}>
             {' '}
             {
