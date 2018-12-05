@@ -12,6 +12,7 @@ import CurrentAdmins from './CurrentAdmins';
 import RejectedAdmins from './RejectedAdmins';
 import DeletedAdmins from './DeletedAdmins';
 import UnapprovedAdmins from './UnapprovedAdmins';
+import AdminServices from './AdminServices';
 import AdminEvent from './AdminEvent'
 
 
@@ -47,6 +48,9 @@ class AdminDashboard extends Component {
             </NavbarNav>
             <NavbarNav right>
               <NavItem>
+                <NavLink to={`${match.url}/admin/services`}>Services</NavLink>
+              </NavItem>
+              <NavItem>
                 <NavLink to={`${match.url}/admin/event`}>Event</NavLink>
               </NavItem>
               <NavItem>
@@ -71,6 +75,7 @@ class AdminDashboard extends Component {
         <Route path={`${match.url}/admins/deleted`} component={DeletedAdmins} exact />
         <Route path={`${match.url}/admins/rejected`} component={RejectedAdmins} exact />
         <Route path={`${match.url}/admins/unapproved`} component={UnapprovedAdmins} exact />
+        <Route path={`${match.url}/admin/services`} component={AdminServices} exact />
         <Route path={`${match.url}/admin/event`} component={AdminEvent} exact />
       </React.Fragment>
     );

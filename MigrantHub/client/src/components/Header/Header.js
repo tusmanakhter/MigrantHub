@@ -180,7 +180,19 @@ class Header extends Component {
           redirectToURL: '/editbusiness',
         });
       }
-    } else if (event.target.id === 'myServices') {
+    } else if (event.target.id === 'viewProfile') {
+          if (type === 'migrant') {
+              this.setState({
+                  redirectTo: true,
+                  redirectToURL: '/migrant/profile',
+              });
+          } else if (type === 'business') {
+              this.setState({
+                  redirectTo: true,
+                  redirectToURL: '/business/profile',
+              });
+          }
+      } else if (event.target.id === 'myServices') {
       this.setState({
         redirectTo: true,
         redirectToURL: '/myservices',
@@ -305,6 +317,7 @@ class Header extends Component {
           <MenuItem onClick={this.handleClose}>Profile</MenuItem>
           <MenuItem onClick={this.handleClose}>My account</MenuItem>
           <MenuItem id="editProfile" onClick={this.handleMenuClick}>Edit Profile</MenuItem>
+          <MenuItem id="viewProfile" onClick={this.handleMenuClick}>View Profile</MenuItem>
           <MenuItem id="myServices" onClick={this.handleMenuClick}>My Services</MenuItem>
           <MenuItem id="myEvents" onClick={this.handleMenuClick}>My Events</MenuItem>
         </Menu>
