@@ -19,6 +19,8 @@ import ServiceForm from '../services/ServiceForm';
 import ServiceList from '../services/ServiceList';
 import EventList from '../events/EventList';
 import EventForm from '../events/EventForm';
+import ViewMigrantProfile from '../account/personal/ViewMigrantProfile';
+import ViewBusinessProfile from '../account/business/ViewBusinessProfile';
 import Auth from './Auth';
 import UsersList from '../People/UsersList';
 
@@ -61,6 +63,8 @@ class Routes extends Component {
         <Route path="/events" component={EventList} exact />
         <Route path="/myevents" component={EventList} exact />
         <Route path="/users" component={UsersList} exact />
+        <Route path="/migrant/profile" component={ViewMigrantProfile} exact />
+        <Route path="/business/profile" component={ViewBusinessProfile} exact />
         <Route component={Error} />
       </Switch>
     );

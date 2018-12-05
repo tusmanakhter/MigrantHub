@@ -38,9 +38,9 @@ module.exports = {
       services.location = parsedObj.location;
       services.serviceHours = parsedObj.serviceHours;
       if (parsedObj.serviceImageName === 'cameraDefault.png') {
-        services.serviceImagePath = (`../uploads/default/${parsedObj.serviceImageName}`);
+        services.serviceImagePath = (`/uploads/default/${parsedObj.serviceImageName}`);
       } else {
-        services.serviceImagePath = (`../uploads/${req.user._id}/services/${parsedObj.serviceImageName}`);
+        services.serviceImagePath = (`/uploads/${req.user._id}/services/${parsedObj.serviceImageName}`);
       }
       services.dateCreated = date;
       services.save((err) => {
@@ -117,7 +117,7 @@ module.exports = {
         parsedObj.serviceHours = [];
       }
 
-      if ((parsedObj.serviceImagePath !== undefined) && (parsedObj.serviceImagePath !== (`../uploads/${req.user._id}/services/${parsedObj.serviceImageName}`))) {
+      if ((parsedObj.serviceImagePath !== undefined) && (parsedObj.serviceImagePath !== (`/uploads/${req.user._id}/services/${parsedObj.serviceImageName}`))) {
         fs.remove(`${parsedObj.serviceImagePath.toString().substring(3)}`, (err) => {
           if (err) {
             logger.error(formatMessage(req.ip, req.method, req.originalUrl, req.httpVersion,
@@ -128,9 +128,9 @@ module.exports = {
       }
 
       if (parsedObj.serviceImageName === 'cameraDefault.png') {
-        parsedObj.serviceImagePath = (`../uploads/default/${parsedObj.serviceImageName}`);
+        parsedObj.serviceImagePath = (`/uploads/default/${parsedObj.serviceImageName}`);
       } else {
-        parsedObj.serviceImagePath = (`../uploads/${req.user._id}/services/${parsedObj.serviceImageName}`);
+        parsedObj.serviceImagePath = (`/uploads/${req.user._id}/services/${parsedObj.serviceImageName}`);
       }
 
       Services.findByIdAndUpdate({ _id: parsedObj._id }, parsedObj, { new: true }, (err) => {
