@@ -72,3 +72,39 @@ describe('friend controller friend management', function () {
     assert.calledWith(MigrantUser.update, { _id: req.user._id, 'friendsList.friend_id': expectedResult.friend_id }, { $set: { 'friendsList.$.state': 'unfriended', 'friendsList.$.lastUpdate': Date.now() } });
   }));
 });
+
+describe('Friend controller search people', function () {
+
+  let req = {
+      user: {
+          _id: "test@test.com"
+      },
+      query: {
+          searchQuery: 'test',
+      }
+  },
+ 
+  error = new Error({ error: "err" }),
+  res = {};
+
+  beforeEach(function () {
+      status = stub();
+      send = spy();
+      res = { send, status };
+      status.returns(res);
+  });
+
+  it('should return people if no error retrieving searched people', test(function () {
+      this.stub(MigrantUser, 'find').yields(null);
+      Controller.viewUsers(req, res);
+      assert.calledWith(MigrantUser.find, { '$or': [ { firstName: /test/gi }, { lastName: /test/gi } ], deleted: false });
+      assert.calledWith(res.status, 200);
+  }));
+
+  it('should return error message if error retrieving searched people', test(function () {
+      this.stub(MigrantUser, 'find').yields(error);
+      Controller.viewUsers(req, res);
+      assert.calledWith(MigrantUser.find, { '$or': [ { firstName: /test/gi }, { lastName: /test/gi }], deleted: false });
+      assert.calledWith(res.status, 400);
+  }));
+});
