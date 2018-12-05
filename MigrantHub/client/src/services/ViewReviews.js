@@ -33,12 +33,14 @@ class ViewReviews extends Component {
       comment: '',
       addReviewMessage: '',
       addReviewError: false,
-      currentReviewSet: []
+      currentReviewSet: [],
+      type: '',
     };
   }
 
   componentDidMount() {
     this.getReviews();
+    this.getUser();
   };
 
   getReviews = () => {
@@ -105,9 +107,16 @@ class ViewReviews extends Component {
       });
   };
 
+  getUser() {
+    const user = JSON.parse(localStorage.getItem('user'));
+    this.setState({
+      type: user.type,
+    });
+  }
+
   render() {
     const { serviceTitle, open, scroll, editMode, onClose } = this.props;
-    const { redirectTo, redirectToURL, redirectState, rating, comment, addReviewMessage, addReviewError, currentReviewSet } = this.state;
+    const { redirectTo, redirectToURL, redirectState, rating, comment, addReviewMessage, addReviewError, currentReviewSet, type } = this.state;
 
     if (redirectTo) {
       return (
@@ -131,46 +140,52 @@ class ViewReviews extends Component {
         >
           <DialogTitle id="scroll-dialog-title">{serviceTitle}</DialogTitle>
           <DialogContent>
-            <div style={{backgroundColor: "#F0F0F0"}}><div style={{margin: "20px"}}>
-              <br></br>
-              <Typography variant="h5" color="inherit" paragraph>
-                <u>Your Review:</u>
-                <Grid container alignItems="center" spacing={8}>
-                  <Grid item xs={1}>
-                    <div>
-                      <br></br>
-                      <StarRatingComponent 
-                        name="rate" 
-                        starCount={5}
-                        value={rating}
-                        onStarClick={this.handleStarClick.bind(this)}
-                      />
-                    </div>
-                  </Grid>
-                  <Grid item xs={8}>
-                    <TextField
-                      id="comment"
-                      name="comment"
-                      label="Comment"
-                      multiline
-                      rows="3"
-                      value={comment}
-                      onChange={event => this.handleChange(event)}
-                      fullWidth
-                      helperText={addReviewMessage}
-                      error={addReviewError}
-                    />
-                  </Grid>
-                  <Grid item xs={2}>
+              { type !== 'admin' 
+                && (
+                  <React.Fragment>
+                    <div style={{backgroundColor: "#F0F0F0"}}><div style={{margin: "20px"}}>
+                     <br></br>
+                    <Typography variant="h5" color="inherit" paragraph>
+                      <u>Your Review:</u>
+                      <Grid container alignItems="center" spacing={8}>
+                        <Grid item xs={1}>
+                          <div>
+                            <br></br>
+                            <StarRatingComponent 
+                              name="rate" 
+                              starCount={5}
+                              value={rating}
+                              onStarClick={this.handleStarClick.bind(this)}
+                            />
+                          </div>
+                        </Grid>
+                        <Grid item xs={8}>
+                          <TextField
+                            id="comment"
+                            name="comment"
+                            label="Comment"
+                            multiline
+                            rows="3"
+                            value={comment}
+                            onChange={event => this.handleChange(event)}
+                            fullWidth
+                            helperText={addReviewMessage}
+                            error={addReviewError}
+                          />
+                        </Grid>
+                        <Grid item xs={2}>
+                          <br></br>
+                          <Button onClick={this.handlePostReview} color="primary">
+                            Post Review
+                          </Button>
+                        </Grid>
+                      </Grid>
+                    </Typography>
                     <br></br>
-                    <Button onClick={this.handlePostReview} color="primary">
-                      Post Review
-                    </Button>
-                  </Grid>
-                </Grid>
-              </Typography>
-              <br></br>
-            </div></div>
+                    </div></div>
+                  </React.Fragment>
+                )
+              }
             <hr></hr>
             <div style={{margin: "20px"}}>
               {

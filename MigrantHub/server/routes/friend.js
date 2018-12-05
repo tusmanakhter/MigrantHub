@@ -9,5 +9,6 @@ router.post('/rejectfriendrequest', friendController.rejectFriendRequest);
 router.post('/unfriend', friendController.unfriend);
 router.get('/getrequests', friendController.getFriendRequests);
 router.get('/getfriendslist', friendController.getFriendsList);
+router.get('/viewusers', friendController.viewUsers);
 
 module.exports = router;
