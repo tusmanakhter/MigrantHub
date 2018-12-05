@@ -26,9 +26,9 @@ import Logout from '../Logout';
 var qs = require('qs');
 
 const searchType = [
-  { value: 'PPLE', label: 'People' },
-  { value: 'SERV', label: 'Services' },
-  { value: 'EVNT', label: 'Events' },
+  { value: 'PEOPLE', label: 'People' },
+  { value: 'SERVICE', label: 'Services' },
+  { value: 'EVENT', label: 'Events' },
 ];
 
 const styles = theme => ({
@@ -225,11 +225,11 @@ class Header extends Component {
   handleSearch = async () => {
     const error = await this.validate();
     if (!error) {
-      if (this.state.searchType === 'SERV') {
+      if (this.state.searchType === 'SERVICE') {
         this.sendSearchServices();
       }
 
-      if (this.state.searchType === 'PPLE') {
+      if (this.state.searchType === 'PEOPLE') {
         this.sendSearchPeople();
       }
     }
