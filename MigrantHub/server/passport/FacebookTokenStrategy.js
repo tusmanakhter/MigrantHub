@@ -1,7 +1,6 @@
 const FacebookTokenStrategy = require('passport-facebook-token');
 const User = require('../models/MigrantUser');
 const { facebookConfig } = require('../config');
-
 const { logger, formatMessage } = require('../config/winston');
 
 const facebookStrategy = new FacebookTokenStrategy({
@@ -12,8 +11,6 @@ const facebookStrategy = new FacebookTokenStrategy({
 },
 ((req, accessToken, refreshToken, profile, done) => {
   User.findOne({ 'facebookAuthentication.id': profile.id }, (err, user) => {
-    console.log(user);
-
     if (err) {
       logger.error(formatMessage(req.ip, req.method, req.originalUrl, req.httpVersion,
         err.status, req.referer, 'FacebookTokenStrategy - Authenticate User', err.message));

@@ -6,7 +6,6 @@ const { logger, formatMessage } = require('../config/winston');
 const localStrategy = new LocalStrategy({ passReqToCallback: true },
   ((req, username, password, done) => {
     User.findOne({ email: username }, (err, user) => {
-      console.log(user);
       if (err) {
         logger.error(formatMessage(req.ip, req.method, req.originalUrl, req.httpVersion,
           err.status, req.referer, 'LocalStrategy - Authenticate User', err.message));

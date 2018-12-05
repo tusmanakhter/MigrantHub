@@ -129,13 +129,11 @@ class Login extends Component {
                     });
                 }
             }
-
         }).catch((error) => {
             this.setState({
                 redirectTo: true,
                 redirectToURL: '/TempError',
             });
-
         });
     };
 
