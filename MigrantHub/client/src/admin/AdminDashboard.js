@@ -12,7 +12,7 @@ import CurrentAdmins from './CurrentAdmins';
 import RejectedAdmins from './RejectedAdmins';
 import DeletedAdmins from './DeletedAdmins';
 import UnapprovedAdmins from './UnapprovedAdmins';
-import AdminServices from './AdminServices';
+import ServiceList from '../services/ServiceList';
 
 
 class AdminDashboard extends Component {
@@ -71,7 +71,7 @@ class AdminDashboard extends Component {
         <Route path={`${match.url}/admins/deleted`} component={DeletedAdmins} exact />
         <Route path={`${match.url}/admins/rejected`} component={RejectedAdmins} exact />
         <Route path={`${match.url}/admins/unapproved`} component={UnapprovedAdmins} exact />
-        <Route path={`${match.url}/admin/services`} component={AdminServices} exact />
+        <Route path={`${match.url}/admin/services`} component={ServiceList} exact />
       </React.Fragment>
     );
   }
