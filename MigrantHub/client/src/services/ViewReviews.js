@@ -96,6 +96,15 @@ class ViewReviews extends Component {
     })
   }
 
+  handleDeleteReview = (id) => {
+    axios.delete('/api/services/review/' + id)
+      .then((response) => {
+        if (response.status === 200) {
+          this.getReviews();
+        }
+      });
+  };
+
   render() {
     const { serviceTitle, open, scroll, editMode, onClose } = this.props;
     const { redirectTo, redirectToURL, redirectState, rating, comment, addReviewMessage, addReviewError, currentReviewSet } = this.state;
@@ -165,7 +174,7 @@ class ViewReviews extends Component {
             <hr></hr>
             <div style={{margin: "20px"}}>
               {
-                currentReviewSet.map(function(review) {
+                currentReviewSet.map((review) => {
                   return (
                     <div>
                       <Grid container alignItems="center" spacing={8}>
@@ -179,7 +188,7 @@ class ViewReviews extends Component {
                               />
                             </div>
                         </Grid>
-                        <Grid item xs={8}>
+                        <Grid item xs={7}>
                           <Typography variant="h5" color="inherit" paragraph>
                             {review.comment}
                           </Typography>
@@ -188,6 +197,11 @@ class ViewReviews extends Component {
                           <Typography variant="h5" color="inherit" paragraph>
                             <p>{review.time}</p>
                           </Typography>
+                        </Grid>
+                        <Grid item xs={1}>
+                          <Button size="small" color="secondary" onClick={() => {this.handleDeleteReview(review._id)}}>
+                            Delete {review._id}
+                          </Button>
                         </Grid>
                       </Grid>
                       <hr></hr>

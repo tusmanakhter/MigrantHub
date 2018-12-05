@@ -169,6 +169,16 @@ module.exports = {
     }
   },
 
+  async deleteReview(req, res) {
+    console.log("yo, deleting review")
+    ReviewService.deleteOne({ _id: req.params.id }, function(err) {
+      if (err) {
+        return res.status(400).send('There was an error deleting service: ' + e);
+      }
+      return res.status(200).send('Service deleted successfully.');
+    });
+  },
+
   async createServiceReview(req, res) {
     const parsedObj = qs.parse(req.body);
     parsedObj.user = req.user._id;
@@ -191,6 +201,7 @@ module.exports = {
       return res.send({ addReviewMessage: errors, addReviewError: true });
     }
   },
+
   async getServiceReviews(req, res) {
     ReviewService.find(req.query, (err, reviews) => {
       if (err) {
