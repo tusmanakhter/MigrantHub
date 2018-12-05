@@ -171,26 +171,26 @@ module.exports = {
   },
 
   async deleteReview(req, res) {
-    //fetch the review in question
-    const review = await ReviewService.findOne({_id: req.params.id});
+    // fetch the review in question
+    const review = await ReviewService.findOne({ _id: req.params.id });
 
-    //make sure the user has the right to delete the review
-    const user = await User.findOne({_id: req.user._id,});
+    // make sure the user has the right to delete the review
+    const user = await User.findOne({ _id: req.user._id });
     if (user) {
-      //only author of the review or an admin can delete
+      // only author of the review or an admin can delete
       if (user.type === 'migrant') {
         if (req.user._id !== review.user) {
-          return res.status(400). send('You can only delete this review if you are the author or an admin.')
+          return res.status(400).send('You can only delete this review if you are the author or an admin.');
         }
       } else if (user.type !== 'admin') {
-        return res.status(400). send('You can only delete this review if you are the author or an admin.')
+        return res.status(400).send('You can only delete this review if you are the author or an admin.');
       }
     } else {
-      return res.status(400). send('Please log out and log back in.')
+      return res.status(400).send('Please log out and log back in.');
     }
-    ReviewService.deleteOne({ _id: req.params.id }, function(err) {
+    ReviewService.deleteOne({ _id: req.params.id }, (err) => {
       if (err) {
-        return res.status(400).send('There was an error deleting service: ' + e);
+        return res.status(400).send(`There was an error deleting service: ${err}`);
       }
       return res.status(200).send('Service deleted successfully.');
     });
