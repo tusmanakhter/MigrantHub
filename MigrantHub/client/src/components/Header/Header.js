@@ -8,7 +8,6 @@ import InputBase from '@material-ui/core/InputBase';
 import Badge from '@material-ui/core/Badge';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
-import Logout from '../Logout';
 import { fade } from '@material-ui/core/styles/colorManipulator';
 import { withStyles } from '@material-ui/core/styles';
 import MenuIcon from '@material-ui/icons/Menu';
@@ -22,13 +21,14 @@ import axios from 'axios';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import validator from 'validator';
+import Logout from '../Logout';
 
 var qs = require('qs');
 
 const searchType = [
-  { value: 'FRND', label: 'Friends' },
-  { value: 'SERV', label: "Services" },
-  { value: 'EVNT', label: "Events" }
+  { value: 'PEOPLE', label: 'People' },
+  { value: 'SERVICE', label: 'Services' },
+  { value: 'EVENT', label: 'Events' },
 ];
 
 const styles = theme => ({
@@ -235,27 +235,17 @@ class Header extends Component {
   }
 
   handleSearch = async () => {
-    let error = await this.validate();
+    const error = await this.validate();
     if (!error) {
-      if(this.state.searchType === "SERV")
-      {
-        this.sendSearchServices(this);
+      if (this.state.searchType === 'SERVICE') {
+        this.sendSearchServices();
+      }
+
+      if (this.state.searchType === 'PEOPLE') {
+        this.sendSearchPeople();
       }
     }
   };
-
-  sendSearchServices(e) { 
-    this.setState({
-      redirectTo: true,
-      redirectToURL: '/services',
-      redirectState: {
-        editOwner: '',
-        editMode: false,
-        searchQuery: this.state.search,
-        searchMode: true
-      }
-    })
-  }
 
   validate = () => {
     let isError = false;
@@ -265,21 +255,45 @@ class Header extends Component {
     };
 
     if (validator.isEmpty(this.state.search)) {
-      errors.searchError = "Search is required";
-      isError = true
+      errors.searchError = 'Search is required';
+      isError = true;
     }
 
     if (validator.isEmpty(this.state.searchType)) {
-      errors.searchTypeError = "Search Type is required";
-      isError = true
+      errors.searchTypeError = 'Search Type is required';
+      isError = true;
     }
 
     this.setState({
       ...this.state,
-      ...errors
-    })
-    
+      ...errors,
+    });
+
     return isError;
+  }
+
+  sendSearchServices() {
+    this.setState({
+      redirectTo: true,
+      redirectToURL: '/services',
+      redirectState: {
+        editOwner: '',
+        editMode: false,
+        searchQuery: this.state.search,
+        searchMode: true,
+      },
+    });
+  }
+
+  sendSearchPeople() {
+    this.setState({
+      redirectTo: true,
+      redirectToURL: '/users',
+      redirectState: {
+        searchQuery: this.state.search,
+        searchMode: true,
+      },
+    });
   }
 
     renderRedirectTo = () => {
