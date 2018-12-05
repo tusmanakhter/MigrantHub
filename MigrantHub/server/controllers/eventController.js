@@ -41,9 +41,9 @@ module.exports = {
       event.repeat = parsedObj.repeat;
       event.secondsEnd = parsedObj.secondsEnd;
       if (parsedObj.eventImageName === 'cameraDefault.png') {
-        event.eventImagePath = (`../uploads/default/${parsedObj.eventImageName}`);
+        event.eventImagePath = (`/uploads/default/${parsedObj.eventImageName}`);
       } else {
-        event.eventImagePath = (`../uploads/${req.user._id}/events/${parsedObj.eventImageName}`);
+        event.eventImagePath = (`/uploads/${req.user._id}/events/${parsedObj.eventImageName}`);
       }
       event.dateCreated = date;
       event.save((err) => {
@@ -108,7 +108,7 @@ module.exports = {
         parsedObj.location = {};
       }
 
-      if ((parsedObj.eventImagePath !== undefined) && (parsedObj.eventImagePath !== (`../uploads/${req.user._id}/events/${parsedObj.eventImageName}`))) {
+      if ((parsedObj.eventImagePath !== undefined) && (parsedObj.eventImagePath !== (`/uploads/${req.user._id}/events/${parsedObj.eventImageName}`))) {
         fs.remove(`${parsedObj.eventImagePath.toString().substring(3)}`, (err) => {
           if (err) {
             logger.error(formatMessage(req.ip, req.method, req.originalUrl, req.httpVersion,
@@ -119,9 +119,9 @@ module.exports = {
       }
 
       if (parsedObj.eventImageName === 'cameraDefault.png') {
-        parsedObj.eventImagePath = (`../uploads/default/${parsedObj.eventImageName}`);
+        parsedObj.eventImagePath = (`/uploads/default/${parsedObj.eventImageName}`);
       } else {
-        parsedObj.eventImagePath = (`../uploads/${req.user._id}/events/${parsedObj.eventImageName}`);
+        parsedObj.eventImagePath = (`/uploads/${req.user._id}/events/${parsedObj.eventImageName}`);
       }
 
       Event.findByIdAndUpdate({ _id: parsedObj._id }, parsedObj, { new: true }, (err) => {
