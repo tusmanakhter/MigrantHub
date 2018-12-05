@@ -191,4 +191,21 @@ describe('Service controller for reviews', function () {
         assert.calledWith(ReviewService.find);
         assert.calledWith(res.send);
     }));
+
+    it('should delete a review', test(function () {
+        this.stub(ReviewService, 'findOne').yields(null);
+        this.stub(User, 'findOne').yields(null);
+        this.stub(ReviewService, 'deleteOne').yields(null);
+        ServicesController.deleteReview(req, res);
+        assert.calledWith(ReviewService.deleteOne);
+        assert.calledWith(res.send);
+    }));
+
+    // it('should delete a service', test(function () {
+
+    //     ServicesController.deleteReview(req, res);
+    //     assert.calledWith(Services.updateOne, { _id: "5bda52305ccfd051484ea790" }, { deleted: true, deletedDate: Date.now() });
+    //     assert.calledWith(res.send, "Service deleted successfully.");
+    //     assert.calledWith(res.status, 200);
+    // }));
 });
