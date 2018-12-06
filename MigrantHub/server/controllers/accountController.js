@@ -76,7 +76,9 @@ module.exports = {
 
       businessuser._id = parsedObj.email;
       businessuser.email = parsedObj.email;
-      businessuser.password = hash;
+      businessuser.localAuthentication = {
+        password: hash,
+      };
 
       businessuser.corpId = parsedObj.corpId;
       businessuser.firstName = parsedObj.firstName;
@@ -118,7 +120,9 @@ module.exports = {
 
       admin._id = parsedObj.email;
       admin.email = parsedObj.email;
-      admin.password = hash;
+      admin.localAuthentication = {
+        password: hash,
+      };
 
       admin.save((err) => {
         if (err) {

@@ -5,7 +5,6 @@ const options = { discriminatorKey: 'type' };
 
 const BusinessUser = User.discriminator('business',
   new Schema({
-    password: { type: String, required: true },
     corpId: { type: String, required: true },
     firstName: { type: String, required: true },
     lastName: { type: String, required: true },

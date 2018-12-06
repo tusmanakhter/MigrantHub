@@ -61,12 +61,6 @@ const MigrantUser = User.discriminator('migrant',
       },
       select: false,
     },
-    localAuthentication: {
-      type: {
-        password: { type: String },
-      },
-      select: false,
-    },
   }, options));
 
 module.exports = MigrantUser;
