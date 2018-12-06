@@ -6,7 +6,6 @@ const options = { discriminatorKey: 'type' };
 const userSchema = new Schema({
   _id: { type: String, required: true },
   email: { type: String, required: true },
-  password: { type: String, required: true },
   deleted: { type: Boolean, required: true, default: false },
   deletedDate: { type: Date, default: null },
 }, options);

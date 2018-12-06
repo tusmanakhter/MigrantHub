@@ -20,8 +20,9 @@ module.exports = {
 
       user._id = parsedObj.email;
       user.email = parsedObj.email;
-      user.password = hash;
-
+      user.localAuthentication = {
+        password: hash,
+      };
       user.firstName = parsedObj.firstName;
       user.lastName = parsedObj.lastName;
       user.address = parsedObj.address;
