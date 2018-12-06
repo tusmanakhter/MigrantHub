@@ -27,7 +27,12 @@ class ViewService extends Component {
       redirectTo: false,
       redirectToURL: '',
       redirectState: {},
+      type: '',
     };
+  }
+
+  componentDidMount() {
+    this.getUser();
   }
 
   handleEdit = () => {
@@ -53,12 +58,19 @@ class ViewService extends Component {
       });
   };
 
+  getUser() {
+    const user = JSON.parse(localStorage.getItem('user'));
+    this.setState({
+      type: user.type,
+    });
+  }
+
   render() {
     const {
       classes, serviceTitle, serviceSummary, serviceDescription, serviceLocation, serviceDate,
       serviceHours, open, scroll, editMode, onClose,
     } = this.props;
-    const { redirectTo, redirectToURL, redirectState } = this.state;
+    const { redirectTo, redirectToURL, redirectState, type } = this.state;
 
     if (redirectTo) {
       return (
@@ -181,6 +193,13 @@ class ViewService extends Component {
             )}
           </DialogContent>
           <DialogActions>
+            { type === 'admin'
+              && (
+                <Button onClick={this.handleDelete} color="secondary">
+                  Delete
+                </Button>
+              )
+            }}
             {editMode && (
               <React.Fragment>
                 <Button onClick={this.handleDelete} color="secondary">

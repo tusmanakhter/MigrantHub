@@ -28,14 +28,17 @@ class ServiceList extends Component {
     };
 
     this.getData = this.getData.bind(this);
+    this.getUser = this.getUser.bind(this);
   }
 
   componentDidMount(props) {
     this.getData(this, props);
+    this.getUser();
   }
 
   componentWillReceiveProps(props) {
     this.getData(this, props);
+    this.getUser();
   }
 
   getData(event, props = this.props) {
@@ -69,6 +72,13 @@ class ServiceList extends Component {
       this.setState({
         items: response.data,
       });
+    });
+  }
+
+  getUser() {
+    const user = JSON.parse(localStorage.getItem('user'));
+    this.setState({
+      type: user.type,
     });
   }
 

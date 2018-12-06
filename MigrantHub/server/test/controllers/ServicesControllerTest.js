@@ -10,24 +10,35 @@ var ReviewService = require('../../models/ReviewService');
 var User = require('../../models/User');
 
 describe('Service controller', function () {
-
     let req = {
-            body: {
-                serviceDetails: ServicesFactory.validServiceData()
-            },
-            user: {
-                _id: "test@test.com"
-            },
-            query: {
-                _id: "5bda52305ccfd051484ea790",
-                editOwner: "test@test.com"
-            },
-            params: {
-                id: "5bda52305ccfd051484ea790"
-            }
+        body: {
+            serviceDetails: ServicesFactory.validServiceData()
         },
-        error = new Error({ error: "err" }),
-        res = {};
+        user: {
+            _id: "test@test.com"
+        },
+        query: {
+            _id: "5bda52305ccfd051484ea790",
+            editOwner: "test@test.com"
+        },
+        params: {
+            id: "5bda52305ccfd051484ea790"
+        }
+    },
+    error = new Error({ error: "err" }),
+    res = {},
+    service = {
+        _id: "5bda52305ccfd051484ea790",
+        email: "test@test.com"
+    },
+    user = {
+        _id: "test@test.com",
+        type: "migrant"
+    },
+    admin = {
+        _id: "test@test.com",
+        type: "admin"
+    }
 
     beforeEach(function () {
         status = stub();
@@ -99,17 +110,31 @@ describe('Service controller', function () {
         assert.calledWith(res.status, 400);
     }));
 
-    it('should delete a service', test(function () {
+    it('migrant should be able to delete a service', test(async function () {
+        this.stub(Services, 'findOne').resolves(service);
+        this.stub(User, 'findOne').resolves(user);
         this.stub(Services, 'updateOne').yields(null);
-        ServicesController.deleteService(req, res);
+        await ServicesController.deleteService(req, res);
         assert.calledWith(Services.updateOne, { _id: "5bda52305ccfd051484ea790" }, { deleted: true, deletedDate: Date.now() });
         assert.calledWith(res.send, "Service deleted successfully.");
         assert.calledWith(res.status, 200);
     }));
 
-    it('should not delete service on error', test(function () {
+    it('admin should be able to delete a service', test(async function () {
+        this.stub(Services, 'findOne').resolves(service);
+        this.stub(User, 'findOne').resolves(admin);
+        this.stub(Services, 'updateOne').yields(null);
+        await ServicesController.deleteService(req, res);
+        assert.calledWith(Services.updateOne, { _id: "5bda52305ccfd051484ea790" }, { deleted: true, deletedDate: Date.now() });
+        assert.calledWith(res.send, "Service deleted successfully.");
+        assert.calledWith(res.status, 200);
+    }));
+
+    it('should not delete service on error', test(async function () {
+        this.stub(Services, 'findOne').returns(service);
+        this.stub(User, 'findOne').returns(user);
         this.stub(Services, 'updateOne').yields(error);
-        ServicesController.deleteService(req, res);
+        await ServicesController.deleteService(req, res);
         assert.calledWith(Services.updateOne, { _id: "5bda52305ccfd051484ea790" }, { deleted: true, deletedDate: Date.now() });
         assert.calledWith(res.send, "There was an error deleting service.");
         assert.calledWith(res.status, 400);
@@ -165,7 +190,11 @@ describe('Service controller for reviews', function () {
                 serviceDetails: ReviewServiceFactory.validReviewData()
             },
             user: {
-                _id: "test@test.com"
+                _id: "test@test.com",
+                type: "admin",
+            },
+            params: {
+                id: "5bda52305ccfd051484ea790",
             },
         },
         error = new Error({ error: "err" }),
@@ -189,6 +218,17 @@ describe('Service controller for reviews', function () {
         this.stub(ReviewService, 'find').yields(null);
         ServicesController.getServiceReviews(req, res);
         assert.calledWith(ReviewService.find);
+        assert.calledWith(res.send);
+    }));
+
+    it('should delete a review', test(async function () {
+        this.stub(ReviewService, 'findOne').returns(null);
+        this.stub(User, 'findOne').returns(req.user);
+        this.stub(ReviewService, 'deleteOne').yields(null);
+        ServicesController.deleteReview(req, res);
+        assert.calledWith(await ReviewService.findOne, { _id: "5bda52305ccfd051484ea790" });
+        assert.calledWith(await User.findOne, { _id: "test@test.com" });
+        assert.calledWith(await ReviewService.deleteOne, { _id: "5bda52305ccfd051484ea790" });
         assert.calledWith(res.send);
     }));
 });

@@ -98,6 +98,9 @@ class EditMigrant extends Component {
         let tempLanguages;
         let tempWorkExperience;
         let tempFamily;
+        let tempProficiencyExams;
+        let tempMotherTongue;
+        let tempSettlingLocation;
 
         if (jsonObj.languages !== undefined) {
           tempLanguages = jsonObj.languages;
@@ -115,6 +118,26 @@ class EditMigrant extends Component {
           tempFamily = jsonObj.family;
         } else {
           tempFamily = [];
+        }
+        if (jsonObj.proficiencyExams !== undefined) {
+            tempProficiencyExams = jsonObj.proficiencyExams;
+        } else {
+            tempProficiencyExams = {
+                ielts: false,
+                french: false,
+                others: "",
+            };
+        }
+        if (jsonObj.motherTongue !== undefined) {
+          tempMotherTongue = jsonObj.motherTongue;
+        } else {
+          tempMotherTongue = '';
+        }
+
+        if (jsonObj.settlingLocation !== undefined) {
+          tempSettlingLocation = jsonObj.settlingLocation;
+        } else {
+          tempSettlingLocation = '';
         }
 
         this.setState({
@@ -137,15 +160,15 @@ class EditMigrant extends Component {
           languages: tempLanguages,
           writingLevel: jsonObj.writingLevel,
           speakingLevel: jsonObj.speakingLevel,
-          motherTongue: jsonObj.motherTongue,
+          motherTongue: tempMotherTongue,
           family: tempFamily,
           educationLevel: jsonObj.educationLevel,
-          proficiencyExams: response.data.proficiencyExams,
+          proficiencyExams: tempProficiencyExams,
           jobStatus: jsonObj.jobStatus,
           lookingForJob: jsonObj.lookingForJob,
           currentIncome: jsonObj.currentIncome,
           workExperience: tempWorkExperience,
-          settlingLocation: jsonObj.settlingLocation,
+          settlingLocation: tempSettlingLocation,
           settlingDuration: jsonObj.settlingDuration,
           joiningReason: jsonObj.joiningReason,
         });

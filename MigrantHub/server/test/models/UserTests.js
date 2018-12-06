@@ -9,7 +9,6 @@ describe('user', function() {
         user.validate(function(err) {
             expect(err.errors._id).to.exist;
             expect(err.errors.email).to.exist;
-            expect(err.errors.password).to.exist;
             done();
         });
     });
