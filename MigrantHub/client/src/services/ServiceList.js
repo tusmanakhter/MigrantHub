@@ -88,57 +88,51 @@ class ServiceList extends Component {
     });
   }
 
-    renderRedirectToServiceForm = () => {
-      const { redirectToServiceForm } = this.state;
-      if (redirectToServiceForm) {
-        return <Redirect to="/services/create" />;
-      }
+  renderRedirectToServiceForm = () => {
+    const { redirectToServiceForm } = this.state;
+    if (redirectToServiceForm) {
+      return <Redirect to="/services/create" />;
     }
+  }
 
-    render() {
-      const { classes } = this.props;
-      const { items, editMode, editOwner, type } = this.state;
-      return (
-        <div>
-          { type !== 'admin'
-            && (
-            <React.Fragment>
-              <Header />
-              {this.renderRedirectToServiceForm()}
-              <Button
-                variant="contained"
-                color="primary"
-                className={classes.button}
-                onClick={this.setRedirectToServiceForm}
-              >
-                Create Service 
-              </Button>
-            </React.Fragment>
-            )
+  render() {
+    const { classes } = this.props;
+    const { items, editMode, editOwner } = this.state;
+    return (
+      <div>
+        <Header />
+        {this.renderRedirectToServiceForm()}
+        <Button
+          variant="contained"
+          color="primary"
+          className={classes.button}
+          onClick={this.setRedirectToServiceForm}
+        >
+          Create Service
+          </Button>
+        <Paper className={classes.root} elevation={2}>
+          {' '}
+          {
+            items.map(item => (
+              <ServiceItem
+                serviceId={item._id}
+                serviceTitle={item.serviceTitle}
+                serviceImagePath={item.serviceImagePath}
+                serviceDescription={item.serviceDescription}
+                serviceSummary={item.serviceSummary}
+                serviceLocation={item.location}
+                serviceDate={item.serviceDate}
+                serviceHours={item.serviceHours}
+                editMode={editMode}
+                editOwner={editOwner}
+                getData={this.getData}
+              />
+            ))
           }
-          <Paper className={classes.root} elevation={2}>
-            {' '}
-            {
-              items.map(item => (
-                <ServiceItem
-                  serviceId={item._id}
-                  serviceTitle={item.serviceTitle}
-                  serviceImagePath={item.serviceImagePath}
-                  serviceDescription={item.serviceDescription}
-                  serviceSummary={item.serviceSummary}
-                  serviceLocation={item.location}
-                  serviceDate={item.serviceDate}
-                  serviceHours={item.serviceHours}
-                  editMode={editMode}
-                  editOwner={editOwner}
-                  getData={this.getData}
-                />
-              ))
-          }
-          </Paper>
-        </div>
-      );
-    }
+        </Paper>
+      </div>
+    );
+  }
 }
 
 ServiceList.propTypes = {

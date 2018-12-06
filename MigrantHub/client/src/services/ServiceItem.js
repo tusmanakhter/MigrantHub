@@ -10,9 +10,7 @@ import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import ViewService from './ViewService';
 import ViewReviews from './ViewReviews';
-import axios from 'axios';
-import qs from 'qs';
-
+import { Link } from 'react-router-dom'
 
 const styles = {
   card: {
@@ -34,9 +32,9 @@ class ServiceItem extends Component {
   }
 
   handleViewReviews = () => {
-        this.setState({
-          openReviews: true
-        });
+    this.setState({
+      openReviews: true
+    });
   };
 
   handleClickOpen = () => {
@@ -44,20 +42,25 @@ class ServiceItem extends Component {
       openService: true,
     });
   };
-  
+
   handleClose = () => {
-    this.setState({ 
+    this.setState({
       openService: false,
       openReviews: false
     });
   };
+
+  raiseInvoiceClicked() {
+    const url = 'somesite.com&data=yourDataToSend';
+    window.open(url, '_blank');
+  }
 
   render() {
     const {
       classes, serviceId, serviceTitle, serviceSummary, serviceDescription, getData,
       serviceImagePath, serviceLocation, serviceDate, serviceHours, editMode, editOwner,
     } = this.props;
-    const { openService, openReviews, scroll} = this.state;
+    const { openService, openReviews, scroll } = this.state;
     return (
       <Card className={classes.card}>
         <CardActionArea>
@@ -80,11 +83,16 @@ class ServiceItem extends Component {
         </CardActionArea>
         <CardActions>
           <Button size="small" color="primary" onClick={this.handleClickOpen}>
-                      View Service
+            View Service
           </Button>
           <Button size="small" color="primary" onClick={this.handleViewReviews}>
-                      Reviews
+            Reviews
           </Button>
+          <Link to={`/services/share/${serviceId}`}>
+            <Button size="small" color="primary">
+              Share
+            </Button>
+          </Link>
           <ViewService
             open={openService}
             scroll={scroll}

@@ -103,28 +103,28 @@ class ViewService extends Component {
             </Typography>
 
             {serviceDate !== undefined && (
-            <Grid container spacing={12}>
-              <Typography variant="h5" color="inherit" paragraph>
-                                  Service date:
-              </Typography>
               <Grid container spacing={12}>
-                <Grid item xs={12}>
-                                      Start date:
+                <Typography variant="h5" color="inherit" paragraph>
+                  Service date:
+              </Typography>
+                <Grid container spacing={12}>
+                  <Grid item xs={12}>
+                    Start date:
                   {' '}
-                  {serviceDate.startDate.substring(0, 10)}
-                </Grid>
-                <Grid item xs={12}>
-                                      End date:
+                    {serviceDate.startDate.substring(0, 10)}
+                  </Grid>
+                  <Grid item xs={12}>
+                    End date:
                   {' '}
-                  {serviceDate.endDate.substring(0, 10)}
+                    {serviceDate.endDate.substring(0, 10)}
+                  </Grid>
                 </Grid>
               </Grid>
-            </Grid>
             )}
             {serviceHours.length > 0 ? (
               <Typography variant="h5" color="inherit" paragraph>
                 <br />
-Service Hours:
+                Service Hours:
               </Typography>
             ) : ''}
             {serviceHours.map(item => (
@@ -134,12 +134,12 @@ Service Hours:
                     {item.serviceDay}
                   </Grid>
                   <Grid item xs={2}>
-                                      Start time:
+                    Start time:
                     {' '}
                     {item.startTime}
                   </Grid>
                   <Grid item xs={2}>
-                                      End time:
+                    End time:
                     {' '}
                     {item.endTime}
                   </Grid>
@@ -147,49 +147,49 @@ Service Hours:
               </Grid>
             ))}
             {serviceLocation !== undefined && (
-            <Grid container spacing={12}>
-              <Typography variant="h5" color="inherit" paragraph>
-                <br />
-Location:
-              </Typography>
               <Grid container spacing={12}>
-                <Grid item xs={12}>
-                                      Address:
+                <Typography variant="h5" color="inherit" paragraph>
+                  <br />
+                  Location:
+              </Typography>
+                <Grid container spacing={12}>
+                  <Grid item xs={12}>
+                    Address:
                   {' '}
-                  {serviceLocation.address}
-                </Grid>
-                <Grid item xs={12}>
-                                      Apartment:
+                    {serviceLocation.address}
+                  </Grid>
+                  <Grid item xs={12}>
+                    Apartment:
                   {' '}
-                  {serviceLocation.apartment}
-                </Grid>
-                <Grid item xs={12}>
-                                      City:
+                    {serviceLocation.apartment}
+                  </Grid>
+                  <Grid item xs={12}>
+                    City:
                   {' '}
-                  {serviceLocation.city}
-                </Grid>
-                <Grid item xs={12}>
-                                      Province:
+                    {serviceLocation.city}
+                  </Grid>
+                  <Grid item xs={12}>
+                    Province:
                   {' '}
-                  {serviceLocation.province}
-                </Grid>
-                <Grid item xs={12}>
-                                      Postal Code:
+                    {serviceLocation.province}
+                  </Grid>
+                  <Grid item xs={12}>
+                    Postal Code:
                   {' '}
-                  {serviceLocation.postalCode}
-                </Grid>
-                <Grid item xs={12}>
-                                      Phone Number:
+                    {serviceLocation.postalCode}
+                  </Grid>
+                  <Grid item xs={12}>
+                    Phone Number:
                   {' '}
-                  {serviceLocation.phoneNumber}
+                    {serviceLocation.phoneNumber}
+                  </Grid>
                 </Grid>
               </Grid>
-            </Grid>
             )}
             {open && serviceLocation !== undefined && (
-            <GoogleMaps
-              location={serviceLocation}
-            />
+              <GoogleMaps
+                location={serviceLocation}
+              />
             )}
           </DialogContent>
           <DialogActions>
@@ -201,14 +201,14 @@ Location:
               )
             }}
             {editMode && (
-            <React.Fragment>
-              <Button onClick={this.handleDelete} color="secondary">
+              <React.Fragment>
+                <Button onClick={this.handleDelete} color="secondary">
                   Delete
               </Button>
-              <Button onClick={this.handleEdit} color="primary">
+                <Button onClick={this.handleEdit} color="primary">
                   Edit
               </Button>
-            </React.Fragment>
+              </React.Fragment>
             )}
             <Button onClick={onClose} color="primary">
               Cancel
