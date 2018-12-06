@@ -27,7 +27,7 @@ const localStrategy = new LocalStrategy({ passReqToCallback: true },
         return done(null, false, { message: 'Your admin account is not authorized yet' });
       }
       return done(null, user);
-    }).select('localAuthentication');
+    }).select('localAuthentication authorized');
   }));
 
 module.exports = localStrategy;
