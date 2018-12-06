@@ -190,7 +190,11 @@ describe('Service controller for reviews', function () {
                 serviceDetails: ReviewServiceFactory.validReviewData()
             },
             user: {
-                _id: "test@test.com"
+                _id: "test@test.com",
+                type: "admin",
+            },
+            params: {
+                id: "5bda52305ccfd051484ea790",
             },
         },
         error = new Error({ error: "err" }),
@@ -214,6 +218,17 @@ describe('Service controller for reviews', function () {
         this.stub(ReviewService, 'find').yields(null);
         ServicesController.getServiceReviews(req, res);
         assert.calledWith(ReviewService.find);
+        assert.calledWith(res.send);
+    }));
+
+    it('should delete a review', test(async function () {
+        this.stub(ReviewService, 'findOne').returns(null);
+        this.stub(User, 'findOne').returns(req.user);
+        this.stub(ReviewService, 'deleteOne').yields(null);
+        ServicesController.deleteReview(req, res);
+        assert.calledWith(await ReviewService.findOne, { _id: "5bda52305ccfd051484ea790" });
+        assert.calledWith(await User.findOne, { _id: "test@test.com" });
+        assert.calledWith(await ReviewService.deleteOne, { _id: "5bda52305ccfd051484ea790" });
         assert.calledWith(res.send);
     }));
 });
