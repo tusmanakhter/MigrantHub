@@ -34,7 +34,8 @@ class ViewReviews extends Component {
       addReviewMessage: '',
       addReviewError: false,
       currentReviewSet: [],
-      type: '',
+      userType: '',
+      userId: '',
     };
   }
 
@@ -110,13 +111,14 @@ class ViewReviews extends Component {
   getUser() {
     const user = JSON.parse(localStorage.getItem('user'));
     this.setState({
-      type: user.type,
+      userType: user.type,
+      userId: user.username
     });
   }
 
   render() {
     const { serviceTitle, open, scroll, editMode, onClose } = this.props;
-    const { redirectTo, redirectToURL, redirectState, rating, comment, addReviewMessage, addReviewError, currentReviewSet, type } = this.state;
+    const { redirectTo, redirectToURL, redirectState, rating, comment, addReviewMessage, addReviewError, currentReviewSet, userType, userId} = this.state;
 
     if (redirectTo) {
       return (
@@ -140,7 +142,7 @@ class ViewReviews extends Component {
         >
           <DialogTitle id="scroll-dialog-title">{serviceTitle}</DialogTitle>
           <DialogContent>
-              { type !== 'admin' 
+              { userType !== 'admin' 
                 && (
                   <React.Fragment>
                     <div style={{backgroundColor: "#F0F0F0"}}><div style={{margin: "20px"}}>
@@ -214,9 +216,12 @@ class ViewReviews extends Component {
                           </Typography>
                         </Grid>
                         <Grid item xs={1}>
+                        { ((userType === 'admin') || userId === (review.user))
+                        &&
                           <Button size="small" color="secondary" onClick={() => {this.handleDeleteReview(review._id)}}>
                             Delete
                           </Button>
+                        }
                         </Grid>
                       </Grid>
                       <hr></hr>
