@@ -1,14 +1,14 @@
 const qs = require('qs');
-const BusinessUser = require('../models/BusinessUser');
+const MigrantUser = require('../models/MigrantUser');
 const { logger, formatMessage } = require('../config/winston');
 
 module.exports = {
-  getBusinessUser(req, res) {
+  getMigrantUser(req, res) {
     const email = req.user._id;
-    BusinessUser.findOne({ email }, (err, user) => {
+    MigrantUser.findOne({ email }, (err, user) => {
       if (err) {
         logger.error(formatMessage(req.ip, req.method, req.originalUrl, req.httpVersion,
-          err.status, req.referer, 'accountController.getBusinessUser', err.message));
+          err.status, req.referer, 'AccountController.getMigrantUser', err.message));
         return res.status(500).send(err);
       } if (!user) {
         return res.status(500).send('Incorrect email');
@@ -17,10 +17,22 @@ module.exports = {
     });
   },
 
-  editBusinessUser(req, res) {
+  editMigrantUser(req, res) {
     const parsedObj = qs.parse(req.body);
 
-    BusinessUser.findByIdAndUpdate(
+    if (parsedObj.languages === undefined) {
+      parsedObj.languages = [];
+    }
+
+    if (parsedObj.workExperience === undefined) {
+      parsedObj.workExperience = [];
+    }
+
+    if (parsedObj.family === undefined) {
+      parsedObj.family = [];
+    }
+
+    MigrantUser.findByIdAndUpdate(
       req.user._id,
       parsedObj,
       { new: true },
@@ -28,10 +40,10 @@ module.exports = {
         // Handle any possible database errors
         if (err) {
           logger.error(formatMessage(req.ip, req.method, req.originalUrl, req.httpVersion,
-            err.status, req.referer, 'accountController.editBusinessUser', err.message));
+            err.status, req.referer, 'AccountController.editMigrantUser', err.message));
           return res.status(500).send(err);
         }
-        return res.send('Updated Business User');
+        return res.send('Updated Migrant User');
       },
     );
   },

@@ -2,7 +2,7 @@ let { spy, stub, assert } = require('sinon');
 let sinon = require('sinon');
 let sinonTest = require('sinon-test');
 let test = sinonTest(sinon);
-let Controller = require('../../controllers/friendController');
+let Controller = require('../../controllers/FriendController');
 let MigrantUser = require('../../models/MigrantUser');
 let FriendRequest = require('../../models/FriendRequest');
 

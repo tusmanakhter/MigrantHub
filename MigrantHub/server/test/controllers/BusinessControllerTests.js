@@ -1,7 +1,7 @@
 var sinon = require('sinon');
 var sinonTest = require('sinon-test');
 var test = sinonTest(sinon);
-var Controller = require('../../controllers/businessController');
+var Controller = require('../../controllers/BusinessController');
 var BusinessUser = require('../../models/BusinessUser');
 var AccountFactory = require('../factories/AccountFactory');
 

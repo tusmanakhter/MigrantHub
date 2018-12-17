@@ -49,14 +49,14 @@ module.exports = {
       event.save((err) => {
         if (err) {
           logger.error(formatMessage(req.ip, req.method, req.originalUrl, req.httpVersion,
-            err.status, req.referer, 'eventController.createEvent', err.message));
+            err.status, req.referer, 'EventController.createEvent', err.message));
           return res.status(400).send('There was a error creating event.');
         }
         return res.status(200).send('Event has been created!');
       });
     } else {
       logger.error(formatMessage(req.ip, req.method, req.originalUrl, req.httpVersion,
-        '500', req.referer, 'eventController.createEvent: CreateEventValidator', errors));
+        '500', req.referer, 'EventController.createEvent: CreateEventValidator', errors));
       return res.status(400).send('There was a error creating event.');
     }
   },
@@ -72,7 +72,7 @@ module.exports = {
     Event.findOne(query, (err, events) => {
       if (err) {
         logger.error(formatMessage(req.ip, req.method, req.originalUrl, req.httpVersion,
-          err.status, req.referer, 'eventController.getEventData', err.message));
+          err.status, req.referer, 'EventController.getEventData', err.message));
         return res.status(400).send('There was a error getting event.');
       }
       return res.status(200).send(events);
@@ -89,7 +89,7 @@ module.exports = {
     Event.find(query, (err, events) => {
       if (err) {
         logger.error(formatMessage(req.ip, req.method, req.originalUrl, req.httpVersion,
-          err.status, req.referer, 'eventController.viewEvents', err.message));
+          err.status, req.referer, 'EventController.viewEvents', err.message));
         res.status(400).send('There was a error getting events.');
       } else {
         res.status(200).send(events);
@@ -112,7 +112,7 @@ module.exports = {
         fs.remove(`${parsedObj.eventImagePath.toString().substring(3)}`, (err) => {
           if (err) {
             logger.error(formatMessage(req.ip, req.method, req.originalUrl, req.httpVersion,
-              err.status, req.referer, 'eventController.updateEvent: remove image', err.message));
+              err.status, req.referer, 'EventController.updateEvent: remove image', err.message));
             updateError = true;
           }
         });
@@ -127,7 +127,7 @@ module.exports = {
       Event.findByIdAndUpdate({ _id: parsedObj._id }, parsedObj, { new: true }, (err) => {
         if (err) {
           logger.error(formatMessage(req.ip, req.method, req.originalUrl, req.httpVersion,
-            err.status, req.referer, 'eventController.updateEvent', err.message));
+            err.status, req.referer, 'EventController.updateEvent', err.message));
           updateError = true;
         }
       });
@@ -138,7 +138,7 @@ module.exports = {
       return res.status(200).send('Event updated successfully.');
     }
     logger.error(formatMessage(req.ip, req.method, req.originalUrl, req.httpVersion,
-      '500', req.referer, 'eventController.updateEvent: remove image', errors));
+      '500', req.referer, 'EventController.updateEvent: remove image', errors));
     return res.status(400).send('There was an error updating Event.');
   },
   deleteEvent(req, res) {
@@ -146,7 +146,7 @@ module.exports = {
     Event.updateOne({ _id: req.params.id }, { deleted: true, deletedDate: Date.now() }, (err) => {
       if (err) {
         logger.error(formatMessage(req.ip, req.method, req.originalUrl, req.httpVersion,
-          err.status, req.referer, 'eventController.deleteEvent', err.message));
+          err.status, req.referer, 'EventController.deleteEvent', err.message));
         deleteError = true;
       }
     });
