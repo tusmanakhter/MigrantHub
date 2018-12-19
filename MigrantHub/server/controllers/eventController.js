@@ -142,10 +142,9 @@ module.exports = {
       '500', req.referer, 'eventController.updateEvent: remove image', errors));
     return res.status(400).send('There was an error updating Event.');
   },
-  
   async deleteEvent(req, res) {
     let deleteError = false;
-    const event = await Event.findOne({_id: req.params.id });
+    const event = await Event.findOne({ _id: req.params.id });
     const user = await User.findOne({ _id: req.user._id });
     if (user) {
       if (user.type === 'migrant' || user.type === 'business') {
@@ -165,7 +164,7 @@ module.exports = {
             err.status, req.referer, 'eventController.deleteEvent', err.message));
           deleteError = true;
         }
-    });
+      });
 
     if (deleteError) {
       res.status(400).send('There was an error deleting event.');
