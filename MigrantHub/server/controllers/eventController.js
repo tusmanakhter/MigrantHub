@@ -3,6 +3,7 @@ const multer = require('multer');
 const fs = require('fs-extra');
 const EventValidator = require('../validators/EventValidator');
 const Event = require('../models/Event');
+const User = require('../models/User');
 const { logger, formatMessage } = require('../config/winston');
 
 const multerStorage = multer.diskStorage({
@@ -141,14 +142,29 @@ module.exports = {
       '500', req.referer, 'eventController.updateEvent: remove image', errors));
     return res.status(400).send('There was an error updating Event.');
   },
-  deleteEvent(req, res) {
+  
+  async deleteEvent(req, res) {
     let deleteError = false;
-    Event.updateOne({ _id: req.params.id }, { deleted: true, deletedDate: Date.now() }, (err) => {
-      if (err) {
-        logger.error(formatMessage(req.ip, req.method, req.originalUrl, req.httpVersion,
-          err.status, req.referer, 'eventController.deleteEvent', err.message));
-        deleteError = true;
+    const event = await Event.findOne({_id: req.params.id });
+    const user = await User.findOne({ _id: req.user._id });
+    if (user) {
+      if (user.type === 'migrant' || user.type === 'business') {
+        if (req.user._id !== event.email) {
+          return res.status(400).send('You can only delete this review if you are the author or an admin.');
+        }
+      } else if (user.type !== 'admin') {
+        return res.status(400).send('You can only delete this review if you are the author or an admin.');
       }
+    } else {
+      return res.status(400).send('Please log out and log back in.');
+    }
+    Event.updateOne({ _id: req.params.id },
+      { deleted: true, deletedDate: Date.now() }, (err) => {
+        if (err) {
+          logger.error(formatMessage(req.ip, req.method, req.originalUrl, req.httpVersion,
+            err.status, req.referer, 'eventController.deleteEvent', err.message));
+          deleteError = true;
+        }
     });
 
     if (deleteError) {
