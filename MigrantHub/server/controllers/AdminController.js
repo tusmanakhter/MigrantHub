@@ -8,7 +8,7 @@ module.exports = {
     }, 'email', (err, users) => {
       if (err) {
         logger.error(formatMessage(req.ip, req.method, req.originalUrl, req.httpVersion,
-          err.status, req.referer, 'adminController.getAdmins', err.message));
+          err.status, req.referer, 'AdminController.getAdmins', err.message));
         res.status(500).send('There was an error finding admins');
       } else {
         res.status(200).send(users);
@@ -20,7 +20,7 @@ module.exports = {
     Admin.find({ deleted: true }, 'email', (err, users) => {
       if (err) {
         logger.error(formatMessage(req.ip, req.method, req.originalUrl, req.httpVersion,
-          err.status, req.referer, 'adminController.getDeletedAdmins', err.message));
+          err.status, req.referer, 'AdminController.getDeletedAdmins', err.message));
         res.status(500).send('There was an error finding deleted admins');
       } else {
         res.status(200).send(users);
@@ -32,7 +32,7 @@ module.exports = {
     Admin.find({ authorized: false, rejected: true }, 'email', (err, users) => {
       if (err) {
         logger.error(formatMessage(req.ip, req.method, req.originalUrl, req.httpVersion,
-          err.status, req.referer, 'adminController.getRejectedAdmins', err.message));
+          err.status, req.referer, 'AdminController.getRejectedAdmins', err.message));
         res.status(500).send('There was an error finding rejected admins');
       } else {
         res.status(200).send(users);
@@ -44,7 +44,7 @@ module.exports = {
     Admin.find({ authorized: false, rejected: false, deleted: false }, 'email', (err, users) => {
       if (err) {
         logger.error(formatMessage(req.ip, req.method, req.originalUrl, req.httpVersion,
-          err.status, req.referer, 'adminController.getUnapprovedAdmins', err.message));
+          err.status, req.referer, 'AdminController.getUnapprovedAdmins', err.message));
         res.status(500).send('There was an error finding unnaproved admins');
       } else {
         res.status(200).send(users);
@@ -57,7 +57,7 @@ module.exports = {
       { authorized: true, deleted: false, deletedDate: null }, (err) => {
         if (err) {
           logger.error(formatMessage(req.ip, req.method, req.originalUrl, req.httpVersion,
-            err.status, req.referer, 'adminController.reactivateAdmin', err.message));
+            err.status, req.referer, 'AdminController.reactivateAdmin', err.message));
           res.status(500).send('There was an error reactivating admin.');
         } else {
           res.status(200).send('Admin reactivated successfully.');
@@ -70,7 +70,7 @@ module.exports = {
       { authorized: true, rejected: false, rejectedDate: null }, (err) => {
         if (err) {
           logger.error(formatMessage(req.ip, req.method, req.originalUrl, req.httpVersion,
-            err.status, req.referer, 'adminController.approveAdmin', err.message));
+            err.status, req.referer, 'AdminController.approveAdmin', err.message));
           res.status(500).send('There was an error approving admin.');
         } else {
           res.status(200).send('Admin approved successfully.');
@@ -82,7 +82,7 @@ module.exports = {
     Admin.updateOne({ _id: req.params.id }, { rejected: true, rejectedDate: Date.now() }, (err) => {
       if (err) {
         logger.error(formatMessage(req.ip, req.method, req.originalUrl, req.httpVersion,
-          err.status, req.referer, 'accountController.rejectAdmin', err.message));
+          err.status, req.referer, 'AccountController.rejectAdmin', err.message));
         res.status(500).send('There was an error rejecting admin.');
       } else {
         res.status(200).send('Admin rejected successfully.');
@@ -99,7 +99,7 @@ module.exports = {
       { authorized: false, deleted: true, deletedDate: Date.now() }, (err) => {
         if (err) {
           logger.error(formatMessage(req.ip, req.method, req.originalUrl, req.httpVersion,
-            err.status, req.referer, 'adminController.deleteAdmin', err.message));
+            err.status, req.referer, 'AdminController.deleteAdmin', err.message));
           res.status(500).send('There was an error deleting admin.');
         } else {
           res.status(200).send('Admin deleted successfully.');

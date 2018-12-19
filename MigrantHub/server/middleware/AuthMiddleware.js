@@ -6,7 +6,7 @@ module.exports = {
       return next();
     }
     logger.error(formatMessage(req.ip, req.method, req.originalUrl, req.httpVersion,
-      '403', req.referer, 'accountController.ensureOwner', 'Unauthorized user(user not logged in'));
+      '403', req.referer, 'AccountController.ensureOwner', 'Unauthorized user(user not logged in'));
     return res.status(403).send('You are not authorized for this');
   },
 
@@ -16,7 +16,7 @@ module.exports = {
         return next();
       }
       logger.error(formatMessage(req.ip, req.method, req.originalUrl, req.httpVersion,
-        '403', req.referer, 'accountController.editBusinessUser', 'Unauthorized role'));
+        '403', req.referer, 'AccountController.editBusinessUser', 'Unauthorized role'));
       return res.status(403).send('You are not authorized for this');
     };
   },
@@ -26,7 +26,7 @@ module.exports = {
       return next();
     }
     logger.error(formatMessage(req.ip, req.method, req.originalUrl, req.httpVersion,
-      '403', req.referer, 'accountController.ensureOwner', 'Unauthorized owner'));
+      '403', req.referer, 'AccountController.ensureOwner', 'Unauthorized owner'));
     return res.status(403).send('You are not authorized for this');
   },
 };

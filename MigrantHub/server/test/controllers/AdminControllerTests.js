@@ -2,7 +2,7 @@ var { spy, stub, assert } = require('sinon');
 var sinon = require('sinon');
 var sinonTest = require('sinon-test');
 var test = sinonTest(sinon);
-var Controller = require('../../controllers/adminController')
+var Controller = require('../../controllers/AdminController')
 var Admin = require('../../models/Admin')
 var AccountFactory = require('../factories/AccountFactory');
 

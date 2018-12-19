@@ -2,7 +2,7 @@ var { spy, stub, assert } = require('sinon');
 var sinon = require('sinon');
 var sinonTest = require('sinon-test');
 var test = sinonTest(sinon);
-var EventController = require('../../controllers/eventController')
+var EventController = require('../../controllers/EventController')
 var EventFactory = require('../factories/EventFactory');
 var Event = require('../../models/Event');
 

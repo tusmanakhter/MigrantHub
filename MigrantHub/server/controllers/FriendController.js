@@ -14,7 +14,7 @@ module.exports = {
       }, (err, user) => {
         if (err) {
           logger.error(formatMessage(req.ip, req.method, req.originalUrl, req.httpVersion,
-            err.status, req.referer, 'friendController.acceptFriendRequest: find one', err.message));
+            err.status, req.referer, 'FriendController.acceptFriendRequest: find one', err.message));
           return res.send('Error finding your friends');
         }
         if (user == null) {
@@ -29,7 +29,7 @@ module.exports = {
           }, (updateUserError) => {
             if (updateUserError) {
               logger.error(formatMessage(req.ip, req.method, req.originalUrl, req.httpVersion,
-                updateUserError.status, req.referer, 'friendController.acceptFriendRequest: update requestTo', updateUserError.message));
+                updateUserError.status, req.referer, 'FriendController.acceptFriendRequest: update requestTo', updateUserError.message));
               return res.send('There was a error accepting friend.');
             }
             User.update({ _id: parsedObj.requestFrom }, {
@@ -43,13 +43,13 @@ module.exports = {
             }, (updateFriendError) => {
               if (updateFriendError) {
                 logger.error(formatMessage(req.ip, req.method, req.originalUrl, req.httpVersion,
-                  updateFriendError.status, req.referer, 'friendController.acceptFriendRequest: update requestFrom', updateFriendError.message));
+                  updateFriendError.status, req.referer, 'FriendController.acceptFriendRequest: update requestFrom', updateFriendError.message));
                 res.send("There was error adding to your friend's list of friend.");
               } else {
                 FriendRequest.findByIdAndDelete({ _id: parsedObj._id }, (findError) => {
                   if (findError) {
                     logger.error(formatMessage(req.ip, req.method, req.originalUrl, req.httpVersion,
-                      findError.status, req.referer, 'friendController.acceptFriendRequest: delete request', findError.message));
+                      findError.status, req.referer, 'FriendController.acceptFriendRequest: delete request', findError.message));
                     return res.send('There was a error removing friend from requestfriend table.');
                   }
                   return res.send('Friend has been accepted and removed from request friend table');
@@ -61,21 +61,21 @@ module.exports = {
           User.update({ _id: req.user._id, 'friendsList.friend_id': parsedObj.requestFrom }, { $set: { 'friendsList.$.state': 'accepted', 'friendsList.$.lastUpdate': Date.now() } }, (updateUserStateError) => {
             if (updateUserStateError) {
               logger.error(formatMessage(req.ip, req.method, req.originalUrl, req.httpVersion,
-                updateUserStateError.status, req.referer, 'friendController.acceptFriendRequest: update requestFrom', updateUserStateError.message));
+                updateUserStateError.status, req.referer, 'FriendController.acceptFriendRequest: update requestFrom', updateUserStateError.message));
               return res.send('Unable to unfriend this user');
             }
           });
           User.update({ _id: parsedObj.requestFrom, 'friendsList.friend_id': parsedObj.requestTo }, { $set: { 'friendsList.$.state': 'accepted', 'friendsList.$.lastUpdate': Date.now() } }, (updateStateError) => {
             if (updateStateError) {
               logger.error(formatMessage(req.ip, req.method, req.originalUrl, req.httpVersion,
-                updateStateError.status, req.referer, 'friendController.acceptFriendRequest: update requestTo', updateStateError.message));
+                updateStateError.status, req.referer, 'FriendController.acceptFriendRequest: update requestTo', updateStateError.message));
               return res.send('Unable to unfriend this user');
             }
           });
           FriendRequest.findByIdAndDelete({ _id: parsedObj._id }, (findError) => {
             if (findError) {
               logger.error(formatMessage(req.ip, req.method, req.originalUrl, req.httpVersion,
-                findError.status, req.referer, 'friendController.acceptFriendRequest: delete request', findError.message));
+                findError.status, req.referer, 'FriendController.acceptFriendRequest: delete request', findError.message));
               return res.send('There was a error removing friend from requestfriend table.');
             }
             return res.send('Friend has been accepted and removed from request friend table');
@@ -90,7 +90,7 @@ module.exports = {
     FriendRequest.findByIdAndDelete({ _id: parsedObj._id }, (err) => {
       if (err) {
         logger.error(formatMessage(req.ip, req.method, req.originalUrl, req.httpVersion,
-          err.status, req.referer, 'friendController.rejectFriendRequest', err.message));
+          err.status, req.referer, 'FriendController.rejectFriendRequest', err.message));
         return res.send('There was a error removing friend from requestfriend table.');
       }
       return res.send('FriendRequest has been removed from table');
@@ -106,14 +106,14 @@ module.exports = {
       friendRequest.save((err) => {
         if (err) {
           logger.error(formatMessage(req.ip, req.method, req.originalUrl, req.httpVersion,
-            err.status, req.referer, 'friendController.addFriend: save request', err.message));
+            err.status, req.referer, 'FriendController.addFriend: save request', err.message));
           return res.send({ isError: true, message: 'Yikes. Unable to add friend. :( ' });
         }
         return res.send({ isError: false, message: 'Woohoo! The request has successfully been sent :) ' });
       });
     } else {
       logger.error(formatMessage(req.ip, req.method, req.originalUrl, req.httpVersion,
-        '500', req.referer, 'friendController.addFriend: FriendRequestValidator', error));
+        '500', req.referer, 'FriendController.addFriend: FriendRequestValidator', error));
       return res.send({ isError: true, message: error });
     }
   },
@@ -122,14 +122,14 @@ module.exports = {
     User.update({ _id: req.user._id, 'friendsList.friend_id': parsedObj.friendId }, { $set: { 'friendsList.$.state': 'unfriended', 'friendsList.$.lastUpdate': Date.now() } }, (err) => {
       if (err) {
         logger.error(formatMessage(req.ip, req.method, req.originalUrl, req.httpVersion,
-          err.status, req.referer, 'friendController.unfriend', err.message));
+          err.status, req.referer, 'FriendController.unfriend', err.message));
         return res.send('Unable to unfriend this user');
       }
     });
     User.update({ _id: parsedObj.friendId, 'friendsList.friend_id': req.user._id }, { $set: { 'friendsList.$.state': 'unfriended', 'friendsList.$.lastUpdate': Date.now() } }, (err) => {
       if (err) {
         logger.error(formatMessage(req.ip, req.method, req.originalUrl, req.httpVersion,
-          err.status, req.referer, 'friendController.unfriend', err.message));
+          err.status, req.referer, 'FriendController.unfriend', err.message));
         return res.send('Unable to unfriend this user');
       }
       return res.send('User has been removed from your friend list');
@@ -139,7 +139,7 @@ module.exports = {
     FriendRequest.find({ requestTo: req.user._id }, (err, friends) => {
       if (err) {
         logger.error(formatMessage(req.ip, req.method, req.originalUrl, req.httpVersion,
-          err.status, req.referer, 'friendController.getFriendRequests', err.message));
+          err.status, req.referer, 'FriendController.getFriendRequests', err.message));
         return res.send('There was a error saving friend.');
       }
       return res.send(friends);
@@ -162,7 +162,7 @@ module.exports = {
     ]), (err, user) => {
       if (err) {
         logger.error(formatMessage(req.ip, req.method, req.originalUrl, req.httpVersion,
-          err.status, req.referer, 'friendController.getFriendsList', err.message));
+          err.status, req.referer, 'FriendController.getFriendsList', err.message));
         return res.send('There was a error listing friends.');
       }
       return res.send(user);
@@ -182,7 +182,7 @@ module.exports = {
     User.find(query, (err, users) => {
       if (err) {
         logger.error(formatMessage(req.ip, req.method, req.originalUrl, req.httpVersion,
-          err.status, req.referer, 'accountController.viewUsers', err.message));
+          err.status, req.referer, 'AccountController.viewUsers', err.message));
         return res.status(400).send('There was an error getting users.');
       }
       return res.status(200).send(users);
