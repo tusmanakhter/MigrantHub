@@ -98,6 +98,10 @@ class SignUpBusiness extends Component {
       event.setState({
         messageFromServer: response.data,
       });
+    }).catch((error) => {
+        event.setState({
+            messageFromServer: error.response.data,
+        });
     });
   }
 
