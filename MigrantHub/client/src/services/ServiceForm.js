@@ -483,7 +483,6 @@ class ServiceForm extends Component {
         }).then((response) => {
         if (response.status === 200) {
           this.setState({
-            messageFromServer: response.data,
             redirectToAllServices: true,
           });
         }
@@ -543,7 +542,6 @@ class ServiceForm extends Component {
         }).then((response) => {
         if (response.status === 200) {
           this.setState({
-            messageFromServer: response.data,
             redirectToAllServices: true,
           });
         }
@@ -568,12 +566,7 @@ class ServiceForm extends Component {
       return (
         <React.Fragment>
           <Header />
-          {messageFromServer.split('\n').map(item => (
-            <span>
-              {item}
-              <br />
-            </span>
-          ))}
+          {messageFromServer}
           {this.renderRedirectToAllServices()}
           <Typography variant="title" gutterBottom>
                     Create Service Form
