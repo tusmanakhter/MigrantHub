@@ -5,12 +5,12 @@ var assert = chai.assert;
 
 
 describe('MigrantAccountValidator()', function () {
-    it('Validates migrant profile data should return empty error string.', function () {
-        let errors = MigrantAccountValidator(AccountFactory.validMigrantAccount());
+    it('Validates migrant profile data should return empty error string.', async function () {
+        let errors = await MigrantAccountValidator.migrantAccountValidator(AccountFactory.validMigrantAccount());
         assert.equal(errors, ""); 
     });
 
-    it('Invalid migrant profile data should return a string with all the errors', function () {
+    it('Invalid migrant profile data should return a string with all the errors', async function () {
 
         var expectedErrors =
             "\nEmail is required" +
@@ -58,11 +58,11 @@ describe('MigrantAccountValidator()', function () {
             "\nSettling duration is required and empty" +
             "\nJoining reason is required and empty";
 
-        let forcedErrors = MigrantAccountValidator(AccountFactory.emptyMigrantAccount());
+        let forcedErrors = await MigrantAccountValidator.migrantAccountValidator(AccountFactory.emptyMigrantAccount());
         assert.equal(forcedErrors, expectedErrors);
     });
 
-    it('Invalid migrant profile data should return a string with all the errors', function () {
+    it('Invalid migrant profile data should return a string with all the errors', async function () {
 
         var expectedErrors =
             "\nAge should be a valid number greater than 0." +
@@ -71,7 +71,7 @@ describe('MigrantAccountValidator()', function () {
             "\nFamily member's age should be a valid number greater than 0." +
             "\nEmployment length is not valid"
 
-        let forcedErrors = MigrantAccountValidator(AccountFactory.invalidNumbersMigrantAccount());
+        let forcedErrors = await MigrantAccountValidator.migrantAccountValidator(AccountFactory.invalidNumbersMigrantAccount());
         assert.equal(forcedErrors, expectedErrors);
     });
 });

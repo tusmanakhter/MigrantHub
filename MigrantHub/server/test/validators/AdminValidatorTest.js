@@ -5,16 +5,16 @@ var assert = chai.assert;
 
 
 describe('admin account validator', function () {
-    it('returns an empty string on valid admin account', function () {
-        let errors = AdminAccountValidator(AccountFactory.validAdminAccount());
+    it('returns an empty string on valid admin account', async function () {
+        let errors = await AdminAccountValidator.adminAccountValidator(AccountFactory.validAdminAccount());
         assert.equal("", errors);
     });
 
-    it('returns errors on empty admin account', function () {
+    it('returns errors on empty admin account', async function () {
         var expectedErrors =
             "{'\n'}Email is required" +
             "{'\n'}Password is empty";
-        let errors = AdminAccountValidator(AccountFactory.emptyAdminAccount());
+        let errors = await AdminAccountValidator.adminAccountValidator(AccountFactory.emptyAdminAccount());
         assert.equal(expectedErrors, errors);
     });
 });
