@@ -4,15 +4,15 @@ var assert = chai.assert;
 var ServicesFactory = require('../factories/ServicesFactory');
 
 describe('ServiceValidator()', function () {
-    it('Validate service data should return empty error string.', function () {
+    it('Validate service data should return empty error string.', async function () {
 
-        let errors = ServiceValidator(ServicesFactory.validServiceData());
+        let errors = await ServiceValidator.serviceValidator(ServicesFactory.validServiceData());
         assert.equal(errors, "");
     });
 });
 
 describe('ServiceValidator()', function () {
-    it('Empty service data should return a string with all the errors', function () {
+    it('Empty service data should return a string with all the errors', async function () {
 
         var expectedErrors =
             "\nService Title is empty" +
@@ -29,13 +29,13 @@ describe('ServiceValidator()', function () {
             "\nService hour start time required and empty" +
             "\nService hour end time required and empty";
 
-        let forcedErrors = ServiceValidator(ServicesFactory.emptyServiceData());
+        let forcedErrors = await ServiceValidator.serviceValidator(ServicesFactory.emptyServiceData());
         assert.equal(forcedErrors, expectedErrors);
     });
 });
 
 describe('ServiceValidator()', function () {
-    it('Invalid migrant profile data should return a string with all the errors', function () {
+    it('Invalid migrant profile data should return a string with all the errors', async function () {
 
         var expectedErrors =
             "\nPostal is should be in the format A1B 2E3" +
@@ -43,7 +43,7 @@ describe('ServiceValidator()', function () {
             "\nService hour start time should be in the format 13:57" +
             "\nService hour end time should be in the format 13:57";
 
-        let forcedErrors = ServiceValidator(ServicesFactory.invalidServiceData());
+        let forcedErrors = await ServiceValidator.serviceValidator(ServicesFactory.invalidServiceData());
         assert.equal(forcedErrors, expectedErrors);
     });
 });
