@@ -2,9 +2,7 @@ const qs = require('qs');
 const multer = require('multer');
 const fs = require('fs-extra');
 const ServiceValidator = require('../validators/ServiceValidator');
-const ReviewValidator = require('../validators/ReviewValidator');
 const Service = require('../models/Service');
-const ReviewService = require('../models/ReviewService');
 const { logger, formatMessage } = require('../config/winston');
 
 const multerStorage = multer.diskStorage({
@@ -162,46 +160,5 @@ module.exports = {
           res.status(200).send('Service deleted successfully.');
         }
       });
-  },
-
-  deleteReview(req, res) {
-    ReviewService.deleteOne({ _id: req.params.id }, (err) => {
-      if (err) {
-        return res.status(400).send(`There was an error deleting service: ${err}`);
-      }
-      return res.status(200).send('Service deleted successfully.');
-    });
-  },
-
-  async createServiceReview(req, res) {
-    const parsedObj = qs.parse(req.body);
-    parsedObj.user = req.user._id;
-
-    const errors = await ReviewValidator(parsedObj);
-
-    if (errors === '') {
-      const reviewService = new ReviewService();
-      reviewService.user = req.user;
-      reviewService.serviceId = parsedObj.serviceId;
-      reviewService.rating = parsedObj.rating;
-      reviewService.comment = parsedObj.comment;
-      reviewService.save((err) => {
-        if (err) {
-          return res.send({ addReviewMessage: `There was an error creating the review.${err}`, addReviewError: true });
-        }
-        return res.send({ addReviewMessage: 'Review has been created!', addReviewError: false });
-      });
-    } else {
-      return res.send({ addReviewMessage: errors, addReviewError: true });
-    }
-  },
-
-  async getServiceReviews(req, res) {
-    ReviewService.find(req.query, (err, reviews) => {
-      if (err) {
-        return res.send('There was an error getting services.');
-      }
-      return res.send(reviews);
-    });
   },
 };

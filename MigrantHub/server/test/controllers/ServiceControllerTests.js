@@ -4,9 +4,7 @@ var sinonTest = require('sinon-test');
 var test = sinonTest(sinon);
 var ServiceController = require('../../controllers/ServiceController')
 var ServiceFactory = require('../factories/ServiceFactory');
-var ReviewServiceFactory = require('../factories/ReviewServiceFactory');
 var Service = require('../../models/Service');
-var ReviewService = require('../../models/ReviewService');
 var User = require('../../models/User');
 
 describe('Service controller', function () {
@@ -179,54 +177,5 @@ describe('Service controller search', function () {
         ServiceController.viewServices(req, res);
         assert.calledWith(Service.find, { '$or': [ { serviceTitle: /test/gi }, { serviceSummary: /test/gi }], deleted: false });
         assert.calledWith(res.status, 400);
-    }));
-});
-
-describe('Service controller for reviews', function () {
-
-    let req = {
-            serviceId: "5be7c2e218d96e03298b71c3",
-            body: {
-                serviceDetails: ReviewServiceFactory.validReviewData()
-            },
-            user: {
-                _id: "test@test.com",
-                type: "admin",
-            },
-            params: {
-                id: "5bda52305ccfd051484ea790",
-            },
-        },
-        error = new Error({ error: "err" }),
-        res = {};
-
-    beforeEach(function () {
-        status = stub();
-        send = spy();
-        res = { send, status };
-        status.returns(res);
-    });
-  
-    it('should return error message if error finding reviews', test(function () {
-        this.stub(ReviewService, 'find').yields(error);
-        ServiceController.getServiceReviews(req, res);
-        assert.calledWith(ReviewService.find);
-        assert.calledWith(res.send, "There was an error getting services.");
-    }));
-
-    it('should find the reviews with no error', test(function () {
-        this.stub(ReviewService, 'find').yields(null);
-        ServiceController.getServiceReviews(req, res);
-        assert.calledWith(ReviewService.find);
-        assert.calledWith(res.send);
-    }));
-
-    it('should delete a review', test(async function () {
-        this.stub(ReviewService, 'findOne').returns(null);
-        this.stub(User, 'findOne').returns(req.user);
-        this.stub(ReviewService, 'deleteOne').yields(null);
-        ServiceController.deleteReview(req, res);
-        assert.calledWith(await ReviewService.deleteOne, { _id: "5bda52305ccfd051484ea790" });
-        assert.calledWith(res.send);
     }));
 });
