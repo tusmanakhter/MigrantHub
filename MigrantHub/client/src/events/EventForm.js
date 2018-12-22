@@ -176,7 +176,7 @@ class EventForm extends Component {
         eventId,
       });
 
-      axios.get('/api/events/get/', {
+      axios.get('/api/events/' + eventId, {
         params: {
           _id: eventId,
         },
@@ -465,7 +465,7 @@ class EventForm extends Component {
       eventImageName: tempImageName,
     }));
 
-    axios.post('/api/events/create', formData, {
+    axios.post('/api/events/', formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
       },
@@ -533,7 +533,7 @@ class EventForm extends Component {
       eventImageName: tempImageName,
     }));
 
-    axios.post('/api/events/update', formData, {
+    axios.put('/api/events/' + eventId, formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
       },

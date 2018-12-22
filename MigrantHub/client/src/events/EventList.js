@@ -60,7 +60,7 @@ class EventList extends Component {
 
       editOwnerEmail = location.state.editOwner;
     }
-    axios.get('/api/events/view/all/', {
+    axios.get('/api/events/', {
       params: {
         editOwner: editOwnerEmail,
       },

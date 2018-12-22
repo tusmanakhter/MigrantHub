@@ -28,6 +28,6 @@ const eventSchema = new Schema({
   deleted: { type: Boolean, default: false },
   deletedDate: { type: Date, default: null },
   lastEditDate: { type: Date, default: null },
-}, { collection: 'Event' });
+});
 
 module.exports = mongoose.model('Event', eventSchema);
