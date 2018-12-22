@@ -1,18 +1,19 @@
 const express = require('express');
 
 const router = express.Router();
-const servicesController = require('../controllers/ServicesController');
-const { ensureIsOwner } = require('../middleware/AuthMiddleware');
-const Services = require('../models/Services');
+const ServiceController = require('../controllers/ServiceController');
+const { ensureRole, ensureIsOwner } = require('../middleware/AuthMiddleware');
+const Service = require('../models/Service');
 const ReviewService = require('../models/ReviewService');
 
-router.post('/create', servicesController.upload.single('serviceImage'), servicesController.createService);
-router.post('/update', servicesController.upload.single('serviceImage'), servicesController.updateService);
-router.post('/review', servicesController.createServiceReview);
-router.get('/reviews', servicesController.getServiceReviews);
-router.delete('/review/:id', ensureIsOwner(ReviewService, true, false, true), servicesController.deleteReview);
-router.delete('/:id', ensureIsOwner(Services, true, true, true), servicesController.deleteService);
-router.get('/view/all/', servicesController.viewServices);
-router.get('/get/', servicesController.getServiceData);
+router.get('/', ServiceController.viewServices);
+router.get('/:id', ServiceController.getServiceData);
+router.post('/', ServiceController.upload.single('serviceImage'), ServiceController.createService);
+router.put('/:id', ensureIsOwner(Service, true, true, true), ServiceController.upload.single('serviceImage'), ServiceController.updateService);
+router.delete('/:id', ensureIsOwner(Service, true, true, true), ServiceController.deleteService);
+
+router.post('/review', ensureRole('migrant'), ServiceController.createServiceReview);
+router.get('/reviews', ServiceController.getServiceReviews);
+router.delete('/review/:id', ensureIsOwner(ReviewService, true, false, true), ServiceController.deleteReview);
 
 module.exports = router;

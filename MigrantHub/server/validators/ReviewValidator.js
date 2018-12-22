@@ -1,6 +1,6 @@
 const validator = require('validator');
 const User = require('../models/User');
-const Service = require('../models/Services');
+const Service = require('../models/Service');
 const ReviewService = require('../models/ReviewService');
 
 // Function to perform server-side validation of reviews before sending to db.

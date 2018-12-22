@@ -2,17 +2,17 @@ var { spy, stub, assert } = require('sinon');
 var sinon = require('sinon');
 var sinonTest = require('sinon-test');
 var test = sinonTest(sinon);
-var ServicesController = require('../../controllers/ServicesController')
-var ServicesFactory = require('../factories/ServicesFactory');
+var ServiceController = require('../../controllers/ServiceController')
+var ServiceFactory = require('../factories/ServiceFactory');
 var ReviewServiceFactory = require('../factories/ReviewServiceFactory');
-var Services = require('../../models/Services');
+var Service = require('../../models/Service');
 var ReviewService = require('../../models/ReviewService');
 var User = require('../../models/User');
 
 describe('Service controller', function () {
     let req = {
         body: {
-            serviceDetails: ServicesFactory.validServiceData()
+            serviceDetails: ServiceFactory.validServiceData()
         },
         user: {
             _id: "test@test.com"
@@ -48,94 +48,94 @@ describe('Service controller', function () {
     });
 
     it('should be able create a new service successfully if data is valid', test(function () {
-        let expectedResult = ServicesFactory.validServiceData();
-        this.stub(Services.prototype, 'save').yields(null, expectedResult);
-        ServicesController.createService(req, res);
-        assert.calledWith(Services.prototype.save);
+        let expectedResult = ServiceFactory.validServiceData();
+        this.stub(Service.prototype, 'save').yields(null, expectedResult);
+        ServiceController.createService(req, res);
+        assert.calledWith(Service.prototype.save);
         assert.calledWith(res.send, "Service has been created!");
         assert.calledWith(res.status, 200);
     }));
 
     it('should return error message if error creating service', test(function () {
-        this.stub(Services.prototype, 'save').yields(error);
-        ServicesController.createService(req, res);
-        assert.calledWith(Services.prototype.save);
+        this.stub(Service.prototype, 'save').yields(error);
+        ServiceController.createService(req, res);
+        assert.calledWith(Service.prototype.save);
         assert.calledWith(res.send, "There was an error creating service.");
         assert.calledWith(res.status, 400);
     }));
 
     it('should successfully update service if no errors', test(function () {
-        this.stub(Services, 'findByIdAndUpdate');
-        ServicesController.updateService(req, res);
-        assert.calledWith(Services.findByIdAndUpdate, { _id: "5bda52305ccfd051484ea790" });
+        this.stub(Service, 'findByIdAndUpdate');
+        ServiceController.updateService(req, res);
+        assert.calledWith(Service.findByIdAndUpdate, { _id: "5bda52305ccfd051484ea790" });
         assert.calledWith(res.send, "Service updated successfully.");
         assert.calledWith(res.status, 200);
     }));
 
     it('should return error message if error updating service', test(function () {
-        this.stub(Services, 'findByIdAndUpdate').yields(error);
-        ServicesController.updateService(req, res);
-        assert.calledWith(Services.findByIdAndUpdate, { _id: "5bda52305ccfd051484ea790" });
+        this.stub(Service, 'findByIdAndUpdate').yields(error);
+        ServiceController.updateService(req, res);
+        assert.calledWith(Service.findByIdAndUpdate, { _id: "5bda52305ccfd051484ea790" });
         assert.calledWith(res.send, "There was an error updating service.");
         assert.calledWith(res.status, 400);
     }));
 
     it('should return services if no error retrieving service data', test(function () {
-        this.stub(Services, 'findOne').yields(null);
-        ServicesController.getServiceData(req, res);
-        assert.calledWith(Services.findOne, { _id: "5bda52305ccfd051484ea790", deleted: false });
+        this.stub(Service, 'findOne').yields(null);
+        ServiceController.getServiceData(req, res);
+        assert.calledWith(Service.findOne, { _id: "5bda52305ccfd051484ea790", deleted: false });
         assert.calledWith(res.status, 200);
     }));
 
     it('should return error message if error retrieving service data', test(function () {
-        this.stub(Services, 'findOne').yields(error);
-        ServicesController.getServiceData(req, res);
-        assert.calledWith(Services.findOne, { _id: "5bda52305ccfd051484ea790", deleted: false });
+        this.stub(Service, 'findOne').yields(error);
+        ServiceController.getServiceData(req, res);
+        assert.calledWith(Service.findOne, { _id: "5bda52305ccfd051484ea790", deleted: false });
         assert.calledWith(res.send, "There was an error getting services.");
         assert.calledWith(res.status, 400);
     }));
 
     it('should return services if no error retrieving all services', test(function () {
-        this.stub(Services, 'find').yields(null);
-        ServicesController.viewServices(req, res);
-        assert.calledWith(Services.find, { email: "test@test.com", deleted: false });
+        this.stub(Service, 'find').yields(null);
+        ServiceController.viewServices(req, res);
+        assert.calledWith(Service.find, { email: "test@test.com", deleted: false });
         assert.calledWith(res.status, 200);
     }));
 
     it('should return error message if error retrieving all services', test(function () {
-        this.stub(Services, 'find').yields(error);
-        ServicesController.viewServices(req, res);
-        assert.calledWith(Services.find, { email: "test@test.com", deleted: false });
+        this.stub(Service, 'find').yields(error);
+        ServiceController.viewServices(req, res);
+        assert.calledWith(Service.find, { email: "test@test.com", deleted: false });
         assert.calledWith(res.send, "There was an error getting services.");
         assert.calledWith(res.status, 400);
     }));
 
     it('migrant should be able to delete a service', test(async function () {
-        this.stub(Services, 'findOne').resolves(service);
+        this.stub(Service, 'findOne').resolves(service);
         this.stub(User, 'findOne').resolves(user);
-        this.stub(Services, 'updateOne').yields(null);
-        await ServicesController.deleteService(req, res);
-        assert.calledWith(Services.updateOne, { _id: "5bda52305ccfd051484ea790" }, { deleted: true, deletedDate: Date.now() });
+        this.stub(Service, 'updateOne').yields(null);
+        await ServiceController.deleteService(req, res);
+        assert.calledWith(Service.updateOne, { _id: "5bda52305ccfd051484ea790" }, { deleted: true, deletedDate: Date.now() });
         assert.calledWith(res.send, "Service deleted successfully.");
         assert.calledWith(res.status, 200);
     }));
 
     it('admin should be able to delete a service', test(async function () {
-        this.stub(Services, 'findOne').resolves(service);
+        this.stub(Service, 'findOne').resolves(service);
         this.stub(User, 'findOne').resolves(admin);
-        this.stub(Services, 'updateOne').yields(null);
-        await ServicesController.deleteService(req, res);
-        assert.calledWith(Services.updateOne, { _id: "5bda52305ccfd051484ea790" }, { deleted: true, deletedDate: Date.now() });
+        this.stub(Service, 'updateOne').yields(null);
+        await ServiceController.deleteService(req, res);
+        assert.calledWith(Service.updateOne, { _id: "5bda52305ccfd051484ea790" }, { deleted: true, deletedDate: Date.now() });
         assert.calledWith(res.send, "Service deleted successfully.");
         assert.calledWith(res.status, 200);
     }));
 
     it('should not delete service on error', test(async function () {
-        this.stub(Services, 'findOne').returns(service);
+        this.stub(Service, 'findOne').returns(service);
         this.stub(User, 'findOne').returns(user);
-        this.stub(Services, 'updateOne').yields(error);
-        await ServicesController.deleteService(req, res);
-        assert.calledWith(Services.updateOne, { _id: "5bda52305ccfd051484ea790" }, { deleted: true, deletedDate: Date.now() });
+        this.stub(Service, 'updateOne').yields(error);
+        await ServiceController.deleteService(req, res);
+        assert.calledWith(Service.updateOne, { _id: "5bda52305ccfd051484ea790" }, { deleted: true, deletedDate: Date.now() });
         assert.calledWith(res.send, "There was an error deleting service.");
         assert.calledWith(res.status, 400);
     }));
@@ -145,7 +145,7 @@ describe('Service controller search', function () {
 
     let req = {
         body: {
-            serviceDetails: ServicesFactory.validServiceData()
+            serviceDetails: ServiceFactory.validServiceData()
         },
         user: {
             _id: "test@test.com"
@@ -168,16 +168,16 @@ describe('Service controller search', function () {
     });
   
     it('should return services if no error retrieving searched services', test(function () {
-        this.stub(Services, 'find').yields(null);
-        ServicesController.viewServices(req, res);
-        assert.calledWith(Services.find, { '$or': [ { serviceTitle: /test/gi }, { serviceSummary: /test/gi } ], deleted: false });
+        this.stub(Service, 'find').yields(null);
+        ServiceController.viewServices(req, res);
+        assert.calledWith(Service.find, { '$or': [ { serviceTitle: /test/gi }, { serviceSummary: /test/gi } ], deleted: false });
         assert.calledWith(res.status, 200);
     }));
 
     it('should return error message if error retrieving searched services', test(function () {
-        this.stub(Services, 'find').yields(error);
-        ServicesController.viewServices(req, res);
-        assert.calledWith(Services.find, { '$or': [ { serviceTitle: /test/gi }, { serviceSummary: /test/gi }], deleted: false });
+        this.stub(Service, 'find').yields(error);
+        ServiceController.viewServices(req, res);
+        assert.calledWith(Service.find, { '$or': [ { serviceTitle: /test/gi }, { serviceSummary: /test/gi }], deleted: false });
         assert.calledWith(res.status, 400);
     }));
 });
@@ -209,14 +209,14 @@ describe('Service controller for reviews', function () {
   
     it('should return error message if error finding reviews', test(function () {
         this.stub(ReviewService, 'find').yields(error);
-        ServicesController.getServiceReviews(req, res);
+        ServiceController.getServiceReviews(req, res);
         assert.calledWith(ReviewService.find);
         assert.calledWith(res.send, "There was an error getting services.");
     }));
 
     it('should find the reviews with no error', test(function () {
         this.stub(ReviewService, 'find').yields(null);
-        ServicesController.getServiceReviews(req, res);
+        ServiceController.getServiceReviews(req, res);
         assert.calledWith(ReviewService.find);
         assert.calledWith(res.send);
     }));
@@ -225,7 +225,7 @@ describe('Service controller for reviews', function () {
         this.stub(ReviewService, 'findOne').returns(null);
         this.stub(User, 'findOne').returns(req.user);
         this.stub(ReviewService, 'deleteOne').yields(null);
-        ServicesController.deleteReview(req, res);
+        ServiceController.deleteReview(req, res);
         assert.calledWith(await ReviewService.deleteOne, { _id: "5bda52305ccfd051484ea790" });
         assert.calledWith(res.send);
     }));

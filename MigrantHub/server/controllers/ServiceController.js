@@ -3,7 +3,7 @@ const multer = require('multer');
 const fs = require('fs-extra');
 const ServiceValidator = require('../validators/ServiceValidator');
 const ReviewValidator = require('../validators/ReviewValidator');
-const Services = require('../models/Services');
+const Service = require('../models/Service');
 const ReviewService = require('../models/ReviewService');
 const { logger, formatMessage } = require('../config/winston');
 
@@ -29,21 +29,21 @@ module.exports = {
     const errors = ServiceValidator(parsedObj);
 
     if (errors === '') {
-      const services = new Services();
-      services.email = req.user;
-      services.serviceTitle = parsedObj.serviceTitle;
-      services.serviceSummary = parsedObj.serviceSummary;
-      services.serviceDescription = parsedObj.serviceDescription;
-      services.serviceDate = parsedObj.serviceDate;
-      services.location = parsedObj.location;
-      services.serviceHours = parsedObj.serviceHours;
+      const service = new Service();
+      service.email = req.user;
+      service.serviceTitle = parsedObj.serviceTitle;
+      service.serviceSummary = parsedObj.serviceSummary;
+      service.serviceDescription = parsedObj.serviceDescription;
+      service.serviceDate = parsedObj.serviceDate;
+      service.location = parsedObj.location;
+      service.serviceHours = parsedObj.serviceHours;
       if (parsedObj.serviceImageName === 'cameraDefault.png') {
-        services.serviceImagePath = (`/uploads/default/${parsedObj.serviceImageName}`);
+        service.serviceImagePath = (`/uploads/default/${parsedObj.serviceImageName}`);
       } else {
-        services.serviceImagePath = (`/uploads/${req.user._id}/services/${parsedObj.serviceImageName}`);
+        service.serviceImagePath = (`/uploads/${req.user._id}/services/${parsedObj.serviceImageName}`);
       }
-      services.dateCreated = date;
-      services.save((err) => {
+      service.dateCreated = date;
+      service.save((err) => {
         if (err) {
           logger.error(formatMessage(req.ip, req.method, req.originalUrl, req.httpVersion,
             err.status, req.referer, 'servicesController.createService', err.message));
@@ -72,7 +72,7 @@ module.exports = {
 
     query.deleted = false;
 
-    Services.find(query, (err, services) => {
+    Service.find(query, (err, services) => {
       if (err) {
         logger.error(formatMessage(req.ip, req.method, req.originalUrl, req.httpVersion,
           err.status, req.referer, 'servicesController.viewServices', err.message));
@@ -90,7 +90,7 @@ module.exports = {
     }
     query.deleted = false;
 
-    Services.findOne(query, (err, services) => {
+    Service.findOne(query, (err, services) => {
       if (err) {
         logger.error(formatMessage(req.ip, req.method, req.originalUrl, req.httpVersion,
           err.status, req.referer, 'servicesController.getServiceData', err.message));
@@ -133,7 +133,7 @@ module.exports = {
         parsedObj.serviceImagePath = (`/uploads/${req.user._id}/services/${parsedObj.serviceImageName}`);
       }
 
-      Services.findByIdAndUpdate({ _id: parsedObj._id }, parsedObj, { new: true }, (err) => {
+      Service.findByIdAndUpdate({ _id: parsedObj._id }, parsedObj, { new: true }, (err) => {
         if (err) {
           logger.error(formatMessage(req.ip, req.method, req.originalUrl, req.httpVersion,
             err.status, req.referer, 'servicesController.updateService', err.message));
@@ -152,7 +152,7 @@ module.exports = {
   },
 
   deleteService(req, res) {
-    Services.updateOne({ _id: req.params.id },
+    Service.updateOne({ _id: req.params.id },
       { deleted: true, deletedDate: Date.now() }, (err) => {
         if (err) {
           logger.error(formatMessage(req.ip, req.method, req.originalUrl, req.httpVersion,

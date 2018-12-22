@@ -1,12 +1,12 @@
 var chai = require('chai');
 var expect = chai.expect;
-var Services = require('../../models/Services');
+var Service = require('../../models/Service');
 
 describe('Services model', function() {
     it('Should be invalid if email, serviceTitle, serviceDescription or serviceSummary is empty', function(done) {
-        var services = new Services();
+        var service = new Service();
 
-        services.validate(function(err) {
+        service.validate(function(err) {
             expect(err.errors.email).to.exist;
             expect(err.errors.serviceTitle).to.exist;
             expect(err.errors.serviceDescription).to.exist;
