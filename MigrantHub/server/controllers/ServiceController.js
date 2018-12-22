@@ -28,7 +28,7 @@ module.exports = {
 
     if (errors === '') {
       const service = new Service();
-      service.email = req.user;
+      service.user = req.user;
       service.serviceTitle = parsedObj.serviceTitle;
       service.serviceSummary = parsedObj.serviceSummary;
       service.serviceDescription = parsedObj.serviceDescription;
@@ -61,7 +61,7 @@ module.exports = {
     let query = {};
 
     if (editOwner !== '') {
-      query.email = editOwner;
+      query.user = editOwner;
     } else if (search !== '') {
       const tempSearchQuery = searchQuery;
       const regex = new RegExp(tempSearchQuery.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&'), 'gi');

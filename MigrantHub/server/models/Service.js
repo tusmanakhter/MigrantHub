@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const { Schema } = require('mongoose');
 
 const serviceSchema = new Schema({
-  email: { type: String, required: true },
+  user: { type: String, required: true },
   serviceTitle: { type: String, required: true },
   serviceDescription: { type: String, required: true },
   serviceSummary: { type: String, required: true },

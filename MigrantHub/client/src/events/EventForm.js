@@ -90,7 +90,7 @@ class EventForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      creator: '',
+      user: '',
       dateCreated: '',
       eventId: '',
       visibility: '',
@@ -431,7 +431,7 @@ class EventForm extends Component {
   // Send event data in post body to add to mongodb
   createEvent = () => {
     const {
-      creator, dateCreated, visibility, eventName, description, location,
+      user, dateCreated, visibility, eventName, description, location,
       dateStart, dateEnd, timeStart, secondsStart, timeEnd, secondsEnd, repeat, eventImage,
     } = this.state;
 
@@ -448,7 +448,7 @@ class EventForm extends Component {
     const formData = new FormData();
     formData.append('eventImage', eventImage);
     formData.append('eventDetails', qs.stringify({
-      creator,
+      user,
       dateCreated,
       visibility,
       eventName,

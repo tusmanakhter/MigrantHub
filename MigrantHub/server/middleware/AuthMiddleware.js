@@ -40,8 +40,7 @@ module.exports = {
       if (user) {
         if ((migrant && user.type === UserTypes.MIGRANT)
         || (business && user.type === UserTypes.BUSINESS)) {
-          if ((item.email !== undefined && req.user._id !== item.email)
-          || (item.user !== undefined && req.user._id !== item.user)) {
+          if (item.user !== undefined && req.user._id !== item.user) {
             return res.status(400).send('You cannot modify this item.');
           }
         } else if ((admin && user.type !== UserTypes.ADMIN)) {

@@ -42,7 +42,7 @@ async function ReviewValidator(reviewObject) {
     let checkError = '';
     try {
       const record = await Service.findOne({
-        email: user,
+        user,
         _id: serviceId,
       });
       if (record) {

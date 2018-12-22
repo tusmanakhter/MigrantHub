@@ -27,7 +27,7 @@ describe('Service controller', function () {
     res = {},
     service = {
         _id: "5bda52305ccfd051484ea790",
-        email: "test@test.com"
+        user: "test@test.com"
     },
     user = {
         _id: "test@test.com",
@@ -96,14 +96,14 @@ describe('Service controller', function () {
     it('should return services if no error retrieving all services', test(function () {
         this.stub(Service, 'find').yields(null);
         ServiceController.viewServices(req, res);
-        assert.calledWith(Service.find, { email: "test@test.com", deleted: false });
+        assert.calledWith(Service.find, { user: "test@test.com", deleted: false });
         assert.calledWith(res.status, 200);
     }));
 
     it('should return error message if error retrieving all services', test(function () {
         this.stub(Service, 'find').yields(error);
         ServiceController.viewServices(req, res);
-        assert.calledWith(Service.find, { email: "test@test.com", deleted: false });
+        assert.calledWith(Service.find, { user: "test@test.com", deleted: false });
         assert.calledWith(res.send, "There was an error getting services.");
         assert.calledWith(res.status, 400);
     }));

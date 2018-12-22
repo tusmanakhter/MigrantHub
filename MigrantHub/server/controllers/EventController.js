@@ -28,7 +28,7 @@ module.exports = {
     if (errors === '') {
       const event = new Event();
 
-      event.creator = req.user._id;
+      event.user = req.user._id;
       event.visibility = parsedObj.visibility;
       event.eventName = parsedObj.eventName;
       event.description = parsedObj.description;
@@ -83,7 +83,7 @@ module.exports = {
     const query = {};
 
     if (req.query.editOwner !== '') {
-      query.creator = req.query.editOwner;
+      query.user = req.query.editOwner;
     }
     query.deleted = false;
     Event.find(query, (err, events) => {

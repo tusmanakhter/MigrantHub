@@ -1,7 +1,7 @@
 module.exports.validCreateEventData = function() {
     return {
         _id: "5bda52305ccfd051484ea790",
-        creator: 'alex@alex.alex',
+        user: 'alex@alex.alex',
         visibility: 'public',
         eventName: 'My Awesome Event',
         description: 'Awesome Event Description',
@@ -25,7 +25,7 @@ module.exports.validCreateEventData = function() {
 
 module.exports.emptyCreateEventData = function() {
     return {
-        creator: '',
+        user: '',
         visibility: '',
         eventName: '',
         description: '',
@@ -49,7 +49,7 @@ module.exports.emptyCreateEventData = function() {
 
 module.exports.invalidNumbersCreateEventData = function() {
     return {
-        creator: 'alex@alex.alex',
+        user: 'alex@alex.alex',
         visibility: 'public',
         eventName: '123',
         description: '123',
