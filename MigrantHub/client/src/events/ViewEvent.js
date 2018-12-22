@@ -27,12 +27,13 @@ class ViewEvent extends Component {
       redirectTo: false,
       redirectToURL: '',
       redirectState: {},
+      type: '',
     };
   }
 
-  handleClose = () => {
-    this.props.onClose();
-  };
+  componentDidMount() {
+    this.getUser();
+  }
 
   handleEdit = () => {
     const { eventId } = this.props;
@@ -47,20 +48,29 @@ class ViewEvent extends Component {
   }
 
   handleDelete = () => {
-    axios.delete('/api/events/' + this.props.eventId)
+    const { eventId, onClose, getData } = this.props;
+    axios.delete('/api/events/' + eventId)
     .then(response => {
       if (response.status === 200) {
-        this.handleClose();
+        onClose();
+        getData();
       }
     });
   };
+
+  getUser(){
+    const user = JSON.parse(localStorage.getItem('user'));
+    this.setState({
+      type: user.type,
+    })
+  }
 
   render() {
     const {
       eventName, description, dateStart, dateEnd, timeStart, timeEnd,
       location, open, scroll, onClose,
     } = this.props;
-    const { redirectTo, redirectToURL, redirectState } = this.state;
+    const { redirectTo, redirectToURL, redirectState, type } = this.state;
 
     if (redirectTo) {
       return (
@@ -172,7 +182,14 @@ Location:
             />
             )}
           </DialogContent>
-          <DialogActions>
+          <DialogActions> 
+            { type === 'admin'
+               && (
+                 <Button onClick={this.handleDelete} color="secondary">
+                   Delete
+                 </Button>
+               )
+            }}
             {this.props.editMode &&
               <React.Fragment>
                   <Button onClick={this.handleDelete} color="secondary">
@@ -214,5 +231,6 @@ ViewEvent.propTypes = {
   open: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
   editMode: PropTypes.bool.isRequired,
+  getData: PropTypes.func.isRequired,
 };
 export default withStyles(styles)(ViewEvent);

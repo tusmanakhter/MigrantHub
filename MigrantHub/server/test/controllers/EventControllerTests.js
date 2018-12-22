@@ -5,6 +5,7 @@ var test = sinonTest(sinon);
 var EventController = require('../../controllers/EventController')
 var EventFactory = require('../factories/EventFactory');
 var Event = require('../../models/Event');
+var User = require('../../models/User');
 
 describe('Event controller', function () {
 
@@ -25,6 +26,18 @@ describe('Event controller', function () {
     },
     error = new Error({ error: "err" }),
     res = {};
+    event = {
+        _id: "5bda52305ccfd051484ea790",
+        email: "test@test.com"
+    },
+    user = {
+        _id: "5bda52305ccfd051484ea790",
+        type: "migrant"
+    },
+    admin = {
+        _id: "test@test.com",
+        type: "admin"
+    }
 
     beforeEach(function () {
         status = stub();
@@ -96,17 +109,43 @@ describe('Event controller', function () {
         assert.calledWith(res.status, 400);
     }));
 
-    it('should delete a event', test(function () {
+    it('should delete a event', test(async function () {
+        this.stub(Event, 'findOne').resolves(event);
+        this.stub(User, 'findOne').returns(user);
         this.stub(Event, 'updateOne').yields(null);
-        EventController.deleteEvent(req, res);
+        await EventController.deleteEvent(req, res);
         assert.calledWith(Event.updateOne, { _id: "5bda52305ccfd051484ea790" }, { deleted: true, deletedDate: Date.now() });
         assert.calledWith(res.send, "Event deleted successfully.");
         assert.calledWith(res.status, 200);
     }));
 
-    it('should not delete event on error', test(function () {
+    it('should not delete event on error', test(async function () {
+        this.stub(Event, 'findOne').resolves(event);
+        this.stub(User, 'findOne').returns(user);
+        this.stub(Event, 'updateOne').yields(error);
+        await EventController.deleteEvent(req, res);
+        assert.calledWith(Event.updateOne, { _id: "5bda52305ccfd051484ea790" }, { deleted: true, deletedDate: Date.now() });
+        assert.calledWith(res.send, "There was an error deleting event.");
+        assert.calledWith(res.status, 400);
+    }));
+
+    it('admin should be able to delete an event', test(async function () {
+        this.stub(Event, 'findOne').resolves(event);
+        this.stub(User, 'findOne').resolves(admin);
+        this.stub(Event, 'updateOne').yields(null);
+        EventController.deleteEvent(req, res);
+        await EventController.deleteEvent(req, res);
+        assert.calledWith(Event.updateOne, { _id: "5bda52305ccfd051484ea790" }, { deleted: true, deletedDate: Date.now() });
+        assert.calledWith(res.send, "Event deleted successfully.");
+        assert.calledWith(res.status, 200);
+    }));
+
+    it('should not delete event on error', test(async function () {
+        this.stub(Event, 'findOne').returns(event);
+        this.stub(User, 'findOne').returns(user);
         this.stub(Event, 'updateOne').yields(error);
         EventController.deleteEvent(req, res);
+        await EventController.deleteEvent(req, res);
         assert.calledWith(Event.updateOne, { _id: "5bda52305ccfd051484ea790" }, { deleted: true, deletedDate: Date.now() });
         assert.calledWith(res.send, "There was an error deleting event.");
         assert.calledWith(res.status, 400);

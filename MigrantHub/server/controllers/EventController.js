@@ -141,20 +141,17 @@ module.exports = {
       '500', req.referer, 'EventController.updateEvent: remove image', errors));
     return res.status(400).send('There was an error updating Event.');
   },
-  deleteEvent(req, res) {
-    let deleteError = false;
-    Event.updateOne({ _id: req.params.id }, { deleted: true, deletedDate: Date.now() }, (err) => {
-      if (err) {
-        logger.error(formatMessage(req.ip, req.method, req.originalUrl, req.httpVersion,
-          err.status, req.referer, 'EventController.deleteEvent', err.message));
-        deleteError = true;
-      }
-    });
 
-    if (deleteError) {
-      res.status(400).send('There was an error deleting event.');
-    } else {
-      res.status(200).send('Event deleted successfully.');
-    }
+  deleteEvent(req, res) {
+    Event.updateOne({ _id: req.params.id },
+      { deleted: true, deletedDate: Date.now() }, (err) => {
+        if (err) {
+          logger.error(formatMessage(req.ip, req.method, req.originalUrl, req.httpVersion,
+            err.status, req.referer, 'eventController.deleteEvent', err.message));
+          res.status(400).send('There was an error deleting event.');
+        } else {
+          res.status(200).send('Event deleted successfully.');
+        }
+      });
   },
 };
