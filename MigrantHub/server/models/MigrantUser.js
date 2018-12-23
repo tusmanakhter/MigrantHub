@@ -1,9 +1,10 @@
 const { Schema } = require('mongoose');
 const User = require('./User');
+const UserTypes = require('../lib/UserTypes');
 
 const options = { discriminatorKey: 'type' };
 
-const MigrantUser = User.discriminator('migrant',
+const MigrantUser = User.discriminator(UserTypes.MIGRANT,
   new Schema({
     firstName: { type: String, required: false },
     lastName: { type: String, required: false },

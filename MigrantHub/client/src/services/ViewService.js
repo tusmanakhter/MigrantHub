@@ -12,6 +12,7 @@ import blue from '@material-ui/core/colors/blue';
 import { Redirect } from 'react-router-dom';
 import axios from 'axios';
 import GoogleMaps from '../components/GoogleMaps/GoogleMaps';
+import UserTypes from '../lib/UserTypes';
 
 const styles = {
   avatar: {
@@ -193,7 +194,7 @@ class ViewService extends Component {
             )}
           </DialogContent>
           <DialogActions>
-            { type === 'admin'
+            { type === UserTypes.ADMIN
               && (
                 <Button onClick={this.handleDelete} color="secondary">
                   Delete

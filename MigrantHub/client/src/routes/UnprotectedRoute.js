@@ -1,16 +1,17 @@
 import React from 'react';
 import { Route, Redirect } from 'react-router-dom';
 import Auth from './Auth';
+import UserTypes from '../lib/UserTypes';
 
 const isLoggedIn = () => {
   const auth = Auth.isAuthenticated('user');
   if (auth === true) {
     const user = JSON.parse(localStorage.getItem('user'));
-    if (user.type === 'admin') {
+    if (user.type === UserTypes.ADMIN) {
       return '/admin/dashboard';
-    } else if (user.type === 'migrant') {
+    } else if (user.type === UserTypes.MIGRANT) {
       return '/main';
-    } else if (user.type === 'business') {
+    } else if (user.type === UserTypes.BUSINESS) {
       return '/businessmain';
     }
   } else {

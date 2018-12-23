@@ -1,4 +1,5 @@
 import axios from 'axios';
+import UserTypes from '../lib/UserTypes';
 
 const auth = {
   authenticate() {
@@ -34,12 +35,12 @@ const auth = {
   isAuthenticated(type) {
     const user = JSON.parse(localStorage.getItem('user'));
     switch (type) {
-      case 'admin':
-        return user.type === 'admin' && user.authenticated;
-      case 'migrant':
-        return user.type === 'migrant' && user.authenticated;
-      case 'business':
-        return user.type === 'business' && user.authenticated;
+      case UserTypes.ADMIN:
+        return user.type === UserTypes.ADMIN && user.authenticated;
+      case UserTypes.MIGRANT:
+        return user.type === UserTypes.MIGRANT && user.authenticated;
+      case UserTypes.BUSINESS:
+        return user.type === UserTypes.BUSINESS && user.authenticated;
       case 'user':
         return user.authenticated;
       default:

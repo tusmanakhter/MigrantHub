@@ -2,6 +2,7 @@ const validator = require('validator');
 const User = require('../models/User');
 const Service = require('../models/Service');
 const Review = require('../models/Review');
+const UserTypes = require('../lib/UserTypes');
 
 // Function to perform server-side validation of reviews before sending to db.
 async function ReviewValidator(reviewObject) {
@@ -25,7 +26,7 @@ async function ReviewValidator(reviewObject) {
         _id: user,
       });
       if (record) {
-        if (record.type !== 'migrant') {
+        if (record.type !== UserTypes.MIGRANT) {
           checkError = 'Only migrants can post reviews.';
         }
       } else {
