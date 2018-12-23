@@ -14,10 +14,10 @@ describe('admin repository', function () {
 
   it('should create a migrant and return promise', test(async function () {
     this.stub(Admin.prototype, 'save').returns(Promise.resolve({}));
-      AdminRepository.createAdmin(req.body);
-    assert.calledWith(Admin.prototype.save);
+    AdminRepository.createAdmin(req.body);
     try {
-        chai.expect(await AdminRepository.createUser(req.body)).should.be.fulfilled;
+        chai.expect(await AdminRepository.createAdmin(req.body)).should.be.fulfilled;
+        assert.calledWith(Admin.prototype.save);
     }catch(error){
         chai.expect(error, false);
     }
@@ -26,9 +26,8 @@ describe('admin repository', function () {
     it('should throw error, since there was a error saving migrant user', test(async function () {
         this.stub(Admin.prototype, 'save').returns(Promise.reject({}));
         AdminRepository.createAdmin(req.body);
-        assert.calledWith(Admin.prototype.save);
         try {
-            chai.expect(await AdminRepository.createUser(req.body)).to.be.rejected;
+            chai.expect(await AdminRepository.createAdmin(req.body)).to.be.rejected;
         }catch(error){
             chai.expect(error, true);
         }

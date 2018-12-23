@@ -2,8 +2,8 @@ const bcrypt = require('bcryptjs');
 const BusinessAccountValidator = require('../validators/BusinessAccountValidator');
 const MigrantAccountValidator = require('../validators/MigrantAccountValidator');
 const AdminAccountValidator = require('../validators/AdminAccountValidator');
-const MigrantUserRepository = require('../repository/MigrantUserRepository');
-const BusinessUserRepository = require('../repository/BusinessUserRepository');
+const MigrantRepository = require('../repository/MigrantRepository');
+const BusinessRepository = require('../repository/BusinessRepository');
 const AdminRepository = require('../repository/AdminRepository');
 
 module.exports = {
@@ -16,7 +16,7 @@ module.exports = {
       const hash = bcrypt.hashSync(migrantUserObject.password, salt);
       migrantUserObject.password = hash;
 
-      return MigrantUserRepository.createUser(migrantUserObject);
+      return MigrantRepository.createUser(migrantUserObject);
     }
     throw new Error('There was an error creating migrant user.');
   },
@@ -30,7 +30,7 @@ module.exports = {
       const hash = bcrypt.hashSync(businessUserObject.password, salt);
       businessUserObject.password = hash;
 
-      return BusinessUserRepository.createBusiness(businessUserObject);
+      return BusinessRepository.createBusiness(businessUserObject);
     }
     throw new Error('There was an error creating business user.');
   },

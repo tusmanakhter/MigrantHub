@@ -1,6 +1,7 @@
 const express = require('express');
 const { ensureOwner } = require('../middleware/AuthMiddleware');
 const BusinessController = require('../controllers/BusinessController');
+
 const router = express.Router();
 const { controllerHandler } = require('../controllers/ControllerUtils');
 

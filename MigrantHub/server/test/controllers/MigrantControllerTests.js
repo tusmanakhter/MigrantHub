@@ -1,8 +1,9 @@
+var { assert } = require('sinon');
 var sinon = require('sinon');
 var sinonTest = require('sinon-test');
 var test = sinonTest(sinon);
-var Controller = require('../../controllers/MigrantController');
-var MigrantUser = require('../../models/MigrantUser');
+var MigrantController = require('../../controllers/MigrantController');
+var MigrantService = require('../../service/MigrantService');
 var AccountFactory = require('../factories/AccountFactory');
 
 
@@ -12,26 +13,17 @@ describe('migrant controller', function () {
     user:{
       _id: "test@test.com"
     },
-  },
-  res = {}, expectedResult;
-  
-  beforeEach(function () {
-    status = sinon.stub();
-    send = sinon.spy();
-    res = { send, status };
-    status.returns(res);
-  });
+  };
 
-  it('should get migrant profile', test(function () {
-    this.stub(MigrantUser, 'findOne')
-    Controller.getMigrantUser(req, res);
-    sinon.assert.calledWith(MigrantUser.findOne, {email: "test@test.com"});
-  })); 
-  
-  it('should edit migrant profile', test(function () {
-    expectedResult = req.body
-    this.stub(MigrantUser, 'findByIdAndUpdate').yields(null, expectedResult);
-    Controller.editMigrantUser(req, res);
-    sinon.assert.calledWith(res.send, "Updated Migrant User");
-  })); 
+  it('should call getMigrantUser migrant service with correct parameters.', test(async function () {
+      this.stub(MigrantService, 'getMigrantUser');
+      MigrantController.getMigrantUser(req.user._id);
+      assert.calledWith(await MigrantService.getMigrantUser, req.user._id);
+  }));
+
+  it('should call editMigrantUser migrant service with correct parameters.', test(async function () {
+      this.stub(MigrantService, 'editMigrantUser');
+      MigrantController.editMigrantUser(req.user._id, req.body);
+      assert.calledWith(await MigrantService.editMigrantUser, req.user._id, req.body);
+  }));
 });

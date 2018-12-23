@@ -1,6 +1,7 @@
 const express = require('express');
 const { ensureOwner } = require('../middleware/AuthMiddleware');
 const MigrantController = require('../controllers/MigrantController');
+
 const router = express.Router();
 const { controllerHandler } = require('../controllers/ControllerUtils');
 

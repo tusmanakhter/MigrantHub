@@ -1,10 +1,10 @@
+var { assert } = require('sinon');
 var sinon = require('sinon');
 var sinonTest = require('sinon-test');
 var test = sinonTest(sinon);
-var Controller = require('../../controllers/BusinessController');
-var BusinessUser = require('../../models/BusinessUser');
+var BusinessController = require('../../controllers/BusinessController');
 var AccountFactory = require('../factories/AccountFactory');
-
+var BusinessService = require('../../service/BusinessService');
 
 describe('business controller', function () {
   let req = {
@@ -12,26 +12,17 @@ describe('business controller', function () {
     user:{
       _id: "test@test.com"
     },
-  },
-  res = {}, expectedResult;
-  
-  beforeEach(function () {
-    status = sinon.stub();
-    send = sinon.spy();
-    res = { send, status };
-    status.returns(res);
-  });
-  
-  it('should get business profile', test(function () {
-    this.stub(BusinessUser, 'findOne')
-    Controller.getBusinessUser(req, res);
-    sinon.assert.calledWith(BusinessUser.findOne, {email: "test@test.com"});
-  })); 
+  };
 
-  it('should edit business profile', test(function () {
-    expectedResult = req.body
-    this.stub(BusinessUser, 'findByIdAndUpdate').yields(null, expectedResult);    
-    Controller.editBusinessUser(req, res);
-    sinon.assert.calledWith(res.send, "Updated Business User");
-  })); 
+  it('should call getBusinessUser business service with correct parameters.', test(async function () {
+      this.stub(BusinessService, 'getBusinessUser');
+      BusinessController.getBusinessUser(req.user._id);
+      assert.calledWith(await BusinessService.getBusinessUser, req.user._id);
+  }));
+
+  it('should call editBusinessUser business service with correct parameters.', test(async function () {
+      this.stub(BusinessService, 'editBusinessUser');
+      BusinessController.editBusinessUser(req.user._id, req.body);
+      assert.calledWith(await BusinessService.editBusinessUser, req.user._id, req.body);
+  }));
 });

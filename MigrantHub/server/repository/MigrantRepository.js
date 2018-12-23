@@ -42,15 +42,16 @@ module.exports = {
   },
 
   getMigrantUser(migrantUserId) {
-      return MigrantUser.findOne({ _id: migrantUserId}).exec().then(businessUser =>
-          Promise.resolve(businessUser)).catch(() => {throw new Error('There was an error retrieving migrant user.');
+    return MigrantUser.findOne({ _id: migrantUserId }).exec()
+      .then(businessUser => Promise.resolve(businessUser)).catch(() => {
+        throw new Error('There was an error retrieving migrant user.');
       });
   },
 
-    editMigrantUser(migrantUserId, migrantUserObject) {
-      return MigrantUser.findByIdAndUpdate(migrantUserId, migrantUserObject, { new: true }).exec().then(services =>
-          Promise.resolve('Migrant user has been updated.')).catch(() => {
-          throw new Error('There was an error retrieving updating migrant user.');
+  editMigrantUser(migrantUserId, migrantUserObject) {
+    return MigrantUser.findByIdAndUpdate({ _id: migrantUserId }, migrantUserObject, { new: true })
+      .exec().then(() => Promise.resolve('Migrant user has been updated.')).catch(() => {
+        throw new Error('There was an error retrieving updating migrant user.');
       });
   },
 };
