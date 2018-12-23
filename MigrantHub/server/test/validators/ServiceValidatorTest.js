@@ -1,12 +1,12 @@
 var ServiceValidator = require('../../validators/ServiceValidator');
 var chai = require('chai');
 var assert = chai.assert;
-var ServicesFactory = require('../factories/ServicesFactory');
+var ServiceFactory = require('../factories/ServiceFactory');
 
 describe('ServiceValidator()', function () {
     it('Validate service data should return empty error string.', function () {
 
-        let errors = ServiceValidator(ServicesFactory.validServiceData());
+        let errors = ServiceValidator(ServiceFactory.validServiceData());
         assert.equal(errors, "");
     });
 });
@@ -29,7 +29,7 @@ describe('ServiceValidator()', function () {
             "\nService hour start time required and empty" +
             "\nService hour end time required and empty";
 
-        let forcedErrors = ServiceValidator(ServicesFactory.emptyServiceData());
+        let forcedErrors = ServiceValidator(ServiceFactory.emptyServiceData());
         assert.equal(forcedErrors, expectedErrors);
     });
 });
@@ -43,7 +43,7 @@ describe('ServiceValidator()', function () {
             "\nService hour start time should be in the format 13:57" +
             "\nService hour end time should be in the format 13:57";
 
-        let forcedErrors = ServiceValidator(ServicesFactory.invalidServiceData());
+        let forcedErrors = ServiceValidator(ServiceFactory.invalidServiceData());
         assert.equal(forcedErrors, expectedErrors);
     });
 });

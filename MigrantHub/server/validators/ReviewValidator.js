@@ -1,7 +1,7 @@
 const validator = require('validator');
 const User = require('../models/User');
-const Service = require('../models/Services');
-const ReviewService = require('../models/ReviewService');
+const Service = require('../models/Service');
+const Review = require('../models/Review');
 
 // Function to perform server-side validation of reviews before sending to db.
 async function ReviewValidator(reviewObject) {
@@ -42,7 +42,7 @@ async function ReviewValidator(reviewObject) {
     let checkError = '';
     try {
       const record = await Service.findOne({
-        email: user,
+        user,
         _id: serviceId,
       });
       if (record) {
@@ -58,7 +58,7 @@ async function ReviewValidator(reviewObject) {
   async function checkForExistingReview(user, serviceId) {
     let checkError = '';
     try {
-      const record = await ReviewService.findOne({
+      const record = await Review.findOne({
         user,
         serviceId,
       });

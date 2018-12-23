@@ -28,7 +28,7 @@ module.exports = {
     if (errors === '') {
       const event = new Event();
 
-      event.creator = req.user._id;
+      event.user = req.user._id;
       event.visibility = parsedObj.visibility;
       event.eventName = parsedObj.eventName;
       event.description = parsedObj.description;
@@ -83,7 +83,7 @@ module.exports = {
     const query = {};
 
     if (req.query.editOwner !== '') {
-      query.creator = req.query.editOwner;
+      query.user = req.query.editOwner;
     }
     query.deleted = false;
     Event.find(query, (err, events) => {
@@ -141,20 +141,17 @@ module.exports = {
       '500', req.referer, 'EventController.updateEvent: remove image', errors));
     return res.status(400).send('There was an error updating Event.');
   },
-  deleteEvent(req, res) {
-    let deleteError = false;
-    Event.updateOne({ _id: req.params.id }, { deleted: true, deletedDate: Date.now() }, (err) => {
-      if (err) {
-        logger.error(formatMessage(req.ip, req.method, req.originalUrl, req.httpVersion,
-          err.status, req.referer, 'EventController.deleteEvent', err.message));
-        deleteError = true;
-      }
-    });
 
-    if (deleteError) {
-      res.status(400).send('There was an error deleting event.');
-    } else {
-      res.status(200).send('Event deleted successfully.');
-    }
+  deleteEvent(req, res) {
+    Event.updateOne({ _id: req.params.id },
+      { deleted: true, deletedDate: Date.now() }, (err) => {
+        if (err) {
+          logger.error(formatMessage(req.ip, req.method, req.originalUrl, req.httpVersion,
+            err.status, req.referer, 'eventController.deleteEvent', err.message));
+          res.status(400).send('There was an error deleting event.');
+        } else {
+          res.status(200).send('Event deleted successfully.');
+        }
+      });
   },
 };

@@ -50,7 +50,7 @@ class ServiceShare extends Component {
   }
 
   getData(event, props = this.props) {
-    axios.get('/api/services/get/', {
+    axios.get('/api/services/' + this.props.serviceId, {
       params: {
         _id: this.props.serviceId,
       },

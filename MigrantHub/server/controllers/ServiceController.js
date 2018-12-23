@@ -2,10 +2,7 @@ const qs = require('qs');
 const multer = require('multer');
 const fs = require('fs-extra');
 const ServiceValidator = require('../validators/ServiceValidator');
-const ReviewValidator = require('../validators/ReviewValidator');
-const User = require('../models/User');
-const Services = require('../models/Services');
-const ReviewService = require('../models/ReviewService');
+const Service = require('../models/Service');
 const { logger, formatMessage } = require('../config/winston');
 
 const multerStorage = multer.diskStorage({
@@ -30,21 +27,21 @@ module.exports = {
     const errors = ServiceValidator(parsedObj);
 
     if (errors === '') {
-      const services = new Services();
-      services.email = req.user;
-      services.serviceTitle = parsedObj.serviceTitle;
-      services.serviceSummary = parsedObj.serviceSummary;
-      services.serviceDescription = parsedObj.serviceDescription;
-      services.serviceDate = parsedObj.serviceDate;
-      services.location = parsedObj.location;
-      services.serviceHours = parsedObj.serviceHours;
+      const service = new Service();
+      service.user = req.user;
+      service.serviceTitle = parsedObj.serviceTitle;
+      service.serviceSummary = parsedObj.serviceSummary;
+      service.serviceDescription = parsedObj.serviceDescription;
+      service.serviceDate = parsedObj.serviceDate;
+      service.location = parsedObj.location;
+      service.serviceHours = parsedObj.serviceHours;
       if (parsedObj.serviceImageName === 'cameraDefault.png') {
-        services.serviceImagePath = (`/uploads/default/${parsedObj.serviceImageName}`);
+        service.serviceImagePath = (`/uploads/default/${parsedObj.serviceImageName}`);
       } else {
-        services.serviceImagePath = (`/uploads/${req.user._id}/services/${parsedObj.serviceImageName}`);
+        service.serviceImagePath = (`/uploads/${req.user._id}/services/${parsedObj.serviceImageName}`);
       }
-      services.dateCreated = date;
-      services.save((err) => {
+      service.dateCreated = date;
+      service.save((err) => {
         if (err) {
           logger.error(formatMessage(req.ip, req.method, req.originalUrl, req.httpVersion,
             err.status, req.referer, 'servicesController.createService', err.message));
@@ -64,7 +61,7 @@ module.exports = {
     let query = {};
 
     if (editOwner !== '') {
-      query.email = editOwner;
+      query.user = editOwner;
     } else if (search !== '') {
       const tempSearchQuery = searchQuery;
       const regex = new RegExp(tempSearchQuery.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&'), 'gi');
@@ -73,7 +70,7 @@ module.exports = {
 
     query.deleted = false;
 
-    Services.find(query, (err, services) => {
+    Service.find(query, (err, services) => {
       if (err) {
         logger.error(formatMessage(req.ip, req.method, req.originalUrl, req.httpVersion,
           err.status, req.referer, 'servicesController.viewServices', err.message));
@@ -91,7 +88,7 @@ module.exports = {
     }
     query.deleted = false;
 
-    Services.findOne(query, (err, services) => {
+    Service.findOne(query, (err, services) => {
       if (err) {
         logger.error(formatMessage(req.ip, req.method, req.originalUrl, req.httpVersion,
           err.status, req.referer, 'servicesController.getServiceData', err.message));
@@ -134,7 +131,7 @@ module.exports = {
         parsedObj.serviceImagePath = (`/uploads/${req.user._id}/services/${parsedObj.serviceImageName}`);
       }
 
-      Services.findByIdAndUpdate({ _id: parsedObj._id }, parsedObj, { new: true }, (err) => {
+      Service.findByIdAndUpdate({ _id: parsedObj._id }, parsedObj, { new: true }, (err) => {
         if (err) {
           logger.error(formatMessage(req.ip, req.method, req.originalUrl, req.httpVersion,
             err.status, req.referer, 'servicesController.updateService', err.message));
@@ -152,92 +149,16 @@ module.exports = {
     return res.status(400).send('There was an error updating service.');
   },
 
-  async deleteService(req, res) {
-    let deleteError = false;
-    const service = await Services.findOne({ _id: req.params.id });
-    const user = await User.findOne({ _id: req.user._id });
-    if (user) {
-      if (user.type === 'migrant' || user.type === 'business') {
-        if (req.user._id !== service.email) {
-          return res.status(400).send('You can only delete this review if you are the author or an admin.');
-        }
-      } else if (user.type !== 'admin') {
-        return res.status(400).send('You can only delete this review if you are the author or an admin.');
-      }
-    } else {
-      return res.status(400).send('Please log out and log back in.');
-    }
-    Services.updateOne({ _id: req.params.id },
+  deleteService(req, res) {
+    Service.updateOne({ _id: req.params.id },
       { deleted: true, deletedDate: Date.now() }, (err) => {
         if (err) {
           logger.error(formatMessage(req.ip, req.method, req.originalUrl, req.httpVersion,
             err.status, req.referer, 'servicesController.deleteService', err.message));
-          deleteError = true;
+          res.status(400).send('There was an error deleting service.');
+        } else {
+          res.status(200).send('Service deleted successfully.');
         }
       });
-
-    if (deleteError) {
-      res.status(400).send('There was an error deleting service.');
-    } else {
-      res.status(200).send('Service deleted successfully.');
-    }
-  },
-
-  async deleteReview(req, res) {
-    // fetch the review in question
-    const review = await ReviewService.findOne({ _id: req.params.id });
-
-    // make sure the user has the right to delete the review
-    const user = await User.findOne({ _id: req.user._id });
-    if (user) {
-      // only author of the review or an admin can delete
-      if (user.type === 'migrant') {
-        if (req.user._id !== review.user) {
-          return res.status(400).send('You can only delete this review if you are the author or an admin.');
-        }
-      } else if (user.type !== 'admin') {
-        return res.status(400).send('You can only delete this review if you are the author or an admin.');
-      }
-    } else {
-      return res.status(400).send('Please log out and log back in.');
-    }
-    ReviewService.deleteOne({ _id: req.params.id }, (err) => {
-      if (err) {
-        return res.status(400).send(`There was an error deleting service: ${err}`);
-      }
-      return res.status(200).send('Service deleted successfully.');
-    });
-  },
-
-  async createServiceReview(req, res) {
-    const parsedObj = qs.parse(req.body);
-    parsedObj.user = req.user._id;
-
-    const errors = await ReviewValidator(parsedObj);
-
-    if (errors === '') {
-      const reviewService = new ReviewService();
-      reviewService.user = req.user;
-      reviewService.serviceId = parsedObj.serviceId;
-      reviewService.rating = parsedObj.rating;
-      reviewService.comment = parsedObj.comment;
-      reviewService.save((err) => {
-        if (err) {
-          return res.send({ addReviewMessage: `There was an error creating the review.${err}`, addReviewError: true });
-        }
-        return res.send({ addReviewMessage: 'Review has been created!', addReviewError: false });
-      });
-    } else {
-      return res.send({ addReviewMessage: errors, addReviewError: true });
-    }
-  },
-
-  async getServiceReviews(req, res) {
-    ReviewService.find(req.query, (err, reviews) => {
-      if (err) {
-        return res.send('There was an error getting services.');
-      }
-      return res.send(reviews);
-    });
   },
 };

@@ -27,15 +27,25 @@ class EventList extends Component {
     };
 
     this.getData = this.getData.bind(this);
+    this.getUser = this.getUser.bind(this);
   }
 
 
   componentDidMount(props) {
     this.getData(this, props);
+    this.getUser();
   }
 
   componentWillReceiveProps(props) {
     this.getData(this, props);
+    this.getUser();
+  }
+
+  getUser(){
+    const user = JSON.parse(localStorage.getItem('user'));
+    this.setState({
+      type: user.type,
+    });
   }
 
   getData(event, props = this.props) {
@@ -50,7 +60,7 @@ class EventList extends Component {
 
       editOwnerEmail = location.state.editOwner;
     }
-    axios.get('/api/events/view/all/', {
+    axios.get('/api/events/', {
       params: {
         editOwner: editOwnerEmail,
       },
@@ -77,20 +87,26 @@ class EventList extends Component {
 
     render() {
       const { classes } = this.props;
-      const { items, editMode, editOwner } = this.state;
+      const { items, editMode, editOwner, type } = this.state;
 
       return (
         <div>
-          {this.renderRedirectToEventForm()}
-          <Header appName="Migrant Hub" />
-          <Button
-            variant="contained"
-            color="primary"
-            className={classes.button}
-            onClick={this.setRedirectToEventForm}
-          >
-            Create Event
-          </Button>
+          { type !== 'admin'
+             && (
+             <React.Fragment>
+               <Header />
+               {this.renderRedirectToEventForm()}
+               <Button
+                 variant="contained"
+                 color="primary"
+                 className={classes.button}
+                 onClick={this.setRedirectToEventForm}
+               >
+                 Create Event 
+               </Button>
+             </React.Fragment>
+             )
+           }
           <Paper className={classes.root} elevation={2}>
             {
             items.map(item => (
@@ -106,6 +122,7 @@ class EventList extends Component {
                 timeEnd={item.timeEnd}
                 editMode={editMode}
                 editOwner={editOwner}
+                getData={this.getData}
               />
             ))
           }

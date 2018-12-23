@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const { Schema } = require('mongoose');
 
 const eventSchema = new Schema({
-  creator: { type: String, required: true },
+  user: { type: String, required: true },
   visibility: { type: String, required: true },
   eventName: { type: String, required: true },
   description: { type: String, required: true },
@@ -28,6 +28,6 @@ const eventSchema = new Schema({
   deleted: { type: Boolean, default: false },
   deletedDate: { type: Date, default: null },
   lastEditDate: { type: Date, default: null },
-}, { collection: 'Event' });
+});
 
 module.exports = mongoose.model('Event', eventSchema);

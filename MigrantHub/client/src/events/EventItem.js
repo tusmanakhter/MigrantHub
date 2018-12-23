@@ -43,7 +43,7 @@ class EventItem extends Component {
     render() {
       const {
         classes, eventId, eventName, eventImagePath, description, location, dateStart,
-        dateEnd, timeStart, timeEnd, editMode, editOwner,
+        dateEnd, timeStart, timeEnd, editMode, editOwner, getData,
       } = this.props;
       const { open, scroll } = this.state;
 
@@ -87,6 +87,7 @@ class EventItem extends Component {
               timeEnd={timeEnd}
               editMode={editMode}
               editOwner={editOwner}
+              getData={getData}
             />
           </CardActions>
         </Card>
@@ -114,6 +115,7 @@ EventItem.propTypes = {
   timeEnd: PropTypes.string.isRequired,
   editOwner: PropTypes.string.isRequired,
   editMode: PropTypes.bool.isRequired,
+  getData: PropTypes.func.isRequired,
 };
 
 export default withStyles(styles)(EventItem);
