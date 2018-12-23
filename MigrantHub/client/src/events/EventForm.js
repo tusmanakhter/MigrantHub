@@ -470,15 +470,17 @@ class EventForm extends Component {
         'Content-Type': 'multipart/form-data',
       },
     }).then((response) => {
-      this.setState({
-        messageFromServer: response.data,
-      });
       if (response.status === 200) {
         this.setState({
           redirectTo: true,
           redirectToAllEvents: true,
+          messageFromServer: response.data,
         });
       }
+    }).catch((error) => {
+        this.setState({
+            messageFromServer: error.response.data,
+        });
     });
   }
 
