@@ -5,8 +5,6 @@ var test = sinonTest(sinon);
 var BusinessService = require('../../service/BusinessService');
 var BusinessRepository = require('../../repository/BusinessRepository');
 var AccountFactory = require('../factories/AccountFactory');
-var chai = require('chai');
-
 
 describe('business service', function () {
   let req = {

@@ -4,7 +4,7 @@ const autoIncrement = require('mongoose-auto-increment');
 
 autoIncrement.initialize(mongoose);
 
-const reviewServiceSchema = new Schema({
+const reviewSchema = new Schema({
   user: { type: String, required: true },
   serviceId: { type: String, required: true },
   rating: { type: Number, required: true },
@@ -12,6 +12,6 @@ const reviewServiceSchema = new Schema({
   time: { type: Date, default: Date.now, required: false },
 });
 
-reviewServiceSchema.plugin(autoIncrement.plugin, 'ReviewService');
+reviewSchema.plugin(autoIncrement.plugin, 'Review');
 
-module.exports = mongoose.model('ReviewService', reviewServiceSchema);
+module.exports = mongoose.model('Review', reviewSchema);

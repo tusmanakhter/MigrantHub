@@ -7,8 +7,8 @@ router.use('/accounts', require('./Accounts'));
 router.use('/admins', ensureUser, ensureRole('admin'), require('./Admins'));
 router.use('/migrants', ensureUser, ensureRole('migrant'), require('./Migrants'));
 router.use('/businesses', ensureUser, ensureRole('business'), require('./Businesses'));
-router.use('/services', require('./Services'));
+router.use('/services', ensureUser, require('./Services'));
 router.use('/friend', ensureUser, ensureRole('migrant'), require('./Friend'));
-router.use('/events', require('./Events'));
+router.use('/events', ensureUser, require('./Events'));
 
 module.exports = router;

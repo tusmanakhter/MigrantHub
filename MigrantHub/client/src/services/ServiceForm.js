@@ -475,7 +475,7 @@ class ServiceForm extends Component {
         serviceImageName: tempImageName,
       }));
 
-      axios.post('/api/services/create', formData,
+      axios.post('/api/services/', formData,
         {
           headers: {
             'Content-Type': 'multipart/form-data',
@@ -534,7 +534,7 @@ class ServiceForm extends Component {
         _id: serviceId,
         serviceImagePath,
       }));
-      axios.post('/api/services/update', formData,
+      axios.put('/api/services/' + serviceId, formData,
         {
           headers: {
             'Content-Type': 'multipart/form-data',

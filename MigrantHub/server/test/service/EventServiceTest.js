@@ -5,8 +5,10 @@ var test = sinonTest(sinon);
 var EventService = require('../../service/EventService');
 var EventRepository = require('../../repository/EventRepository');
 var EventFactory = require('../factories/EventFactory');
-var chai = require('chai');
 var EventValidator = require('../../validators/EventValidator');
+var chai = require('chai');
+var chaiAsPromised = require('chai-as-promised');
+chai.use(chaiAsPromised);
 
 describe('Event Service', function () {
     let req = {
@@ -39,7 +41,7 @@ describe('Event Service', function () {
         this.stub(EventRepository, 'createEvent');
         this.stub(EventValidator, 'eventValidator').returns("error");
         try {
-            chai.expect(await EventRepository.createEvent(req.user._id, req.body.eventDetails)).to.be.rejected;
+            chai.expect(await EventRepository.createEvent(req.user._id, req.body.eventDetails)).should.be.rejected;
         }catch(error){
             chai.expect(error, true);
         }
@@ -48,7 +50,7 @@ describe('Event Service', function () {
     it('should call getEvents to retrieve a users searched events from getEvents service', test(async function () {
         this.stub(EventRepository, 'getEvents');
         EventService.getEvents(req.query.editOwner);
-        assert.calledWith(await EventRepository.getEvents, { deleted: false, creator: "test@test.com" });
+        assert.calledWith(await EventRepository.getEvents, { deleted: false, user: "test@test.com" });
     }));
 
     it('should call getEvents to retrieve all events from getEvents service', test(async function () {
@@ -76,7 +78,7 @@ describe('Event Service', function () {
         this.stub(EventRepository, 'updateEvent');
         this.stub(EventValidator, 'eventValidator').returns("error");
         try {
-            chai.expect(await EventRepository.updateEvent(req.body.eventDetails)).to.be.rejected;
+            chai.expect(await EventRepository.updateEvent(req.body.eventDetails)).should.be.rejected;
         }catch(error){
             chai.expect(error, true);
         }

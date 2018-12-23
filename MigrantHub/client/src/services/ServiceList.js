@@ -62,7 +62,7 @@ class ServiceList extends Component {
         searchQuery = location.state.searchQuery;
       }
     }
-    axios.get('/api/services/view/all/', {
+    axios.get('/api/services/', {
       params: {
         editOwner: editOwnerEmail,
         searchQuery: searchQuery,

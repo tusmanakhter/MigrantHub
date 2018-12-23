@@ -47,7 +47,7 @@ class ViewReviews extends Component {
   getReviews = () => {
     var reviews
     //get all reviews for the service
-    axios.get('/api/services/reviews', {
+    axios.get('/api/services/' + this.props.serviceId + '/reviews/', {
       params: {
         serviceId: this.props.serviceId,
       },
@@ -85,7 +85,7 @@ class ViewReviews extends Component {
   }
 
   handlePostReview = () => {
-    axios.post('/api/services/review', qs.stringify({
+    axios.post('/api/services/' + this.props.serviceId + '/reviews/', qs.stringify({
       serviceId: this.props.serviceId,
       rating: this.state.rating,
       comment: this.state.comment
@@ -100,7 +100,7 @@ class ViewReviews extends Component {
   }
 
   handleDeleteReview = (id) => {
-    axios.delete('/api/services/review/' + id)
+    axios.delete('/api/services/' + this.props.serviceId + '/reviews/' + id)
       .then((response) => {
         if (response.status === 200) {
           this.getReviews();

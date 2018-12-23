@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const { Schema } = require('mongoose');
 
 const serviceSchema = new Schema({
-  email: { type: String, required: true },
+  user: { type: String, required: true },
   serviceTitle: { type: String, required: true },
   serviceDescription: { type: String, required: true },
   serviceSummary: { type: String, required: true },
@@ -27,5 +27,6 @@ const serviceSchema = new Schema({
   dateCreated: { type: Date, required: false },
   deleted: { type: Boolean, default: false },
   deletedDate: { type: Date, default: null },
-}, { collection: 'Services' });
-module.exports = mongoose.model('Services', serviceSchema);
+});
+
+module.exports = mongoose.model('Service', serviceSchema);

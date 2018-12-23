@@ -6,6 +6,8 @@ var BusinessUser = require('../../models/BusinessUser');
 var AccountFactory = require('../factories/AccountFactory');
 var BusinessRepository = require('../../repository/BusinessRepository');
 var chai = require('chai');
+var chaiAsPromised = require('chai-as-promised');
+chai.use(chaiAsPromised);
 
 describe('business repository', function () {
   let req = {
@@ -28,7 +30,7 @@ describe('business repository', function () {
     it('should throw error, since there was a error saving business user', test(async function () {
         this.stub(BusinessUser.prototype, 'save').returns(Promise.reject({}));
         try {
-            chai.expect(await BusinessRepository.createBusiness(req.body)).to.be.rejected;
+            chai.expect(await BusinessRepository.createBusiness(req.body)).should.be.rejected;
         }catch(error){
             chai.expect(error, true);
         }
@@ -43,7 +45,7 @@ describe('business repository', function () {
     it('should throw error, since there was a error findOne business user', test(async function () {
         this.stub(BusinessUser, 'findOne').returns(Promise.reject({}));
         try {
-            chai.expect(await BusinessRepository.getBusinessUser(req.user._id)).to.be.rejected;
+            chai.expect(await BusinessRepository.getBusinessUser(req.user._id)).should.be.rejected;
         }catch(error){
             chai.expect(error, true);
         }
@@ -58,7 +60,7 @@ describe('business repository', function () {
     it('should throw error, since there was a error findByIdAndUpdate business user', test(async function () {
         this.stub(BusinessUser, 'findByIdAndUpdate').returns(Promise.reject({}));
         try {
-            chai.expect(await BusinessRepository.editBusinessUser(req.user._id, req.body)).to.be.rejected;
+            chai.expect(await BusinessRepository.editBusinessUser(req.user._id, req.body)).should.be.rejected;
         }catch(error){
             chai.expect(error, true);
         }

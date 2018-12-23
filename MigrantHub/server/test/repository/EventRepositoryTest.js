@@ -6,6 +6,8 @@ var EventRepository = require('../../repository/EventRepository');
 var EventFactory = require('../factories/EventFactory');
 var Event = require('../../models/Event');
 var chai = require('chai');
+var chaiAsPromised = require('chai-as-promised');
+chai.use(chaiAsPromised);
 
 describe('Event Repository', function () {
 
@@ -20,7 +22,7 @@ describe('Event Repository', function () {
         };
 
     it('should successfully call mongodb save to createEvent', test(function () {
-        this.stub(Event.prototype, 'save');
+        this.stub(Event.prototype, 'save').returns(Promise.resolve({}));
         EventRepository.createEvent('user id', 'event object');
         assert.calledWith(Event.prototype.save);
     }));
@@ -28,7 +30,7 @@ describe('Event Repository', function () {
     it('should throw error, since there was a error saving event', test(async function () {
         this.stub(Event.prototype, 'save').returns(Promise.reject({}));
         try {
-            chai.expect(await EventRepository.createEvent(req.body)).to.be.rejected;
+            chai.expect(await EventRepository.createEvent(req.body)).should.be.rejected;
         }catch(error){
             chai.expect(error, true);
         }
@@ -36,14 +38,14 @@ describe('Event Repository', function () {
 
     it('should successfully call mongodb find to find all events', test(function () {
         this.stub(Event, 'find').returns({exec: sinon.stub().returns(Promise.resolve({}))});
-        EventRepository.getEvents({ 'creator': 'test@hotmail.com', deleted: false });
-        assert.calledWith(Event.find, { 'creator': 'test@hotmail.com', deleted: false });
+        EventRepository.getEvents({ 'user': 'test@hotmail.com', deleted: false });
+        assert.calledWith(Event.find, { 'user': 'test@hotmail.com', deleted: false });
     }));
 
     it('should throw error, since there was a error getting all events', test(async function () {
         this.stub(Event, 'find').returns(Promise.reject({}));
         try {
-            chai.expect(await EventRepository.getEvents({ 'creator': 'test@hotmail.com', deleted: false })).to.be.rejected;
+            chai.expect(await EventRepository.getEvents({ 'user': 'test@hotmail.com', deleted: false })).should.be.rejected;
         }catch(error){
             chai.expect(error, true);
         }
@@ -58,7 +60,7 @@ describe('Event Repository', function () {
     it('should throw error, since there was a error getting a event', test(async function () {
         this.stub(Event, 'findOne').returns(Promise.reject({}));
         try {
-            chai.expect(await EventRepository.getEvent({ _id: event._id, deleted: false })).to.be.rejected;
+            chai.expect(await EventRepository.getEvent({ _id: event._id, deleted: false })).should.be.rejected;
         }catch(error){
             chai.expect(error, true);
         }
@@ -74,7 +76,7 @@ describe('Event Repository', function () {
     it('should throw error, since there was a error updating event', test(async function () {
         this.stub(Event, 'findByIdAndUpdate').returns(Promise.reject({}));
         try {
-            chai.expect(await EventRepository.updateEvent(req.body.eventDetails)).to.be.rejected;
+            chai.expect(await EventRepository.updateEvent(req.body.eventDetails)).should.be.rejected;
         }catch(error){
             chai.expect(error, true);
         }
@@ -90,7 +92,7 @@ describe('Event Repository', function () {
     it('should throw error, since there was a error deleting event', test(async function () {
         this.stub(Event, 'updateOne').returns(Promise.reject({}));
         try {
-            chai.expect(await EventRepository.deleteEvent(req.event._id)).to.be.rejected;
+            chai.expect(await EventRepository.deleteEvent(req.event._id)).should.be.rejected;
         }catch(error){
             chai.expect(error, true);
         }

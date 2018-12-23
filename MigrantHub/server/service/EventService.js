@@ -36,7 +36,7 @@ module.exports = {
     const query = {};
 
     if (editOwner !== '') {
-      query.creator = editOwner;
+      query.user = editOwner;
     }
     query.deleted = false;
 

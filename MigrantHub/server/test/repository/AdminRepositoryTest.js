@@ -6,6 +6,8 @@ var Admin = require('../../models/Admin')
 var AccountFactory = require('../factories/AccountFactory');
 var AdminRepository = require('../../repository/AdminRepository');
 var chai = require('chai');
+var chaiAsPromised = require('chai-as-promised');
+chai.use(chaiAsPromised);
 
 describe('admin repository', function () {
   let req = {
@@ -27,7 +29,7 @@ describe('admin repository', function () {
         this.stub(Admin.prototype, 'save').returns(Promise.reject({}));
         AdminRepository.createAdmin(req.body);
         try {
-            chai.expect(await AdminRepository.createAdmin(req.body)).to.be.rejected;
+            chai.expect(await AdminRepository.createAdmin(req.body)).should.be.rejected;
         }catch(error){
             chai.expect(error, true);
         }

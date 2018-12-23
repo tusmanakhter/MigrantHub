@@ -10,8 +10,10 @@ var BusinessRepository = require('../../repository/BusinessRepository');
 var BusinessAccountValidator = require('../../validators/BusinessAccountValidator');
 var AdminRepository = require('../../repository/AdminRepository');
 var AdminAccountValidator = require('../../validators/AdminAccountValidator');
+var bcrypt = require('bcryptjs');
 var chai = require('chai');
-const bcrypt = require('bcryptjs');
+var chaiAsPromised = require('chai-as-promised');
+chai.use(chaiAsPromised);
 
 describe('account service migrant', function () {
   let req = {
@@ -32,7 +34,7 @@ describe('account service migrant', function () {
     this.stub(MigrantRepository, 'createUser');
     this.stub(MigrantAccountValidator, 'migrantAccountValidator').returns("error");
       try {
-          chai.expect(await AccountService.createUser(req.body)).to.be.rejected;
+          chai.expect(await AccountService.createUser(req.body)).should.be.rejected;
       }catch(error){
           chai.expect(error, true);
       }
@@ -58,7 +60,7 @@ describe('account service business', function () {
       this.stub(BusinessRepository, 'createBusiness');
       this.stub(BusinessAccountValidator, 'businessAccountValidator').returns("error");
       try {
-          chai.expect(await AccountService.createBusiness(req.body)).to.be.rejected;
+          chai.expect(await AccountService.createBusiness(req.body)).should.be.rejected;
       }catch(error){
           chai.expect(error, true);
       }
@@ -85,7 +87,7 @@ describe('account service admin', function () {
       this.stub(AdminRepository, 'createAdmin');
       this.stub(AdminAccountValidator, 'adminAccountValidator').returns("error");
       try {
-          chai.expect(await AccountService.createAdmin(req.body)).to.be.rejected;
+          chai.expect(await AccountService.createAdmin(req.body)).should.be.rejected;
       }catch(error){
           chai.expect(error, true);
       }

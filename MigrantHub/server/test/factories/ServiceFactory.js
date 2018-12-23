@@ -1,7 +1,7 @@
 module.exports.validServiceData = function() {
     return {
         _id: "5bda52305ccfd051484ea790",
-        email : "test@hotmail.com",
+        user : "test@hotmail.com",
         serviceTitle : "My First Service",
         serviceSummary : "In reasonable compliment favourable is connection dispatched in terminated.",
         serviceDescription : "Way nor furnished sir procuring therefore but. Warmth far manner myself active are cannot called.",
@@ -29,7 +29,7 @@ module.exports.validServiceData = function() {
 
 module.exports.emptyServiceData = function() {
     return {
-        email : "",
+        user : "",
         serviceTitle : "",
         serviceSummary : "",
         serviceDescription : "",
@@ -58,7 +58,7 @@ module.exports.emptyServiceData = function() {
 
 module.exports.invalidServiceData = function() {
     return {
-        email : "test@hotmail.com",
+        user : "test@hotmail.com",
         serviceTitle : "My First Service",
         serviceSummary : "In reasonable compliment favourable is connection dispatched in terminated.",
         serviceDescription : "Way nor furnished sir procuring therefore but. Warmth far manner myself active are cannot called.",

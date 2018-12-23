@@ -1,6 +1,6 @@
 const fs = require('fs-extra');
 const ServiceValidator = require('../validators/ServiceValidator');
-const ServicesRepository = require('../repository/ServicesRepository');
+const ServiceRepository = require('../repository/ServiceRepository');
 
 module.exports = {
 
@@ -14,7 +14,7 @@ module.exports = {
       } else {
         serviceObject.serviceImagePath = (`/uploads/${user._id}/services/${serviceObject.serviceImageName}`);
       }
-      return ServicesRepository.createService(user._id, serviceObject);
+      return ServiceRepository.createService(user._id, serviceObject);
     }
     throw new Error('There was an error creating service.');
   },
@@ -23,7 +23,7 @@ module.exports = {
     let query = {};
 
     if (editOwner !== '') {
-      query.email = editOwner;
+      query.user = editOwner;
     } else if (search !== '') {
       const tempSearchQuery = searchQuery;
       const regex = new RegExp(tempSearchQuery.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&'), 'gi');
@@ -31,7 +31,7 @@ module.exports = {
     }
 
     query.deleted = false;
-    return ServicesRepository.findServices(query);
+    return ServiceRepository.getServices(query);
   },
 
   async getService(serviceId) {
@@ -42,7 +42,7 @@ module.exports = {
     }
     query.deleted = false;
 
-    return ServicesRepository.findOneService(query);
+    return ServiceRepository.getService(query);
   },
 
   async updateService(user, parsedServiceObj) {
@@ -63,7 +63,7 @@ module.exports = {
       if ((serviceObject.serviceImagePath !== undefined) && (serviceObject.serviceImagePath !== (`/uploads/${user._id}/services/${serviceObject.serviceImageName}`))) {
         fs.remove(`${serviceObject.serviceImagePath.toString().substring(3)}`, (err) => {
           if (err) {
-            throw new Error('servicesController.updateService: removeImage');
+            throw new Error('serviceController.updateService: removeImage');
           }
         });
       }
@@ -74,12 +74,12 @@ module.exports = {
         serviceObject.serviceImagePath = (`/uploads/${user._id}/services/${serviceObject.serviceImageName}`);
       }
 
-      return ServicesRepository.updateService(serviceObject);
+      return ServiceRepository.updateService(serviceObject);
     }
     throw new Error('There was an error updating service.');
   },
 
   async deleteService(serviceId) {
-    return ServicesRepository.deleteService(serviceId);
+    return ServiceRepository.deleteService(serviceId);
   },
 };

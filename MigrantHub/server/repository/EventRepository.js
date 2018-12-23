@@ -4,7 +4,7 @@ module.exports = {
 
   createEvent(eventOwner, eventObject) {
     const event = new Event();
-    event.creator = eventOwner;
+    event.user = eventOwner;
     event.visibility = eventObject.visibility;
     event.eventName = eventObject.eventName;
     event.description = eventObject.description;
@@ -18,12 +18,9 @@ module.exports = {
     event.secondsEnd = eventObject.secondsEnd;
     event.eventImagePath = eventObject.eventImagePath;
     event.dateCreated = eventObject.dateCreated;
-    event.save((err) => {
-      if (err) {
-        throw new Error('There was an error saving event.');
-      } else {
-        return Promise.resolve('Event has been created.');
-      }
+
+    return event.save().then(() => Promise.resolve('Event has been created.')).catch(() => {
+      throw new Error('There was an error saving event.');
     });
   },
 

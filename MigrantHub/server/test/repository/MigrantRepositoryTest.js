@@ -6,6 +6,8 @@ var MigrantUser = require('../../models/MigrantUser')
 var AccountFactory = require('../factories/AccountFactory');
 var MigrantRepository = require('../../repository/MigrantRepository');
 var chai = require('chai');
+var chaiAsPromised = require('chai-as-promised');
+chai.use(chaiAsPromised);
 
 describe('migrant repository', function () {
   let req = {
@@ -28,7 +30,7 @@ describe('migrant repository', function () {
   it('should throw error, since there was a error saving migrant user', test(async function () {
       this.stub(MigrantUser.prototype, 'save').returns(Promise.reject({}));
       try {
-          chai.expect(await MigrantRepository.createUser(req.body)).to.be.rejected;
+          chai.expect(await MigrantRepository.createUser(req.body)).should.be.rejected;
       }catch(error){
           chai.expect(error, true);
       }
@@ -43,7 +45,7 @@ describe('migrant repository', function () {
   it('should throw error, since there was a error migrant business user', test(async function () {
       this.stub(MigrantUser, 'findByIdAndUpdate').returns(Promise.reject({}));
       try {
-          chai.expect(await MigrantRepository.editMigrantUser(req.user._id, req.body)).to.be.rejected;
+          chai.expect(await MigrantRepository.editMigrantUser(req.user._id, req.body)).should.be.rejected;
       }catch(error){
             chai.expect(error, true);
       }
