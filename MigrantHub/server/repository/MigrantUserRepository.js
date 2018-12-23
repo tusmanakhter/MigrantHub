@@ -1,8 +1,8 @@
-const User = require('../models/MigrantUser');
+const MigrantUser = require('../models/MigrantUser');
 
 module.exports = {
   createUser(userObject) {
-    const user = new User();
+    const user = new MigrantUser();
     user._id = userObject.email;
     user.email = userObject.email;
     user.localAuthentication = {
@@ -39,5 +39,18 @@ module.exports = {
     return user.save().then(() => Promise.resolve('Migrant User has been created.')).catch(() => {
       throw new Error('There was an error saving migrant user.');
     });
+  },
+
+  getMigrantUser(migrantUserId) {
+      return MigrantUser.findOne({ _id: migrantUserId}).exec().then(businessUser =>
+          Promise.resolve(businessUser)).catch(() => {throw new Error('There was an error retrieving migrant user.');
+      });
+  },
+
+    editMigrantUser(migrantUserId, migrantUserObject) {
+      return MigrantUser.findByIdAndUpdate(migrantUserId, migrantUserObject, { new: true }).exec().then(services =>
+          Promise.resolve('Migrant user has been updated.')).catch(() => {
+          throw new Error('There was an error retrieving updating migrant user.');
+      });
   },
 };
