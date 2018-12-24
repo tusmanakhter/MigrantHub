@@ -15,14 +15,14 @@ module.exports = {
   },
 
   getAdmins(query) {
-      return Admin.find(query, 'email').exec().then(admins => Promise.resolve(admins)).catch(() => {
-          throw new Error('There was an error retrieving unapproved admins.');
-      });
+    return Admin.find(query, 'email').exec().then(admins => Promise.resolve(admins)).catch(() => {
+      throw new Error('There was an error retrieving unapproved admins.');
+    });
   },
 
   updateAdminStatus(adminId, query) {
-      return Admin.updateOne({ _id: adminId }, query).exec().then(() => Promise.resolve('Admin has been deleted.')).catch(() => {
-          throw new Error('There was an error deleting admin.');
-      });
+    return Admin.updateOne({ _id: adminId }, query).exec().then(() => Promise.resolve('Admin has been deleted.')).catch(() => {
+      throw new Error('There was an error deleting admin.');
+    });
   },
 };

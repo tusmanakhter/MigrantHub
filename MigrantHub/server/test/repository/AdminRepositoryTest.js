@@ -11,7 +11,10 @@ chai.use(chaiAsPromised);
 
 describe('admin repository', function () {
   let req = {
-    body: AccountFactory.validAdminAccount()
+      body: AccountFactory.validAdminAccount(),
+      admin:{
+          _id: "admin@test.com"
+      },
   };
 
   it('should create a migrant and return promise', test(async function () {
@@ -30,6 +33,38 @@ describe('admin repository', function () {
         AdminRepository.createAdmin(req.body);
         try {
             chai.expect(await AdminRepository.createAdmin(req.body)).should.be.rejected;
+        }catch(error){
+            chai.expect(error, true);
+        }
+    }));
+
+    it('should successfully call mongodb find', test(async function () {
+        this.stub(Admin, 'find').returns({exec: sinon.stub().returns(Promise.resolve({}))});
+        this.stub(Date, 'now').returns('2018-12-19T00:32:22.749Z');
+        AdminRepository.getAdmins({ deleted: true });
+        assert.calledWith(Admin.find, { deleted: true });
+    }));
+
+    it('should throw error, since there was a error finding admins', test(async function () {
+        this.stub(Admin, 'find').returns(Promise.reject({}));
+        try {
+            chai.expect(await AdminRepository.getAdmins({ deleted: true })).should.be.rejected;
+        }catch(error){
+            chai.expect(error, true);
+        }
+    }));
+
+    it('should successfully call mongodb updateOne with passed query and admin id', test(async function () {
+        this.stub(Admin, 'updateOne').returns({exec: sinon.stub().returns(Promise.resolve({}))});
+        this.stub(Date, 'now').returns('2018-12-19T00:32:22.749Z');
+        AdminRepository.updateAdminStatus(req.admin._id, { rejected: true, rejectedDate: Date.now() });
+        assert.calledWith(Admin.updateOne, { _id: req.admin._id }, { rejected: true, rejectedDate: Date.now() });
+    }));
+
+    it('should throw error, since there was a error updating admin status', test(async function () {
+        this.stub(Admin, 'updateOne').returns(Promise.reject({}));
+        try {
+            chai.expect(await AdminRepository.updateAdminStatus(req.admin._id, { rejected: true, rejectedDate: Date.now() })).should.be.rejected;
         }catch(error){
             chai.expect(error, true);
         }

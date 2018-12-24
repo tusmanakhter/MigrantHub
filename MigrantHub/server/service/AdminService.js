@@ -2,7 +2,9 @@ const AdminRepository = require('../repository/AdminRepository');
 
 module.exports = {
   async getAdmins(user) {
-    const query = {_id: { $ne: user._id }, authorized: true, rejected: false, deleted: false,};
+    const query = {
+      _id: { $ne: user._id }, authorized: true, rejected: false, deleted: false,
+    };
     return AdminRepository.getAdmins(query);
   },
 
