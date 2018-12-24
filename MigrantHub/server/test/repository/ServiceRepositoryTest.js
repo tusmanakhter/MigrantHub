@@ -14,6 +14,9 @@ describe('Service Repository', function () {
             body: {
                 serviceDetails: ServiceFactory.validServiceData()
             },
+            user:{
+                _id: "test@test.com"
+            },
         },
         service = {
             _id: "5bda52305ccfd051484ea790",
@@ -22,14 +25,14 @@ describe('Service Repository', function () {
 
     it('should successfully call mongodb save to createService', test(function () {
         this.stub(Service.prototype, 'save').returns(Promise.resolve({}));
-        ServiceRepository.createService('user id', 'service object');
+        ServiceRepository.createService(req.user._id, {});
         assert.calledWith(Service.prototype.save);
     }));
 
     it('should throw error, since there was a error saving service', test(async function () {
         this.stub(Service.prototype, 'save').returns(Promise.reject({}));
         try {
-            chai.expect(await ServiceRepository.createService(req.body)).should.be.rejected;
+            chai.expect(await ServiceRepository.createService(req.user._id, {})).should.be.rejected;
         }catch(error){
             chai.expect(error, true);
         }
@@ -44,7 +47,7 @@ describe('Service Repository', function () {
     it('should throw error, since there was a error getting all services', test(async function () {
         this.stub(Service, 'find').returns(Promise.reject({}));
         try {
-            chai.expect(await ServiceRepository.getServices({ '$or': [{ serviceTitle: /test/gi }, { serviceSummary: /test/gi }], deleted: false })).to.be.rejected;
+            chai.expect(await ServiceRepository.getServices({ '$or': [{ serviceTitle: /test/gi }, { serviceSummary: /test/gi }], deleted: false })).should.be.rejected;
         }catch(error){
             chai.expect(error, true);
         }
