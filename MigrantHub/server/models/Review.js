@@ -10,6 +10,8 @@ const reviewSchema = new Schema({
   rating: { type: Number, required: true },
   comment: { type: String, required: true },
   time: { type: Date, default: Date.now, required: false },
+  deleted: { type: Boolean, default: false },
+  deletedDate: { type: Date, default: null },
 });
 
 reviewSchema.plugin(autoIncrement.plugin, 'Review');
