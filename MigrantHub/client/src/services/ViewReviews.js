@@ -14,6 +14,7 @@ import { Redirect } from 'react-router-dom';
 import StarRatingComponent from 'react-star-rating-component';
 import axios from 'axios';
 import qs from 'qs';
+import UserTypes from '../lib/UserTypes';
 
 const styles = {
   avatar: {
@@ -142,7 +143,7 @@ class ViewReviews extends Component {
         >
           <DialogTitle id="scroll-dialog-title">{serviceTitle}</DialogTitle>
           <DialogContent>
-              { userType !== 'admin' 
+              { userType !== UserTypes.ADMIN 
                 && (
                   <React.Fragment>
                     <div style={{backgroundColor: "#F0F0F0"}}><div style={{margin: "20px"}}>
@@ -216,7 +217,7 @@ class ViewReviews extends Component {
                           </Typography>
                         </Grid>
                         <Grid item xs={1}>
-                        { ((userType === 'admin') || userId === (review.user))
+                        { ((userType === UserTypes.ADMIN) || userId === (review.user))
                         &&
                           <Button size="small" color="secondary" onClick={() => {this.handleDeleteReview(review._id)}}>
                             Delete

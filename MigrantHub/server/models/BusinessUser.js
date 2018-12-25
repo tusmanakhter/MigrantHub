@@ -1,9 +1,10 @@
 const { Schema } = require('mongoose');
 const User = require('./User');
+const UserTypes = require('../lib/UserTypes');
 
 const options = { discriminatorKey: 'type' };
 
-const BusinessUser = User.discriminator('business',
+const BusinessUser = User.discriminator(UserTypes.BUSINESS,
   new Schema({
     corpId: { type: String, required: true },
     firstName: { type: String, required: true },

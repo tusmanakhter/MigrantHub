@@ -22,6 +22,7 @@ import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import validator from 'validator';
 import Logout from '../Logout';
+import UserTypes from '../../lib/UserTypes';
 
 var qs = require('qs');
 
@@ -169,24 +170,24 @@ class Header extends Component {
   handleMenuClick = (event) => {
     const { type, email } = this.state;
     if (event.target.id === 'editProfile') {
-      if (type === 'migrant') {
+      if (type === UserTypes.MIGRANT) {
         this.setState({
           redirectTo: true,
           redirectToURL: '/editmigrant',
         });
-      } else if (type === 'business') {
+      } else if (type === UserTypes.BUSINESS) {
         this.setState({
           redirectTo: true,
           redirectToURL: '/editbusiness',
         });
       }
     } else if (event.target.id === 'viewProfile') {
-          if (type === 'migrant') {
+          if (type === UserTypes.MIGRANT) {
               this.setState({
                   redirectTo: true,
                   redirectToURL: '/migrant/profile',
               });
-          } else if (type === 'business') {
+          } else if (type === UserTypes.BUSINESS) {
               this.setState({
                   redirectTo: true,
                   redirectToURL: '/business/profile',
@@ -213,12 +214,12 @@ class Header extends Component {
         },
       });
     } else if (event.target.id === 'main') {
-      if (type === 'migrant') {
+      if (type === UserTypes.MIGRANT) {
         this.setState({
             redirectTo: true,
             redirectToURL: '/main',
         });
-      } else if (type === 'business') {
+      } else if (type === UserTypes.BUSINESS) {
         this.setState({
             redirectTo: true,
             redirectToURL: '/businessmain',

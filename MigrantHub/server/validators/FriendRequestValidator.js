@@ -1,6 +1,7 @@
 const validator = require('validator');
 const User = require('../models/User');
 const FriendRequest = require('../models/FriendRequest');
+const UserTypes = require('../lib/UserTypes');
 
 // helper function: makes sure the added user exists
 async function checkForExistingUser(requestTo) {
@@ -52,7 +53,7 @@ async function checkForMigrantUser(requestTo) {
       _id: requestTo,
     });
     if (record) {
-      if (record.type !== 'migrant') {
+      if (record.type !== UserTypes.MIGRANT) {
         error = 'Not a valid user. Try again.';
       }
     } else {
