@@ -6,10 +6,10 @@ const AccountController = require('../controllers/AccountController');
 const { controllerHandler } = require('../controllers/ControllerUtils');
 
 router.get('/', controllerHandler(AccountController.getUser, req => [req.user]));
+router.get('/get/user', controllerHandler(AccountController.getUserType, req => [req.user]));
 router.post('/create/user', controllerHandler(AccountController.createUser, req => [req.body]));
 router.post('/create/business', controllerHandler(AccountController.createBusiness, req => [req.body]));
 router.post('/create/admin', controllerHandler(AccountController.createAdmin, req => [req.body]));
-router.get('/get/user', controllerHandler(AccountController.getUserType, req => [req.user]));
 
 router.post('/login', (req, res, next) => { next(); }, passport.authenticate('local'), (req, res) => {
   const user = {

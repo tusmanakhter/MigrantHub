@@ -4,7 +4,7 @@ var sinonTest = require('sinon-test');
 var test = sinonTest(sinon);
 var ServiceController = require('../../controllers/ServiceController')
 var ServiceFactory = require('../factories/ServiceFactory');
-var ServicesService = require('../../service/ServicesService');
+var ServiceService = require('../../service/ServiceService');
 
 describe('Service controller', function () {
     let req = {
@@ -30,32 +30,32 @@ describe('Service controller', function () {
         };
 
     it('should call createService service with correct parameters from createService controller', test(async function () {
-        this.stub(ServicesService, 'createService');
+        this.stub(ServiceService, 'createService');
         ServiceController.createService(req.user, req.body.serviceDetails);
-        assert.calledWith(await ServicesService.createService, req.user, req.body.serviceDetails);
+        assert.calledWith(await ServiceService.createService, req.user, req.body.serviceDetails);
     }));
 
     it('should call getServices service with correct parameters from createService controller', test(async function () {
-        this.stub(ServicesService, 'getServices');
+        this.stub(ServiceService, 'getServices');
         ServiceController.getServices(req.query.editOwner, req.query.searchQuery, req.query.search);
-        assert.calledWith(await ServicesService.getServices, req.query.editOwner, req.query.searchQuery, req.query.search);
+        assert.calledWith(await ServiceService.getServices, req.query.editOwner, req.query.searchQuery, req.query.search);
     }));
 
     it('should call getService service with correct parameters from getService controller', test(async function () {
-        this.stub(ServicesService, 'getService');
+        this.stub(ServiceService, 'getService');
         ServiceController.getService(service._id);
-        assert.calledWith(await ServicesService.getService, service._id);
+        assert.calledWith(await ServiceService.getService, service._id);
     }));
 
     it('should call updateService service with correct parameters from updateService controller', test(async function () {
-        this.stub(ServicesService, 'updateService');
+        this.stub(ServiceService, 'updateService');
         ServiceController.updateService(req.body.serviceDetails);
-        assert.calledWith(await ServicesService.updateService, req.body.serviceDetails);
+        assert.calledWith(await ServiceService.updateService, req.body.serviceDetails);
     }));
 
     it('should call deleteService service with merchant service owner from deleteService controller', test(async function () {
-        this.stub(ServicesService, 'deleteService');
+        this.stub(ServiceService, 'deleteService');
         ServiceController.deleteService(service._id);
-        assert.calledWith(await ServicesService.deleteService, service._id);
+        assert.calledWith(await ServiceService.deleteService, service._id);
     }));
 });

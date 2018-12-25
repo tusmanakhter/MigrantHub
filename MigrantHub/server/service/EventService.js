@@ -1,6 +1,7 @@
 const fs = require('fs-extra');
 const EventValidator = require('../validators/EventValidator');
 const EventRepository = require('../repository/EventRepository');
+const { ServerError } = require('../errors/ServerError');
 
 module.exports = {
 
@@ -18,7 +19,7 @@ module.exports = {
       eventObject.dateCreated = date;
       return EventRepository.createEvent(user._id, eventObject);
     }
-    throw new Error('There was an error creating event.');
+    throw new ServerError('There was an error creating event.', 400, errors);
   },
 
   async getEvent(eventId) {
@@ -32,11 +33,11 @@ module.exports = {
     return EventRepository.getEvent(query);
   },
 
-  async getEvents(editOwner) {
+  async getEvents(userId) {
     const query = {};
 
-    if (editOwner !== '') {
-      query.user = editOwner;
+    if (userId !== '') {
+      query.user = userId;
     }
     query.deleted = false;
 
@@ -53,9 +54,9 @@ module.exports = {
       }
 
       if ((eventObject.eventImagePath !== undefined) && (eventObject.eventImagePath !== (`/uploads/${user._id}/events/${eventObject.eventImageName}`))) {
-        fs.remove(`${eventObject.eventImagePath.toString().substring(3)}`, (err) => {
-          if (err) {
-            throw new Error('eventController.updateEvent: removeImage');
+        fs.remove(`${eventObject.eventImagePath.toString().substring(3)}`, (error) => {
+          if (error) {
+            throw new ServerError('eventController.updateEvent: removeImage', 400, error);
           }
         });
       }
@@ -68,7 +69,7 @@ module.exports = {
 
       return EventRepository.updateEvent(eventObject);
     }
-    throw new Error('There was an error updating event.');
+    throw new ServerError('There was an error updating event.', 400, errors);
   },
 
   async deleteEvent(eventId) {

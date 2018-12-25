@@ -1,5 +1,6 @@
 const qs = require('qs');
 const AccountService = require('../service/AccountService');
+const { ServerError } = require('../errors/ServerError');
 
 module.exports = {
   async createUser(migrantUserObject) {
@@ -8,8 +9,8 @@ module.exports = {
   },
 
   async createBusiness(businessUserObject) {
-    const parsedMigrantUserObject = qs.parse(businessUserObject);
-    return AccountService.createBusiness(parsedMigrantUserObject);
+    const parsedBusinessUserObject = qs.parse(businessUserObject);
+    return AccountService.createBusiness(parsedBusinessUserObject);
   },
 
   async createAdmin(adminUserObject) {
@@ -27,7 +28,7 @@ module.exports = {
       };
       return Promise.resolve(userObject);
     }
-    throw new Error('Error retrieving user.');
+    throw new ServerError('Error retrieving user.', 400, `User value: ${user}`);
   },
 
   async getUser(userObject) {

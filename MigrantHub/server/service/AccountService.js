@@ -5,6 +5,7 @@ const AdminAccountValidator = require('../validators/AdminAccountValidator');
 const MigrantRepository = require('../repository/MigrantRepository');
 const BusinessRepository = require('../repository/BusinessRepository');
 const AdminRepository = require('../repository/AdminRepository');
+const { ServerError } = require('../errors/ServerError');
 
 module.exports = {
   async createUser(parsedMigrantUserObject) {
@@ -18,7 +19,7 @@ module.exports = {
 
       return MigrantRepository.createUser(migrantUserObject);
     }
-    throw new Error('There was an error creating migrant user.');
+    throw new ServerError('There was an error creating migrant user.', 400, errors);
   },
 
   async createBusiness(parsedBusinessUserObject) {
@@ -32,7 +33,7 @@ module.exports = {
 
       return BusinessRepository.createBusiness(businessUserObject);
     }
-    throw new Error('There was an error creating business user.');
+    throw new ServerError('There was an error creating business user.', 400, errors);
   },
 
   async createAdmin(parsedAdminUserObject) {
@@ -46,6 +47,6 @@ module.exports = {
 
       return AdminRepository.createAdmin(adminUserObject);
     }
-    throw new Error('There was an error creating admin user.');
+    throw new ServerError('There was an error creating admin user.', 400, errors);
   },
 };

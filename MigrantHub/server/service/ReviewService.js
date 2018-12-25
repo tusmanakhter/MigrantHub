@@ -1,5 +1,6 @@
 const ReviewValidator = require('../validators/ReviewValidator');
 const ReviewRepository = require('../repository/ReviewRepository');
+const { ServerError } = require('../errors/ServerError');
 
 module.exports = {
 
@@ -9,7 +10,7 @@ module.exports = {
     if (errors === '') {
       return ReviewRepository.createReview(user._id, parsedReviewObject);
     }
-    throw new Error('There was an error creating the review.');
+    throw new ServerError('There was an error creating the review.', 400, errors);
   },
 
   async getReview(user, serviceId) {

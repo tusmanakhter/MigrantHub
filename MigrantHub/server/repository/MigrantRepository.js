@@ -1,4 +1,5 @@
 const MigrantUser = require('../models/MigrantUser');
+const { ServerError } = require('../errors/ServerError');
 
 module.exports = {
   createUser(userObject) {
@@ -37,21 +38,21 @@ module.exports = {
     user.joiningReason = userObject.joiningReason;
 
     return user.save().then(() => Promise.resolve('Migrant User has been created.')).catch(() => {
-      throw new Error('There was an error saving migrant user.');
+      throw new ServerError('There was an error saving migrant user.');
     });
   },
 
   getMigrantUser(migrantUserId) {
     return MigrantUser.findOne({ _id: migrantUserId }).exec()
-      .then(businessUser => Promise.resolve(businessUser)).catch(() => {
-        throw new Error('There was an error retrieving migrant user.');
+      .then(migrantUser => Promise.resolve(migrantUser)).catch((error) => {
+        throw new ServerError('There was an error retrieving migrant user.', 400, error);
       });
   },
 
   editMigrantUser(migrantUserId, migrantUserObject) {
     return MigrantUser.findByIdAndUpdate({ _id: migrantUserId }, migrantUserObject, { new: true })
-      .exec().then(() => Promise.resolve('Migrant user has been updated.')).catch(() => {
-        throw new Error('There was an error retrieving updating migrant user.');
+      .exec().then(() => Promise.resolve('Migrant user has been updated.')).catch((error) => {
+        throw new ServerError('There was an error retrieving updating migrant user.', 400, error);
       });
   },
 };

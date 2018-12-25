@@ -1,4 +1,5 @@
 const Admin = require('../models/Admin');
+const { ServerError } = require('../errors/ServerError');
 
 module.exports = {
   createAdmin(adminUserObject) {
@@ -9,20 +10,20 @@ module.exports = {
       password: adminUserObject.password,
     };
 
-    return admin.save().then(() => Promise.resolve('Admin User has been created.')).catch(() => {
-      throw new Error('There was an error creating admin.');
+    return admin.save().then(() => Promise.resolve('Admin User has been created.')).catch((error) => {
+      throw new ServerError('There was an error creating admin.', 400, error);
     });
   },
 
   getAdmins(query) {
-    return Admin.find(query, 'email').exec().then(admins => Promise.resolve(admins)).catch(() => {
-      throw new Error('There was an error retrieving unapproved admins.');
+    return Admin.find(query, 'email').exec().then(admins => Promise.resolve(admins)).catch((error) => {
+      throw new ServerError('There was an error retrieving admins.', 400, error);
     });
   },
 
   updateAdminStatus(adminId, query) {
-    return Admin.updateOne({ _id: adminId }, query).exec().then(() => Promise.resolve('Admin has been deleted.')).catch(() => {
-      throw new Error('There was an error deleting admin.');
+    return Admin.updateOne({ _id: adminId }, query).exec().then(() => Promise.resolve('Admin has been updated.')).catch((error) => {
+      throw new ServerError('There was an error updating admin.', 400, error);
     });
   },
 };

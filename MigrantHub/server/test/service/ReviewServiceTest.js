@@ -6,6 +6,7 @@ var ReviewService = require('../../service/ReviewService');
 var ReviewRepository = require('../../repository/ReviewRepository');
 var ReviewFactory = require('../factories/ReviewFactory');
 var ReviewValidator = require('../../validators/ReviewValidator');
+var { ServerError } = require('../../errors/ServerError');
 var chai = require('chai');
 var chaiAsPromised = require('chai-as-promised');
 chai.use(chaiAsPromised);
@@ -38,14 +39,10 @@ describe('Service Service', function () {
         assert.calledWith(await ReviewRepository.createReview, req.user._id, req.body);
     }));
 
-    it('should call createReview repository with error in validation', test(async function () {
+    it('should call createReview repository with error in validation', test(function () {
         this.stub(ReviewRepository, 'createReview');
         this.stub(ReviewValidator, 'reviewValidator').returns("error");
-        try {
-            chai.expect(await ReviewRepository.createReview(req.user._id, req.body)).should.be.rejected;
-        }catch(error){
-            chai.expect(error, true);
-        }
+        return chai.assert.isRejected(ReviewService.createReview(req.user._id, req.body), ServerError, 'There was an error creating the review.');
     }));
 
     it('should call getReview repository with correct parameters', test(async function () {

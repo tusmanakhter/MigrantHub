@@ -1,4 +1,5 @@
 const AdminRepository = require('../repository/AdminRepository');
+const { ServerError } = require('../errors/ServerError');
 
 module.exports = {
   async getAdmins(user) {
@@ -40,7 +41,7 @@ module.exports = {
 
   async deleteAdmin(user, adminId) {
     if (user._id === adminId) {
-      throw new Error('You cannot delete yourself.');
+      throw new ServerError('You cannot delete yourself.', 400, `Admin ${user._id} tried to delete ${adminId}`);
     }
     const query = { authorized: false, deleted: true, deletedDate: Date.now() };
     return AdminRepository.updateAdminStatus(adminId, query);

@@ -6,7 +6,8 @@ var ReviewController = require('../../controllers/ReviewController');
 var ReviewFactory = require('../factories/ReviewFactory');
 var ServiceFactory = require('../factories/ServiceFactory');
 var ReviewService = require('../../service/ReviewService');
-var ServicesService = require('../../service/ServicesService');
+var ServiceService = require('../../service/ServiceService');
+var { ServerError } = require('../../errors/ServerError');
 var chai = require('chai');
 var chaiAsPromised = require('chai-as-promised');
 chai.use(chaiAsPromised);
@@ -23,41 +24,28 @@ describe('Review Controller', function () {
     };
 
     it('should call createReview service with correct parameters', test(async function () {
-        this.stub(ServicesService, 'getService').returns(Promise.resolve(ServiceFactory.validServiceData()));
-        this.stub(ReviewService, 'getReview').returns(Promise.resolve({}));
+        this.stub(ServiceService, 'getService').returns(Promise.resolve(ServiceFactory.validServiceData()));
+        this.stub(ReviewService, 'getReview').returns(Promise.resolve(null));
         this.stub(ReviewService, 'createReview');
-        try {
-            chai.expect(await ReviewController.createReview(req.user, req.body)).should.be.fulfilled;
-            assert.calledWith(await ServicesService.getService, req.serviceId);
-            assert.calledWith(await ReviewService.getReview, req.user, req.serviceId);
-            assert.calledWith(await ReviewService.createReview, req.user, '5bda52305ccfd051484ea790');
-        }catch(error){
-            chai.expect(error, false);
-        }
+        await ReviewController.createReview(req.user, req.body);
+        assert.calledWith(await ServiceService.getService, req.serviceId);
+        assert.calledWith(await ReviewService.getReview, req.user, req.serviceId);
+        assert.calledWith(await ReviewService.createReview, req.user, req.body);
     }));
 
-    it('should return rejected promise if getService validation fails', test(async function () {
-        this.stub(ServicesService, 'getService').returns(Promise.reject({}));
+    it('should return rejected promise if getService validation fails', test(function () {
+        this.stub(ServiceService, 'getService').returns(Promise.reject({}));
         this.stub(ReviewService, 'createReview');
-        try {
-            chai.expect(await ReviewController.createReview(req.user, req.body)).should.be.rejected;
-            assert.calledWith(await ServicesService.getService, req.serviceId);
-        }catch(error){
-            chai.expect(error, true);
-        }
+        return chai.assert.isRejected(ReviewController.createReview(req.user, req.body), ServerError, 'Server Errors. Please log out and back in and try again.');
+
     }));
 
-    it('should return rejected promise if getReview validation fails', test(async function () {
-        this.stub(ServicesService, 'getService').returns(Promise.resolve(ServiceFactory.validServiceData()));
+    it('should return rejected promise if getReview validation fails', test(function () {
+        this.stub(ServiceService, 'getService').returns(Promise.resolve(ServiceFactory.validServiceData()));
         this.stub(ReviewService, 'getReview').returns(Promise.reject({}));
         this.stub(ReviewService, 'createReview');
-        try {
-            chai.expect(await ReviewController.createReview(req.user, req.body)).should.be.rejected;
-            assert.calledWith(await ServicesService.getService, req.serviceId);
-            assert.calledWith(await ReviewService.getReview, req.user, req.serviceId);
-        }catch(error){
-            chai.expect(error, true);
-        }
+        return chai.assert.isRejected(ReviewController.createReview(req.user, req.body), ServerError, 'Server Errors. Please log out and back in and try again.');
+
     }));
 
     it('should call getReviews service with correct parameters', test(async function () {

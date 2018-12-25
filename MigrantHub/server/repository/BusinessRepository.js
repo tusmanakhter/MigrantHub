@@ -1,4 +1,5 @@
 const BusinessUser = require('../models/BusinessUser');
+const { ServerError } = require('../errors/ServerError');
 
 module.exports = {
   createBusiness(businessUserObject) {
@@ -23,22 +24,22 @@ module.exports = {
     businessUser.serviceType = businessUserObject.serviceType;
     businessUser.description = businessUserObject.description;
 
-    return businessUser.save().then(() => Promise.resolve('Business User has been created.')).catch(() => {
-      throw new Error('There was an error saving business user.');
+    return businessUser.save().then(() => Promise.resolve('Business User has been created.')).catch((error) => {
+      throw new ServerError('There was an error saving business user.', 400, error);
     });
   },
 
   getBusinessUser(businessUserId) {
     return BusinessUser.findOne({ _id: businessUserId }).exec()
-      .then(businessUser => Promise.resolve(businessUser)).catch(() => {
-        throw new Error('There was an error retrieving business user.');
+      .then(businessUser => Promise.resolve(businessUser)).catch((error) => {
+        throw new ServerError('There was an error retrieving business user.', 400, error);
       });
   },
 
   editBusinessUser(businessUserId, businessUserObject) {
     return BusinessUser.findByIdAndUpdate({ _id: businessUserId }, businessUserObject,
-      { new: true }).exec().then(() => Promise.resolve('Business user has been updated.')).catch(() => {
-      throw new Error('There was an error retrieving updating business user.');
+      { new: true }).exec().then(() => Promise.resolve('Business user has been updated.')).catch((error) => {
+      throw new ServerError('There was an error retrieving updating business user.', 400, error);
     });
   },
 };

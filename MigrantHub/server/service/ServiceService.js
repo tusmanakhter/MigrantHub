@@ -1,6 +1,7 @@
 const fs = require('fs-extra');
 const ServiceValidator = require('../validators/ServiceValidator');
 const ServiceRepository = require('../repository/ServiceRepository');
+const { ServerError } = require('../errors/ServerError');
 
 module.exports = {
 
@@ -16,14 +17,14 @@ module.exports = {
       }
       return ServiceRepository.createService(user._id, serviceObject);
     }
-    throw new Error('There was an error creating service.');
+    throw new ServerError('There was an error creating service.', 400, errors);
   },
 
-  async getServices(editOwner, searchQuery, search) {
+  async getServices(userId, searchQuery, search) {
     let query = {};
 
-    if (editOwner !== '') {
-      query.user = editOwner;
+    if (userId !== '') {
+      query.user = userId;
     } else if (search !== '') {
       const tempSearchQuery = searchQuery;
       const regex = new RegExp(tempSearchQuery.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&'), 'gi');
@@ -61,9 +62,9 @@ module.exports = {
       }
 
       if ((serviceObject.serviceImagePath !== undefined) && (serviceObject.serviceImagePath !== (`/uploads/${user._id}/services/${serviceObject.serviceImageName}`))) {
-        fs.remove(`${serviceObject.serviceImagePath.toString().substring(3)}`, (err) => {
-          if (err) {
-            throw new Error('serviceController.updateService: removeImage');
+        fs.remove(`${serviceObject.serviceImagePath.toString().substring(3)}`, (error) => {
+          if (error) {
+            throw new ServerError('serviceController.updateService: removeImage', 400, error);
           }
         });
       }
@@ -76,7 +77,7 @@ module.exports = {
 
       return ServiceRepository.updateService(serviceObject);
     }
-    throw new Error('There was an error updating service.');
+    throw new ServerError('There was an error updating service.', 400, errors);
   },
 
   async deleteService(serviceId) {

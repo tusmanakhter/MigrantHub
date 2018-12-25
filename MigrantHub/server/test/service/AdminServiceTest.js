@@ -4,6 +4,7 @@ var sinonTest = require('sinon-test');
 var test = sinonTest(sinon);
 var AdminService = require('../../service/AdminService');
 var AdminRepository = require('../../repository/AdminRepository');
+var { ServerError } = require('../../errors/ServerError');
 var chai = require('chai');
 var chaiAsPromised = require('chai-as-promised');
 chai.use(chaiAsPromised);
@@ -73,10 +74,6 @@ describe('admin service', function () {
 
     it('should call admin repository updateAdminStatus with error in validation to deleteAdmin', test(async function () {
         this.stub(AdminRepository, 'updateAdminStatus');
-        try {
-            chai.expect(await AdminService.deleteAdmin(req.admin._id, req.currentAdmin._id)).should.be.rejected;
-        }catch(error){
-            chai.expect(error, true);
-        }
+        return chai.assert.isRejected(AdminService.deleteAdmin(req.admin, req.currentAdmin._id), ServerError, 'You cannot delete yourself.');
     }));
 });

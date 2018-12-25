@@ -1,4 +1,5 @@
 const Service = require('../models/Service');
+const { ServerError } = require('../errors/ServerError');
 
 module.exports = {
 
@@ -15,28 +16,29 @@ module.exports = {
     service.serviceHours = serviceObject.serviceHours;
     service.serviceImagePath = serviceObject.serviceImagePath;
     service.dateCreated = date;
-    return service.save().then(() => Promise.resolve('Service has been created.')).catch(() => {
-      throw new Error('There was an error saving service.');
+    return service.save().then(() => Promise.resolve('Service has been created.')).catch((error) => {
+      throw new ServerError('There was an error saving service.', 400, error);
     });
   },
 
   getServices(query) {
-    return Service.find(query).exec().then(services => Promise.resolve(services)).catch(() => {
-      throw new Error('There was an error retrieving services.');
+    return Service.find(query).exec().then(services => Promise.resolve(services)).catch((error) => {
+      throw new ServerError('There was an error retrieving services.', 400, error);
     });
   },
 
   getService(query) {
-    return Service.findOne(query).exec().then(service => Promise.resolve(service)).catch(() => {
-      throw new Error('There was an error retrieving service.');
-    });
+    return Service.findOne(query).exec().then(service => Promise.resolve(service))
+      .catch((error) => {
+        throw new ServerError('There was an error retrieving service.', 400, error);
+      });
   },
 
   updateService(serviceObject) {
     return Service.findByIdAndUpdate({ _id: serviceObject._id }, serviceObject,
       { new: true }).exec()
       .then(() => Promise.resolve('Service has been updated.')).catch((error) => {
-        throw new Error(`There was an error updating service in db.${error}`);
+        throw new ServerError('There was an error updating service in db.', 400, error);
       });
   },
 
@@ -44,8 +46,8 @@ module.exports = {
     return Service.updateOne({ _id: serviceId }, {
       deleted: true,
       deletedDate: Date.now(),
-    }).exec().then(() => Promise.resolve('Service has been deleted.')).catch(() => {
-      throw new Error('There was an error deleting service.');
+    }).exec().then(() => Promise.resolve('Service has been deleted.')).catch((error) => {
+      throw new ServerError('There was an error deleting service.', 400, error);
     });
   },
 };

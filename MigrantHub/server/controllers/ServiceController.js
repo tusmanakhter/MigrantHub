@@ -1,7 +1,7 @@
 const qs = require('qs');
 const multer = require('multer');
 const fs = require('fs-extra');
-const ServicesService = require('../service/ServicesService');
+const ServiceService = require('../service/ServiceService');
 
 const multerStorage = multer.diskStorage({
   destination(req, file, cb) {
@@ -20,23 +20,23 @@ module.exports = {
 
   async createService(user, serviceObject) {
     const parsedServiceObj = qs.parse(serviceObject);
-    return ServicesService.createService(user, parsedServiceObj);
+    return ServiceService.createService(user, parsedServiceObj);
   },
 
-  async getServices(editOwner, searchQuery, search) {
-    return ServicesService.getServices(editOwner, searchQuery, search);
+  async getServices(userId, searchQuery, search) {
+    return ServiceService.getServices(userId, searchQuery, search);
   },
 
   async getService(serviceId) {
-    return ServicesService.getService(serviceId);
+    return ServiceService.getService(serviceId);
   },
 
   async updateService(user, serviceObject) {
     const parsedServiceObj = qs.parse(serviceObject);
-    return ServicesService.updateService(user, parsedServiceObj);
+    return ServiceService.updateService(user, parsedServiceObj);
   },
 
   async deleteService(serviceId) {
-    return ServicesService.deleteService(serviceId);
+    return ServiceService.deleteService(serviceId);
   },
 };
