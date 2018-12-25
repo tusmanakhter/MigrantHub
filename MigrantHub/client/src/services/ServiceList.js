@@ -7,6 +7,7 @@ import { Redirect } from 'react-router-dom';
 import axios from 'axios';
 import ServiceItem from './ServiceItem';
 import Header from '../components/Header/Header';
+import UserTypes from '../lib/UserTypes';
 
 const styles = theme => ({
   root: {
@@ -100,7 +101,7 @@ class ServiceList extends Component {
       const { items, editMode, editOwner, type } = this.state;
       return (
         <div>
-          { type !== 'admin'
+          { type !== UserTypes.ADMIN
             && (
             <React.Fragment>
               <Header />

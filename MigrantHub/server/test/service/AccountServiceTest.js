@@ -25,16 +25,16 @@ describe('account service migrant', function () {
     this.stub(MigrantRepository, 'createUser');
     this.stub(MigrantAccountValidator, 'migrantAccountValidator').returns('');
     this.stub(bcrypt, 'hashSync').returns('$2a$10$XlWI50RjCbUmZ7tJFuVoRe9O1UFhtIDJ1PAw62cR5YDwnaQAJcTEK');
-    AccountService.createUser(req.body);
+    await AccountService.createUser(req.body);
     let tempMigrantUserObject = req.body;
     tempMigrantUserObject.password = '$2a$10$XlWI50RjCbUmZ7tJFuVoRe9O1UFhtIDJ1PAw62cR5YDwnaQAJcTEK';
-    assert.calledWith(await MigrantRepository.createUser, tempMigrantUserObject);
+    assert.calledWith(MigrantRepository.createUser, tempMigrantUserObject);
   }));
 
   it('should call MigrantRepository repository with error in validation to createUser', test(function () {
     this.stub(MigrantRepository, 'createUser');
     this.stub(MigrantAccountValidator, 'migrantAccountValidator').returns("error");
-      return chai.assert.isRejected(AccountService.createUser(req.body), ServerError, 'There was an error creating migrant user.');
+    return chai.assert.isRejected(AccountService.createUser(req.body), ServerError, 'There was an error creating migrant user.');
   }));
 });
 
@@ -47,10 +47,10 @@ describe('account service business', function () {
       this.stub(BusinessRepository, 'createBusiness');
       this.stub(BusinessAccountValidator, 'businessAccountValidator').returns('');
       this.stub(bcrypt, 'hashSync').returns('$2a$10$XlWI50RjCbUmZ7tJFuVoRe9O1UFhtIDJ1PAw62cR5YDwnaQAJcTEK');
-      AccountService.createBusiness(req.body);
+      await AccountService.createBusiness(req.body);
       let tempBusinessUserObject = req.body;
       tempBusinessUserObject.password = '$2a$10$XlWI50RjCbUmZ7tJFuVoRe9O1UFhtIDJ1PAw62cR5YDwnaQAJcTEK';
-      assert.calledWith(await BusinessRepository.createBusiness, tempBusinessUserObject);
+      assert.calledWith(BusinessRepository.createBusiness, tempBusinessUserObject);
   }));
 
   it('should call BusinessRepository repository with error in validation to createBusiness', test(async function () {
@@ -70,10 +70,10 @@ describe('account service admin', function () {
       this.stub(AdminRepository, 'createAdmin');
       this.stub(AdminAccountValidator, 'adminAccountValidator').returns('');
       this.stub(bcrypt, 'hashSync').returns('$2a$10$XlWI50RjCbUmZ7tJFuVoRe9O1UFhtIDJ1PAw62cR5YDwnaQAJcTEK');
-      AccountService.createAdmin(req.body);
+      await AccountService.createAdmin(req.body);
       let tempAdminObject = req.body;
       tempAdminObject.password = '$2a$10$XlWI50RjCbUmZ7tJFuVoRe9O1UFhtIDJ1PAw62cR5YDwnaQAJcTEK';
-      assert.calledWith(await AdminRepository.createAdmin, req.body);
+      assert.calledWith(AdminRepository.createAdmin, req.body);
   }));
 
   it('should call AdminRepository repository with error in validation to createAdmin', test(function () {

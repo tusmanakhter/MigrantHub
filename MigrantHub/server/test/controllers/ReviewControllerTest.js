@@ -28,9 +28,9 @@ describe('Review Controller', function () {
         this.stub(ReviewService, 'getReview').returns(Promise.resolve(null));
         this.stub(ReviewService, 'createReview');
         await ReviewController.createReview(req.user, req.body);
-        assert.calledWith(await ServiceService.getService, req.serviceId);
-        assert.calledWith(await ReviewService.getReview, req.user, req.serviceId);
-        assert.calledWith(await ReviewService.createReview, req.user, req.body);
+        assert.calledWith(ServiceService.getService, req.serviceId);
+        assert.calledWith(ReviewService.getReview, req.user, req.serviceId);
+        assert.calledWith(ReviewService.createReview, req.user, req.body);
     }));
 
     it('should return rejected promise if getService validation fails', test(function () {
@@ -50,13 +50,13 @@ describe('Review Controller', function () {
 
     it('should call getReviews service with correct parameters', test(async function () {
         this.stub(ReviewService, 'getReviews');
-        ReviewController.getReviews('query')
-        assert.calledWith(await ReviewService.getReviews, 'query');
+        await ReviewController.getReviews('query')
+        assert.calledWith(ReviewService.getReviews, 'query');
     }));
 
     it('should call deleteReview service with correct parameters', test(async function () {
         this.stub(ReviewService, 'deleteReview');
-        ReviewController.deleteReview('review id')
-        assert.calledWith(await ReviewService.deleteReview, 'review id');
+        await ReviewController.deleteReview('review id')
+        assert.calledWith(ReviewService.deleteReview, 'review id');
     }));
 });

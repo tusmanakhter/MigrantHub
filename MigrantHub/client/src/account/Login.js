@@ -23,6 +23,7 @@ import axios from 'axios';
 import HomeLayout from '../home/HomeLayout';
 import Auth from '../routes/Auth';
 import FacebookLogin from 'react-facebook-login';
+import UserTypes from '../lib/UserTypes';
 
 const qs = require('qs');
 
@@ -89,17 +90,17 @@ class Login extends Component {
             })).then(async (response) => {
             if (response.status === 200) {
                 await Auth.authenticate();
-                if (response.data.type === 'admin') {
+                if (response.data.type === UserTypes.ADMIN) {
                     this.setState({
                         redirectTo: true,
                         redirectToURL: '/admin/dashboard',
                     });
-                } else if(response.data.type === 'migrant') {
+                } else if(response.data.type === UserTypes.MIGRANT) {
                     this.setState({
                         redirectTo: true,
                         redirectToURL: '/main',
                     });
-                } else if(response.data.type === 'business') {
+                } else if(response.data.type === UserTypes.BUSINESS) {
                     this.setState({
                         redirectTo: true,
                         redirectToURL: '/businessmain',
@@ -122,7 +123,7 @@ class Login extends Component {
             })).then(async (response) => {
             if (response.status === 200) {
                 await Auth.authenticate();
-                if (response.data.type === 'migrant') {
+                if (response.data.type === UserTypes.MIGRANT) {
                     this.setState({
                         redirectTo: true,
                         redirectToURL: '/main',

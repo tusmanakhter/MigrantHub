@@ -35,8 +35,8 @@ describe('Service Service', function () {
     it('should call createReview repository with correct parameters', test(async function () {
         this.stub(ReviewRepository, 'createReview');
         this.stub(ReviewValidator, 'reviewValidator').returns('');
-        ReviewService.createReview(req.user, req.body);
-        assert.calledWith(await ReviewRepository.createReview, req.user._id, req.body);
+        await ReviewService.createReview(req.user, req.body);
+        assert.calledWith(ReviewRepository.createReview, req.user._id, req.body);
     }));
 
     it('should call createReview repository with error in validation', test(function () {
@@ -47,19 +47,19 @@ describe('Service Service', function () {
 
     it('should call getReview repository with correct parameters', test(async function () {
         this.stub(ReviewRepository, 'getReview');
-        ReviewService.getReview(req.user, service._id);
-        assert.calledWith(await ReviewRepository.getReview, { deleted: false, serviceId: "5bda52305ccfd051484ea790", user: "test@test.com" } );
+        await ReviewService.getReview(req.user, service._id);
+        assert.calledWith(ReviewRepository.getReview, { deleted: false, serviceId: "5bda52305ccfd051484ea790", user: "test@test.com" } );
     }));
 
     it('should call getReviews with correct parameters', test(async function () {
         this.stub(ReviewRepository, 'getReviews');
-        ReviewService.getReviews({serviceId: '5bda52305ccfd051484ea790', deleted: false});
-        assert.calledWith(await ReviewRepository.getReviews, {serviceId: '5bda52305ccfd051484ea790', deleted: false});
+        await ReviewService.getReviews({serviceId: '5bda52305ccfd051484ea790', deleted: false});
+        assert.calledWith(ReviewRepository.getReviews, {serviceId: '5bda52305ccfd051484ea790', deleted: false});
     }));
 
     it('should call deleteReview repository with correct parameters', test(async function () {
         this.stub(ReviewRepository, 'deleteReview');
-        ReviewService.deleteReview(req.body._id);
-        assert.calledWith(await ReviewRepository.deleteReview, req.body._id);
+        await ReviewService.deleteReview(req.body._id);
+        assert.calledWith(ReviewRepository.deleteReview, req.body._id);
     }));
 });

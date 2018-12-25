@@ -24,31 +24,31 @@ describe('Event controller', function () {
 
     it('should call createEvent service with correct parameters from createEvent controller', test(async function () {
         this.stub(EventService, 'createEvent');
-        EventController.createEvent(req.user, req.body.eventDetails);
-        assert.calledWith(await EventService.createEvent, req.user, req.body.eventDetails);
+        await EventController.createEvent(req.user, req.body.eventDetails);
+        assert.calledWith(EventService.createEvent, req.user, req.body.eventDetails);
     }));
 
     it('should call getEvents service with correct parameters from getEvents controller', test(async function () {
         this.stub(EventService, 'getEvents');
-        EventController.getEvents(req.query.editOwner);
-        assert.calledWith(await EventService.getEvents, req.query.editOwner);
+        await EventController.getEvents(req.query.editOwner);
+        assert.calledWith(EventService.getEvents, req.query.editOwner);
     }));
 
     it('should call getEvent service with correct parameters from getEvent controller', test(async function () {
         this.stub(EventService, 'getEvent');
-        EventController.getEvent(event._id);
-        assert.calledWith(await EventService.getEvent, event._id);
+        await EventController.getEvent(event._id);
+        assert.calledWith(EventService.getEvent, event._id);
     }));
 
     it('should call updateEvent service with correct parameters from updateEvent controller', test(async function () {
         this.stub(EventService, 'updateEvent');
-        EventController.updateEvent(req.body.eventDetails);
-        assert.calledWith(await EventService.updateEvent, req.body.eventDetails);
+        await EventController.updateEvent(req.body.eventDetails);
+        assert.calledWith(EventService.updateEvent, req.body.eventDetails);
     }));
 
     it('should call deleteService service with with correct parameters from deleteService controller', test(async function () {
         this.stub(EventService, 'deleteEvent');
-        EventController.deleteEvent(event._id);
-        assert.calledWith(await EventService.deleteEvent, event._id);
+        await EventController.deleteEvent(event._id);
+        assert.calledWith(EventService.deleteEvent, event._id);
     }));
 });

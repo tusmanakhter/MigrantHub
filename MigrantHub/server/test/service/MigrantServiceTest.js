@@ -18,13 +18,13 @@ describe('migrant service', function () {
 
     it('should call getMigrantUser migrant repository with correct parameters.', test(async function () {
         this.stub(MigrantRepository, 'getMigrantUser');
-        MigrantService.getMigrantUser(req.user._id);
-        assert.calledWith(await MigrantRepository.getMigrantUser, req.user._id);
+        await MigrantService.getMigrantUser(req.user._id);
+        assert.calledWith(MigrantRepository.getMigrantUser, req.user._id);
     }));
 
     it('should call editMigrantUser migrant repository with correct parameters.', test(async function () {
         this.stub(MigrantRepository, 'editMigrantUser');
-        MigrantService.editMigrantUser(req.user._id, req.body);
-        assert.calledWith(await MigrantRepository.editMigrantUser, req.user._id, req.body);
+        await MigrantService.editMigrantUser(req.user._id, req.body);
+        assert.calledWith(MigrantRepository.editMigrantUser, req.user._id, req.body);
     }));
 });

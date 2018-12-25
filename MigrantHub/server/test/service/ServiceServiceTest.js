@@ -37,10 +37,10 @@ describe('Service Service', function () {
     it('should call createService repository with correct parameters from createService service', test(async function () {
         this.stub(ServiceRepository, 'createService');
         this.stub(ServiceValidator, 'serviceValidator').returns('');
-        ServiceService.createService(req.user, req.body.serviceDetails);
+        await ServiceService.createService(req.user, req.body.serviceDetails);
         let tempServiceObject = req.body.serviceDetails;
         tempServiceObject.serviceImagePath = '/uploads/test@test.com/services/undefined';
-        assert.calledWith(await ServiceRepository.createService, req.user._id, tempServiceObject);
+        assert.calledWith(ServiceRepository.createService, req.user._id, tempServiceObject);
     }));
 
     it('should call createService repository with error in validation from createService service', test(function () {
@@ -51,35 +51,35 @@ describe('Service Service', function () {
 
     it('should call getServices to retrieve users services from getServices service', test(async function () {
         this.stub(ServiceRepository, 'getServices');
-        ServiceService.getServices('', req.query.searchQuery, req.query.search);
-        assert.calledWith(await ServiceRepository.getServices, { '$or': [{ serviceTitle: /test/gi }, { serviceSummary: /test/gi }], deleted: false });
+        await ServiceService.getServices('', req.query.searchQuery, req.query.search);
+        assert.calledWith(ServiceRepository.getServices, { '$or': [{ serviceTitle: /test/gi }, { serviceSummary: /test/gi }], deleted: false });
     }));
 
     it('should call getServices to retrieve search services from getServices service', test(async function () {
         this.stub(ServiceRepository, 'getServices');
-        ServiceService.getServices(req.query.editOwner, '', '');
-        assert.calledWith(await ServiceRepository.getServices, { deleted: false, user: "test@test.com" });
+        await ServiceService.getServices(req.query.editOwner, '', '');
+        assert.calledWith(ServiceRepository.getServices, { deleted: false, user: "test@test.com" });
     }));
 
     it('should call getServices to retrieve all services from getServices service', test(async function () {
         this.stub(ServiceRepository, 'getServices');
-        ServiceService.getServices('', '', '');
-        assert.calledWith(await ServiceRepository.getServices, { deleted: false });
+        await ServiceService.getServices('', '', '');
+        assert.calledWith(ServiceRepository.getServices, { deleted: false });
     }));
 
     it('should call getService repository with correct parameters from getService service', test(async function () {
         this.stub(ServiceRepository, 'getService');
-        ServiceService.getService(service._id);
-        assert.calledWith(await ServiceRepository.getService, { _id: "5bda52305ccfd051484ea790", deleted: false } );
+        await ServiceService.getService(service._id);
+        assert.calledWith(ServiceRepository.getService, { _id: "5bda52305ccfd051484ea790", deleted: false } );
     }));
 
     it('should call updateService repository with correct parameters from updateService service', test(async function () {
         this.stub(ServiceRepository, 'updateService');
         this.stub(ServiceValidator, 'serviceValidator').returns('');
-        ServiceService.updateService(req.user, req.body.serviceDetails);
+        await ServiceService.updateService(req.user, req.body.serviceDetails);
         let tempServiceObject = req.body.serviceDetails;
         tempServiceObject.serviceImagePath = "/uploads/test@test.com/services/undefined";
-        assert.calledWith(await ServiceRepository.updateService, tempServiceObject);
+        assert.calledWith(ServiceRepository.updateService, tempServiceObject);
     }));
 
     it('should call updateService repository with error in validation from updateService service', test(function () {
@@ -91,7 +91,7 @@ describe('Service Service', function () {
 
     it('should call deleteService repository with merchant service owner from deleteService service', test(async function () {
         this.stub(ServiceRepository, 'deleteService');
-        ServiceService.deleteService(service._id);
-        assert.calledWith(await ServiceRepository.deleteService, service._id);
+        await ServiceService.deleteService(service._id);
+        assert.calledWith(ServiceRepository.deleteService, service._id);
     }));
 });

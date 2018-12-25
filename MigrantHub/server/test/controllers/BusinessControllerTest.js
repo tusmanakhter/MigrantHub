@@ -16,13 +16,13 @@ describe('business controller', function () {
 
   it('should call getBusinessUser business service with correct parameters.', test(async function () {
       this.stub(BusinessService, 'getBusinessUser');
-      BusinessController.getBusinessUser(req.user._id);
-      assert.calledWith(await BusinessService.getBusinessUser, req.user._id);
+      await BusinessController.getBusinessUser(req.user._id);
+      assert.calledWith(BusinessService.getBusinessUser, req.user._id);
   }));
 
   it('should call editBusinessUser business service with correct parameters.', test(async function () {
       this.stub(BusinessService, 'editBusinessUser');
-      BusinessController.editBusinessUser(req.user._id, req.body);
-      assert.calledWith(await BusinessService.editBusinessUser, req.user._id, req.body);
+      await BusinessController.editBusinessUser(req.user._id, req.body);
+      assert.calledWith(BusinessService.editBusinessUser, req.user._id, req.body);
   }));
 });

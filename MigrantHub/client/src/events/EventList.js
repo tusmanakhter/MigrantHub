@@ -7,6 +7,7 @@ import axios from 'axios';
 import { Redirect } from 'react-router-dom';
 import EventItem from './EventItem';
 import Header from '../components/Header/Header';
+import UserTypes from '../lib/UserTypes';
 
 const styles = theme => ({
   root: {
@@ -91,7 +92,7 @@ class EventList extends Component {
 
       return (
         <div>
-          { type !== 'admin'
+          { type !== UserTypes.ADMIN
              && (
              <React.Fragment>
                <Header />

@@ -17,13 +17,13 @@ describe('migrant controller', function () {
 
   it('should call getMigrantUser migrant service with correct parameters.', test(async function () {
       this.stub(MigrantService, 'getMigrantUser');
-      MigrantController.getMigrantUser(req.user._id);
-      assert.calledWith(await MigrantService.getMigrantUser, req.user._id);
+      await MigrantController.getMigrantUser(req.user._id);
+      assert.calledWith(MigrantService.getMigrantUser, req.user._id);
   }));
 
   it('should call editMigrantUser migrant service with correct parameters.', test(async function () {
       this.stub(MigrantService, 'editMigrantUser');
-      MigrantController.editMigrantUser(req.user._id, req.body);
-      assert.calledWith(await MigrantService.editMigrantUser, req.user._id, req.body);
+      await MigrantController.editMigrantUser(req.user._id, req.body);
+      assert.calledWith(MigrantService.editMigrantUser, req.user._id, req.body);
   }));
 });
