@@ -10,6 +10,9 @@ import withStyles from '@material-ui/core/styles/withStyles';
 import { genders } from '../../../lib/SignUpConstants';
 
 const styles = ({
+  formControl: {
+    textAlign: 'left',
+  },
   group: {
     flexDirection: 'row',
   },
