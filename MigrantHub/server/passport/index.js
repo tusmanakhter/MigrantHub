@@ -1,6 +1,7 @@
 const passport = require('passport');
 const LocalStrategy = require('./LocalStrategy');
 const FacebookTokenStrategy = require('./FacebookTokenStrategy');
+const GoogleTokenStrategy = require('./GoogleTokenStrategy');
 const User = require('../models/User');
 
 passport.serializeUser((user, done) => {
@@ -21,5 +22,6 @@ passport.deserializeUser((user, done) => {
 
 passport.use(LocalStrategy);
 passport.use(FacebookTokenStrategy);
+passport.use(GoogleTokenStrategy);
 
 module.exports = passport;

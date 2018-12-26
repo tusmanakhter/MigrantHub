@@ -23,6 +23,7 @@ import axios from 'axios';
 import HomeLayout from '../home/HomeLayout';
 import Auth from '../routes/Auth';
 import FacebookLogin from 'react-facebook-login';
+import { GoogleLogin } from 'react-google-login';
 import UserTypes from '../lib/UserTypes';
 
 const qs = require('qs');
@@ -138,6 +139,36 @@ class Login extends Component {
         });
     };
 
+    // Send profile data in post body to add to mongodb /api/accounts/auth/facebook
+    googleAuthenticationLogin = (reply) => {
+        axios.post('/api/accounts/auth/google',
+            qs.stringify({
+                access_token: reply.accessToken,
+            })).then(async (response) => {
+            if (response.status === 200) {
+                await Auth.authenticate();
+                if (response.data.type === UserTypes.MIGRANT) {
+                    this.setState({
+                        redirectTo: true,
+                        redirectToURL: '/main',
+                    });
+                }
+            }
+        }).catch(() => {
+            this.setState({
+                redirectTo: true,
+                redirectToURL: '/TempError',
+            });
+        });
+    };
+
+    onLoginFailure = () => {
+        this.setState({
+            redirectTo: true,
+            redirectToURL: '/TempError',
+        });
+    };
+
   render() {
     if (this.state.redirectTo) {
       return <Redirect to={this.state.redirectToURL} />;
@@ -215,6 +246,12 @@ class Login extends Component {
                             autoLoad={false}
                             fields="name, email"
                             callback={this.facebookAuthenticationLogin} />
+                        <GoogleLogin
+                            clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}
+                            buttonText="Google Login"
+                            onSuccess={this.googleAuthenticationLogin}
+                            onFailure={() => this.onLoginFailure}
+                        />
                     </Grid>
                 </Grid>
               </form>
