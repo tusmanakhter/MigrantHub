@@ -8,6 +8,10 @@ import axios from 'axios';
 import ServiceItem from './ServiceItem';
 import Header from '../components/Header/Header';
 import UserTypes from '../lib/UserTypes';
+import QuestionnairePanel from '../components/QuestionnairePanel/QuestionnairePanel';
+import Grid from '@material-ui/core/Grid';
+
+
 
 const styles = theme => ({
   root: {
@@ -98,7 +102,7 @@ class ServiceList extends Component {
 
     render() {
       const { classes } = this.props;
-      const { items, editMode, editOwner, type } = this.state;
+      const { items, editMode, editOwner, type, searchMode } = this.state;
       return (
         <div>
           { type !== UserTypes.ADMIN
@@ -117,6 +121,8 @@ class ServiceList extends Component {
             </React.Fragment>
             )
           }
+          <Grid container spacing={20}>
+          <Grid item xs={10}>
           <Paper className={classes.root} elevation={2}>
             {' '}
             {
@@ -137,6 +143,11 @@ class ServiceList extends Component {
               ))
           }
           </Paper>
+          </Grid>
+          <Grid item xs={2}>
+                <div className="Panel">{<QuestionnairePanel />}</div>
+          </Grid>
+          </Grid>
         </div>
       );
     }
