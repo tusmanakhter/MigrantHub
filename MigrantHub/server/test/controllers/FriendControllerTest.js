@@ -28,7 +28,6 @@ describe('friend controller friend management', function () {
       lastUpdate: Date.now(),
     }],
   },
-    error = new Error({ error: "err" }),
     res = {}, expectedResult;
 
   beforeEach(function () {

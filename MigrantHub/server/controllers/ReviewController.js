@@ -1,55 +1,47 @@
 const qs = require('qs');
-const ReviewValidator = require('../validators/ReviewValidator');
-const Review = require('../models/Review');
-const { logger, formatMessage } = require('../config/winston');
+const ReviewService = require('../service/ReviewService');
+const ServiceService = require('../service/ServiceService');
+const { ServerError } = require('../errors/ServerError');
 
 module.exports = {
-  async getReviews(req, res) {
-    Review.find(req.query, (err, reviews) => {
-      if (err) {
-        logger.error(formatMessage(req.ip, req.method, req.originalUrl, req.httpVersion,
-          err.status, req.referer, 'ReviewController.getReviews', err.message));
-        return res.send('There was an error getting reviews.');
-      }
-      return res.send(reviews);
+
+  async createReview(user, reviewObject) {
+    const parsedReviewObject = qs.parse(reviewObject);
+    parsedReviewObject.user = user._id;
+
+    let retrievedService;
+    let retrievedReview;
+
+    // make sure the user isn't reviewing their own service
+    await ServiceService.getService(parsedReviewObject.serviceId).then((service) => {
+      retrievedService = service;
+    }).catch((error) => {
+      throw new ServerError('Server Errors. Please log out and back in and try again.', 400, error);
     });
-  },
 
-  async createReview(req, res) {
-    const parsedObj = qs.parse(req.body);
-    parsedObj.user = req.user._id;
-
-    const errors = await ReviewValidator(parsedObj);
-
-    if (errors === '') {
-      const review = new Review();
-      review.user = req.user;
-      review.serviceId = parsedObj.serviceId;
-      review.rating = parsedObj.rating;
-      review.comment = parsedObj.comment;
-      review.save((err) => {
-        if (err) {
-          logger.error(formatMessage(req.ip, req.method, req.originalUrl, req.httpVersion,
-            err.status, req.referer, 'ReviewController.createReview', err.message));
-          return res.send({ addReviewMessage: `There was an error creating the review.${err}`, addReviewError: true });
-        }
-        return res.send({ addReviewMessage: 'Review has been created!', addReviewError: false });
-      });
-    } else {
-      logger.error(formatMessage(req.ip, req.method, req.originalUrl, req.httpVersion,
-        '500', req.referer, 'ReviewController.createReview: ReviewValidator', errors));
-      return res.send({ addReviewMessage: errors, addReviewError: true });
+    if (retrievedService.user === user._id) {
+      throw new ServerError('You cannot review your own service.', 400, `Service id ${retrievedService.user} matches user's is ${user._id}`);
     }
+
+    // make sure the user hasn't already reviewed this service
+    await ReviewService.getReview(user, parsedReviewObject.serviceId).then((review) => {
+      retrievedReview = review;
+    }).catch((error) => {
+      throw new ServerError('Server Errors. Please log out and back in and try again.', 400, error);
+    });
+
+    if (retrievedReview) {
+      throw new ServerError('Your review for this service already exists.', 400, '');
+    }
+
+    return ReviewService.createReview(user, parsedReviewObject);
   },
 
-  deleteReview(req, res) {
-    Review.deleteOne({ _id: req.params.id }, (err) => {
-      if (err) {
-        logger.error(formatMessage(req.ip, req.method, req.originalUrl, req.httpVersion,
-          err.status, req.referer, 'ReviewController.deleteReview', err.message));
-        return res.status(400).send(`There was an error deleting review: ${err}`);
-      }
-      return res.status(200).send('Review deleted successfully.');
-    });
+  async getReviews(query) {
+    return ReviewService.getReviews(query);
+  },
+
+  async deleteReview(reviewId) {
+    return ReviewService.deleteReview(reviewId);
   },
 };

@@ -92,12 +92,19 @@ class ViewReviews extends Component {
       comment: this.state.comment
     }))
     .then((response) => {
-      this.setState({
-        addReviewMessage: response.data.addReviewMessage,
-        addReviewError: response.data.addReviewError,
-      });
-      this.getReviews();
-    })
+        if (response.status === 200) {
+            this.setState({
+                addReviewMessage: response.data,
+                addReviewError: false,
+            });
+            this.getReviews();
+        }
+    }).catch((error) => {
+        this.setState({
+            addReviewMessage: error.response.data,
+            addReviewError: true,
+        });
+    });
   }
 
   handleDeleteReview = (id) => {

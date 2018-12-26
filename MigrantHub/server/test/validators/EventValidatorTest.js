@@ -4,12 +4,12 @@ var assert = chai.assert;
 var EventFactory = require('../factories/EventFactory');
 
 describe('EventValidator()', function () {
-    it('Validates create event data should return empty error string.', function () {
-        let errors = EventValidator(EventFactory.validCreateEventData());
+    it('Validates create event data should return empty error string.', async function () {
+        let errors = await EventValidator.eventValidator(EventFactory.validCreateEventData());
         assert.equal(errors, "");
     });
 
-    it('Invalid create event data should return a string with all the errors', function () {
+    it('Invalid create event data should return a string with all the errors', async function () {
         var expectedErrors =
             "\nEvent name is required" +
             "\nDescription is required" +
@@ -25,11 +25,11 @@ describe('EventValidator()', function () {
             "\nStart time is required" +
             "\nEnd time is required";
 
-        let forcedErrors = EventValidator(EventFactory.emptyCreateEventData());
+        let forcedErrors = await EventValidator.eventValidator(EventFactory.emptyCreateEventData());
         assert.equal(forcedErrors, expectedErrors);
     });
 
-    it('Invalid create event data should return a string with all the errors', function () {
+    it('Invalid create event data should return a string with all the errors', async function () {
         var expectedErrors =
             "\nDescription must be at least 10 characters" +
             "\nCity is invalid" +
@@ -41,7 +41,7 @@ describe('EventValidator()', function () {
             "\nEnd date is invalid" +
             "\nEnd time is invalid";
 
-        let forcedErrors = EventValidator(EventFactory.invalidNumbersCreateEventData());
+        let forcedErrors = await EventValidator.eventValidator(EventFactory.invalidNumbersCreateEventData());
         assert.equal(forcedErrors, expectedErrors);
     });
 });

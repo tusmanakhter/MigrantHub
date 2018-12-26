@@ -161,12 +161,7 @@ class SignUp extends Component {
     return (
       <React.Fragment>
         <CssBaseline />
-        {this.state.messageFromServer.split('\n').map((item, key) => (
-          <span key={key}>
-            {item}
-            <br />
-          </span>
-        ))}
+        {this.state.messageFromServer}
         <main className={classes.layout}>
           <Paper className={classes.paper}>
             <Typography variant="display1" align="center">

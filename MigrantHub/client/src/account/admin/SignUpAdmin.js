@@ -38,6 +38,10 @@ class SignUpAdmin extends Component {
       e.setState({
         messageFromServer: response.data,
       });
+    }).catch((error) => {
+        e.setState({
+            messageFromServer: error.response.data,
+        });
     });
   }
 
