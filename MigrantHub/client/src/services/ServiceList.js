@@ -127,6 +127,8 @@ class ServiceList extends Component {
                   serviceImagePath={item.serviceImagePath}
                   serviceDescription={item.serviceDescription}
                   serviceSummary={item.serviceSummary}
+                  category={item.category}
+                  subcategory={item.subcategory}
                   serviceLocation={item.location}
                   serviceDate={item.serviceDate}
                   serviceHours={item.serviceHours}
