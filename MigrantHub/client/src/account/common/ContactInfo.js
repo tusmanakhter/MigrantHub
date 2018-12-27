@@ -29,16 +29,14 @@ class ContactInfo extends Component {
 
   validate = () => {
     const {
-      firstName, lastName, address, city, province, postalCode, phoneNumber,
+      firstName, lastName, city, postalCode, phoneNumber,
     } = this.props;
     let isError = false;
     const errors = {
       firstNameError: '',
       lastNameError: '',
-      addressError: '',
       apartmentError: '',
       cityError: '',
-      provinceError: '',
       postalCodeError: '',
       phoneNumberError: '',
     };
@@ -59,38 +57,24 @@ class ContactInfo extends Component {
       isError = true;
     }
 
-    if (validator.isEmpty(address)) {
-      errors.addressError = 'Address is required';
-      isError = true;
-    }
-
-    if (validator.isEmpty(city)) {
-      errors.cityError = 'City is required';
-      isError = true;
-    } else if (!validator.isAlpha(city)) {
+    if (city !== undefined && !validator.isAlpha(city)) {
       errors.cityError = 'This is not a valid city';
       isError = true;
     }
 
-    if (validator.isEmpty(province)) {
-      errors.provinceError = 'Province is required';
-      isError = true;
-    }
-
-    if (validator.isEmpty(postalCode)) {
-      errors.postalCodeError = 'Postal code is required';
-      isError = true;
-    } else if (!validator.isLength(postalCode, { min: 7, max: 7 })) {
+    if (postalCode !== undefined && !validator.isLength(postalCode, { min: 7, max: 7 })) {
       errors.postalCodeError = 'Postal code is invalid';
       isError = true;
     }
 
-    if (validator.isEmpty(phoneNumber)) {
-      errors.phoneNumberError = 'Phone number is required';
-      isError = true;
-    } else if (!validator.isLength(phoneNumber, { min: 14, max: 14 })) {
-      errors.phoneNumberError = 'Phone number is invalid';
-      isError = true;
+    if (phoneNumber !== undefined) {
+      if (validator.isEmpty(phoneNumber)) {
+        errors.phoneNumberError = 'Phone number is required';
+        isError = true;
+      } else if (!validator.isLength(phoneNumber, { min: 14, max: 14 })) {
+        errors.phoneNumberError = 'Phone number is invalid';
+        isError = true;
+      }
     }
 
     this.setState(prevState => ({

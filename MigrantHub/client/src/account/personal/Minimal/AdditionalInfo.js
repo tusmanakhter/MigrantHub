@@ -4,25 +4,42 @@ import withStyles from '@material-ui/core/styles/withStyles';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import validator from 'validator';
-import SettlingLocation from '../../components/fields/other/SettlingLocation';
-import SettlingDuration from '../../components/fields/other/SettlingDuration';
-import JoiningReason from '../../components/fields/other/JoiningReason';
+import EducationLevel from '../../../components/fields/education/EducationLevel';
+import JobStatus from '../../../components/fields/employment/JobStatus';
+import SettlingLocation from '../../../components/fields/other/SettlingLocation';
+import JoiningReason from '../../../components/fields/other/JoiningReason';
 
 const styles = ({});
-class OtherInfo extends Component {
+
+class AdditionalInfo extends Component {
   state = {
+    educationLevelError: '',
+    jobStatusError: '',
     settlingLocationError: '',
-    settlingDurationError: '',
     joiningReasonError: '',
   }
 
   validate = () => {
-    const { settlingLocation, joiningReason } = this.props;
+    const {
+      educationLevel, jobStatus, settlingLocation, joiningReason,
+    } = this.props;
     let isError = false;
     const errors = {
+      educationLevelError: '',
+      jobStatusError: '',
       settlingLocationError: '',
       joiningReasonError: '',
     };
+
+    if (validator.isEmpty(educationLevel)) {
+      errors.educationLevelError = 'Education level is required';
+      isError = true;
+    }
+
+    if (validator.isEmpty(jobStatus)) {
+      errors.jobStatusError = 'Job status is required';
+      isError = true;
+    }
 
     if (validator.isEmpty(settlingLocation)) {
       errors.settlingLocationError = 'Settling location is required';
@@ -44,17 +61,24 @@ class OtherInfo extends Component {
 
   render() {
     const {
-      handleChange, handleAutoSuggestChange, settlingLocation, settlingDuration,
-      joiningReason,
-    } = this.props;
-    const {
-      settlingLocationError, settlingDurationError, joiningReasonError,
+      educationLevelError, jobStatusError, settlingLocationError, joiningReasonError,
     } = this.state;
+
+    const {
+      handleChange, handleAutoSuggestChange, educationLevel, jobStatus, settlingLocation, joiningReason,
+    } = this.props;
 
     return (
       <React.Fragment>
-        <Typography variant="title" gutterBottom> Other Information </Typography>
+        <Typography variant="title" gutterBottom> Additional Information </Typography>
         <Grid container spacing={24}>
+          <Grid item xs={12} sm={6}>
+            <EducationLevel
+              educationLevel={educationLevel}
+              educationLevelError={educationLevelError}
+              handleChange={handleChange}
+            />
+          </Grid>
           <Grid item xs={12} sm={6}>
             <SettlingLocation
               settlingLocation={settlingLocation}
@@ -63,13 +87,13 @@ class OtherInfo extends Component {
             />
           </Grid>
           <Grid item xs={12} sm={6}>
-            <SettlingDuration
-              settlingDuration={settlingDuration}
-              settlingDurationError={settlingDurationError}
+            <JobStatus
+              jobStatus={jobStatus}
+              jobStatusError={jobStatusError}
               handleChange={handleChange}
             />
           </Grid>
-          <Grid item xs={12}>
+          <Grid item xs={12} sm={6}>
             <JoiningReason
               joiningReason={joiningReason}
               joiningReasonError={joiningReasonError}
@@ -82,13 +106,13 @@ class OtherInfo extends Component {
   }
 }
 
-OtherInfo.propTypes = {
-  classes: PropTypes.shape({}).isRequired,
+AdditionalInfo.propTypes = {
   handleChange: PropTypes.func.isRequired,
   handleAutoSuggestChange: PropTypes.func.isRequired,
+  educationLevel: PropTypes.string.isRequired,
+  jobStatus: PropTypes.string.isRequired,
   settlingLocation: PropTypes.string.isRequired,
-  settlingDuration: PropTypes.string.isRequired,
   joiningReason: PropTypes.string.isRequired,
 };
 
-export default withStyles(styles)(OtherInfo);
+export default withStyles(styles)(AdditionalInfo);

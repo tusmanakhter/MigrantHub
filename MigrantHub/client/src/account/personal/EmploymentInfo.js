@@ -37,21 +37,15 @@ class EmploymentInfo extends Component {
   }
 
   validate = () => {
-    const { jobStatus, lookingForJob, workExperience } = this.props;
+    const { jobStatus, workExperience } = this.props;
     let isError = false;
     const errors = {
       jobStatusError: '',
-      lookingForJobError: '',
       workExperienceError: [],
     };
 
     if (validator.isEmpty(jobStatus)) {
       errors.jobStatusError = 'Job status is required';
-      isError = true;
-    }
-
-    if (validator.isEmpty(lookingForJob)) {
-      errors.lookingForJobError = 'This field is required';
       isError = true;
     }
 

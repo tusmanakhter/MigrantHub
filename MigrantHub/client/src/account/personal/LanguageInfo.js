@@ -37,31 +37,16 @@ class LanguageInfo extends Component {
 
   validate = () => {
     const {
-      languages, writingLevel, speakingLevel, motherTongue,
+      languages, motherTongue,
     } = this.props;
     let isError = false;
     const errors = {
       languagesError: [],
-      writingLevelError: '',
-      speakingLevelError: '',
       motherTongueError: '',
     };
 
-    if (validator.isEmpty(motherTongue)) {
-      errors.motherTongueError = 'Mother tongue is required';
-      isError = true;
-    } else if (!validator.isAlpha(motherTongue)) {
+    if (motherTongue !== undefined && !validator.isAlpha(motherTongue)) {
       errors.motherTongueError = 'Mother tongue is not valid';
-      isError = true;
-    }
-
-    if (validator.isEmpty(writingLevel)) {
-      errors.writingLevelError = 'Writing level is required';
-      isError = true;
-    }
-
-    if (validator.isEmpty(speakingLevel)) {
-      errors.speakingLevelError = 'Speaking level is required';
       isError = true;
     }
 

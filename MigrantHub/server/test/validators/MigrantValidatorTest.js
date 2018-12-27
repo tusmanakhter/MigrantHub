@@ -17,19 +17,15 @@ describe('MigrantAccountValidator()', function () {
             "\nPassword is empty" +
             "\nFirst name is required and empty" +
             "\nLast name is required and empty" +
-            "\nAddress is required and empty" +
-            "\nCity is required and empty" +
-            "\nProvince is required and empty" +
-            "\nPostal code is required and empty" +
-            "\nPhone number is required and empty" +
+            "\nThis is not a valid city" +
+            "\nPostal code is invalid" +
+            "\nPhone number is invalid" +
             "\nAge is required and empty" +
             "\nGender is required and empty" +
             "\nNationality is required and empty" +
             "\nRelationship status is required and empty" +
             "\nStatus is required and empty" +
-            "\nMother tongue is required and empty" +
-            "\nWriting level is required and empty" +
-            "\nSpeaking level is required and empty" +
+            "\nMother tongue is not valid" +
             "\nLanguage name is required and empty" +
             "\nAdditional language writing level is required and empty" +
             "\nAdditional language speaking level is required and empty" +
@@ -47,15 +43,11 @@ describe('MigrantAccountValidator()', function () {
             "\nFamily member relation is required and empty" +
             "\nEducation level is required and empty" +
             "\nJob status is required and empty" +
-            "\nThe looking for a job field is required and empty" +
-            "\nThe french proficiency exam value seems to be invalid." +
-            "\nThe IELTS proficiency exam value seems to be invalid." +
-            "\nThe job status field is required and empty" +
+            "\nThe looking for a job field value is invalid" +
             "\nWork experience title is required and empty" +
             "\nCompany is required and empty" +
             "\nEmployment length is required and empty" +
             "\nSettling location is required and empty" +
-            "\nSettling duration is required and empty" +
             "\nJoining reason is required and empty";
 
         let forcedErrors = await MigrantAccountValidator.migrantAccountValidator(AccountFactory.emptyMigrantAccount());
