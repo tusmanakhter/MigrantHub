@@ -46,7 +46,7 @@ const ProficiencyExams = (props) => {
 
 ProficiencyExams.propTypes = {
   classes: PropTypes.shape({}).isRequired,
-  proficiencyExams: PropTypes.string.isRequired,
+  proficiencyExams: PropTypes.shape({}).isRequired,
   handleChange: PropTypes.func.isRequired,
 };
 

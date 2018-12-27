@@ -1,19 +1,17 @@
 import React from 'react';
-import TextField from '@material-ui/core/TextField';
 import PropTypes from 'prop-types';
+import TextBox from '../generic/TextBox';
 
 const Company = (props) => {
   const { company, companyError, handleChange } = props;
   return (
-    <TextField
-      id="company"
+    <TextBox
       name="company"
       label="Company"
+      placeholder=""
       value={company}
-      onChange={handleChange}
-      helperText={companyError}
-      error={companyError.length > 0}
-      fullWidth
+      error={companyError}
+      handleChange={handleChange}
     />
   );
 };

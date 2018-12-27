@@ -1,22 +1,19 @@
 import React from 'react';
-import TextField from '@material-ui/core/TextField';
 import PropTypes from 'prop-types';
 import { IncomeMask } from '../../../lib/Masks';
+import MaskedTextbox from '../generic/MaskedTextbox';
 
 const CurrentIncome = (props) => {
   const { currentIncome, currentIncomeError, handleChange } = props;
   return (
-    <TextField
+    <MaskedTextbox
       name="currentIncome"
       label="Current Income (Optional)"
+      placeholder=""
       value={currentIncome}
-      onChange={event => handleChange(event)}
-      fullWidth
-      helperText={currentIncomeError}
-      error={currentIncomeError.length > 0}
-      InputProps={{
-        inputComponent: IncomeMask,
-      }}
+      error={currentIncomeError}
+      mask={IncomeMask}
+      handleChange={event => handleChange(event)}
     />
   );
 };

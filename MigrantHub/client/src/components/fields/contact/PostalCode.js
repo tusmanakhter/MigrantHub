@@ -1,23 +1,19 @@
 import React from 'react';
-import TextField from '@material-ui/core/TextField';
 import PropTypes from 'prop-types';
 import { PostalCodeMask } from '../../../lib/Masks';
+import MaskedTextbox from '../generic/MaskedTextbox';
 
 const PostalCode = (props) => {
   const { postalCode, postalCodeError, handleChange } = props;
   return (
-    <TextField
-      id="postalCode"
+    <MaskedTextbox
       name="postalCode"
       label="Postal Code"
+      placeholder=""
       value={postalCode}
-      onChange={event => handleChange(event)}
-      fullWidth
-      InputProps={{
-        inputComponent: PostalCodeMask,
-      }}
-      helperText={postalCodeError}
-      error={postalCodeError.length > 0}
+      error={postalCodeError}
+      mask={PostalCodeMask}
+      handleChange={event => handleChange(event)}
     />
   );
 };

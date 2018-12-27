@@ -1,24 +1,16 @@
 import React from 'react';
-import TextField from '@material-ui/core/TextField';
-import InputAdornment from '@material-ui/core/InputAdornment';
 import PropTypes from 'prop-types';
+import Years from '../generic/Years';
 
 const SettlingDuration = (props) => {
   const { settlingDuration, settlingDurationError, handleChange } = props;
   return (
-    <TextField
-      id="settlingDuration"
+    <Years
       name="settlingDuration"
       label="Settling Duration"
       value={settlingDuration}
-      onChange={event => handleChange(event)}
-      fullWidth
-      type="number"
-      helperText={settlingDurationError}
-      error={settlingDurationError.length > 0}
-      InputProps={{
-        endAdornment: <InputAdornment position="end">years</InputAdornment>,
-      }}
+      error={settlingDurationError}
+      handleChange={event => handleChange(event)}
     />
   );
 };

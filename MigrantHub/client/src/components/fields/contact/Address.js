@@ -1,20 +1,17 @@
 import React from 'react';
-import TextField from '@material-ui/core/TextField';
 import PropTypes from 'prop-types';
+import TextBox from '../generic/TextBox';
 
 const Address = (props) => {
   const { address, addressError, handleChange } = props;
   return (
-    <TextField
-      id="address"
+    <TextBox
       name="address"
       label="Street Address"
       placeholder="Street and number"
       value={address}
-      onChange={event => handleChange(event)}
-      fullWidth
-      helperText={addressError}
-      error={addressError.length > 0}
+      error={addressError}
+      handleChange={event => handleChange(event)}
     />
   );
 };

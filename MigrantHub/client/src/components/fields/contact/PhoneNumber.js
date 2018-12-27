@@ -1,23 +1,19 @@
 import React from 'react';
-import TextField from '@material-ui/core/TextField';
 import PropTypes from 'prop-types';
 import { PhoneMask } from '../../../lib/Masks';
+import MaskedTextbox from '../generic/MaskedTextbox';
 
 const PhoneNumber = (props) => {
   const { phoneNumber, phoneNumberError, handleChange } = props;
   return (
-    <TextField
-      id="phoneNumber"
+    <MaskedTextbox
       name="phoneNumber"
       label="Phone Number"
+      placeholder=""
       value={phoneNumber}
-      onChange={event => handleChange(event)}
-      fullWidth
-      helperText={phoneNumberError}
-      error={phoneNumberError.length > 0}
-      InputProps={{
-        inputComponent: PhoneMask,
-      }}
+      error={phoneNumberError}
+      mask={PhoneMask}
+      handleChange={event => handleChange(event)}
     />
   );
 };

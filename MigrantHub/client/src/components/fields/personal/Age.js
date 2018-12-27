@@ -1,24 +1,16 @@
 import React from 'react';
-import TextField from '@material-ui/core/TextField';
-import InputAdornment from '@material-ui/core/InputAdornment';
 import PropTypes from 'prop-types';
+import Years from '../generic/Years';
 
 const Age = (props) => {
   const { age, ageError, handleChange } = props;
   return (
-    <TextField
-      id="age"
+    <Years
       name="age"
       label="Age"
       value={age}
-      type="number"
-      onChange={event => handleChange(event)}
-      fullWidth
-      helperText={ageError}
-      error={ageError.length > 0}
-      InputProps={{
-        endAdornment: <InputAdornment position="end">years</InputAdornment>,
-      }}
+      error={ageError}
+      handleChange={event => handleChange(event)}
     />
   );
 };

@@ -1,19 +1,17 @@
 import React from 'react';
-import TextField from '@material-ui/core/TextField';
 import PropTypes from 'prop-types';
+import TextBox from '../generic/TextBox';
 
 const City = (props) => {
   const { city, cityError, handleChange } = props;
   return (
-    <TextField
-      id="city"
+    <TextBox
       name="city"
       label="City"
+      placeholder=""
       value={city}
-      onChange={event => handleChange(event)}
-      fullWidth
-      helperText={cityError}
-      error={cityError.length > 0}
+      error={cityError}
+      handleChange={event => handleChange(event)}
     />
   );
 };

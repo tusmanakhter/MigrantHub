@@ -1,19 +1,17 @@
 import React from 'react';
-import TextField from '@material-ui/core/TextField';
 import PropTypes from 'prop-types';
+import TextBox from './generic/TextBox';
 
 const Other = (props) => {
   const { other, otherError, handleChange } = props;
   return (
-    <TextField
-      id="other"
+    <TextBox
       name="other"
       label="Other"
+      placeholder=""
       value={other}
-      onChange={event => handleChange(event)}
-      fullWidth
-      helperText={otherError}
-      error={otherError.length > 0}
+      error={otherError}
+      handleChange={event => handleChange(event)}
     />
   );
 };
