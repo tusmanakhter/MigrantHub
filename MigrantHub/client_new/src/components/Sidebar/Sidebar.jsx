@@ -12,9 +12,9 @@ import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import Icon from "@material-ui/core/Icon";
 // core components
-import HeaderLinks from "components/Header/HeaderLinks.jsx";
+import HeaderLinks from "../Header/HeaderLinks.jsx";
 
-import sidebarStyle from "assets/jss/material-dashboard-react/components/sidebarStyle.jsx";
+import sidebarStyle from "../../assets/jss/material-dashboard-react/components/sidebarStyle.jsx";
 
 const Sidebar = ({ ...props }) => {
   // verifies if routeName is the one active (in browser input)
@@ -53,8 +53,8 @@ const Sidebar = ({ ...props }) => {
                 {typeof prop.icon === "string" ? (
                   <Icon>{prop.icon}</Icon>
                 ) : (
-                  <prop.icon />
-                )}
+                    <prop.icon />
+                  )}
               </ListItemIcon>
               <ListItemText
                 primary={prop.sidebarName}

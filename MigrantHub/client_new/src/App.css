@@ -1,0 +1,35 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto:300,400,500,700');
+
+.App {
+  height: 100%;
+  background-color: #e6e6e6;
+  /* color: white; */
+  text-align: center;
+  font-family: 'Roboto', sans-serif;
+}
+
+.App-logo {
+  animation: App-logo-spin infinite 20s linear;
+  height: 80px;
+}
+
+@keyframes App-logo-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.User-avatar {
+  height: 40px;
+}
+
+.Header {
+  background-color: #153345;
+}
+
+.Card-friend-panel {
+  background-color: #153345;
+}
+
+ul {
+  list-style: none;
+}

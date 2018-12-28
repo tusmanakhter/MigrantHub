@@ -1,21 +1,21 @@
-import React from "react";
-import ReactDOM from "react-dom";
-import { createBrowserHistory } from "history";
-import { Router, Route, Switch } from "react-router-dom";
+import 'react-app-polyfill/ie9'; // For IE 9-11 support
+import 'react-app-polyfill/ie11'; // For IE 11 support
+import React from 'react';
+import ReactDOM from 'react-dom';
+import './index.css';
+import { BrowserRouter } from 'react-router-dom';
+import registerServiceWorker from './registerServiceWorker';
+import App from './App';
 
-import "assets/css/material-dashboard-react.css?v=1.5.0";
+import 'font-awesome/css/font-awesome.min.css';
+import 'bootstrap-css-only/css/bootstrap.min.css';
+import 'mdbreact/dist/css/mdb.css';
 
-import indexRoutes from "routes/index.jsx";
-
-const hist = createBrowserHistory();
+require('dotenv').config();
 
 ReactDOM.render(
-  <Router history={hist}>
-    <Switch>
-      {indexRoutes.map((prop, key) => {
-        return <Route path={prop.path} component={prop.component} key={key} />;
-      })}
-    </Switch>
-  </Router>,
-  document.getElementById("root")
+  <BrowserRouter>
+    <App />
+  </BrowserRouter>, document.getElementById('root'),
 );
+registerServiceWorker();

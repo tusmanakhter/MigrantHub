@@ -2,10 +2,10 @@
 ### Nice stuff
 - Added `install:clean` command (deletes `node_modules` and `package-lock.json` and runs `npm install`)
 ### Major style changes
-- `src/assets/jss/material-dashboard-react/components/tasksStyle.jsx`
+- `src/../../assets/jss/material-dashboard-react/components/tasksStyle.jsx`
 - `src/assets/jss/material-dashboard-react/checkboxAdnRadioStyle.jsx`
-- `src/assets/jss/material-dashboard-react/components/customTabsStyle.jsx`
-- `src/assets/jss/material-dashboard-react/components/snackbarContentStyle.jsx`
+- `src/../../assets/jss/material-dashboard-react/components/customTabsStyle.jsx`
+- `src/../../assets/jss/material-dashboard-react/components/snackbarContentStyle.jsx`
 ### Deleted dependencies
 - `@babel/runtime v7.0.0-beta.55`
 ### Added dependencies
@@ -28,8 +28,8 @@
   - `https://github.com/creativetimofficial/material-dashboard-react/issues/58`
 - Changed the `GridContainer` component
 ### Major style changes
-- `src/assets/jss/material-dashboard-react/components/footerStyle.jsx`
-- `src/assets/jss/material-dashboard-react/components/headerStyle.jsx`
+- `src/../../assets/jss/material-dashboard-react/components/footerStyle.jsx`
+- `src/../../assets/jss/material-dashboard-react/components/headerStyle.jsx`
 ### Added dependencies
 - `@babel/runtime v7.0.0-beta.55`
 ### Update dependencies
@@ -52,11 +52,11 @@
 ### Major style changes
 - Added styles for `svg`'s, **font-awesome** classes and `.material-icons` class inside
   - `src/assets/jss/material-dashboard-react/views/dashboardStyle.jsx`
-  - `src/assets/jss/material-dashboard-react/components/buttonStyle.jsx`
-  - `src/assets/jss/material-dashboard-react/components/cardFooterStyle.jsx`
-  - `src/assets/jss/material-dashboard-react/components/cardHeaderStyle.jsx`
-  - `src/assets/jss/material-dashboard-react/components/headerLinksStyle.jsx`
-  - `src/assets/jss/material-dashboard-react/components/customTabsStyle.jsx`
+  - `src/../../assets/jss/material-dashboard-react/components/buttonStyle.jsx`
+  - `src/../../assets/jss/material-dashboard-react/components/cardFooterStyle.jsx`
+  - `src/../../assets/jss/material-dashboard-react/components/cardHeaderStyle.jsx`
+  - `src/../../assets/jss/material-dashboard-react/components/headerLinksStyle.jsx`
+  - `src/../../assets/jss/material-dashboard-react/components/customTabsStyle.jsx`
 - Others
   - `src/assets/jss/material-dashboard-react/tooltipStyle.jsx`
   - `src/assets/jss/material-dashboard-react/dropdownStyle.jsx`
@@ -82,7 +82,7 @@
 - Droped `src/components/index.js`, and changed all the imports to separate ones
 - Renamed `ItemGrid` to `GridItem`
 ### Major style changes
-- Moved the styles of `src/components/` inside `src/assets/jss/material-dashboard-react/components/`
+- Moved the styles of `src/components/` inside `src/../../assets/jss/material-dashboard-react/components/`
 - Moved the styles of `src/layouts/` inside `src/assets/jss/material-dashboard-react/layouts/`
 - Moved the styles of `src/views/` inside `src/assets/jss/material-dashboard-react/views/`
 - Almost all styles have been changed more or less
