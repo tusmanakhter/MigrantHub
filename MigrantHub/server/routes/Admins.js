@@ -2,15 +2,15 @@ const express = require('express');
 
 const router = express.Router();
 const AdminController = require('../controllers/AdminController');
+const { controllerHandler } = require('../controllers/ControllerUtils');
 
-
-router.get('/', AdminController.getAdmins);
-router.get('/deleted', AdminController.getDeletedAdmins);
-router.get('/rejected', AdminController.getRejectedAdmins);
-router.get('/unapproved', AdminController.getUnapprovedAdmins);
-router.put('/:id/reactivate', AdminController.reactivateAdmin);
-router.put('/:id/approve', AdminController.approveAdmin);
-router.put('/:id/reject', AdminController.rejectAdmin);
-router.delete('/:id', AdminController.deleteAdmin);
+router.get('/', controllerHandler(AdminController.getAdmins, req => [req.user]));
+router.get('/deleted', controllerHandler(AdminController.getDeletedAdmins, () => []));
+router.get('/rejected', controllerHandler(AdminController.getRejectedAdmins, () => []));
+router.get('/unapproved', controllerHandler(AdminController.getUnapprovedAdmins, () => []));
+router.put('/:id/reactivate', controllerHandler(AdminController.reactivateAdmin, req => [req.params.id]));
+router.put('/:id/approve', controllerHandler(AdminController.approveAdmin, req => [req.params.id]));
+router.put('/:id/reject', controllerHandler(AdminController.rejectAdmin, req => [req.params.id]));
+router.delete('/:id', controllerHandler(AdminController.deleteAdmin, req => [req.user, req.params.id]));
 
 module.exports = router;

@@ -2,7 +2,7 @@ module.exports.validReviewData = function() {
     return {
         _id:5,
         time: "2018-11-11 23:14:17.890",
-        user: "taj@taj.taj",
+        user: "test@test.com",
         serviceId: "5be7c2e218d96e03298b71c3",
         rating: 3,
         comment: "i think this service is great!"

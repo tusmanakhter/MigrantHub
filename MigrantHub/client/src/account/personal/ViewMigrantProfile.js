@@ -83,6 +83,7 @@ class ViewMigrantProfile extends Component {
         let tempLanguages;
         let tempWorkExperience;
         let tempFamily;
+        let tempProficiencyExams;
 
         if (jsonObj.languages !== undefined) {
           tempLanguages = jsonObj.languages;
@@ -100,6 +101,12 @@ class ViewMigrantProfile extends Component {
           tempFamily = jsonObj.family;
         } else {
           tempFamily = [];
+        }
+
+        if (jsonObj.proficiencyExams !== undefined) {
+            tempProficiencyExams = jsonObj.proficiencyExams;
+        } else {
+            tempProficiencyExams = [];
         }
 
         this.setState({
@@ -125,7 +132,7 @@ class ViewMigrantProfile extends Component {
           motherTongue: jsonObj.motherTongue,
           family: tempFamily,
           educationLevel: jsonObj.educationLevel,
-          proficiencyExams: response.data.proficiencyExams,
+          proficiencyExams: tempProficiencyExams,
           jobStatus: jsonObj.jobStatus,
           lookingForJob: jsonObj.lookingForJob,
           currentIncome: jsonObj.currentIncome,
