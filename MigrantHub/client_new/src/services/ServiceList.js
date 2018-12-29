@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import withStyles from '@material-ui/core/styles/withStyles';
 import Button from '@material-ui/core/Button';
 import Paper from '@material-ui/core/Paper';
+import GridContainer from "components/Grid/GridContainer.jsx";
 import { Redirect } from 'react-router-dom';
 import axios from 'axios';
 import ServiceItem from './ServiceItem';
@@ -117,7 +118,7 @@ class ServiceList extends Component {
             </React.Fragment>
             )
           }
-          <Paper className={classes.root} elevation={2}>
+          <GridContainer>
             {' '}
             {
               items.map(item => (
@@ -136,7 +137,7 @@ class ServiceList extends Component {
                 />
               ))
           }
-          </Paper>
+          </GridContainer>
         </div>
       );
     }
