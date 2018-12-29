@@ -14,7 +14,7 @@ module.exports = {
     const answers = userAnswer.questionAnswers;
     const questions = await QuestionRepository.getQuestions();
     const filteredQuestions = questions.filter(question => !answers.some(item => item.question._id
-      === question._id));
+      .equals(question._id)));
     return Promise.resolve(filteredQuestions);
   },
 };

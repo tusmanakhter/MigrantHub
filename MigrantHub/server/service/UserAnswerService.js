@@ -1,5 +1,6 @@
 const UserAnswerRepository = require('../repository/UserAnswerRepository');
 const QuestionRepository = require('../repository/QuestionRepository');
+const { ServerError } = require('../errors/ServerError');
 
 module.exports = {
   async addUserAnswer(userId, questionAnswer) {
@@ -7,11 +8,24 @@ module.exports = {
 
     const userAnswer = await UserAnswerRepository.getUserAnswer(query);
     const question = await QuestionRepository.getQuestion(questionAnswer.question);
+
+    let answerExists;
+    if (userAnswer) {
+      answerExists = userAnswer.questionAnswers
+        .find(answer => answer.question._id.equals(question._id));
+    } else {
+      answerExists = false;
+    }
+
+    if (answerExists) {
+      throw new ServerError('There was an error creating service.', 400, ['answer already exists']);
+    }
+
     const answerOption = question.answerOptions.find(option => option.optionNumber
       === parseInt(questionAnswer.answerOption, 10));
 
     const questionAnswerObj = {
-      question,
+      question: { _id: question._id, question: question.question },
       answerOption,
     };
 

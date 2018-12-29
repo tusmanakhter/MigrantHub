@@ -30,15 +30,22 @@ class QuestionnairePanel extends Component {
     axios.get('/api/questions/')
       .then((response) => {
         const questions = response.data;
-        const singleQuestion = questions[Math.floor(Math.random() * questions.length)];
-        const answerOptions = singleQuestion.answerOptions.map(answerOption => ({
-          value: answerOption.optionNumber,
-          label: answerOption.answerBody,
-        }));
-        this.setState({
-          question: singleQuestion,
-          answerOptions,
-        });
+        if (questions.length > 0) {
+          const singleQuestion = questions[Math.floor(Math.random() * questions.length)];
+          const answerOptions = singleQuestion.answerOptions.map(answerOption => ({
+            value: answerOption.optionNumber,
+            label: answerOption.answerBody,
+          }));
+          this.setState({
+            question: singleQuestion,
+            answerOptions,
+          });
+        } else {
+          this.setState({
+            question: '',
+            answerOptions: [],
+          });
+        }
       });
   }
 
@@ -74,6 +81,10 @@ class QuestionnairePanel extends Component {
         })).then((response) => {
         if (response.status === 200) {
           this.getQuestions();
+          this.setState({
+            answer: '',
+            answerError: '',
+          });
         }
       });
     }
@@ -85,7 +96,9 @@ class QuestionnairePanel extends Component {
     } = this.state;
 
     return (
-      <div>
+      <React.Fragment>
+        {question
+        && (
         <Card>
           <CardContent>
             <p>Please answer this question so we can recommend services to you!</p>
@@ -114,7 +127,9 @@ class QuestionnairePanel extends Component {
             <Button onClick={this.handleSubmit} color="primary"> Submit </Button>
           </CardContent>
         </Card>
-      </div>
+        )
+        }
+      </React.Fragment>
     );
   }
 }
