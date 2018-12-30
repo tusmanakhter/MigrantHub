@@ -57,17 +57,17 @@ class ContactInfo extends Component {
       isError = true;
     }
 
-    if (city !== undefined && !validator.isAlpha(city)) {
+    if ((city !== '' && city !== undefined) && !validator.isAlpha(city)) {
       errors.cityError = 'This is not a valid city';
       isError = true;
     }
 
-    if (postalCode !== undefined && !validator.isLength(postalCode, { min: 7, max: 7 })) {
+    if ((postalCode !== '' && postalCode !== undefined) && !validator.isLength(postalCode, { min: 7, max: 7 })) {
       errors.postalCodeError = 'Postal code is invalid';
       isError = true;
     }
 
-    if (phoneNumber !== undefined) {
+    if (phoneNumber !== '' && phoneNumber !== undefined) {
       if (validator.isEmpty(phoneNumber)) {
         errors.phoneNumberError = 'Phone number is required';
         isError = true;

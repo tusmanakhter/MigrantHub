@@ -45,7 +45,7 @@ class LanguageInfo extends Component {
       motherTongueError: '',
     };
 
-    if (motherTongue !== undefined && !validator.isAlpha(motherTongue)) {
+    if ((motherTongue !== '' && motherTongue !== undefined) && !validator.isAlpha(motherTongue)) {
       errors.motherTongueError = 'Mother tongue is not valid';
       isError = true;
     }
