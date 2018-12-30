@@ -8,7 +8,7 @@ module.exports = {
     const userAnswer = await UserAnswerRepository.getUserAnswer(query);
 
     if (!userAnswer) {
-      return QuestionRepository.getQuestions({});
+      return QuestionRepository.getQuestions();
     }
 
     const answers = userAnswer.questionAnswers;

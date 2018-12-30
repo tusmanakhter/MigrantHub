@@ -18,7 +18,7 @@ module.exports = {
     }
 
     if (answerExists) {
-      throw new ServerError('There was an error creating service.', 400, ['answer already exists']);
+      throw new ServerError('There was an error adding answer.', 400, ['answer already exists']);
     }
 
     const answerOption = question.answerOptions.find(option => option.optionNumber
@@ -28,7 +28,6 @@ module.exports = {
       question: { _id: question._id, question: question.question },
       answerOption,
     };
-
     if (!userAnswer) {
       return UserAnswerRepository.createUserAnswer(userId, questionAnswerObj);
     }
