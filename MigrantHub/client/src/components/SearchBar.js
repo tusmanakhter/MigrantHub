@@ -2,7 +2,7 @@ import React from "react";
 //import "../assets/css/searchBar.css";
 import Search from "@material-ui/icons/Search";
 import withStyles from '@material-ui/core/styles/withStyles';
-import Card from "components/Card/Card.jsx";
+import Card from "../components/Card/Card.jsx";
 
 const styles = theme => ({
   card: {

@@ -7,7 +7,7 @@ import FriendPanel from '../components/FriendPanel/FriendPanel';
 import NavPanel from '../components/NavPanel/NavPanel';
 import ServiceCategory from '../services/ServiceCategory';
 import SearchBar from '../components/SearchBar';
-import Header from "components/Header/Header.jsx";
+import Header from "../components/Header/Header.jsx";
 
 const styles = theme => ({
   app: {
