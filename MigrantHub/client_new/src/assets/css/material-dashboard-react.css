@@ -212,7 +212,7 @@ footer ul li a:hover {
 
     #bodyClick {
         height: 100%;
-        width: 100%;
+        width: 50%;
         position: fixed;
         opacity: 0;
         top: 0;

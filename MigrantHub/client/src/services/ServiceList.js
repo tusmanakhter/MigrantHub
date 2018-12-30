@@ -117,7 +117,7 @@ class ServiceList extends Component {
             </React.Fragment>
             )
           }
-          <Paper className={classes.root} elevation={2}>
+          {/* <Paper className={classes.root} elevation={2}>
             {' '}
             {
               items.map(item => (
@@ -136,7 +136,7 @@ class ServiceList extends Component {
                 />
               ))
           }
-          </Paper>
+          </Paper> */}
         </div>
       );
     }

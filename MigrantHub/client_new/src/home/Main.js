@@ -7,6 +7,8 @@ import FriendPanel from '../components/FriendPanel/FriendPanel';
 import NavPanel from '../components/NavPanel/NavPanel';
 import Header from '../components/Header/Header';
 import Sidebar from '../components/Sidebar/Sidebar';
+import ServiceCategory from '../services/ServiceCategory';
+import ServiceList from '../services/ServiceList';
 
 const theme = createMuiTheme({
   palette: {
@@ -25,13 +27,14 @@ class Main extends Component {
       { description: 'Events', link: '/events' },
     ],
     navPanelVisibility: true,
-    friendPanelVisibility: true,
+    friendPanelVisibility: false,
+    serviceCategoryVisibility: true,
   };
 
   render() {
     const {
       appLogo, appName, userPic, navPanelVisibility,
-      navOptions, friendPanelVisibility, friends,
+      navOptions, friendPanelVisibility, friends, serviceCategoryVisibility,
     } = this.state;
 
     return (
@@ -43,14 +46,12 @@ class Main extends Component {
         />
         <div className="App">
           <Grid container spacing={8}>
-            <Grid item xs={3}>
+            <Grid item xs={1}>
               <div className="Panel">{navPanelVisibility && <NavPanel />}</div>
             </Grid>
-            <Grid item xs={6}>
+            <Grid item lg={10}>
               <div className="Main-feed">
-                <h1>
-                  Welcome to your homepage
-                  </h1>
+                  <div className="">{serviceCategoryVisibility && <ServiceCategory location = {this.props.location} />}</div>
               </div>
             </Grid>
             <Grid item xs={3}>
