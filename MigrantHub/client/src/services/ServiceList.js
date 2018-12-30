@@ -102,7 +102,7 @@ class ServiceList extends Component {
 
     render() {
       const { classes } = this.props;
-      const { items, editMode, editOwner, type, searchMode } = this.state;
+      const { items, editMode, editOwner, type } = this.state;
       return (
         <div>
           { type !== UserTypes.ADMIN
