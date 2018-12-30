@@ -1,8 +1,8 @@
 @import url('https://fonts.googleapis.com/css?family=Roboto:300,400,500,700');
 
 .App {
-  height: 100%;
-  background-color: #E2B39A;
+  height: auto;
+  background-color: #e6e6e6;
   /* color: white; */
   text-align: center;
   font-family: 'Roboto', sans-serif;
@@ -28,6 +28,11 @@
 
 .Card-friend-panel {
   background-color: #153345;
+}
+
+.col-centered{
+  float: none;
+  margin: 0 auto;
 }
 
 ul {

@@ -1,65 +1,81 @@
 import React, { Component } from 'react';
-import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import logo from '../logo.svg';
-import '../App.css';
 import FriendPanel from '../components/FriendPanel/FriendPanel';
 import NavPanel from '../components/NavPanel/NavPanel';
-import Header from '../components/Header/Header';
+import ServiceCategory from '../services/ServiceCategory';
+import SearchBar from '../components/SearchBar';
 
-const theme = createMuiTheme({
-  palette: {
-    primary: { main: '#153345' },
-    secondary: { main: '#E2B39A' },
+const styles = theme => ({
+  app: {
+    marginLeft: 100,
+    //marginRight: 36,
   },
 });
 
 class Main extends Component {
-    state = {
-      appName: 'Migrant Hub',
-      appLogo: logo,
-      userPic: logo,
-      navOptions: [
-        { description: 'Services', link: '/categories' },
-        { description: 'Events', link: '/events' },
-      ],
-      navPanelVisibility: true,
-      friendPanelVisibility: true,
-    };
+  state = {
+    appName: 'Migrant Hub',
+    appLogo: logo,
+    userPic: logo,
+    navOptions: [
+      { description: 'Services', link: '/services' },
+      { description: 'Events', link: '/events' },
+    ],
+    navPanelVisibility: true,
+    friendPanelVisibility: false,
+    serviceCategoryVisibility: true,
+    SearchBarVisibility: true,
+  };
 
-    render() {
-      const {
-        appLogo, appName, userPic, navPanelVisibility,
-        navOptions, friendPanelVisibility, friends,
-      } = this.state;
+  render() {
+    const { classes } = this.props;
+    const {
+      appLogo, appName, userPic, navPanelVisibility,
+      navOptions, friendPanelVisibility, friends, serviceCategoryVisibility, SearchBarVisibility,
+    } = this.state;
 
-      return (
-        <MuiThemeProvider theme={theme}>
-          <Header
-            appLogo={appLogo}
-            appName={appName}
-            userPic={userPic}
-          />
-          <div className="App">
-            <Grid container spacing={8}>
-              <Grid item xs={3}>
-                <div className="Panel">{navPanelVisibility && <NavPanel navOptions={navOptions} />}</div>
-              </Grid>
-              <Grid item xs={6}>
+    return (
+      <div>
+        {/* <Header
+          appLogo={appLogo}
+          appName={appName}
+          userPic={userPic}
+        /> */}
+        <Grid
+          container
+          spacing={0}
+          direction="column"
+          alignItems="center"
+          justify="center"
+          style={{ minHeight: '100vh' }}
+        >
+          <div className={classes.app}>
+            <Grid item xs={1}>
+              <div className="Panel">{navPanelVisibility && <NavPanel />}</div>
+            </Grid>
+            <Grid>
+              <Grid item lg={12}>
                 <div className="Main-feed">
-                  <h1>
-                      Welcome to your homepage
-                  </h1>
+                  <div className="">{SearchBarVisibility && <SearchBar />}</div>
                 </div>
               </Grid>
-              <Grid item xs={3}>
+              <Grid item lg={12}>
+                <div className="Main-feed">
+                  <div className="">{serviceCategoryVisibility && <ServiceCategory location={this.props.location} />}</div>
+                </div>
+              </Grid>
+
+              <Grid item lg={12}>
                 <div className="Panel">{friendPanelVisibility && <FriendPanel />}</div>
               </Grid>
             </Grid>
           </div>
-        </MuiThemeProvider>
-      );
-    }
+        </Grid>
+      </div>
+    );
+  }
 }
 
-export default Main;
+export default withStyles(styles)(Main);
