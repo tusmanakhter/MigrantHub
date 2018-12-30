@@ -42,11 +42,11 @@ class Main extends Component {
 
     return (
       <div>
-        <Header
+        {/* <Header
           appLogo={appLogo}
           appName={appName}
           userPic={userPic}
-        />
+        /> */}
         <div className={classes.app}>
             <Grid item xs={1}>
                     <div className="Panel">{navPanelVisibility && <NavPanel />}</div>

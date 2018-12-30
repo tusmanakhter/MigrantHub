@@ -23,12 +23,10 @@ const drawerWidth = 240;
 
 const styles = theme => ({
   root: {
-    background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)',
     display: 'flex',
     color: 'red',
   },
   appBar: {
-    background: 'linear-gradient(45deg, #0d0d0d 30%, #3e4444 90%)',
     zIndex: theme.zIndex.drawer + 1,
     transition: theme.transitions.create(['width', 'margin'], {
       easing: theme.transitions.easing.sharp,
@@ -106,28 +104,7 @@ class NavPanel extends React.Component {
     return (
       <div className={classes.root}>
         <CssBaseline />
-        <AppBar
-          position="fixed"
-          className={classNames(classes.appBar, {
-            [classes.appBarShift]: this.state.open,
-          })}
-        >
-          <Toolbar disableGutters={!this.state.open}>
-            <IconButton
-              color="inherit"
-              aria-label="Open drawer"
-              onClick={this.handleDrawerOpen}
-              className={classNames(classes.menuButton, {
-                [classes.hide]: this.state.open,
-              })}
-            >
-              <MenuIcon />
-            </IconButton>
-            <Typography variant="h6" color="inherit" noWrap>
-              MigrantHub
-            </Typography>
-          </Toolbar>
-        </AppBar>
+          
         <Drawer
           variant="permanent"
           className={classNames(classes.drawer, {
@@ -143,9 +120,12 @@ class NavPanel extends React.Component {
           open={this.state.open}
         >
           <div className={classes.toolbar}>
-            <IconButton onClick={this.handleDrawerClose}>
-              {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
-            </IconButton>
+            {this.state.open?<IconButton onClick={this.handleDrawerClose}>
+              <ChevronLeftIcon />
+            </IconButton>:
+            <IconButton onClick={this.handleDrawerOpen}>
+              <ChevronRightIcon />
+            </IconButton>}
           </div>
           <Divider />
           <List>
