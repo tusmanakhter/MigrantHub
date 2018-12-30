@@ -51,6 +51,9 @@ class Main extends Component {
         <Typography variant="h3" gutterBottom>
           Migrant Hub
       </Typography>
+        <Typography variant="subtitles" gutterBottom>
+          Welcome to your dashboard! We will guide you through to find what you need.
+      </Typography>
         <Grid
           container
           spacing={0}

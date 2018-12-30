@@ -19,7 +19,7 @@ class Logout extends Component {
   render() {
     return (
       <React.Fragment>
-        <Button variant="contained" color="primary" onClick={this.logout}>
+        <Button color="" onClick={this.logout}>
           Logout
         </Button>
       </React.Fragment>

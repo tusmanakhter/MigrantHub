@@ -8,7 +8,8 @@ import axios from 'axios';
 import ServiceItem from './ServiceItem';
 import Header from '../components/Header/Header';
 import UserTypes from '../lib/UserTypes';
-
+import QuestionnairePanel from '../components/QuestionnairePanel/QuestionnairePanel';
+import Grid from '@material-ui/core/Grid';
 
 
 
@@ -145,8 +146,11 @@ class ServiceList extends Component {
               />
             ))
           }
-        </GridContainer>
-      </div>
+          <Grid item xs={2}>
+            <div className="Panel">{<QuestionnairePanel />}</div>
+          </Grid>
+        </GridContainer >
+      </div >
     );
   }
 }
