@@ -46,12 +46,12 @@ export const renderSuggestion = (suggestion, { query, isHighlighted }) => {
 
 export function handleSuggestionsFetchRequested({ value }) {
   this.setState({
-    citySuggestions: getSuggestions(value),
+    suggestions: getSuggestions(value),
   });
 }
 
 export function handleSuggestionsClearRequested() {
   this.setState({
-    citySuggestions: [],
+    suggestions: [],
   });
 }

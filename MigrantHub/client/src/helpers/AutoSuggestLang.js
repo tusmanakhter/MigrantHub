@@ -48,13 +48,12 @@ export const renderSuggestion = (suggestion, { query, isHighlighted }) => {
 
 export function handleSuggestionsFetchRequested({ value }) {
   this.setState({
-    langSuggestions: getSuggestions(value),
+    suggestions: getSuggestions(value),
   });
 }
 
-
 export function handleSuggestionsClearRequested() {
   this.setState({
-    langSuggestions: [],
+    suggestions: [],
   });
 }

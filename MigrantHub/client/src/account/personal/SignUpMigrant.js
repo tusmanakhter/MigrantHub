@@ -4,22 +4,14 @@ import qs from 'qs';
 import HomeLayout from '../../home/HomeLayout';
 import SignUp from '../common/SignUp';
 import AccountInfo from '../common/AccountInfo';
-import ContactInfo from '../common/ContactInfo';
-import PersonalInfo from './PersonalInfo';
-import LanguageInfo from './LanguageInfo';
-import FamilyInfo from './FamilyInfo';
-import EducationInfo from './EducationInfo';
-import EmploymentInfo from './EmploymentInfo';
-import OtherInfo from './OtherInfo';
+import PersonalInfo from './Minimal/PersonalInfo';
+import AdditionalInfo from './Minimal/AdditionalInfo';
 
 class SignUpMigrant extends Component {
   getStepContent(step) {
     const {
-      email, password, confirmPassword, firstName, lastName, address, apartment,
-      city, province, postalCode, phoneNumber, age, gender, nationality, relationshipStatus,
-      status, languages, writingLevel, speakingLevel, motherTongue, family, educationLevel,
-      proficiencyExams, jobStatus, lookingForJob, currentIncome, workExperience,
-      settlingLocation, settlingDuration, joiningReason,
+      email, password, confirmPassword, firstName, lastName, age, gender, nationality,
+      relationshipStatus, status, educationLevel, jobStatus, settlingLocation, joiningReason,
     } = this.state;
 
     switch (step) {
@@ -35,24 +27,11 @@ class SignUpMigrant extends Component {
         );
       case 1:
         return (
-          <ContactInfo
+          <PersonalInfo
             innerRef={this.child}
             handleChange={this.handleChange}
             firstName={firstName}
             lastName={lastName}
-            address={address}
-            apartment={apartment}
-            city={city}
-            province={province}
-            postalCode={postalCode}
-            phoneNumber={phoneNumber}
-          />
-        );
-      case 2:
-        return (
-          <PersonalInfo
-            innerRef={this.child}
-            handleChange={this.handleChange}
             age={age}
             gender={gender}
             nationality={nationality}
@@ -60,64 +39,15 @@ class SignUpMigrant extends Component {
             status={status}
           />
         );
-      case 3:
+      case 2:
         return (
-          <LanguageInfo
+          <AdditionalInfo
             innerRef={this.child}
             handleChange={this.handleChange}
             handleAutoSuggestChange={this.handleAutoSuggestChange}
-            handleAddObject={this.handleAddObject}
-            handleRemoveObject={this.handleRemoveObject}
-            handleEditObjectAutosuggest={this.handleEditObjectAutosuggest}
-            handleEditObject={this.handleEditObject}
-            languages={languages}
-            writingLevel={writingLevel}
-            speakingLevel={speakingLevel}
-            motherTongue={motherTongue}
-          />
-        );
-      case 4:
-        return (
-          <FamilyInfo
-            innerRef={this.child}
-            handleAddObject={this.handleAddObject}
-            handleRemoveObject={this.handleRemoveObject}
-            handleEditObject={this.handleEditObject}
-            family={family}
-          />
-        );
-      case 5:
-        return (
-          <EducationInfo
-            innerRef={this.child}
-            handleChange={this.handleChange}
-            handleEditSingleObject={this.handleEditSingleObject}
             educationLevel={educationLevel}
-            proficiencyExams={proficiencyExams}
-          />
-        );
-      case 6:
-        return (
-          <EmploymentInfo
-            innerRef={this.child}
-            handleChange={this.handleChange}
-            handleAddObject={this.handleAddObject}
-            handleRemoveObject={this.handleRemoveObject}
-            handleEditObject={this.handleEditObject}
             jobStatus={jobStatus}
-            lookingForJob={lookingForJob}
-            currentIncome={currentIncome}
-            workExperience={workExperience}
-          />
-        );
-      case 7:
-        return (
-          <OtherInfo
-            innerRef={this.child}
-            handleChange={this.handleChange}
-            handleAutoSuggestChange={this.handleAutoSuggestChange}
             settlingLocation={settlingLocation}
-            settlingDuration={settlingDuration}
             joiningReason={joiningReason}
           />
         );
@@ -129,19 +59,9 @@ class SignUpMigrant extends Component {
   // Send profile data in post body to add to mongodb
   createAccount(event) {
     const {
-      email, password, confirmPassword, firstName, lastName, address, apartment,
-      city, province, postalCode, phoneNumber, age, gender, nationality, relationshipStatus,
-      status, languages, writingLevel, speakingLevel, motherTongue, family, educationLevel,
-      proficiencyExams, jobStatus, lookingForJob, currentIncome, workExperience,
-      settlingLocation, settlingDuration, joiningReason,
+      email, password, confirmPassword, firstName, lastName, age, gender, nationality, relationshipStatus,
+      status, educationLevel, jobStatus, settlingLocation, joiningReason,
     } = event.state;
-
-    if (proficiencyExams.french === '') {
-      event.state.proficiencyExams.french = 'false';
-    }
-    if (proficiencyExams.ielts === '') {
-      event.state.proficiencyExams.ielts = 'false';
-    }
 
     axios.post('/api/accounts/create/user',
       qs.stringify({
@@ -150,30 +70,14 @@ class SignUpMigrant extends Component {
         confirmPassword,
         firstName,
         lastName,
-        address,
-        apartment,
-        city,
-        province,
-        postalCode,
-        phoneNumber,
         age,
         gender,
         nationality,
         relationshipStatus,
         status,
-        languages,
-        writingLevel,
-        speakingLevel,
-        motherTongue,
-        family,
         educationLevel,
-        proficiencyExams,
         jobStatus,
-        lookingForJob,
-        currentIncome,
-        workExperience,
         settlingLocation,
-        settlingDuration,
         joiningReason,
       })).then((response) => {
       event.setState({
@@ -187,7 +91,7 @@ class SignUpMigrant extends Component {
   }
 
   render() {
-    const steps = ['Account', 'Contact', 'Personal', 'Language', 'Family', 'Education', 'Employment', 'Other'];
+    const steps = ['Account', 'Personal', 'Additional'];
 
     return (
       <React.Fragment>
