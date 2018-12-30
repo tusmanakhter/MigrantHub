@@ -20,15 +20,17 @@ module.exports = {
     throw new ServerError('There was an error creating service.', 400, errors);
   },
 
-  async getServices(userId, searchQuery, search) {
+  async getServices(userId, searchQuery, search, category, subcategory) {
     let query = {};
 
     if (userId !== '') {
       query.user = userId;
-    } else if (search !== '') {
+    } else if (search === 'true') {
       const tempSearchQuery = searchQuery;
       const regex = new RegExp(tempSearchQuery.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&'), 'gi');
       query = { $or: [{ serviceTitle: regex }, { serviceSummary: regex }] };
+    } else if (category !== '') {
+      query = { category, subcategory };
     }
 
     query.deleted = false;

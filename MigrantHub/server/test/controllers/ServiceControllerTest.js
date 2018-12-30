@@ -26,7 +26,9 @@ describe('Service controller', function () {
         },
         service = {
             _id: "5bda52305ccfd051484ea790",
-            email: "test@hotmail.com"
+            email: "test@hotmail.com",
+            category : "Employment",
+            subcategory : "SmallBusiness",
         };
 
     it('should call createService service with correct parameters from createService controller', test(async function () {
@@ -37,8 +39,8 @@ describe('Service controller', function () {
 
     it('should call getServices service with correct parameters from createService controller', test(async function () {
         this.stub(ServiceService, 'getServices');
-        await ServiceController.getServices(req.query.editOwner, req.query.searchQuery, req.query.search);
-        assert.calledWith(ServiceService.getServices, req.query.editOwner, req.query.searchQuery, req.query.search);
+        await ServiceController.getServices(req.query.editOwner, req.query.searchQuery, req.query.search, service.category, service.subcategory );
+        assert.calledWith(ServiceService.getServices, req.query.editOwner, req.query.searchQuery, req.query.search, service.category, service.subcategory);
     }));
 
     it('should call getService service with correct parameters from getService controller', test(async function () {
