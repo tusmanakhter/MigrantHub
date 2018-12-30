@@ -12,7 +12,7 @@ const localStrategy = new LocalStrategy({ passReqToCallback: true },
           err.status, req.referer, 'LocalStrategy - Authenticate User', err.message));
         return done(err);
       }
-      if (!user) {
+      if (!user || !user.localAuthentication) {
         logger.error(formatMessage(req.ip, req.method, req.originalUrl, req.httpVersion,
           '404', req.referer, 'LocalStrategy - Authenticate User', 'Invalid user login attempt'));
         return done(null, false, { message: 'Incorrect email or password' });

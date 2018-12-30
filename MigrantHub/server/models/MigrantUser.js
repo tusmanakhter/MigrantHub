@@ -62,6 +62,13 @@ const MigrantUser = User.discriminator(UserTypes.MIGRANT,
       },
       select: false,
     },
+    googleAuthentication: {
+      type: {
+        id: { type: String },
+        token: { type: String },
+      },
+      select: false,
+    },
   }, options));
 
 module.exports = MigrantUser;
