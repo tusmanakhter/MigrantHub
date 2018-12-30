@@ -3,21 +3,20 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { withStyles } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
 import List from '@material-ui/core/List';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 import IconButton from '@material-ui/core/IconButton';
-import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import InboxIcon from '@material-ui/icons/MoveToInbox';
-import MailIcon from '@material-ui/icons/Mail';
+import ViewList from '@material-ui/icons/ViewList';
+import ThumbsUpDown from '@material-ui/icons/ThumbsUpDown';
+import PersonPin from '@material-ui/icons/PersonPin';
+import Event from '@material-ui/icons/Event';
+import { Link } from 'react-router-dom';
 
 const drawerWidth = 240;
 
@@ -54,6 +53,7 @@ const styles = theme => ({
     whiteSpace: 'nowrap',
   },
   drawerOpen: {
+    background: '#ffffff',
     width: drawerWidth,
     transition: theme.transitions.create('width', {
       easing: theme.transitions.easing.sharp,
@@ -61,7 +61,7 @@ const styles = theme => ({
     }),
   },
   drawerClose: {
-    background: 'linear-gradient(45deg, #0d0d0d 30%, #3e4444 90%)',
+    background: '#ffffff',
     transition: theme.transitions.create('width', {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
@@ -104,7 +104,7 @@ class NavPanel extends React.Component {
     return (
       <div className={classes.root}>
         <CssBaseline />
-          
+
         <Drawer
           variant="permanent"
           className={classNames(classes.drawer, {
@@ -120,31 +120,47 @@ class NavPanel extends React.Component {
           open={this.state.open}
         >
           <div className={classes.toolbar}>
-            {this.state.open?<IconButton onClick={this.handleDrawerClose}>
+            {this.state.open ? <IconButton onClick={this.handleDrawerClose}>
               <ChevronLeftIcon />
-            </IconButton>:
-            <IconButton onClick={this.handleDrawerOpen}>
-              <ChevronRightIcon />
-            </IconButton>}
+            </IconButton> :
+              <IconButton onClick={this.handleDrawerOpen}>
+                <ChevronRightIcon />
+              </IconButton>}
           </div>
           <Divider />
-          <List>
-            {['Services', 'Events'].map((text, index) => (
-              <ListItem button key={text}>
-                <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-                <ListItemText primary={text} />
+          <Link to={`/services`}>
+            <List>
+              <ListItem button key='Services'>
+                <ListItemIcon><ViewList className={classes.icons} color="" /></ListItemIcon>
+                <ListItemText primary='Services' />
               </ListItem>
-            ))}
-          </List>
+            </List>
+          </Link>
+          <Link to={`/events`}>
+            <List>
+              <ListItem button key='Events'>
+                <ListItemIcon><Event className={classes.icons} color="" /></ListItemIcon>
+                <ListItemText primary='Events' />
+              </ListItem>
+            </List>
+          </Link>
           <Divider />
-          <List>
-            {['Social Media', 'Reviews'].map((text, index) => (
-              <ListItem button key={text}>
-                <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-                <ListItemText primary={text} />
+          <Link to={`/`}>
+            <List>
+              <ListItem button key='Friends'>
+                <ListItemIcon><PersonPin className={classes.icons} color="" /></ListItemIcon>
+                <ListItemText primary='Friends' />
               </ListItem>
-            ))}
-          </List>
+            </List>
+          </Link>
+          <Link to={`/`}>
+            <List>
+              <ListItem button key='Reviews'>
+                <ListItemIcon><ThumbsUpDown className={classes.icons} color="" /></ListItemIcon>
+                <ListItemText primary='Reviews' />
+              </ListItem>
+            </List>
+          </Link>
         </Drawer>
       </div>
     );

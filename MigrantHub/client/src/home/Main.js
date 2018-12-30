@@ -1,15 +1,17 @@
 import React, { Component } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
+import Typography from '@material-ui/core/Typography';
 import logo from '../logo.svg';
 import FriendPanel from '../components/FriendPanel/FriendPanel';
 import NavPanel from '../components/NavPanel/NavPanel';
 import ServiceCategory from '../services/ServiceCategory';
 import SearchBar from '../components/SearchBar';
+import Header from "components/Header/Header.jsx";
 
 const styles = theme => ({
   app: {
-    marginLeft: 100,
+    marginLeft: 75,
     //marginRight: 36,
   },
 });
@@ -29,8 +31,12 @@ class Main extends Component {
     SearchBarVisibility: true,
   };
 
+  handleDrawerToggle = () => {
+    this.setState({ mobileOpen: !this.state.mobileOpen });
+  };
+
   render() {
-    const { classes } = this.props;
+    const { classes, ...rest } = this.props;
     const {
       appLogo, appName, userPic, navPanelVisibility,
       navOptions, friendPanelVisibility, friends, serviceCategoryVisibility, SearchBarVisibility,
@@ -38,11 +44,13 @@ class Main extends Component {
 
     return (
       <div>
-        {/* <Header
-          appLogo={appLogo}
-          appName={appName}
-          userPic={userPic}
-        /> */}
+        <Header
+          handleDrawerToggle={this.handleDrawerToggle}
+          {...rest}
+        />
+        <Typography variant="h3" gutterBottom>
+          Migrant Hub
+      </Typography>
         <Grid
           container
           spacing={0}

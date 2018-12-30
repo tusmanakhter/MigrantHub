@@ -34,6 +34,7 @@ const searchType = [
 
 const styles = theme => ({
   root: {
+    background: 'linear-gradient(45deg, #0d0d0d 30%, #3e4444 90%)',
     width: '100%',
   },
   grow: {
@@ -139,11 +140,11 @@ class Header extends Component {
       axios.get('/api/accounts/get/user').then((response) => {
         if (response.status === 200) {
           this.setState({
-              type: response.data.type,
-              email: response.data.email,
-              firstName: response.data.firstName,
-              lastName: response.data.lastName,
-              dataRetrieved: true,
+            type: response.data.type,
+            email: response.data.email,
+            firstName: response.data.firstName,
+            lastName: response.data.lastName,
+            dataRetrieved: true,
           });
         }
       });
@@ -182,18 +183,18 @@ class Header extends Component {
         });
       }
     } else if (event.target.id === 'viewProfile') {
-          if (type === UserTypes.MIGRANT) {
-              this.setState({
-                  redirectTo: true,
-                  redirectToURL: '/migrant/profile',
-              });
-          } else if (type === UserTypes.BUSINESS) {
-              this.setState({
-                  redirectTo: true,
-                  redirectToURL: '/business/profile',
-              });
-          }
-      } else if (event.target.id === 'myServices') {
+      if (type === UserTypes.MIGRANT) {
+        this.setState({
+          redirectTo: true,
+          redirectToURL: '/migrant/profile',
+        });
+      } else if (type === UserTypes.BUSINESS) {
+        this.setState({
+          redirectTo: true,
+          redirectToURL: '/business/profile',
+        });
+      }
+    } else if (event.target.id === 'myServices') {
       this.setState({
         redirectTo: true,
         redirectToURL: '/myservices',
@@ -216,13 +217,13 @@ class Header extends Component {
     } else if (event.target.id === 'main') {
       if (type === UserTypes.MIGRANT) {
         this.setState({
-            redirectTo: true,
-            redirectToURL: '/main',
+          redirectTo: true,
+          redirectToURL: '/main',
         });
       } else if (type === UserTypes.BUSINESS) {
         this.setState({
-            redirectTo: true,
-            redirectToURL: '/businessmain',
+          redirectTo: true,
+          redirectToURL: '/businessmain',
         });
       }
     }
@@ -297,99 +298,99 @@ class Header extends Component {
     });
   }
 
-    renderRedirectTo = () => {
-      const { redirectTo, redirectToURL, redirectState } = this.state;
+  renderRedirectTo = () => {
+    const { redirectTo, redirectToURL, redirectState } = this.state;
 
-      if (redirectTo) {
-        this.setState({
-          redirectTo: false,
-          redirectToURL: '',
-        });
-        return (
-          <Redirect to={{
-            pathname: redirectToURL,
-            state: redirectState,
-          }}
-          />
-        );
-      }
-    }
-
-    render() {
-      const { anchorEl, mobileMoreAnchorEl, firstName, lastName } = this.state;
-      const { classes } = this.props;
-      const isMenuOpen = Boolean(anchorEl);
-      const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
-
-      const renderMenu = (
-        <Menu
-          anchorEl={anchorEl}
-          anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-          transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-          open={isMenuOpen}
-          onClose={this.handleMenuClose}
-        >
-          <MenuItem onClick={this.handleClose}>Profile</MenuItem>
-          <MenuItem onClick={this.handleClose}>My account</MenuItem>
-          <MenuItem id="editProfile" onClick={this.handleMenuClick}>Edit Profile</MenuItem>
-          <MenuItem id="viewProfile" onClick={this.handleMenuClick}>View Profile</MenuItem>
-          <MenuItem id="myServices" onClick={this.handleMenuClick}>My Services</MenuItem>
-          <MenuItem id="myEvents" onClick={this.handleMenuClick}>My Events</MenuItem>
-        </Menu>
-      );
-
-      const renderMobileMenu = (
-        <Menu
-          anchorEl={mobileMoreAnchorEl}
-          anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-          transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-          open={isMobileMenuOpen}
-          onClose={this.handleMobileMenuClose}
-        >
-          <MenuItem>
-            <IconButton color="inherit">
-              <Badge className={classes.margin} badgeContent={4} color="secondary">
-                <MailIcon />
-              </Badge>
-            </IconButton>
-            <p>Messages</p>
-          </MenuItem>
-          <MenuItem>
-            <IconButton color="inherit">
-              <Badge className={classes.margin} badgeContent={11} color="secondary">
-                <NotificationsIcon />
-              </Badge>
-            </IconButton>
-            <p>Notifications</p>
-          </MenuItem>
-          <MenuItem onClick={this.handleProfileMenuOpen}>
-            <IconButton color="inherit">
-              <AccountCircle />
-            </IconButton>
-            <p>Profile</p>
-          </MenuItem>
-        </Menu>
-      );
-
+    if (redirectTo) {
+      this.setState({
+        redirectTo: false,
+        redirectToURL: '',
+      });
       return (
-        <div className={classes.root}>
-          {this.renderRedirectTo()}
-          <AppBar position="static">
-            <Toolbar>
-              <IconButton className={classes.menuButton} color="inherit" aria-label="Open drawer">
-                <MenuIcon />
-              </IconButton>
-              <IconButton color="inherit">
-                <Typography id="main" onClick={this.handleMenuClick} className={classes.title} variant="title" color="inherit" noWrap>
+        <Redirect to={{
+          pathname: redirectToURL,
+          state: redirectState,
+        }}
+        />
+      );
+    }
+  }
+
+  render() {
+    const { anchorEl, mobileMoreAnchorEl, firstName, lastName } = this.state;
+    const { classes } = this.props;
+    const isMenuOpen = Boolean(anchorEl);
+    const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
+
+    const renderMenu = (
+      <Menu
+        anchorEl={anchorEl}
+        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+        transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+        open={isMenuOpen}
+        onClose={this.handleMenuClose}
+      >
+        <MenuItem onClick={this.handleClose}>Profile</MenuItem>
+        <MenuItem onClick={this.handleClose}>My account</MenuItem>
+        <MenuItem id="editProfile" onClick={this.handleMenuClick}>Edit Profile</MenuItem>
+        <MenuItem id="viewProfile" onClick={this.handleMenuClick}>View Profile</MenuItem>
+        <MenuItem id="myServices" onClick={this.handleMenuClick}>My Services</MenuItem>
+        <MenuItem id="myEvents" onClick={this.handleMenuClick}>My Events</MenuItem>
+      </Menu>
+    );
+
+    const renderMobileMenu = (
+      <Menu
+        anchorEl={mobileMoreAnchorEl}
+        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+        transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+        open={isMobileMenuOpen}
+        onClose={this.handleMobileMenuClose}
+      >
+        <MenuItem>
+          <IconButton color="inherit">
+            <Badge className={classes.margin} badgeContent={4} color="secondary">
+              <MailIcon />
+            </Badge>
+          </IconButton>
+          <p>Messages</p>
+        </MenuItem>
+        <MenuItem>
+          <IconButton color="inherit">
+            <Badge className={classes.margin} badgeContent={11} color="secondary">
+              <NotificationsIcon />
+            </Badge>
+          </IconButton>
+          <p>Notifications</p>
+        </MenuItem>
+        <MenuItem onClick={this.handleProfileMenuOpen}>
+          <IconButton color="inherit">
+            <AccountCircle />
+          </IconButton>
+          <p>Profile</p>
+        </MenuItem>
+      </Menu>
+    );
+
+    return (
+      <div className={classes.root}>
+        {this.renderRedirectTo()}
+        <AppBar position="static">
+          <Toolbar>
+            <IconButton className={classes.menuButton} color="inherit" aria-label="Open drawer">
+              <MenuIcon />
+            </IconButton>
+            <IconButton color="inherit">
+              <Typography id="main" onClick={this.handleMenuClick} className={classes.title} variant="title" color="inherit" noWrap>
                 MigrantHub
                 </Typography>
-              </IconButton>
-              <div className={classes.search}>
+            </IconButton>
+            <div className={classes.search}>
               <div className={classes.searchIcon}>
                 <SearchIcon />
               </div>
               <InputBase
-                id="search" 
+                id="search"
                 name="search"
                 placeholder="Search…"
                 value={this.state.search}
@@ -403,69 +404,69 @@ class Header extends Component {
               />
             </div>
             <TextField
-            id="searchType"
-            name="searchType"
-            style = {{width: 200}}
-            defaultValue = {searchType[0]}
-            select
-            value={this.state.searchType}
-            className={classes.select}
-            onChange={event => this.handleChange(event)}
-            helperText={this.state.searchTypeError}
-            error={this.state.searchTypeError.length > 0}
-          >
-            {searchType.map(option => (
-              <MenuItem key={option.value} value={option.value}>
-                {option.label}
-              </MenuItem>
-            ))}
-          </TextField>
-            <Button 
+              id="searchType"
+              name="searchType"
+              style={{ width: 200 }}
+              defaultValue={searchType[0]}
+              select
+              value={this.state.searchType}
+              className={classes.select}
+              onChange={event => this.handleChange(event)}
+              helperText={this.state.searchTypeError}
+              error={this.state.searchTypeError.length > 0}
+            >
+              {searchType.map(option => (
+                <MenuItem key={option.value} value={option.value}>
+                  {option.label}
+                </MenuItem>
+              ))}
+            </TextField>
+            <Button
               variant="contained"
               color="primary"
-              onClick={this.handleSearch} 
+              onClick={this.handleSearch}
               className={classes.button}>
               Search
             </Button>
-              <div className={classes.grow} />
-              <div className={classes.sectionDesktop}>
-                <IconButton color="inherit">
-                  <Badge className={classes.margin} badgeContent={4} color="secondary">
-                    <MailIcon />
-                  </Badge>
-                </IconButton>
-                <IconButton color="inherit">
-                  <Badge className={classes.margin} badgeContent={17} color="secondary">
-                    <NotificationsIcon />
-                  </Badge>
-                </IconButton>
-                <IconButton
-                  aria-owns={isMenuOpen ? 'material-appbar' : null}
-                  aria-haspopup="true"
-                  onClick={this.handleProfileMenuOpen}
-                  color="inherit"
-                >
-                  <AccountCircle />
-                  <div>
-                    <Typography id="main" className={classes.title} variant="subheading"  color="inherit" noWrap>
-                        {firstName + ' ' + lastName}
-                    </Typography>
-                  </div>
-                </IconButton>
-                <Logout />
-              </div>
-              <div className={classes.sectionMobile}>
-                <IconButton aria-haspopup="true" onClick={this.handleMobileMenuOpen} color="inherit">
-                  <MoreIcon />
-                </IconButton>
-              </div>
-            </Toolbar>
-          </AppBar>
-          {renderMenu}
-          {renderMobileMenu}
-        </div>
-      );
-    }
+            <div className={classes.grow} />
+            <div className={classes.sectionDesktop}>
+              <IconButton color="inherit">
+                <Badge className={classes.margin} badgeContent={4} color="secondary">
+                  <MailIcon />
+                </Badge>
+              </IconButton>
+              <IconButton color="inherit">
+                <Badge className={classes.margin} badgeContent={17} color="secondary">
+                  <NotificationsIcon />
+                </Badge>
+              </IconButton>
+              <IconButton
+                aria-owns={isMenuOpen ? 'material-appbar' : null}
+                aria-haspopup="true"
+                onClick={this.handleProfileMenuOpen}
+                color="inherit"
+              >
+                <AccountCircle />
+                <div>
+                  <Typography id="main" className={classes.title} variant="subheading" color="inherit" noWrap>
+                    {firstName + ' ' + lastName}
+                  </Typography>
+                </div>
+              </IconButton>
+              <Logout />
+            </div>
+            <div className={classes.sectionMobile}>
+              <IconButton aria-haspopup="true" onClick={this.handleMobileMenuOpen} color="inherit">
+                <MoreIcon />
+              </IconButton>
+            </div>
+          </Toolbar>
+        </AppBar>
+        {renderMenu}
+        {renderMobileMenu}
+      </div>
+    );
+  }
 }
 
 Header.propTypes = {

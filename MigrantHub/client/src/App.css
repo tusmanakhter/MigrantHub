@@ -2,7 +2,9 @@
 
 .App {
   height: auto;
-  background-color: #e6e6e6;
+  background: linear-gradient(0deg, #ffbb00 30%, #fcfcfc 75%);
+  background-repeat: no-repeat;
+  background-size: auto;
   /* color: white; */
   text-align: center;
   font-family: 'Roboto', sans-serif;
