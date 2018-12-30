@@ -1,38 +1,35 @@
 export const serviceCategories = [
-    {  value:  'WorkAccidents' , label: 'Work Accidents' },
-    {  value:  'Accidents' , label: 'Accidents' },
-    {  value:  'Welfare' , label: 'Welfare',
+    {  value:  'WorkAccidents' , label: 'Work Accidents',
         SubCategories: [
             {  value:  'CommunityOrganizations' , label: 'Community Organizations' }
         ]},
+    {  value:  'Automobile Accidents' , label: 'Accidents' },
+    {  value:  'Welfare' , label: 'Welfare' },
+    {  value:  'CommunityOrganizations' , label: 'Community Organizations' },
     {  value:  'BudgetAndDebtProblems' , label: 'Budget And Debt Problems' },
     {  value:  'ConsumerProtection' , label: 'Consumer Protection' },
     {  value:  'CommunityGroups' , label: 'Community Groups' },
-    {  value:  'EmergencyAid' , label: 'Emergency Aid' },
-    {  value:  'Food' , label: 'Food',
+    {  value:  'EmergencyAid' , label: 'Emergency Aid',
         SubCategories: [
-            {  value:  'SecondHandClothing' , label: 'Second-Hand Clothing' },
-            {  value:  'SecondHandFurnitureAndClothing' , label: 'Second-Hand Furniture And Clothing' }
+            {  value:  'Food' , label: 'Food' }
         ]},
+    {  value:  'SecondHandClothing' , label: 'Second-Hand Clothing' },
+    {  value:  'SecondHandFurnitureAndClothing' , label: 'Second-Hand Furniture And Clothing' },
     {  value:  'Employment' , label: 'Employment',
         SubCategories: [
             {  value:  'CommunityOrganizations' , label: 'Community Organizations' },
             {  value:  'SmallBusiness' , label: 'Small Business' },
             {  value:  'JobSearch' , label: 'Job Search' },
-            {  value:  'EmploymentInsurance' , label: 'Employment Insurance' },
-            {  value:  'CommunityOrganizations' , label: 'Community Organizations' }
         ]},
+    {  value:  'EmploymentInsurance' , label: 'Employment Insurance' },
     {  value:  'FamilyBenefits' , label: 'Family Benefits' },
     {  value:  'Women' , label: 'Women' },
     {  value:  'Immigration' , label: 'Immigration' },
     {  value:  'IncomeTaxes' , label: 'Income Taxes' },
     {  value:  'ResourcesForLgbtqPeople' , label: 'Resources For Lgbtq+ People' },
-    {  value:  'Housing' , label: 'Housing',
-        SubCategories: [
-            {  value:  'CommunityOrganizations' , label: 'Community Organizations' },
-            {  value:  'ApartmentSearch' , label: 'Apartment Search' },
-            {  value:  'InfoForLandlords' , label: 'Info For Landlords' }
-        ]},
+    {  value:  'Housing' , label: 'Housing' },
+    {  value:  'ApartmentSearch' , label: 'Apartment Search' },
+    {  value:  'InfoForLandlords' , label: 'Info For Landlords' },
     {  value:  'SocialHousing' , label: 'Social Housing' },
     {  value:  'CDNCommunityOrganizations' , label: 'C-D-N Community Organizations' },
     {  value:  'Pensions' , label: 'Pensions' },
@@ -43,8 +40,10 @@ export const serviceCategories = [
             {  value:  'Seniors’MealDelivery' , label: 'Seniors’ Meal Delivery' },
             {  value:  'Seniors’Miscellaneous' , label: 'Seniors’ Miscellaneous' }
         ]},
-    {  value:  'DisabledPeople' , label: 'Disabled People' },
-    {  value:  'CommunityOrganizations' , label: 'Community Organizations' },
+    {  value:  'DisabledPeople' , label: 'Disabled People',
+        SubCategories: [
+            {  value:  'CommunityOrganizations' , label: 'Community Organizations' },
+        ]},
     {  value:  'MentalHealth' , label: 'Mental Health',
         SubCategories: [
             {  value:  'ListeningServices' , label: 'Listening Services' },

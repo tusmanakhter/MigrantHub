@@ -20,7 +20,7 @@ class Main extends Component {
       appLogo: logo,
       userPic: logo,
       navOptions: [
-        { description: 'Services', link: '/services' },
+        { description: 'Services', link: '/categories' },
         { description: 'Events', link: '/events' },
       ],
       navPanelVisibility: true,
