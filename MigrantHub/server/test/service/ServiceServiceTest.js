@@ -22,7 +22,7 @@ describe('Service Service', function () {
             query: {
                 _id: "5bda52305ccfd051484ea790",
                 editOwner: "test@test.com",
-                search: true,
+                search: 'true',
                 searchQuery: 'test',
             },
             params: {
@@ -31,7 +31,9 @@ describe('Service Service', function () {
         },
         service = {
             _id: "5bda52305ccfd051484ea790",
-            email: "test@hotmail.com"
+            email: "test@hotmail.com",
+            category : "Employment",
+            subcategory : "SmallBusiness",
         };
 
     it('should call createService repository with correct parameters from createService service', test(async function () {
@@ -49,21 +51,27 @@ describe('Service Service', function () {
         return chai.assert.isRejected(ServiceService.createService(req.user._id, req.body.serviceDetails), ServerError, 'There was an error creating service.');Z
     }));
 
-    it('should call getServices to retrieve users services from getServices service', test(async function () {
+    it('should call getServices to retrieve search services from getServices service', test(async function () {
         this.stub(ServiceRepository, 'getServices');
-        await ServiceService.getServices('', req.query.searchQuery, req.query.search);
+        await ServiceService.getServices('', req.query.searchQuery, req.query.search, '', '');
         assert.calledWith(ServiceRepository.getServices, { '$or': [{ serviceTitle: /test/gi }, { serviceSummary: /test/gi }], deleted: false });
     }));
 
-    it('should call getServices to retrieve search services from getServices service', test(async function () {
+    it('should call getServices to retrieve users services from getServices service', test(async function () {
         this.stub(ServiceRepository, 'getServices');
         await ServiceService.getServices(req.query.editOwner, '', '');
         assert.calledWith(ServiceRepository.getServices, { deleted: false, user: "test@test.com" });
     }));
 
+    it('should call getServices to retrieve a categories services from getServices service', test(async function () {
+        this.stub(ServiceRepository, 'getServices');
+        await ServiceService.getServices('', '', '', service.category, service.subcategory);
+        assert.calledWith(ServiceRepository.getServices, { deleted: false, category: service.category, subcategory: service.subcategory });
+    }));
+
     it('should call getServices to retrieve all services from getServices service', test(async function () {
         this.stub(ServiceRepository, 'getServices');
-        await ServiceService.getServices('', '', '');
+        await ServiceService.getServices('', '', '', '', '');
         assert.calledWith(ServiceRepository.getServices, { deleted: false });
     }));
 

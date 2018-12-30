@@ -17,6 +17,7 @@ import FormData from 'form-data';
 import qs from 'qs';
 import Header from '../components/Header/Header';
 import { provinces } from '../lib/SignUpConstants';
+import { serviceCategories } from '../lib/ServiceCategories';
 import { PhoneMask, PostalCodeMask } from '../lib/Masks';
 
 const dayOfTheWeek = [
@@ -95,6 +96,8 @@ class ServiceForm extends Component {
       serviceDescriptionError: '',
       serviceSummaryError: '',
       serviceTitleError: '',
+      categoryError: '',
+      subcategoryError: '',
       addressError: '',
       apartmentError: '',
       cityError: '',
@@ -130,8 +133,10 @@ class ServiceForm extends Component {
       addServiceDate: false,
       serviceHoursCount: 0,
       dataRetrieved: false,
-
-      // Server response
+      category: '',
+      subcategory: '',
+      subcategoriesArray: [],
+        // Server response
       messageFromServer: '',
       redirectToAllServices: false,
     };
@@ -204,7 +209,7 @@ class ServiceForm extends Component {
             endDate: parsedObj.serviceDate.endDate.toString().substring(0, 10),
           };
         }
-
+        this.handleSubCategoryChange(parsedObj.category);
         const imagePath = parsedObj.serviceImagePath.split('/');
         const imageName = imagePath[imagePath.length - 1];
 
@@ -212,6 +217,8 @@ class ServiceForm extends Component {
           serviceTitle: parsedObj.serviceTitle,
           serviceSummary: parsedObj.serviceSummary,
           serviceDescription: parsedObj.serviceDescription,
+          category: parsedObj.category,
+          subcategory: parsedObj.subcategory,
           serviceDate: tempServiceDate,
           location: tempLocation,
           serviceHours: tempServiceHours,
@@ -253,6 +260,26 @@ class ServiceForm extends Component {
       this.setState({
         [event.target.name]: event.target.value,
       });
+    }
+
+    handleCategoryChange = (event) => {
+        this.setState({
+            [event.target.name]: event.target.value,
+            subcategoriesArray: [],
+            subcategory: '',
+        });
+
+        this.handleSubCategoryChange(event.target.value)
+    }
+
+    handleSubCategoryChange = (value) => {
+        let tempArray = serviceCategories.find(x => x.value === value).SubCategories;
+
+        if(tempArray) {
+            this.setState({
+                subcategoriesArray: tempArray,
+            });
+        }
     }
 
     handleAddLocation = () => {
@@ -323,7 +350,8 @@ class ServiceForm extends Component {
 
       const {
         serviceTitle, serviceSummary, serviceDescription, serviceHours, serviceDate,
-        location, addLocation, addServiceDate, serviceImageName, serviceImage,
+        location, addLocation, addServiceDate, serviceImageName, serviceImage, category,
+          subcategory, subcategoriesArray,
       } = this.state;
 
       const errors = {
@@ -331,6 +359,8 @@ class ServiceForm extends Component {
         serviceTitleError: '',
         serviceDescriptionError: '',
         serviceSummaryError: '',
+        categoryError: '',
+        subcategoryError: '',
         addressError: '',
         apartmentError: '',
         cityError: '',
@@ -353,6 +383,16 @@ class ServiceForm extends Component {
       if (validator.isEmpty(serviceDescription)) {
         errors.serviceDescriptionError = 'Service description is required';
         isError = true;
+      }
+      if (validator.isEmpty(category)) {
+          errors.categoryError = 'Service category is required';
+          isError = true;
+      }
+      if (subcategoriesArray.length > 0) {
+          if (validator.isEmpty(subcategory)) {
+              errors.subcategoryError = 'Service sub-category is required';
+              isError = true;
+          }
       }
       if (serviceImage !== null) {
         if (!validator.matches(serviceImageName, '.([.jpg]|[.jpeg]|[.png])$')) {
@@ -447,7 +487,7 @@ class ServiceForm extends Component {
     createService = () => {
       const {
         serviceTitle, serviceSummary, serviceDescription, serviceHours, serviceDate,
-        location, addLocation, addServiceDate, serviceImageName, serviceImage,
+        location, addLocation, addServiceDate, serviceImageName, serviceImage, category, subcategory,
       } = this.state;
 
       let tempImageName = 'cameraDefault.png';
@@ -472,6 +512,8 @@ class ServiceForm extends Component {
         serviceTitle,
         serviceDescription,
         serviceSummary,
+        category,
+        subcategory,
         serviceImageName: tempImageName,
       }));
 
@@ -497,7 +539,7 @@ class ServiceForm extends Component {
       const {
         serviceId, serviceTitle, serviceSummary, serviceDescription, serviceHours, serviceDate,
         location, addLocation, addServiceDate, serviceImageName, serviceImage, serviceImagePath,
-        setDefaultImage,
+        setDefaultImage, category, subcategory,
       } = this.state;
 
       let tempImageName = serviceImageName;
@@ -530,6 +572,8 @@ class ServiceForm extends Component {
         serviceTitle,
         serviceDescription,
         serviceSummary,
+        category,
+        subcategory,
         serviceImageName: tempImageName,
         _id: serviceId,
         serviceImagePath,
@@ -560,7 +604,7 @@ class ServiceForm extends Component {
         serviceImageError, startDateError, endDateError, serviceTitle, serviceSummary,
         serviceDescription, tempServiceImagePath, serviceHours, serviceDate, location,
         addLocation, addServiceDate, serviceHoursCount, messageFromServer, editMode,
-        setDefaultImage,
+        setDefaultImage, category, categoryError, subcategory, subcategoryError, subcategoriesArray,
       } = this.state;
 
       return (
@@ -609,6 +653,42 @@ class ServiceForm extends Component {
                 helperText={serviceDescriptionError}
                 error={serviceDescriptionError.length > 0}
               />
+              <Grid item xs={12} sm={4}>
+                <TextField
+                    name="category"
+                    select
+                    label="Category"
+                    value={category}
+                    onChange={event => this.handleCategoryChange(event)}
+                    className={classes.select}
+                    fullWidth
+                    helperText={categoryError}
+                    error={categoryError.length > 0}
+                >
+                    {serviceCategories.map(option => (
+                        <MenuItem key={option.value} value={option.value}>
+                            {option.label}
+                        </MenuItem>
+                    ))}
+                </TextField>
+                <TextField
+                    name="subcategory"
+                    select
+                    label="SubCategory"
+                    value={subcategory}
+                    onChange={event => this.handleChange(event)}
+                    className={classes.select}
+                    fullWidth
+                    helperText={subcategoryError}
+                    error={subcategoryError.length > 0}
+                >
+                    {subcategoriesArray.map(option => (
+                        <MenuItem key={option.value} value={option.value}>
+                            {option.label}
+                        </MenuItem>
+                    ))}
+                </TextField>
+              </Grid>
             </Grid>
             <Grid item xs={12}>
               <Grid container spacing={24}>

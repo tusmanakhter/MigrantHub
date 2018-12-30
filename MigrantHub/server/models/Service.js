@@ -6,6 +6,8 @@ const serviceSchema = new Schema({
   serviceTitle: { type: String, required: true },
   serviceDescription: { type: String, required: true },
   serviceSummary: { type: String, required: true },
+  category: { type: String, required: true },
+  subcategory: { type: String, required: false },
   serviceDate: {
     startDate: { type: Date, required: false },
     endDate: { type: Date, required: false },

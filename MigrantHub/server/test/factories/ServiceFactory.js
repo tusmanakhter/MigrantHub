@@ -5,6 +5,8 @@ module.exports.validServiceData = function() {
         serviceTitle : "My First Service",
         serviceSummary : "In reasonable compliment favourable is connection dispatched in terminated.",
         serviceDescription : "Way nor furnished sir procuring therefore but. Warmth far manner myself active are cannot called.",
+        category : "Food",
+        subcategory : "SecondHandFurnitureAndClothing",
         serviceDate : {
             startDate : "2020-11-01",
             endDate : "2021-02-01"
@@ -33,6 +35,8 @@ module.exports.emptyServiceData = function() {
         serviceTitle : "",
         serviceSummary : "",
         serviceDescription : "",
+        category : "",
+        subcategory : "",
         serviceImagePath : "",
         serviceDate : {
             startDate : "",
@@ -62,6 +66,8 @@ module.exports.invalidServiceData = function() {
         serviceTitle : "My First Service",
         serviceSummary : "In reasonable compliment favourable is connection dispatched in terminated.",
         serviceDescription : "Way nor furnished sir procuring therefore but. Warmth far manner myself active are cannot called.",
+        category : "Food",
+        subcategory : "SecondHandFurnitureAndClothing",
         serviceDate : {
             startDate : "2022-11-01",
             endDate : "2024-02-01"

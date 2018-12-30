@@ -69,7 +69,7 @@ class ViewService extends Component {
   render() {
     const {
       classes, serviceTitle, serviceSummary, serviceDescription, serviceLocation, serviceDate,
-      serviceHours, open, scroll, editMode, onClose,
+      serviceHours, open, scroll, editMode, onClose, category, subcategory
     } = this.props;
     const { redirectTo, redirectToURL, redirectState, type } = this.state;
 
@@ -96,6 +96,12 @@ class ViewService extends Component {
         >
           <DialogTitle id="scroll-dialog-title" variant="title" align="center">{serviceTitle}</DialogTitle>
           <DialogContent>
+            <Typography variant="body1" color="inherit" paragraph align="center">
+                Service Category: {category}
+            </Typography>
+            <Typography variant="body1" color="inherit" paragraph align="center">
+              Service SubCategory: {subcategory}
+            </Typography>
             <Typography variant="body2" color="inherit" paragraph align="center">
               {serviceSummary}
             </Typography>

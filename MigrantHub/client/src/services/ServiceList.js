@@ -8,6 +8,10 @@ import axios from 'axios';
 import ServiceItem from './ServiceItem';
 import Header from '../components/Header/Header';
 import UserTypes from '../lib/UserTypes';
+import QuestionnairePanel from '../components/QuestionnairePanel/QuestionnairePanel';
+import Grid from '@material-ui/core/Grid';
+
+
 
 const styles = theme => ({
   root: {
@@ -25,7 +29,6 @@ class ServiceList extends Component {
       redirectToServiceForm: false,
       editMode: '',
       editOwner: '',
-      searchMode: false,
     };
 
     this.getData = this.getData.bind(this);
@@ -44,9 +47,11 @@ class ServiceList extends Component {
 
   getData(event, props = this.props) {
     const { location } = props;
-    const { searchMode } = this.state;
     let editOwnerEmail = '';
     let searchQuery = '';
+    let searchMode = false;
+    let category = '';
+    let subcategory = '';
 
     if (location.state) {
       if (location.state.editMode) {
@@ -57,17 +62,20 @@ class ServiceList extends Component {
 
         editOwnerEmail = location.state.editOwner;
       } else if (location.state.searchMode) {
-        this.setState({
-          searchMode: searchMode,
-        });
+          searchMode = location.state.searchMode;
         searchQuery = location.state.searchQuery;
+      } else if (location.state.category) {
+          category = location.state.category;
+          subcategory = location.state.subcategory;
       }
     }
-    axios.get('/api/services/', {
+      axios.get('/api/services/', {
       params: {
         editOwner: editOwnerEmail,
         searchQuery: searchQuery,
         search: searchMode,
+        category: category,
+        subcategory: subcategory,
       },
     }).then((response) => {
       this.setState({
@@ -117,6 +125,8 @@ class ServiceList extends Component {
             </React.Fragment>
             )
           }
+          <Grid container spacing={20}>
+          <Grid item xs={10}>
           <Paper className={classes.root} elevation={2}>
             {' '}
             {
@@ -127,6 +137,8 @@ class ServiceList extends Component {
                   serviceImagePath={item.serviceImagePath}
                   serviceDescription={item.serviceDescription}
                   serviceSummary={item.serviceSummary}
+                  category={item.category}
+                  subcategory={item.subcategory}
                   serviceLocation={item.location}
                   serviceDate={item.serviceDate}
                   serviceHours={item.serviceHours}
@@ -137,6 +149,11 @@ class ServiceList extends Component {
               ))
           }
           </Paper>
+          </Grid>
+          <Grid item xs={2}>
+                <div className="Panel">{<QuestionnairePanel />}</div>
+          </Grid>
+          </Grid>
         </div>
       );
     }

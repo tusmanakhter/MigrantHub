@@ -59,6 +59,7 @@ class ServiceItem extends Component {
     const {
       classes, serviceId, serviceTitle, serviceSummary, serviceDescription, getData,
       serviceImagePath, serviceLocation, serviceDate, serviceHours, editMode, editOwner,
+      category, subcategory,
     } = this.props;
     const { openService, openReviews, scroll } = this.state;
     return (
@@ -102,6 +103,8 @@ class ServiceItem extends Component {
             serviceImagePath={serviceImagePath}
             serviceDescription={serviceDescription}
             serviceSummary={serviceSummary}
+            category={category}
+            subcategory={subcategory}
             serviceLocation={serviceLocation}
             serviceDate={serviceDate}
             serviceHours={serviceHours}

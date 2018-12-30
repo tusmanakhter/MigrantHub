@@ -33,6 +33,20 @@ router.post('/auth/facebook', passport.authenticate('facebook-token'), (req, res
   res.send(user);
 });
 
+router.post('/auth/google', passport.authenticate('google-token'), (req, res) => {
+  if (!req.user) {
+    return res.send(401, 'User Not Authenticated');
+  }
+  req.auth = {
+    id: req.user.id,
+  };
+  const user = {
+    _id: req.user._id,
+    type: req.user.type,
+  };
+  res.send(user);
+});
+
 router.post('/logout', (req, res) => {
   if (req.user) {
     req.logout();

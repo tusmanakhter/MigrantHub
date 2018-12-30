@@ -24,6 +24,7 @@ import ViewMigrantProfile from '../account/personal/ViewMigrantProfile';
 import ViewBusinessProfile from '../account/business/ViewBusinessProfile';
 import Auth from './Auth';
 import UsersList from '../People/UsersList';
+import ServiceCategories from '../services/ServiceCategories';
 
 class Routes extends Component {
   state = {
@@ -59,6 +60,7 @@ class Routes extends Component {
         <ProtectedRoute path="/admin/dashboard" component={AdminDashboard} type="admin" />
         <Route path="/services/create" component={ServiceForm} exact />
         <Route path="/services" component={ServiceList} exact />
+        <Route path="/categories" component={ServiceCategories} exact />
         <Route path="/services/share/:id" render={(props) => <ServiceShare serviceId={props.match.params.id} />} />
         <Route path="/events/create" component={EventForm} exact />
         <Route path="/myservices" component={ServiceList} exact />
