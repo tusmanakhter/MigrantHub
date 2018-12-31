@@ -1,4 +1,3 @@
-
 import React, { Component } from 'react';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
@@ -8,8 +7,8 @@ import CardContent from '@material-ui/core/CardContent';
 import IconButton from '@material-ui/core/IconButton';
 import PersonAddDisabled from '@material-ui/icons/PersonAddDisabled';
 import axios from 'axios';
-import yes from './yes.svg';
-import no from './no.svg';
+import yes from 'components/FriendPanel/yes.svg';
+import no from 'components/FriendPanel/no.svg';
 
 const qs = require('qs');
 

@@ -4,14 +4,14 @@ import withStyles from '@material-ui/core/styles/withStyles';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import validator from 'validator';
-import FirstName from '../../components/fields/contact/FirstName';
-import LastName from '../../components/fields/contact/LastName';
-import Address from '../../components/fields/contact/Address';
-import Apartment from '../../components/fields/contact/Apartment';
-import City from '../../components/fields/contact/City';
-import Province from '../../components/fields/contact/Province';
-import PostalCode from '../../components/fields/contact/PostalCode';
-import PhoneNumber from '../../components/fields/contact/PhoneNumber';
+import FirstName from 'components/fields/contact/FirstName';
+import LastName from 'components/fields/contact/LastName';
+import Address from 'components/fields/contact/Address';
+import Apartment from 'components/fields/contact/Apartment';
+import City from 'components/fields/contact/City';
+import Province from 'components/fields/contact/Province';
+import PostalCode from 'components/fields/contact/PostalCode';
+import PhoneNumber from 'components/fields/contact/PhoneNumber';
 
 const styles = ({});
 

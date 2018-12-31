@@ -2,13 +2,13 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import withStyles from '@material-ui/core/styles/withStyles';
 import Button from '@material-ui/core/Button';
-import GridContainer from "../components/Grid/GridContainer.jsx";
+import GridContainer from "components/Grid/GridContainer.jsx";
 import { Redirect } from 'react-router-dom';
 import axios from 'axios';
-import ServiceItem from './ServiceItem';
-import Header from '../components/Header/Header';
-import UserTypes from '../lib/UserTypes';
-import QuestionnairePanel from '../components/QuestionnairePanel/QuestionnairePanel';
+import ServiceItem from 'services/ServiceItem';
+import Header from 'components/Header/Header';
+import UserTypes from 'lib/UserTypes';
+import QuestionnairePanel from 'components/QuestionnairePanel/QuestionnairePanel';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 

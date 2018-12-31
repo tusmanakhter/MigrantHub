@@ -10,9 +10,9 @@ import Checkbox from '@material-ui/core/Checkbox';
 import validator from 'validator';
 import axios from 'axios';
 import { Redirect } from 'react-router-dom';
-import Header from '../components/Header/Header';
-import { provinces } from '../lib/SignUpConstants';
-import { PhoneMask, PostalCodeMask } from '../lib/Masks';
+import Header from 'components/Header/Header';
+import { provinces } from 'lib/SignUpConstants';
+import { PhoneMask, PostalCodeMask } from 'lib/Masks';
 
 const qs = require('qs');
 

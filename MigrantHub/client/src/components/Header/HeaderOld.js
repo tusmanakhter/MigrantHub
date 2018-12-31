@@ -21,8 +21,8 @@ import axios from 'axios';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import validator from 'validator';
-import Logout from '../Logout';
-import UserTypes from '../../lib/UserTypes';
+import Logout from 'components/Logout';
+import UserTypes from 'lib/UserTypes';
 
 var qs = require('qs');
 

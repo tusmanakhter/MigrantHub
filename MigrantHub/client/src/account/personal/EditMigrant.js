@@ -3,17 +3,17 @@ import PropTypes from 'prop-types';
 import withStyles from '@material-ui/core/styles/withStyles';
 import Button from '@material-ui/core/Button';
 import axios from 'axios';
-import Header from '../../components/Header/Header';
-import ContactInfo from '../common/ContactInfo';
-import PersonalInfo from './PersonalInfo';
-import LanguageInfo from './LanguageInfo';
-import FamilyInfo from './FamilyInfo';
-import EducationInfo from './EducationInfo';
-import EmploymentInfo from './EmploymentInfo';
-import OtherInfo from './OtherInfo';
-import { handleChange } from '../../helpers/Forms';
-import { handleAutoSuggestChange, handleEditObjectAutosuggest } from '../../helpers/Autosuggest';
-import { handleAddObject, handleEditObject, handleEditSingleObject, handleRemoveObject } from '../../helpers/Object';
+import Header from 'components/Header/Header';
+import ContactInfo from 'account/common/ContactInfo';
+import PersonalInfo from 'account/personal/PersonalInfo';
+import LanguageInfo from 'account/personal/LanguageInfo';
+import FamilyInfo from 'account/personal/FamilyInfo';
+import EducationInfo from 'account/personal/EducationInfo';
+import EmploymentInfo from 'account/personal/EmploymentInfo';
+import OtherInfo from 'account/personal/OtherInfo';
+import { handleChange } from 'helpers/Forms';
+import { handleAutoSuggestChange, handleEditObjectAutosuggest } from 'helpers/Autosuggest';
+import { handleAddObject, handleEditObject, handleEditSingleObject, handleRemoveObject } from 'helpers/Object';
 
 const qs = require('qs');
 

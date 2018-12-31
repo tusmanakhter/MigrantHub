@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Button from '@material-ui/core/Button';
-import { serviceCategories } from '../lib/ServiceCategories';
-import Header from '../components/Header/Header';
+import { serviceCategories } from 'lib/ServiceCategories';
+import Header from 'components/Header/Header';
 import { Redirect } from 'react-router-dom';
 
 class ServiceCategories extends Component {

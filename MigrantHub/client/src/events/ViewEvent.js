@@ -11,8 +11,8 @@ import Button from '@material-ui/core/Button';
 import blue from '@material-ui/core/colors/blue';
 import { Redirect } from 'react-router-dom';
 import axios from 'axios';
-import GoogleMaps from '../components/GoogleMaps/GoogleMaps';
-import UserTypes from '../lib/UserTypes';
+import GoogleMaps from 'components/GoogleMaps/GoogleMaps';
+import UserTypes from 'lib/UserTypes';
 
 const styles = {
   avatar: {

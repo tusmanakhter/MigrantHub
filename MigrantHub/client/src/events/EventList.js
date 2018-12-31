@@ -5,9 +5,9 @@ import Button from '@material-ui/core/Button';
 import Paper from '@material-ui/core/Paper';
 import axios from 'axios';
 import { Redirect } from 'react-router-dom';
-import EventItem from './EventItem';
-import Header from '../components/Header/Header';
-import UserTypes from '../lib/UserTypes';
+import EventItem from 'events/EventItem';
+import Header from 'components/Header/Header';
+import UserTypes from 'lib/UserTypes';
 
 const styles = theme => ({
   root: {

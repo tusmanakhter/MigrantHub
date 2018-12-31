@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import qs from 'qs';
-import HomeLayout from '../../home/HomeLayout';
-import SignUp from '../common/SignUp';
-import AccountInfo from '../common/AccountInfo';
-import PersonalInfo from './Minimal/PersonalInfo';
-import AdditionalInfo from './Minimal/AdditionalInfo';
+import HomeLayout from 'home/HomeLayout';
+import SignUp from 'account/common/SignUp';
+import AccountInfo from 'account/common/AccountInfo';
+import PersonalInfo from 'account/personal/Minimal/PersonalInfo';
+import AdditionalInfo from 'account/personal/Minimal/AdditionalInfo';
 
 class SignUpMigrant extends Component {
   getStepContent(step) {

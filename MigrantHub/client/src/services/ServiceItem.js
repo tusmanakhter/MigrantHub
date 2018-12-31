@@ -3,25 +3,20 @@ import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Tooltip from "@material-ui/core/Tooltip";
 import CardMedia from '@material-ui/core/CardMedia';
-
 import Place from "@material-ui/icons/Place";
-import Button from "../components/CustomButtons/Button.jsx";
-import ViewService from './ViewService';
-import ViewReviews from './ViewReviews';
+import Button from "components/CustomButtons/Button.jsx";
+import ViewService from 'services/ViewService';
+import ViewReviews from 'services/ViewReviews';
 import { Link } from 'react-router-dom';
-
 import ArtTrack from "@material-ui/icons/ArtTrack";
 import RateReview from "@material-ui/icons/RateReview";
 import Share from "@material-ui/icons/Share";
-
-// core components
-import GridItem from "../components/Grid/GridItem.jsx";
-
-import Card from "../components/Card/Card.jsx";
-import CardHeader from "../components/Card/CardHeader.jsx";
-import CardBody from "../components/Card/CardBody.jsx";
-import CardFooter from "../components/Card/CardFooter.jsx";
-import dashboardStyle from "../assets/jss/material-dashboard-react/views/dashboardStyle.jsx";
+import GridItem from "components/Grid/GridItem.jsx";
+import Card from "components/Card/Card.jsx";
+import CardHeader from "components/Card/CardHeader.jsx";
+import CardBody from "components/Card/CardBody.jsx";
+import CardFooter from "components/Card/CardFooter.jsx";
+import dashboardStyle from "assets/jss/material-dashboard-react/views/dashboardStyle.jsx";
 
 var styles = {
   ...dashboardStyle,

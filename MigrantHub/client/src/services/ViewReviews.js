@@ -14,7 +14,7 @@ import { Redirect } from 'react-router-dom';
 import StarRatingComponent from 'react-star-rating-component';
 import axios from 'axios';
 import qs from 'qs';
-import UserTypes from '../lib/UserTypes';
+import UserTypes from 'lib/UserTypes';
 
 const styles = {
   avatar: {

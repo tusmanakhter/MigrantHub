@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import TextBox from '../generic/TextBox';
+import TextBox from 'components/fields/generic/TextBox';
 
 const City = (props) => {
   const { city, cityError, handleChange } = props;

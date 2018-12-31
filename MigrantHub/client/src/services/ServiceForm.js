@@ -15,10 +15,10 @@ import axios from 'axios';
 import { Redirect } from 'react-router-dom';
 import FormData from 'form-data';
 import qs from 'qs';
-import Header from '../components/Header/Header';
-import { provinces } from '../lib/SignUpConstants';
-import { serviceCategories } from '../lib/ServiceCategories';
-import { PhoneMask, PostalCodeMask } from '../lib/Masks';
+import Header from 'components/Header/Header';
+import { provinces } from 'lib/SignUpConstants';
+import { serviceCategories } from 'lib/ServiceCategories';
+import { PhoneMask, PostalCodeMask } from 'lib/Masks';
 
 const dayOfTheWeek = [
   { value: 'monday', label: 'Monday' },

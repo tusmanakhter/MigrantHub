@@ -8,12 +8,12 @@ import AddIcon from '@material-ui/icons/Add';
 import DeleteIcon from '@material-ui/icons/Delete';
 import Paper from '@material-ui/core/Paper';
 import validator from 'validator';
-import { objectErrorText } from '../../helpers/Object';
-import { familyObject } from '../../lib/SignUpConstants';
-import Age from '../../components/fields/personal/Age';
-import RelationshipStatus from '../../components/fields/personal/RelationshipStatus';
-import Relation from '../../components/fields/family/Relation';
-import Gender from '../../components/fields/personal/Gender';
+import { objectErrorText } from 'helpers/Object';
+import { familyObject } from 'lib/SignUpConstants';
+import Age from 'components/fields/personal/Age';
+import RelationshipStatus from 'components/fields/personal/RelationshipStatus';
+import Relation from 'components/fields/family/Relation';
+import Gender from 'components/fields/personal/Gender';
 
 const styles = theme => ({
   row: {

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Route, Redirect } from 'react-router-dom';
-import Auth from './Auth';
-import UserTypes from '../lib/UserTypes';
+import Auth from 'routes/Auth';
+import UserTypes from 'lib/UserTypes';
 
 const isLoggedIn = () => {
   const auth = Auth.isAuthenticated('user');

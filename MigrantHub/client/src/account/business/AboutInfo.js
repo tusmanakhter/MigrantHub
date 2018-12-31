@@ -6,7 +6,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import validator from 'validator';
-import { organizationTypes } from '../../lib/SignUpConstants';
+import { organizationTypes } from 'lib/SignUpConstants';
 
 const styles = ({
   select: {

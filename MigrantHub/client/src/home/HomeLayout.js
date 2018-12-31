@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import HomeHeader from './HomeHeader';
+import HomeHeader from 'home/HomeHeader';
 
 const HomeLayout = (props) => {
   const { children } = props;

@@ -20,11 +20,11 @@ import Checkbox from '@material-ui/core/Checkbox';
 import LockIcon from '@material-ui/icons/LockOutlined';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import axios from 'axios';
-import HomeLayout from '../home/HomeLayout';
-import Auth from '../routes/Auth';
+import HomeLayout from 'home/HomeLayout';
+import Auth from 'routes/Auth';
 import FacebookLogin from 'react-facebook-login';
 import { GoogleLogin } from 'react-google-login';
-import UserTypes from '../lib/UserTypes';
+import UserTypes from 'lib/UserTypes';
 
 const qs = require('qs');
 

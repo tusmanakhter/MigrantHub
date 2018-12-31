@@ -3,7 +3,7 @@ import Autosuggest from 'react-autosuggest';
 import Paper from '@material-ui/core/Paper';
 import PropTypes from 'prop-types';
 import withStyles from '@material-ui/core/styles/withStyles';
-import { renderInputComponent } from '../../../helpers/Autosuggest';
+import { renderInputComponent } from 'helpers/Autosuggest';
 
 const styles = theme => ({
   container: {

@@ -2,31 +2,24 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import withStyles from '@material-ui/core/styles/withStyles';
 import axios from 'axios';
-import refugiecenterlogo from '../assets/img/refugiecenterlogo.png'
-
-// @material-ui/icons
+import refugiecenterlogo from 'assets/img/refugiecenterlogo.png'
 import Folder from "@material-ui/icons/Folder";
 import Pages from "@material-ui/icons/Pages";
 import Tooltip from "@material-ui/core/Tooltip";
 import CardMedia from '@material-ui/core/CardMedia';
-
 import Place from "@material-ui/icons/Place";
-
 import ArtTrack from "@material-ui/icons/ArtTrack";
 import RateReview from "@material-ui/icons/RateReview";
 import Share from "@material-ui/icons/Share";
-
-
-// core components
-import GridItem from "../components/Grid/GridItem.jsx";
-import GridContainer from "../components/Grid/GridContainer.jsx";
-import Card from "../components/Card/Card.jsx";
-import CardHeader from "../components/Card/CardHeader.jsx";
-import Button from '../components/CustomButtons/Button';
-import CardIcon from "../components/Card/CardIcon.jsx";
-import CardBody from "../components/Card/CardBody.jsx";
-import CardFooter from "../components/Card/CardFooter.jsx";
-import dashboardStyle from "../assets/jss/material-dashboard-react/views/dashboardStyle.jsx";
+import GridItem from "components/Grid/GridItem.jsx";
+import GridContainer from "components/Grid/GridContainer.jsx";
+import Card from "components/Card/Card.jsx";
+import CardHeader from "components/Card/CardHeader.jsx";
+import Button from 'components/CustomButtons/Button';
+import CardIcon from "components/Card/CardIcon.jsx";
+import CardBody from "components/Card/CardBody.jsx";
+import CardFooter from "components/Card/CardFooter.jsx";
+import dashboardStyle from "assets/jss/material-dashboard-react/views/dashboardStyle.jsx";
 
 
 const styles = theme => ({

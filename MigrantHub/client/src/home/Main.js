@@ -2,12 +2,12 @@ import React, { Component } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
-import logo from '../logo.svg';
-import FriendPanel from '../components/FriendPanel/FriendPanel';
-import NavPanel from '../components/NavPanel/NavPanel';
-import ServiceCategory from '../services/ServiceCategory';
-import SearchBar from '../components/SearchBar';
-import Header from "../components/Header/Header.jsx";
+import logo from 'logo.svg';
+import FriendPanel from 'components/FriendPanel/FriendPanel';
+import NavPanel from 'components/NavPanel/NavPanel';
+import ServiceCategory from 'services/ServiceCategory';
+import SearchBar from 'components/SearchBar';
+import Header from "components/Header/Header.jsx";
 
 const styles = theme => ({
   app: {

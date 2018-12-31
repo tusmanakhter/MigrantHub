@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import Button from '@material-ui/core/Button';
 import axios from 'axios';
-import Auth from '../routes/Auth';
+import Auth from 'routes/Auth';
 
 class Logout extends Component {
   logout = () => {

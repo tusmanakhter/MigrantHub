@@ -4,9 +4,9 @@ import withStyles from '@material-ui/core/styles/withStyles';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import validator from 'validator';
-import EducationLevel from '../../components/fields/education/EducationLevel';
-import ProficiencyExams from '../../components/fields/education/ProficiencyExams';
-import Other from '../../components/fields/Other';
+import EducationLevel from 'components/fields/education/EducationLevel';
+import ProficiencyExams from 'components/fields/education/ProficiencyExams';
+import Other from 'components/fields/Other';
 
 const styles = ({});
 

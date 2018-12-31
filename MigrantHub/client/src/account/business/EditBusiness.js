@@ -3,10 +3,10 @@ import PropTypes from 'prop-types';
 import withStyles from '@material-ui/core/styles/withStyles';
 import Button from '@material-ui/core/Button';
 import axios from 'axios';
-import Header from '../../components/Header/Header';
-import ContactInfo from '../common/ContactInfo';
-import AboutInfo from './AboutInfo';
-import { handleChange } from '../../helpers/Forms';
+import Header from 'components/Header/Header';
+import ContactInfo from 'account/common/ContactInfo';
+import AboutInfo from 'account/business/AboutInfo';
+import { handleChange } from 'helpers/Forms';
 
 const qs = require('qs');
 

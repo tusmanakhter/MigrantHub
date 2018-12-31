@@ -4,13 +4,13 @@ import withStyles from '@material-ui/core/styles/withStyles';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import validator from 'validator';
-import FirstName from '../../../components/fields/contact/FirstName';
-import LastName from '../../../components/fields/contact/LastName';
-import Age from '../../../components/fields/personal/Age';
-import Nationality from '../../../components/fields/personal/Nationality';
-import Gender from '../../../components/fields/personal/Gender';
-import Status from '../../../components/fields/personal/Status';
-import RelationshipStatus from '../../../components/fields/personal/RelationshipStatus';
+import FirstName from 'components/fields/contact/FirstName';
+import LastName from 'components/fields/contact/LastName';
+import Age from 'components/fields/personal/Age';
+import Nationality from 'components/fields/personal/Nationality';
+import Gender from 'components/fields/personal/Gender';
+import Status from 'components/fields/personal/Status';
+import RelationshipStatus from 'components/fields/personal/RelationshipStatus';
 
 const styles = ({});
 

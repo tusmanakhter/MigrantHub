@@ -1,5 +1,5 @@
 import axios from 'axios';
-import UserTypes from '../lib/UserTypes';
+import UserTypes from 'lib/UserTypes';
 
 const auth = {
   authenticate() {

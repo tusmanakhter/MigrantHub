@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { genders } from '../../../lib/SignUpConstants';
-import RadioOption from '../generic/RadioOption';
+import { genders } from 'lib/SignUpConstants';
+import RadioOption from 'components/fields/generic/RadioOption';
 
 const Gender = (props) => {
   const {

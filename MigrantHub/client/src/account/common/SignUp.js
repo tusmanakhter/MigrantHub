@@ -8,9 +8,9 @@ import Step from '@material-ui/core/Step';
 import StepLabel from '@material-ui/core/StepLabel';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
-import { handleChange } from '../../helpers/Forms';
-import { handleAutoSuggestChange, handleEditObjectAutosuggest } from '../../helpers/Autosuggest';
-import { handleAddObject, handleEditObject, handleEditSingleObject, handleRemoveObject } from '../../helpers/Object';
+import { handleChange } from 'helpers/Forms';
+import { handleAutoSuggestChange, handleEditObjectAutosuggest } from 'helpers/Autosuggest';
+import { handleAddObject, handleEditObject, handleEditSingleObject, handleRemoveObject } from 'helpers/Object';
 
 const styles = theme => ({
   layout: {
