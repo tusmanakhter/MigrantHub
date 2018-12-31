@@ -10,6 +10,7 @@ import Header from '../components/Header/Header';
 import UserTypes from '../lib/UserTypes';
 import QuestionnairePanel from '../components/QuestionnairePanel/QuestionnairePanel';
 import Grid from '@material-ui/core/Grid';
+import Typography from '@material-ui/core/Typography';
 
 
 
@@ -104,15 +105,25 @@ class ServiceList extends Component {
     }
   }
 
+  handleDrawerToggle = () => {
+    this.setState({ mobileOpen: !this.state.mobileOpen });
+  };
+
   render() {
-    const { classes } = this.props;
+    const { classes, ...rest } = this.props;
     const { items, editMode, editOwner, type } = this.state;
     return (
       <div>
         {type !== UserTypes.ADMIN
           && (
-            <React.Fragment>
-              <Header />
+            <div>
+              <Header
+                handleDrawerToggle={this.handleDrawerToggle}
+                {...rest}
+              />
+              <Typography variant="h3" gutterBottom>
+                  Migrant Hub
+              </Typography>
               {this.renderRedirectToServiceForm()}
               <Button
                 variant="contained"
@@ -122,7 +133,7 @@ class ServiceList extends Component {
               >
                 Create Service
               </Button>
-            </React.Fragment>
+              </div>
           )
         }
         <GridContainer>
