@@ -19,6 +19,7 @@ import Header from 'components/Header/Header';
 import { provinces } from 'lib/SignUpConstants';
 import { serviceCategories } from 'lib/ServiceCategories';
 import { PhoneMask, PostalCodeMask } from 'lib/Masks';
+import NavPanel from 'components/NavPanel/NavPanel';
 
 const dayOfTheWeek = [
   { value: 'monday', label: 'Monday' },
@@ -86,6 +87,9 @@ const styles = theme => ({
     width: 400,
     length: 300,
 
+  },
+  mainContainer: {
+      marginLeft: 75,
   },
 });
 class ServiceForm extends Component {
@@ -609,412 +613,415 @@ class ServiceForm extends Component {
 
       return (
         <React.Fragment>
-          <Header />
-          {messageFromServer}
-          {this.renderRedirectToAllServices()}
-          <Typography variant="title" gutterBottom>
-                    Create Service Form
-          </Typography>
-          <Grid container spacing={24}>
-            <Grid item xs={12}>
-              <TextField
-                id="serviceTitle"
-                name="serviceTitle"
-                label="Service Title"
-                value={serviceTitle}
-                onChange={event => this.handleChange(event)}
-                fullWidth
-                helperText={serviceTitleError}
-                error={serviceTitleError.length > 0}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                id="serviceSummary"
-                name="serviceSummary"
-                label="Service Summary"
-                value={serviceSummary}
-                onChange={event => this.handleChange(event)}
-                fullWidth
-                helperText={serviceSummaryError}
-                error={serviceSummaryError.length > 0}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                id="serviceDescription"
-                name="serviceDescription"
-                label="Service Description"
-                value={serviceDescription}
-                onChange={event => this.handleChange(event)}
-                fullWidth
-                multiline
-                rows={12}
-                helperText={serviceDescriptionError}
-                error={serviceDescriptionError.length > 0}
-              />
-              <Grid item xs={12} sm={4}>
+          <div className={classes.mainContainer}>
+            <NavPanel />
+            <Header />
+            {messageFromServer}
+            {this.renderRedirectToAllServices()}
+            <Typography variant="title" gutterBottom>
+                      Create Service Form
+            </Typography>
+            <Grid container spacing={24}>
+              <Grid item xs={12}>
                 <TextField
-                    name="category"
-                    select
-                    label="Category"
-                    value={category}
-                    onChange={event => this.handleCategoryChange(event)}
-                    className={classes.select}
-                    fullWidth
-                    helperText={categoryError}
-                    error={categoryError.length > 0}
-                >
-                    {serviceCategories.map(option => (
-                        <MenuItem key={option.value} value={option.value}>
-                            {option.label}
-                        </MenuItem>
-                    ))}
-                </TextField>
-                <TextField
-                    name="subcategory"
-                    select
-                    label="SubCategory"
-                    value={subcategory}
-                    onChange={event => this.handleChange(event)}
-                    className={classes.select}
-                    fullWidth
-                    helperText={subcategoryError}
-                    error={subcategoryError.length > 0}
-                >
-                    {subcategoriesArray.map(option => (
-                        <MenuItem key={option.value} value={option.value}>
-                            {option.label}
-                        </MenuItem>
-                    ))}
-                </TextField>
+                  id="serviceTitle"
+                  name="serviceTitle"
+                  label="Service Title"
+                  value={serviceTitle}
+                  onChange={event => this.handleChange(event)}
+                  fullWidth
+                  helperText={serviceTitleError}
+                  error={serviceTitleError.length > 0}
+                />
               </Grid>
-            </Grid>
-            <Grid item xs={12}>
-              <Grid container spacing={24}>
-                <Grid item xs={12}>
-                  <img
-                    src={tempServiceImagePath}
-                    alt={tempServiceImagePath}
-                    className={classes.img}
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <Typography variant="subheading" gutterBottom className={classes.row} align="left">
-                                    Select image to upload (Optional)
-                    {' '}
-                    <br />
-                    <br />
-                  </Typography>
-                </Grid>
-                <Grid item xs={12}>
-                  {editMode ? (
-                    <Checkbox
-                      id="setDefaultImage"
-                      name="setDefaultImage"
-                      value={setDefaultImage}
+              <Grid item xs={12}>
+                <TextField
+                  id="serviceSummary"
+                  name="serviceSummary"
+                  label="Service Summary"
+                  value={serviceSummary}
+                  onChange={event => this.handleChange(event)}
+                  fullWidth
+                  helperText={serviceSummaryError}
+                  error={serviceSummaryError.length > 0}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  id="serviceDescription"
+                  name="serviceDescription"
+                  label="Service Description"
+                  value={serviceDescription}
+                  onChange={event => this.handleChange(event)}
+                  fullWidth
+                  multiline
+                  rows={12}
+                  helperText={serviceDescriptionError}
+                  error={serviceDescriptionError.length > 0}
+                />
+                <Grid item xs={12} sm={4}>
+                  <TextField
+                      name="category"
+                      select
+                      label="Category"
+                      value={category}
+                      onChange={event => this.handleCategoryChange(event)}
+                      className={classes.select}
+                      fullWidth
+                      helperText={categoryError}
+                      error={categoryError.length > 0}
+                  >
+                      {serviceCategories.map(option => (
+                          <MenuItem key={option.value} value={option.value}>
+                              {option.label}
+                          </MenuItem>
+                      ))}
+                  </TextField>
+                  <TextField
+                      name="subcategory"
+                      select
+                      label="SubCategory"
+                      value={subcategory}
                       onChange={event => this.handleChange(event)}
+                      className={classes.select}
+                      fullWidth
+                      helperText={subcategoryError}
+                      error={subcategoryError.length > 0}
+                  >
+                      {subcategoriesArray.map(option => (
+                          <MenuItem key={option.value} value={option.value}>
+                              {option.label}
+                          </MenuItem>
+                      ))}
+                  </TextField>
+                </Grid>
+              </Grid>
+              <Grid item xs={12}>
+                <Grid container spacing={24}>
+                  <Grid item xs={12}>
+                    <img
+                      src={tempServiceImagePath}
+                      alt={tempServiceImagePath}
+                      className={classes.img}
                     />
-                  ) : (<br />) }
-                    Set to default picture
-                </Grid>
-                <Grid item xs={12}>
-                  <TextField
-                    id="serviceImage"
-                    type="file"
-                    onChange={event => this.handleUploadImage(event)}
-                    helperText={serviceImageError}
-                    error={serviceImageError.length > 0}
-                  />
-                </Grid>
-              </Grid>
-            </Grid>
-            <Grid item xs={12}>
-              <Typography variant="subheading" gutterBottom className={classes.row} align="left">
-                            Add Service date (Optional)
-              </Typography>
-              <Button
-                variant="fab"
-                mini
-                color="primary"
-                aria-label="Add Service date"
-                onClick={event => this.handleAddServiceDate()}
-                className={classes.button}
-              >
-                {addServiceDate ? <DeleteIcon /> : <AddIcon />}
-              </Button>
-            </Grid>
-
-            {addServiceDate === true && (
-            <Paper className={classes.paper}>
-              <Grid container spacing={24} item xs={6}>
-                <Grid item xs={6}>
-                  <TextField
-                    id="startDate"
-                    name="startDate"
-                    label="Start Date"
-                    type="date"
-                    value={serviceDate.startDate}
-                    className={classes.textField}
-                    onChange={this.handleEditSingleObject('serviceDate', 'startDate')}
-                    fullWidth
-                    helperText={startDateError}
-                    error={startDateError.length > 0}
-                    InputLabelProps={{
-                      shrink: true,
-                    }}
-                  />
-                </Grid>
-                <Grid item xs={6}>
-                  <TextField
-                    id="endDate"
-                    name="endDate"
-                    label="End Date"
-                    type="date"
-                    value={serviceDate.endDate}
-                    className={classes.textField}
-                    onChange={this.handleEditSingleObject('serviceDate', 'endDate')}
-                    fullWidth
-                    helperText={endDateError}
-                    error={endDateError.length > 0}
-                    InputLabelProps={{
-                      shrink: true,
-                    }}
-                  />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <Typography variant="subheading" gutterBottom className={classes.row} align="left">
+                                      Select image to upload (Optional)
+                      {' '}
+                      <br />
+                      <br />
+                    </Typography>
+                  </Grid>
+                  <Grid item xs={12}>
+                    {editMode ? (
+                      <Checkbox
+                        id="setDefaultImage"
+                        name="setDefaultImage"
+                        value={setDefaultImage}
+                        onChange={event => this.handleChange(event)}
+                      />
+                    ) : (<br />) }
+                      Set to default picture
+                  </Grid>
+                  <Grid item xs={12}>
+                    <TextField
+                      id="serviceImage"
+                      type="file"
+                      onChange={event => this.handleUploadImage(event)}
+                      helperText={serviceImageError}
+                      error={serviceImageError.length > 0}
+                    />
+                  </Grid>
                 </Grid>
               </Grid>
-            </Paper>
-            )}
-
-            <Grid item xs={12}>
-              <Typography variant="subheading" gutterBottom className={classes.row} align="left">
-                            Add Location (Optional, but recommended)
-              </Typography>
-              <Button
-                variant="fab"
-                mini
-                color="primary"
-                aria-label="Add Location"
-                onClick={event => this.handleAddLocation()}
-                className={classes.button}
-              >
-                {addLocation ? <DeleteIcon /> : <AddIcon />}
-              </Button>
-            </Grid>
-
-            {addLocation === true && (
-            <Paper className={classes.paper}>
-              <Grid item xs={6}>
-                <TextField
-                  id="address"
-                  name="address"
-                  label="Street Address"
-                  placeholder="Street and number"
-                  value={location.address}
-                  onChange={this.handleEditSingleObject('location', 'address')}
-                  fullWidth
-                  helperText={addressError}
-                  error={addressError.length > 0}
-                />
-              </Grid>
-              <Grid item xs={6}>
-                <TextField
-                  id="apartment"
-                  name="apartment"
-                  label="Apartment"
-                  placeholder="Apartment, suite, unit, building, floor, etc."
-                  value={location.apartment}
-                  onChange={this.handleEditSingleObject('location', 'apartment')}
-                  fullWidth
-                  helperText={apartmentError}
-                  error={apartmentError.length > 0}
-                />
-              </Grid>
-              <Grid item xs={6} sm={3}>
-                <TextField
-                  id="city"
-                  name="city"
-                  label="City"
-                  value={location.city}
-                  onChange={this.handleEditSingleObject('location', 'city')}
-                  fullWidth
-                  helperText={cityError}
-                  error={cityError.length > 0}
-                />
-              </Grid>
-              <Grid item xs={6} sm={3}>
-                <TextField
-                  id="province"
-                  name="province"
-                  select
-                  label="Province/Territory"
-                  value={location.province}
-                  className={classes.select}
-                  onChange={this.handleEditSingleObject('location', 'province')}
-                  fullWidth
-                  helperText={provinceError}
-                  error={provinceError.length > 0}
+              <Grid item xs={12}>
+                <Typography variant="subheading" gutterBottom className={classes.row} align="left">
+                              Add Service date (Optional)
+                </Typography>
+                <Button
+                  variant="fab"
+                  mini
+                  color="primary"
+                  aria-label="Add Service date"
+                  onClick={event => this.handleAddServiceDate()}
+                  className={classes.button}
                 >
-                  {provinces.map(option => (
-                    <MenuItem key={option.value} value={option.value}>
-                      {option.label}
-                    </MenuItem>
-                  ))}
-                </TextField>
+                  {addServiceDate ? <DeleteIcon /> : <AddIcon />}
+                </Button>
               </Grid>
-              <Grid item xs={6} sm={3}>
-                <TextField
-                  id="postalCode"
-                  name="postalCode"
-                  label="Postal Code"
-                  value={location.postalCode}
-                  onChange={this.handleEditSingleObject('location', 'postalCode')}
-                  fullWidth
-                  InputProps={{
-                    inputComponent: PostalCodeMask,
-                  }}
-                  helperText={postalCodeError}
-                  error={postalCodeError.length > 0}
-                />
-              </Grid>
-              <Grid item xs={6} sm={3}>
-                <TextField
-                  id="phoneNumber"
-                  name="phoneNumber"
-                  label="Phone Number"
-                  value={location.phoneNumber}
-                  onChange={this.handleEditSingleObject('location', 'phoneNumber')}
-                  fullWidth
-                  helperText={phoneNumberError}
-                  error={phoneNumberError.length > 0}
-                  InputProps={{
-                    inputComponent: PhoneMask,
-                  }}
-                />
-              </Grid>
-            </Paper>
-            )}
-            <Grid item xs={12}>
-              <Typography variant="subheading" gutterBottom className={classes.row} align="left">
-                            Add service hours (Optional)
-              </Typography>
-              {serviceHoursCount < 7 && (
 
-              <Button
-                variant="fab"
-                mini
-                color="secondary"
-                aria-label="Add"
-                onClick={event => this.handleAddObject('serviceHours', serviceHoursObject)}
-                className={classes.button}
-              >
-                <AddIcon />
-              </Button>
+              {addServiceDate === true && (
+              <Paper className={classes.paper}>
+                <Grid container spacing={24} item xs={6}>
+                  <Grid item xs={6}>
+                    <TextField
+                      id="startDate"
+                      name="startDate"
+                      label="Start Date"
+                      type="date"
+                      value={serviceDate.startDate}
+                      className={classes.textField}
+                      onChange={this.handleEditSingleObject('serviceDate', 'startDate')}
+                      fullWidth
+                      helperText={startDateError}
+                      error={startDateError.length > 0}
+                      InputLabelProps={{
+                        shrink: true,
+                      }}
+                    />
+                  </Grid>
+                  <Grid item xs={6}>
+                    <TextField
+                      id="endDate"
+                      name="endDate"
+                      label="End Date"
+                      type="date"
+                      value={serviceDate.endDate}
+                      className={classes.textField}
+                      onChange={this.handleEditSingleObject('serviceDate', 'endDate')}
+                      fullWidth
+                      helperText={endDateError}
+                      error={endDateError.length > 0}
+                      InputLabelProps={{
+                        shrink: true,
+                      }}
+                    />
+                  </Grid>
+                </Grid>
+              </Paper>
+              )}
+
+              <Grid item xs={12}>
+                <Typography variant="subheading" gutterBottom className={classes.row} align="left">
+                              Add Location (Optional, but recommended)
+                </Typography>
+                <Button
+                  variant="fab"
+                  mini
+                  color="primary"
+                  aria-label="Add Location"
+                  onClick={event => this.handleAddLocation()}
+                  className={classes.button}
+                >
+                  {addLocation ? <DeleteIcon /> : <AddIcon />}
+                </Button>
+              </Grid>
+
+              {addLocation === true && (
+              <Paper className={classes.paper}>
+                <Grid item xs={6}>
+                  <TextField
+                    id="address"
+                    name="address"
+                    label="Street Address"
+                    placeholder="Street and number"
+                    value={location.address}
+                    onChange={this.handleEditSingleObject('location', 'address')}
+                    fullWidth
+                    helperText={addressError}
+                    error={addressError.length > 0}
+                  />
+                </Grid>
+                <Grid item xs={6}>
+                  <TextField
+                    id="apartment"
+                    name="apartment"
+                    label="Apartment"
+                    placeholder="Apartment, suite, unit, building, floor, etc."
+                    value={location.apartment}
+                    onChange={this.handleEditSingleObject('location', 'apartment')}
+                    fullWidth
+                    helperText={apartmentError}
+                    error={apartmentError.length > 0}
+                  />
+                </Grid>
+                <Grid item xs={6} sm={3}>
+                  <TextField
+                    id="city"
+                    name="city"
+                    label="City"
+                    value={location.city}
+                    onChange={this.handleEditSingleObject('location', 'city')}
+                    fullWidth
+                    helperText={cityError}
+                    error={cityError.length > 0}
+                  />
+                </Grid>
+                <Grid item xs={6} sm={3}>
+                  <TextField
+                    id="province"
+                    name="province"
+                    select
+                    label="Province/Territory"
+                    value={location.province}
+                    className={classes.select}
+                    onChange={this.handleEditSingleObject('location', 'province')}
+                    fullWidth
+                    helperText={provinceError}
+                    error={provinceError.length > 0}
+                  >
+                    {provinces.map(option => (
+                      <MenuItem key={option.value} value={option.value}>
+                        {option.label}
+                      </MenuItem>
+                    ))}
+                  </TextField>
+                </Grid>
+                <Grid item xs={6} sm={3}>
+                  <TextField
+                    id="postalCode"
+                    name="postalCode"
+                    label="Postal Code"
+                    value={location.postalCode}
+                    onChange={this.handleEditSingleObject('location', 'postalCode')}
+                    fullWidth
+                    InputProps={{
+                      inputComponent: PostalCodeMask,
+                    }}
+                    helperText={postalCodeError}
+                    error={postalCodeError.length > 0}
+                  />
+                </Grid>
+                <Grid item xs={6} sm={3}>
+                  <TextField
+                    id="phoneNumber"
+                    name="phoneNumber"
+                    label="Phone Number"
+                    value={location.phoneNumber}
+                    onChange={this.handleEditSingleObject('location', 'phoneNumber')}
+                    fullWidth
+                    helperText={phoneNumberError}
+                    error={phoneNumberError.length > 0}
+                    InputProps={{
+                      inputComponent: PhoneMask,
+                    }}
+                  />
+                </Grid>
+              </Paper>
+              )}
+              <Grid item xs={12}>
+                <Typography variant="subheading" gutterBottom className={classes.row} align="left">
+                              Add service hours (Optional)
+                </Typography>
+                {serviceHoursCount < 7 && (
+
+                <Button
+                  variant="fab"
+                  mini
+                  color="secondary"
+                  aria-label="Add"
+                  onClick={event => this.handleAddObject('serviceHours', serviceHoursObject)}
+                  className={classes.button}
+                >
+                  <AddIcon />
+                </Button>
+                )}
+              </Grid>
+              {serviceHours.map((member, index) => (
+                <React.Fragment key={index}>
+                  <Paper className={classes.paper}>
+                    <Typography variant="subheading" align="left" gutterBottom />
+                    <Grid justify="center" alignItems="center" container item xs>
+                      <Grid container spacing={24} item xs={11}>
+                        <Grid item xs={12} sm={4}>
+                          <TextField
+                            id="serviceDay"
+                            name="serviceDay"
+                            select
+                            label="ServiceDay"
+                            value={member.serviceDay}
+                            onChange={this.handleEditObject('serviceHours', index)}
+                            className={classes.select}
+                            helperText={this.objectErrorText('serviceHoursError', index, 'serviceDay')}
+                            error={this.objectErrorText('serviceHoursError', index, 'serviceDay').length > 0}
+                            fullWidth
+                          >
+                            {dayOfTheWeek.map(option => (
+                              <MenuItem key={option.value} value={option.value}>
+                                {option.label}
+                              </MenuItem>
+                            ))}
+                          </TextField>
+                        </Grid>
+                        <Grid item xs={12} sm={4}>
+                          <TextField
+                            id="startTime"
+                            name="startTime"
+                            label="Start Time"
+                            value={member.startTime}
+                            className={classes.textField}
+                            type="time"
+                            defaultValue="08:30"
+                            onChange={this.handleEditObject('serviceHours', index)}
+                            helperText={this.objectErrorText('serviceHoursError', index, 'startTime')}
+                            error={this.objectErrorText('serviceHoursError', index, 'startTime').length > 0}
+                            fullWidth
+                            InputLabelProps={{
+                              shrink: true,
+                            }}
+                            inputProps={{
+                              step: 300,
+                            }}
+                          />
+                        </Grid>
+                        <Grid item xs={12} sm={4}>
+                          <TextField
+                            id="endTime"
+                            name="endTime"
+                            label="End Time"
+                            value={member.endTime}
+                            className={classes.textField}
+                            type="time"
+                            onChange={this.handleEditObject('serviceHours', index)}
+                            helperText={this.objectErrorText('serviceHoursError', index, 'endTime')}
+                            error={this.objectErrorText('serviceHoursError', index, 'endTime').length > 0}
+                            fullWidth
+                            InputLabelProps={{
+                              shrink: true,
+                            }}
+                            inputProps={{
+                              step: 300,
+                            }}
+                          />
+                        </Grid>
+                      </Grid>
+                      <Grid item xs={1}>
+                        <Button
+                          variant="fab"
+                          mini
+                          aria-label="Delete"
+                          onClick={event => this.handleRemoveObject('serviceHours', index, event)}
+                          className={classes.button}
+                        >
+                          <DeleteIcon />
+                        </Button>
+                      </Grid>
+                    </Grid>
+                  </Paper>
+                </React.Fragment>
+              ))}
+              {!editMode ? (
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={this.handleSubmit}
+                  className={classes.button}
+                >
+                              Create
+                </Button>
+              ) : (
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={this.handleUpdate}
+                  className={classes.button}
+                >
+                              Edit
+                </Button>
               )}
             </Grid>
-            {serviceHours.map((member, index) => (
-              <React.Fragment key={index}>
-                <Paper className={classes.paper}>
-                  <Typography variant="subheading" align="left" gutterBottom />
-                  <Grid justify="center" alignItems="center" container item xs>
-                    <Grid container spacing={24} item xs={11}>
-                      <Grid item xs={12} sm={4}>
-                        <TextField
-                          id="serviceDay"
-                          name="serviceDay"
-                          select
-                          label="ServiceDay"
-                          value={member.serviceDay}
-                          onChange={this.handleEditObject('serviceHours', index)}
-                          className={classes.select}
-                          helperText={this.objectErrorText('serviceHoursError', index, 'serviceDay')}
-                          error={this.objectErrorText('serviceHoursError', index, 'serviceDay').length > 0}
-                          fullWidth
-                        >
-                          {dayOfTheWeek.map(option => (
-                            <MenuItem key={option.value} value={option.value}>
-                              {option.label}
-                            </MenuItem>
-                          ))}
-                        </TextField>
-                      </Grid>
-                      <Grid item xs={12} sm={4}>
-                        <TextField
-                          id="startTime"
-                          name="startTime"
-                          label="Start Time"
-                          value={member.startTime}
-                          className={classes.textField}
-                          type="time"
-                          defaultValue="08:30"
-                          onChange={this.handleEditObject('serviceHours', index)}
-                          helperText={this.objectErrorText('serviceHoursError', index, 'startTime')}
-                          error={this.objectErrorText('serviceHoursError', index, 'startTime').length > 0}
-                          fullWidth
-                          InputLabelProps={{
-                            shrink: true,
-                          }}
-                          inputProps={{
-                            step: 300,
-                          }}
-                        />
-                      </Grid>
-                      <Grid item xs={12} sm={4}>
-                        <TextField
-                          id="endTime"
-                          name="endTime"
-                          label="End Time"
-                          value={member.endTime}
-                          className={classes.textField}
-                          type="time"
-                          onChange={this.handleEditObject('serviceHours', index)}
-                          helperText={this.objectErrorText('serviceHoursError', index, 'endTime')}
-                          error={this.objectErrorText('serviceHoursError', index, 'endTime').length > 0}
-                          fullWidth
-                          InputLabelProps={{
-                            shrink: true,
-                          }}
-                          inputProps={{
-                            step: 300,
-                          }}
-                        />
-                      </Grid>
-                    </Grid>
-                    <Grid item xs={1}>
-                      <Button
-                        variant="fab"
-                        mini
-                        aria-label="Delete"
-                        onClick={event => this.handleRemoveObject('serviceHours', index, event)}
-                        className={classes.button}
-                      >
-                        <DeleteIcon />
-                      </Button>
-                    </Grid>
-                  </Grid>
-                </Paper>
-              </React.Fragment>
-            ))}
-            {!editMode ? (
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={this.handleSubmit}
-                className={classes.button}
-              >
-                            Create
-              </Button>
-            ) : (
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={this.handleUpdate}
-                className={classes.button}
-              >
-                            Edit
-              </Button>
-            )}
-          </Grid>
+          </div>
         </React.Fragment>
       );
     }

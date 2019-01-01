@@ -9,6 +9,8 @@ import PersonAddDisabled from '@material-ui/icons/PersonAddDisabled';
 import axios from 'axios';
 import yes from 'components/FriendPanel/yes.svg';
 import no from 'components/FriendPanel/no.svg';
+import NavPanel from 'components/NavPanel/NavPanel';
+import Header from 'components/Header/Header';
 
 const qs = require('qs');
 
@@ -118,6 +120,8 @@ class FriendPanel extends Component {
   render() {
     return (
       <div>
+        <NavPanel />
+        <Header />
         <Card className="Card-friend-panel">
           <CardContent>
             <p>Your list of friends:</p>

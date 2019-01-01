@@ -20,6 +20,7 @@ import CardIcon from "components/Card/CardIcon.jsx";
 import CardBody from "components/Card/CardBody.jsx";
 import CardFooter from "components/Card/CardFooter.jsx";
 import dashboardStyle from "assets/jss/material-dashboard-react/views/dashboardStyle.jsx";
+import ServiceCategories from "./ServiceCategories";
 
 
 const styles = theme => ({
@@ -116,112 +117,7 @@ class ServiceCategory extends Component {
     const { items, editMode, editOwner, type } = this.state;
     return (
       <div>
-        <Card style={{ padding: '20px' }}>
-          <CardHeader>
-            <h4 className={classes.cardTitle}>Category</h4>
-          </CardHeader>
-          <GridContainer>
-            <GridItem xs={12} sm={6} md={2}>
-              <Card>
-                <CardHeader color="warning" stats icon>
-                  <CardIcon color="warning">
-                    <Folder />
-                  </CardIcon>
-                  <p className={classes.cardCategory}></p>
-                  <h5 className={classes.cardTitle}>
-                    Work Accidents
-                    </h5>
-                </CardHeader>
-                <CardFooter stats>
-                  <div className={classes.stats}>
-                    <Pages />
-                    16 services
-                    </div>
-                </CardFooter>
-              </Card>
-            </GridItem>
-            <GridItem xs={12} sm={6} md={2}>
-              <Card>
-                <CardHeader color="success" stats icon>
-                  <CardIcon color="success">
-                    <Folder />
-                  </CardIcon>
-                  <p className={classes.cardCategory}>Women</p>
-                </CardHeader>
-                <CardFooter stats>
-                  <div className={classes.stats}>
-                    <Pages />
-                    5 services
-                    </div>
-                </CardFooter>
-              </Card>
-            </GridItem>
-            <GridItem xs={12} sm={6} md={2}>
-              <Card>
-                <CardHeader color="danger" stats icon>
-                  <CardIcon color="danger">
-                    <Folder />
-                  </CardIcon>
-                  <p className={classes.cardCategory}>Employement</p>
-                </CardHeader>
-                <CardFooter stats>
-                  <div className={classes.stats}>
-                    <Pages />
-                    11 services
-                    </div>
-                </CardFooter>
-              </Card>
-            </GridItem>
-            <GridItem xs={12} sm={6} md={2}>
-              <Card>
-                <CardHeader color="info" stats icon>
-                  <CardIcon color="info">
-                    <Folder />
-                  </CardIcon>
-                  <p className={classes.cardCategory}>Housing</p>
-                </CardHeader>
-                <CardFooter stats>
-                  <div className={classes.stats}>
-                    <Pages />
-                    9 services
-                    </div>
-                </CardFooter>
-              </Card>
-            </GridItem>
-            <GridItem xs={12} sm={6} md={2}>
-              <Card>
-                <CardHeader color="success" stats icon>
-                  <CardIcon color="success">
-                    <Folder />
-                  </CardIcon>
-                  <p className={classes.cardCategory}>Legal aid</p>
-                </CardHeader>
-                <CardFooter stats>
-                  <div className={classes.stats}>
-                    <Pages />
-                    9 services
-                    </div>
-                </CardFooter>
-              </Card>
-            </GridItem>
-            <GridItem xs={12} sm={6} md={2}>
-              <Card>
-                <CardHeader color="primary" stats icon>
-                  <CardIcon color="primary">
-                    <Folder />
-                  </CardIcon>
-                  <p className={classes.cardCategory}>Information and referral</p>
-                </CardHeader>
-                <CardFooter stats>
-                  <div className={classes.stats}>
-                    <Pages />
-                    9 services
-                    </div>
-                </CardFooter>
-              </Card>
-            </GridItem>
-          </GridContainer>
-        </Card>
+        <ServiceCategories classes={this.props.classes}/>
         <Card style={{ padding: '20px' }}>
           <CardHeader>
             <h4 className={classes.cardTitle}>Services</h4>
@@ -482,7 +378,6 @@ class ServiceCategory extends Component {
                     <Button color="info" simple justIcon className={classes.tableActionButton}>
                       <Share className={classes.tableActionButtonIcon + " " + classes.edit} />
                     </Button>
-
                   </Tooltip>
                 </CardFooter>
               </Card>

@@ -14,12 +14,16 @@ import OtherInfo from 'account/personal/OtherInfo';
 import { handleChange } from 'helpers/Forms';
 import { handleAutoSuggestChange, handleEditObjectAutosuggest } from 'helpers/Autosuggest';
 import { handleAddObject, handleEditObject, handleEditSingleObject, handleRemoveObject } from 'helpers/Object';
+import NavPanel from 'components/NavPanel/NavPanel';
 
 const qs = require('qs');
 
 const styles = theme => ({
   button: {
     margin: theme.spacing.unit,
+  },
+  mainContainer: {
+      marginLeft: 75,
   },
 });
 
@@ -262,82 +266,85 @@ class EditMigrant extends Component {
 
     return (
       <React.Fragment>
-        <Header />
-        <ContactInfo
-          innerRef={this.contactChild}
-          handleChange={this.handleChange}
-          firstName={firstName}
-          lastName={lastName}
-          address={address}
-          apartment={apartment}
-          city={city}
-          province={province}
-          postalCode={postalCode}
-          phoneNumber={phoneNumber}
-        />
-        <PersonalInfo
-          innerRef={this.personalChild}
-          handleChange={this.handleChange}
-          age={age}
-          gender={gender}
-          nationality={nationality}
-          relationshipStatus={relationshipStatus}
-          status={status}
-        />
-        <LanguageInfo
-          innerRef={this.langChild}
-          handleChange={this.handleChange}
-          handleAutoSuggestChange={this.handleAutoSuggestChange}
-          handleAddObject={this.handleAddObject}
-          handleRemoveObject={this.handleRemoveObject}
-          handleEditObjectAutosuggest={this.handleEditObjectAutosuggest}
-          handleEditObject={this.handleEditObject}
-          languages={languages}
-          writingLevel={writingLevel}
-          speakingLevel={speakingLevel}
-          motherTongue={motherTongue}
-        />
-        <FamilyInfo
-          innerRef={this.familyChild}
-          handleAddObject={this.handleAddObject}
-          handleRemoveObject={this.handleRemoveObject}
-          handleEditObject={this.handleEditObject}
-          family={family}
-        />
-        <EducationInfo
-          innerRef={this.educationChild}
-          handleChange={this.handleChange}
-          handleEditSingleObject={this.handleEditSingleObject}
-          educationLevel={educationLevel}
-          proficiencyExams={proficiencyExams}
-        />
-        <EmploymentInfo
-          innerRef={this.employmentChild}
-          handleChange={this.handleChange}
-          handleAddObject={this.handleAddObject}
-          handleRemoveObject={this.handleRemoveObject}
-          handleEditObject={this.handleEditObject}
-          jobStatus={jobStatus}
-          lookingForJob={lookingForJob}
-          currentIncome={currentIncome}
-          workExperience={workExperience}
-        />
-        <OtherInfo
-          innerRef={this.otherChild}
-          handleChange={this.handleChange}
-          handleAutoSuggestChange={this.handleAutoSuggestChange}
-          settlingLocation={settlingLocation}
-          settlingDuration={settlingDuration}
-          joiningReason={joiningReason}
-        />
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={this.handleSave}
-          className={classes.button}
-        >
-                Save
-        </Button>
+          <div className={classes.mainContainer}>
+              <Header />
+              <NavPanel />
+              <ContactInfo
+              innerRef={this.contactChild}
+              handleChange={this.handleChange}
+              firstName={firstName}
+              lastName={lastName}
+              address={address}
+              apartment={apartment}
+              city={city}
+              province={province}
+              postalCode={postalCode}
+              phoneNumber={phoneNumber}
+            />
+            <PersonalInfo
+              innerRef={this.personalChild}
+              handleChange={this.handleChange}
+              age={age}
+              gender={gender}
+              nationality={nationality}
+              relationshipStatus={relationshipStatus}
+              status={status}
+            />
+            <LanguageInfo
+              innerRef={this.langChild}
+              handleChange={this.handleChange}
+              handleAutoSuggestChange={this.handleAutoSuggestChange}
+              handleAddObject={this.handleAddObject}
+              handleRemoveObject={this.handleRemoveObject}
+              handleEditObjectAutosuggest={this.handleEditObjectAutosuggest}
+              handleEditObject={this.handleEditObject}
+              languages={languages}
+              writingLevel={writingLevel}
+              speakingLevel={speakingLevel}
+              motherTongue={motherTongue}
+            />
+            <FamilyInfo
+              innerRef={this.familyChild}
+              handleAddObject={this.handleAddObject}
+              handleRemoveObject={this.handleRemoveObject}
+              handleEditObject={this.handleEditObject}
+              family={family}
+            />
+            <EducationInfo
+              innerRef={this.educationChild}
+              handleChange={this.handleChange}
+              handleEditSingleObject={this.handleEditSingleObject}
+              educationLevel={educationLevel}
+              proficiencyExams={proficiencyExams}
+            />
+            <EmploymentInfo
+              innerRef={this.employmentChild}
+              handleChange={this.handleChange}
+              handleAddObject={this.handleAddObject}
+              handleRemoveObject={this.handleRemoveObject}
+              handleEditObject={this.handleEditObject}
+              jobStatus={jobStatus}
+              lookingForJob={lookingForJob}
+              currentIncome={currentIncome}
+              workExperience={workExperience}
+            />
+            <OtherInfo
+              innerRef={this.otherChild}
+              handleChange={this.handleChange}
+              handleAutoSuggestChange={this.handleAutoSuggestChange}
+              settlingLocation={settlingLocation}
+              settlingDuration={settlingDuration}
+              joiningReason={joiningReason}
+            />
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={this.handleSave}
+              className={classes.button}
+            >
+                    Save
+            </Button>
+          </div>
       </React.Fragment>
     );
   }

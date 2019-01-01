@@ -6,12 +6,14 @@ import Header from 'components/Header/Header';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
+import NavPanel from 'components/NavPanel/NavPanel';
 
 const qs = require('qs');
 
 const styles = theme => ({
     root: {
         flexGrow: 1,
+        marginLeft: 75,
     },
     paper: {
         padding: theme.spacing.unit * 2,
@@ -157,7 +159,8 @@ class ViewMigrantProfile extends Component {
 
     return (
       <React.Fragment>
-        <Header />
+          <NavPanel />
+          <Header />
           <div className={classes.root}>
               <Grid
                   container spacing={6}

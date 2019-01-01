@@ -8,8 +8,12 @@ import { Redirect } from 'react-router-dom';
 import EventItem from 'events/EventItem';
 import Header from 'components/Header/Header';
 import UserTypes from 'lib/UserTypes';
+import NavPanel from 'components/NavPanel/NavPanel';
 
 const styles = theme => ({
+  mainContainer: {
+      marginLeft: 75,
+  },
   root: {
     ...theme.mixins.gutters(),
     paddingTop: theme.spacing.unit * 2,
@@ -50,7 +54,7 @@ class EventList extends Component {
   }
 
   getData(event, props = this.props) {
-    const { location } = props;
+    const { location } = this.props;
 
     let editOwnerEmail = '';
     if (location.state) {
@@ -91,10 +95,11 @@ class EventList extends Component {
       const { items, editMode, editOwner, type } = this.state;
 
       return (
-        <div>
+        <div className={classes.mainContainer}>
+          <NavPanel />
           { type !== UserTypes.ADMIN
              && (
-             <React.Fragment>
+             <div>
                <Header />
                {this.renderRedirectToEventForm()}
                <Button
@@ -105,7 +110,7 @@ class EventList extends Component {
                >
                  Create Event 
                </Button>
-             </React.Fragment>
+             </div>
              )
            }
           <Paper className={classes.root} elevation={2}>
@@ -134,7 +139,7 @@ class EventList extends Component {
 }
 
 EventList.propTypes = {
-  classes: PropTypes.shape({}).isRequired,
+    classes: PropTypes.shape({}).isRequired,
 };
 
 export default withStyles(styles)(EventList);

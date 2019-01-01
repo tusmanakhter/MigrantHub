@@ -25,6 +25,7 @@ import ViewBusinessProfile from 'account/business/ViewBusinessProfile';
 import Auth from 'routes/Auth';
 import UsersList from 'People/UsersList';
 import ServiceCategories from 'services/ServiceCategories';
+import FriendPanel from 'components/FriendPanel/FriendPanel';
 
 class Routes extends Component {
   state = {
@@ -63,12 +64,11 @@ class Routes extends Component {
         <Route path="/categories" component={ServiceCategories} exact />
         <Route path="/services/share/:id" render={(props) => <ServiceShare serviceId={props.match.params.id} />} />
         <Route path="/events/create" component={EventForm} exact />
-        <Route path="/myservices" component={ServiceList} exact />
         <Route path="/events" component={EventList} exact />
-        <Route path="/myevents" component={EventList} exact />
         <Route path="/users" component={UsersList} exact />
         <Route path="/migrant/profile" component={ViewMigrantProfile} exact />
         <Route path="/business/profile" component={ViewBusinessProfile} exact />
+        <Route path="/friends" component={FriendPanel} exact />
         <Route component={Error} />
       </Switch>
     );

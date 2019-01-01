@@ -10,11 +10,12 @@ import Header from 'components/Header/Header';
 import UserTypes from 'lib/UserTypes';
 import QuestionnairePanel from 'components/QuestionnairePanel/QuestionnairePanel';
 import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
-
-
+import NavPanel from 'components/NavPanel/NavPanel';
 
 const styles = theme => ({
+  mainContainer: {
+    marginLeft: 75,
+  },
   root: {
     ...theme.mixins.gutters(),
     paddingTop: theme.spacing.unit * 2,
@@ -113,17 +114,12 @@ class ServiceList extends Component {
     const { classes, ...rest } = this.props;
     const { items, editMode, editOwner, type } = this.state;
     return (
-      <div>
+      <div className={classes.mainContainer}>
+        <NavPanel />
         {type !== UserTypes.ADMIN
           && (
             <div>
-              <Header
-                handleDrawerToggle={this.handleDrawerToggle}
-                {...rest}
-              />
-              <Typography variant="h3" gutterBottom>
-                  Migrant Hub
-              </Typography>
+              <Header/>
               {this.renderRedirectToServiceForm()}
               <Button
                 variant="contained"

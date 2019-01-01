@@ -7,6 +7,7 @@ import Header from 'components/Header/Header';
 import ContactInfo from 'account/common/ContactInfo';
 import AboutInfo from 'account/business/AboutInfo';
 import { handleChange } from 'helpers/Forms';
+import NavPanel from 'components/NavPanel/NavPanel';
 
 const qs = require('qs');
 
@@ -14,7 +15,11 @@ const styles = ({
   select: {
     textAlign: 'left',
   },
+  mainContainer: {
+    marginLeft: 75,
+  },
 });
+
 class EditBusiness extends Component {
   constructor(props) {
     super(props);
@@ -140,36 +145,39 @@ class EditBusiness extends Component {
 
     return (
       <React.Fragment>
-        <Header />
-        <ContactInfo
-          innerRef={this.contactChild}
-          handleChange={this.handleChange}
-          firstName={firstName}
-          lastName={lastName}
-          address={address}
-          apartment={apartment}
-          city={city}
-          province={province}
-          postalCode={postalCode}
-          phoneNumber={phoneNumber}
-        />
-        <AboutInfo
-          innerRef={this.aboutChild}
-          handleChange={this.handleChange}
-          organizationName={organizationName}
-          orgType={orgType}
-          department={department}
-          serviceType={serviceType}
-          description={description}
-        />
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={this.handleSave}
-          className={classes.button}
-        >
-              Save
-        </Button>
+        <div className={classes.mainContainer}>
+            <Header />
+            <NavPanel />
+              <ContactInfo
+              innerRef={this.contactChild}
+              handleChange={this.handleChange}
+              firstName={firstName}
+              lastName={lastName}
+              address={address}
+              apartment={apartment}
+              city={city}
+              province={province}
+              postalCode={postalCode}
+              phoneNumber={phoneNumber}
+            />
+            <AboutInfo
+              innerRef={this.aboutChild}
+              handleChange={this.handleChange}
+              organizationName={organizationName}
+              orgType={orgType}
+              department={department}
+              serviceType={serviceType}
+              description={description}
+            />
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={this.handleSave}
+              className={classes.button}
+            >
+                  Save
+            </Button>
+        </div>
       </React.Fragment>
     );
   }
