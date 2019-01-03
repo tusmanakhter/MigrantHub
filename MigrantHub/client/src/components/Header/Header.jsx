@@ -1,53 +1,112 @@
 import React from "react";
-import classNames from "classnames";
 import PropTypes from "prop-types";
+import cx from "classnames";
+
+// @material-ui/core components
 import withStyles from "@material-ui/core/styles/withStyles";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
-import IconButton from "@material-ui/core/IconButton";
 import Hidden from "@material-ui/core/Hidden";
+
+// material-ui icons
 import Menu from "@material-ui/icons/Menu";
-import HeaderLinks from "components/Header/HeaderLinks.jsx";
-import headerStyle from "assets/jss/material-dashboard-react/components/headerStyle.jsx";
-import Typography from '@material-ui/core/Typography';
+import MoreVert from "@material-ui/icons/MoreVert";
+import ViewList from "@material-ui/icons/ViewList";
+
+// core components
+import HeaderLinks from "./HeaderLinks";
+import Button from "components/CustomButtons/Button.jsx";
+
+import headerStyle from "assets/jss/material-dashboard-pro-react/components/headerStyle.jsx";
 
 function Header({ ...props }) {
-  const { classes, color } = props;
-  const appBarClasses = classNames({
+  function makeBrand() {
+    var name;
+    // props.routes.map((prop, key) => {
+    //   if (prop.collapse) {
+    //     prop.views.map((prop, key) => {
+    //       if (prop.path === props.location.pathname) {
+    //         name = prop.name;
+    //       }
+    //       return null;
+    //     });
+    //   }
+    //   if (prop.path === props.location.pathname) {
+    //     name = prop.name;
+    //   }
+    //   return null;
+    // });
+    if(name){
+      return name;
+    } else {
+      return "Home Page";
+    }
+  }
+  const { classes, color, rtlActive } = props;
+  const appBarClasses = cx({
     [" " + classes[color]]: color
   });
+  const sidebarMinimize =
+    classes.sidebarMinimize +
+    " " +
+    cx({
+      [classes.sidebarMinimizeRTL]: rtlActive
+    });
   return (
-      <div>
-        <AppBar className={classes.appBar + appBarClasses}>
-          <Toolbar className={classes.container}>
-            <div className={classes.flex}>
-              {/* Here we create navbar brand, based on route name */}
-            </div>
-            <Hidden smDown implementation="css">
-              <HeaderLinks />
-            </Hidden>
-            <Hidden mdUp implementation="css">
-              <IconButton
-                color="inherit"
-                aria-label="open drawer"
-                onClick={props.handleDrawerToggle}
+    <AppBar className={classes.appBar + appBarClasses}>
+      <Toolbar className={classes.container}>
+        <Hidden smDown implementation="css">
+          <div className={sidebarMinimize}>
+            {props.miniActive ? (
+              <Button
+                justIcon
+                round
+                color="white"
+                onClick={props.sidebarMinimize}
               >
-                <Menu />
-              </IconButton>
-            </Hidden>
-          </Toolbar>
-        </AppBar>
-        <Typography variant="h3" align='center'>
-          Migrant Hub
-        </Typography>
-        <br />
-      </div>
+                <ViewList className={classes.sidebarMiniIcon} />
+              </Button>
+            ) : (
+              <Button
+                justIcon
+                round
+                color="white"
+                onClick={props.sidebarMinimize}
+              >
+                <MoreVert className={classes.sidebarMiniIcon} />
+              </Button>
+            )}
+          </div>
+        </Hidden>
+        <div className={classes.flex}>
+          {/* Here we create navbar brand, based on route name */}
+          <Button href="#" className={classes.title} color="transparent">
+            {makeBrand()}
+          </Button>
+        </div>
+        {/* <Hidden smDown implementation="css">
+          <HeaderLinks rtlActive={rtlActive} />
+        </Hidden> */}
+        <Hidden mdUp implementation="css">
+          <Button
+            className={classes.appResponsive}
+            color="transparent"
+            justIcon
+            aria-label="open drawer"
+            onClick={props.handleDrawerToggle}
+          >
+            <Menu />
+          </Button>
+        </Hidden>
+      </Toolbar>
+    </AppBar>
   );
 }
 
 Header.propTypes = {
   classes: PropTypes.object.isRequired,
-  color: PropTypes.oneOf(["primary", "info", "success", "warning", "danger"])
+  color: PropTypes.oneOf(["primary", "info", "success", "warning", "danger"]),
+  rtlActive: PropTypes.bool
 };
 
 export default withStyles(headerStyle)(Header);

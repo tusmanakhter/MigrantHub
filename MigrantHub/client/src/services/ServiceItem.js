@@ -16,7 +16,7 @@ import Card from "components/Card/Card.jsx";
 import CardHeader from "components/Card/CardHeader.jsx";
 import CardBody from "components/Card/CardBody.jsx";
 import CardFooter from "components/Card/CardFooter.jsx";
-import dashboardStyle from "assets/jss/material-dashboard-react/views/dashboardStyle.jsx";
+import dashboardStyle from "assets/jss/material-dashboard-pro-react/views/dashboardStyle.jsx";
 
 var styles = {
   ...dashboardStyle,
@@ -73,58 +73,73 @@ class ServiceItem extends Component {
     const { openService, openReviews, scroll } = this.state;
     return (
       <GridItem xs={12} sm={12} md={2}>
-        <Card chart>
-          <CardHeader color="success">
-            <CardMedia
-              component="img"
-              alt={serviceTitle}
-              className={classes.media}
-              height="200"
-              src={serviceImagePath}
-              title={serviceTitle}
-            />
-          </CardHeader>
-          <CardBody>
-            <h4 className={classes.cardTitle}>{serviceTitle}</h4>
-            <p className={classes.cardCategory}>
-              {serviceSummary}
-            </p>
-            <div>
-              {serviceLocation ? (<div><Place />{serviceLocation.city}</div>) : ""}
-            </div>
-          </CardBody>
-          <CardFooter chart>
-            <Tooltip
-              id="tooltip-top"
-              title="View"
-              placement="top"
-              classes={{ tooltip: classes.tooltip }}>
-              <Button color="primary" simple justIcon onClick={this.handleClickOpen}>
-                <ArtTrack className={classes.tableActionButtonIcon + " " + classes.edit} />
-              </Button>
-            </Tooltip>
-            <Tooltip
-              id="tooltip-top"
-              title="Review"
-              placement="top"
-              classes={{ tooltip: classes.tooltip }}>
-              <Button color="success" simple justIcon className={classes.tableActionButton} onClick={this.handleViewReviews}>
-                <RateReview className={classes.tableActionButtonIcon + " " + classes.edit} />
-              </Button>
-            </Tooltip>
-            <Tooltip
-              id="tooltip-top"
-              title="Share"
-              placement="top"
-              classes={{ tooltip: classes.tooltip }}>
-              <Link to={`/services/share/${serviceId}`}>
-                <Button color="info" simple justIcon className={classes.tableActionButton}>
-                  <Share className={classes.tableActionButtonIcon + " " + classes.edit} />
-                </Button>
-              </Link>
-            </Tooltip>
-          </CardFooter>
-        </Card>
+        <Card product className={classes.cardHover}>
+              <CardHeader image className={classes.cardHeaderHover}>
+                <a href="#pablo" onClick={this.handleClickOpen}>
+                <CardMedia
+                  component="img"
+                  alt={serviceTitle}
+                  className={classes.media}
+                  height="200"
+                  src={serviceImagePath}
+                  title={serviceTitle}
+                />
+                </a>
+              </CardHeader>
+              <CardBody>
+                <div className={classes.cardHoverUnder}>
+                  <Tooltip
+                    id="tooltip-top"
+                    title="View"
+                    placement="bottom"
+                    classes={{ tooltip: classes.tooltip }}
+                  >
+                    <Button color="primary" simple justIcon onClick={this.handleClickOpen}>
+                      <ArtTrack className={classes.tableActionButtonIcon + " " + classes.edit} />
+                    </Button>
+                  </Tooltip>
+                  <Tooltip
+                    id="tooltip-top"
+                    title="Review"
+                    placement="bottom"
+                    classes={{ tooltip: classes.tooltip }}
+                  >
+                    <Button color="success" simple justIcon className={classes.tableActionButton} onClick={this.handleViewReviews}>
+                      <RateReview className={classes.tableActionButtonIcon + " " + classes.edit} />
+                    </Button>
+                  </Tooltip>
+                  <Tooltip
+                    id="tooltip-top"
+                    title="Share"
+                    placement="bottom"
+                    classes={{ tooltip: classes.tooltip }}
+                  >
+                    <Link to={`/services/share/${serviceId}`}>
+                      <Button color="info" simple justIcon className={classes.tableActionButton}>
+                        <Share className={classes.tableActionButtonIcon + " " + classes.edit} />
+                      </Button>
+                    </Link>
+                  </Tooltip>
+                </div>
+                <h4 className={classes.cardProductTitle}>
+                  <a href="#pablo" onClick={e => e.preventDefault()}>
+                    {serviceTitle}
+                  </a>
+                </h4>
+                <p className={classes.cardProductDesciprion}>
+                    {serviceSummary}
+                </p>
+              </CardBody>
+              <CardFooter product>
+                <div className={classes.price}>
+                  <h4>Free</h4>
+                </div>
+                <div className={`${classes.stats} ${classes.productStats}`}>
+                  {serviceLocation ? (<div><Place />{serviceLocation.city}</div>) : ""}
+                </div>
+              </CardFooter>
+            </Card>
+            
         <ViewService
           open={openService}
           scroll={scroll}
