@@ -137,14 +137,18 @@ class ServiceList extends Component {
               >
                 Create Service 
               </Button>
-              <Button
-                variant="contained"
-                color="primary"
-                className={classes.button}
-                onClick={this.setRedirectToSuggestionForm}
-              >
-                Add Suggestion 
-              </Button>
+              { type === UserTypes.MIGRANT
+                && (
+                <Button
+                  variant="contained"
+                  color="primary"
+                  className={classes.button}
+                  onClick={this.setRedirectToSuggestionForm}
+                >
+                  Add Suggestion 
+                </Button>
+                )
+              }
             </React.Fragment>
             )
           }

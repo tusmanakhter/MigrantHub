@@ -61,7 +61,7 @@ class Routes extends Component {
         <ProtectedRoute path="/editbusiness" component={EditBusiness} business exact />
         <ProtectedRoute path="/admin/dashboard" component={AdminDashboard} admin />
         <Route path="/services/create" component={ServiceForm} exact />
-        <ProtectedRoute path="/services/suggestions/create" component={ServiceSuggestionForm} exact />
+        <ProtectedRoute path="/services/suggestions/create" component={ServiceSuggestionForm} migrant exact />
         <ProtectedRoute path="/services/suggestions" component={ServiceSuggestionList} business admin exact />
         <Route path="/services" component={ServiceList} exact />
         <Route path="/categories" component={ServiceCategories} exact />
