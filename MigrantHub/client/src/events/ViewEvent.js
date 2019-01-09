@@ -1,10 +1,4 @@
 import React, { Component } from 'react';
-import {
-  withScriptjs,
-  withGoogleMap,
-  GoogleMap,
-  Marker
-} from "react-google-maps";
 import withStyles from '@material-ui/core/styles/withStyles';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
@@ -33,9 +27,12 @@ import Card from "components/Card/Card.jsx";
 import CardHeader from "components/Card/CardHeader.jsx";
 import CardBody from "components/Card/CardBody.jsx";
 import { cardTitle } from "assets/jss/material-dashboard-pro-react.jsx";
+import SweetAlert from "react-bootstrap-sweetalert";
+import sweetAlertStyle from "assets/jss/material-dashboard-pro-react/views/sweetAlertStyle.jsx";
 
 const styles = {
   cardTitle,
+  sweetAlertStyle,
   pageSubcategoriesTitle: {
     color: "#3C4858",
     textDecoration: "none",
@@ -56,20 +53,6 @@ const styles = {
   }
 };
 
-const RegularMap = withScriptjs(
-  withGoogleMap(props => (
-    <GoogleMap
-      defaultZoom={8}
-      defaultCenter={{ lat: 40.748817, lng: -73.985428 }}
-      defaultOptions={{
-        scrollwheel: false
-      }}
-    >
-      <Marker position={{ lat: 40.748817, lng: -73.985428 }} />
-    </GoogleMap>
-  ))
-);
-
 class ViewEvent extends Component {
   constructor(props) {
     super(props);
@@ -78,7 +61,12 @@ class ViewEvent extends Component {
       redirectToURL: '',
       redirectState: {},
       type: '',
+      alert: null,
+      show: false,
     };
+    this.hideAlert = this.hideAlert.bind(this);
+    this.successDelete = this.successDelete.bind(this);
+    this.cancelDetele = this.cancelDetele.bind(this);
   }
 
   componentDidMount() {
@@ -115,6 +103,76 @@ class ViewEvent extends Component {
     })
   }
 
+  warningWithConfirmAndCancelMessage() {
+    this.setState({
+      alert: (
+        <SweetAlert
+          warning
+          style={{ display: "block", marginTop: "-100px" }}
+          title="Are you sure?"
+          onConfirm={() => this.successDelete()}
+          onCancel={() => this.cancelDetele()}
+          confirmBtnCssClass={
+            this.props.classes.button + " " + this.props.classes.success
+          }
+          cancelBtnCssClass={
+            this.props.classes.button + " " + this.props.classes.danger
+          }
+          confirmBtnText="Yes, delete it!"
+          cancelBtnText="Cancel"
+          showCancel
+        >
+          You will not be able to recover this service!
+        </SweetAlert>
+      )
+    });
+  }
+
+  successDelete() {
+    this.setState({
+      alert: (
+        <SweetAlert
+          success
+          style={{ display: "block", marginTop: "-100px" }}
+          title="Deleted!"
+          onConfirm={() => this.hideAlert()}
+          onCancel={() => this.hideAlert()}
+          confirmBtnCssClass={
+            this.props.classes.button + " " + this.props.classes.success
+          }
+        >
+          Your service has been deleted.
+        </SweetAlert>
+      )
+    });
+    this.handleDelete();
+  }
+
+  cancelDetele() {
+    this.setState({
+      alert: (
+        <SweetAlert
+          danger
+          style={{ display: "block", marginTop: "-100px" }}
+          title="Cancelled"
+          onConfirm={() => this.hideAlert()}
+          onCancel={() => this.hideAlert()}
+          confirmBtnCssClass={
+            this.props.classes.button + " " + this.props.classes.success
+          }
+        >
+          Your service file is safe :)
+        </SweetAlert>
+      )
+    });
+  }
+
+  hideAlert() {
+    this.setState({
+      alert: null
+    });
+  }
+
   render() {
     const {
       classes, eventName, description, dateStart, dateEnd, timeStart, timeEnd,
@@ -134,6 +192,7 @@ class ViewEvent extends Component {
 
     return (
       <div>
+        {this.state.alert}
         <Dialog
           open={open}
           onClose={onClose}
@@ -229,30 +288,13 @@ class ViewEvent extends Component {
                       )
                     },
                     {
-                      tabButton: "Schedule",
-                      tabIcon: Schedule,
+                      tabButton: "Map",
+                      tabIcon: AddLocation,
                       tabContent: (
                         <span>
-                            <CardHeader color="rose" icon>
-                              <CardIcon color="rose">
-                                <AddLocation />
-                              </CardIcon>
-                              <h4 className={classes.cardIconTitle}>Map</h4>
-                            </CardHeader>
                             <CardBody>
-                              <RegularMap
-                                googleMapURL="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY_HERE"
-                                loadingElement={<div style={{ height: `100%` }} />}
-                                containerElement={
-                                  <div
-                                    style={{
-                                      height: `280px`,
-                                      borderRadius: "6px",
-                                      overflow: "hidden"
-                                    }}
-                                  />
-                                }
-                                mapElement={<div style={{ height: `100%` }} />}
+                              <GoogleMaps
+                                location={location}
                               />
                             </CardBody>
                         </span>
@@ -264,14 +306,14 @@ class ViewEvent extends Component {
                 <DialogActions> 
                   { type === UserTypes.ADMIN
                     && (
-                      <Button onClick={this.handleDelete} color="secondary">
+                      <Button onClick={this.warningWithConfirmAndCancelMessage.bind(this)} color="secondary">
                         Delete
                       </Button>
                     )
                   }}
                   {this.props.editMode &&
                     <React.Fragment>
-                        <Button onClick={this.handleDelete} color="secondary">
+                        <Button onClick={this.warningWithConfirmAndCancelMessage.bind(this)} color="secondary">
                             Delete
                         </Button>
                         <Button onClick={this.handleEdit} color="primary">
