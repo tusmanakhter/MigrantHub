@@ -6,7 +6,7 @@ import Grid from '@material-ui/core/Grid';
 import ServiceCategory from 'services/ServiceCategory';
 import SearchBar from 'components/SearchBar';
 import FriendPanel from 'components/FriendPanel/FriendPanel';
-
+import Logout from 'components/Logout';
 import dashboardRoutes from "routes/dashboard.jsx";
 
 // creates a beautiful scrollbar
@@ -27,22 +27,23 @@ import appStyle from "assets/jss/material-dashboard-pro-react/layouts/dashboardS
 
 import image from "assets/img/sidebar-2.jpg";
 import logo from "assets/img/logo-white.svg";
+import ServiceList from "../services/ServiceList";
 
-const switchRoutes = (
-  <Switch>
-    {dashboardRoutes.map((prop, key) => {
-      if (prop.redirect)
-        return <Redirect from={prop.path} to={prop.pathTo} key={key} />;
-      if (prop.collapse)
-        return prop.views.map((prop, key) => {
-          return (
-            <Route path={prop.path} component={prop.component} key={key} />
-          );
-        });
-      return <Route path={prop.path} component={prop.component} key={key} />;
-    })}
-  </Switch>
-);
+// const switchRoutes = (
+//   <Switch>
+//     {dashboardRoutes.map((prop, key) => {
+//       if (prop.redirect)
+//         return <Redirect from={prop.path} to={prop.pathTo} key={key} />;
+//       if (prop.collapse)
+//         return prop.views.map((prop, key) => {
+//           return (
+//             <Route path={prop.path} component={prop.component} key={key} />
+//           );
+//         });
+//       return <Route path={prop.path} component={prop.component} key={key} />;
+//     })}
+//   </Switch>
+// );
 
 var ps;
 
@@ -128,12 +129,13 @@ class Dashboard extends React.Component {
           <Header
             sidebarMinimize={this.sidebarMinimize.bind(this)}
             miniActive={this.state.miniActive}
-            routes={dashboardRoutes}
+            //routes={dashboardRoutes}
             handleDrawerToggle={this.handleDrawerToggle}
             {...rest}
           />
 
             <div className={classes.content}>
+
               {/* MAIN PAGE CONTENT */}
               <Grid item lg={12}>
                  <div className="Main-feed">
@@ -149,10 +151,8 @@ class Dashboard extends React.Component {
               <Grid item lg={12}>
                  <div className="Panel">{friendPanelVisibility && <FriendPanel />}</div>
               </Grid>
-
             </div>
-          
-          <Footer fluid />
+            <Footer fluid />
         </div>
       </div>
     );
@@ -164,95 +164,3 @@ Dashboard.propTypes = {
 };
 
 export default withStyles(appStyle)(Dashboard);
-
-
-
-// import React, { Component } from 'react';
-// import { withStyles } from '@material-ui/core/styles';
-// import Grid from '@material-ui/core/Grid';
-// import Typography from '@material-ui/core/Typography';
-// import logo from 'logo.svg';
-// import FriendPanel from 'components/FriendPanel/FriendPanel';
-// import NavPanel from 'components/NavPanel/NavPanel';
-// import ServiceCategory from 'services/ServiceCategory';
-// import SearchBar from 'components/SearchBar';
-// import Header from "components/Header/Header.jsx";
-
-// const styles = theme => ({
-//   app: {
-//     marginLeft: 75,
-//     //marginRight: 36,
-//   },
-// });
-
-// class Main extends Component {
-//   state = {
-//     appName: 'Migrant Hub',
-//     appLogo: logo,
-//     userPic: logo,
-//     navOptions: [
-//       { description: 'Services', link: '/services' },
-//       { description: 'Events', link: '/events' },
-//     ],
-//     navPanelVisibility: true,
-//     friendPanelVisibility: false,
-//     serviceCategoryVisibility: true,
-//     SearchBarVisibility: true,
-//   };
-
-//   handleDrawerToggle = () => {
-//     this.setState({ mobileOpen: !this.state.mobileOpen });
-//   };
-
-//   render() {
-//     const { classes, ...rest } = this.props;
-//     const {
-//       appLogo, appName, userPic, navPanelVisibility,
-//       navOptions, friendPanelVisibility, friends, serviceCategoryVisibility, SearchBarVisibility,
-//     } = this.state;
-
-//     return (
-//       <div>
-//         <Header
-//           handleDrawerToggle={this.handleDrawerToggle}
-//           {...rest}
-//         />
-//         <Typography variant="subtitles" gutterBottom>
-//           Welcome to your dashboard! We will guide you through to find what you need.
-//       </Typography>
-//         <Grid
-//           container
-//           spacing={0}
-//           direction="column"
-//           alignItems="center"
-//           justify="center"
-//           style={{ minHeight: '100vh' }}
-//         >
-//           <div className={classes.app}>
-//             <Grid item xs={1}>
-//               <div className="Panel">{navPanelVisibility && <NavPanel />}</div>
-//             </Grid>
-//             <Grid>
-//               <Grid item lg={12}>
-//                 <div className="Main-feed">
-//                   <div className="">{SearchBarVisibility && <SearchBar />}</div>
-//                 </div>
-//               </Grid>
-//               <Grid item lg={12}>
-//                 <div className="Main-feed">
-//                   <div className="">{serviceCategoryVisibility && <ServiceCategory location={this.props.location} />}</div>
-//                 </div>
-//               </Grid>
-
-//               <Grid item lg={12}>
-//                 <div className="Panel">{friendPanelVisibility && <FriendPanel />}</div>
-//               </Grid>
-//             </Grid>
-//           </div>
-//         </Grid>
-//       </div>
-//     );
-//   }
-// }
-
-// export default withStyles(styles)(Main);

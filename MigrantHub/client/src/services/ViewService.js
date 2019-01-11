@@ -167,7 +167,7 @@ class ViewService extends Component {
           scroll={scroll}
           aria-labelledby="scroll-dialog-title"
           fullWidth
-          maxWidth="150"
+          maxWidth="lg"
         >
           <DialogTitle id="scroll-dialog-title" variant="title" align="center">{serviceTitle}</DialogTitle>
           <DialogContent>
