@@ -11,6 +11,7 @@ import Face from "@material-ui/icons/Face";
 import Email from "@material-ui/icons/Email";
 
 // core components
+import HomeLayout from 'home/HomeLayout';
 import GridContainer from "components/Grid/GridContainer.jsx";
 import GridItem from "components/Grid/GridItem.jsx";
 import Input from '@material-ui/core/Input';
@@ -176,75 +177,79 @@ class Login extends React.Component {
     const password = this.props.password;
 
     return (
-      <div className="login">
-        <div className={classes.container}>
-          <GridContainer justify="center">
-            <GridItem xs={12} sm={6} md={4}>
-              <form className={classes.form}>
-                <Card login className={classes[this.state.cardAnimaton]}>
-                  <CardBody>
-                    <CardHeader
-                      className={`${classes.cardHeader} ${classes.textCenter}`}
-                      color="rose"
-                    >
-                      <h4 className={classes.cardTitle}>Log in</h4>
-                      <div className={classes.socialLine}>
-                        <Button
-                          color="transparent"
-                          justIcon
-                          appId={process.env.REACT_APP_FACEBOOK_APP_ID}
-                          autoLoad={false}
-                          fields="name, email"
-                          callback={this.facebookAuthenticationLogin}
+      <React.Fragment>
+        <HomeLayout>
+          <div className="login">
+            <div className={classes.container}>
+              <GridContainer justify="center">
+                <GridItem xs={12} sm={6} md={4}>
+                  <form className={classes.form}>
+                    <Card login className={classes[this.state.cardAnimaton]}>
+                      <CardBody>
+                        <CardHeader
+                          className={`${classes.cardHeader} ${classes.textCenter}`}
+                          color="warning"
                         >
-                          <Icon className={classNames(classes.icon, "fab fa-facebook-square")} />
+                          <h4 className={classes.cardTitle}>Log in</h4>
+                          <div className={classes.socialLine}>
+                            <Button
+                              color="transparent"
+                              justIcon
+                              appId={process.env.REACT_APP_FACEBOOK_APP_ID}
+                              autoLoad={false}
+                              fields="name, email"
+                              callback={this.facebookAuthenticationLogin}
+                            >
+                              <Icon className={classNames(classes.icon, "fab fa-facebook-square")} />
+                            </Button>
+                            <Button
+                              color="transparent"
+                              justIcon
+                              clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}
+                              buttonText="Google Login"
+                              onSuccess={this.googleAuthenticationLogin}
+                              onFailure={() => this.onLoginFailure}
+                            >
+                              <Icon className={classNames(classes.icon, "fab fa-google-plus")} />
+                            </Button>
+                          </div>
+                        </CardHeader>
+                        <TextField
+                          id="username"
+                          name="username"
+                          label="Email"
+                          value={username}
+                          onChange={event => this.handleChange(event)}
+                          fullWidth
+                        />
+                        <TextField
+                          id="password"
+                          name="password"
+                          type="password"
+                          label="Password"
+                          value={password}
+                          onChange={event => this.handleChange(event)}
+                          fullWidth
+                        />
+                      </CardBody>
+                      <CardFooter className={classes.justifyContentCenter}>
+                        <Button color="warning" simple size="lg" block
+                          fullWidth
+                          variant="contained"
+                          onClick={this.handleSubmit}
+                          className={classes.submit}>
+                          Sign in
                         </Button>
-                        <Button
-                          color="transparent"
-                          justIcon
-                          clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}
-                          buttonText="Google Login"
-                          onSuccess={this.googleAuthenticationLogin}
-                          onFailure={() => this.onLoginFailure}
-                        >
-                          <Icon className={classNames(classes.icon, "fab fa-google-plus")} />
-                        </Button>
-                      </div>
-                    </CardHeader>
-                    <TextField
-                      id="username"
-                      name="username"
-                      label="Email"
-                      value={username}
-                      onChange={event => this.handleChange(event)}
-                      fullWidth
-                    />
-                    <TextField
-                      id="password"
-                      name="password"
-                      type="password"
-                      label="Password"
-                      value={password}
-                      onChange={event => this.handleChange(event)}
-                      fullWidth
-                    />
-                  </CardBody>
-                  <CardFooter className={classes.justifyContentCenter}>
-                    <Button color="rose" simple size="lg" block
-                      fullWidth
-                      variant="contained"
-                      color="primary"
-                      onClick={this.handleSubmit}
-                      className={classes.submit}>
-                      Sign in
-                  </Button>
-                  </CardFooter>
-                </Card>
-              </form>
-            </GridItem>
-          </GridContainer>
-        </div>
-      </div >
+                      </CardFooter>
+                      <Button variant="outlined" className={classes.button}>Forgot Password?</Button>
+                    </Card>
+                  </form>
+                </GridItem>
+              </GridContainer>
+            </div>
+          </div >
+        </HomeLayout>
+      </React.Fragment>
     );
   }
 }

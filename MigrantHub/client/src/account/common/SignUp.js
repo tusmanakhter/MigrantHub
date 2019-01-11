@@ -1,16 +1,41 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import withStyles from '@material-ui/core/styles/withStyles';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import Paper from '@material-ui/core/Paper';
 import Stepper from '@material-ui/core/Stepper';
 import Step from '@material-ui/core/Step';
 import StepLabel from '@material-ui/core/StepLabel';
-import Button from '@material-ui/core/Button';
+import { Link } from 'react-router-dom';
 import Typography from '@material-ui/core/Typography';
+import "assets/jss/material-dashboard-pro-react/views/register.css";
 import { handleChange } from 'helpers/Forms';
 import { handleAutoSuggestChange, handleEditObjectAutosuggest } from 'helpers/Autosuggest';
 import { handleAddObject, handleEditObject, handleEditSingleObject, handleRemoveObject } from 'helpers/Object';
+
+
+//////////NEW//////////////
+// @material-ui/core components
+import withStyles from "@material-ui/core/styles/withStyles";
+import InputAdornment from "@material-ui/core/InputAdornment";
+import Checkbox from "@material-ui/core/Checkbox";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import Icon from "@material-ui/core/Icon";
+
+// @material-ui/icons
+import Timeline from "@material-ui/icons/Timeline";
+import Code from "@material-ui/icons/Code";
+import Group from "@material-ui/icons/Group";
+import Check from "@material-ui/icons/Check";
+
+// core components
+import GridContainer from "components/Grid/GridContainer.jsx";
+import GridItem from "components/Grid/GridItem.jsx";
+import Button from "components/CustomButtons/Button.jsx";
+import InfoArea from "components/InfoArea/InfoArea.jsx";
+import Card from "components/Card/Card.jsx";
+import CardBody from "components/Card/CardBody.jsx";
+
+import registerPageStyle from "assets/jss/material-dashboard-pro-react/views/registerPageStyle";
+
+
 
 const styles = theme => ({
   layout: {
@@ -160,53 +185,113 @@ class SignUp extends Component {
 
     return (
       <React.Fragment>
-        <CssBaseline />
-        {this.state.messageFromServer}
-        <main className={classes.layout}>
-          <Paper className={classes.paper}>
-            <Typography variant="display1" align="center">
-              Sign Up
-            </Typography>
-            <Stepper activeStep={activeStep} className={classes.stepper}>
-              {this.props.steps.map(label => (
-                <Step key={label}>
-                  <StepLabel>{label}</StepLabel>
-                </Step>
-              ))}
-            </Stepper>
-            <React.Fragment>
-              {activeStep === this.props.steps.length ? (
-                <React.Fragment>
-                  <Typography variant="headline" gutterBottom>
-                    Welcome to MigrantHub.
-                  </Typography>
-                  <Typography variant="subheading">
-                    You may now login.
-                  </Typography>
-                </React.Fragment>
-              ) : (
-                <React.Fragment>
-                  {this.getStepContent(activeStep)}
-                  <div className={classes.buttons}>
-                    {activeStep !== 0 && (
-                    <Button onClick={this.handleBack} className={classes.button}>
-                          Back
-                    </Button>
-                    )}
-                    <Button
-                      variant="contained"
-                      color="primary"
-                      onClick={this.handleNext}
-                      className={classes.button}
-                    >
-                      {activeStep === this.props.steps.length - 1 ? 'Sign Up' : 'Next'}
-                    </Button>
-                  </div>
-                </React.Fragment>
-              )}
-            </React.Fragment>
-          </Paper>
-        </main>
+        <div className="register">
+          <div className={classes.container}>
+            <GridContainer justify="center">
+              <GridItem xs={12} sm={12} md={12}>
+                <Card className={classes.cardSignup}>
+                  <h2 className={classes.cardTitle}>Register</h2>
+                  <Stepper activeStep={activeStep} className={classes.stepper}>
+                    {this.props.steps.map(label => (
+                      <Step key={label}>
+                        <StepLabel>{label}</StepLabel>
+                      </Step>
+                    ))}
+                  </Stepper>
+                  <CardBody>
+                    <GridContainer justify="center">
+                      <GridItem xs={12} sm={12} md={5}>
+                        <InfoArea
+                          title="Service Hub"
+                          description="A free list of available services near you. A chat bot that will help you find what you need."
+                          icon={Timeline}
+                          iconColor="rose"
+                        />
+                        <InfoArea
+                          title="Event Hub"
+                          description="Create an event or view a list of events happening near you."
+                          icon={Code}
+                          iconColor="primary"
+                        />
+                        <InfoArea
+                          title="Connect Hub"
+                          description="A built in social media platform that will help you connect with other users."
+                          icon={Group}
+                          iconColor="info"
+                        />
+                      </GridItem>
+                      <GridItem xs={12} sm={8} md={5}>
+                        <form className={classes.form}>
+                          <React.Fragment>
+                            {activeStep === this.props.steps.length ? (
+                              <React.Fragment>
+                                <Typography variant="headline" gutterBottom>
+                                  Welcome to MigrantHub.
+                            </Typography>
+                                <Typography variant="subheading">
+                                  You may now login.
+                            </Typography>
+                                <Link to={`/login`}>
+                                  <Button round color="primary">
+                                    Get started
+                                </Button>
+                                </Link>
+                              </React.Fragment>
+                            ) : (
+                                <React.Fragment>
+                                  {this.getStepContent(activeStep)}
+                                  <div className={classes.buttons}>
+                                    {activeStep !== 0 && (
+                                      <Button onClick={this.handleBack} className={classes.button}>
+                                        Back
+                                      </Button>
+                                    )}
+                                    <Button
+                                      variant="contained"
+                                      color="primary"
+                                      onClick={this.handleNext}
+                                      className={classes.button}
+                                    >
+                                      {activeStep === this.props.steps.length - 1 ? 'Sign Up' : 'Next'}
+                                    </Button>
+                                  </div>
+                                </React.Fragment>
+                              )}
+                          </React.Fragment>
+                        </form>
+                        <FormControlLabel
+                          classes={{
+                            root: classes.checkboxLabelControl,
+                            label: classes.checkboxLabel
+                          }}
+                          control={
+                            <Checkbox
+                              tabIndex={-1}
+                              checkedIcon={
+                                <Check className={classes.checkedIcon} />
+                              }
+                              icon={<Check className={classes.uncheckedIcon} />}
+                              classes={{
+                                checked: classes.checked,
+                                root: classes.checkRoot
+                              }}
+                            />
+                          }
+                          label={
+                            <span>
+                              Upon signing up you agree to the{" "}
+                              <a href="#pablo">terms and conditions</a>.
+                          </span>
+                          }
+                        />
+                      </GridItem>
+                    </GridContainer>
+                  </CardBody>
+                </Card>
+              </GridItem>
+            </GridContainer>
+          </div>
+        </div>
       </React.Fragment>
     );
   }
@@ -216,4 +301,4 @@ SignUp.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(SignUp);
+export default withStyles(registerPageStyle)(SignUp);
