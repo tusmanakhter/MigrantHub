@@ -10,6 +10,8 @@ module.exports = {
         "linebreak-style": 0,
         "no-underscore-dangle": 0,
         "consistent-return": 0,
-        "import/no-extraneous-dependencies": ["error", {"devDependencies": true, "optionalDependencies": true, "peerDependencies": false}]
+        "import/no-extraneous-dependencies": ["error", {"devDependencies": true, "optionalDependencies": true, "peerDependencies": false}],
+        "react/jsx-one-expression-per-line": 0,
+        "react/forbid-prop-types": 0,
     }
 };
