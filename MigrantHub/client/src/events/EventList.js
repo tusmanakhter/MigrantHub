@@ -9,6 +9,7 @@ import EventItem from 'events/EventItem';
 import Header from 'components/Header/Header';
 import UserTypes from 'lib/UserTypes';
 import NavPanel from 'components/NavPanel/NavPanel';
+import GridContainer from "components/Grid/GridContainer.jsx";
 
 const styles = theme => ({
   mainContainer: {
@@ -113,7 +114,7 @@ class EventList extends Component {
              </div>
              )
            }
-          <Paper className={classes.root} elevation={2}>
+          <GridContainer>
             {
             items.map(item => (
               <EventItem
@@ -132,7 +133,7 @@ class EventList extends Component {
               />
             ))
           }
-          </Paper>
+          </GridContainer>
         </div>
       );
     }

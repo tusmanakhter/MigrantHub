@@ -19,6 +19,10 @@ import ListItemText from "@material-ui/core/ListItemText";
 import Hidden from "@material-ui/core/Hidden";
 import Collapse from "@material-ui/core/Collapse";
 import Icon from "@material-ui/core/Icon";
+import PermIdentity from '@material-ui/icons/PermIdentity';
+import ViewList from '@material-ui/icons/ViewList';
+import Event from '@material-ui/icons/Event';
+import Logout from 'components/Logout';
 
 // core components
 import HeaderLinks from "components/Header/HeaderLinks.jsx";
@@ -121,7 +125,7 @@ class Sidebar extends React.Component {
       bgColor,
       rtlActive,
     } = this.props;
-    const { email, type } = this.state;
+    const { email, type, firstName, lastName } = this.state;
     const itemText =
       classes.itemText +
       " " +
@@ -178,7 +182,7 @@ class Sidebar extends React.Component {
               onClick={() => this.openCollapse("openAvatar")}
             >
               <ListItemText
-                primary={rtlActive ? "تانيا أندرو" : "Tania Andrew"}
+                primary={rtlActive ? "تانيا أندرو" : firstName+" "+lastName}
                 secondary={
                   <b
                     className={
@@ -204,7 +208,7 @@ class Sidebar extends React.Component {
                     }
                   >
                     <span className={collapseItemMini}>
-                      {rtlActive ? "مع" : "MP"}
+                      {rtlActive ? "مع" : <PermIdentity/>}
                     </span>
                     <ListItemText
                       primary={rtlActive ? "ملفي" : "My Profile"}
@@ -221,7 +225,7 @@ class Sidebar extends React.Component {
                     }
                   >
                     <span className={collapseItemMini}>
-                      {rtlActive ? "هوع" : "EP"}
+                    {rtlActive ? "هوع" : <PermIdentity/>}
                     </span>
                     <ListItemText
                       primary={
@@ -234,16 +238,33 @@ class Sidebar extends React.Component {
                 </ListItem>
                 <ListItem className={classes.collapseItem}>
                   <NavLink
-                    to="#"
+                    to={{ pathname: '/services', state: { editOwner: email, editMode: true, searchQuery: '', searchMode: false } }}
                     className={
                       classes.itemLink + " " + classes.userCollapseLinks
                     }
                   >
                     <span className={collapseItemMini}>
-                      {rtlActive ? "و" : "S"}
+                      {rtlActive ? "و" : <ViewList/>}
                     </span>
                     <ListItemText
-                      primary={rtlActive ? "إعدادات" : "Settings"}
+                      primary={rtlActive ? "إعدادات" : "My Services"}
+                      disableTypography={true}
+                      className={collapseItemText}
+                    />
+                  </NavLink>
+                </ListItem>
+                <ListItem className={classes.collapseItem}>
+                  <NavLink
+                    to={{ pathname: '/events', state: { editOwner: email, editMode: true } }}
+                    className={
+                      classes.itemLink + " " + classes.userCollapseLinks
+                    }
+                  >
+                    <span className={collapseItemMini}>
+                      {rtlActive ? "و" : <Event/>}
+                    </span>
+                    <ListItemText
+                      primary={rtlActive ? "إعدادات" : "My Events"}
                       disableTypography={true}
                       className={collapseItemText}
                     />

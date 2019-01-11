@@ -2,7 +2,7 @@
 
 .App {
   height: auto;
-  background: linear-gradient(0deg, #ffbb00 30%, #fcfcfc 75%);
+  background: #e0e0e0;
   background-repeat: no-repeat;
   background-size: auto;
   /* color: white; */
@@ -35,8 +35,4 @@
 .col-centered{
   float: none;
   margin: 0 auto;
-}
-
-ul {
-  list-style: none;
 }
