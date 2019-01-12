@@ -9,8 +9,6 @@ import { handleChange } from 'helpers/Forms';
 import { handleAutoSuggestChange, handleEditObjectAutosuggest } from 'helpers/Autosuggest';
 import { handleAddObject, handleEditObject, handleEditSingleObject, handleRemoveObject } from 'helpers/Object';
 
-
-//////////NEW//////////////
 // @material-ui/core components
 import withStyles from "@material-ui/core/styles/withStyles";
 import InputAdornment from "@material-ui/core/InputAdornment";

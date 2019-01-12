@@ -3,12 +3,7 @@ import PropTypes from 'prop-types';
 
 // @material-ui/core components
 import withStyles from "@material-ui/core/styles/withStyles";
-import InputAdornment from "@material-ui/core/InputAdornment";
 import Icon from "@material-ui/core/Icon";
-
-// @material-ui/icons
-import Face from "@material-ui/icons/Face";
-import Email from "@material-ui/icons/Email";
 
 // core components
 import HomeLayout from 'home/HomeLayout';
@@ -21,7 +16,7 @@ import Card from "components/Card/Card.jsx";
 import CardBody from "components/Card/CardBody.jsx";
 import CardHeader from "components/Card/CardHeader.jsx";
 import CardFooter from "components/Card/CardFooter.jsx";
-import FacebookLogin from 'react-facebook-login';
+import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props'
 import { GoogleLogin } from 'react-google-login';
 
 import loginPageStyle from "assets/jss/material-dashboard-pro-react/views/loginPageStyle.jsx";
@@ -190,29 +185,37 @@ class Login extends React.Component {
                           color="warning"
                         >
                           <h4 className={classes.cardTitle}>Log in</h4>
+                          <h7 className={classes.cardTitle}><b>Sign in using facebook or google!</b></h7>
                           <div className={classes.socialLine}>
-                            <Button
-                              color="transparent"
-                              justIcon
+                            <FacebookLogin
                               appId={process.env.REACT_APP_FACEBOOK_APP_ID}
                               autoLoad={false}
                               fields="name, email"
                               callback={this.facebookAuthenticationLogin}
-                            >
-                              <Icon className={classNames(classes.icon, "fab fa-facebook-square")} />
-                            </Button>
-                            <Button
-                              color="transparent"
-                              justIcon
+                              render={renderProps => (
+                                <Button onClick={renderProps.onClick}
+                                  justIcon
+                                  color="transparent">
+                                  <Icon className={classNames(classes.icon, "fab fa-facebook-square")} />
+                                </Button>
+                              )}
+                            />
+                            <GoogleLogin
                               clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}
-                              buttonText="Google Login"
+                              buttonText="Login"
                               onSuccess={this.googleAuthenticationLogin}
                               onFailure={() => this.onLoginFailure}
-                            >
-                              <Icon className={classNames(classes.icon, "fab fa-google-plus")} />
-                            </Button>
+                              render={renderProps => (
+                                <Button onClick={renderProps.onClick}
+                                  justIcon
+                                  color="transparent">
+                                  <Icon className={classNames(classes.icon, "fab fa-google-plus")} />
+                                </Button>
+                              )}
+                            />
                           </div>
                         </CardHeader>
+                        <h7><font color="gray"><br />Already have an account with us?</font></h7>
                         <TextField
                           id="username"
                           name="username"
