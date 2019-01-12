@@ -4,7 +4,6 @@ import PropTypes from "prop-types";
 import validator from 'validator';
 import { Redirect } from 'react-router-dom';
 
-
 // import { Manager, Target, Popper } from "react-popper";
 
 // @material-ui/core components
@@ -25,8 +24,6 @@ import Search from "@material-ui/icons/Search";
 
 // core components
 import InputBase from '@material-ui/core/InputBase';
-
-import CustomInput from "components/CustomInput/CustomInput.jsx";
 import Button from "components/CustomButtons/Button.jsx";
 
 import headerLinksStyle from "assets/jss/material-dashboard-pro-react/components/headerLinksStyle";

@@ -4,9 +4,11 @@ import withStyles from '@material-ui/core/styles/withStyles';
 import GridContainer from "components/Grid/GridContainer.jsx";
 import axios from 'axios';
 import ServiceItem from 'services/ServiceItem';
+import UserItem from 'People/UserItem';
 import Header from 'components/Header/Header';
 import QuestionnairePanel from 'components/QuestionnairePanel/QuestionnairePanel';
 import NavPanel from 'components/NavPanel/NavPanel';
+import Paper from '@material-ui/core/Paper';
 
 const styles = theme => ({
   mainContainer: {
@@ -22,6 +24,7 @@ const styles = theme => ({
     float: 'right',
     position: 'absolute',
     right: 0,
+    paddingTop: 25,
   },
 });
 
@@ -29,23 +32,27 @@ class Search extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      userItem: [],
       servicesItem: [],
       editMode: '',
       editOwner: '',
     };
 
-    this.getData = this.getData.bind(this);
+    this.getServices = this.getServices.bind(this);
+    this.getUsers = this.getUsers.bind(this);
   }
 
   componentDidMount(props) {
-    this.getData(this, props);
+    this.getServices(this, props);
+    this.getUsers(this, props);
   }
 
   componentWillReceiveProps(props) {
-    this.getData(this, props);
+    this.getServices(this, props);
+    this.getUsers(this, props);
   }
 
-  getData(event, props = this.props) {
+  getServices(event, props = this.props) {
     const { location } = props;
     let editOwnerEmail = '';
     let searchQuery = '';
@@ -84,20 +91,38 @@ class Search extends Component {
     });
   }
 
-  render() {
+  getUsers(event, props = this.props) {
+    const { location } = props;
+    let searchQuery = '';
+
+    if (location.state) {
+      searchQuery = location.state.searchQuery;
+    }
+
+    axios.get('/api/friend/viewusers', {
+      params: {
+        searchQuery: searchQuery,
+      },
+    }).then((response) => {
+      this.setState({
+        userItem: response.data,
+      });
+    });
+  }
+
+  renderServices() {
     const { classes } = this.props;
     const { servicesItem, editMode, editOwner } = this.state;
-    return (
-      <div className={classes.mainContainer}>
-        <NavPanel />
-        <Header/>
-        <div className={classes.Panel}>{<QuestionnairePanel />}</div>
+
+    if(this.state.servicesItem.length !== 0) {
+        return (
+        <div className={classes.serviceContainer}>
         <h4 className={classes.searchContainer}>Services</h4>
         <GridContainer>
-          {' '}
-          {
+        {' '}
+        {
             servicesItem.map(item => (
-              <ServiceItem
+            <ServiceItem
                 serviceId={item._id}
                 serviceTitle={item.serviceTitle}
                 serviceImagePath={item.serviceImagePath}
@@ -110,12 +135,54 @@ class Search extends Component {
                 serviceHours={item.serviceHours}
                 editMode={editMode}
                 editOwner={editOwner}
-                getData={this.getData}
-              />
+                getServices={this.getServices}
+            />
             ))
-          }
+        }
         </GridContainer>
-      </div>
+        </div>
+        );
+    }
+  }
+
+  renderUsers() {
+    const { classes } = this.props;
+    const { userItem } = this.state;
+
+    if(this.state.userItem.length !== 0) {
+        return (
+        <div className={classes.userContainer}>
+        <h4 className={classes.searchContainer}>People</h4>
+        <Paper className={classes.root} elevation={2}>
+          {' '}
+          {
+              userItem.map(item => (
+                <UserItem
+                  userid={item._id}
+                  firstName={item.firstName}
+                  lastName={item.lastName}
+                  email={item.email}
+                  getUsers={this.getUsers}
+                />
+              ))
+          }
+        </Paper>
+        </div>
+        );
+    }
+  }
+
+  render() {
+    const { classes } = this.props;
+
+    return (
+      <div className={classes.mainContainer}>
+        <NavPanel />
+        <Header/>
+        <div className={classes.Panel}>{<QuestionnairePanel />}</div>
+        {this.renderServices()}
+        {this.renderUsers()}
+        </div>
     );
   }
 }
