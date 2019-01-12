@@ -102,8 +102,8 @@ const HomePage = (props) => {
               </Typography>
             </Grid>
             <Grid item xs={12} className={classes.buttons}>
-              <Button variant="contained" component={Link} to="/signup/account-selection" className={[classes.button, classes.signUpButton]}>Sign Up</Button>
-              <Button variant="outlined" className={[classes.button, classes.aboutButton]}>About Us</Button>
+              <Button variant="contained" component={Link} to="/signup/account-selection" className={[classes.button, classes.signUpButton].join(' ')}>Sign Up</Button>
+              <Button variant="outlined" className={[classes.button, classes.aboutButton].join(' ')}>About Us</Button>
             </Grid>
           </Grid>
           <Grid item xs={12} className={classes.business}>
@@ -114,7 +114,7 @@ const HomePage = (props) => {
                 MigrantHub makes it easy to get your services noticed and used. This helps MigrantHub grow and provide more services for newcomers. Sign up now!
             </Typography>
             <Grid item xs={12} className={classes.buttons}>
-              <Button variant="contained" component={Link} to="/signup/business" className={[classes.button, classes.businessButton]}>Get Started as a Business</Button>
+              <Button variant="contained" component={Link} to="/signup/business" className={[classes.button, classes.businessButton].join(' ')}>Get Started as a Business</Button>
             </Grid>
           </Grid>
           <Grid item xs={12} className={classes.about}>

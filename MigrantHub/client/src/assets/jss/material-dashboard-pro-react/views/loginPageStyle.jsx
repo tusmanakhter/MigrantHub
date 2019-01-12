@@ -6,8 +6,18 @@ import {
   container,
   cardTitle
 } from "assets/jss/material-dashboard-pro-react.jsx";
+import Background from "../../../img/login.jpeg";
 
 const loginPageStyle = theme => ({
+  login: {
+    height: '100%',
+    flexGrow: 1,
+    display: 'flex',
+    alignItems: 'center',
+    backgroundImage: `url(${Background})`,
+    backgroundColor: 'black',
+    backgroundSize: 'cover',
+  },
   container: {
     ...container,
     zIndex: "4",

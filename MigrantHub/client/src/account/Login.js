@@ -25,7 +25,6 @@ import FacebookLogin from 'react-facebook-login';
 import { GoogleLogin } from 'react-google-login';
 
 import loginPageStyle from "assets/jss/material-dashboard-pro-react/views/loginPageStyle.jsx";
-import "assets/jss/material-dashboard-pro-react/views/loginPage.css";
 import classNames from "classnames";
 import IconButton from '@material-ui/core/IconButton';
 import Visibility from '@material-ui/icons/Visibility';
@@ -179,7 +178,7 @@ class Login extends React.Component {
     return (
       <React.Fragment>
         <HomeLayout>
-          <div className="login">
+          <div className={classes.login}>
             <div className={classes.container}>
               <GridContainer justify="center">
                 <GridItem xs={12} sm={6} md={4}>

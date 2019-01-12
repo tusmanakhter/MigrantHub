@@ -5,7 +5,6 @@ import Step from '@material-ui/core/Step';
 import StepLabel from '@material-ui/core/StepLabel';
 import { Link } from 'react-router-dom';
 import Typography from '@material-ui/core/Typography';
-import "assets/jss/material-dashboard-pro-react/views/register.css";
 import { handleChange } from 'helpers/Forms';
 import { handleAutoSuggestChange, handleEditObjectAutosuggest } from 'helpers/Autosuggest';
 import { handleAddObject, handleEditObject, handleEditSingleObject, handleRemoveObject } from 'helpers/Object';
@@ -185,7 +184,7 @@ class SignUp extends Component {
 
     return (
       <React.Fragment>
-        <div className="register">
+        <div className={classes.register}>
           <div className={classes.container}>
             <GridContainer justify="center">
               <GridItem xs={12} sm={12} md={12}>
