@@ -5,6 +5,7 @@ const AdminAccountValidator = require('../validators/AdminAccountValidator');
 const MigrantRepository = require('../repository/MigrantRepository');
 const BusinessRepository = require('../repository/BusinessRepository');
 const AdminRepository = require('../repository/AdminRepository');
+const UserRepository = require('../repository/UserRepository');
 const { ServerError } = require('../errors/ServerError');
 
 module.exports = {
@@ -48,5 +49,9 @@ module.exports = {
       return AdminRepository.createAdmin(adminUserObject);
     }
     throw new ServerError('There was an error creating admin user.', 400, errors);
+  },
+
+  async getUser(userEmail) {
+    return UserRepository.getUser(userEmail);
   },
 };
