@@ -439,7 +439,7 @@ class EventForm extends Component {
       dateStart, dateEnd, timeStart, secondsStart, timeEnd, secondsEnd, repeat, eventImage,
     } = this.state;
 
-    let tempImageName = 'cameraDefault.png';
+    let tempImageName = 'montrealCity.png';
     if (eventImage !== null) {
       tempImageName = eventImage.name;
     }
@@ -505,13 +505,13 @@ class EventForm extends Component {
     let tempImageName = eventImageName;
 
     if (eventImageName === '') {
-      tempImageName = 'cameraDefault.png';
+      tempImageName = 'montrealCity.png';
     } else if (eventImage !== null) {
       tempImageName = eventImage.name;
     }
 
     if (setDefaultImage) {
-      tempImageName = 'cameraDefault.png';
+      tempImageName = 'montrealCity.png';
     }
 
     const date = new Date();

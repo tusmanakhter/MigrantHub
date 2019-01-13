@@ -10,7 +10,7 @@ module.exports = {
     const errors = await ServiceValidator.serviceValidator(serviceObject);
 
     if (errors === '') {
-      if (serviceObject.serviceImageName === 'cameraDefault.png') {
+      if (serviceObject.serviceImageName === 'montrealCity.png') {
         serviceObject.serviceImagePath = (`/uploads/default/${serviceObject.serviceImageName}`);
       } else {
         serviceObject.serviceImagePath = (`/uploads/${user._id}/services/${serviceObject.serviceImageName}`);
@@ -71,7 +71,7 @@ module.exports = {
         });
       }
 
-      if (serviceObject.serviceImageName === 'cameraDefault.png') {
+      if (serviceObject.serviceImageName === 'montrealCity.png') {
         serviceObject.serviceImagePath = (`/uploads/default/${serviceObject.serviceImageName}`);
       } else {
         serviceObject.serviceImagePath = (`/uploads/${user._id}/services/${serviceObject.serviceImageName}`);
