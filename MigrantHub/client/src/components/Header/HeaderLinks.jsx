@@ -23,7 +23,7 @@ import Dashboard from "@material-ui/icons/Dashboard";
 import Search from "@material-ui/icons/Search";
 
 // core components
-import InputBase from '@material-ui/core/InputBase';
+import TextField from '@material-ui/core/TextField';
 import Button from "components/CustomButtons/Button.jsx";
 
 import headerLinksStyle from "assets/jss/material-dashboard-pro-react/components/headerLinksStyle";
@@ -129,7 +129,7 @@ class HeaderLinks extends React.Component {
       
       <div className={wrapper}>
       {this.renderRedirectTo()}
-        <InputBase
+        <TextField
           id="search" 
           name="search"
           placeholder="Search…"
