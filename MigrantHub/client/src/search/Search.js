@@ -4,6 +4,7 @@ import withStyles from '@material-ui/core/styles/withStyles';
 import GridContainer from "components/Grid/GridContainer.jsx";
 import axios from 'axios';
 import ServiceItem from 'services/ServiceItem';
+import EventItem from 'events/EventItem';
 import UserItem from 'People/UserItem';
 import Header from 'components/Header/Header';
 import QuestionnairePanel from 'components/QuestionnairePanel/QuestionnairePanel';
@@ -36,21 +37,25 @@ class Search extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      userItem: [],
       servicesItem: [],
+      eventItem: [],
+      userItem: [],
     };
 
     this.getServices = this.getServices.bind(this);
+    this.getEvents = this.getEvents.bind(this);
     this.getUsers = this.getUsers.bind(this);
   }
 
   componentDidMount(props) {
     this.getServices(this, props);
+    this.getEvents(this, props);
     this.getUsers(this, props);
   }
 
   componentWillReceiveProps(props) {
     this.getServices(this, props);
+    this.getEvents(this, props);
     this.getUsers(this, props);
   }
 
@@ -77,6 +82,30 @@ class Search extends Component {
     }).then((response) => {
       this.setState({
         servicesItem: response.data,
+      });
+    });
+  }
+
+  getEvents(event, props = this.props) {
+    const { location } = props;
+    let searchQuery = '';
+    let searchMode = false;
+    let editOwnerEmail = '';
+
+      if (location.state) {
+        searchQuery = location.state.searchQuery;
+        searchMode = location.state.searchMode;
+      }
+
+      axios.get('/api/events/', {
+      params: {
+        editOwner: editOwnerEmail,
+        searchQuery: searchQuery,
+        search: searchMode,
+      },
+    }).then((response) => {
+      this.setState({
+        eventItem: response.data,
       });
     });
   }
@@ -135,6 +164,40 @@ class Search extends Component {
     }
   }
 
+  renderEvents() {
+    const { classes } = this.props;
+    const { eventItem } = this.state;
+
+    if(this.state.eventItem.length !== 0) {
+        return (
+        <div className={classes.eventContainer}>
+        <h4 className={classes.searchContainer}>Events</h4>
+        <GridContainer>
+        {' '}
+        {
+            eventItem.map(item => (
+              <EventItem
+                eventId={item._id}
+                eventName={item.eventName}
+                eventImagePath={item.eventImagePath}
+                description={item.description}
+                location={item.location}
+                dateStart={item.dateStart}
+                dateEnd={item.dateEnd}
+                timeStart={item.timeStart}
+                timeEnd={item.timeEnd}
+                editMode={item.editMode}
+                editOwner={item.editOwner}
+                getEvents={this.getEvents}
+              />
+            ))
+        }
+        </GridContainer>
+        </div>
+        );
+    }
+  }
+
   renderUsers() {
     const { classes } = this.props;
     const { userItem } = this.state;
@@ -171,6 +234,7 @@ class Search extends Component {
         <Header/>
         <div className={classes.Panel}>{<QuestionnairePanel />}</div>
         {this.renderServices()}
+        {this.renderEvents()}
         {this.renderUsers()}
         </div>
     );

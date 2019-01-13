@@ -55,7 +55,7 @@ class EventList extends Component {
   }
 
   getData(event, props = this.props) {
-    const { location } = this.props;
+    const { location } = props;
     let searchQuery = '';
     let searchMode = false;
 
