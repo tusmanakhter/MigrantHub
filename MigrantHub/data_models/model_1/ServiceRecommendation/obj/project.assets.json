@@ -4205,11 +4205,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/Mira/Desktop/MatrixFactorization_MovieRecommendation/MovieRecommendation/MovieRecommendation.csproj",
-      "projectName": "MovieRecommendation",
-      "projectPath": "/Users/Mira/Desktop/MatrixFactorization_MovieRecommendation/MovieRecommendation/MovieRecommendation.csproj",
+      "projectUniqueName": "/Users/Mira/Repository/MigrantHub/MigrantHub/data_models/model_1/ServiceRecommendation/ServiceRecommendation.csproj",
+      "projectName": "ServiceRecommendation",
+      "projectPath": "/Users/Mira/Repository/MigrantHub/MigrantHub/data_models/model_1/ServiceRecommendation/ServiceRecommendation.csproj",
       "packagesPath": "/Users/Mira/.nuget/packages/",
-      "outputPath": "/Users/Mira/Desktop/MatrixFactorization_MovieRecommendation/MovieRecommendation/obj",
+      "outputPath": "/Users/Mira/Repository/MigrantHub/MigrantHub/data_models/model_1/ServiceRecommendation/obj",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "/usr/local/share/dotnet/sdk/NuGetFallbackFolder"

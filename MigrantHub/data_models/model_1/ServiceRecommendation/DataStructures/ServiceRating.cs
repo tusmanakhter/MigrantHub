@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace MovieRecommendationConsoleApp.DataStructures
+namespace ServiceRecommendationConsoleApp.DataStructures
 {
-    public class MovieRating
+    public class ServiceRating
     {
         public float userId;
 
-        public float movieId;
+        public float serviceId;
 
         public float Label;
     }

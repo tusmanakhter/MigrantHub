@@ -6,13 +6,13 @@
   "compilationOptions": {},
   "targets": {
     ".NETCoreApp,Version=v2.1": {
-      "MovieRecommendation/1.0.0": {
+      "ServiceRecommendation/1.0.0": {
         "dependencies": {
           "Microsoft.ML": "0.7.0",
           "Microsoft.ML.MatrixFactorization": "0.7.0"
         },
         "runtime": {
-          "MovieRecommendation.dll": {}
+          "ServiceRecommendation.dll": {}
         }
       },
       "Microsoft.CSharp/4.3.0": {
@@ -629,7 +629,7 @@
     }
   },
   "libraries": {
-    "MovieRecommendation/1.0.0": {
+    "ServiceRecommendation/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

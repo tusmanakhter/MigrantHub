@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace MovieRecommendationConsoleApp.DataStructures
+namespace ServiceRecommendationConsoleApp.DataStructures
 {
-    class MovieRatingPrediction
+    class ServiceRatingPrediction
     {
         public float Label;
 
