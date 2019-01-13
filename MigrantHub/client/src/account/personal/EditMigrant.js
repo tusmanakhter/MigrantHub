@@ -11,6 +11,7 @@ import FamilyInfo from 'account/personal/FamilyInfo';
 import EducationInfo from 'account/personal/EducationInfo';
 import EmploymentInfo from 'account/personal/EmploymentInfo';
 import OtherInfo from 'account/personal/OtherInfo';
+import MainLayout from 'home/MainLayout';
 import { handleChange } from 'helpers/Forms';
 import { handleAutoSuggestChange, handleEditObjectAutosuggest } from 'helpers/Autosuggest';
 import { handleAddObject, handleEditObject, handleEditSingleObject, handleRemoveObject } from 'helpers/Object';
@@ -23,7 +24,7 @@ const styles = theme => ({
     margin: theme.spacing.unit,
   },
   mainContainer: {
-      marginLeft: 75,
+    marginLeft: 75,
   },
 });
 
@@ -124,13 +125,13 @@ class EditMigrant extends Component {
           tempFamily = [];
         }
         if (jsonObj.proficiencyExams !== undefined) {
-            tempProficiencyExams = jsonObj.proficiencyExams;
+          tempProficiencyExams = jsonObj.proficiencyExams;
         } else {
-            tempProficiencyExams = {
-                ielts: false,
-                french: false,
-                others: "",
-            };
+          tempProficiencyExams = {
+            ielts: false,
+            french: false,
+            others: "",
+          };
         }
         if (jsonObj.motherTongue !== undefined) {
           tempMotherTongue = jsonObj.motherTongue;
@@ -248,10 +249,10 @@ class EditMigrant extends Component {
         joiningReason,
 
       })).then((response) => {
-      e.setState({
-        messageFromServer: response.data,
+        e.setState({
+          messageFromServer: response.data,
+        });
       });
-    });
   }
 
   render() {
@@ -266,10 +267,9 @@ class EditMigrant extends Component {
 
     return (
       <React.Fragment>
+        <MainLayout>
           <div className={classes.mainContainer}>
-              <Header />
-              <NavPanel />
-              <ContactInfo
+            <ContactInfo
               innerRef={this.contactChild}
               handleChange={this.handleChange}
               firstName={firstName}
@@ -342,9 +342,10 @@ class EditMigrant extends Component {
               onClick={this.handleSave}
               className={classes.button}
             >
-                    Save
+              Save
             </Button>
           </div>
+        </MainLayout>
       </React.Fragment>
     );
   }
