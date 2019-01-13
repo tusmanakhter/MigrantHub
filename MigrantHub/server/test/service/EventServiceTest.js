@@ -22,6 +22,8 @@ describe('Event Service', function () {
             query: {
                 _id: "5bda52305ccfd051484ea790",
                 editOwner: "test@test.com",
+                search: 'true',
+                searchQuery: 'test',
             }
         },
         event = {
@@ -53,8 +55,8 @@ describe('Event Service', function () {
 
     it('should call getEvents to retrieve all events from getEvents service', test(async function () {
         this.stub(EventRepository, 'getEvents');
-        await EventService.getEvents('');
-        assert.calledWith(EventRepository.getEvents, { deleted: false });
+        await EventService.getEvents('', req.query.searchQuery, req.query.search);
+        assert.calledWith(EventRepository.getEvents,  { eventName: /test/gi, deleted: false });
     }));
 
     it('should call getEvent repository with correct parameters from getEvent service', test(async function () {

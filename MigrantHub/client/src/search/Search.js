@@ -15,6 +15,9 @@ const styles = theme => ({
     marginLeft: 75,
     paddingTop: 100,
   },
+  serviceContainer : {
+    float: 'left',
+  },
   root: {
     ...theme.mixins.gutters(),
     paddingTop: theme.spacing.unit * 2,
@@ -25,6 +28,7 @@ const styles = theme => ({
     position: 'absolute',
     right: 0,
     paddingTop: 25,
+    width: '25%',
   },
 });
 
@@ -34,8 +38,6 @@ class Search extends Component {
     this.state = {
       userItem: [],
       servicesItem: [],
-      editMode: '',
-      editOwner: '',
     };
 
     this.getServices = this.getServices.bind(this);
@@ -61,20 +63,8 @@ class Search extends Component {
     let subcategory = '';
 
     if (location.state) {
-      if (location.state.editMode) {
-        this.setState({
-          editMode: location.state.editMode,
-          editOwner: location.state.editOwner,
-        });
-
-        editOwnerEmail = location.state.editOwner;
-      } else if (location.state.searchMode) {
-        searchMode = location.state.searchMode;
         searchQuery = location.state.searchQuery;
-      } else if (location.state.category) {
-        category = location.state.category;
-        subcategory = location.state.subcategory;
-      }
+        searchMode = location.state.searchMode;
     }
     axios.get('/api/services/', {
       params: {
@@ -112,7 +102,7 @@ class Search extends Component {
 
   renderServices() {
     const { classes } = this.props;
-    const { servicesItem, editMode, editOwner } = this.state;
+    const { servicesItem } = this.state;
 
     if(this.state.servicesItem.length !== 0) {
         return (
@@ -133,8 +123,8 @@ class Search extends Component {
                 serviceLocation={item.location}
                 serviceDate={item.serviceDate}
                 serviceHours={item.serviceHours}
-                editMode={editMode}
-                editOwner={editOwner}
+                editMode={item.editMode}
+                editOwner={item.editOwner}
                 getServices={this.getServices}
             />
             ))

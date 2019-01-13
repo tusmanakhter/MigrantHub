@@ -44,7 +44,6 @@ class HeaderLinks extends React.Component {
     this.setState({ open: false });
   };
   handleSearch = async () => {
-    console.log(this.state.search)
     const error = await this.validate();
     if (!error) {
         this.sendSearch();
