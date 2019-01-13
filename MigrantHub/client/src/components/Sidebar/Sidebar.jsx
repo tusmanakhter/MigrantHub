@@ -68,21 +68,15 @@ class Sidebar extends React.Component {
     super(props);
     this.state = {
       openAvatar: false,
-      openComponents: this.activeRoute("/components"),
-      openForms: this.activeRoute("/forms"),
-      openTables: this.activeRoute("/tables"),
-      openMaps: this.activeRoute("/maps"),
-      openPages: this.activeRoute("-page"),
       miniActive: true,
       type: '',
     };
-    this.activeRoute.bind(this);
     this.getUser = this.getUser.bind(this);
   }
   // verifies if routeName is the one active (in browser input)
-  activeRoute(routeName) {
-    return this.props.location.pathname.indexOf(routeName) > -1 ? true : false;
-  }
+  // activeRoute(routeName) {
+  //   return this.props.location.pathname.indexOf(routeName) > -1 ? true : false;
+  // }
   openCollapse(collapse) {
     var st = {};
     st[collapse] = !this.state[collapse];
@@ -94,25 +88,25 @@ class Sidebar extends React.Component {
   }
 
   componentWillReceiveProps() {
-      this.getUser(this);
+    this.getUser(this);
   }
 
   getUser() {
     const { dataRetrieved } = this.state;
     if (!dataRetrieved) {
-        axios.get('/api/accounts/get/user').then((response) => {
-            if (response.status === 200) {
-                this.setState({
-                    type: response.data.type,
-                    email: response.data.email,
-                    firstName: response.data.firstName,
-                    lastName: response.data.lastName,
-                    dataRetrieved: true,
-                });
-            }
-        });
+      axios.get('/api/accounts/get/user').then((response) => {
+        if (response.status === 200) {
+          this.setState({
+            type: response.data.type,
+            email: response.data.email,
+            firstName: response.data.firstName,
+            lastName: response.data.lastName,
+            dataRetrieved: true,
+          });
+        }
+      });
     }
-}
+  }
 
   render() {
     const {
@@ -182,7 +176,7 @@ class Sidebar extends React.Component {
               onClick={() => this.openCollapse("openAvatar")}
             >
               <ListItemText
-                primary={rtlActive ? "تانيا أندرو" : firstName+" "+lastName}
+                primary={rtlActive ? "تانيا أندرو" : firstName + " " + lastName}
                 secondary={
                   <b
                     className={
@@ -208,7 +202,7 @@ class Sidebar extends React.Component {
                     }
                   >
                     <span className={collapseItemMini}>
-                      {rtlActive ? "مع" : <PermIdentity/>}
+                      {rtlActive ? "مع" : <PermIdentity />}
                     </span>
                     <ListItemText
                       primary={rtlActive ? "ملفي" : "My Profile"}
@@ -219,13 +213,13 @@ class Sidebar extends React.Component {
                 </ListItem>
                 <ListItem className={classes.collapseItem}>
                   <NavLink
-                    to={ type === UserTypes.MIGRANT? '/editmigrant': type === UserTypes.BUSINESS? '/editbusiness' : '/'}
+                    to={type === UserTypes.MIGRANT ? '/editmigrant' : type === UserTypes.BUSINESS ? '/editbusiness' : '/'}
                     className={
                       classes.itemLink + " " + classes.userCollapseLinks
                     }
                   >
                     <span className={collapseItemMini}>
-                    {rtlActive ? "هوع" : <PermIdentity/>}
+                      {rtlActive ? "هوع" : <PermIdentity />}
                     </span>
                     <ListItemText
                       primary={
@@ -244,7 +238,7 @@ class Sidebar extends React.Component {
                     }
                   >
                     <span className={collapseItemMini}>
-                      {rtlActive ? "و" : <ViewList/>}
+                      {rtlActive ? "و" : <ViewList />}
                     </span>
                     <ListItemText
                       primary={rtlActive ? "إعدادات" : "My Services"}
@@ -261,7 +255,7 @@ class Sidebar extends React.Component {
                     }
                   >
                     <span className={collapseItemMini}>
-                      {rtlActive ? "و" : <Event/>}
+                      {rtlActive ? "و" : <Event />}
                     </span>
                     <ListItemText
                       primary={rtlActive ? "إعدادات" : "My Events"}
@@ -284,11 +278,11 @@ class Sidebar extends React.Component {
           }
           if (prop.collapse) {
             const navLinkClasses =
-              classes.itemLink +
-              " " +
-              cx({
-                [" " + classes.collapseActive]: this.activeRoute(prop.path)
-              });
+              classes.itemLink //+
+            // " " +
+            // cx({
+            //   [" " + classes.collapseActive]: this.activeRoute(prop.path)
+            // });
             const itemText =
               classes.itemText +
               " " +
@@ -332,8 +326,8 @@ class Sidebar extends React.Component {
                     {typeof prop.icon === "string" ? (
                       <Icon>{prop.icon}</Icon>
                     ) : (
-                      <prop.icon />
-                    )}
+                        <prop.icon />
+                      )}
                   </ListItemIcon>
                   <ListItemText
                     primary={prop.name}
@@ -357,11 +351,11 @@ class Sidebar extends React.Component {
                         return null;
                       }
                       const navLinkClasses =
-                        classes.collapseItemLink +
-                        " " +
-                        cx({
-                          [" " + classes[color]]: this.activeRoute(prop.path)
-                        });
+                        classes.collapseItemLink //+
+                      // " " +
+                      // cx({
+                      //   [" " + classes[color]]: this.activeRoute(prop.path)
+                      // });
                       const collapseItemMini =
                         classes.collapseItemMini +
                         " " +
@@ -389,11 +383,11 @@ class Sidebar extends React.Component {
             );
           }
           const navLinkClasses =
-            classes.itemLink +
-            " " +
-            cx({
-              [" " + classes[color]]: this.activeRoute(prop.path)
-            });
+            classes.itemLink //+
+          // " " +
+          // cx({
+          //   [" " + classes[color]]: this.activeRoute(prop.path)
+          // });
           const itemText =
             classes.itemText +
             " " +
@@ -417,8 +411,8 @@ class Sidebar extends React.Component {
                   {typeof prop.icon === "string" ? (
                     <Icon>{prop.icon}</Icon>
                   ) : (
-                    <prop.icon />
-                  )}
+                      <prop.icon />
+                    )}
                 </ListItemIcon>
                 <ListItemText
                   primary={prop.name}

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import MainLayout from 'home/MainLayout';
 import PropTypes from 'prop-types';
 import withStyles from '@material-ui/core/styles/withStyles';
 import Button from '@material-ui/core/Button';
@@ -114,50 +115,52 @@ class ServiceList extends Component {
     const { classes, ...rest } = this.props;
     const { items, editMode, editOwner, type } = this.state;
     return (
-      <div className={classes.mainContainer}>
-        <NavPanel />
-        {type !== UserTypes.ADMIN
-          && (
-            <div>
-              <Header/>
-              {this.renderRedirectToServiceForm()}
-              <Button
-                variant="contained"
-                color="primary"
-                className={classes.button}
-                onClick={this.setRedirectToServiceForm}
-              >
-                Create Service
+      <React.Fragment>
+        <MainLayout>
+          <div className={classes.mainContainer}>
+            {type !== UserTypes.ADMIN
+              && (
+                <div>
+                  {this.renderRedirectToServiceForm()}
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    className={classes.button}
+                    onClick={this.setRedirectToServiceForm}
+                  >
+                    Create Service
               </Button>
-              </div>
-          )
-        }
-        <GridContainer>
-          {' '}
-          {
-            items.map(item => (
-              <ServiceItem
-                serviceId={item._id}
-                serviceTitle={item.serviceTitle}
-                serviceImagePath={item.serviceImagePath}
-                serviceDescription={item.serviceDescription}
-                serviceSummary={item.serviceSummary}
-                category={item.category}
-                subcategory={item.subcategory}
-                serviceLocation={item.location}
-                serviceDate={item.serviceDate}
-                serviceHours={item.serviceHours}
-                editMode={editMode}
-                editOwner={editOwner}
-                getData={this.getData}
-              />
-            ))
-          }
-          <Grid item xs={2}>
-            <div className="Panel">{<QuestionnairePanel />}</div>
-          </Grid>
-        </GridContainer >
-      </div >
+                </div>
+              )
+            }
+            <GridContainer>
+              {' '}
+              {
+                items.map(item => (
+                  <ServiceItem
+                    serviceId={item._id}
+                    serviceTitle={item.serviceTitle}
+                    serviceImagePath={item.serviceImagePath}
+                    serviceDescription={item.serviceDescription}
+                    serviceSummary={item.serviceSummary}
+                    category={item.category}
+                    subcategory={item.subcategory}
+                    serviceLocation={item.location}
+                    serviceDate={item.serviceDate}
+                    serviceHours={item.serviceHours}
+                    editMode={editMode}
+                    editOwner={editOwner}
+                    getData={this.getData}
+                  />
+                ))
+              }
+              <Grid item xs={2}>
+                <div className="Panel">{<QuestionnairePanel />}</div>
+              </Grid>
+            </GridContainer >
+          </div >
+        </MainLayout>
+      </React.Fragment>
     );
   }
 }
