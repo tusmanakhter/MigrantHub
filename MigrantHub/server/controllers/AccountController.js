@@ -31,10 +31,14 @@ module.exports = {
     throw new ServerError('Error retrieving user.', 400, `User value: ${user}`);
   },
 
-  async getUser(userObject) {
+  async getCurrentUser(userObject) {
     if (userObject) {
       return Promise.resolve({ user: userObject });
     }
     return Promise.resolve({ user: null });
+  },
+
+  async getUser(userEmail) {
+    return AccountService.getUser(userEmail);
   },
 };
