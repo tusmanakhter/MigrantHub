@@ -21,7 +21,7 @@ const Error = () => (
                 <Link to={`/main`}>
                   <Button round color="warning" simple variant="contained">
                     Bring me back
-                    </Button>
+                  </Button>
                 </Link>
               </GridItem>
             </GridContainer>

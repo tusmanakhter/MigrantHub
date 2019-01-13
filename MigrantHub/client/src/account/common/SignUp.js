@@ -17,9 +17,9 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Icon from "@material-ui/core/Icon";
 
 // @material-ui/icons
-import Timeline from "@material-ui/icons/Timeline";
-import Code from "@material-ui/icons/Code";
 import Group from "@material-ui/icons/Group";
+import ListAlt from "@material-ui/icons/ListAlt";
+import CalendarToday from "@material-ui/icons/CalendarToday";
 import Check from "@material-ui/icons/Check";
 
 // core components
@@ -201,13 +201,13 @@ class SignUp extends Component {
                         <InfoArea
                           title="Service Hub"
                           description="A free list of available services near you. A chat bot that will help you find what you need."
-                          icon={Timeline}
+                          icon={ListAlt}
                           iconColor="rose"
                         />
                         <InfoArea
                           title="Event Hub"
                           description="Create an event or view a list of events happening near you."
-                          icon={Code}
+                          icon={CalendarToday}
                           iconColor="primary"
                         />
                         <InfoArea
