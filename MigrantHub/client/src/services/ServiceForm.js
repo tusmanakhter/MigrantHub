@@ -494,7 +494,7 @@ class ServiceForm extends Component {
         location, addLocation, addServiceDate, serviceImageName, serviceImage, category, subcategory,
       } = this.state;
 
-      let tempImageName = 'cameraDefault.png';
+      let tempImageName = 'montrealCity.png';
       let tempLocation = {};
       let tempServiceDate = {};
 
@@ -551,13 +551,13 @@ class ServiceForm extends Component {
       let tempServiceDate = {};
 
       if (serviceImageName === '') {
-        tempImageName = 'cameraDefault.png';
+        tempImageName = 'montrealCity.png';
       } else if (serviceImage !== null) {
         tempImageName = serviceImage.name;
       }
 
       if (setDefaultImage) {
-        tempImageName = 'cameraDefault.png';
+        tempImageName = 'montrealCity.png';
       }
 
       if (addLocation) {

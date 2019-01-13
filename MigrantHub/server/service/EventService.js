@@ -11,7 +11,7 @@ module.exports = {
     const errors = await EventValidator.eventValidator(eventObject);
 
     if (errors === '') {
-      if (eventObject.eventImageName === 'cameraDefault.png') {
+      if (eventObject.eventImageName === 'montrealCity.png') {
         eventObject.eventImagePath = (`/uploads/default/${eventObject.eventImageName}`);
       } else {
         eventObject.eventImagePath = (`/uploads/${user._id}/events/${eventObject.eventImageName}`);
@@ -61,7 +61,7 @@ module.exports = {
         });
       }
 
-      if (eventObject.eventImageName === 'cameraDefault.png') {
+      if (eventObject.eventImageName === 'montrealCity.png') {
         eventObject.eventImagePath = (`/uploads/default/${eventObject.eventImageName}`);
       } else {
         eventObject.eventImagePath = (`/uploads/${user._id}/events/${eventObject.eventImageName}`);
