@@ -7,6 +7,7 @@ var AccountService = require('../../service/AccountService');
 var MigrantRepository = require('../../repository/MigrantRepository');
 var MigrantAccountValidator = require('../../validators/MigrantAccountValidator');
 var BusinessRepository = require('../../repository/BusinessRepository');
+var UserRepository = require('../../repository/UserRepository');
 var BusinessAccountValidator = require('../../validators/BusinessAccountValidator');
 var AdminRepository = require('../../repository/AdminRepository');
 var AdminAccountValidator = require('../../validators/AdminAccountValidator');
@@ -81,4 +82,18 @@ describe('account service admin', function () {
       this.stub(AdminAccountValidator, 'adminAccountValidator').returns("error");
       return chai.assert.isRejected(AccountService.createAdmin(req.body), ServerError, 'There was an error creating admin user.');
   }));
+});
+
+describe('account service user', function () {
+    let req = {
+        user: {
+            _id: 'test@test.test'
+        }
+    };
+
+    it('should call getUser user repository with correct parameters.', test(async function () {
+        this.stub(UserRepository, 'getUser');
+        await AccountService.getUser(req.user._id);
+        assert.calledWith(UserRepository.getUser, req.user._id);
+    }));
 });
