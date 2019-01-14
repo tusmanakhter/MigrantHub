@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Route, Switch } from 'react-router-dom';
+
 import SignUpMigrant from 'account/personal/SignUpMigrant';
 import SignUpBusiness from 'account/business/SignUpBusiness';
 import SignUpAdmin from 'account/admin/SignUpAdmin';
@@ -28,6 +29,8 @@ import UsersList from 'People/UsersList';
 import ServiceCategories from 'services/ServiceCategories';
 import FriendPanel from 'components/FriendPanel/FriendPanel';
 import AccountSelection from 'account/AccountSelection';
+import ServiceSuggestionForm from '../services/ServiceSuggestionForm';
+import ServiceSuggestionList from '../services/ServiceSuggestionList';
 
 class Routes extends Component {
   state = {
@@ -50,19 +53,20 @@ class Routes extends Component {
     return (
       <Switch>
         <UnprotectedRoute path="/" component={Home} exact />
-        <ProtectedRoute path="/main" component={Main} type="migrant" exact />
-        <ProtectedRoute path="/businessmain" component={BusinessMain} type="business" exact />
-        <UnprotectedRoute path="/signup/account-selection" component={AccountSelection} exact />
+        <ProtectedRoute path="/main" component={Main} migrant exact />
+        <ProtectedRoute path="/businessmain" component={BusinessMain} business exact />
         <UnprotectedRoute path="/signup/business" component={SignUpBusiness} exact />
         <UnprotectedRoute path="/signup/personal" component={SignUpMigrant} exact />
         <UnprotectedRoute path="/signup/admin" component={SignUpAdmin} exact />
         <UnprotectedRoute path="/login" component={Login} exact />
         <Route path="/temphome" component={TempHome} exact />
         <Route path="/temperror" component={TempError} exact />
-        <ProtectedRoute path="/editmigrant" component={EditMigrant} type="migrant" exact />
-        <ProtectedRoute path="/editbusiness" component={EditBusiness} type="business" exact />
-        <ProtectedRoute path="/admin/dashboard" component={AdminDashboard} type="admin" />
+        <ProtectedRoute path="/editmigrant" component={EditMigrant} migrant exact />
+        <ProtectedRoute path="/editbusiness" component={EditBusiness} business exact />
+        <ProtectedRoute path="/admin/dashboard" component={AdminDashboard} admin />
         <Route path="/services/create" component={ServiceForm} exact />
+        <ProtectedRoute path="/services/suggestions/create" component={ServiceSuggestionForm} migrant exact />
+        <ProtectedRoute path="/services/suggestions" component={ServiceSuggestionList} business admin exact />
         <Route path="/services" component={ServiceList} exact />
         <Route path="/categories" component={ServiceCategories} exact />
         <Route path="/services/share/:id" render={(props) => <ServiceShare serviceId={props.match.params.id} />} />

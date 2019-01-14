@@ -5,15 +5,17 @@ import {
 } from 'mdbreact';
 import { Route } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import 'App.css';
-import Logout from 'components/Logout';
-import AdminMain from 'admin/AdminMain';
-import CurrentAdmins from 'admin/CurrentAdmins';
-import RejectedAdmins from 'admin/RejectedAdmins';
-import DeletedAdmins from 'admin/DeletedAdmins';
-import UnapprovedAdmins from 'admin/UnapprovedAdmins';
-import ServiceList from 'services/ServiceList';
-import EventList from 'events/EventList'
+import '../App.css';
+import Logout from '../components/Logout';
+import AdminMain from './AdminMain';
+import CurrentAdmins from './CurrentAdmins';
+import RejectedAdmins from './RejectedAdmins';
+import DeletedAdmins from './DeletedAdmins';
+import UnapprovedAdmins from './UnapprovedAdmins';
+import ServiceList from '../services/ServiceList';
+import ServiceSuggestionList from '../services/ServiceSuggestionList';
+import EventList from '../events/EventList';
+
 
 
 class AdminDashboard extends Component {
@@ -51,6 +53,9 @@ class AdminDashboard extends Component {
                 <NavLink to={`${match.url}/admin/services`}>Services</NavLink>
               </NavItem>
               <NavItem>
+                <NavLink to={`${match.url}/admin/services/suggestions`}>Service Suggestions</NavLink>
+              </NavItem>
+              <NavItem>
                 <NavLink to={`${match.url}/admin/event`}>Event</NavLink>
               </NavItem>
               <NavItem>
@@ -77,6 +82,7 @@ class AdminDashboard extends Component {
         <Route path={`${match.url}/admins/unapproved`} component={UnapprovedAdmins} exact />
         <Route path={`${match.url}/admin/services`} component={ServiceList} exact />
         <Route path={`${match.url}/admin/event`} component={EventList} exact />
+        <Route path={`${match.url}/admin/services/suggestions`} component={ServiceSuggestionList} exact />
       </React.Fragment>
     );
   }
