@@ -61,7 +61,7 @@ class EventItem extends Component {
       const { open, scroll } = this.state;
 
       return (
-      <GridItem xs={12} sm={12} md={2}>
+      <GridItem xs={12} sm={6} md={2}>
         <Card product className={classes.cardHover}>
               <CardHeader image className={classes.cardHeaderHover}>
                 <a href="#pablo" onClick={this.handleClickOpen}>
@@ -110,11 +110,8 @@ class EventItem extends Component {
                 </p>
               </CardBody>
               <CardFooter product>
-                <div className={classes.price}>
-                  <h4>Free</h4>
-                </div>
                 <div className={`${classes.stats} ${classes.productStats}`}>
-                  {location ? (<div><Place />{location.city}</div>) : ""}
+                  {location ? (<div><Place />{location.city}</div>) : (<div><Place/>Montreal</div>)}
                 </div>
               </CardFooter>
             </Card>

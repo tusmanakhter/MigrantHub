@@ -27,6 +27,7 @@ import Auth from 'routes/Auth';
 import UsersList from 'People/UsersList';
 import ServiceCategories from 'services/ServiceCategories';
 import FriendPanel from 'components/FriendPanel/FriendPanel';
+import AccountSelection from 'account/AccountSelection';
 
 class Routes extends Component {
   state = {
@@ -51,8 +52,9 @@ class Routes extends Component {
         <UnprotectedRoute path="/" component={Home} exact />
         <ProtectedRoute path="/main" component={Main} type="migrant" exact />
         <ProtectedRoute path="/businessmain" component={BusinessMain} type="business" exact />
+        <UnprotectedRoute path="/signup/account-selection" component={AccountSelection} exact />
         <UnprotectedRoute path="/signup/business" component={SignUpBusiness} exact />
-        <UnprotectedRoute path="/signup/user" component={SignUpMigrant} exact />
+        <UnprotectedRoute path="/signup/personal" component={SignUpMigrant} exact />
         <UnprotectedRoute path="/signup/admin" component={SignUpAdmin} exact />
         <UnprotectedRoute path="/login" component={Login} exact />
         <Route path="/temphome" component={TempHome} exact />

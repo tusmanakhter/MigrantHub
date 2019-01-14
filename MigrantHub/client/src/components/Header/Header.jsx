@@ -22,21 +22,7 @@ import headerStyle from "assets/jss/material-dashboard-pro-react/components/head
 function Header({ ...props }) {
   function makeBrand() {
     var name;
-    // props.routes.map((prop, key) => {
-    //   if (prop.collapse) {
-    //     prop.views.map((prop, key) => {
-    //       if (prop.path === props.location.pathname) {
-    //         name = prop.name;
-    //       }
-    //       return null;
-    //     });
-    //   }
-    //   if (prop.path === props.location.pathname) {
-    //     name = prop.name;
-    //   }
-    //   return null;
-    // });
-    if(name){
+    if (name) {
       return name;
     } else {
       return "Home Page";
@@ -67,22 +53,18 @@ function Header({ ...props }) {
                 <ViewList className={classes.sidebarMiniIcon} />
               </Button>
             ) : (
-              <Button
-                justIcon
-                round
-                color="white"
-                onClick={props.sidebarMinimize}
-              >
-                <MoreVert className={classes.sidebarMiniIcon} />
-              </Button>
-            )}
+                <Button
+                  justIcon
+                  round
+                  color="white"
+                  onClick={props.sidebarMinimize}
+                >
+                  <MoreVert className={classes.sidebarMiniIcon} />
+                </Button>
+              )}
           </div>
         </Hidden>
         <div className={classes.flex}>
-          {/* Here we create navbar brand, based on route name */}
-          <Button href="#" className={classes.title} color="transparent">
-            {makeBrand()}
-          </Button>
         </div>
         <Hidden smDown implementation="css">
           <HeaderLinks rtlActive={rtlActive} />
