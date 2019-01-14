@@ -22,6 +22,7 @@ class BusinessMain extends Component {
       navOptions: [
         { description: 'Services', link: '/services' },
         { description: 'Events', link: '/events' },
+        { description: 'Service Suggestions', link: '/services/suggestions' },
       ],
       navPanelVisibility: true
     };

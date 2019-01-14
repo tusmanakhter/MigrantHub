@@ -32,20 +32,27 @@ const auth = {
     };
     localStorage.setItem('user', JSON.stringify(user));
   },
-  isAuthenticated(type) {
+  isAuthenticated(migrant, business, admin) {
     const user = JSON.parse(localStorage.getItem('user'));
-    switch (type) {
-      case UserTypes.ADMIN:
-        return user.type === UserTypes.ADMIN && user.authenticated;
-      case UserTypes.MIGRANT:
-        return user.type === UserTypes.MIGRANT && user.authenticated;
-      case UserTypes.BUSINESS:
-        return user.type === UserTypes.BUSINESS && user.authenticated;
-      case 'user':
-        return user.authenticated;
-      default:
-        return false;
+    let authenticated = false;
+
+    if (migrant) {
+      authenticated = user.type === UserTypes.MIGRANT && user.authenticated;
     }
+
+    if (business && !authenticated) {
+      authenticated = user.type === UserTypes.BUSINESS && user.authenticated;
+    }
+
+    if (admin && !authenticated) {
+      authenticated = user.type === UserTypes.ADMIN && user.authenticated;
+    }
+
+    if (!migrant && !business && !admin) {
+      authenticated = user.authenticated;
+    }
+    
+    return authenticated;
   },
 };
 

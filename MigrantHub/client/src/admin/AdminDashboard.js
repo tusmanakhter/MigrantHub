@@ -14,7 +14,7 @@ import DeletedAdmins from 'admin/DeletedAdmins';
 import UnapprovedAdmins from 'admin/UnapprovedAdmins';
 import ServiceList from 'services/ServiceList';
 import EventList from 'events/EventList'
-
+import ServiceSuggestionList from 'services/ServiceSuggestionList';
 
 class AdminDashboard extends Component {
   constructor(props) {
@@ -51,6 +51,9 @@ class AdminDashboard extends Component {
                 <NavLink to={`${match.url}/admin/services`}>Services</NavLink>
               </NavItem>
               <NavItem>
+                <NavLink to={`${match.url}/admin/services/suggestions`}>Service Suggestions</NavLink>
+              </NavItem>
+              <NavItem>
                 <NavLink to={`${match.url}/admin/event`}>Event</NavLink>
               </NavItem>
               <NavItem>
@@ -77,6 +80,7 @@ class AdminDashboard extends Component {
         <Route path={`${match.url}/admins/unapproved`} component={UnapprovedAdmins} exact />
         <Route path={`${match.url}/admin/services`} component={ServiceList} exact />
         <Route path={`${match.url}/admin/event`} component={EventList} exact />
+        <Route path={`${match.url}/admin/services/suggestions`} component={ServiceSuggestionList} exact />
       </React.Fragment>
     );
   }

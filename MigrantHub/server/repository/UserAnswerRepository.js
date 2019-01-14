@@ -13,9 +13,10 @@ module.exports = {
   },
 
   getUserAnswer(query) {
-    return UserAnswer.findOne(query).exec().then(event => Promise.resolve(event)).catch((error) => {
-      throw new ServerError('There was an error retrieving answers.', 400, error);
-    });
+    return UserAnswer.findOne(query).exec()
+      .then(userAnswer => Promise.resolve(userAnswer)).catch((error) => {
+        throw new ServerError('There was an error retrieving answers.', 400, error);
+      });
   },
 
   updateUserAnswer(userAnswerId, questionAnswer) {

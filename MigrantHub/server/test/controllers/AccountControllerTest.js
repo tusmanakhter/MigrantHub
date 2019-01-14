@@ -2,7 +2,7 @@ var { assert } = require('sinon');
 var sinon = require('sinon');
 var sinonTest = require('sinon-test');
 var test = sinonTest(sinon);
-var Controller = require('../../controllers/AccountController')
+var AccountController = require('../../controllers/AccountController')
 var AccountFactory = require('../factories/AccountFactory');
 var AccountService = require('../../service/AccountService');
 
@@ -13,7 +13,7 @@ describe('account controller migrant', function () {
 
   it('should create a migrant', test(async function () {
     this.stub(AccountService, 'createUser');
-    await Controller.createUser(req.body);
+    await AccountController.createUser(req.body);
     assert.calledWith(AccountService.createUser, req.body);
   }));
 });
@@ -25,7 +25,7 @@ describe('account controller business', function () {
 
   it('should create a business user', test(async function () {
     this.stub(AccountService, 'createBusiness');
-    await Controller.createBusiness(req.body);
+    await AccountController.createBusiness(req.body);
     assert.calledWith(AccountService.createBusiness, req.body);
   }));
 });
@@ -37,7 +37,23 @@ describe('account controller admin', function () {
 
   it('should create an admin', test(async function () {
       this.stub(AccountService, 'createAdmin');
-      await Controller.createAdmin(req.body);
+      await AccountController.createAdmin(req.body);
       assert.calledWith(AccountService.createAdmin, req.body);
   }));
 });
+
+describe('account controller user', function () {
+    let req = {
+        user: {
+          _id: 'test@test.test'
+        }
+    };
+
+    it('should call getUser user service with correct parameters.', test(async function () {
+        this.stub(AccountService, 'getUser');
+        await AccountController.getUser(req.user._id);
+        assert.calledWith(AccountService.getUser, req.user._id);
+    }));
+
+});
+
