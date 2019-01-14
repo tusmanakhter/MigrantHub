@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { relations } from '../../../lib/SignUpConstants';
-import Dropdown from '../generic/Dropdown';
+import { relations } from 'lib/SignUpConstants';
+import Dropdown from 'components/fields/generic/Dropdown';
 
 const Relation = (props) => {
   const {

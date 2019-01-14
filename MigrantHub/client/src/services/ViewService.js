@@ -11,9 +11,10 @@ import Button from '@material-ui/core/Button';
 import blue from '@material-ui/core/colors/blue';
 import { Redirect } from 'react-router-dom';
 import axios from 'axios';
-import GoogleMaps from '../components/GoogleMaps/GoogleMaps';
-import UserTypes from '../lib/UserTypes';
-
+import GoogleMaps from 'components/GoogleMaps/GoogleMaps';
+import UserTypes from 'lib/UserTypes';
+import SweetAlert from "react-bootstrap-sweetalert";
+import sweetAlertStyle from "assets/jss/material-dashboard-pro-react/views/sweetAlertStyle.jsx";
 const styles = {
   avatar: {
     backgroundColor: blue[100],
@@ -29,7 +30,12 @@ class ViewService extends Component {
       redirectToURL: '',
       redirectState: {},
       type: '',
+      alert: null,
+      show: false,
     };
+    this.hideAlert = this.hideAlert.bind(this);
+    this.successDelete = this.successDelete.bind(this);
+    this.cancelDetele = this.cancelDetele.bind(this);
   }
 
   componentDidMount() {
@@ -66,6 +72,75 @@ class ViewService extends Component {
     });
   }
 
+  warningWithConfirmAndCancelMessage() {
+    this.setState({
+      alert: (
+        <SweetAlert
+          warning
+          style={{ display: "block", marginTop: "-100px" }}
+          title="Are you sure?"
+          onConfirm={() => this.successDelete()}
+          onCancel={() => this.cancelDetele()}
+          confirmBtnCssClass={
+            this.props.classes.button + " " + this.props.classes.success
+          }
+          cancelBtnCssClass={
+            this.props.classes.button + " " + this.props.classes.danger
+          }
+          confirmBtnText="Yes, delete it!"
+          cancelBtnText="Cancel"
+          showCancel
+        >
+          You will not be able to recover this service!
+        </SweetAlert>
+      )
+    });
+  }
+
+  successDelete() {
+    this.setState({
+      alert: (
+        <SweetAlert
+          success
+          style={{ display: "block", marginTop: "-100px" }}
+          title="Deleted!"
+          onConfirm={() => this.hideAlert()}
+          onCancel={() => this.hideAlert()}
+          confirmBtnCssClass={
+            this.props.classes.button + " " + this.props.classes.success
+          }
+        >
+          Your service has been deleted.
+        </SweetAlert>
+      )
+    });
+    this.handleDelete();
+  }
+  cancelDetele() {
+    this.setState({
+      alert: (
+        <SweetAlert
+          danger
+          style={{ display: "block", marginTop: "-100px" }}
+          title="Cancelled"
+          onConfirm={() => this.hideAlert()}
+          onCancel={() => this.hideAlert()}
+          confirmBtnCssClass={
+            this.props.classes.button + " " + this.props.classes.success
+          }
+        >
+          Your service file is safe :)
+        </SweetAlert>
+      )
+    });
+  }
+
+  hideAlert() {
+    this.setState({
+      alert: null
+    });
+  }
+
   render() {
     const {
       classes, serviceTitle, serviceSummary, serviceDescription, serviceLocation, serviceDate,
@@ -85,14 +160,14 @@ class ViewService extends Component {
 
     return (
       <div>
-
+      {this.state.alert}
         <Dialog
           open={open}
           onClose={onClose}
           scroll={scroll}
           aria-labelledby="scroll-dialog-title"
           fullWidth
-          maxWidth="150"
+          maxWidth="lg"
         >
           <DialogTitle id="scroll-dialog-title" variant="title" align="center">{serviceTitle}</DialogTitle>
           <DialogContent>
@@ -202,14 +277,14 @@ class ViewService extends Component {
           <DialogActions>
             { type === UserTypes.ADMIN
               && (
-                <Button onClick={this.handleDelete} color="secondary">
+                <Button onClick={this.warningWithConfirmAndCancelMessage.bind(this)} color="secondary">
                   Delete
                 </Button>
               )
             }}
             {editMode && (
               <React.Fragment>
-                <Button onClick={this.handleDelete} color="secondary">
+                <Button onClick={this.warningWithConfirmAndCancelMessage.bind(this)} color="secondary">
                   Delete
               </Button>
                 <Button onClick={this.handleEdit} color="primary">
@@ -256,4 +331,4 @@ ViewService.propTypes = {
   getData: PropTypes.func.isRequired,
 };
 
-export default withStyles(styles)(ViewService);
+export default withStyles(sweetAlertStyle)(ViewService);

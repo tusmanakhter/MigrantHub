@@ -1,19 +1,22 @@
 import React, { Component } from 'react';
+import MainLayout from 'home/MainLayout';
 import PropTypes from 'prop-types';
 import withStyles from '@material-ui/core/styles/withStyles';
 import Button from '@material-ui/core/Button';
-import Paper from '@material-ui/core/Paper';
+import GridContainer from "components/Grid/GridContainer.jsx";
 import { Redirect } from 'react-router-dom';
 import axios from 'axios';
-import ServiceItem from './ServiceItem';
-import Header from '../components/Header/Header';
-import UserTypes from '../lib/UserTypes';
-import QuestionnairePanel from '../components/QuestionnairePanel/QuestionnairePanel';
+import ServiceItem from 'services/ServiceItem';
+import Header from 'components/Header/Header';
+import UserTypes from 'lib/UserTypes';
+import QuestionnairePanel from 'components/QuestionnairePanel/QuestionnairePanel';
 import Grid from '@material-ui/core/Grid';
-
-
+import NavPanel from 'components/NavPanel/NavPanel';
 
 const styles = theme => ({
+  mainContainer: {
+    marginLeft: 75,
+  },
   root: {
     ...theme.mixins.gutters(),
     paddingTop: theme.spacing.unit * 2,
@@ -63,14 +66,14 @@ class ServiceList extends Component {
 
         editOwnerEmail = location.state.editOwner;
       } else if (location.state.searchMode) {
-          searchMode = location.state.searchMode;
+        searchMode = location.state.searchMode;
         searchQuery = location.state.searchQuery;
       } else if (location.state.category) {
-          category = location.state.category;
-          subcategory = location.state.subcategory;
+        category = location.state.category;
+        subcategory = location.state.subcategory;
       }
     }
-      axios.get('/api/services/', {
+    axios.get('/api/services/', {
       params: {
         editOwner: editOwnerEmail,
         searchQuery: searchQuery,
@@ -98,19 +101,23 @@ class ServiceList extends Component {
     });
   }
 
-    renderRedirectToServiceForm = () => {
-      const { redirectToServiceForm } = this.state;
-      if (redirectToServiceForm) {
-        return <Redirect to="/services/create" />;
-      }
+  renderRedirectToServiceForm = () => {
+    const { redirectToServiceForm } = this.state;
+    if (redirectToServiceForm) {
+      return <Redirect to="/services/create" />;
     }
-  
+  }
+
+  handleDrawerToggle = () => {
+    this.setState({ mobileOpen: !this.state.mobileOpen });
+  };
+
   setRedirectToSuggestionForm = () => {
     this.setState({
       redirectToSuggestionForm: true,
     });
   }
-  
+
   renderRedirectToSuggestionForm = () => {
     const { redirectToSuggestionForm } = this.state;
     if (redirectToSuggestionForm) {
@@ -118,72 +125,71 @@ class ServiceList extends Component {
     }
   }
 
-    render() {
-      const { classes } = this.props;
-      const { items, editMode, editOwner, type } = this.state;
-      return (
-        <div>
-          { type !== UserTypes.ADMIN
-            && (
-            <React.Fragment>
-              <Header />
-              {this.renderRedirectToServiceForm()}
-              {this.renderRedirectToSuggestionForm()}
-              <Button
-                variant="contained"
-                color="primary"
-                className={classes.button}
-                onClick={this.setRedirectToServiceForm}
-              >
-                Create Service 
-              </Button>
-              { type === UserTypes.MIGRANT
-                && (
-                <Button
-                  variant="contained"
-                  color="primary"
-                  className={classes.button}
-                  onClick={this.setRedirectToSuggestionForm}
-                >
-                  Add Suggestion 
-                </Button>
-                )
+  render() {
+    const { classes, ...rest } = this.props;
+    const { items, editMode, editOwner, type } = this.state;
+    return (
+      <React.Fragment>
+        <MainLayout>
+          <div className={classes.mainContainer}>
+            {type !== UserTypes.ADMIN
+              && (
+                <div>
+                  {this.renderRedirectToServiceForm()}
+                  {this.renderRedirectToSuggestionForm()}
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    className={classes.button}
+                    onClick={this.setRedirectToServiceForm}
+                  >
+                    Create Service
+                  </Button>
+                  { type === UserTypes.MIGRANT
+                    && (
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      className={classes.button}
+                      onClick={this.setRedirectToSuggestionForm}
+                    >
+                      Add Suggestion
+                    </Button>
+                    )
+                  }
+                </div>
+              )
+            }
+            <GridContainer>
+              {' '}
+              {
+                items.map(item => (
+                  <ServiceItem
+                    serviceId={item._id}
+                    serviceTitle={item.serviceTitle}
+                    serviceImagePath={item.serviceImagePath}
+                    serviceDescription={item.serviceDescription}
+                    serviceSummary={item.serviceSummary}
+                    category={item.category}
+                    subcategory={item.subcategory}
+                    serviceLocation={item.location}
+                    serviceDate={item.serviceDate}
+                    serviceHours={item.serviceHours}
+                    editMode={editMode}
+                    editOwner={editOwner}
+                    getData={this.getData}
+                  />
+                ))
               }
-            </React.Fragment>
-            )
-          }
-          <Grid container spacing={20}>
-          <Grid item xs={10}>
-          <Paper className={classes.root} elevation={2}>
-            {' '}
-            {
-              items.map(item => (
-                <ServiceItem
-                  serviceId={item._id}
-                  serviceTitle={item.serviceTitle}
-                  serviceImagePath={item.serviceImagePath}
-                  serviceDescription={item.serviceDescription}
-                  serviceSummary={item.serviceSummary}
-                  category={item.category}
-                  subcategory={item.subcategory}
-                  serviceLocation={item.location}
-                  serviceDate={item.serviceDate}
-                  serviceHours={item.serviceHours}
-                  editMode={editMode}
-                  editOwner={editOwner}
-                  getData={this.getData}
-                />
-              ))
-          }
-          </Paper>
-          </Grid>
-          <Grid item xs={2}>
+              <Grid item xs={2}>
                 <div className="Panel">{<QuestionnairePanel />}</div>
-          </Grid>
-          </Grid>
-        </div>
-      );
-    }
+              </Grid>
+            </GridContainer >
+          </div >
+        </MainLayout>
+      </React.Fragment>
+    );
+  }
 }
 
 ServiceList.propTypes = {

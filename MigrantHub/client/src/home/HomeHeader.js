@@ -1,65 +1,71 @@
-import React, { Component } from 'react';
-import {
-  Navbar, NavbarBrand, NavbarNav, NavbarToggler, Collapse, NavItem, NavLink,
-  Dropdown, DropdownToggle, DropdownMenu, DropdownItem,
-} from 'mdbreact';
+import React from 'react';
+import PropTypes from 'prop-types';
+import { withStyles } from '@material-ui/core/styles';
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
+import Typography from '@material-ui/core/Typography';
+import { Link } from 'react-router-dom';
 
-class HomeHeader extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      collapse: false,
-      isWideEnough: false,
-    };
-    this.onClick = this.onClick.bind(this);
-  }
+const styles = theme => ({
+  root: {
+    '& a': {
+      [theme.breakpoints.down('sm')]: {
+        marginRight: 10,
+      },
+      color: 'white',
+      marginRight: 20,
+    },
+    '& a:hover': {
+      color: '#e5e5e5',
+    },
+  },
+  title: {
+    display: 'block',
+    marginRight: 'auto',
+  },
+  appBar: {
+    [theme.breakpoints.down('sm')]: {
+      padding: '0% 1%',
+    },
+    padding: '0% 7.5%',
+    background: '#193446',
+  },
+  toolbar: {
+    [theme.breakpoints.down('sm')]: {
+      padding: '0% 1% 0% 2%',
+    },
+  },
+  underline: {
+    background: 'white',
+    content: '""',
+    display: 'block',
+    height: '2px',
+    opacity: '.5',
+    position: 'absolute',
+    width: '100%',
+  },
+});
 
-  onClick() {
-    this.setState(prevState => ({
-      collapse: !prevState.collapse,
-    }));
-  }
+const HomeHeader = (props) => {
+  const { classes } = props;
+  return (
+    <div className={classes.root}>
+      <AppBar position="static" className={classes.appBar}>
+        <Toolbar className={classes.toolbar}>
+          <Typography variant="h6" color="inherit" className={classes.title}>
+            <Link to="/">MigrantHub</Link>
+          </Typography>
+          <Link to="/login">Log In</Link>
+          <Link to="/signup/account-selection">Sign Up</Link>
+        </Toolbar>
+      </AppBar>
+      <div className={classes.underline} />
+    </div>
+  );
+};
 
-  render() {
-    const { isWideEnough, collapse } = this.state;
+HomeHeader.propTypes = {
+  classes: PropTypes.object.isRequired,
+};
 
-    return (
-      <React.Fragment>
-        <Navbar color="indigo" dark expand="md" scrolling>
-          <NavbarBrand href="/">
-            <strong>MigrantHub</strong>
-          </NavbarBrand>
-          { !isWideEnough && <NavbarToggler onClick={this.onClick} />}
-          <Collapse isOpen={collapse} navbar>
-            <NavbarNav left>
-              <NavItem>
-                <NavLink to="/">Home</NavLink>
-              </NavItem>
-            </NavbarNav>
-            <NavbarNav right>
-              <NavItem>
-                <Dropdown>
-                  <DropdownToggle nav caret>Sign Up</DropdownToggle>
-                  <DropdownMenu>
-                    <DropdownItem><NavLink to="/signup/user" style={{ color: 'black' }}>User</NavLink></DropdownItem>
-                    <DropdownItem><NavLink to="/signup/business" style={{ color: 'black' }}>Business</NavLink></DropdownItem>
-                  </DropdownMenu>
-                </Dropdown>
-              </NavItem>
-              <NavItem>
-                <NavLink to="/login">LogIn</NavLink>
-              </NavItem>
-            </NavbarNav>
-          </Collapse>
-        </Navbar>
-        {/* <ul>
-          <li><NavLink to="/signup/user"> Create personal account </NavLink></li>
-          <li><NavLink to="/signup/business"> Create a business account </NavLink></li>
-          <li><NavLink to="/login">LogIn</NavLink></li>
-        </ul> */}
-      </React.Fragment>
-    );
-  }
-}
-
-export default HomeHeader;
+export default withStyles(styles)(HomeHeader);

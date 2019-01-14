@@ -1,8 +1,10 @@
 @import url('https://fonts.googleapis.com/css?family=Roboto:300,400,500,700');
 
 .App {
-  height: 100%;
-  background-color: #E2B39A;
+  height: auto;
+  background: #e0e0e0;
+  background-repeat: no-repeat;
+  background-size: auto;
   /* color: white; */
   text-align: center;
   font-family: 'Roboto', sans-serif;
@@ -30,6 +32,7 @@
   background-color: #153345;
 }
 
-ul {
-  list-style: none;
+.col-centered{
+  float: none;
+  margin: 0 auto;
 }

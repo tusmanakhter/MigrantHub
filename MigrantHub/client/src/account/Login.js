@@ -1,71 +1,63 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import withStyles from '@material-ui/core/styles/withStyles';
-import TextField from '@material-ui/core/TextField';
+
+// @material-ui/core components
+import withStyles from "@material-ui/core/styles/withStyles";
+import Icon from "@material-ui/core/Icon";
+
+// core components
+import HomeLayout from 'home/HomeLayout';
+import GridContainer from "components/Grid/GridContainer.jsx";
+import GridItem from "components/Grid/GridItem.jsx";
 import Input from '@material-ui/core/Input';
-import InputLabel from '@material-ui/core/InputLabel';
-import InputAdornment from '@material-ui/core/InputAdornment';
+import CustomInput from "components/CustomInput/CustomInput.jsx";
+import Button from "components/CustomButtons/Button.jsx";
+import Card from "components/Card/Card.jsx";
+import CardBody from "components/Card/CardBody.jsx";
+import CardHeader from "components/Card/CardHeader.jsx";
+import CardFooter from "components/Card/CardFooter.jsx";
+import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props'
+import { GoogleLogin } from 'react-google-login';
+
+import loginPageStyle from "assets/jss/material-dashboard-pro-react/views/loginPageStyle.jsx";
+import classNames from "classnames";
 import IconButton from '@material-ui/core/IconButton';
 import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
-import FormControl from '@material-ui/core/FormControl';
-import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
 import { Redirect } from 'react-router-dom';
-import Avatar from '@material-ui/core/Avatar';
-import Button from '@material-ui/core/Button';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import Paper from '@material-ui/core/Paper';
-import Checkbox from '@material-ui/core/Checkbox';
-import LockIcon from '@material-ui/icons/LockOutlined';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
 import axios from 'axios';
-import HomeLayout from '../home/HomeLayout';
-import Auth from '../routes/Auth';
-import FacebookLogin from 'react-facebook-login';
-import { GoogleLogin } from 'react-google-login';
-import UserTypes from '../lib/UserTypes';
-
+import Auth from 'routes/Auth';
+import UserTypes from 'lib/UserTypes';
+import { TextField } from '@material-ui/core';
 const qs = require('qs');
 
-const styles = theme => ({
-  layout: {
-    width: 'auto',
-    display: 'block', // Fix IE11 issue.
-    marginLeft: theme.spacing.unit * 3,
-    marginRight: theme.spacing.unit * 3,
-    [theme.breakpoints.up(400 + theme.spacing.unit * 3 * 2)]: {
-      width: 400,
-      marginLeft: 'auto',
-      marginRight: 'auto',
-    },
-  },
-  paper: {
-    marginTop: theme.spacing.unit * 8,
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    padding: `${theme.spacing.unit * 2}px ${theme.spacing.unit * 3}px ${theme.spacing.unit * 3}px`,
-  },
-  avatar: {
-    margin: theme.spacing.unit,
-    backgroundColor: theme.palette.secondary.main,
-  },
-  form: {
-    width: '100%', // Fix IE11 issue.
-    marginTop: theme.spacing.unit,
-  },
-  submit: {
-    marginTop: theme.spacing.unit * 3,
-  },
-});
 
-class Login extends Component {
+class Login extends React.Component {
   state = {
     showPassword: false,
     redirectTo: false,
     redirectToURL: '',
 
+  }
+  constructor(props) {
+    super(props);
+    // we use this to make the card to appear after the page has been rendered
+    this.state = {
+      cardAnimaton: "cardHidden"
+    };
+  }
+  componentDidMount() {
+    // we add a hidden class to the card and after 700 ms we delete it and the transition appears
+    this.timeOutFunction = setTimeout(
+      function () {
+        this.setState({ cardAnimaton: "" });
+      }.bind(this),
+      700
+    );
+  }
+  componentWillUnmount() {
+    clearTimeout(this.timeOutFunction);
+    this.timeOutFunction = null;
   }
 
   handleClickShowPassword = () => {
@@ -78,96 +70,96 @@ class Login extends Component {
     });
   }
 
-    handleSubmit = () => {
-        this.sendLogin(this);
-    };
+  handleSubmit = () => {
+    this.sendLogin(this);
+  };
 
-    // Send profile data in post body to add to mongodb
-    sendLogin(e) {
-        axios.post('/api/accounts/login',
-            qs.stringify({
-                username: e.state.username,
-                password: e.state.password,
-            })).then(async (response) => {
-            if (response.status === 200) {
-                await Auth.authenticate();
-                if (response.data.type === UserTypes.ADMIN) {
-                    this.setState({
-                        redirectTo: true,
-                        redirectToURL: '/admin/dashboard',
-                    });
-                } else if(response.data.type === UserTypes.MIGRANT) {
-                    this.setState({
-                        redirectTo: true,
-                        redirectToURL: '/main',
-                    });
-                } else if(response.data.type === UserTypes.BUSINESS) {
-                    this.setState({
-                        redirectTo: true,
-                        redirectToURL: '/businessmain',
-                    });
-                }
-            }
-        }).catch((error) => {
+  // Send profile data in post body to add to mongodb
+  sendLogin(e) {
+    axios.post('/api/accounts/login',
+      qs.stringify({
+        username: e.state.username,
+        password: e.state.password,
+      })).then(async (response) => {
+        if (response.status === 200) {
+          await Auth.authenticate();
+          if (response.data.type === UserTypes.ADMIN) {
             this.setState({
-                redirectTo: true,
-                redirectToURL: '/TempError',
+              redirectTo: true,
+              redirectToURL: '/admin/dashboard',
             });
-        });
-    }
-
-    // Send profile data in post body to add to mongodb /api/accounts/auth/facebook
-    facebookAuthenticationLogin = (reply) => {
-        axios.post('/api/accounts/auth/facebook',
-            qs.stringify({
-                access_token: reply.accessToken,
-            })).then(async (response) => {
-            if (response.status === 200) {
-                await Auth.authenticate();
-                if (response.data.type === UserTypes.MIGRANT) {
-                    this.setState({
-                        redirectTo: true,
-                        redirectToURL: '/main',
-                    });
-                }
-            }
-        }).catch((error) => {
+          } else if (response.data.type === UserTypes.MIGRANT) {
             this.setState({
-                redirectTo: true,
-                redirectToURL: '/TempError',
+              redirectTo: true,
+              redirectToURL: '/main',
             });
-        });
-    };
-
-    // Send profile data in post body to add to mongodb /api/accounts/auth/facebook
-    googleAuthenticationLogin = (reply) => {
-        axios.post('/api/accounts/auth/google',
-            qs.stringify({
-                access_token: reply.accessToken,
-            })).then(async (response) => {
-            if (response.status === 200) {
-                await Auth.authenticate();
-                if (response.data.type === UserTypes.MIGRANT) {
-                    this.setState({
-                        redirectTo: true,
-                        redirectToURL: '/main',
-                    });
-                }
-            }
-        }).catch(() => {
+          } else if (response.data.type === UserTypes.BUSINESS) {
             this.setState({
-                redirectTo: true,
-                redirectToURL: '/TempError',
+              redirectTo: true,
+              redirectToURL: '/businessmain',
             });
-        });
-    };
-
-    onLoginFailure = () => {
+          }
+        }
+      }).catch((error) => {
         this.setState({
-            redirectTo: true,
-            redirectToURL: '/TempError',
+          redirectTo: true,
+          redirectToURL: '/TempError',
         });
-    };
+      });
+  }
+
+  // Send profile data in post body to add to mongodb /api/accounts/auth/facebook
+  facebookAuthenticationLogin = (reply) => {
+    axios.post('/api/accounts/auth/facebook',
+      qs.stringify({
+        access_token: reply.accessToken,
+      })).then(async (response) => {
+        if (response.status === 200) {
+          await Auth.authenticate();
+          if (response.data.type === UserTypes.MIGRANT) {
+            this.setState({
+              redirectTo: true,
+              redirectToURL: '/main',
+            });
+          }
+        }
+      }).catch((error) => {
+        this.setState({
+          redirectTo: true,
+          redirectToURL: '/TempError',
+        });
+      });
+  };
+
+  // Send profile data in post body to add to mongodb /api/accounts/auth/facebook
+  googleAuthenticationLogin = (reply) => {
+    axios.post('/api/accounts/auth/google',
+      qs.stringify({
+        access_token: reply.accessToken,
+      })).then(async (response) => {
+        if (response.status === 200) {
+          await Auth.authenticate();
+          if (response.data.type === UserTypes.MIGRANT) {
+            this.setState({
+              redirectTo: true,
+              redirectToURL: '/main',
+            });
+          }
+        }
+      }).catch(() => {
+        this.setState({
+          redirectTo: true,
+          redirectToURL: '/TempError',
+        });
+      });
+  };
+
+  onLoginFailure = () => {
+    this.setState({
+      redirectTo: true,
+      redirectToURL: '/TempError',
+    });
+  };
 
   render() {
     if (this.state.redirectTo) {
@@ -181,82 +173,83 @@ class Login extends Component {
     return (
       <React.Fragment>
         <HomeLayout>
-          <CssBaseline />
-          <main className={classes.layout}>
-            <Paper className={classes.paper}>
-              <Typography component="h2" variant="display1">
-                Sign in
-              </Typography>
-              <Avatar className={classes.avatar}>
-                <LockIcon />
-              </Avatar>
-              <form className={classes.form}>
-                <Grid container>
-                  <Grid item xs={12}>
-                    <TextField
-                      id="username"
-                      name="username"
-                      label="Email"
-                      value={username}
-                      onChange={event => this.handleChange(event)}
-                      fullWidth
-                    />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <FormControl margin="normal" fullWidth>
-                      <InputLabel htmlFor="password">Password</InputLabel>
-                      <Input
-                        name="password"
-                        type={this.state.showPassword ? 'text' : 'password'}
-                        value={password}
-                        onChange={event => this.handleChange(event)}
-                        endAdornment={(
-                          <InputAdornment position="end">
-                            <IconButton
-                              aria-label="Toggle password visibility"
-                              onClick={this.handleClickShowPassword}
-                            >
-                              {this.state.showPassword ? <VisibilityOff /> : <Visibility />}
-                            </IconButton>
-                          </InputAdornment>
-)}
-                      />
-                    </FormControl>
-                  </Grid>
-                  <Grid item xs={12}>
-                    <FormControlLabel
-                      control={<Checkbox value="remember" color="primary" />}
-                      label="Remember me"
-                    />
-                  </Grid>
-                    <Grid item xs={12}>
-                        <Button
-                            fullWidth
-                            variant="contained"
-                            color="primary"
-                            onClick={this.handleSubmit}
-                            className={classes.submit}>
-                            Sign in
-                        </Button>
-                    </Grid>
-                    <Grid item xs={12}>
-                        <FacebookLogin
-                            size="small"
-                            appId={process.env.REACT_APP_FACEBOOK_APP_ID}
-                            autoLoad={false}
-                            fields="name, email"
-                            callback={this.facebookAuthenticationLogin} />
-                        <GoogleLogin
-                            clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}
-                            buttonText="Google Login"
-                            onSuccess={this.googleAuthenticationLogin}
-                            onFailure={() => this.onLoginFailure}
+          <div className={classes.login}>
+            <div className={classes.container}>
+              <GridContainer justify="center">
+                <GridItem xs={12} sm={6} md={4}>
+                  <form className={classes.form}>
+                    <Card login className={classes[this.state.cardAnimaton]}>
+                      <CardBody>
+                        <CardHeader
+                          className={`${classes.cardHeader} ${classes.textCenter}`}
+                          color="warning"
+                        >
+                          <h4 className={classes.cardTitle}>Log in</h4>
+                          <h7 className={classes.cardTitle}><b>Sign in using facebook or google!</b></h7>
+                          <div className={classes.socialLine}>
+                            <FacebookLogin
+                              appId={process.env.REACT_APP_FACEBOOK_APP_ID}
+                              autoLoad={false}
+                              fields="name, email"
+                              callback={this.facebookAuthenticationLogin}
+                              render={renderProps => (
+                                <Button onClick={renderProps.onClick}
+                                  justIcon
+                                  color="transparent">
+                                  <Icon className={classNames(classes.icon, "fab fa-facebook-square")} />
+                                </Button>
+                              )}
+                            />
+                            <GoogleLogin
+                              clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}
+                              buttonText="Login"
+                              onSuccess={this.googleAuthenticationLogin}
+                              onFailure={() => this.onLoginFailure}
+                              render={renderProps => (
+                                <Button onClick={renderProps.onClick}
+                                  justIcon
+                                  color="transparent">
+                                  <Icon className={classNames(classes.icon, "fab fa-google-plus")} />
+                                </Button>
+                              )}
+                            />
+                          </div>
+                        </CardHeader>
+                        <h7><font color="gray"><br />Already have an account with us?</font></h7>
+                        <TextField
+                          id="username"
+                          name="username"
+                          label="Email"
+                          value={username}
+                          onChange={event => this.handleChange(event)}
+                          fullWidth
                         />
-                    </Grid>
-                </Grid>
-              </form>
-            </Paper>
-          </main>
+                        <TextField
+                          id="password"
+                          name="password"
+                          type="password"
+                          label="Password"
+                          value={password}
+                          onChange={event => this.handleChange(event)}
+                          fullWidth
+                        />
+                      </CardBody>
+                      <CardFooter className={classes.justifyContentCenter}>
+                        <Button color="warning" simple size="lg" block
+                          fullWidth
+                          variant="contained"
+                          onClick={this.handleSubmit}
+                          className={classes.submit}>
+                          Sign in
+                        </Button>
+                      </CardFooter>
+                      <Button variant="outlined" className={classes.button}>Forgot Password?</Button>
+                    </Card>
+                  </form>
+                </GridItem>
+              </GridContainer>
+            </div>
+          </div >
         </HomeLayout>
       </React.Fragment>
     );
@@ -264,7 +257,7 @@ class Login extends Component {
 }
 
 Login.propTypes = {
-  classes: PropTypes.shape({}).isRequired,
+  classes: PropTypes.object.isRequired
 };
 
-export default withStyles(styles)(Login);
+export default withStyles(loginPageStyle)(Login);

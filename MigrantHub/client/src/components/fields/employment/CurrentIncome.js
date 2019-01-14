@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { IncomeMask } from '../../../lib/Masks';
-import MaskedTextbox from '../generic/MaskedTextbox';
+import { IncomeMask } from 'lib/Masks';
+import MaskedTextbox from 'components/fields/generic/MaskedTextbox';
 
 const CurrentIncome = (props) => {
   const { currentIncome, currentIncomeError, handleChange } = props;

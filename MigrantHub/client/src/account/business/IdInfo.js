@@ -6,7 +6,7 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import validator from 'validator';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import IdApi from './IdApi';
+import IdApi from 'account/business/IdApi';
 
 const styles = ({});
 

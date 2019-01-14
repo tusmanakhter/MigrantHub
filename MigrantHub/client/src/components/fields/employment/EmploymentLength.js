@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Years from '../generic/Years';
+import Years from 'components/fields/generic/Years';
 
 const EmploymentLength = (props) => {
   const { years, yearsError, handleChange } = props;

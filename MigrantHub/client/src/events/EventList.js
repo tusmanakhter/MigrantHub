@@ -2,14 +2,20 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import withStyles from '@material-ui/core/styles/withStyles';
 import Button from '@material-ui/core/Button';
+import MainLayout from 'home/MainLayout';
 import Paper from '@material-ui/core/Paper';
 import axios from 'axios';
 import { Redirect } from 'react-router-dom';
-import EventItem from './EventItem';
-import Header from '../components/Header/Header';
-import UserTypes from '../lib/UserTypes';
+import EventItem from 'events/EventItem';
+import Header from 'components/Header/Header';
+import UserTypes from 'lib/UserTypes';
+import NavPanel from 'components/NavPanel/NavPanel';
+import GridContainer from "components/Grid/GridContainer.jsx";
 
 const styles = theme => ({
+  mainContainer: {
+    marginLeft: 75,
+  },
   root: {
     ...theme.mixins.gutters(),
     paddingTop: theme.spacing.unit * 2,
@@ -42,7 +48,7 @@ class EventList extends Component {
     this.getUser();
   }
 
-  getUser(){
+  getUser() {
     const user = JSON.parse(localStorage.getItem('user'));
     this.setState({
       type: user.type,
@@ -50,7 +56,7 @@ class EventList extends Component {
   }
 
   getData(event, props = this.props) {
-    const { location } = props;
+    const { location } = this.props;
 
     let editOwnerEmail = '';
     if (location.state) {
@@ -72,65 +78,66 @@ class EventList extends Component {
     });
   }
 
-    setRedirectToEventForm = () => {
-      this.setState({
-        redirectToEventForm: true,
-      });
+  setRedirectToEventForm = () => {
+    this.setState({
+      redirectToEventForm: true,
+    });
+  }
+
+  renderRedirectToEventForm = () => {
+    const { redirectToEventForm } = this.state;
+
+    if (redirectToEventForm) {
+      return <Redirect to="/events/create" />;
     }
+  }
 
-    renderRedirectToEventForm = () => {
-      const { redirectToEventForm } = this.state;
+  render() {
+    const { classes } = this.props;
+    const { items, editMode, editOwner, type } = this.state;
 
-      if (redirectToEventForm) {
-        return <Redirect to="/events/create" />;
-      }
-    }
-
-    render() {
-      const { classes } = this.props;
-      const { items, editMode, editOwner, type } = this.state;
-
-      return (
-        <div>
-          { type !== UserTypes.ADMIN
-             && (
-             <React.Fragment>
-               <Header />
-               {this.renderRedirectToEventForm()}
-               <Button
-                 variant="contained"
-                 color="primary"
-                 className={classes.button}
-                 onClick={this.setRedirectToEventForm}
-               >
-                 Create Event 
+    return (
+      <MainLayout>
+        <div className={classes.mainContainer}>
+          {type !== UserTypes.ADMIN
+            && (
+              <div>
+                {this.renderRedirectToEventForm()}
+                <Button
+                  variant="contained"
+                  color="primary"
+                  className={classes.button}
+                  onClick={this.setRedirectToEventForm}
+                >
+                  Create Event
                </Button>
-             </React.Fragment>
-             )
-           }
-          <Paper className={classes.root} elevation={2}>
-            {
-            items.map(item => (
-              <EventItem
-                eventId={item._id}
-                eventName={item.eventName}
-                eventImagePath={item.eventImagePath}
-                description={item.description}
-                location={item.location}
-                dateStart={item.dateStart}
-                dateEnd={item.dateEnd}
-                timeStart={item.timeStart}
-                timeEnd={item.timeEnd}
-                editMode={editMode}
-                editOwner={editOwner}
-                getData={this.getData}
-              />
-            ))
+              </div>
+            )
           }
-          </Paper>
+          <GridContainer>
+            {
+              items.map(item => (
+                <EventItem
+                  eventId={item._id}
+                  eventName={item.eventName}
+                  eventImagePath={item.eventImagePath}
+                  description={item.description}
+                  location={item.location}
+                  dateStart={item.dateStart}
+                  dateEnd={item.dateEnd}
+                  timeStart={item.timeStart}
+                  timeEnd={item.timeEnd}
+                  editMode={editMode}
+                  editOwner={editOwner}
+                  getData={this.getData}
+                />
+              ))
+            }
+          </GridContainer>
         </div>
-      );
-    }
+      </MainLayout>
+    );
+  }
 }
 
 EventList.propTypes = {

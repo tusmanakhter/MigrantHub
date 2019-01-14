@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import SignUp from '../common/SignUp';
-import AccountInfo from '../common/AccountInfo';
-import HomeLayout from '../../home/HomeLayout';
+import SignUp from 'account/common/SignUp';
+import AccountInfo from 'account/common/AccountInfo';
+import HomeLayout from 'home/HomeLayout';
 
 
 const qs = require('qs');

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import Button from '@material-ui/core/Button';
 import axios from 'axios';
-import Auth from '../routes/Auth';
+import Auth from 'routes/Auth';
 
 class Logout extends Component {
   logout = () => {
@@ -19,7 +19,7 @@ class Logout extends Component {
   render() {
     return (
       <React.Fragment>
-        <Button variant="contained" color="primary" onClick={this.logout}>
+        <Button color="" onClick={this.logout}>
           Logout
         </Button>
       </React.Fragment>

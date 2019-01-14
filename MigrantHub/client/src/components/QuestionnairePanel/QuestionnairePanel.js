@@ -1,13 +1,12 @@
-
 import React, { Component } from 'react';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
 import qs from 'qs';
 import axios from 'axios';
-import AnswerTextbox from '../fields/questions/AnswerTextbox';
-import AnswerDropdown from '../fields/questions/AnswerDropdown';
-import { handleChange } from '../../helpers/Forms';
+import AnswerTextbox from 'components/fields/questions/AnswerTextbox';
+import AnswerDropdown from 'components/fields/questions/AnswerDropdown';
+import { handleChange } from 'helpers/Forms';
 
 class QuestionnairePanel extends Component {
   constructor(props) {

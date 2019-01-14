@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { PostalCodeMask } from '../../../lib/Masks';
-import MaskedTextbox from '../generic/MaskedTextbox';
+import { PostalCodeMask } from 'lib/Masks';
+import MaskedTextbox from 'components/fields/generic/MaskedTextbox';
 
 const PostalCode = (props) => {
   const { postalCode, postalCodeError, handleChange } = props;

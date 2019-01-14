@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
-import HomeLayout from '../../home/HomeLayout';
-import SignUp from '../common/SignUp';
-import AccountInfo from '../common/AccountInfo';
-import ContactInfo from '../common/ContactInfo';
-import AboutInfo from './AboutInfo';
-import IdInfo from './IdInfo';
+import HomeLayout from 'home/HomeLayout';
+import SignUp from 'account/common/SignUp';
+import AccountInfo from 'account/common/AccountInfo';
+import ContactInfo from 'account/common/ContactInfo';
+import AboutInfo from 'account/business/AboutInfo';
+import IdInfo from 'account/business/IdInfo';
 
 const qs = require('qs');
 

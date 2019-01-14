@@ -7,11 +7,11 @@ import Button from '@material-ui/core/Button';
 import AddIcon from '@material-ui/icons/Add';
 import DeleteIcon from '@material-ui/icons/Delete';
 import validator from 'validator';
-import { objectErrorText } from '../../helpers/Object';
-import { langObject } from '../../lib/SignUpConstants';
-import Language from '../../components/fields/language/Language';
-import WritingLevel from '../../components/fields/language/WritingLevel';
-import SpeakingLevel from '../../components/fields/language/SpeakingLevel';
+import { objectErrorText } from 'helpers/Object';
+import { langObject } from 'lib/SignUpConstants';
+import Language from 'components/fields/language/Language';
+import WritingLevel from 'components/fields/language/WritingLevel';
+import SpeakingLevel from 'components/fields/language/SpeakingLevel';
 
 const styles = theme => ({
   row: {

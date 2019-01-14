@@ -11,14 +11,46 @@ import Button from '@material-ui/core/Button';
 import blue from '@material-ui/core/colors/blue';
 import { Redirect } from 'react-router-dom';
 import axios from 'axios';
-import GoogleMaps from '../components/GoogleMaps/GoogleMaps';
-import UserTypes from '../lib/UserTypes';
+import GoogleMaps from 'components/GoogleMaps/GoogleMaps';
+import UserTypes from 'lib/UserTypes';
+// @material-ui/icons
+import Map from "@material-ui/icons/Map";
+import AddLocation from "@material-ui/icons/AddLocation";
+import Place from "@material-ui/icons/Place";
+import Dashboard from "@material-ui/icons/Dashboard";
+import Schedule from "@material-ui/icons/Schedule";
+import CardIcon from "components/Card/CardIcon.jsx";
+
+import GridItem from "components/Grid/GridItem.jsx";
+import NavPills from "components/NavPills/NavPills.jsx";
+import Card from "components/Card/Card.jsx";
+import CardHeader from "components/Card/CardHeader.jsx";
+import CardBody from "components/Card/CardBody.jsx";
+import { cardTitle } from "assets/jss/material-dashboard-pro-react.jsx";
+import SweetAlert from "react-bootstrap-sweetalert";
+import sweetAlertStyle from "assets/jss/material-dashboard-pro-react/views/sweetAlertStyle.jsx";
 
 const styles = {
+  cardTitle,
+  sweetAlertStyle,
+  pageSubcategoriesTitle: {
+    color: "#3C4858",
+    textDecoration: "none",
+    textAlign: "center"
+  },
+  cardCategory: {
+    margin: "0",
+    color: "#999999"
+  },
   avatar: {
     backgroundColor: blue[100],
     color: blue[600],
   },
+  cardIconTitle: {
+    ...cardTitle,
+    marginTop: "15px",
+    marginBottom: "0px"
+  }
 };
 
 class ViewEvent extends Component {
@@ -29,7 +61,12 @@ class ViewEvent extends Component {
       redirectToURL: '',
       redirectState: {},
       type: '',
+      alert: null,
+      show: false,
     };
+    this.hideAlert = this.hideAlert.bind(this);
+    this.successDelete = this.successDelete.bind(this);
+    this.cancelDetele = this.cancelDetele.bind(this);
   }
 
   componentDidMount() {
@@ -66,9 +103,79 @@ class ViewEvent extends Component {
     })
   }
 
+  warningWithConfirmAndCancelMessage() {
+    this.setState({
+      alert: (
+        <SweetAlert
+          warning
+          style={{ display: "block", marginTop: "-100px" }}
+          title="Are you sure?"
+          onConfirm={() => this.successDelete()}
+          onCancel={() => this.cancelDetele()}
+          confirmBtnCssClass={
+            this.props.classes.button + " " + this.props.classes.success
+          }
+          cancelBtnCssClass={
+            this.props.classes.button + " " + this.props.classes.danger
+          }
+          confirmBtnText="Yes, delete it!"
+          cancelBtnText="Cancel"
+          showCancel
+        >
+          You will not be able to recover this service!
+        </SweetAlert>
+      )
+    });
+  }
+
+  successDelete() {
+    this.setState({
+      alert: (
+        <SweetAlert
+          success
+          style={{ display: "block", marginTop: "-100px" }}
+          title="Deleted!"
+          onConfirm={() => this.hideAlert()}
+          onCancel={() => this.hideAlert()}
+          confirmBtnCssClass={
+            this.props.classes.button + " " + this.props.classes.success
+          }
+        >
+          Your service has been deleted.
+        </SweetAlert>
+      )
+    });
+    this.handleDelete();
+  }
+
+  cancelDetele() {
+    this.setState({
+      alert: (
+        <SweetAlert
+          danger
+          style={{ display: "block", marginTop: "-100px" }}
+          title="Cancelled"
+          onConfirm={() => this.hideAlert()}
+          onCancel={() => this.hideAlert()}
+          confirmBtnCssClass={
+            this.props.classes.button + " " + this.props.classes.success
+          }
+        >
+          Your service file is safe :)
+        </SweetAlert>
+      )
+    });
+  }
+
+  hideAlert() {
+    this.setState({
+      alert: null
+    });
+  }
+
   render() {
     const {
-      eventName, description, dateStart, dateEnd, timeStart, timeEnd,
+      classes, eventName, description, dateStart, dateEnd, timeStart, timeEnd,
       location, open, scroll, onClose,
     } = this.props;
     const { redirectTo, redirectToURL, redirectState, type } = this.state;
@@ -85,127 +192,143 @@ class ViewEvent extends Component {
 
     return (
       <div>
+        {this.state.alert}
         <Dialog
           open={open}
           onClose={onClose}
+          style={{backgroundColor: 'transparent'}}
+          overlayStyle={{backgroundColor: 'transparent'}}
+          PaperProps={{
+            style: {
+              backgroundColor: 'transparent',
+              boxShadow: 'none',
+            },
+          }}
           scroll={scroll}
           aria-labelledby="scroll-dialog-title"
           fullWidth
-          maxWidth="150"
+          maxWidth="lg"
+          xs={12} sm={12} md={6}
         >
-          <DialogTitle variant="title" id="scroll-dialog-title" align="center">{eventName}</DialogTitle>
-          <DialogContent>
-            <Typography color="inherit" paragraph align="center" variant="body1">
-              {description}
-            </Typography>
-
-            <Grid container spacing={12}>
-              <Typography variant="h5" color="inherit" paragraph>
-                            Event Date:
-              </Typography>
-              <Grid container spacing={12}>
-                <Grid item xs={12}>
-                                Start date:
-                  {' '}
-                  {dateStart.substring(0, 10)}
-                </Grid>
-                <Grid item xs={12}>
-                                End date:
-                  {' '}
-                  {dateEnd.substring(0, 10)}
-                </Grid>
-              </Grid>
-            </Grid>
-
-            <Typography variant="h5" color="inherit" paragraph>
-              <br />
-Event Time:
-            </Typography>
-
-            <Grid justify="center" container item xs>
-              <Grid container spacing={12}>
-                <Grid item xs={6}>
-                                Start time:
-                  {' '}
-                  {timeStart}
-                </Grid>
-                <Grid item xs={6}>
-                                End time:
-                  {' '}
-                  {timeEnd}
-                </Grid>
-              </Grid>
-            </Grid>
-
-            {location !== undefined && (
-            <Grid container spacing={12}>
-              <Typography variant="h5" color="inherit" paragraph>
-                <br />
-Location:
-              </Typography>
-              <Grid container spacing={12}>
-                <Grid item xs={12}>
-                                    Address:
-                  {' '}
-                  {location.address}
-                </Grid>
-                <Grid item xs={12}>
-                                    Apartment:
-                  {' '}
-                  {location.apartment}
-                </Grid>
-                <Grid item xs={12}>
-                                    City:
-                  {' '}
-                  {location.city}
-                </Grid>
-                <Grid item xs={12}>
-                                    Province:
-                  {' '}
-                  {location.province}
-                </Grid>
-                <Grid item xs={12}>
-                                    Postal Code:
-                  {' '}
-                  {location.postalCode}
-                </Grid>
-                <Grid item xs={12}>
-                                    Phone Number:
-                  {' '}
-                  {location.phoneNumber}
-                </Grid>
-              </Grid>
-            </Grid>
-            )}
-            {open && location !== undefined && (
-            <GoogleMaps
-              location={location}
-            />
-            )}
-          </DialogContent>
-          <DialogActions> 
-            { type === UserTypes.ADMIN
-               && (
-                 <Button onClick={this.handleDelete} color="secondary">
-                   Delete
-                 </Button>
-               )
-            }}
-            {this.props.editMode &&
-              <React.Fragment>
-                  <Button onClick={this.handleDelete} color="secondary">
-                      Delete
+          <GridItem>
+            <Card>
+              <CardHeader>
+                <h4 className={classes.cardTitle}>
+                  {eventName} <small> {dateStart.substring(0, 10)}</small>
+                </h4>
+              </CardHeader>
+              <CardBody>
+                <NavPills
+                  color="rose"
+                  horizontal={{
+                    tabsGrid: { xs: 12, sm: 12, md: 4 },
+                    contentGrid: { xs: 12, sm: 12, md: 8 }
+                  }}
+                  tabs={[
+                    {
+                      tabButton: "Description",
+                      tabIcon: Dashboard,
+                      tabContent: (
+                        <span>
+                          <p>
+                            <center>{description}</center>
+                          </p>
+                          <br />
+                          <p>
+                          <b>Start date:</b>
+                          {' '}
+                          {dateStart.substring(0, 10)}
+                          {' '}
+                          <b>End date:</b>
+                          {' '}
+                          {dateEnd.substring(0, 10)}
+                          {' '}
+                          <b>Start time:</b>
+                          {' '}
+                          {timeStart}
+                          {' '}
+                          <b>End time:</b>
+                          {' '}
+                          {timeEnd}
+                          </p>
+                          <p>
+                            {location !== undefined && (
+                              <p>
+                                  <center><h6><b>Location</b></h6></center>
+                                  <Grid>
+                                    <b>Address:</b>
+                                    {' '}
+                                    {location.address}
+                                    <br />
+                                    <b>Apartment:</b>
+                                    {' '}
+                                    {location.apartment}
+                                    <br />
+                                    <b>City:</b>
+                                    {' '}
+                                    {location.city}
+                                    <br />
+                                    <b>Province:</b>
+                                    {' '}
+                                    {location.province}
+                                    <br />
+                                    <b>Postal Code:</b>
+                                    {' '}
+                                    {location.postalCode}
+                                    <br />
+                                    <b>Phone Number:</b>
+                                    {' '}
+                                    {location.phoneNumber}
+                                    <br />
+                                    </Grid>
+                                    </p>
+                              )}
+                          </p>
+                        </span>
+                      )
+                    },
+                    {
+                      tabButton: "Map",
+                      tabIcon: AddLocation,
+                      tabContent: (
+                        <span>
+                            <CardBody>
+                              <GoogleMaps
+                                location={location}
+                              />
+                            </CardBody>
+                        </span>
+                      )
+                    }
+                  ]}
+                />
+              </CardBody>
+                <DialogActions> 
+                  { type === UserTypes.ADMIN
+                    && (
+                      <Button onClick={this.warningWithConfirmAndCancelMessage.bind(this)} color="secondary">
+                        Delete
+                      </Button>
+                    )
+                  }}
+                  {this.props.editMode &&
+                    <React.Fragment>
+                        <Button onClick={this.warningWithConfirmAndCancelMessage.bind(this)} color="secondary">
+                            Delete
+                        </Button>
+                        <Button onClick={this.handleEdit} color="primary">
+                            Edit
+                        </Button>
+                    </React.Fragment>
+                    }
+                  <Button onClick={onClose} color="primary">
+                    Cancel
                   </Button>
-                  <Button onClick={this.handleEdit} color="primary">
-                      Edit
-                  </Button>
-              </React.Fragment>
-              }
-            <Button onClick={onClose} color="primary">
-              Cancel
-            </Button>
-          </DialogActions>
+                </DialogActions>
+            </Card>
+          </GridItem>
         </Dialog>
+        
       </div>
     );
   }

@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { provinces } from '../../../lib/SignUpConstants';
-import Dropdown from '../generic/Dropdown';
+import { provinces } from 'lib/SignUpConstants';
+import Dropdown from 'components/fields/generic/Dropdown';
 
 const Province = (props) => {
   const {

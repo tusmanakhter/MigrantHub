@@ -4,9 +4,9 @@ import withStyles from '@material-ui/core/styles/withStyles';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import validator from 'validator';
-import SettlingLocation from '../../components/fields/other/SettlingLocation';
-import SettlingDuration from '../../components/fields/other/SettlingDuration';
-import JoiningReason from '../../components/fields/other/JoiningReason';
+import SettlingLocation from 'components/fields/other/SettlingLocation';
+import SettlingDuration from 'components/fields/other/SettlingDuration';
+import JoiningReason from 'components/fields/other/JoiningReason';
 
 const styles = ({});
 class OtherInfo extends Component {

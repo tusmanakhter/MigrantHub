@@ -6,7 +6,7 @@ import FormGroup from '@material-ui/core/FormGroup';
 import Checkbox from '@material-ui/core/Checkbox';
 import PropTypes from 'prop-types';
 import withStyles from '@material-ui/core/styles/withStyles';
-import { proficiencyExaminations } from '../../../lib/SignUpConstants';
+import { proficiencyExaminations } from 'lib/SignUpConstants';
 
 const styles = ({
   formControl: {

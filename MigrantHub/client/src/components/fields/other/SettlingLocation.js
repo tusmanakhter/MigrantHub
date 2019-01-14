@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import {
   handleSuggestionsClearRequested, handleSuggestionsFetchRequested,
   renderSuggestion, getSuggestionValue,
-} from '../../../helpers/AutoSuggestCity';
-import AutosuggestTextbox from '../generic/AutosuggestTextbox';
+} from 'helpers/AutoSuggestCity';
+import AutosuggestTextbox from 'components/fields/generic/AutosuggestTextbox';
 
 const SettlingLocation = (props) => {
   const {

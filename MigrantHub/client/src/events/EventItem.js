@@ -1,22 +1,35 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
-import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
-import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
-import ViewEvent from './ViewEvent';
+import ViewEvent from 'events/ViewEvent';
+import Share from "@material-ui/icons/Share";
+import GridItem from "components/Grid/GridItem.jsx";
+import Card from "components/Card/Card.jsx";
+import CardHeader from "components/Card/CardHeader.jsx";
+import CardBody from "components/Card/CardBody.jsx";
+import CardFooter from "components/Card/CardFooter.jsx";
+import dashboardStyle from "assets/jss/material-dashboard-pro-react/views/dashboardStyle.jsx";
+import Tooltip from "@material-ui/core/Tooltip";
+import Place from "@material-ui/icons/Place";
+import Button from "components/CustomButtons/Button.jsx";
+import { Link } from 'react-router-dom';
+import ArtTrack from "@material-ui/icons/ArtTrack";
 
 const styles = {
-  card: {
-    width: '100%',
-  },
-  media: {
-    objectFit: 'contain',
-  },
+  ...dashboardStyle,
+  cardTitle: {
+    marginTop: "0",
+    minHeight: "auto",
+    fontWeight: "300",
+    fontFamily: "'Roboto', 'Helvetica', 'Arial', sans-serif",
+    marginBottom: "3px",
+    textDecoration: "none"
+  }
 };
 
 class EventItem extends Component {
@@ -48,30 +61,60 @@ class EventItem extends Component {
       const { open, scroll } = this.state;
 
       return (
-        <Card className={classes.card}>
-          <CardActionArea>
-            <CardMedia
-              component="img"
-              alt={eventName}
-              className={classes.media}
-              height="200"
-              width="300"
-              src={eventImagePath}
-              title={eventName}
-            />
-            <CardContent>
-              <Typography gutterBottom variant="headline" component="h2">
-                {eventName}
-              </Typography>
-              <Typography component="p">
-                {description}
-              </Typography>
-            </CardContent>
-          </CardActionArea>
-          <CardActions>
-            <Button size="small" color="primary" onClick={this.handleClickOpen}>
-              View Event
-            </Button>
+      <GridItem xs={12} sm={6} md={2}>
+        <Card product className={classes.cardHover}>
+              <CardHeader image className={classes.cardHeaderHover}>
+                <a href="#pablo" onClick={this.handleClickOpen}>
+                <CardMedia
+                  component="img"
+                  alt={eventName}
+                  className={classes.media}
+                  height="200"
+                  src={eventImagePath}
+                  title={eventName}
+                />
+                </a>
+              </CardHeader>
+              <CardBody>
+                <div className={classes.cardHoverUnder}>
+                  <Tooltip
+                    id="tooltip-top"
+                    title="View"
+                    placement="bottom"
+                    classes={{ tooltip: classes.tooltip }}
+                  >
+                    <Button color="primary" simple justIcon onClick={this.handleClickOpen}>
+                      <ArtTrack className={classes.tableActionButtonIcon + " " + classes.edit} />
+                    </Button>
+                  </Tooltip>
+                  <Tooltip
+                    id="tooltip-top"
+                    title="Share"
+                    placement="bottom"
+                    classes={{ tooltip: classes.tooltip }}
+                  >
+                    <Link to={`event/share/${eventId}`}>
+                      <Button color="info" simple justIcon className={classes.tableActionButton}>
+                        <Share className={classes.tableActionButtonIcon + " " + classes.edit} />
+                      </Button>
+                    </Link>
+                  </Tooltip>
+                </div>
+                <h4 className={classes.cardProductTitle}>
+                  <a href="#pablo" onClick={e => e.preventDefault()}>
+                    {eventName}
+                  </a>
+                </h4>
+                <p className={classes.cardProductDesciprion}>
+                    {description}
+                </p>
+              </CardBody>
+              <CardFooter product>
+                <div className={`${classes.stats} ${classes.productStats}`}>
+                  {location ? (<div><Place />{location.city}</div>) : (<div><Place/>Montreal</div>)}
+                </div>
+              </CardFooter>
+            </Card>
             <ViewEvent
               open={open}
               scroll={scroll}
@@ -89,8 +132,7 @@ class EventItem extends Component {
               editOwner={editOwner}
               getData={getData}
             />
-          </CardActions>
-        </Card>
+         </GridItem>
       );
     }
 }

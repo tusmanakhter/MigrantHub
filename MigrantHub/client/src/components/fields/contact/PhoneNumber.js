@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { PhoneMask } from '../../../lib/Masks';
-import MaskedTextbox from '../generic/MaskedTextbox';
+import { PhoneMask } from 'lib/Masks';
+import MaskedTextbox from 'components/fields/generic/MaskedTextbox';
 
 const PhoneNumber = (props) => {
   const { phoneNumber, phoneNumberError, handleChange } = props;

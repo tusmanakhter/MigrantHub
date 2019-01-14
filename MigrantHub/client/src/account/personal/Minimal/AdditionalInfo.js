@@ -4,10 +4,10 @@ import withStyles from '@material-ui/core/styles/withStyles';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import validator from 'validator';
-import EducationLevel from '../../../components/fields/education/EducationLevel';
-import JobStatus from '../../../components/fields/employment/JobStatus';
-import SettlingLocation from '../../../components/fields/other/SettlingLocation';
-import JoiningReason from '../../../components/fields/other/JoiningReason';
+import EducationLevel from 'components/fields/education/EducationLevel';
+import JobStatus from 'components/fields/employment/JobStatus';
+import SettlingLocation from 'components/fields/other/SettlingLocation';
+import JoiningReason from 'components/fields/other/JoiningReason';
 
 const styles = ({});
 
