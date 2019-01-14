@@ -56,7 +56,9 @@ class EventList extends Component {
   }
 
   getData(event, props = this.props) {
-    const { location } = this.props;
+    const { location } = props;
+    let searchQuery = '';
+    let searchMode = false;
 
     let editOwnerEmail = '';
     if (location.state) {
@@ -66,10 +68,17 @@ class EventList extends Component {
       });
 
       editOwnerEmail = location.state.editOwner;
+
+      if (location.state.searchMode) {
+        searchMode = location.state.searchMode;
+        searchQuery = location.state.searchQuery;
+      }
     }
     axios.get('/api/events/', {
       params: {
         editOwner: editOwnerEmail,
+        searchQuery: searchQuery,
+        search: searchMode,
       },
     }).then((response) => {
       this.setState({

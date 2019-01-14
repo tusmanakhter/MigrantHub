@@ -1,6 +1,9 @@
 import React from "react";
 import classNames from "classnames";
 import PropTypes from "prop-types";
+import validator from 'validator';
+import { Redirect } from 'react-router-dom';
+
 // import { Manager, Target, Popper } from "react-popper";
 
 // @material-ui/core components
@@ -20,7 +23,7 @@ import Dashboard from "@material-ui/icons/Dashboard";
 import Search from "@material-ui/icons/Search";
 
 // core components
-import CustomInput from "components/CustomInput/CustomInput.jsx";
+import TextField from '@material-ui/core/TextField';
 import Button from "components/CustomButtons/Button.jsx";
 import Logout from '../Logout';
 import { Link } from 'react-router-dom';
@@ -29,7 +32,12 @@ import headerLinksStyle from "assets/jss/material-dashboard-pro-react/components
 
 class HeaderLinks extends React.Component {
   state = {
-    open: false
+    open: false,
+    search: '',
+    searchError: '',
+    redirectTo: false,
+    redirectToURL: '',
+    redirectState: {},
   };
   handleClick = () => {
     this.setState({ open: !this.state.open });
@@ -37,6 +45,66 @@ class HeaderLinks extends React.Component {
   handleClose = () => {
     this.setState({ open: false });
   };
+  handleSearch = async () => {
+    const error = await this.validate();
+    if (!error) {
+        this.sendSearch();
+    }
+  };
+  sendSearch() {
+    this.setState({
+      redirectTo: true,
+      redirectToURL: '/search',
+      redirectState: {
+        editOwner: '',
+        editMode: false,
+        searchQuery: this.state.search,
+        searchMode: true,
+      },
+    });
+  };
+  validate = () => {
+    let isError = false;
+    const errors = {
+      searchError: '',
+    };
+
+    if (validator.isEmpty(this.state.search)) {
+      errors.searchError = 'Search is required';
+      isError = true;
+    }
+
+    this.setState({
+      ...this.state,
+      ...errors,
+    });
+
+    return isError;
+  };
+    handleChange = event => {
+    this.setState({
+      [event.target.name]: event.target.value
+    })
+  };
+
+  renderRedirectTo = () => {
+    const { redirectTo, redirectToURL, redirectState } = this.state;
+
+    if (redirectTo) {
+      this.setState({
+        redirectTo: false,
+        redirectToURL: '',
+      });
+      return (
+        <Redirect to={{
+          pathname: redirectToURL,
+          state: redirectState,
+        }}
+        />
+      );
+    }
+  }
+
   render() {
     const { classes, rtlActive } = this.props;
     const { open } = this.state;
@@ -60,18 +128,20 @@ class HeaderLinks extends React.Component {
       [classes.managerClasses]: true
     });
     return (
+      
       <div className={wrapper}>
-        <CustomInput
-          rtlActive={rtlActive}
-          formControlProps={{
-            className: classes.top + " " + classes.search
-          }}
-          inputProps={{
-            placeholder: rtlActive ? "بحث" : "Search",
-            inputProps: {
-              "aria-label": rtlActive ? "بحث" : "Search",
-              className: classes.searchInput
-            }
+      {this.renderRedirectTo()}
+        <TextField
+          id="search" 
+          name="search"
+          placeholder="Search…"
+          value={this.state.search}
+          onChange={event => this.handleChange(event)}
+          helperText={this.state.searchError}
+          error={this.state.searchError.length > 0}
+          classes={{
+            root: classes.inputRoot,
+            input: classes.inputInput,
           }}
         />
         <Button
@@ -79,6 +149,7 @@ class HeaderLinks extends React.Component {
           aria-label="edit"
           justIcon
           round
+          onClick={this.handleSearch}
           className={searchButton}
         >
           <Search

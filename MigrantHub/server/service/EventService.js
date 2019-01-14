@@ -33,11 +33,15 @@ module.exports = {
     return EventRepository.getEvent(query);
   },
 
-  async getEvents(userId) {
-    const query = {};
+  async getEvents(userId, searchQuery, search) {
+    let query = {};
 
     if (userId !== '') {
       query.user = userId;
+    } else if (search === 'true') {
+      const tempSearchQuery = searchQuery;
+      const regex = new RegExp(tempSearchQuery.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&'), 'gi');
+      query = { eventName: regex };
     }
     query.deleted = false;
 

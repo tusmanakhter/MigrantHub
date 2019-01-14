@@ -17,6 +17,7 @@ import ProtectedRoute from 'routes/ProtectedRoute';
 import UnprotectedRoute from 'routes/UnprotectedRoute';
 import ServiceForm from 'services/ServiceForm';
 import ServiceList from 'services/ServiceList';
+import Search from 'search/Search';
 import EventList from 'events/EventList';
 import EventForm from 'events/EventForm';
 import ServiceShare from 'services/ServiceShare';
@@ -69,6 +70,7 @@ class Routes extends Component {
         <Route path="/services" component={ServiceList} exact />
         <Route path="/categories" component={ServiceCategories} exact />
         <Route path="/services/share/:id" render={(props) => <ServiceShare serviceId={props.match.params.id} />} />
+        <Route path="/search" component={Search} exact />
         <Route path="/events/create" component={EventForm} exact />
         <Route path="/events" component={EventList} exact />
         <Route path="/users" component={UsersList} exact />
