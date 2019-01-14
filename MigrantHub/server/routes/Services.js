@@ -7,6 +7,7 @@ const { ensureIsOwner } = require('../middleware/AuthMiddleware');
 const Service = require('../models/Service');
 
 router.use('/:id/reviews', require('./Reviews'));
+router.use('/suggestions', require('./ServiceSuggestions'));
 
 router.get('/', controllerHandler(ServiceController.getServices, req => [req.query.editOwner, req.query.searchQuery, req.query.search, req.query.category, req.query.subcategory]));
 router.get('/:id', controllerHandler(ServiceController.getService, req => [req.query._id]));

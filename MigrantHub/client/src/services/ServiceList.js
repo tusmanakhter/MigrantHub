@@ -27,6 +27,7 @@ class ServiceList extends Component {
     this.state = {
       items: [],
       redirectToServiceForm: false,
+      redirectToSuggestionForm: false,
       editMode: '',
       editOwner: '',
     };
@@ -103,6 +104,19 @@ class ServiceList extends Component {
         return <Redirect to="/services/create" />;
       }
     }
+  
+  setRedirectToSuggestionForm = () => {
+    this.setState({
+      redirectToSuggestionForm: true,
+    });
+  }
+  
+  renderRedirectToSuggestionForm = () => {
+    const { redirectToSuggestionForm } = this.state;
+    if (redirectToSuggestionForm) {
+      return <Redirect to="/services/suggestions/create" />;
+    }
+  }
 
     render() {
       const { classes } = this.props;
@@ -114,6 +128,7 @@ class ServiceList extends Component {
             <React.Fragment>
               <Header />
               {this.renderRedirectToServiceForm()}
+              {this.renderRedirectToSuggestionForm()}
               <Button
                 variant="contained"
                 color="primary"
@@ -122,6 +137,18 @@ class ServiceList extends Component {
               >
                 Create Service 
               </Button>
+              { type === UserTypes.MIGRANT
+                && (
+                <Button
+                  variant="contained"
+                  color="primary"
+                  className={classes.button}
+                  onClick={this.setRedirectToSuggestionForm}
+                >
+                  Add Suggestion 
+                </Button>
+                )
+              }
             </React.Fragment>
             )
           }
