@@ -5,6 +5,7 @@ import {
 } from 'mdbreact';
 import { Route } from 'react-router-dom';
 import PropTypes from 'prop-types';
+<<<<<<< HEAD
 import '../App.css';
 import Logout from '../components/Logout';
 import AdminMain from './AdminMain';
@@ -17,6 +18,18 @@ import ServiceSuggestionList from '../services/ServiceSuggestionList';
 import EventList from '../events/EventList';
 
 
+=======
+import 'App.css';
+import Logout from 'components/Logout';
+import AdminMain from 'admin/AdminMain';
+import CurrentAdmins from 'admin/CurrentAdmins';
+import RejectedAdmins from 'admin/RejectedAdmins';
+import DeletedAdmins from 'admin/DeletedAdmins';
+import UnapprovedAdmins from 'admin/UnapprovedAdmins';
+import ServiceList from 'services/ServiceList';
+import EventList from 'events/EventList'
+import ServiceSuggestionList from 'services/ServiceSuggestionList';
+>>>>>>> 65faa20eb80f3813baa55417cdc43799b6b46cb0
 
 class AdminDashboard extends Component {
   constructor(props) {
