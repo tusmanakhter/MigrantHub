@@ -32,6 +32,7 @@
     "react-google-maps": "^9.4.5",
     "react-icons": "^3.2.2",
     "react-input-mask": "^2.0.4",
+    "react-intl": "^2.8.0",
     "react-number-format": "^3.6.2",
     "react-rating": "^1.5.0",
     "react-router": "^4.3.1",

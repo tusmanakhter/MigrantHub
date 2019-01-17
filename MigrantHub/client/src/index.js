@@ -6,6 +6,7 @@ import 'index.css';
 import { BrowserRouter } from 'react-router-dom';
 import registerServiceWorker from 'registerServiceWorker';
 import App from 'App';
+import { IntlProvider } from 'locales/IntlContext';
 
 import 'font-awesome/css/font-awesome.min.css';
 import 'bootstrap-css-only/css/bootstrap.min.css';
@@ -14,8 +15,11 @@ import 'mdbreact/dist/css/mdb.css';
 require('dotenv').config();
 
 ReactDOM.render(
-  <BrowserRouter>
-    <App />
-  </BrowserRouter>, document.getElementById('root'),
+  <IntlProvider>
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
+  </IntlProvider>,
+  document.getElementById('root'),
 );
 registerServiceWorker();

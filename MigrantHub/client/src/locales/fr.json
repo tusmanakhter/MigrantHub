@@ -1,0 +1,15 @@
+{
+  "login": "Se connecter",
+  "signup": "S'inscrire",
+  "home": "Accueil",
+  "contact": "Contactez",
+  "home.title": "Accès facile aux services pour tous les nouveaux arrivants au Canada",
+  "home.subtitle": "Nous rassemblons et répertorions des services conçus pour les nouveaux arrivants, les migrants et les réfugiés, tous réunis au même endroit. Inscrivez-vous maintenant pour voir tous les services disponibles afin de faciliter votre transition vers la vie au Canada.",
+  "home.aboutus": "À propos",
+  "home.askBusiness": "Êtes-vous une entreprise qui cherche à fournir des services?",
+  "home.businessInfo": "MigrantHub facilite la détection et l'utilisation de vos services. Cela aide MigrantHub à se développer et à fournir davantage de services aux nouveaux arrivants. S'inscrire maintenant!",
+  "home.signupBusiness": "Commencez comme une entreprise",
+  "home.aboutus1": "Nous sommes un projet en accès libre créé par une équipe d'étudiants travaillant avec <a href=\"https://www.therefugeecentre.org\" target=\"_blank\" rel=\"noopener noreferrer\">Le Centre De Réfugiés</a>",
+  "footer.privacypolicy": "Politique de Confidentialité",
+  "footer.faq": "FAQ"
+}

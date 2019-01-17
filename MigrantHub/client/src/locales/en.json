@@ -1,0 +1,15 @@
+{
+  "login": "Log In",
+  "signup": "Sign Up",
+  "home": "Home",
+  "contact": "Contact",
+  "home.title": "Easy access to services for all newcomers to Canada",
+  "home.subtitle": "We gather and list services geared for newcomers, migrants and refugees all in one place. Sign up now to view all services available for you to ease your transition to living in Canada.",
+  "home.aboutus": "About Us",
+  "home.askBusiness": "Are you a business looking to provide services?",
+  "home.businessInfo": "MigrantHub makes it easy to get your services noticed and used. This helps MigrantHub grow and provide more services for newcomers. Sign up now!",
+  "home.signupBusiness": "Get Started as a Business",
+  "home.aboutus1": "We are an open sourced project created by a team of students working with <a href=\"https://www.therefugeecentre.org\" target=\"_blank\" rel=\"noopener noreferrer\">The Refugee Centre</a>",
+  "footer.privacypolicy": "Privacy Policy",
+  "footer.faq": "FAQ"
+}

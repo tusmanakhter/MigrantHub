@@ -5,6 +5,7 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import { Link } from 'react-router-dom';
+import { FormattedMessage } from 'react-intl';
 
 const styles = theme => ({
   root: {
@@ -55,8 +56,18 @@ const HomeHeader = (props) => {
           <Typography variant="h6" color="inherit" className={classes.title}>
             <Link to="/">MigrantHub</Link>
           </Typography>
-          <Link to="/login">Log In</Link>
-          <Link to="/signup/account-selection">Sign Up</Link>
+          <Link to="/login">
+            <FormattedMessage
+              id="login"
+              defaultMessage="Log In"
+            />
+          </Link>
+          <Link to="/signup/account-selection">
+            <FormattedMessage
+              id="signup"
+              defaultMessage="Sign Up"
+            />
+          </Link>
         </Toolbar>
       </AppBar>
       <div className={classes.underline} />
