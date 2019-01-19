@@ -13,6 +13,7 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import validator from 'validator';
+import { injectIntl, intlShape } from 'react-intl';
 
 const styles = ({});
 
@@ -29,7 +30,7 @@ class AccountInfo extends Component {
   };
 
   validate = () => {
-    const { email, password, confirmPassword } = this.props;
+    const { email, password, confirmPassword, intl } = this.props;
 
     let isError = false;
     const errors = {
@@ -39,7 +40,7 @@ class AccountInfo extends Component {
     };
 
     if (validator.isEmpty(email)) {
-      errors.emailError = 'Email is required';
+      errors.emailError = intl.formatMessage({ id: 'account.validation.emailReq' });
       isError = true;
     } else if (!validator.isEmail(email)) {
       errors.emailError = 'Email is not valid';
@@ -171,7 +172,7 @@ AccountInfo.propTypes = {
   password: PropTypes.string.isRequired,
   confirmPassword: PropTypes.string.isRequired,
   handleChange: PropTypes.func.isRequired,
-
+  intl: intlShape.isRequired,
 };
 
-export default withStyles(styles)(AccountInfo);
+export default withStyles(styles)(injectIntl(AccountInfo, { withRef: true }));

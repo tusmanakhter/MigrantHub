@@ -7,9 +7,9 @@ import Auth from 'routes/Auth';
 
 class Logout extends Component {
   logout = () => {
-    axios.post('/api/accounts/logout').then((response) => {
+    axios.post('/api/accounts/logout').then(async (response) => {
       if (response.status === 200) {
-        Auth.unauthenticate();
+        await Auth.unauthenticate();
         const { history } = this.props;
         history.push('/');
       }

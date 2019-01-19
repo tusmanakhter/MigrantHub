@@ -51,25 +51,21 @@ const HomeFooter = (props) => {
       <Typography variant="subtitle2" color="inherit" component={Link} to="/">
         <FormattedMessage
           id="home"
-          defaultMessage="Home"
         />
       </Typography>
       <Typography variant="subtitle2" color="inherit">
         <FormattedMessage
           id="footer.privacypolicy"
-          defaultMessage="Privacy Policy"
         />
       </Typography>
       <Typography variant="subtitle2" color="inherit">
         <FormattedMessage
           id="footer.faq"
-          defaultMessage="FAQ"
         />
       </Typography>
       <Typography variant="subtitle2" color="inherit">
         <FormattedMessage
           id="contact"
-          defaultMessage="Contact"
         />
       </Typography>
       <Typography variant="subtitle2" color="inherit" className={classes.copyright}>

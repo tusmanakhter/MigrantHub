@@ -59,13 +59,11 @@ const HomeHeader = (props) => {
           <Link to="/login">
             <FormattedMessage
               id="login"
-              defaultMessage="Log In"
             />
           </Link>
           <Link to="/signup/account-selection">
             <FormattedMessage
               id="signup"
-              defaultMessage="Sign Up"
             />
           </Link>
         </Toolbar>

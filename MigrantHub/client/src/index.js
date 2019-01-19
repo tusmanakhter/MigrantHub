@@ -7,6 +7,7 @@ import { BrowserRouter } from 'react-router-dom';
 import registerServiceWorker from 'registerServiceWorker';
 import App from 'App';
 import { IntlProvider } from 'locales/IntlContext';
+import { CookiesProvider } from 'react-cookie';
 
 import 'font-awesome/css/font-awesome.min.css';
 import 'bootstrap-css-only/css/bootstrap.min.css';
@@ -15,11 +16,13 @@ import 'mdbreact/dist/css/mdb.css';
 require('dotenv').config();
 
 ReactDOM.render(
-  <IntlProvider>
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>
-  </IntlProvider>,
+  <CookiesProvider>
+    <IntlProvider>
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
+    </IntlProvider>
+  </CookiesProvider>,
   document.getElementById('root'),
 );
 registerServiceWorker();

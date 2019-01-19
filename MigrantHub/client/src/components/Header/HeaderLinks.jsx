@@ -272,8 +272,8 @@ class HeaderLinks extends React.Component {
               </span>
             </Hidden>
           </Button>
-          <Logout />
         </Link>
+        <Logout />
       </div>
     );
   }

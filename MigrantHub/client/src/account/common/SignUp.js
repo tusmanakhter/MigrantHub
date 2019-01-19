@@ -31,7 +31,7 @@ import Card from "components/Card/Card.jsx";
 import CardBody from "components/Card/CardBody.jsx";
 
 import registerPageStyle from "assets/jss/material-dashboard-pro-react/views/registerPageStyle";
-
+import { FormattedMessage, FormattedHTMLMessage } from 'react-intl';
 
 
 const styles = theme => ({
@@ -153,7 +153,12 @@ class SignUp extends Component {
   getStepContent = this.props.getStepContent
 
   handleNext = async () => {
-    const error = await this.child.current.validate();
+    let error = false;
+    if (this.child.current._wrappedInstance != null) {
+      error = await this.child.current._wrappedInstance.validate();
+    } else {
+      error = await this.child.current.validate();
+    }
     if (!error) {
       this.setState(state => ({
         activeStep: state.activeStep + 1,
@@ -187,7 +192,11 @@ class SignUp extends Component {
             <GridContainer justify="center">
               <GridItem xs={12} sm={12} md={12}>
                 <Card className={classes.cardSignup}>
-                  <h2 className={classes.cardTitle}>Register</h2>
+                  <h2 className={classes.cardTitle}>
+                    <FormattedMessage
+                      id="signup.register"
+                    />
+                  </h2>
                   <Stepper activeStep={activeStep} className={classes.stepper}>
                     {this.props.steps.map(label => (
                       <Step key={label}>
@@ -240,7 +249,9 @@ class SignUp extends Component {
                                   <div className={classes.buttons}>
                                     {activeStep !== 0 && (
                                       <Button onClick={this.handleBack} className={classes.button}>
-                                        Back
+                                        <FormattedMessage
+                                          id="back"
+                                        />
                                       </Button>
                                     )}
                                     <Button
@@ -249,7 +260,18 @@ class SignUp extends Component {
                                       onClick={this.handleNext}
                                       className={classes.button}
                                     >
-                                      {activeStep === this.props.steps.length - 1 ? 'Sign Up' : 'Next'}
+                                      {activeStep === this.props.steps.length - 1 
+                                        ? (
+                                          <FormattedMessage
+                                            id="signup"
+                                          />
+                                        )
+                                        : (
+                                          <FormattedMessage
+                                            id="next"
+                                          />
+                                        )
+                                      }
                                     </Button>
                                   </div>
                                 </React.Fragment>
@@ -274,12 +296,11 @@ class SignUp extends Component {
                               }}
                             />
                           }
-                          label={
-                            <span>
-                              Upon signing up you agree to the{" "}
-                              <a href="#pablo">terms and conditions</a>.
-                          </span>
-                          }
+                          label={(
+                            <FormattedHTMLMessage
+                              id="signup.terms"
+                            />
+                          )}
                         />
                       </GridItem>
                     </GridContainer>

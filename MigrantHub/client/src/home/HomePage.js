@@ -96,7 +96,6 @@ const HomePage = (props) => {
               <Typography variant="h2" color="inherit" gutterBottom>
                 <FormattedMessage
                   id="home.title"
-                  defaultMessage="Easy access to services for all newcomers to Canada"
                 />
               </Typography>
             </Grid>
@@ -104,7 +103,6 @@ const HomePage = (props) => {
               <Typography variant="h6" color="inherit" gutterBottom>
                 <FormattedMessage
                   id="home.subtitle"
-                  defaultMessage="We gather and list services geared for newcomers, migrants and refugees all in one place. Sign up now to view all services available for you to ease your transition to living in Canada."
                 />
               </Typography>
             </Grid>
@@ -112,13 +110,11 @@ const HomePage = (props) => {
               <Button variant="contained" component={Link} to="/signup/account-selection" className={[classes.button, classes.signUpButton].join(' ')}>
                 <FormattedMessage
                   id="signup"
-                  defaultMessage="Sign Up"
                 />
               </Button>
               <Button variant="outlined" className={[classes.button, classes.aboutButton].join(' ')}>
                 <FormattedMessage
                   id="home.aboutus"
-                  defaultMessage="About Us"
                 />
               </Button>
             </Grid>
@@ -127,20 +123,17 @@ const HomePage = (props) => {
             <Typography variant="h5" gutterBottom>
               <FormattedMessage
                 id="home.askBusiness"
-                defaultMessage="Are you a business looking to provide services?"
               />
             </Typography>
             <Typography variant="subtitle1" gutterBottom>
               <FormattedMessage
                 id="home.businessInfo"
-                defaultMessage="MigrantHub makes it easy to get your services noticed and used. This helps MigrantHub grow and provide more services for newcomers. Sign up now!"
               />
             </Typography>
             <Grid item xs={12} className={classes.buttons}>
               <Button variant="contained" component={Link} to="/signup/business" className={[classes.button, classes.businessButton].join(' ')}>
                 <FormattedMessage
                   id="home.signupBusiness"
-                  defaultMessage="Get Started as a Business"
                 />
               </Button>
             </Grid>
@@ -149,7 +142,6 @@ const HomePage = (props) => {
             <Typography variant="h4" align="left" gutterBottom>
               <FormattedMessage
                 id="home.aboutus"
-                defaultMessage="About Us"
               />
             </Typography>
             <div className={classes.underline} />
@@ -157,7 +149,6 @@ const HomePage = (props) => {
               <Typography variant="h6" align="left" gutterBottom>
                 <FormattedHTMLMessage
                   id="home.aboutus1"
-                  defaultMessage='We are an open sourced project created by a team of students working with <a href="https://www.therefugeecentre.org" target="_blank" rel="noopener noreferrer">The Refugee Centre</a>'
                 />
               </Typography>
             </div>
