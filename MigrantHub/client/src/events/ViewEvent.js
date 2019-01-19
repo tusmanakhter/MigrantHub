@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import withStyles from '@material-ui/core/styles/withStyles';
+import classNames from "classnames";
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import PropTypes from 'prop-types';
@@ -7,19 +8,18 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import Button from '@material-ui/core/Button';
+//import Button from '@material-ui/core/Button';
+import Button from "components/CustomButtons/Button.jsx";
+import Icon from "@material-ui/core/Icon";
+import IconButton from '@material-ui/core/IconButton';
 import blue from '@material-ui/core/colors/blue';
 import { Redirect } from 'react-router-dom';
 import axios from 'axios';
 import GoogleMaps from 'components/GoogleMaps/GoogleMaps';
 import UserTypes from 'lib/UserTypes';
 // @material-ui/icons
-import Map from "@material-ui/icons/Map";
 import AddLocation from "@material-ui/icons/AddLocation";
-import Place from "@material-ui/icons/Place";
 import Dashboard from "@material-ui/icons/Dashboard";
-import Schedule from "@material-ui/icons/Schedule";
-import CardIcon from "components/Card/CardIcon.jsx";
 
 import GridItem from "components/Grid/GridItem.jsx";
 import NavPills from "components/NavPills/NavPills.jsx";
@@ -29,6 +29,7 @@ import CardBody from "components/Card/CardBody.jsx";
 import { cardTitle } from "assets/jss/material-dashboard-pro-react.jsx";
 import SweetAlert from "react-bootstrap-sweetalert";
 import sweetAlertStyle from "assets/jss/material-dashboard-pro-react/views/sweetAlertStyle.jsx";
+import AddToCalendar from 'react-add-to-calendar';
 
 const styles = {
   cardTitle,
@@ -63,6 +64,13 @@ class ViewEvent extends Component {
       type: '',
       alert: null,
       show: false,
+      event: {
+        title: this.props.eventName,
+        description: this.props.description,
+        location: this.props.location.address,
+        startTime: this.props.dateStart.substring(0, 11) + this.props.timeStart + ":00-04:00",
+        endTime: this.props.dateEnd.substring(0, 11) + this.props.timeEnd + ":00-04:00"
+      }
     };
     this.hideAlert = this.hideAlert.bind(this);
     this.successDelete = this.successDelete.bind(this);
@@ -88,15 +96,15 @@ class ViewEvent extends Component {
   handleDelete = () => {
     const { eventId, onClose, getData } = this.props;
     axios.delete('/api/events/' + eventId)
-    .then(response => {
-      if (response.status === 200) {
-        onClose();
-        getData();
-      }
-    });
+      .then(response => {
+        if (response.status === 200) {
+          onClose();
+          getData();
+        }
+      });
   };
 
-  getUser(){
+  getUser() {
     const user = JSON.parse(localStorage.getItem('user'));
     this.setState({
       type: user.type,
@@ -196,8 +204,8 @@ class ViewEvent extends Component {
         <Dialog
           open={open}
           onClose={onClose}
-          style={{backgroundColor: 'transparent'}}
-          overlayStyle={{backgroundColor: 'transparent'}}
+          style={{ backgroundColor: 'transparent' }}
+          overlayStyle={{ backgroundColor: 'transparent' }}
           PaperProps={{
             style: {
               backgroundColor: 'transparent',
@@ -235,55 +243,66 @@ class ViewEvent extends Component {
                           </p>
                           <br />
                           <p>
-                          <b>Start date:</b>
-                          {' '}
-                          {dateStart.substring(0, 10)}
-                          {' '}
-                          <b>End date:</b>
-                          {' '}
-                          {dateEnd.substring(0, 10)}
-                          {' '}
-                          <b>Start time:</b>
-                          {' '}
-                          {timeStart}
-                          {' '}
-                          <b>End time:</b>
-                          {' '}
-                          {timeEnd}
+                            <b>Start date:</b>
+                            {' '}
+                            {dateStart.substring(0, 10)}
+                            {' '}
+                            <b>End date:</b>
+                            {' '}
+                            {dateEnd.substring(0, 10)}
+                            {' '}
+                            <b>Start time:</b>
+                            {' '}
+                            {timeStart}
+                            {' '}
+                            <b>End time:</b>
+                            {' '}
+                            {timeEnd}
                           </p>
                           <p>
                             {location !== undefined && (
                               <p>
-                                  <center><h6><b>Location</b></h6></center>
-                                  <Grid>
-                                    <b>Address:</b>
-                                    {' '}
-                                    {location.address}
-                                    <br />
-                                    <b>Apartment:</b>
-                                    {' '}
-                                    {location.apartment}
-                                    <br />
-                                    <b>City:</b>
-                                    {' '}
-                                    {location.city}
-                                    <br />
-                                    <b>Province:</b>
-                                    {' '}
-                                    {location.province}
-                                    <br />
-                                    <b>Postal Code:</b>
-                                    {' '}
-                                    {location.postalCode}
-                                    <br />
-                                    <b>Phone Number:</b>
-                                    {' '}
-                                    {location.phoneNumber}
-                                    <br />
-                                    </Grid>
-                                    </p>
-                              )}
+                                <center><h6><b>Location</b></h6></center>
+                                <Grid>
+                                  <b>Address:</b>
+                                  {' '}
+                                  {location.address}
+                                  <br />
+                                  <b>Apartment:</b>
+                                  {' '}
+                                  {location.apartment}
+                                  <br />
+                                  <b>City:</b>
+                                  {' '}
+                                  {location.city}
+                                  <br />
+                                  <b>Province:</b>
+                                  {' '}
+                                  {location.province}
+                                  <br />
+                                  <b>Postal Code:</b>
+                                  {' '}
+                                  {location.postalCode}
+                                  <br />
+                                  <b>Phone Number:</b>
+                                  {' '}
+                                  {location.phoneNumber}
+                                  <br />
+                                </Grid>
+                              </p>
+                            )}
                           </p>
+                          <hr />
+                          <p>Share Now!</p>
+                          <AddToCalendar event={this.state.event}
+                            buttonWrapperClass={renderProps => (
+                              <Button onClick={renderProps.onClick}
+                                justIcon
+                                color="transparent">
+                                <Icon className={classNames(classes.icon, "fab fa-google-plus")} />
+                              </Button>
+                            )}
+                          />
                         </span>
                       )
                     },
@@ -292,43 +311,43 @@ class ViewEvent extends Component {
                       tabIcon: AddLocation,
                       tabContent: (
                         <span>
-                            <CardBody>
-                              <GoogleMaps
-                                location={location}
-                              />
-                            </CardBody>
+                          <CardBody>
+                            <GoogleMaps
+                              location={location}
+                            />
+                          </CardBody>
                         </span>
                       )
                     }
                   ]}
                 />
               </CardBody>
-                <DialogActions> 
-                  { type === UserTypes.ADMIN
-                    && (
-                      <Button onClick={this.warningWithConfirmAndCancelMessage.bind(this)} color="secondary">
-                        Delete
+              <DialogActions>
+                {type === UserTypes.ADMIN
+                  && (
+                    <Button onClick={this.warningWithConfirmAndCancelMessage.bind(this)} color="secondary">
+                      Delete
                       </Button>
-                    )
-                  }}
+                  )
+                }}
                   {this.props.editMode &&
-                    <React.Fragment>
-                        <Button onClick={this.warningWithConfirmAndCancelMessage.bind(this)} color="secondary">
-                            Delete
+                  <React.Fragment>
+                    <Button onClick={this.warningWithConfirmAndCancelMessage.bind(this)} color="secondary">
+                      Delete
                         </Button>
-                        <Button onClick={this.handleEdit} color="primary">
-                            Edit
+                    <Button onClick={this.handleEdit} color="primary">
+                      Edit
                         </Button>
-                    </React.Fragment>
-                    }
-                  <Button onClick={onClose} color="primary">
-                    Cancel
+                  </React.Fragment>
+                }
+                <Button onClick={onClose} color="primary">
+                  Cancel
                   </Button>
-                </DialogActions>
+              </DialogActions>
             </Card>
           </GridItem>
         </Dialog>
-        
+
       </div>
     );
   }
