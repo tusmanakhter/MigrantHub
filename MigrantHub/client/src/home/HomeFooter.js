@@ -7,7 +7,7 @@ import { FaGithub, FaRegCopyright } from 'react-icons/fa';
 import LanguageSwitch from 'components/LanguageSwitch';
 import { FormattedMessage } from 'react-intl';
 
-const styles = {
+const styles = theme => ({
   root: {
     display: 'flex',
     alignItems: 'center',
@@ -25,11 +25,21 @@ const styles = {
     '& h6': {
       marginRight: 15,
     },
+    flexWrap: 'wrap',
+    [theme.breakpoints.down('sm')]: {
+      justifyContent: 'center',
+    },
   },
   right: {
     marginLeft: 'auto',
     display: 'flex',
     textAlign: 'center',
+    alignItems: 'center',
+    [theme.breakpoints.down('sm')]: {
+      justifyContent: 'center',
+      marginLeft: 'initial',
+      textAlign: 'center',
+    },
   },
   languageSwitcher: {
     marginRight: 15,
@@ -42,7 +52,11 @@ const styles = {
     margin: 'auto',
     marginLeft: 5,
   },
-};
+  center: {
+    display: 'flex',
+    alignItems: 'center',
+  },
+});
 
 const HomeFooter = (props) => {
   const { classes } = props;
@@ -76,7 +90,7 @@ const HomeFooter = (props) => {
         <div className={classes.languageSwitcher}>
           <LanguageSwitch dark />
         </div>
-        <a href="https://github.com/tusmanakhter/MigrantHub" target="_blank" rel="noopener noreferrer"><FaGithub size="2em" /></a>
+        <a href="https://github.com/tusmanakhter/MigrantHub" target="_blank" rel="noopener noreferrer" className={classes.center}><FaGithub size="2em" /></a>
       </div>
     </div>
   );

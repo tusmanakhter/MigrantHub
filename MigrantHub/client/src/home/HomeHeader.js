@@ -23,17 +23,20 @@ const styles = theme => ({
   title: {
     display: 'block',
     marginRight: 'auto',
+    [theme.breakpoints.down('xs')]: {
+      marginRight: 'initial',
+    },
   },
   appBar: {
-    [theme.breakpoints.down('sm')]: {
-      padding: '0% 1%',
-    },
     padding: '0% 7.5%',
     background: '#193446',
   },
   toolbar: {
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('xs')]: {
       padding: '0% 1% 0% 2%',
+      display: 'flex',
+      flexDirection: 'column',
+      textAlign: 'center',
     },
   },
   underline: {
