@@ -12,8 +12,6 @@ const { dbConfig } = require('./config');
 const passport = require('./passport');
 const { logger, formatMessage } = require('./config/winston');
 
-const insertServices = require('./db/insertServices');
-
 const app = express();
 
 require('dotenv').config();
