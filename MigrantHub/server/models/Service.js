@@ -7,7 +7,7 @@ const serviceSchema = new Schema({
   serviceDescription: { type: String, required: false },
   serviceSummary: { type: String, required: false },
   category: { type: String, required: true },
-  subCategory: { type: String, required: false },
+  subcategory: { type: String, required: false },
   acronym: { type: String, required: false },
   serviceDate: {
     startDate: { type: Date, required: false },
@@ -15,6 +15,7 @@ const serviceSchema = new Schema({
   },
   location: {
     address: { type: String, required: false },
+    apartment: { type: String, required: false },
     city: { type: String, required: false },
     province: { type: String, required: false },
     postalCode: { type: String, required: false },
