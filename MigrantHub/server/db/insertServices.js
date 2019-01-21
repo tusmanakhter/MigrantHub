@@ -4,9 +4,8 @@ const fs = require('fs');
 
 const Service = require('../models/Service');
 
-//MongoDB/Mongoose Connection
-const { db: { host, port, name } } = dbConfig;
-const connectionString = `mongodb://${host}:${port}/${name}`;
+//MongoDB-Mongoose Connection
+const connectionString = '127.0.0.1:27017/migranthub';
 mongoose.Promise = global.Promise;
 mongoose.connect(connectionString, (error) => {
   if (error) {
@@ -19,8 +18,8 @@ database.on('error', console.error.bind(console, 'MongoDB connection error: '));
 
 
 //Inputting all the Services Located in Montreal
-const servicesSchemaKeyList = ['category', 'subCategory', 'acronym', 'serviceTitle',
-'serviceDescription', 'address', 'city', 'province', 'postalCode',
+const servicesSchemaKeyList = ['category', 'subcategory', 'acronym', 'serviceTitle',
+'serviceDescription', 'address', 'apartment', 'city', 'province', 'postalCode',
 'metro', 'sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturyda',
 'openHours', 'phoneNumber', 'phoneNumber2', 'fax', 'wesbsite', 'email', 'notes'];
 const date = new Date();
@@ -39,6 +38,7 @@ function createDocRecurse(err) {
     const doc = new Service();
     const location = {
       address: '',
+      apartment: '',
       city: '',
       province: '',
       postalCode: '',
@@ -53,7 +53,6 @@ function createDocRecurse(err) {
       endTime: '',
     };
 
-
     line.split(';').forEach((entry, i) => {
       doc.user = 'Admin';
       doc[servicesSchemaKeyList[i]] = entry;
@@ -61,17 +60,18 @@ function createDocRecurse(err) {
 
       // Location
       if (i === 5) location.address = entry;
-      else if (i === 6) location.city = entry;
-      else if (i === 7) location.province = entry;
-      else if (i === 8) location.postalCode = entry;
-      else if (i === 9) location.metro = entry;
-      else if (i === 18) location.phoneNumber = entry;
-      else if (i === 19) location.phoneNumber2 = entry;
-      else if (i === 20) doc.location = location;
+      else if (i === 6) location.apartment = entry;
+      else if (i === 7) location.city = entry;
+      else if (i === 8) location.province = entry;
+      else if (i === 9) location.postalCode = entry;
+      else if (i === 10) location.metro = entry;
+      else if (i === 19) location.phoneNumber = entry;
+      else if (i === 20) location.phoneNumber2 = entry;
+      else if (i === 21) doc.location = location;
 
       var serviceTime;
       //Hours
-      if (i === 10) { 
+      if (i === 11) { 
         if(entry.length > 0){
           serviceTime = entry.split('-');
           serviceHour.serviceDay = "Sunday";
@@ -80,7 +80,7 @@ function createDocRecurse(err) {
           doc.serviceHours.push(serviceHour);
         }
       }
-      else if (i === 11) {
+      else if (i === 12) {
         if(entry.length > 0){
           serviceTime = entry.split('-');
           serviceHour.serviceDay = "Monday";
@@ -89,7 +89,7 @@ function createDocRecurse(err) {
           doc.serviceHours.push(serviceHour);
         }
       }
-      else if (i === 12) {
+      else if (i === 13) {
         if(entry.length > 0){
           serviceTime = entry.split('-');
           serviceHour.serviceDay = "Tuesday";
@@ -98,7 +98,7 @@ function createDocRecurse(err) {
           doc.serviceHours.push(serviceHour);
         }
       }
-      else if (i === 13) {
+      else if (i === 14) {
         if(entry.length > 0){
           serviceTime = entry.split('-');
           serviceHour.serviceDay = "Wednesday";
@@ -107,7 +107,7 @@ function createDocRecurse(err) {
           doc.serviceHours.push(serviceHour);
         }
       }
-      else if (i === 14) {
+      else if (i === 15) {
         if(entry.length > 0){
           serviceTime = entry.split('-');
           serviceHour.serviceDay = "Thursday";
@@ -116,7 +116,7 @@ function createDocRecurse(err) {
           doc.serviceHours.push(serviceHour);
         }
       }
-      else if (i === 15) {
+      else if (i === 16) {
         if(entry.length > 0){
           serviceTime = entry.split('-');
           serviceHour.serviceDay = "Friday";
@@ -125,7 +125,7 @@ function createDocRecurse(err) {
           doc.serviceHours.push(serviceHour);
         }
       }
-      else if (i === 16) {
+      else if (i === 17) {
         if(entry.length > 0){
           serviceTime = entry.split('-');
           serviceHour.serviceDay = "Saturday";
