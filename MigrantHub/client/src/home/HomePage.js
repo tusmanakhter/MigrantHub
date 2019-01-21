@@ -94,62 +94,44 @@ const HomePage = (props) => {
           <Grid item xs={12} className={classes.top}>
             <Grid item xs={12}>
               <Typography variant="h2" color="inherit" gutterBottom>
-                <FormattedMessage
-                  id="home.title"
-                />
+                <FormattedMessage id="home.title" />
               </Typography>
             </Grid>
             <Grid item xs={12}>
               <Typography variant="h6" color="inherit" gutterBottom>
-                <FormattedMessage
-                  id="home.subtitle"
-                />
+                <FormattedMessage id="home.subtitle" />
               </Typography>
             </Grid>
             <Grid item xs={12} className={classes.buttons}>
               <Button variant="contained" component={Link} to="/signup/account-selection" className={[classes.button, classes.signUpButton].join(' ')}>
-                <FormattedMessage
-                  id="signup"
-                />
+                <FormattedMessage id="signup" />
               </Button>
               <Button variant="outlined" className={[classes.button, classes.aboutButton].join(' ')}>
-                <FormattedMessage
-                  id="home.aboutus"
-                />
+                <FormattedMessage id="home.aboutus" />
               </Button>
             </Grid>
           </Grid>
           <Grid item xs={12} className={classes.business}>
             <Typography variant="h5" gutterBottom>
-              <FormattedMessage
-                id="home.askBusiness"
-              />
+              <FormattedMessage id="home.askBusiness" />
             </Typography>
             <Typography variant="subtitle1" gutterBottom>
-              <FormattedMessage
-                id="home.businessInfo"
-              />
+              <FormattedMessage id="home.businessInfo" />
             </Typography>
             <Grid item xs={12} className={classes.buttons}>
               <Button variant="contained" component={Link} to="/signup/business" className={[classes.button, classes.businessButton].join(' ')}>
-                <FormattedMessage
-                  id="home.signupBusiness"
-                />
+                <FormattedMessage id="home.signupBusiness" />
               </Button>
             </Grid>
           </Grid>
           <Grid item xs={12} className={classes.about}>
             <Typography variant="h4" align="left" gutterBottom>
-              <FormattedMessage
-                id="home.aboutus"
-              />
+              <FormattedMessage id="home.aboutus" />
             </Typography>
             <div className={classes.underline} />
             <div className={classes.content}>
               <Typography variant="h6" align="left" gutterBottom>
-                <FormattedHTMLMessage
-                  id="home.aboutus1"
-                />
+                <FormattedHTMLMessage id="home.aboutus1" />
               </Typography>
             </div>
           </Grid>

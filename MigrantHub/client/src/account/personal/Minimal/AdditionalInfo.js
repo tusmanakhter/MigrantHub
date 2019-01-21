@@ -8,6 +8,7 @@ import EducationLevel from 'components/fields/education/EducationLevel';
 import JobStatus from 'components/fields/employment/JobStatus';
 import SettlingLocation from 'components/fields/other/SettlingLocation';
 import JoiningReason from 'components/fields/other/JoiningReason';
+import { FormattedMessage } from 'react-intl';
 
 const styles = ({});
 
@@ -70,7 +71,9 @@ class AdditionalInfo extends Component {
 
     return (
       <React.Fragment>
-        <Typography variant="title" gutterBottom> Additional Information </Typography>
+        <Typography variant="title" gutterBottom>
+          <FormattedMessage id="signup.additional" />
+        </Typography>
         <Grid container spacing={24}>
           <Grid item xs={12} sm={6}>
             <EducationLevel

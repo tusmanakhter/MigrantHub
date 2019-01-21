@@ -7,6 +7,7 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import validator from 'validator';
 import { organizationTypes } from 'lib/SignUpConstants';
+import { FormattedMessage } from 'react-intl';
 
 const styles = ({
   select: {
@@ -79,14 +80,14 @@ class AboutInfo extends Component {
     return (
       <React.Fragment>
         <Typography variant="title" gutterBottom>
-              About
+          <FormattedMessage id="signup.about" />
         </Typography>
         <Grid container spacing={24}>
           <Grid item xs={12} sm={6}>
             <TextField
               id="organizationName"
               name="organizationName"
-              label="Name of organization"
+              label={<FormattedMessage id="business.orgname" />}
               value={organizationName}
               onChange={event => handleChange(event)}
               fullWidth
@@ -99,7 +100,7 @@ class AboutInfo extends Component {
               id="orgType"
               name="orgType"
               select
-              label="Organization Type"
+              label={<FormattedMessage id="business.orgtype" />}
               className={classes.select}
               value={orgType}
               onChange={event => handleChange(event)}
@@ -118,7 +119,7 @@ class AboutInfo extends Component {
             <TextField
               id="department"
               name="department"
-              label="Name of the department"
+              label={<FormattedMessage id="business.dept" />}
               value={department}
               onChange={event => handleChange(event)}
               fullWidth
@@ -130,7 +131,7 @@ class AboutInfo extends Component {
             <TextField
               id="serviceType"
               name="serviceType"
-              label="Type of service"
+              label={<FormattedMessage id="business.service" />}
               value={serviceType}
               onChange={event => handleChange(event)}
               fullWidth
@@ -142,7 +143,7 @@ class AboutInfo extends Component {
             <TextField
               id="description"
               name="description"
-              label="Description"
+              label={<FormattedMessage id="business.desc" />}
               value={description}
               onChange={event => handleChange(event)}
               fullWidth

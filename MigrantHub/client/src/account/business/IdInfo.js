@@ -7,6 +7,7 @@ import Typography from '@material-ui/core/Typography';
 import validator from 'validator';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import IdApi from 'account/business/IdApi';
+import { FormattedMessage } from 'react-intl';
 
 const styles = ({});
 
@@ -54,25 +55,19 @@ class IdInfo extends Component {
     return (
       <React.Fragment>
         <Typography variant="title" gutterBottom>
-          Corporation ID Verification
+          <FormattedMessage id="business.corpVerification" />
         </Typography>
         <i>
           <small>
-            A corporation number is the number assigned to a corporation by Corporations Canada.
-            It is usually a 7-digit number.
-            Find the corporation number on the corporation’s Certificate of Incorporation,
-            Amalgamation or Continuance.
-            Or access Corporations Canada online database of federal corporations
-             or by contacting Corporations Canada directly.
+            <FormattedMessage id="business.corpIdDesc" />
           </small>
         </i>
-        <i><b><small>- Goverment Of Canada</small></b></i>
         <Grid container spacing={24}>
           <Grid item xs={12}>
             <TextField
               id="corpId"
               name="corpId"
-              label="Corporation Id Example: 1234567"
+              label={<FormattedMessage id="business.corpIdEx" />}
               value={corpId}
               onChange={event => handleChange(event)}
               fullWidth
@@ -86,7 +81,7 @@ class IdInfo extends Component {
             <br />
             <CircularProgress />
             <br />
-            <p>Please wait while we verify your ID</p>
+            <p><FormattedMessage id="business.corpIdLoading" /></p>
           </div>
         ) : ''
         }

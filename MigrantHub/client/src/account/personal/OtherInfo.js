@@ -7,6 +7,7 @@ import validator from 'validator';
 import SettlingLocation from 'components/fields/other/SettlingLocation';
 import SettlingDuration from 'components/fields/other/SettlingDuration';
 import JoiningReason from 'components/fields/other/JoiningReason';
+import { FormattedMessage } from 'react-intl';
 
 const styles = ({});
 class OtherInfo extends Component {
@@ -53,7 +54,9 @@ class OtherInfo extends Component {
 
     return (
       <React.Fragment>
-        <Typography variant="title" gutterBottom> Other Information </Typography>
+        <Typography variant="title" gutterBottom>
+          <FormattedMessage id="signup.otherinfo" />
+        </Typography>
         <Grid container spacing={24}>
           <Grid item xs={12} sm={6}>
             <SettlingLocation

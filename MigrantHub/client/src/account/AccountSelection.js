@@ -70,9 +70,7 @@ const AccountSelection = (props) => {
         <Grid container className={classes.title}>
           <Grid item xs={12}>
             <Typography variant="h5">
-              <FormattedMessage
-                id="signup.selection.create"
-              />
+              <FormattedMessage id="signup.selection.create" />
             </Typography>
           </Grid>
         </Grid>
@@ -82,14 +80,10 @@ const AccountSelection = (props) => {
               <div className={classes.section}>
                 <FaAddressCard size="3em" className={classes.icon} />
                 <Typography variant="h5">
-                  <FormattedMessage
-                    id="signup.selection.personal"
-                  />
+                  <FormattedMessage id="signup.selection.personal" />
                 </Typography>
                 <Typography variant="subtitle1">
-                  <FormattedMessage
-                    id="signup.selection.personalSubtitle"
-                  />
+                  <FormattedMessage id="signup.selection.personalSubtitle" />
                 </Typography>
               </div>
               <Typography variant="body1" className={classes.section}>Lorem ipsum dolor sit amet consectetur adipisicing elit. Laudantium incidunt ipsa exercitationem dolores nobis, aliquam commodi consequuntur tenetur inventore sapiente perferendis illum sint maxime fugit quidem! Ab possimus culpa eaque.</Typography>
@@ -99,9 +93,7 @@ const AccountSelection = (props) => {
                 <li><Typography variant="body2">Its amazing</Typography></li>
               </ul>
               <Button variant="contained" component={Link} to="/signup/personal" className={classes.button}>
-                <FormattedMessage
-                  id="signup.selection.personalSignUp"
-                />
+                <FormattedMessage id="signup.selection.personalSignUp" />
               </Button>
             </Paper>
           </Grid>
@@ -110,14 +102,10 @@ const AccountSelection = (props) => {
               <div className={classes.section}>
                 <FaCreditCard size="3em" className={classes.icon} />
                 <Typography variant="h5">
-                  <FormattedMessage
-                    id="signup.selection.business"
-                  />
+                  <FormattedMessage id="signup.selection.business" />
                 </Typography>
                 <Typography variant="subtitle1">
-                  <FormattedMessage
-                    id="signup.selection.businessSubtitle"
-                  />
+                  <FormattedMessage id="signup.selection.businessSubtitle" />
                 </Typography>
               </div>
               <Typography variant="body1" className={classes.section}>Lorem ipsum dolor sit amet consectetur adipisicing elit. Laudantium incidunt ipsa exercitationem dolores nobis, aliquam commodi consequuntur tenetur inventore sapiente perferendis illum sint maxime fugit quidem! Ab possimus culpa eaque.</Typography>
@@ -127,9 +115,7 @@ const AccountSelection = (props) => {
                 <li><Typography variant="body2">Its amazing</Typography></li>
               </ul>
               <Button variant="contained" component={Link} to="/signup/business" className={classes.button}>
-                <FormattedMessage
-                  id="signup.selection.businessSignUp"
-                />
+                <FormattedMessage id="signup.selection.businessSignUp" />
               </Button>
             </Paper>
           </Grid>

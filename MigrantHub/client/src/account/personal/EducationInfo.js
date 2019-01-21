@@ -7,6 +7,7 @@ import validator from 'validator';
 import EducationLevel from 'components/fields/education/EducationLevel';
 import ProficiencyExams from 'components/fields/education/ProficiencyExams';
 import Other from 'components/fields/Other';
+import { FormattedMessage } from 'react-intl';
 
 const styles = ({});
 
@@ -43,7 +44,9 @@ class EducationInfo extends Component {
 
     return (
       <React.Fragment>
-        <Typography variant="title" gutterBottom> Education Information </Typography>
+        <Typography variant="title" gutterBottom>
+          <FormattedMessage id="signup.educationinfo" />
+        </Typography>
         <Grid container spacing={24}>
           <Grid item xs={12}>
             <EducationLevel

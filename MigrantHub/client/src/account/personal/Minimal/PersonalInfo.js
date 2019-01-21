@@ -11,6 +11,7 @@ import Nationality from 'components/fields/personal/Nationality';
 import Gender from 'components/fields/personal/Gender';
 import Status from 'components/fields/personal/Status';
 import RelationshipStatus from 'components/fields/personal/RelationshipStatus';
+import { FormattedMessage } from 'react-intl';
 
 const styles = ({});
 
@@ -105,7 +106,9 @@ class PersonalInfo extends Component {
 
     return (
       <React.Fragment>
-        <Typography variant="title" gutterBottom> Personal Information </Typography>
+        <Typography variant="title" gutterBottom>
+          <FormattedMessage id="signup.personalinfo" />
+        </Typography>
         <Grid container spacing={24}>
           <Grid item xs={12} sm={6}>
             <FirstName

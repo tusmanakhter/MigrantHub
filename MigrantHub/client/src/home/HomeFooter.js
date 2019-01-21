@@ -63,24 +63,16 @@ const HomeFooter = (props) => {
   return (
     <div className={classes.root}>
       <Typography variant="subtitle2" color="inherit" component={Link} to="/">
-        <FormattedMessage
-          id="home"
-        />
+        <FormattedMessage id="home" />
       </Typography>
       <Typography variant="subtitle2" color="inherit">
-        <FormattedMessage
-          id="footer.privacypolicy"
-        />
+        <FormattedMessage id="footer.privacypolicy" />
       </Typography>
       <Typography variant="subtitle2" color="inherit">
-        <FormattedMessage
-          id="footer.faq"
-        />
+        <FormattedMessage id="footer.faq" />
       </Typography>
       <Typography variant="subtitle2" color="inherit">
-        <FormattedMessage
-          id="contact"
-        />
+        <FormattedMessage id="contact" />
       </Typography>
       <Typography variant="subtitle2" color="inherit" className={classes.copyright}>
         <FaRegCopyright />

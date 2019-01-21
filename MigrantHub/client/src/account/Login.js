@@ -30,6 +30,7 @@ import Auth from 'routes/Auth';
 import UserTypes from 'lib/UserTypes';
 import { TextField } from '@material-ui/core';
 import { FormattedMessage } from 'react-intl';
+
 const qs = require('qs');
 
 
@@ -186,15 +187,11 @@ class Login extends React.Component {
                           color="warning"
                         >
                           <h4 className={classes.cardTitle}>
-                            <FormattedMessage
-                              id="login"
-                            />
+                            <FormattedMessage id="login" />
                           </h4>
                           <h6 className={classes.cardTitle}>
                             <b>
-                              <FormattedMessage
-                                id="login.social"
-                              />
+                              <FormattedMessage id="login.social" />
                             </b>
                           </h6>
                           <div className={classes.socialLine}>
@@ -228,19 +225,13 @@ class Login extends React.Component {
                         </CardHeader>
                         <h6>
                           <font color="gray"><br />
-                            <FormattedMessage
-                              id="login.already"
-                            />
+                            <FormattedMessage id="login.already" />
                           </font>
                         </h6>
                         <TextField
                           id="username"
                           name="username"
-                          label={(
-                            <FormattedMessage
-                              id="email"
-                            />
-                          )}
+                          label={<FormattedMessage id="email" />}
                           value={username}
                           onChange={event => this.handleChange(event)}
                           fullWidth
@@ -249,11 +240,7 @@ class Login extends React.Component {
                           id="password"
                           name="password"
                           type="password"
-                          label={(
-                            <FormattedMessage
-                              id="password"
-                            />
-                          )}
+                          label={<FormattedMessage id="password" />}
                           value={password}
                           onChange={event => this.handleChange(event)}
                           fullWidth
@@ -266,15 +253,11 @@ class Login extends React.Component {
                           onClick={this.handleSubmit}
                           className={classes.submit}
                         >
-                          <FormattedMessage
-                            id="login"
-                          />
+                          <FormattedMessage id="login" />
                         </Button>
                       </CardFooter>
                       <Button variant="outlined" className={classes.button}>
-                        <FormattedMessage
-                          id="login.forgot"
-                        />
+                        <FormattedMessage id="login.forgot" />
                       </Button>
                     </Card>
                   </form>

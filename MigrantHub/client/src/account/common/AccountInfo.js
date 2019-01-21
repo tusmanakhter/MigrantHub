@@ -13,7 +13,7 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import validator from 'validator';
-import { injectIntl, intlShape } from 'react-intl';
+import { injectIntl, intlShape, FormattedMessage } from 'react-intl';
 
 const styles = ({});
 
@@ -82,14 +82,14 @@ class AccountInfo extends Component {
     return (
       <React.Fragment>
         <Typography variant="title" gutterBottom>
-                  Account Information
+          <FormattedMessage id="signup.accountinfo" />
         </Typography>
         <Grid container spacing={24}>
           <Grid item xs={12}>
             <TextField
               id="email"
               name="email"
-              label="Email"
+              label={<FormattedMessage id="email" />}
               value={email}
               onChange={event => handleChange(event)}
               fullWidth
@@ -103,7 +103,7 @@ class AccountInfo extends Component {
                 htmlFor="password"
                 error={passwordError.length > 0}
               >
-Password
+                <FormattedMessage id="password" />
               </InputLabel>
               <Input
                 name="password"
@@ -135,7 +135,7 @@ Password
                 htmlFor="password"
                 error={confirmPasswordError.length > 0 || passwordError.length > 0}
               >
-                              Confirm Password
+                <FormattedMessage id="signup.confirmpassword" />
               </InputLabel>
               <Input
                 name="confirmPassword"

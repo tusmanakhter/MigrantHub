@@ -12,6 +12,7 @@ import { langObject } from 'lib/SignUpConstants';
 import Language from 'components/fields/language/Language';
 import WritingLevel from 'components/fields/language/WritingLevel';
 import SpeakingLevel from 'components/fields/language/SpeakingLevel';
+import { FormattedMessage } from 'react-intl';
 
 const styles = theme => ({
   row: {
@@ -92,7 +93,9 @@ class LanguageInfo extends Component {
 
     return (
       <React.Fragment>
-        <Typography variant="title" gutterBottom> Language Information </Typography>
+        <Typography variant="title" gutterBottom>
+          <FormattedMessage id="signup.languageinfo" />
+        </Typography>
         <Grid container spacing={24}>
           <Grid item xs={12} sm={4}>
             <Language
@@ -116,7 +119,9 @@ class LanguageInfo extends Component {
             />
           </Grid>
           <Grid item xs={12}>
-            <Typography variant="subheading" gutterBottom className={classes.row}> Add another language </Typography>
+            <Typography variant="subheading" gutterBottom className={classes.row}>
+              <FormattedMessage id="signup.language.add" />
+            </Typography>
             <Button
               variant="fab"
               mini

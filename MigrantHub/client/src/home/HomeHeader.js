@@ -60,14 +60,10 @@ const HomeHeader = (props) => {
             <Link to="/">MigrantHub</Link>
           </Typography>
           <Link to="/login">
-            <FormattedMessage
-              id="login"
-            />
+            <FormattedMessage id="login" />
           </Link>
           <Link to="/signup/account-selection">
-            <FormattedMessage
-              id="signup"
-            />
+            <FormattedMessage id="signup" />
           </Link>
         </Toolbar>
       </AppBar>

@@ -15,6 +15,7 @@ import LookingForJob from 'components/fields/employment/LookingForJob';
 import Title from 'components/fields/employment/Title';
 import Company from 'components/fields/employment/Company';
 import EmploymentLength from 'components/fields/employment/EmploymentLength';
+import { FormattedMessage } from 'react-intl';
 
 const styles = theme => ({
   row: {
@@ -90,7 +91,9 @@ class EmploymentInfo extends Component {
 
     return (
       <React.Fragment>
-        <Typography variant="title" gutterBottom> Employment Information </Typography>
+        <Typography variant="title" gutterBottom>
+          <FormattedMessage id="signup.employmentinfo" />
+        </Typography>
         <Grid container spacing={24}>
           <Grid item xs={12} sm={4}>
             <JobStatus
@@ -114,7 +117,9 @@ class EmploymentInfo extends Component {
             />
           </Grid>
           <Grid item xs={12}>
-            <Typography variant="subheading" gutterBottom className={classes.row}> Add work experience </Typography>
+            <Typography variant="subheading" gutterBottom className={classes.row}>
+              <FormattedMessage id="signup.employment.addwork" />
+            </Typography>
             <Button
               variant="fab"
               mini

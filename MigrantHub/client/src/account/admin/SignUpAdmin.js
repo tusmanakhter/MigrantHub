@@ -3,7 +3,7 @@ import axios from 'axios';
 import SignUp from 'account/common/SignUp';
 import AccountInfo from 'account/common/AccountInfo';
 import HomeLayout from 'home/HomeLayout';
-
+import { FormattedMessage } from 'react-intl';
 
 const qs = require('qs');
 
@@ -46,7 +46,7 @@ class SignUpAdmin extends Component {
   }
 
   render() {
-    const steps = ['Account'];
+    const steps = [<FormattedMessage id="signup.account" />];
 
     return (
       <React.Fragment>

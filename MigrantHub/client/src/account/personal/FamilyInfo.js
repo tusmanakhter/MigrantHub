@@ -14,6 +14,7 @@ import Age from 'components/fields/personal/Age';
 import RelationshipStatus from 'components/fields/personal/RelationshipStatus';
 import Relation from 'components/fields/family/Relation';
 import Gender from 'components/fields/personal/Gender';
+import { FormattedMessage } from 'react-intl';
 
 const styles = theme => ({
   row: {
@@ -98,10 +99,14 @@ class FamilyInfo extends Component {
 
     return (
       <React.Fragment>
-        <Typography variant="title" gutterBottom> Family Information </Typography>
+        <Typography variant="title" gutterBottom>
+          <FormattedMessage id="signup.familyinfo" />
+        </Typography>
         <Grid container spacing={24}>
           <Grid item xs={12}>
-            <Typography variant="subheading" gutterBottom className={classes.row}> Add family member </Typography>
+            <Typography variant="subheading" gutterBottom className={classes.row}>
+              <FormattedMessage id="signup.family.addfam" />
+            </Typography>
             <Button
               variant="fab"
               mini
@@ -117,7 +122,7 @@ class FamilyInfo extends Component {
             <React.Fragment key={index}>
               <Paper className={classes.paper}>
                 <Typography variant="subheading" align="left" gutterBottom>
-                          Member
+                  <FormattedMessage id="signup.family.member" />
                   {' '}
                   {index + 1}
                 </Typography>

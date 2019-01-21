@@ -12,6 +12,7 @@ import City from 'components/fields/contact/City';
 import Province from 'components/fields/contact/Province';
 import PostalCode from 'components/fields/contact/PostalCode';
 import PhoneNumber from 'components/fields/contact/PhoneNumber';
+import { FormattedMessage } from 'react-intl';
 
 const styles = ({});
 
@@ -98,7 +99,9 @@ class ContactInfo extends Component {
 
     return (
       <React.Fragment>
-        <Typography variant="title" gutterBottom> Contact Information </Typography>
+        <Typography variant="title" gutterBottom>
+          <FormattedMessage id="signup.contactinfo" />
+        </Typography>
         <Grid container spacing={24}>
           <Grid item xs={12} sm={6}>
             <FirstName
