@@ -7,7 +7,7 @@ import Typography from '@material-ui/core/Typography';
 import validator from 'validator';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import IdApi from 'account/business/IdApi';
-import { FormattedMessage } from 'react-intl';
+import { injectIntl, intlShape, FormattedMessage } from 'react-intl';
 
 const styles = ({});
 
@@ -18,7 +18,7 @@ class IdInfo extends Component {
   }
 
   validate = async () => {
-    const { corpId } = this.props;
+    const { corpId, intl } = this.props;
 
     let isError = false;
     const errors = {
@@ -26,17 +26,17 @@ class IdInfo extends Component {
     };
 
     if (validator.isEmpty(corpId)) {
-      errors.corpIdError = 'Corporation Id is required';
+      errors.corpIdError = `${intl.formatMessage({ id: 'business.corpId' })}  ${intl.formatMessage({ id: 'isrequired' })}`;
       isError = true;
     } else if (!validator.isNumeric(corpId)) {
-      errors.corpIdError = 'Please enter 7-digit';
+      errors.corpIdError = intl.formatMessage({ id: 'corpid.validation.length' });
       isError = true;
     } else {
       this.setState({ loading: true });
       const validId = await IdApi.checkCorpId(corpId);
       this.setState({ loading: false });
       if (!validId) {
-        errors.corpIdError = 'ID entered is invalid';
+        errors.corpIdError = `${intl.formatMessage({ id: 'business.corpId' })}  ${intl.formatMessage({ id: 'notvalid' })}`;
         isError = true;
       }
     }
@@ -94,6 +94,7 @@ IdInfo.propTypes = {
   classes: PropTypes.shape({}).isRequired,
   handleChange: PropTypes.func.isRequired,
   corpId: PropTypes.number.isRequired,
+  intl: intlShape.isRequired,
 };
 
-export default withStyles(styles)(IdInfo);
+export default withStyles(styles)(injectIntl(IdInfo, { withRef: true }));

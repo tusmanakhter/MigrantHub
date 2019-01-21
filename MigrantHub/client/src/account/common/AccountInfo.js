@@ -40,26 +40,26 @@ class AccountInfo extends Component {
     };
 
     if (validator.isEmpty(email)) {
-      errors.emailError = intl.formatMessage({ id: 'account.validation.emailReq' });
+      errors.emailError = `${intl.formatMessage({ id: 'email' })}  ${intl.formatMessage({ id: 'isrequired' })}`;
       isError = true;
     } else if (!validator.isEmail(email)) {
-      errors.emailError = 'Email is not valid';
+      errors.emailError = `${intl.formatMessage({ id: 'email' })}  ${intl.formatMessage({ id: 'notvalid' })}`;
       isError = true;
     }
 
     if (validator.isEmpty(password)) {
-      errors.passwordError = 'Password is required';
+      errors.passwordError = `${intl.formatMessage({ id: 'password' })}  ${intl.formatMessage({ id: 'isrequired' })}`;
       isError = true;
     } else if (validator.isEmpty(confirmPassword)) {
-      errors.confirmPasswordError = 'Confirm your password';
+      errors.confirmPasswordError = intl.formatMessage({ id: 'account.validation.passwordConfirm' });
       isError = true;
     } else if (!validator.equals(password, confirmPassword)) {
-      errors.passwordError = 'Passwords do not match';
-      errors.confirmPasswordError = 'Passwords do not match';
+      errors.passwordError = intl.formatMessage({ id: 'account.validation.passwordMatch' });
+      errors.confirmPasswordError = intl.formatMessage({ id: 'account.validation.passwordMatch' });
       isError = true;
     } else if (!validator.isLength(password, { min: 8 })) {
-      errors.passwordError = 'Password must be atleast 8 characters';
-      errors.confirmPasswordError = 'Password must be atleast 8 characters';
+      errors.passwordError = intl.formatMessage({ id: 'account.validation.passwordLength' });
+      errors.confirmPasswordError = intl.formatMessage({ id: 'account.validation.passwordLength' });
       isError = true;
     }
 

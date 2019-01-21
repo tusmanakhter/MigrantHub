@@ -12,7 +12,7 @@ import City from 'components/fields/contact/City';
 import Province from 'components/fields/contact/Province';
 import PostalCode from 'components/fields/contact/PostalCode';
 import PhoneNumber from 'components/fields/contact/PhoneNumber';
-import { FormattedMessage } from 'react-intl';
+import { injectIntl, intlShape, FormattedMessage } from 'react-intl';
 
 const styles = ({});
 
@@ -30,7 +30,7 @@ class ContactInfo extends Component {
 
   validate = () => {
     const {
-      firstName, lastName, city, postalCode, phoneNumber,
+      firstName, lastName, city, postalCode, phoneNumber, intl,
     } = this.props;
     let isError = false;
     const errors = {
@@ -43,37 +43,37 @@ class ContactInfo extends Component {
     };
 
     if (validator.isEmpty(firstName)) {
-      errors.firstNameError = 'First name is required';
+      errors.firstNameError = `${intl.formatMessage({ id: 'contact.firstname' })}  ${intl.formatMessage({ id: 'isrequired' })}`;
       isError = true;
     } else if (!validator.isAlpha(firstName)) {
-      errors.firstNameError = 'First name is not valid';
+      errors.firstNameError = `${intl.formatMessage({ id: 'contact.firstname' })}  ${intl.formatMessage({ id: 'notvalid' })}`;
       isError = true;
     }
 
     if (validator.isEmpty(lastName)) {
-      errors.lastNameError = 'Last name is required';
+      errors.lastNameError = `${intl.formatMessage({ id: 'contact.lastname' })}  ${intl.formatMessage({ id: 'isrequired' })}`;
       isError = true;
     } else if (!validator.isAlpha(lastName)) {
-      errors.lastNameError = 'Last name is not valid';
+      errors.lastNameError = `${intl.formatMessage({ id: 'contact.lastname' })}  ${intl.formatMessage({ id: 'notvalid' })}`;
       isError = true;
     }
 
     if ((city !== '' && city !== undefined) && !validator.isAlpha(city)) {
-      errors.cityError = 'This is not a valid city';
+      errors.cityError = `${intl.formatMessage({ id: 'contact.city' })}  ${intl.formatMessage({ id: 'notvalid' })}`;
       isError = true;
     }
 
     if ((postalCode !== '' && postalCode !== undefined) && !validator.isLength(postalCode, { min: 7, max: 7 })) {
-      errors.postalCodeError = 'Postal code is invalid';
+      errors.postalCodeError = `${intl.formatMessage({ id: 'contact.postal' })}  ${intl.formatMessage({ id: 'notvalid' })}`;
       isError = true;
     }
 
     if (phoneNumber !== '' && phoneNumber !== undefined) {
       if (validator.isEmpty(phoneNumber)) {
-        errors.phoneNumberError = 'Phone number is required';
+        errors.phoneNumberError = `${intl.formatMessage({ id: 'contact.phone' })}  ${intl.formatMessage({ id: 'required' })}`;
         isError = true;
       } else if (!validator.isLength(phoneNumber, { min: 14, max: 14 })) {
-        errors.phoneNumberError = 'Phone number is invalid';
+        errors.phoneNumberError = `${intl.formatMessage({ id: 'contact.phone' })}  ${intl.formatMessage({ id: 'notvalid' })}`;
         isError = true;
       }
     }
@@ -175,6 +175,7 @@ ContactInfo.propTypes = {
   province: PropTypes.string.isRequired,
   postalCode: PropTypes.string.isRequired,
   phoneNumber: PropTypes.string.isRequired,
+  intl: intlShape.isRequired,
 };
 
-export default withStyles(styles)(ContactInfo);
+export default withStyles(styles)(injectIntl(ContactInfo, { withRef: true }));

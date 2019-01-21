@@ -7,7 +7,7 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import validator from 'validator';
 import { organizationTypes } from 'lib/SignUpConstants';
-import { FormattedMessage } from 'react-intl';
+import { injectIntl, intlShape, FormattedMessage } from 'react-intl';
 
 const styles = ({
   select: {
@@ -34,31 +34,31 @@ class AboutInfo extends Component {
     };
 
     const {
-      organizationName, orgType, department, serviceType, description,
+      organizationName, orgType, department, serviceType, description, intl,
     } = this.props;
 
     if (validator.isEmpty(organizationName)) {
-      errors.organizationNameError = 'Organization name is required';
+      errors.organizationNameError = `${intl.formatMessage({ id: 'business.orgname' })}  ${intl.formatMessage({ id: 'isrequired' })}`;
       isError = true;
     }
 
     if (validator.isEmpty(orgType)) {
-      errors.orgTypeError = 'Organization type is required';
+      errors.orgTypeError = `${intl.formatMessage({ id: 'business.orgtype' })}  ${intl.formatMessage({ id: 'isrequired' })}`;
       isError = true;
     }
 
     if (validator.isEmpty(department)) {
-      errors.departmentError = 'Organization department is required';
+      errors.departmentError = `${intl.formatMessage({ id: 'business.dept' })}  ${intl.formatMessage({ id: 'isrequired' })}`;
       isError = true;
     }
 
     if (validator.isEmpty(serviceType)) {
-      errors.serviceTypeError = 'Organization service type is required';
+      errors.serviceTypeError = `${intl.formatMessage({ id: 'business.service' })}  ${intl.formatMessage({ id: 'isrequired' })}`;
       isError = true;
     }
 
     if (validator.isEmpty(description)) {
-      errors.descriptionError = 'Organization description is required';
+      errors.descriptionError = `${intl.formatMessage({ id: 'business.desc' })}  ${intl.formatMessage({ id: 'isrequired' })}`;
       isError = true;
     }
 
@@ -165,6 +165,7 @@ AboutInfo.propTypes = {
   department: PropTypes.string.isRequired,
   serviceType: PropTypes.string.isRequired,
   description: PropTypes.string.isRequired,
+  intl: intlShape.isRequired,
 };
 
-export default withStyles(styles)(AboutInfo);
+export default withStyles(styles)(injectIntl(AboutInfo, { withRef: true }));

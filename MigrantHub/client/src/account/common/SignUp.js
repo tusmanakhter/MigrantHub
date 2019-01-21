@@ -153,12 +153,7 @@ class SignUp extends Component {
   getStepContent = this.props.getStepContent
 
   handleNext = async () => {
-    let error = false;
-    if (this.child.current._wrappedInstance != null) {
-      error = await this.child.current._wrappedInstance.validate();
-    } else {
-      error = await this.child.current.validate();
-    }
+    const error = await this.child.current._wrappedInstance.validate();
     if (!error) {
       this.setState(state => ({
         activeStep: state.activeStep + 1,

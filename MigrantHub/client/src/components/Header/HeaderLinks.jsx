@@ -27,6 +27,7 @@ import TextField from '@material-ui/core/TextField';
 import Button from "components/CustomButtons/Button.jsx";
 import Logout from '../Logout';
 import { Link } from 'react-router-dom';
+import { injectIntl, intlShape } from 'react-intl';
 
 import headerLinksStyle from "assets/jss/material-dashboard-pro-react/components/headerLinksStyle";
 
@@ -106,7 +107,7 @@ class HeaderLinks extends React.Component {
   }
 
   render() {
-    const { classes, rtlActive } = this.props;
+    const { classes, rtlActive, intl } = this.props;
     const { open } = this.state;
     const searchButton =
       classes.top +
@@ -134,7 +135,7 @@ class HeaderLinks extends React.Component {
         <TextField
           id="search" 
           name="search"
-          placeholder="Search…"
+          placeholder={intl.formatMessage({ id: 'search' })}
           value={this.state.search}
           onChange={event => this.handleChange(event)}
           helperText={this.state.searchError}
@@ -281,7 +282,8 @@ class HeaderLinks extends React.Component {
 
 HeaderLinks.propTypes = {
   classes: PropTypes.object.isRequired,
-  rtlActive: PropTypes.bool
+  rtlActive: PropTypes.bool,
+  intl: intlShape.isRequired,
 };
 
-export default withStyles(headerLinksStyle)(HeaderLinks);
+export default withStyles(headerLinksStyle)(injectIntl(HeaderLinks));

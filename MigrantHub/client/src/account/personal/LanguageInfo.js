@@ -12,7 +12,7 @@ import { langObject } from 'lib/SignUpConstants';
 import Language from 'components/fields/language/Language';
 import WritingLevel from 'components/fields/language/WritingLevel';
 import SpeakingLevel from 'components/fields/language/SpeakingLevel';
-import { FormattedMessage } from 'react-intl';
+import { injectIntl, intlShape, FormattedMessage } from 'react-intl';
 
 const styles = theme => ({
   row: {
@@ -38,7 +38,7 @@ class LanguageInfo extends Component {
 
   validate = () => {
     const {
-      languages, motherTongue,
+      languages, motherTongue, intl,
     } = this.props;
     let isError = false;
     const errors = {
@@ -47,7 +47,7 @@ class LanguageInfo extends Component {
     };
 
     if ((motherTongue !== '' && motherTongue !== undefined) && !validator.isAlpha(motherTongue)) {
-      errors.motherTongueError = 'Mother tongue is not valid';
+      errors.motherTongueError = `${intl.formatMessage({ id: 'lang.lang' })}  ${intl.formatMessage({ id: 'notvalid' })}`;
       isError = true;
     }
 
@@ -56,19 +56,19 @@ class LanguageInfo extends Component {
         JSON.stringify(langObject),
       )]);
       if (validator.isEmpty(language.name)) {
-        errors.languagesError[index].name = 'Language name is required';
+        errors.languagesError[index].name = `${intl.formatMessage({ id: 'lang.name' })}  ${intl.formatMessage({ id: 'isrequired' })}`;
         isError = true;
       } else if (!validator.isAlpha(language.name)) {
-        errors.languagesError[index].name = 'Language name is not valid';
+        errors.languagesError[index].name = `${intl.formatMessage({ id: 'lange.name' })}  ${intl.formatMessage({ id: 'notvalid' })}`;
         isError = true;
       }
       if (validator.isEmpty(language.writingLevel)) {
-        errors.languagesError[index].writingLevel = 'Writing level is required';
+        errors.languagesError[index].writingLevel = `${intl.formatMessage({ id: 'lang.writing' })}  ${intl.formatMessage({ id: 'isrequired' })}`;
         isError = true;
       }
 
       if (validator.isEmpty(language.speakingLevel)) {
-        errors.languagesError[index].speakingLevel = 'Speaking level is required';
+        errors.languagesError[index].speakingLevel = `${intl.formatMessage({ id: 'lang.speaking' })}  ${intl.formatMessage({ id: 'isrequired' })}`;
         isError = true;
       }
     });
@@ -189,6 +189,7 @@ LanguageInfo.propTypes = {
   writingLevel: PropTypes.string.isRequired,
   speakingLevel: PropTypes.string.isRequired,
   motherTongue: PropTypes.string.isRequired,
+  intl: intlShape.isRequired,
 };
 
-export default withStyles(styles)(LanguageInfo);
+export default withStyles(styles)(injectIntl(LanguageInfo, { withRef: true }));

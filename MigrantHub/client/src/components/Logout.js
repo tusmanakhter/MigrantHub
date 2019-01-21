@@ -4,6 +4,7 @@ import { withRouter } from 'react-router-dom';
 import Button from '@material-ui/core/Button';
 import axios from 'axios';
 import Auth from 'routes/Auth';
+import { FormattedMessage } from 'react-intl';
 
 class Logout extends Component {
   logout = () => {
@@ -20,7 +21,7 @@ class Logout extends Component {
     return (
       <React.Fragment>
         <Button color="" onClick={this.logout}>
-          Logout
+          <FormattedMessage id="logout" />
         </Button>
       </React.Fragment>
     );

@@ -92,8 +92,8 @@ class EditBusiness extends Component {
   };
 
   validate = async () => {
-    const contactError = await this.contactChild.current.validate();
-    const aboutError = await this.aboutChild.current.validate();
+    const contactError = await this.contactChild.current._wrappedInstance.validate();
+    const aboutError = await this.aboutChild.current._wrappedInstance.validate();
 
     const errors = [contactError, aboutError];
     if (errors.indexOf(true) > -1) {

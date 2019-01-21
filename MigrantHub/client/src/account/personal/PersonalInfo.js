@@ -9,7 +9,7 @@ import Nationality from 'components/fields/personal/Nationality';
 import Gender from 'components/fields/personal/Gender';
 import Status from 'components/fields/personal/Status';
 import RelationshipStatus from 'components/fields/personal/RelationshipStatus';
-import { FormattedMessage } from 'react-intl';
+import { injectIntl, intlShape, FormattedMessage } from 'react-intl';
 
 const styles = ({});
 
@@ -24,7 +24,7 @@ class PersonalInfo extends Component {
 
   validate = () => {
     const {
-      age, gender, nationality, relationshipStatus, status,
+      age, gender, nationality, relationshipStatus, status, intl,
     } = this.props;
     let isError = false;
     const errors = {
@@ -36,33 +36,33 @@ class PersonalInfo extends Component {
     };
 
     if (validator.isEmpty(age)) {
-      errors.ageError = 'Age is required';
+      errors.ageError = `${intl.formatMessage({ id: 'personal.age' })}  ${intl.formatMessage({ id: 'isrequired' })}`;
       isError = true;
     } else if (!validator.isInt(age, { min: 1, max: 100 })) {
-      errors.ageError = 'Age is not valid';
+      errors.ageError = `${intl.formatMessage({ id: 'personal.age' })}  ${intl.formatMessage({ id: 'notvalid' })}`;
       isError = true;
     }
 
     if (validator.isEmpty(gender)) {
-      errors.genderError = 'Gender is required';
+      errors.genderError = `${intl.formatMessage({ id: 'personal.gender' })}  ${intl.formatMessage({ id: 'isrequired' })}`;
       isError = true;
     }
 
     if (validator.isEmpty(nationality)) {
-      errors.nationalityError = 'Nationality is required';
+      errors.nationalityError = `${intl.formatMessage({ id: 'personal.nationality' })}  ${intl.formatMessage({ id: 'isrequired' })}`;
       isError = true;
     } else if (!validator.isAlpha(nationality)) {
-      errors.nationalityError = 'This is not a valid nationality';
+      errors.nationalityError = `${intl.formatMessage({ id: 'personal.nationality' })}  ${intl.formatMessage({ id: 'notvalid' })}`;
       isError = true;
     }
 
     if (validator.isEmpty(relationshipStatus)) {
-      errors.relationshipStatusError = 'Relationship status is required';
+      errors.relationshipStatusError = `${intl.formatMessage({ id: 'personal.relationship' })}  ${intl.formatMessage({ id: 'isrequired' })}`;
       isError = true;
     }
 
     if (validator.isEmpty(status)) {
-      errors.statusError = 'Status is required';
+      errors.statusError = `${intl.formatMessage({ id: 'personal.status' })}  ${intl.formatMessage({ id: 'isrequired' })}`;
       isError = true;
     }
 
@@ -136,6 +136,7 @@ PersonalInfo.propTypes = {
   nationality: PropTypes.string.isRequired,
   relationshipStatus: PropTypes.string.isRequired,
   status: PropTypes.string.isRequired,
+  intl: intlShape.isRequired,
 };
 
-export default withStyles(styles)(PersonalInfo);
+export default withStyles(styles)(injectIntl(PersonalInfo, { withRef: true }));

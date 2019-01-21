@@ -8,7 +8,7 @@ import EducationLevel from 'components/fields/education/EducationLevel';
 import JobStatus from 'components/fields/employment/JobStatus';
 import SettlingLocation from 'components/fields/other/SettlingLocation';
 import JoiningReason from 'components/fields/other/JoiningReason';
-import { FormattedMessage } from 'react-intl';
+import { injectIntl, intlShape, FormattedMessage } from 'react-intl';
 
 const styles = ({});
 
@@ -22,7 +22,7 @@ class AdditionalInfo extends Component {
 
   validate = () => {
     const {
-      educationLevel, jobStatus, settlingLocation, joiningReason,
+      educationLevel, jobStatus, settlingLocation, joiningReason, intl,
     } = this.props;
     let isError = false;
     const errors = {
@@ -33,22 +33,22 @@ class AdditionalInfo extends Component {
     };
 
     if (validator.isEmpty(educationLevel)) {
-      errors.educationLevelError = 'Education level is required';
+      errors.educationLevelError = `${intl.formatMessage({ id: 'educ.level' })}  ${intl.formatMessage({ id: 'isrequired' })}`;
       isError = true;
     }
 
     if (validator.isEmpty(jobStatus)) {
-      errors.jobStatusError = 'Job status is required';
+      errors.jobStatusError = `${intl.formatMessage({ id: 'employment.status' })}  ${intl.formatMessage({ id: 'isrequired' })}`;
       isError = true;
     }
 
     if (validator.isEmpty(settlingLocation)) {
-      errors.settlingLocationError = 'Settling location is required';
+      errors.settlingLocationError = `${intl.formatMessage({ id: 'other.location' })}  ${intl.formatMessage({ id: 'isrequired' })}`;
       isError = true;
     }
 
     if (validator.isEmpty(joiningReason)) {
-      errors.joiningReasonError = 'Joining reason is required';
+      errors.joiningReasonError = `${intl.formatMessage({ id: 'other.reason' })}  ${intl.formatMessage({ id: 'isrequired' })}`;
       isError = true;
     }
 
@@ -116,6 +116,7 @@ AdditionalInfo.propTypes = {
   jobStatus: PropTypes.string.isRequired,
   settlingLocation: PropTypes.string.isRequired,
   joiningReason: PropTypes.string.isRequired,
+  intl: intlShape.isRequired,
 };
 
-export default withStyles(styles)(AdditionalInfo);
+export default withStyles(styles)(injectIntl(AdditionalInfo, { withRef: true }));

@@ -29,7 +29,7 @@ const LanguageSwitch = (props) => {
           {locale === 'en'
           && (
             <Button className={button} onClick={switchToFrench}>
-              French
+              Français
             </Button>
           )
           }

@@ -14,7 +14,7 @@ import Age from 'components/fields/personal/Age';
 import RelationshipStatus from 'components/fields/personal/RelationshipStatus';
 import Relation from 'components/fields/family/Relation';
 import Gender from 'components/fields/personal/Gender';
-import { FormattedMessage } from 'react-intl';
+import { injectIntl, intlShape, FormattedMessage } from 'react-intl';
 
 const styles = theme => ({
   row: {
@@ -54,7 +54,7 @@ class FamilyInfo extends Component {
   }
 
   validate = () => {
-    const { family } = this.props;
+    const { family, intl } = this.props;
     let isError = false;
     const errors = {
       familyError: [],
@@ -64,22 +64,22 @@ class FamilyInfo extends Component {
       errors.familyError = errors.familyError.concat([JSON.parse(JSON.stringify(familyObject))]);
 
       if (validator.isEmpty(member.age)) {
-        errors.familyError[index].age = 'Age is required';
+        errors.familyError[index].age = `${intl.formatMessage({ id: 'personal.age' })}  ${intl.formatMessage({ id: 'isrequired' })}`;
         isError = true;
       }
 
       if (validator.isEmpty(member.gender)) {
-        errors.familyError[index].gender = 'Gender is required';
+        errors.familyError[index].gender = `${intl.formatMessage({ id: 'personal.gender' })}  ${intl.formatMessage({ id: 'isrequired' })}`;
         isError = true;
       }
 
       if (validator.isEmpty(member.relationshipStatus)) {
-        errors.familyError[index].relationshipStatus = 'Relationship status is required';
+        errors.familyError[index].relationshipStatus = `${intl.formatMessage({ id: 'personal.relationship' })}  ${intl.formatMessage({ id: 'isrequired' })}`;
         isError = true;
       }
 
       if (validator.isEmpty(member.relation)) {
-        errors.familyError[index].relation = 'Relation is required';
+        errors.familyError[index].relation = `${intl.formatMessage({ id: 'family.relation' })}  ${intl.formatMessage({ id: 'isrequired' })}`;
         isError = true;
       }
     });
@@ -184,6 +184,7 @@ FamilyInfo.propTypes = {
   handleRemoveObject: PropTypes.func.isRequired,
   handleEditObject: PropTypes.func.isRequired,
   family: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+  intl: intlShape.isRequired,
 };
 
-export default withStyles(styles)(FamilyInfo);
+export default withStyles(styles)(injectIntl(FamilyInfo, { withRef: true }));
