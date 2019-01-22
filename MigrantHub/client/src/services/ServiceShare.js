@@ -3,6 +3,7 @@ import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import 'App.css';
 import Header from 'components/Header/Header';
+import MainLayout from 'home/MainLayout';
 import GoogleMaps from 'components/GoogleMaps/GoogleMaps';
 import axios from 'axios';
 import qs from 'qs';
@@ -112,28 +113,21 @@ class ServiceShare extends Component {
     } = this.state;
 
     return (
-      <div>
-        <MuiThemeProvider theme={theme}>
-          <Header
-            appLogo={appLogo}
-            appName={appName}
-            userPic={userPic}
-          />
-
-        </MuiThemeProvider>
-        <Grid container spacing={24} style={gridStyle}>
+      <MainLayout>
+        <div>
+          <Grid container spacing={24} style={gridStyle}>
             <Grid item xs={12}>
-                <br></br>
-                <h4>{this.state.dataRetrieved}</h4>
+              <br></br>
+              <h4>{this.state.dataRetrieved}</h4>
             </Grid>
             <Grid item xs={12}>
-                <h2>{this.state.serviceTitle}</h2>
+              <h2>{this.state.serviceTitle}</h2>
             </Grid>
             <Grid item xs={12}>
-                <h3>{this.state.serviceSummary}</h3>
+              <h3>{this.state.serviceSummary}</h3>
             </Grid>
             <Grid item xs={12}>
-                <h4>{this.state.serviceDescription}</h4>
+              <h4>{this.state.serviceDescription}</h4>
             </Grid>
             {serviceHours !== undefined && (
               <Grid item xs={12}>
@@ -184,10 +178,11 @@ class ServiceShare extends Component {
               />
             )}
             <Grid item xs={12}>
-                Service Id : {serviceId}
+              Service Id : {serviceId}
             </Grid>
-        </Grid>
-      </div>
+          </Grid>
+        </div>
+      </MainLayout>
     );
   }
 }

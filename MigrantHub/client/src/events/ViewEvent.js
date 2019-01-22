@@ -11,7 +11,6 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 //import Button from '@material-ui/core/Button';
 import Button from "components/CustomButtons/Button.jsx";
 import Icon from "@material-ui/core/Icon";
-import IconButton from '@material-ui/core/IconButton';
 import blue from '@material-ui/core/colors/blue';
 import { Redirect } from 'react-router-dom';
 import axios from 'axios';
@@ -293,16 +292,25 @@ class ViewEvent extends Component {
                             )}
                           </p>
                           <hr />
-                          <p>Share Now!</p>
-                          <AddToCalendar event={this.state.event}
-                            buttonWrapperClass={renderProps => (
-                              <Button onClick={renderProps.onClick}
-                                justIcon
-                                color="transparent">
-                                <Icon className={classNames(classes.icon, "fab fa-google-plus")} />
-                              </Button>
-                            )}
-                          />
+                          <p>Share Now! <br />
+                            <Button
+                              justIcon
+                              color="transparent">
+                              <Icon className={classNames(classes.icon, "fab fa-facebook-square")} />
+                            </Button>
+                            <Button
+                              justIcon
+                              color="transparent">
+                              <Icon className={classNames(classes.icon, "fab fa-google-plus")} />
+                            </Button>
+                            <Button
+                              justIcon
+                              color="transparent">
+                              <Icon className={classNames(classes.icon, "fab fa-twitter-square")} />
+                            </Button>
+                          </p>
+
+                          <AddToCalendar event={this.state.event} />
                         </span>
                       )
                     },

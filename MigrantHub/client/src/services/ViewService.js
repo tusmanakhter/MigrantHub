@@ -15,6 +15,8 @@ import GoogleMaps from 'components/GoogleMaps/GoogleMaps';
 import UserTypes from 'lib/UserTypes';
 import SweetAlert from "react-bootstrap-sweetalert";
 import sweetAlertStyle from "assets/jss/material-dashboard-pro-react/views/sweetAlertStyle.jsx";
+import AddToCalendar from 'react-add-to-calendar';
+
 const styles = {
   avatar: {
     backgroundColor: blue[100],
@@ -32,6 +34,13 @@ class ViewService extends Component {
       type: '',
       alert: null,
       show: false,
+      event: {
+        title: this.props.serviceTitle,
+        description: this.props.serviceDescription,
+        location: 'Montreal, QC',
+        startTime: new Date().toLocaleString(),
+        endTime: new Date().toLocaleString(),
+      }
     };
     this.hideAlert = this.hideAlert.bind(this);
     this.successDelete = this.successDelete.bind(this);
@@ -160,7 +169,7 @@ class ViewService extends Component {
 
     return (
       <div>
-      {this.state.alert}
+        {this.state.alert}
         <Dialog
           open={open}
           onClose={onClose}
@@ -172,7 +181,7 @@ class ViewService extends Component {
           <DialogTitle id="scroll-dialog-title" variant="title" align="center">{serviceTitle}</DialogTitle>
           <DialogContent>
             <Typography variant="body1" color="inherit" paragraph align="center">
-                Service Category: {category}
+              Service Category: {category}
             </Typography>
             <Typography variant="body1" color="inherit" paragraph align="center">
               Service SubCategory: {subcategory}
@@ -183,7 +192,8 @@ class ViewService extends Component {
             <Typography variant="body1" color="inherit" paragraph align="center">
               {serviceDescription}
             </Typography>
-
+            <hr />
+            <AddToCalendar event={this.state.event} />
             {serviceDate !== undefined && (
               <Grid container spacing={12}>
                 <Typography variant="h5" color="inherit" paragraph>
@@ -275,7 +285,7 @@ class ViewService extends Component {
             )}
           </DialogContent>
           <DialogActions>
-            { type === UserTypes.ADMIN
+            {type === UserTypes.ADMIN
               && (
                 <Button onClick={this.warningWithConfirmAndCancelMessage.bind(this)} color="secondary">
                   Delete
