@@ -20,8 +20,8 @@ database.on('error', console.error.bind(console, 'MongoDB connection error: '));
 //Inputting all the Services Located in Montreal
 const servicesSchemaKeyList = ['category', 'subcategory', 'acronym', 'serviceTitle',
 'serviceDescription', 'address', 'apartment', 'city', 'province', 'postalCode',
-'metro', 'sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturyda',
-'openHours', 'phoneNumber', 'phoneNumber2', 'fax', 'wesbsite', 'email', 'notes'];
+'metro', 'sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday',
+'openHours', 'phoneNumber', 'phoneNumber2', 'fax', 'website', 'email', 'notes'];
 const date = new Date();
 const path = require("path");
 const lineList = fs.readFileSync(path.resolve(__dirname, "../db/MtlOrgsCvsHours.csv")).toString().split('\n');
