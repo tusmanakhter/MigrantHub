@@ -10,6 +10,8 @@ import { NavLink } from "react-router-dom";
 import cx from "classnames";
 
 // @material-ui/core components
+
+import { TextField } from '@material-ui/core';
 import withStyles from "@material-ui/core/styles/withStyles";
 import Drawer from "@material-ui/core/Drawer";
 import List from "@material-ui/core/List";
@@ -22,7 +24,14 @@ import Icon from "@material-ui/core/Icon";
 import PermIdentity from '@material-ui/icons/PermIdentity';
 import ViewList from '@material-ui/icons/ViewList';
 import Event from '@material-ui/icons/Event';
-import Logout from 'components/Logout';
+import Chatbot from 'components/Sidebar/Chatbot/Chatbot.jsx';
+
+// core components
+import GridItem from "components/Grid/GridItem.jsx";
+import Card from "components/Card/Card.jsx";
+import CardHeader from "components/Card/CardHeader.jsx";
+import CardBody from "components/Card/CardBody.jsx";
+
 
 // core components
 import HeaderLinks from "components/Header/HeaderLinks.jsx";
@@ -58,6 +67,7 @@ class SidebarWrapper extends React.Component {
         {user}
         {headerLinks}
         {links}
+        <Chatbot />
       </div>
     );
   }
