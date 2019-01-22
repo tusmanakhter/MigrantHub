@@ -5,7 +5,9 @@ const fs = require('fs');
 const Service = require('../models/Service');
 
 //MongoDB-Mongoose Connection
-const connectionString = '127.0.0.1:27017/migranthub';
+const { db: { host, port, name } } = dbConfig;
+const connectionString = `mongodb://${host}:${port}/${name}`;
+
 mongoose.Promise = global.Promise;
 mongoose.connect(connectionString, (error) => {
   if (error) {
@@ -20,8 +22,8 @@ database.on('error', console.error.bind(console, 'MongoDB connection error: '));
 //Inputting all the Services Located in Montreal
 const servicesSchemaKeyList = ['category', 'subcategory', 'acronym', 'serviceTitle',
 'serviceDescription', 'address', 'apartment', 'city', 'province', 'postalCode',
-'metro', 'sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturyda',
-'openHours', 'phoneNumber', 'phoneNumber2', 'fax', 'wesbsite', 'email', 'notes'];
+'metro', 'sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday',
+'openHours', 'phoneNumber', 'phoneNumber2', 'fax', 'website', 'email', 'notes'];
 const date = new Date();
 const path = require("path");
 const lineList = fs.readFileSync(path.resolve(__dirname, "../db/MtlOrgsCvsHours.csv")).toString().split('\n');
@@ -54,6 +56,7 @@ function createDocRecurse(err) {
     };
 
     line.split(';').forEach((entry, i) => {
+      console.log(entry);
       doc.user = 'Admin';
       doc[servicesSchemaKeyList[i]] = entry;
       doc.dateCreated = date;
