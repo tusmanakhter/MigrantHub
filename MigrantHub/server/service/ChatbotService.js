@@ -1,14 +1,11 @@
 const dialogflow = require('dialogflow');
-const uuid = require('uuid');
 
 module.exports = {
 
   // Send a query to the dialogflow agent, and return the query result.
-  async callChatbot(requestString) {
+  async callChatbot(userId, requestString) {
     const projectId = 'migranthub';
-
-    // Create unique identifier for session
-    const sessionId = uuid.v4();
+    const sessionId = userId; 
 
     // Create session
     const sessionClient = new dialogflow.SessionsClient();

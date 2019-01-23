@@ -83,6 +83,7 @@ class Chatbot extends Component {
                 id="username"
                 name="username"
                 label="Try me!"
+                placeholder="Type 'Help' for help"
                 value={this.state.userMessage}
                 onChange={event => this.handleChange(event)}
                 onKeyDown={event => this.keyPress(event)}

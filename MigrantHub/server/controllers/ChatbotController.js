@@ -1,7 +1,7 @@
 const ChatbotService = require('../service/ChatbotService');
 
 module.exports = {
-  async callChatbot(requestString) {
-    return ChatbotService.callChatbot(requestString);
+  async callChatbot(userId, requestString) {
+    return ChatbotService.callChatbot(userId, requestString);
   },
 };
