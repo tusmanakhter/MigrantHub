@@ -1,4 +1,5 @@
 const dialogflow = require('dialogflow');
+const ChatbotRepository = require('../repository/ChatbotRepository');
 
 module.exports = {
 
@@ -8,34 +9,19 @@ module.exports = {
     const sessionId = userId; 
 
     const privateKey = process.env.DIALOGFLOW_PRIVATE_KEY;
-		const clientEmail = process.env.DIALOGFLOW_CLIENT_EMAIL;
-		const config = {
-			credentials: {
-				private_key: privateKey,
-				client_email: clientEmail
-			}
-		}
-    
-    // Create session
-		const sessionClient = new dialogflow.SessionsClient(config)
-    const sessionPath = sessionClient.sessionPath(projectId, sessionId);
+    const clientEmail = process.env.DIALOGFLOW_CLIENT_EMAIL;
 
-    const request = {
-      session: sessionPath,
-      queryInput: {
-        text: {
-          // The query to send to the dialogflow agent
-          text: requestString,
-          // The language used by the client (en-US)
-          languageCode: 'en-US',
-        },
+    const config = {
+      credentials: {
+        private_key: privateKey,
+        client_email: clientEmail,
       },
     };
 
-    // Send request and log result
-    const responses = await sessionClient.detectIntent(request);
-    const result = responses[0].queryResult;
+    // Create session
+    const sessionClient = new dialogflow.SessionsClient(config);
+    const sessionPath = sessionClient.sessionPath(projectId, sessionId);
 
-    return result.fulfillmentText;
+    return ChatbotRepository.getChatbotResponse(sessionPath, sessionClient, requestString);
   },
 };
