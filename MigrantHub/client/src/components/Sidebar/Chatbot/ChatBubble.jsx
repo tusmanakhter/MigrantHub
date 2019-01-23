@@ -7,7 +7,7 @@ Code slightly modified to work with the rest of the Chatbot
 
 import React, { Component } from 'react';
 import PropTypes from 'prop-types'
-import './ChatBubble.css';
+import '../../../assets/css/ChatBubble.css';
 
 class ChatBubble extends Component {
   state = {
@@ -29,7 +29,7 @@ class ChatBubble extends Component {
       }
       return (
               <div className={`bubble-container ${bubbleDirection}`} key={index}>
-                <img className={`img-circle`} src={message.image} />
+                {/* <img className={`img-circle`} src={message.image} /> */}
                 <div className={`bubble ${bubbleClass}`}>{message.text}</div>
               </div>
           );
