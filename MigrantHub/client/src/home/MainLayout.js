@@ -1,12 +1,6 @@
 import React from "react";
 import cx from "classnames";
 import PropTypes from "prop-types";
-import { Switch, Route, Redirect } from "react-router-dom";
-import Grid from '@material-ui/core/Grid';
-import ServiceCategory from 'services/ServiceCategory';
-import SearchBar from 'components/SearchBar';
-import FriendPanel from 'components/FriendPanel/FriendPanel';
-import Logout from 'components/Logout';
 import dashboardRoutes from "routes/dashboard.jsx";
 
 // creates a beautiful scrollbar
@@ -21,13 +15,10 @@ import Header from "components/Header/Header.jsx";
 import Footer from "components/Footer/Footer.jsx";
 import Sidebar from "components/Sidebar/Sidebar.jsx";
 
-//import dashboardRoutes from "routes/dashboard.jsx";
-
 import appStyle from "assets/jss/material-dashboard-pro-react/layouts/dashboardStyle.jsx";
 
 import image from "assets/img/sidebar-2.jpg";
 import logo from "assets/img/logo-white.svg";
-import ServiceList from "../services/ServiceList";
 
 // const switchRoutes = (
 //   <Switch>

@@ -1,46 +1,25 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import withStyles from '@material-ui/core/styles/withStyles';
-import axios from 'axios';
-import refugiecenterlogo from 'assets/img/card-1.jpeg'
-import Folder from "@material-ui/icons/Folder";
-import Pages from "@material-ui/icons/Pages";
 import Tooltip from "@material-ui/core/Tooltip";
-import CardMedia from '@material-ui/core/CardMedia';
 import Place from "@material-ui/icons/Place";
 import ArtTrack from "@material-ui/icons/ArtTrack";
 import RateReview from "@material-ui/icons/RateReview";
 import Share from "@material-ui/icons/Share";
 import GridItem from "components/Grid/GridItem.jsx";
-import GridContainer from "components/Grid/GridContainer.jsx";
 import Card from "components/Card/Card.jsx";
 import CardHeader from "components/Card/CardHeader.jsx";
 import Button from 'components/CustomButtons/Button';
-import CardIcon from "components/Card/CardIcon.jsx";
 import CardBody from "components/Card/CardBody.jsx";
 import CardFooter from "components/Card/CardFooter.jsx";
 import dashboardStyle from "assets/jss/material-dashboard-pro-react/views/dashboardStyle.jsx";
-import ServiceCategories from "./ServiceCategories";
-import ServiceList from "./ServiceList";
-
+import ServiceCategories from "./ServiceCategoryMenu1";
 import priceImage1 from "assets/img/card-2.jpeg";
-
+import ArrowDown from "@material-ui/icons/ArrowDropDown";
+import ArrowUp from "@material-ui/icons/ArrowDropUp";
 
 const styles = theme => ({
   ...dashboardStyle,
-  card: {
-    maxWidth: 100,
-    padding: 20,
-  },
-  media: {
-    paddingTop: '0%', // 16:9,
-    maxWidth: 200,
-  },
-  root: {
-    ...theme.mixins.gutters(),
-    paddingTop: theme.spacing.unit * 2,
-    paddingBottom: theme.spacing.unit * 2,
-  },
 });
 
 class ServiceCategory extends Component {
@@ -49,78 +28,40 @@ class ServiceCategory extends Component {
     this.state = {
       items: [],
       redirectToServiceForm: false,
-      editMode: '',
-      editOwner: '',
-      searchMode: false,
+      viewCategories: false,
     };
-
-    this.getData = this.getData.bind(this);
-    this.getUser = this.getUser.bind(this);
   }
 
-  componentDidMount(props) {
-    this.getData(this, props);
-    this.getUser();
-  }
-
-  componentWillReceiveProps(props) {
-    this.getData(this, props);
-    this.getUser();
-  }
-
-  getData(event, props = this.props) {
-    const { location } = props;
-    const { searchMode } = this.state;
-    let editOwnerEmail = '';
-    let searchQuery = '';
-
-    if (location.state) {
-      if (location.state.editMode) {
-        this.setState({
-          editMode: location.state.editMode,
-          editOwner: location.state.editOwner,
-        });
-
-        editOwnerEmail = location.state.editOwner;
-      } else if (location.state.searchMode) {
-        this.setState({
-          searchMode: searchMode,
-        });
-        searchQuery = location.state.searchQuery;
-      }
-    }
-    axios.get('/api/services/', {
-      params: {
-        editOwner: editOwnerEmail,
-        searchQuery: searchQuery,
-        search: searchMode,
-      },
-    }).then((response) => {
-      this.setState({
-        items: response.data,
-      });
-    });
-  }
-
-  getUser() {
-    const user = JSON.parse(localStorage.getItem('user'));
-    this.setState({
-      type: user.type,
-    });
-  }
-
-  setRedirectToServiceForm = () => {
-    this.setState({
-      redirectToServiceForm: true,
-    });
+  handleViewCategories = () => {
+      this.setState(prevState => ({
+          viewCategories: !prevState.viewCategories,
+      }));
   }
 
   render() {
     const { classes } = this.props;
-    const { items, editMode, editOwner, type } = this.state;
+    const { viewCategories } = this.state;
+
     return (
       <div>
-        <ServiceCategories classes={this.props.classes}/>
+        <div className={classes.categoryButton}>
+          <Button
+              variant="fab"
+              mini
+              color="primary"
+              aria-label="Add Service date"
+              size="large"
+              justifyContent='center'
+              onClick={event => this.handleViewCategories()}
+              className={classes.button}
+          >
+              {viewCategories ? <ArrowUp /> : <ArrowDown />}
+          </Button>
+            {viewCategories ? <p>Hide Categories</p> : <p>View Categories</p>}
+        </div>
+          {viewCategories ?
+              <ServiceCategories classes={this.props.classes}/>
+              : "" }
         {/* <ServiceList classes={this.props.classes} location={this.props.location}/> */}
         <Card style={{ padding: '20px' }}>
           <CardHeader>

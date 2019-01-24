@@ -30,7 +30,11 @@ module.exports = {
       const regex = new RegExp(tempSearchQuery.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&'), 'gi');
       query = { $or: [{ serviceTitle: regex }, { serviceSummary: regex }] };
     } else if (category !== '') {
-      query = { category, subcategory };
+      if (subcategory === '') {
+        query = { category };
+      } else {
+        query = { category, subcategory };
+      }
     }
 
     query.deleted = false;

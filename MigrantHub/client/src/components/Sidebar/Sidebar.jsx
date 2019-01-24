@@ -22,14 +22,15 @@ import Icon from "@material-ui/core/Icon";
 import PermIdentity from '@material-ui/icons/PermIdentity';
 import ViewList from '@material-ui/icons/ViewList';
 import Event from '@material-ui/icons/Event';
-import Logout from 'components/Logout';
-
 // core components
 import HeaderLinks from "components/Header/HeaderLinks.jsx";
 
 import sidebarStyle from "assets/jss/material-dashboard-pro-react/components/sidebarStyle.jsx";
 
 import avatar from "assets/img/faces/avatar.jpg";
+
+import Menu, {SubMenu } from 'rc-menu';
+import 'rc-menu/assets/index.css';
 
 var ps;
 
@@ -62,6 +63,19 @@ class SidebarWrapper extends React.Component {
     );
   }
 }
+
+const menuStyle = {
+    width: 300,
+    height: 500,
+    overflow: 'auto',
+    position: 'absolute',
+    zIndex: 1000,
+    background: 'white'
+};
+
+const optionList = {
+    position: 'relative',
+};
 
 class Sidebar extends React.Component {
   constructor(props) {
@@ -414,11 +428,26 @@ class Sidebar extends React.Component {
                       <prop.icon />
                     )}
                 </ListItemIcon>
-                <ListItemText
-                  primary={prop.name}
-                  disableTypography={true}
-                  className={itemText}
-                />
+                    {prop.option?
+                        <div style={optionList}>
+                          <Menu>
+                            <SubMenu
+                                title={<ListItemText
+                                    primary={prop.name}
+                                    disableTypography={true}
+                                    className={itemText}/>}
+                            >
+                              <Menu style={menuStyle}>
+                              <prop.option />
+                              </Menu>
+                            </SubMenu>
+                          </Menu>
+                        </div>
+                        :<ListItemText
+                            primary={prop.name}
+                            disableTypography={true}
+                            className={itemText}
+                        />}
               </NavLink>
             </ListItem>
           );
