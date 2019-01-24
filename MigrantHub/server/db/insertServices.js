@@ -5,7 +5,9 @@ const fs = require('fs');
 const Service = require('../models/Service');
 
 //MongoDB-Mongoose Connection
-const connectionString = '127.0.0.1:27017/migranthub';
+const { db: { host, port, name } } = dbConfig;
+const connectionString = `mongodb://${host}:${port}/${name}`;
+
 mongoose.Promise = global.Promise;
 mongoose.connect(connectionString, (error) => {
   if (error) {
@@ -54,6 +56,7 @@ function createDocRecurse(err) {
     };
 
     line.split(';').forEach((entry, i) => {
+      console.log(entry);
       doc.user = 'Admin';
       doc[servicesSchemaKeyList[i]] = entry;
       doc.dateCreated = date;
