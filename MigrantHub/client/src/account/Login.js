@@ -29,6 +29,8 @@ import axios from 'axios';
 import Auth from 'routes/Auth';
 import UserTypes from 'lib/UserTypes';
 import { TextField } from '@material-ui/core';
+import { FormattedMessage } from 'react-intl';
+
 const qs = require('qs');
 
 
@@ -184,8 +186,14 @@ class Login extends React.Component {
                           className={`${classes.cardHeader} ${classes.textCenter}`}
                           color="warning"
                         >
-                          <h4 className={classes.cardTitle}>Log in</h4>
-                          <h7 className={classes.cardTitle}><b>Sign in using facebook or google!</b></h7>
+                          <h4 className={classes.cardTitle}>
+                            <FormattedMessage id="login" />
+                          </h4>
+                          <h6 className={classes.cardTitle}>
+                            <b>
+                              <FormattedMessage id="login.social" />
+                            </b>
+                          </h6>
                           <div className={classes.socialLine}>
                             <FacebookLogin
                               appId={process.env.REACT_APP_FACEBOOK_APP_ID}
@@ -215,11 +223,15 @@ class Login extends React.Component {
                             />
                           </div>
                         </CardHeader>
-                        <h7><font color="gray"><br />Already have an account with us?</font></h7>
+                        <h6>
+                          <font color="gray"><br />
+                            <FormattedMessage id="login.already" />
+                          </font>
+                        </h6>
                         <TextField
                           id="username"
                           name="username"
-                          label="Email"
+                          label={<FormattedMessage id="email" />}
                           value={username}
                           onChange={event => this.handleChange(event)}
                           fullWidth
@@ -228,7 +240,7 @@ class Login extends React.Component {
                           id="password"
                           name="password"
                           type="password"
-                          label="Password"
+                          label={<FormattedMessage id="password" />}
                           value={password}
                           onChange={event => this.handleChange(event)}
                           fullWidth
@@ -239,11 +251,14 @@ class Login extends React.Component {
                           fullWidth
                           variant="contained"
                           onClick={this.handleSubmit}
-                          className={classes.submit}>
-                          Sign in
+                          className={classes.submit}
+                        >
+                          <FormattedMessage id="login" />
                         </Button>
                       </CardFooter>
-                      <Button variant="outlined" className={classes.button}>Forgot Password?</Button>
+                      <Button variant="outlined" className={classes.button}>
+                        <FormattedMessage id="login.forgot" />
+                      </Button>
                     </Card>
                   </form>
                 </GridItem>

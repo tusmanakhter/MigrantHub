@@ -14,6 +14,7 @@ import Age from 'components/fields/personal/Age';
 import RelationshipStatus from 'components/fields/personal/RelationshipStatus';
 import Relation from 'components/fields/family/Relation';
 import Gender from 'components/fields/personal/Gender';
+import { injectIntl, intlShape, FormattedMessage } from 'react-intl';
 
 const styles = theme => ({
   row: {
@@ -53,7 +54,7 @@ class FamilyInfo extends Component {
   }
 
   validate = () => {
-    const { family } = this.props;
+    const { family, intl } = this.props;
     let isError = false;
     const errors = {
       familyError: [],
@@ -63,22 +64,22 @@ class FamilyInfo extends Component {
       errors.familyError = errors.familyError.concat([JSON.parse(JSON.stringify(familyObject))]);
 
       if (validator.isEmpty(member.age)) {
-        errors.familyError[index].age = 'Age is required';
+        errors.familyError[index].age = `${intl.formatMessage({ id: 'personal.age' })}  ${intl.formatMessage({ id: 'isrequired' })}`;
         isError = true;
       }
 
       if (validator.isEmpty(member.gender)) {
-        errors.familyError[index].gender = 'Gender is required';
+        errors.familyError[index].gender = `${intl.formatMessage({ id: 'personal.gender' })}  ${intl.formatMessage({ id: 'isrequired' })}`;
         isError = true;
       }
 
       if (validator.isEmpty(member.relationshipStatus)) {
-        errors.familyError[index].relationshipStatus = 'Relationship status is required';
+        errors.familyError[index].relationshipStatus = `${intl.formatMessage({ id: 'personal.relationship' })}  ${intl.formatMessage({ id: 'isrequired' })}`;
         isError = true;
       }
 
       if (validator.isEmpty(member.relation)) {
-        errors.familyError[index].relation = 'Relation is required';
+        errors.familyError[index].relation = `${intl.formatMessage({ id: 'family.relation' })}  ${intl.formatMessage({ id: 'isrequired' })}`;
         isError = true;
       }
     });
@@ -98,10 +99,14 @@ class FamilyInfo extends Component {
 
     return (
       <React.Fragment>
-        <Typography variant="title" gutterBottom> Family Information </Typography>
+        <Typography variant="title" gutterBottom>
+          <FormattedMessage id="signup.familyinfo" />
+        </Typography>
         <Grid container spacing={24}>
           <Grid item xs={12}>
-            <Typography variant="subheading" gutterBottom className={classes.row}> Add family member </Typography>
+            <Typography variant="subheading" gutterBottom className={classes.row}>
+              <FormattedMessage id="signup.family.addfam" />
+            </Typography>
             <Button
               variant="fab"
               mini
@@ -117,7 +122,7 @@ class FamilyInfo extends Component {
             <React.Fragment key={index}>
               <Paper className={classes.paper}>
                 <Typography variant="subheading" align="left" gutterBottom>
-                          Member
+                  <FormattedMessage id="signup.family.member" />
                   {' '}
                   {index + 1}
                 </Typography>
@@ -179,6 +184,7 @@ FamilyInfo.propTypes = {
   handleRemoveObject: PropTypes.func.isRequired,
   handleEditObject: PropTypes.func.isRequired,
   family: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+  intl: intlShape.isRequired,
 };
 
-export default withStyles(styles)(FamilyInfo);
+export default withStyles(styles)(injectIntl(FamilyInfo, { withRef: true }));

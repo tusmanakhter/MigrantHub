@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { languageLevels } from 'lib/SignUpConstants';
 import Dropdown from 'components/fields/generic/Dropdown';
+import { FormattedMessage } from 'react-intl';
 
 const SpeakingLevel = (props) => {
   const {
@@ -10,7 +11,7 @@ const SpeakingLevel = (props) => {
   return (
     <Dropdown
       name="speakingLevel"
-      label="Speaking Level"
+      label={<FormattedMessage id="lang.speaking" />}
       value={speakingLevel}
       error={speakingLevelError}
       options={languageLevels}

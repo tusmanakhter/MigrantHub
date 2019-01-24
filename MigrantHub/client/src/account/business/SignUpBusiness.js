@@ -7,6 +7,7 @@ import AccountInfo from 'account/common/AccountInfo';
 import ContactInfo from 'account/common/ContactInfo';
 import AboutInfo from 'account/business/AboutInfo';
 import IdInfo from 'account/business/IdInfo';
+import { FormattedMessage } from 'react-intl';
 
 const qs = require('qs');
 
@@ -106,7 +107,12 @@ class SignUpBusiness extends Component {
   }
 
   render() {
-    const steps = ['Account', 'ID', 'Contact', 'About'];
+    const steps = [
+      <FormattedMessage id="signup.account" />,
+      'ID',
+      'Contact',
+      <FormattedMessage id="signup.about" />,
+    ];
 
     return (
       <React.Fragment>

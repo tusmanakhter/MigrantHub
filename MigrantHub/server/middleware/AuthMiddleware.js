@@ -9,7 +9,7 @@ module.exports = {
       return next();
     }
     logger.error(formatMessage(req.ip, req.method, req.originalUrl, req.httpVersion,
-      '403', req.referer, 'AccountController.ensureOwner', 'Unauthorized user(user not logged in'));
+      '403', req.referer, 'AccountController.ensureUser', 'Unauthorized user(user not logged in'));
     return res.status(403).send('You are not authorized for this');
   },
 

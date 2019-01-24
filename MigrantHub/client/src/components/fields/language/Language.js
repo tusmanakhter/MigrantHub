@@ -5,6 +5,7 @@ import {
   renderSuggestion, getSuggestionValue,
 } from 'helpers/AutoSuggestLang';
 import AutosuggestTextbox from 'components/fields/generic/AutosuggestTextbox';
+import { FormattedMessage } from 'react-intl';
 
 const Language = (props) => {
   const {
@@ -13,7 +14,7 @@ const Language = (props) => {
 
   return (
     <AutosuggestTextbox
-      label="Language"
+      label={<FormattedMessage id="lang.lang" />}
       value={language}
       error={languageError}
       handleAutoSuggestChange={handleAutoSuggestChange}

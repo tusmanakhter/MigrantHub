@@ -6,7 +6,7 @@ import cx from "classnames";
 import withStyles from "@material-ui/core/styles/withStyles";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
-
+import LanguageSwitch from 'components/LanguageSwitch'
 import footerStyle from "assets/jss/material-dashboard-pro-react/components/footerStyle";
 
 function Footer({ ...props }) {
@@ -39,6 +39,9 @@ function Footer({ ...props }) {
               <a href="#company" className={block}>
                 {rtlActive ? "شركة" : "Company"}
               </a>
+            </ListItem>
+            <ListItem className={classes.inlineBlock}>
+              <LanguageSwitch />
             </ListItem>
           </List>
         </div>
