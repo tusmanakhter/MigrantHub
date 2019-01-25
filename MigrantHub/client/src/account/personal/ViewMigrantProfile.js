@@ -156,11 +156,11 @@ class ViewMigrantProfile extends Component {
       lookingForJob, currentIncome, workExperience, settlingLocation, settlingDuration,
       joiningReason,
     } = this.state;
-    const { classes } = this.props;
+    const { classes, location, history } = this.props;
 
     return (
       <React.Fragment>
-        <MainLayout>
+        <MainLayout location={location} history={history}>
           <div className={classes.root}>
             <Grid
               container spacing={6}
@@ -648,6 +648,8 @@ class ViewMigrantProfile extends Component {
 
 ViewMigrantProfile.propTypes = {
   classes: PropTypes.shape({}).isRequired,
+  location: PropTypes.shape({}).isRequired,
+  history: PropTypes.shape({}).isRequired,
 };
 
 export default withStyles(styles)(ViewMigrantProfile);

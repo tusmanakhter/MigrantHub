@@ -126,11 +126,11 @@ class ServiceList extends Component {
   }
 
   render() {
-    const { classes, ...rest } = this.props;
+    const { classes, location, history } = this.props;
     const { items, editMode, editOwner, type } = this.state;
     return (
       <React.Fragment>
-        <MainLayout>
+        <MainLayout location={location} history={history}>
           <div className={classes.mainContainer}>
             {type !== UserTypes.ADMIN
               && (
@@ -145,15 +145,15 @@ class ServiceList extends Component {
                   >
                     Create Service
                   </Button>
-                  { type === UserTypes.MIGRANT
+                  {type === UserTypes.MIGRANT
                     && (
-                    <Button
-                      variant="contained"
-                      color="primary"
-                      className={classes.button}
-                      onClick={this.setRedirectToSuggestionForm}
-                    >
-                      Add Suggestion
+                      <Button
+                        variant="contained"
+                        color="primary"
+                        className={classes.button}
+                        onClick={this.setRedirectToSuggestionForm}
+                      >
+                        Add Suggestion
                     </Button>
                     )
                   }
@@ -195,6 +195,7 @@ class ServiceList extends Component {
 ServiceList.propTypes = {
   classes: PropTypes.shape({}).isRequired,
   location: PropTypes.shape({}).isRequired,
+  history: PropTypes.shape({}).isRequired,
 };
 
 export default withStyles(styles)(ServiceList);

@@ -263,11 +263,11 @@ class EditMigrant extends Component {
       lookingForJob, currentIncome, workExperience, settlingLocation, settlingDuration,
       joiningReason,
     } = this.state;
-    const { classes } = this.props;
+    const { classes, location, history } = this.props;
 
     return (
       <React.Fragment>
-        <MainLayout>
+        <MainLayout location={location} history={history}>
           <div className={classes.mainContainer}>
             <ContactInfo
               innerRef={this.contactChild}
@@ -354,6 +354,8 @@ class EditMigrant extends Component {
 
 EditMigrant.propTypes = {
   classes: PropTypes.shape({}).isRequired,
+  location: PropTypes.shape({}).isRequired,
+  history: PropTypes.shape({}).isRequired,
 };
 
 export default withStyles(styles)(EditMigrant);

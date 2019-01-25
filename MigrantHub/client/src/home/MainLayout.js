@@ -29,22 +29,6 @@ import image from "assets/img/sidebar-2.jpg";
 import logo from "assets/img/logo-white.svg";
 import ServiceList from "../services/ServiceList";
 
-// const switchRoutes = (
-//   <Switch>
-//     {dashboardRoutes.map((prop, key) => {
-//       if (prop.redirect)
-//         return <Redirect from={prop.path} to={prop.pathTo} key={key} />;
-//       if (prop.collapse)
-//         return prop.views.map((prop, key) => {
-//           return (
-//             <Route path={prop.path} component={prop.component} key={key} />
-//           );
-//         });
-//       return <Route path={prop.path} component={prop.component} key={key} />;
-//     })}
-//   </Switch>
-// );
-
 var ps;
 
 class MainLayout extends React.Component {
@@ -76,9 +60,11 @@ class MainLayout extends React.Component {
     window.removeEventListener("resize", this.resizeFunction);
   }
   componentDidUpdate(e) {
-    this.refs.mainPanel.scrollTop = 0;
-    if (this.state.mobileOpen) {
-      this.setState({ mobileOpen: false });
+    if (e.history.location.pathname !== e.location.pathname) {
+      this.refs.mainPanel.scrollTop = 0;
+      if (this.state.mobileOpen) {
+        this.setState({ mobileOpen: false });
+      }
     }
   }
   handleDrawerToggle = () => {
@@ -133,23 +119,8 @@ class MainLayout extends React.Component {
               handleDrawerToggle={this.handleDrawerToggle}
               {...rest}
             />
-
             <div className={classes.content}>
-              {/* MAIN PAGE CONTENT */}
               {children}
-              {/* <Grid item lg={12}>
-                <div className="Main-feed">
-                  <div className="">{SearchBarVisibility && <SearchBar />}</div>
-                </div>
-              </Grid>
-              <Grid item lg={12}>
-                <div className="Main-feed">
-                  <div className="">{serviceCategoryVisibility && <ServiceCategory location={this.props.location} />}</div>
-                </div>
-              </Grid>
-              <Grid item lg={12}>
-                <div className="Panel">{friendPanelVisibility && <FriendPanel />}</div>
-              </Grid> */}
             </div>
             <Footer fluid />
           </div>

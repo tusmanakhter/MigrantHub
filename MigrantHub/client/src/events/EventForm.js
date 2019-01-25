@@ -14,6 +14,7 @@ import Header from 'components/Header/Header';
 import { provinces } from 'lib/SignUpConstants';
 import { PhoneMask, PostalCodeMask } from 'lib/Masks';
 import NavPanel from 'components/NavPanel/NavPanel';
+import MainLayout from 'home/MainLayout';
 
 const qs = require('qs');
 
@@ -482,9 +483,9 @@ class EventForm extends Component {
         });
       }
     }).catch((error) => {
-        this.setState({
-            messageFromServer: error.response.data,
-        });
+      this.setState({
+        messageFromServer: error.response.data,
+      });
     });
   }
 
@@ -568,304 +569,305 @@ class EventForm extends Component {
       phoneNumberError, dateStartError, dateEndError, timeStartError, timeEndError,
       tempEventImagePath, eventImageError, messageFromServer, editMode, setDefaultImage,
     } = this.state;
-    const { classes } = this.props;
+    const { classes, history } = this.props;
     return (
       <React.Fragment>
-        <div className={classes.mainContainer}>
-          <NavPanel />
-          <Header />
-          {messageFromServer.split('\n').map((item, key) => (
-            <span key={key}>
-              {item}
-              <br />
-            </span>
-          ))}
-          {this.renderRedirectToAllEvents()}
-          <Typography variant="title" gutterBottom>
-                Create Event Form
+        <MainLayout location={location} history={history}>
+          <div className={classes.mainContainer}>
+            {messageFromServer.split('\n').map((item, key) => (
+              <span key={key}>
+                {item}
+                <br />
+              </span>
+            ))}
+            {this.renderRedirectToAllEvents()}
+            <Typography variant="title" gutterBottom>
+              Create Event Form
           </Typography>
-          <Grid container spacing={24}>
-            <Grid item xs={6}>
-              <TextField
-                id="visibility"
-                name="visibility"
-                label="Visibility"
-                select
-                className={classes.select}
-                value={visibility}
-                onChange={event => this.handleChange(event)}
-                fullWidth
-                >
-                {visibilities.map(option => (
-                  <MenuItem key={option.value} value={option.value}>
-                    {option.label}
-                  </MenuItem>
-                ))}
-              </TextField>
-            </Grid>
-            <Grid item xs={6}>
-              <TextField
-                id="repeat"
-                name="repeat"
-                label="Repeat"
-                select
-                className={classes.select}
-                value={repeat}
-                onChange={event => this.handleChange(event)}
-                fullWidth
-              >
-                {repeats.map(option => (
-                  <MenuItem key={option.value} value={option.value}>
-                    {option.label}
-                  </MenuItem>
-                ))}
-              </TextField>
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                type="text"
-                id="eventName"
-                name="eventName"
-                label="Event Name"
-                value={eventName}
-                onChange={event => this.handleChange(event)}
-                helperText={eventNameError}
-                error={eventNameError.length > 0}
-                fullWidth
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                id="description"
-                name="description"
-                label="Description"
-                value={description}
-                onChange={event => this.handleChange(event)}
-                helperText={descriptionError}
-                error={descriptionError.length > 0}
-                fullWidth
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                id="address"
-                name="address"
-                label="Address"
-                value={location.address}
-                onChange={this.handleEditSingleObject('location', 'address')}
-                helperText={addressError}
-                error={addressError.length > 0}
-                fullWidth
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                id="apartment"
-                name="apartment"
-                label="Apartment"
-                value={location.apartment}
-                onChange={this.handleEditSingleObject('location', 'apartment')}
-                helperText={apartmentError}
-                error={apartmentError.length > 0}
-                fullWidth
-                />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                id="city"
-                name="city"
-                label="City"
-                value={location.city}
-                onChange={this.handleEditSingleObject('location', 'city')}
-                helperText={cityError}
-                error={cityError.length > 0}
-                fullWidth
-                />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                id="province"
-                name="province"
-                label="Province"
-                select
-                className={classes.select}
-                value={location.province}
-                onChange={this.handleEditSingleObject('location', 'province')}
-                helperText={provinceError}
-                error={provinceError.length > 0}
-                fullWidth
-              >
-                {provinces.map(option => (
-                  <MenuItem key={option.value} value={option.value}>
-                    {option.label}
-                  </MenuItem>
-                ))}
-              </TextField>
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                id="postalCode"
-                name="postalCode"
-                label="Postal Code"
-                value={location.postalCode}
-                onChange={this.handleEditSingleObject('location', 'postalCode')}
-                helperText={postalCodeError}
-                error={postalCodeError.length > 0}
-                InputProps={{
-                  inputComponent: PostalCodeMask,
-                }}
-                fullWidth
-                />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                id="phoneNumber"
-                name="phoneNumber"
-                label="Phone Number"
-                value={location.phoneNumber}
-                placeholder="(123) 123-4567"
-                onChange={this.handleEditSingleObject('location', 'phoneNumber')}
-                helperText={phoneNumberError}
-                error={phoneNumberError.length > 0}
-                InputProps={{
-                  inputComponent: PhoneMask,
-                }}
-                fullWidth
-                />
-            </Grid>
-            <Grid item xs={6}>
-              <TextField
-                type="date"
-                id="dateStart"
-                name="dateStart"
-                label="Start Date"
-                className={classes.textField}
-                value={dateStart}
-                onChange={event => this.handleChange(event)}
-                helperText={dateStartError}
-                error={dateStartError.length > 0}
-                InputLabelProps={{
-                  shrink: true,
-                }}
-                fullWidth
-              />
-            </Grid>
-            <Grid item xs={6}>
-              <TextField
-                type="date"
-                id="dateEnd"
-                name="dateEnd"
-                label="End Date"
-                className={classes.textField}
-                value={dateEnd}
-                onChange={event => this.handleChange(event)}
-                helperText={dateEndError}
-                error={dateEndError.length > 0}
-                InputLabelProps={{
-                  shrink: true,
-                }}
-                fullWidth
-              />
-            </Grid>
-            <Grid item xs={6}>
-              <TextField
-                id="timeStart"
-                name="timeStart"
-                className={classes.textField}
-                label="Start Time"
-                type="time"
-                value={timeStart}
-                onChange={event => this.handleChange(event)}
-                helperText={timeStartError}
-                error={timeStartError.length > 0}
-                fullWidth
-                InputLabelProps={{
-                  shrink: true,
-                }}
-                inputProps={{
-                  step: 300,
-                }}
-              />
-            </Grid>
-            <Grid item xs={6}>
-              <TextField
-                id="timeEnd"
-                name="timeEnd"
-                className={classes.textField}
-                label="End Time"
-                type="time"
-                value={timeEnd}
-                onChange={event => this.handleChange(event)}
-                helperText={timeEndError}
-                error={timeEndError.length > 0}
-                fullWidth
-                InputLabelProps={{
-                  shrink: true,
-                }}
-                inputProps={{
-                  step: 300,
-                }}
-              />
-            </Grid>
             <Grid container spacing={24}>
+              <Grid item xs={6}>
+                <TextField
+                  id="visibility"
+                  name="visibility"
+                  label="Visibility"
+                  select
+                  className={classes.select}
+                  value={visibility}
+                  onChange={event => this.handleChange(event)}
+                  fullWidth
+                >
+                  {visibilities.map(option => (
+                    <MenuItem key={option.value} value={option.value}>
+                      {option.label}
+                    </MenuItem>
+                  ))}
+                </TextField>
+              </Grid>
+              <Grid item xs={6}>
+                <TextField
+                  id="repeat"
+                  name="repeat"
+                  label="Repeat"
+                  select
+                  className={classes.select}
+                  value={repeat}
+                  onChange={event => this.handleChange(event)}
+                  fullWidth
+                >
+                  {repeats.map(option => (
+                    <MenuItem key={option.value} value={option.value}>
+                      {option.label}
+                    </MenuItem>
+                  ))}
+                </TextField>
+              </Grid>
               <Grid item xs={12}>
-                <img
-                  src={tempEventImagePath}
-                  alt={tempEventImagePath}
-                  className={classes.img}
+                <TextField
+                  type="text"
+                  id="eventName"
+                  name="eventName"
+                  label="Event Name"
+                  value={eventName}
+                  onChange={event => this.handleChange(event)}
+                  helperText={eventNameError}
+                  error={eventNameError.length > 0}
+                  fullWidth
                 />
               </Grid>
               <Grid item xs={12}>
-                <Typography variant="subheading" gutterBottom className={classes.row} align="left">
-                      Select image to upload (Optional)
-                </Typography>
                 <TextField
-                  id="eventImage"
-                  type="file"
-                  onChange={event => this.handleUploadImage(event)}
-                  helperText={eventImageError}
-                  error={eventImageError.length > 0}
+                  id="description"
+                  name="description"
+                  label="Description"
+                  value={description}
+                  onChange={event => this.handleChange(event)}
+                  helperText={descriptionError}
+                  error={descriptionError.length > 0}
+                  fullWidth
                 />
-                {editMode ? (
-                  <Checkbox
-                    id="setDefaultImage"
-                    name="setDefaultImage"
-                    value={setDefaultImage}
-                    onChange={event => this.handleChange(event)}
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  id="address"
+                  name="address"
+                  label="Address"
+                  value={location.address}
+                  onChange={this.handleEditSingleObject('location', 'address')}
+                  helperText={addressError}
+                  error={addressError.length > 0}
+                  fullWidth
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  id="apartment"
+                  name="apartment"
+                  label="Apartment"
+                  value={location.apartment}
+                  onChange={this.handleEditSingleObject('location', 'apartment')}
+                  helperText={apartmentError}
+                  error={apartmentError.length > 0}
+                  fullWidth
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  id="city"
+                  name="city"
+                  label="City"
+                  value={location.city}
+                  onChange={this.handleEditSingleObject('location', 'city')}
+                  helperText={cityError}
+                  error={cityError.length > 0}
+                  fullWidth
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  id="province"
+                  name="province"
+                  label="Province"
+                  select
+                  className={classes.select}
+                  value={location.province}
+                  onChange={this.handleEditSingleObject('location', 'province')}
+                  helperText={provinceError}
+                  error={provinceError.length > 0}
+                  fullWidth
+                >
+                  {provinces.map(option => (
+                    <MenuItem key={option.value} value={option.value}>
+                      {option.label}
+                    </MenuItem>
+                  ))}
+                </TextField>
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  id="postalCode"
+                  name="postalCode"
+                  label="Postal Code"
+                  value={location.postalCode}
+                  onChange={this.handleEditSingleObject('location', 'postalCode')}
+                  helperText={postalCodeError}
+                  error={postalCodeError.length > 0}
+                  InputProps={{
+                    inputComponent: PostalCodeMask,
+                  }}
+                  fullWidth
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  id="phoneNumber"
+                  name="phoneNumber"
+                  label="Phone Number"
+                  value={location.phoneNumber}
+                  placeholder="(123) 123-4567"
+                  onChange={this.handleEditSingleObject('location', 'phoneNumber')}
+                  helperText={phoneNumberError}
+                  error={phoneNumberError.length > 0}
+                  InputProps={{
+                    inputComponent: PhoneMask,
+                  }}
+                  fullWidth
+                />
+              </Grid>
+              <Grid item xs={6}>
+                <TextField
+                  type="date"
+                  id="dateStart"
+                  name="dateStart"
+                  label="Start Date"
+                  className={classes.textField}
+                  value={dateStart}
+                  onChange={event => this.handleChange(event)}
+                  helperText={dateStartError}
+                  error={dateStartError.length > 0}
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  fullWidth
+                />
+              </Grid>
+              <Grid item xs={6}>
+                <TextField
+                  type="date"
+                  id="dateEnd"
+                  name="dateEnd"
+                  label="End Date"
+                  className={classes.textField}
+                  value={dateEnd}
+                  onChange={event => this.handleChange(event)}
+                  helperText={dateEndError}
+                  error={dateEndError.length > 0}
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  fullWidth
+                />
+              </Grid>
+              <Grid item xs={6}>
+                <TextField
+                  id="timeStart"
+                  name="timeStart"
+                  className={classes.textField}
+                  label="Start Time"
+                  type="time"
+                  value={timeStart}
+                  onChange={event => this.handleChange(event)}
+                  helperText={timeStartError}
+                  error={timeStartError.length > 0}
+                  fullWidth
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  inputProps={{
+                    step: 300,
+                  }}
+                />
+              </Grid>
+              <Grid item xs={6}>
+                <TextField
+                  id="timeEnd"
+                  name="timeEnd"
+                  className={classes.textField}
+                  label="End Time"
+                  type="time"
+                  value={timeEnd}
+                  onChange={event => this.handleChange(event)}
+                  helperText={timeEndError}
+                  error={timeEndError.length > 0}
+                  fullWidth
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  inputProps={{
+                    step: 300,
+                  }}
+                />
+              </Grid>
+              <Grid container spacing={24}>
+                <Grid item xs={12}>
+                  <img
+                    src={tempEventImagePath}
+                    alt={tempEventImagePath}
+                    className={classes.img}
                   />
-                ) : (<br />) }
+                </Grid>
+                <Grid item xs={12}>
+                  <Typography variant="subheading" gutterBottom className={classes.row} align="left">
+                    Select image to upload (Optional)
+                </Typography>
+                  <TextField
+                    id="eventImage"
+                    type="file"
+                    onChange={event => this.handleUploadImage(event)}
+                    helperText={eventImageError}
+                    error={eventImageError.length > 0}
+                  />
+                  {editMode ? (
+                    <Checkbox
+                      id="setDefaultImage"
+                      name="setDefaultImage"
+                      value={setDefaultImage}
+                      onChange={event => this.handleChange(event)}
+                    />
+                  ) : (<br />)}
                   Set to default picture
               </Grid>
+              </Grid>
+              {!editMode ? (
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={this.handleSubmit}
+                  className={classes.button}
+                >
+                  Create
+              </Button>
+              ) : (
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={this.handleUpdate}
+                    className={classes.button}
+                  >
+                    Edit
+              </Button>
+                )}
             </Grid>
-            {!editMode ? (
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={this.handleSubmit}
-                className={classes.button}
-              >
-                              Create
-              </Button>
-            ) : (
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={this.handleUpdate}
-                className={classes.button}
-              >
-                            Edit
-              </Button>
-            )}
-          </Grid>
-        </div>
+          </div>
+        </MainLayout>
       </React.Fragment>
     );
   }
 }
-  
+
 EventForm.propTypes = {
   classes: PropTypes.shape({}).isRequired,
   location: PropTypes.shape({}).isRequired,
+  history: PropTypes.shape({}).isRequired,
 };
-  
+
 export default withStyles(styles)(EventForm);

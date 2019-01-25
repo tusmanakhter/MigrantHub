@@ -15,6 +15,7 @@ import axios from 'axios';
 import { Redirect } from 'react-router-dom';
 import FormData from 'form-data';
 import qs from 'qs';
+import MainLayout from 'home/MainLayout';
 import Header from 'components/Header/Header';
 import { provinces } from 'lib/SignUpConstants';
 import { serviceCategories } from 'lib/ServiceCategories';
@@ -89,7 +90,7 @@ const styles = theme => ({
 
   },
   mainContainer: {
-      marginLeft: 75,
+    marginLeft: 75,
   },
 });
 class ServiceForm extends Component {
@@ -140,7 +141,7 @@ class ServiceForm extends Component {
       category: '',
       subcategory: '',
       subcategoriesArray: [],
-        // Server response
+      // Server response
       messageFromServer: '',
       redirectToAllServices: false,
     };
@@ -237,296 +238,296 @@ class ServiceForm extends Component {
     }
   }
 
-    handleAddObject = (name, object) => {
-      this.state.serviceHoursCount += 1;
+  handleAddObject = (name, object) => {
+    this.state.serviceHoursCount += 1;
+    this.setState({
+      [name]: this.state[name].concat([object]),
+    });
+  }
+
+  handleRemoveObject = (name, index) => {
+    this.state.serviceHoursCount -= 1;
+    this.setState({
+      [name]: this.state[name].filter((s, _index) => _index !== index),
+    });
+  }
+
+  handleEditObject = (name, index) => (event) => {
+    this.setState({
+      [name]: this.state[name].map((s, _index) => {
+        if (_index !== index) return s;
+        return { ...s, [event.target.name]: event.target.value };
+      }),
+    });
+  }
+
+  handleChange = (event) => {
+    this.setState({
+      [event.target.name]: event.target.value,
+    });
+  }
+
+  handleCategoryChange = (event) => {
+    this.setState({
+      [event.target.name]: event.target.value,
+      subcategoriesArray: [],
+      subcategory: '',
+    });
+
+    this.handleSubCategoryChange(event.target.value)
+  }
+
+  handleSubCategoryChange = (value) => {
+    let tempArray = serviceCategories.find(x => x.value === value).SubCategories;
+
+    if (tempArray) {
       this.setState({
-        [name]: this.state[name].concat([object]),
+        subcategoriesArray: tempArray,
       });
     }
+  }
 
-    handleRemoveObject = (name, index) => {
-      this.state.serviceHoursCount -= 1;
+  handleAddLocation = () => {
+    this.setState(prevState => ({
+      addLocation: !prevState.addLocation,
+    }));
+  }
+
+  handleAddServiceDate = () => {
+    this.setState(prevState => ({
+      addServiceDate: !prevState.addServiceDate,
+    }));
+  }
+
+  handleUploadImage = (event) => {
+    const { tempServiceImagePath } = this.state;
+
+    if (tempServiceImagePath !== '') {
+      URL.revokeObjectURL(tempServiceImagePath);
+    }
+
+    if (event.target.files[0] !== undefined) {
       this.setState({
-        [name]: this.state[name].filter((s, _index) => _index !== index),
+        serviceImage: event.target.files[0],
+        serviceImageName: event.target.files[0].name,
+        tempServiceImagePath: window.URL.createObjectURL(event.target.files[0]),
+      });
+    } else {
+      this.setState({
+        serviceImage: null,
+        serviceImageName: '',
+        tempServiceImagePath: '',
       });
     }
+  }
 
-    handleEditObject= (name, index) => (event) => {
-      this.setState({
-        [name]: this.state[name].map((s, _index) => {
-          if (_index !== index) return s;
-          return { ...s, [event.target.name]: event.target.value };
-        }),
-      });
+  handleSubmit = () => {
+    const error = this.validate();
+    if (!error) {
+      this.createService();
     }
+  };
 
-    handleChange = (event) => {
-      this.setState({
-        [event.target.name]: event.target.value,
-      });
+  handleUpdate = () => {
+    const error = this.validate();
+    if (!error) {
+      this.updateService();
     }
+  };
 
-    handleCategoryChange = (event) => {
-        this.setState({
-            [event.target.name]: event.target.value,
-            subcategoriesArray: [],
-            subcategory: '',
-        });
+  handleEditSingleObject = (name, fieldName) => (event) => {
+    const obj = {};
+    obj[name] = { ...this.state[name] };
+    const value = event.target.value;
+    obj[name][fieldName] = value;
+    this.setState({ [name]: obj[name] });
+  };
 
-        this.handleSubCategoryChange(event.target.value)
+  renderRedirectToAllServices = () => {
+    const { redirectToAllServices } = this.state;
+    if (redirectToAllServices) {
+      return <Redirect to="/services" />;
     }
+  }
 
-    handleSubCategoryChange = (value) => {
-        let tempArray = serviceCategories.find(x => x.value === value).SubCategories;
+  validate = () => {
+    let isError = false;
 
-        if(tempArray) {
-            this.setState({
-                subcategoriesArray: tempArray,
-            });
-        }
-    }
+    const {
+      serviceTitle, serviceSummary, serviceDescription, serviceHours, serviceDate,
+      location, addLocation, addServiceDate, serviceImageName, serviceImage, category,
+      subcategory, subcategoriesArray,
+    } = this.state;
 
-    handleAddLocation = () => {
-      this.setState(prevState => ({
-        addLocation: !prevState.addLocation,
-      }));
-    }
-
-    handleAddServiceDate = () => {
-      this.setState(prevState => ({
-        addServiceDate: !prevState.addServiceDate,
-      }));
-    }
-
-    handleUploadImage = (event) => {
-      const { tempServiceImagePath } = this.state;
-
-      if (tempServiceImagePath !== '') {
-        URL.revokeObjectURL(tempServiceImagePath);
-      }
-
-      if (event.target.files[0] !== undefined) {
-        this.setState({
-          serviceImage: event.target.files[0],
-          serviceImageName: event.target.files[0].name,
-          tempServiceImagePath: window.URL.createObjectURL(event.target.files[0]),
-        });
-      } else {
-        this.setState({
-          serviceImage: null,
-          serviceImageName: '',
-          tempServiceImagePath: '',
-        });
-      }
-    }
-
-    handleSubmit = () => {
-      const error = this.validate();
-      if (!error) {
-        this.createService();
-      }
+    const errors = {
+      serviceHoursError: [],
+      serviceTitleError: '',
+      serviceDescriptionError: '',
+      serviceSummaryError: '',
+      categoryError: '',
+      subcategoryError: '',
+      addressError: '',
+      apartmentError: '',
+      cityError: '',
+      provinceError: '',
+      postalCodeError: '',
+      phoneNumberError: '',
+      serviceImageError: '',
+      startDateError: '',
+      endDateError: '',
     };
 
-    handleUpdate = () => {
-      const error = this.validate();
-      if (!error) {
-        this.updateService();
+    if (validator.isEmpty(serviceTitle)) {
+      errors.serviceTitleError = 'Title is required';
+      isError = true;
+    }
+    if (validator.isEmpty(serviceSummary)) {
+      errors.serviceSummaryError = 'Service summary is required';
+      isError = true;
+    }
+    if (validator.isEmpty(serviceDescription)) {
+      errors.serviceDescriptionError = 'Service description is required';
+      isError = true;
+    }
+    if (validator.isEmpty(category)) {
+      errors.categoryError = 'Service category is required';
+      isError = true;
+    }
+    if (subcategoriesArray.length > 0) {
+      if (validator.isEmpty(subcategory)) {
+        errors.subcategoryError = 'Service sub-category is required';
+        isError = true;
       }
-    };
-
-    handleEditSingleObject = (name, fieldName) => (event) => {
-      const obj = {};
-      obj[name] = { ...this.state[name] };
-      const value = event.target.value;
-      obj[name][fieldName] = value;
-      this.setState({ [name]: obj[name] });
-    };
-
-    renderRedirectToAllServices = () => {
-      const { redirectToAllServices } = this.state;
-      if (redirectToAllServices) {
-        return <Redirect to="/services" />;
+    }
+    if (serviceImage !== null) {
+      if (!validator.matches(serviceImageName, '.([.jpg]|[.jpeg]|[.png])$')) {
+        errors.serviceImageError = 'Invalid image format. Should be either .jpg, .jpeg or .png';
+        isError = true;
       }
     }
 
-    validate = () => {
-      let isError = false;
-
-      const {
-        serviceTitle, serviceSummary, serviceDescription, serviceHours, serviceDate,
-        location, addLocation, addServiceDate, serviceImageName, serviceImage, category,
-          subcategory, subcategoriesArray,
-      } = this.state;
-
-      const errors = {
-        serviceHoursError: [],
-        serviceTitleError: '',
-        serviceDescriptionError: '',
-        serviceSummaryError: '',
-        categoryError: '',
-        subcategoryError: '',
-        addressError: '',
-        apartmentError: '',
-        cityError: '',
-        provinceError: '',
-        postalCodeError: '',
-        phoneNumberError: '',
-        serviceImageError: '',
-        startDateError: '',
-        endDateError: '',
-      };
-
-      if (validator.isEmpty(serviceTitle)) {
-        errors.serviceTitleError = 'Title is required';
+    if (addServiceDate) {
+      const date = new Date();
+      const todaysDate = (`${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`);
+      if (validator.isEmpty(serviceDate.startDate)) {
+        errors.startDateError = 'Start date is required';
+        isError = true;
+      } else if (validator.isBefore(serviceDate.startDate, todaysDate)) {
+        errors.startDateError = 'Start date is invalid';
         isError = true;
       }
-      if (validator.isEmpty(serviceSummary)) {
-        errors.serviceSummaryError = 'Service summary is required';
+      if (validator.isEmpty(serviceDate.endDate)) {
+        errors.endDateError = 'End date is required';
+        isError = true;
+      } else if (validator.isBefore(serviceDate.endDate, serviceDate.startDate)) {
+        errors.endDateError = 'End date should be after start date';
         isError = true;
       }
-      if (validator.isEmpty(serviceDescription)) {
-        errors.serviceDescriptionError = 'Service description is required';
-        isError = true;
-      }
-      if (validator.isEmpty(category)) {
-          errors.categoryError = 'Service category is required';
-          isError = true;
-      }
-      if (subcategoriesArray.length > 0) {
-          if (validator.isEmpty(subcategory)) {
-              errors.subcategoryError = 'Service sub-category is required';
-              isError = true;
-          }
-      }
-      if (serviceImage !== null) {
-        if (!validator.matches(serviceImageName, '.([.jpg]|[.jpeg]|[.png])$')) {
-          errors.serviceImageError = 'Invalid image format. Should be either .jpg, .jpeg or .png';
-          isError = true;
-        }
-      }
-
-      if (addServiceDate) {
-        const date = new Date();
-        const todaysDate = (`${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`);
-        if (validator.isEmpty(serviceDate.startDate)) {
-          errors.startDateError = 'Start date is required';
-          isError = true;
-        } else if (validator.isBefore(serviceDate.startDate, todaysDate)) {
-          errors.startDateError = 'Start date is invalid';
-          isError = true;
-        }
-        if (validator.isEmpty(serviceDate.endDate)) {
-          errors.endDateError = 'End date is required';
-          isError = true;
-        } else if (validator.isBefore(serviceDate.endDate, serviceDate.startDate)) {
-          errors.endDateError = 'End date should be after start date';
-          isError = true;
-        }
-      }
-
-      if (addLocation) {
-        if (validator.isEmpty(location.address)) {
-          errors.addressError = 'Address is required';
-          isError = true;
-        }
-        if (validator.isEmpty(location.city)) {
-          errors.cityError = 'City is required';
-          isError = true;
-        } else if (!validator.isAlpha(location.city)) {
-          errors.cityError = 'This is not a valid city';
-          isError = true;
-        }
-        if (validator.isEmpty(location.province)) {
-          errors.provinceError = 'Province is required';
-          isError = true;
-        }
-        if (validator.isEmpty(location.postalCode)) {
-          errors.postalCodeError = 'Postal code is required';
-          isError = true;
-        } else if (!validator.isLength(location.postalCode, { min: 7, max: 7 })) {
-          errors.postalCodeError = 'Postal code is invalid';
-          isError = true;
-        }
-        if (validator.isEmpty(location.phoneNumber)) {
-          errors.phoneNumberError = 'Phone number is required';
-          isError = true;
-        } else if (!validator.isLength(location.phoneNumber, { min: 14, max: 14 })) {
-          errors.phoneNumberError = 'Phone number is invalid';
-          isError = true;
-        }
-      }
-
-      serviceHours.forEach((member, index) => {
-        errors.serviceHoursError = errors.serviceHoursError.concat([JSON.parse(
-          JSON.stringify(serviceHoursObject),
-        )]);
-
-        if (validator.isEmpty(member.startTime)) {
-          errors.serviceHoursError[index].startTime = 'Start time is required';
-          isError = true;
-        }
-        if (validator.isEmpty(member.endTime)) {
-          errors.serviceHoursError[index].endTime = 'End time is required';
-          isError = true;
-        } else if (member.endTime <= member.startTime) {
-          errors.serviceHoursError[index].endTime = 'End time should be after start time';
-          isError = true;
-        }
-        if (validator.isEmpty(member.serviceDay)) {
-          errors.serviceHoursError[index].serviceDay = 'Service day is required';
-          isError = true;
-        }
-      });
-
-      this.setState(prevState => ({
-        ...prevState,
-        ...errors,
-      }));
-
-      return isError;
     }
 
-    objectErrorText = (name, index, field) => (this.state[name][index] === undefined ? '' : this.state[name][index][field])
-
-    createService = () => {
-      const {
-        serviceTitle, serviceSummary, serviceDescription, serviceHours, serviceDate,
-        location, addLocation, addServiceDate, serviceImageName, serviceImage, category, subcategory,
-      } = this.state;
-
-      let tempImageName = 'montrealCity.png';
-      let tempLocation = {};
-      let tempServiceDate = {};
-
-      if (serviceImageName !== '') {
-        tempImageName = serviceImageName;
+    if (addLocation) {
+      if (validator.isEmpty(location.address)) {
+        errors.addressError = 'Address is required';
+        isError = true;
       }
-      if (addLocation) {
-        tempLocation = location;
+      if (validator.isEmpty(location.city)) {
+        errors.cityError = 'City is required';
+        isError = true;
+      } else if (!validator.isAlpha(location.city)) {
+        errors.cityError = 'This is not a valid city';
+        isError = true;
       }
-      if (addServiceDate) {
-        tempServiceDate = serviceDate;
+      if (validator.isEmpty(location.province)) {
+        errors.provinceError = 'Province is required';
+        isError = true;
       }
-      const formData = new FormData();
-      formData.append('serviceImage', serviceImage);
-      formData.append('serviceDetails', qs.stringify({
-        location: tempLocation,
-        serviceHours,
-        serviceDate: tempServiceDate,
-        serviceTitle,
-        serviceDescription,
-        serviceSummary,
-        category,
-        subcategory,
-        serviceImageName: tempImageName,
-      }));
+      if (validator.isEmpty(location.postalCode)) {
+        errors.postalCodeError = 'Postal code is required';
+        isError = true;
+      } else if (!validator.isLength(location.postalCode, { min: 7, max: 7 })) {
+        errors.postalCodeError = 'Postal code is invalid';
+        isError = true;
+      }
+      if (validator.isEmpty(location.phoneNumber)) {
+        errors.phoneNumberError = 'Phone number is required';
+        isError = true;
+      } else if (!validator.isLength(location.phoneNumber, { min: 14, max: 14 })) {
+        errors.phoneNumberError = 'Phone number is invalid';
+        isError = true;
+      }
+    }
 
-      axios.post('/api/services/', formData,
-        {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
-        }).then((response) => {
+    serviceHours.forEach((member, index) => {
+      errors.serviceHoursError = errors.serviceHoursError.concat([JSON.parse(
+        JSON.stringify(serviceHoursObject),
+      )]);
+
+      if (validator.isEmpty(member.startTime)) {
+        errors.serviceHoursError[index].startTime = 'Start time is required';
+        isError = true;
+      }
+      if (validator.isEmpty(member.endTime)) {
+        errors.serviceHoursError[index].endTime = 'End time is required';
+        isError = true;
+      } else if (member.endTime <= member.startTime) {
+        errors.serviceHoursError[index].endTime = 'End time should be after start time';
+        isError = true;
+      }
+      if (validator.isEmpty(member.serviceDay)) {
+        errors.serviceHoursError[index].serviceDay = 'Service day is required';
+        isError = true;
+      }
+    });
+
+    this.setState(prevState => ({
+      ...prevState,
+      ...errors,
+    }));
+
+    return isError;
+  }
+
+  objectErrorText = (name, index, field) => (this.state[name][index] === undefined ? '' : this.state[name][index][field])
+
+  createService = () => {
+    const {
+      serviceTitle, serviceSummary, serviceDescription, serviceHours, serviceDate,
+      location, addLocation, addServiceDate, serviceImageName, serviceImage, category, subcategory,
+    } = this.state;
+
+    let tempImageName = 'montrealCity.png';
+    let tempLocation = {};
+    let tempServiceDate = {};
+
+    if (serviceImageName !== '') {
+      tempImageName = serviceImageName;
+    }
+    if (addLocation) {
+      tempLocation = location;
+    }
+    if (addServiceDate) {
+      tempServiceDate = serviceDate;
+    }
+    const formData = new FormData();
+    formData.append('serviceImage', serviceImage);
+    formData.append('serviceDetails', qs.stringify({
+      location: tempLocation,
+      serviceHours,
+      serviceDate: tempServiceDate,
+      serviceTitle,
+      serviceDescription,
+      serviceSummary,
+      category,
+      subcategory,
+      serviceImageName: tempImageName,
+    }));
+
+    axios.post('/api/services/', formData,
+      {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      }).then((response) => {
         if (response.status === 200) {
           this.setState({
             redirectToAllServices: true,
@@ -537,57 +538,57 @@ class ServiceForm extends Component {
           messageFromServer: error.response.data,
         });
       });
+  }
+
+  updateService = () => {
+    const {
+      serviceId, serviceTitle, serviceSummary, serviceDescription, serviceHours, serviceDate,
+      location, addLocation, addServiceDate, serviceImageName, serviceImage, serviceImagePath,
+      setDefaultImage, category, subcategory,
+    } = this.state;
+
+    let tempImageName = serviceImageName;
+    let tempLocation = {};
+    let tempServiceDate = {};
+
+    if (serviceImageName === '') {
+      tempImageName = 'montrealCity.png';
+    } else if (serviceImage !== null) {
+      tempImageName = serviceImage.name;
     }
 
-    updateService = () => {
-      const {
-        serviceId, serviceTitle, serviceSummary, serviceDescription, serviceHours, serviceDate,
-        location, addLocation, addServiceDate, serviceImageName, serviceImage, serviceImagePath,
-        setDefaultImage, category, subcategory,
-      } = this.state;
+    if (setDefaultImage) {
+      tempImageName = 'montrealCity.png';
+    }
 
-      let tempImageName = serviceImageName;
-      let tempLocation = {};
-      let tempServiceDate = {};
+    if (addLocation) {
+      tempLocation = location;
+    }
+    if (addServiceDate) {
+      tempServiceDate = serviceDate;
+    }
 
-      if (serviceImageName === '') {
-        tempImageName = 'montrealCity.png';
-      } else if (serviceImage !== null) {
-        tempImageName = serviceImage.name;
-      }
-
-      if (setDefaultImage) {
-        tempImageName = 'montrealCity.png';
-      }
-
-      if (addLocation) {
-        tempLocation = location;
-      }
-      if (addServiceDate) {
-        tempServiceDate = serviceDate;
-      }
-
-      const formData = new FormData();
-      formData.append('serviceImage', serviceImage);
-      formData.append('serviceDetails', qs.stringify({
-        location: tempLocation,
-        serviceHours,
-        serviceDate: tempServiceDate,
-        serviceTitle,
-        serviceDescription,
-        serviceSummary,
-        category,
-        subcategory,
-        serviceImageName: tempImageName,
-        _id: serviceId,
-        serviceImagePath,
-      }));
-      axios.put('/api/services/' + serviceId, formData,
-        {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
-        }).then((response) => {
+    const formData = new FormData();
+    formData.append('serviceImage', serviceImage);
+    formData.append('serviceDetails', qs.stringify({
+      location: tempLocation,
+      serviceHours,
+      serviceDate: tempServiceDate,
+      serviceTitle,
+      serviceDescription,
+      serviceSummary,
+      category,
+      subcategory,
+      serviceImageName: tempImageName,
+      _id: serviceId,
+      serviceImagePath,
+    }));
+    axios.put('/api/services/' + serviceId, formData,
+      {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      }).then((response) => {
         if (response.status === 200) {
           this.setState({
             redirectToAllServices: true,
@@ -598,28 +599,26 @@ class ServiceForm extends Component {
           messageFromServer: error.response.data,
         });
       });
-    }
+  }
 
-    render() {
-      const { classes } = this.props;
-      const {
-        serviceTitleError, serviceDescriptionError, serviceSummaryError, addressError,
-        apartmentError, cityError, provinceError, postalCodeError, phoneNumberError,
-        serviceImageError, startDateError, endDateError, serviceTitle, serviceSummary,
-        serviceDescription, tempServiceImagePath, serviceHours, serviceDate, location,
-        addLocation, addServiceDate, serviceHoursCount, messageFromServer, editMode,
-        setDefaultImage, category, categoryError, subcategory, subcategoryError, subcategoriesArray,
-      } = this.state;
-
-      return (
-        <React.Fragment>
-          <div className={classes.mainContainer}>
-            <NavPanel />
-            <Header />
+  render() {
+    const {
+      serviceTitleError, serviceDescriptionError, serviceSummaryError, addressError,
+      apartmentError, cityError, provinceError, postalCodeError, phoneNumberError,
+      serviceImageError, startDateError, endDateError, serviceTitle, serviceSummary,
+      serviceDescription, tempServiceImagePath, serviceHours, serviceDate, location,
+      addLocation, addServiceDate, serviceHoursCount, messageFromServer, editMode,
+      setDefaultImage, category, categoryError, subcategory, subcategoryError, subcategoriesArray,
+    } = this.state;
+    const { classes, history } = this.props;
+    return (
+      <React.Fragment>
+        <div className={classes.mainContainer}>
+          <MainLayout location={location} history={history}>
             {messageFromServer}
             {this.renderRedirectToAllServices()}
             <Typography variant="title" gutterBottom>
-                      Create Service Form
+              Create Service Form
             </Typography>
             <Grid container spacing={24}>
               <Grid item xs={12}>
@@ -661,38 +660,38 @@ class ServiceForm extends Component {
                 />
                 <Grid item xs={12} sm={4}>
                   <TextField
-                      name="category"
-                      select
-                      label="Category"
-                      value={category}
-                      onChange={event => this.handleCategoryChange(event)}
-                      className={classes.select}
-                      fullWidth
-                      helperText={categoryError}
-                      error={categoryError.length > 0}
+                    name="category"
+                    select
+                    label="Category"
+                    value={category}
+                    onChange={event => this.handleCategoryChange(event)}
+                    className={classes.select}
+                    fullWidth
+                    helperText={categoryError}
+                    error={categoryError.length > 0}
                   >
-                      {serviceCategories.map(option => (
-                          <MenuItem key={option.value} value={option.value}>
-                              {option.label}
-                          </MenuItem>
-                      ))}
+                    {serviceCategories.map(option => (
+                      <MenuItem key={option.value} value={option.value}>
+                        {option.label}
+                      </MenuItem>
+                    ))}
                   </TextField>
                   <TextField
-                      name="subcategory"
-                      select
-                      label="SubCategory"
-                      value={subcategory}
-                      onChange={event => this.handleChange(event)}
-                      className={classes.select}
-                      fullWidth
-                      helperText={subcategoryError}
-                      error={subcategoryError.length > 0}
+                    name="subcategory"
+                    select
+                    label="SubCategory"
+                    value={subcategory}
+                    onChange={event => this.handleChange(event)}
+                    className={classes.select}
+                    fullWidth
+                    helperText={subcategoryError}
+                    error={subcategoryError.length > 0}
                   >
-                      {subcategoriesArray.map(option => (
-                          <MenuItem key={option.value} value={option.value}>
-                              {option.label}
-                          </MenuItem>
-                      ))}
+                    {subcategoriesArray.map(option => (
+                      <MenuItem key={option.value} value={option.value}>
+                        {option.label}
+                      </MenuItem>
+                    ))}
                   </TextField>
                 </Grid>
               </Grid>
@@ -707,7 +706,7 @@ class ServiceForm extends Component {
                   </Grid>
                   <Grid item xs={12}>
                     <Typography variant="subheading" gutterBottom className={classes.row} align="left">
-                                      Select image to upload (Optional)
+                      Select image to upload (Optional)
                       {' '}
                       <br />
                       <br />
@@ -721,8 +720,8 @@ class ServiceForm extends Component {
                         value={setDefaultImage}
                         onChange={event => this.handleChange(event)}
                       />
-                    ) : (<br />) }
-                      Set to default picture
+                    ) : (<br />)}
+                    Set to default picture
                   </Grid>
                   <Grid item xs={12}>
                     <TextField
@@ -737,7 +736,7 @@ class ServiceForm extends Component {
               </Grid>
               <Grid item xs={12}>
                 <Typography variant="subheading" gutterBottom className={classes.row} align="left">
-                              Add Service date (Optional)
+                  Add Service date (Optional)
                 </Typography>
                 <Button
                   variant="fab"
@@ -752,49 +751,49 @@ class ServiceForm extends Component {
               </Grid>
 
               {addServiceDate === true && (
-              <Paper className={classes.paper}>
-                <Grid container spacing={24} item xs={6}>
-                  <Grid item xs={6}>
-                    <TextField
-                      id="startDate"
-                      name="startDate"
-                      label="Start Date"
-                      type="date"
-                      value={serviceDate.startDate}
-                      className={classes.textField}
-                      onChange={this.handleEditSingleObject('serviceDate', 'startDate')}
-                      fullWidth
-                      helperText={startDateError}
-                      error={startDateError.length > 0}
-                      InputLabelProps={{
-                        shrink: true,
-                      }}
-                    />
+                <Paper className={classes.paper}>
+                  <Grid container spacing={24} item xs={6}>
+                    <Grid item xs={6}>
+                      <TextField
+                        id="startDate"
+                        name="startDate"
+                        label="Start Date"
+                        type="date"
+                        value={serviceDate.startDate}
+                        className={classes.textField}
+                        onChange={this.handleEditSingleObject('serviceDate', 'startDate')}
+                        fullWidth
+                        helperText={startDateError}
+                        error={startDateError.length > 0}
+                        InputLabelProps={{
+                          shrink: true,
+                        }}
+                      />
+                    </Grid>
+                    <Grid item xs={6}>
+                      <TextField
+                        id="endDate"
+                        name="endDate"
+                        label="End Date"
+                        type="date"
+                        value={serviceDate.endDate}
+                        className={classes.textField}
+                        onChange={this.handleEditSingleObject('serviceDate', 'endDate')}
+                        fullWidth
+                        helperText={endDateError}
+                        error={endDateError.length > 0}
+                        InputLabelProps={{
+                          shrink: true,
+                        }}
+                      />
+                    </Grid>
                   </Grid>
-                  <Grid item xs={6}>
-                    <TextField
-                      id="endDate"
-                      name="endDate"
-                      label="End Date"
-                      type="date"
-                      value={serviceDate.endDate}
-                      className={classes.textField}
-                      onChange={this.handleEditSingleObject('serviceDate', 'endDate')}
-                      fullWidth
-                      helperText={endDateError}
-                      error={endDateError.length > 0}
-                      InputLabelProps={{
-                        shrink: true,
-                      }}
-                    />
-                  </Grid>
-                </Grid>
-              </Paper>
+                </Paper>
               )}
 
               <Grid item xs={12}>
                 <Typography variant="subheading" gutterBottom className={classes.row} align="left">
-                              Add Location (Optional, but recommended)
+                  Add Location (Optional, but recommended)
                 </Typography>
                 <Button
                   variant="fab"
@@ -809,113 +808,113 @@ class ServiceForm extends Component {
               </Grid>
 
               {addLocation === true && (
-              <Paper className={classes.paper}>
-                <Grid item xs={6}>
-                  <TextField
-                    id="address"
-                    name="address"
-                    label="Street Address"
-                    placeholder="Street and number"
-                    value={location.address}
-                    onChange={this.handleEditSingleObject('location', 'address')}
-                    fullWidth
-                    helperText={addressError}
-                    error={addressError.length > 0}
-                  />
-                </Grid>
-                <Grid item xs={6}>
-                  <TextField
-                    id="apartment"
-                    name="apartment"
-                    label="Apartment"
-                    placeholder="Apartment, suite, unit, building, floor, etc."
-                    value={location.apartment}
-                    onChange={this.handleEditSingleObject('location', 'apartment')}
-                    fullWidth
-                    helperText={apartmentError}
-                    error={apartmentError.length > 0}
-                  />
-                </Grid>
-                <Grid item xs={6} sm={3}>
-                  <TextField
-                    id="city"
-                    name="city"
-                    label="City"
-                    value={location.city}
-                    onChange={this.handleEditSingleObject('location', 'city')}
-                    fullWidth
-                    helperText={cityError}
-                    error={cityError.length > 0}
-                  />
-                </Grid>
-                <Grid item xs={6} sm={3}>
-                  <TextField
-                    id="province"
-                    name="province"
-                    select
-                    label="Province/Territory"
-                    value={location.province}
-                    className={classes.select}
-                    onChange={this.handleEditSingleObject('location', 'province')}
-                    fullWidth
-                    helperText={provinceError}
-                    error={provinceError.length > 0}
-                  >
-                    {provinces.map(option => (
-                      <MenuItem key={option.value} value={option.value}>
-                        {option.label}
-                      </MenuItem>
-                    ))}
-                  </TextField>
-                </Grid>
-                <Grid item xs={6} sm={3}>
-                  <TextField
-                    id="postalCode"
-                    name="postalCode"
-                    label="Postal Code"
-                    value={location.postalCode}
-                    onChange={this.handleEditSingleObject('location', 'postalCode')}
-                    fullWidth
-                    InputProps={{
-                      inputComponent: PostalCodeMask,
-                    }}
-                    helperText={postalCodeError}
-                    error={postalCodeError.length > 0}
-                  />
-                </Grid>
-                <Grid item xs={6} sm={3}>
-                  <TextField
-                    id="phoneNumber"
-                    name="phoneNumber"
-                    label="Phone Number"
-                    value={location.phoneNumber}
-                    onChange={this.handleEditSingleObject('location', 'phoneNumber')}
-                    fullWidth
-                    helperText={phoneNumberError}
-                    error={phoneNumberError.length > 0}
-                    InputProps={{
-                      inputComponent: PhoneMask,
-                    }}
-                  />
-                </Grid>
-              </Paper>
+                <Paper className={classes.paper}>
+                  <Grid item xs={6}>
+                    <TextField
+                      id="address"
+                      name="address"
+                      label="Street Address"
+                      placeholder="Street and number"
+                      value={location.address}
+                      onChange={this.handleEditSingleObject('location', 'address')}
+                      fullWidth
+                      helperText={addressError}
+                      error={addressError.length > 0}
+                    />
+                  </Grid>
+                  <Grid item xs={6}>
+                    <TextField
+                      id="apartment"
+                      name="apartment"
+                      label="Apartment"
+                      placeholder="Apartment, suite, unit, building, floor, etc."
+                      value={location.apartment}
+                      onChange={this.handleEditSingleObject('location', 'apartment')}
+                      fullWidth
+                      helperText={apartmentError}
+                      error={apartmentError.length > 0}
+                    />
+                  </Grid>
+                  <Grid item xs={6} sm={3}>
+                    <TextField
+                      id="city"
+                      name="city"
+                      label="City"
+                      value={location.city}
+                      onChange={this.handleEditSingleObject('location', 'city')}
+                      fullWidth
+                      helperText={cityError}
+                      error={cityError.length > 0}
+                    />
+                  </Grid>
+                  <Grid item xs={6} sm={3}>
+                    <TextField
+                      id="province"
+                      name="province"
+                      select
+                      label="Province/Territory"
+                      value={location.province}
+                      className={classes.select}
+                      onChange={this.handleEditSingleObject('location', 'province')}
+                      fullWidth
+                      helperText={provinceError}
+                      error={provinceError.length > 0}
+                    >
+                      {provinces.map(option => (
+                        <MenuItem key={option.value} value={option.value}>
+                          {option.label}
+                        </MenuItem>
+                      ))}
+                    </TextField>
+                  </Grid>
+                  <Grid item xs={6} sm={3}>
+                    <TextField
+                      id="postalCode"
+                      name="postalCode"
+                      label="Postal Code"
+                      value={location.postalCode}
+                      onChange={this.handleEditSingleObject('location', 'postalCode')}
+                      fullWidth
+                      InputProps={{
+                        inputComponent: PostalCodeMask,
+                      }}
+                      helperText={postalCodeError}
+                      error={postalCodeError.length > 0}
+                    />
+                  </Grid>
+                  <Grid item xs={6} sm={3}>
+                    <TextField
+                      id="phoneNumber"
+                      name="phoneNumber"
+                      label="Phone Number"
+                      value={location.phoneNumber}
+                      onChange={this.handleEditSingleObject('location', 'phoneNumber')}
+                      fullWidth
+                      helperText={phoneNumberError}
+                      error={phoneNumberError.length > 0}
+                      InputProps={{
+                        inputComponent: PhoneMask,
+                      }}
+                    />
+                  </Grid>
+                </Paper>
               )}
               <Grid item xs={12}>
                 <Typography variant="subheading" gutterBottom className={classes.row} align="left">
-                              Add service hours (Optional)
+                  Add service hours (Optional)
                 </Typography>
                 {serviceHoursCount < 7 && (
 
-                <Button
-                  variant="fab"
-                  mini
-                  color="secondary"
-                  aria-label="Add"
-                  onClick={event => this.handleAddObject('serviceHours', serviceHoursObject)}
-                  className={classes.button}
-                >
-                  <AddIcon />
-                </Button>
+                  <Button
+                    variant="fab"
+                    mini
+                    color="secondary"
+                    aria-label="Add"
+                    onClick={event => this.handleAddObject('serviceHours', serviceHoursObject)}
+                    className={classes.button}
+                  >
+                    <AddIcon />
+                  </Button>
                 )}
               </Grid>
               {serviceHours.map((member, index) => (
@@ -1008,28 +1007,30 @@ class ServiceForm extends Component {
                   onClick={this.handleSubmit}
                   className={classes.button}
                 >
-                              Create
+                  Create
                 </Button>
               ) : (
-                <Button
-                  variant="contained"
-                  color="primary"
-                  onClick={this.handleUpdate}
-                  className={classes.button}
-                >
-                              Edit
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={this.handleUpdate}
+                    className={classes.button}
+                  >
+                    Edit
                 </Button>
-              )}
+                )}
             </Grid>
-          </div>
-        </React.Fragment>
-      );
-    }
+          </MainLayout>
+        </div>
+      </React.Fragment>
+    );
+  }
 }
 
 ServiceForm.propTypes = {
   classes: PropTypes.shape({}).isRequired,
   location: PropTypes.shape({}).isRequired,
+  history: PropTypes.shape({}).isRequired,
 };
 
 export default withStyles(styles)(ServiceForm);

@@ -1,26 +1,39 @@
 import React, { Component } from 'react';
-import Typography from '@material-ui/core/Typography';
-import HomeLayout from 'home/HomeLayout';
-import MainLayout from './MainLayout';
+import PropTypes from "prop-types";
+import MainLayout from 'home/MainLayout';
+import Grid from '@material-ui/core/Grid';
 import ServiceCategory from 'services/ServiceCategory';
 import SearchBar from 'components/SearchBar';
 import FriendPanel from 'components/FriendPanel/FriendPanel';
-import Grid from '@material-ui/core/Grid';
 
-class MainDashboard extends Component {
+class Main extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      serviceCategoryVisibility: true,
+      friendPanelVisibility: false,
+    };
+  }
 
   render() {
-    const { friendPanelVisibility, serviceCategoryVisibility, SearchBarVisibility } = this.props;
-
+    const { friendPanelVisibility, serviceCategoryVisibility } = this.state;
+    const { location, history } = this.props;
     return (
-      <React.Fragment>
-        <MainLayout>
-          <SearchBar />
-          <ServiceCategory location={this.props.location} />
-        </MainLayout>
-      </React.Fragment>
+      <MainLayout location={location} history={history}>
+        <Grid item lg={12}>
+          <div className="Main-feed">
+            <SearchBar />
+            <div className="">{serviceCategoryVisibility && <ServiceCategory location={location} />}</div>
+          </div>
+        </Grid>
+      </MainLayout>
     );
   }
 }
 
-export default MainDashboard;
+Main.propTypes = {
+  location: PropTypes.string.isRequired,
+  history: PropTypes.string.isRequired,
+};
+
+export default Main;

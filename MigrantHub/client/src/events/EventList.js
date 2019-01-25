@@ -102,11 +102,11 @@ class EventList extends Component {
   }
 
   render() {
-    const { classes } = this.props;
+    const { classes, location, history } = this.props;
     const { items, editMode, editOwner, type } = this.state;
 
     return (
-      <MainLayout>
+      <MainLayout location={location} history={history}>
         <div className={classes.mainContainer}>
           {type !== UserTypes.ADMIN
             && (
@@ -151,6 +151,8 @@ class EventList extends Component {
 
 EventList.propTypes = {
   classes: PropTypes.shape({}).isRequired,
+  location: PropTypes.shape({}).isRequired,
+  history: PropTypes.shape({}).isRequired,
 };
 
 export default withStyles(styles)(EventList);

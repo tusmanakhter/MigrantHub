@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
+import PropTypes from 'prop-types';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import IconButton from '@material-ui/core/IconButton';
@@ -117,8 +118,10 @@ class FriendPanel extends Component {
 
 
   render() {
+    const { classes, location, history } = this.props;
+
     return (
-      <MainLayout>
+      <MainLayout location={location} history={history}>
         <div>
           <Card className="Card-friend-panel">
             <CardContent>
@@ -194,4 +197,11 @@ class FriendPanel extends Component {
     );
   }
 }
+
+FriendPanel.propTypes = {
+  classes: PropTypes.shape({}).isRequired,
+  location: PropTypes.shape({}).isRequired,
+  history: PropTypes.shape({}).isRequired,
+};
+
 export default FriendPanel;
