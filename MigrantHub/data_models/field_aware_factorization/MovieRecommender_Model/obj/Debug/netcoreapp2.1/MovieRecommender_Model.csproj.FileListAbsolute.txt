@@ -1,0 +1,14 @@
+/Users/Mira/Repository/MigrantHub/MigrantHub/data_models/field_aware_factorization/MovieRecommender_Model/bin/Debug/netcoreapp2.1/Data/ratings.csv
+/Users/Mira/Repository/MigrantHub/MigrantHub/data_models/field_aware_factorization/MovieRecommender_Model/bin/Debug/netcoreapp2.1/Data/ratings_test.csv
+/Users/Mira/Repository/MigrantHub/MigrantHub/data_models/field_aware_factorization/MovieRecommender_Model/bin/Debug/netcoreapp2.1/Data/ratings_train.csv
+/Users/Mira/Repository/MigrantHub/MigrantHub/data_models/field_aware_factorization/MovieRecommender_Model/bin/Debug/netcoreapp2.1/MovieRecommender_Model.deps.json
+/Users/Mira/Repository/MigrantHub/MigrantHub/data_models/field_aware_factorization/MovieRecommender_Model/bin/Debug/netcoreapp2.1/MovieRecommender_Model.runtimeconfig.json
+/Users/Mira/Repository/MigrantHub/MigrantHub/data_models/field_aware_factorization/MovieRecommender_Model/bin/Debug/netcoreapp2.1/MovieRecommender_Model.runtimeconfig.dev.json
+/Users/Mira/Repository/MigrantHub/MigrantHub/data_models/field_aware_factorization/MovieRecommender_Model/bin/Debug/netcoreapp2.1/MovieRecommender_Model.dll
+/Users/Mira/Repository/MigrantHub/MigrantHub/data_models/field_aware_factorization/MovieRecommender_Model/bin/Debug/netcoreapp2.1/MovieRecommender_Model.pdb
+/Users/Mira/Repository/MigrantHub/MigrantHub/data_models/field_aware_factorization/MovieRecommender_Model/obj/Debug/netcoreapp2.1/MovieRecommender_Model.csprojAssemblyReference.cache
+/Users/Mira/Repository/MigrantHub/MigrantHub/data_models/field_aware_factorization/MovieRecommender_Model/obj/Debug/netcoreapp2.1/MovieRecommender_Model.csproj.CoreCompileInputs.cache
+/Users/Mira/Repository/MigrantHub/MigrantHub/data_models/field_aware_factorization/MovieRecommender_Model/obj/Debug/netcoreapp2.1/MovieRecommender_Model.AssemblyInfoInputs.cache
+/Users/Mira/Repository/MigrantHub/MigrantHub/data_models/field_aware_factorization/MovieRecommender_Model/obj/Debug/netcoreapp2.1/MovieRecommender_Model.AssemblyInfo.cs
+/Users/Mira/Repository/MigrantHub/MigrantHub/data_models/field_aware_factorization/MovieRecommender_Model/obj/Debug/netcoreapp2.1/MovieRecommender_Model.dll
+/Users/Mira/Repository/MigrantHub/MigrantHub/data_models/field_aware_factorization/MovieRecommender_Model/obj/Debug/netcoreapp2.1/MovieRecommender_Model.pdb

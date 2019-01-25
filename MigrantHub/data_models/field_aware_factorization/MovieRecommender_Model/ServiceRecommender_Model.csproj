@@ -10,6 +10,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove=".DS_Store" />
+  </ItemGroup>
+  <ItemGroup>
     <None Update="Data\ratings_test.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
