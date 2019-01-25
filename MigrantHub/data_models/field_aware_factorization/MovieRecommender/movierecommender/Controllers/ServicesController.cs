@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using movierecommender.Models;
+using servicerecommender.Models;
 using Newtonsoft.Json;
 using Microsoft.ML;
 using Microsoft.ML.Runtime.Api;
@@ -23,7 +23,7 @@ using Microsoft.ML.StaticPipe;
 using Microsoft.ML.Trainers;
 using System.IO;
 
-namespace movierecommender.Controllers
+namespace servicerecommender.Controllers
 {
     public class StringTable
     {
@@ -31,17 +31,17 @@ namespace movierecommender.Controllers
         public string[,] Values { get; set; }
     }
 
-    public class MoviesController : Controller
+    public class ServicesController : Controller
     {
-        private readonly MovieService _movieService;
+        private readonly ServiceService _serviceService;
         private readonly ProfileService _profileService;
         private readonly AppSettings _appSettings;
         //private static HttpClient Client = new HttpClient();
-        private readonly ILogger<MoviesController> _logger;
+        private readonly ILogger<ServicesController> _logger;
 
-        public MoviesController(ILogger<MoviesController> logger, IOptions<AppSettings> appSettings)
+        public ServicesController(ILogger<ServicesController> logger, IOptions<AppSettings> appSettings)
         {
-            _movieService = new MovieService();
+            _serviceService = new ServiceService();
             _profileService = new ProfileService();
             _logger = logger;
             _appSettings = appSettings.Value;
@@ -49,7 +49,7 @@ namespace movierecommender.Controllers
 
         public ActionResult Choose()
         {
-            return View(_movieService.GetSomeSuggestions());
+            return View(_serviceService.GetSomeSuggestions());
         }
 
         static async Task<string> InvokeRequestResponseService(int id, ILogger logger, AppSettings appSettings)
@@ -63,10 +63,10 @@ namespace movierecommender.Controllers
 
             // 1. Create the local environment
             var ctx = new MLContext();
-            
-            //2. Load the MoviesRecommendation Model
+
+            //2. Load the ServicesRecommendation Model
             ITransformer loadedModel;
-            using (var stream = new FileStream(_movieService.GetModelPath(), FileMode.Open, FileAccess.Read, FileShare.Read))
+            using (var stream = new FileStream(_serviceService.GetModelPath(), FileMode.Open, FileAccess.Read, FileShare.Read))
             {
                 loadedModel = ctx.Model.Load(stream);
             }
@@ -75,32 +75,32 @@ namespace movierecommender.Controllers
             var predictionfunction = loadedModel.MakePredictionFunction<RatingData, RatingPrediction>(ctx);
             
             List<Tuple<int, float>> ratings = new List<Tuple<int, float>>();
-            List<Tuple<int, int>> MovieRatings = _profileService.GetProfileWatchedMovies(id);
-            List<Movie> WatchedMovies = new List<Movie>();
+            List<Tuple<int, int>> ServiceRatings = _profileService.GetProfileWatchedServices(id);
+            List<Service> WatchedServices = new List<Service>();
 
-            foreach (Tuple<int, int> tuple in MovieRatings)
+            foreach (Tuple<int, int> tuple in ServiceRatings)
             {
-                WatchedMovies.Add(_movieService.Get(tuple.Item1));
+                WatchedServices.Add(_serviceService.Get(tuple.Item1));
             }
 
             // 3. Create an Rating Prediction Output Class
             RatingPrediction prediction = null;
-            foreach (var movie in _movieService._trendingMovies)
+            foreach (var service in _serviceService._trendingServices)
             {
-            //4. Call the Rating Prediction for each movie prediction
-             prediction = predictionfunction.Predict(new RatingData { userId = id.ToString(), movieId = movie.MovieID.ToString()});
+            //4. Call the Rating Prediction for each service prediction
+             prediction = predictionfunction.Predict(new RatingData { userId = id.ToString(), serviceId = service.ServiceID.ToString()});
               
             //5. Normalize the prediction scores for the "ratings" b/w 0 - 100
              var normalizedscore = Sigmoid(prediction.Score);
 
-            //6. Add the score for recommendation of each movie in the trending movie list
-             ratings.Add(Tuple.Create(movie.MovieID, normalizedscore));
+            //6. Add the score for recommendation of each service in the trending service list
+             ratings.Add(Tuple.Create(service.ServiceID, normalizedscore));
             }
 
             //5. Provide ratings to the view to be displayed
-            ViewData["watchedmovies"] = WatchedMovies;
+            ViewData["watchedservices"] = WatchedServices;
             ViewData["ratings"] = ratings;
-            ViewData["trendingmovies"] = _movieService._trendingMovies;
+            ViewData["trendingservices"] = _serviceService._trendingServices;
             return View(activeprofile);
         }
 
@@ -124,15 +124,15 @@ namespace movierecommender.Controllers
         public ActionResult Watched(int id)
         {
             Profile activeprofile = _profileService.GetProfileByID(id);
-            List<Tuple<int,int>> MovieRatings = _profileService.GetProfileWatchedMovies(id);
-            List<Movie> WatchedMovies = new List<Movie>();
+            List<Tuple<int,int>> ServiceRatings = _profileService.GetProfileWatchedServices(id);
+            List<Service> WatchedServices = new List<Service>();
 
-            foreach (Tuple<int,int> tuple in MovieRatings)
+            foreach (Tuple<int,int> tuple in ServiceRatings)
             {
-                WatchedMovies.Add(_movieService.Get(tuple.Item1));
+                WatchedServices.Add(_serviceService.Get(tuple.Item1));
             }
-            ViewData["watchedmovies"] = WatchedMovies;
-            ViewData["trendingmovies"] = _movieService._trendingMovies;
+            ViewData["watchedservices"] = WatchedServices;
+            ViewData["trendingservices"] = _serviceService._trendingServices;
             return View(activeprofile);
         }
 
@@ -149,7 +149,7 @@ namespace movierecommender.Controllers
             public string userId;
 
             [Column("1")]
-            public string movieId;
+            public string serviceId;
 
             [Column("2")]
             [ColumnName("Label")]

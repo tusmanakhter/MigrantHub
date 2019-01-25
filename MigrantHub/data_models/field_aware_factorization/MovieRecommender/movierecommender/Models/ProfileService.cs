@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace movierecommender.Models
+namespace servicerecommender.Models
 {
     public class ProfileService
     {
@@ -12,13 +12,13 @@ namespace movierecommender.Models
 
         public int _activeprofileid = -1;       
 
-        public List<Tuple<int, int>> GetProfileWatchedMovies(int id)
+        public List<Tuple<int, int>> GetProfileWatchedServices(int id)
         {
             foreach(var Profile in _profile)
             {
                 if (id == Profile.ProfileID)
                 {
-                    return Profile.ProfileMovieRatings;
+                    return Profile.ProfileServiceRatings;
                 }
             }
 
@@ -65,7 +65,7 @@ namespace movierecommender.Models
                     for (int i = 3; i < fields.Length; i+=2) {
                     ratings.Add(Tuple.Create(Int32.Parse(fields[i]), Int32.Parse(fields[i+1])));
                     }
-                    result.Add(new Profile() { ProfileID = ProfileID, ProfileImageName= ProfileImageName, ProfileName = ProfileName, ProfileMovieRatings = ratings });
+                    result.Add(new Profile() { ProfileID = ProfileID, ProfileImageName= ProfileImageName, ProfileName = ProfileName, ProfileServiceRatings = ratings });
                     index++;
                 }
             }

@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace movierecommender
+namespace servicerecommender
 {
     public class Startup
     {
@@ -34,7 +34,7 @@ namespace movierecommender
             }
             else
             {
-                app.UseExceptionHandler("/Movies/Error");
+                app.UseExceptionHandler("/Services/Error");
             }
 
             app.UseStaticFiles();
@@ -43,7 +43,7 @@ namespace movierecommender
             {
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller=Movies}/{action=Profiles}/{id?}");
+                    template: "{controller=Services}/{action=Profiles}/{id?}");
             });
         }
     }

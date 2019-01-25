@@ -1,0 +1,14 @@
+/Users/Mira/Repository/MigrantHub/MigrantHub/data_models/field_aware_factorization/MovieRecommender/movierecommender/obj/Debug/netcoreapp2.1/ServiceRecommender.csprojAssemblyReference.cache
+/Users/Mira/Repository/MigrantHub/MigrantHub/data_models/field_aware_factorization/MovieRecommender/movierecommender/obj/Debug/netcoreapp2.1/ServiceRecommender.csproj.CoreCompileInputs.cache
+/Users/Mira/Repository/MigrantHub/MigrantHub/data_models/field_aware_factorization/MovieRecommender/movierecommender/obj/Debug/netcoreapp2.1/ServiceRecommender.AssemblyInfoInputs.cache
+/Users/Mira/Repository/MigrantHub/MigrantHub/data_models/field_aware_factorization/MovieRecommender/movierecommender/obj/Debug/netcoreapp2.1/ServiceRecommender.AssemblyInfo.cs
+/Users/Mira/Repository/MigrantHub/MigrantHub/data_models/field_aware_factorization/MovieRecommender/movierecommender/bin/Debug/netcoreapp2.1/wwwroot/images/smileybob.png
+/Users/Mira/Repository/MigrantHub/MigrantHub/data_models/field_aware_factorization/MovieRecommender/movierecommender/bin/Debug/netcoreapp2.1/wwwroot/images/smileycat.png
+/Users/Mira/Repository/MigrantHub/MigrantHub/data_models/field_aware_factorization/MovieRecommender/movierecommender/bin/Debug/netcoreapp2.1/wwwroot/images/smileyrob.png
+/Users/Mira/Repository/MigrantHub/MigrantHub/data_models/field_aware_factorization/MovieRecommender/movierecommender/bin/Debug/netcoreapp2.1/ServiceRecommender.deps.json
+/Users/Mira/Repository/MigrantHub/MigrantHub/data_models/field_aware_factorization/MovieRecommender/movierecommender/bin/Debug/netcoreapp2.1/ServiceRecommender.runtimeconfig.json
+/Users/Mira/Repository/MigrantHub/MigrantHub/data_models/field_aware_factorization/MovieRecommender/movierecommender/bin/Debug/netcoreapp2.1/ServiceRecommender.runtimeconfig.dev.json
+/Users/Mira/Repository/MigrantHub/MigrantHub/data_models/field_aware_factorization/MovieRecommender/movierecommender/bin/Debug/netcoreapp2.1/ServiceRecommender.dll
+/Users/Mira/Repository/MigrantHub/MigrantHub/data_models/field_aware_factorization/MovieRecommender/movierecommender/bin/Debug/netcoreapp2.1/ServiceRecommender.pdb
+/Users/Mira/Repository/MigrantHub/MigrantHub/data_models/field_aware_factorization/MovieRecommender/movierecommender/obj/Debug/netcoreapp2.1/ServiceRecommender.dll
+/Users/Mira/Repository/MigrantHub/MigrantHub/data_models/field_aware_factorization/MovieRecommender/movierecommender/obj/Debug/netcoreapp2.1/ServiceRecommender.pdb

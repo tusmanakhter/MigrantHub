@@ -13246,9 +13246,9 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/Mira/Repository/MigrantHub/MigrantHub/data_models/field_aware_factorization/MovieRecommender/movierecommender/MovieRecommender.csproj",
-      "projectName": "MovieRecommender",
-      "projectPath": "/Users/Mira/Repository/MigrantHub/MigrantHub/data_models/field_aware_factorization/MovieRecommender/movierecommender/MovieRecommender.csproj",
+      "projectUniqueName": "/Users/Mira/Repository/MigrantHub/MigrantHub/data_models/field_aware_factorization/MovieRecommender/movierecommender/ServiceRecommender.csproj",
+      "projectName": "ServiceRecommender",
+      "projectPath": "/Users/Mira/Repository/MigrantHub/MigrantHub/data_models/field_aware_factorization/MovieRecommender/movierecommender/ServiceRecommender.csproj",
       "packagesPath": "/Users/Mira/.nuget/packages/",
       "outputPath": "/Users/Mira/Repository/MigrantHub/MigrantHub/data_models/field_aware_factorization/MovieRecommender/movierecommender/obj",
       "projectStyle": "PackageReference",

@@ -5,7 +5,7 @@ VisualStudioVersion = 15.0.28010.2026
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServiceRecommender_Model", "MovieRecommender_Model\ServiceRecommender_Model.csproj", "{B6F5153E-481E-4783-A1FE-F30225EE1532}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MovieRecommender", "MovieRecommender\movierecommender\MovieRecommender.csproj", "{16CBF89A-9C04-45EC-83D2-6500A15C6FDC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServiceRecommender", "MovieRecommender\movierecommender\ServiceRecommender.csproj", "{16CBF89A-9C04-45EC-83D2-6500A15C6FDC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

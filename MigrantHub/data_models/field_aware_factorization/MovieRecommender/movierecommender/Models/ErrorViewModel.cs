@@ -1,6 +1,6 @@
 using System;
 
-namespace movierecommender.Models
+namespace servicerecommender.Models
 {
     public class ErrorViewModel
     {
