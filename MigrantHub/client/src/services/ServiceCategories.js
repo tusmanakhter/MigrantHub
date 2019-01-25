@@ -40,7 +40,6 @@ class ServiceCategories extends Component {
     }
 
     handleCategoryClick(category, subcategory){
-        console.log(category);
         let selectedCategory = category;
         this.setState({
             redirectTo: true,

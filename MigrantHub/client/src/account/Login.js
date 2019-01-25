@@ -161,6 +161,13 @@ class Login extends React.Component {
     });
   };
 
+    forgotPassword = () => {
+        this.setState({
+            redirectTo: true,
+            redirectToURL: '/forgotpassword',
+        });
+    };
+
   render() {
     if (this.state.redirectTo) {
       return <Redirect to={this.state.redirectToURL} />;
@@ -243,7 +250,12 @@ class Login extends React.Component {
                           Sign in
                         </Button>
                       </CardFooter>
-                      <Button variant="outlined" className={classes.button}>Forgot Password?</Button>
+                      <Button
+                          variant="outlined"
+                          className={classes.button}
+                          onClick={this.forgotPassword}>
+                        Forgot Password?
+                      </Button>
                     </Card>
                   </form>
                 </GridItem>
