@@ -7,7 +7,7 @@ Code slightly modified to work with the rest of the Chatbot
 
 import React, { Component } from 'react';
 import PropTypes from 'prop-types'
-import '../../../assets/css/ChatBubble.css';
+import 'assets/css/ChatBubble.css';
 
 class ChatBubble extends Component {
   state = {

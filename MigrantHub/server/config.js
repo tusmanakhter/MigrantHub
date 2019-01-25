@@ -19,4 +19,17 @@ const googleConfig = {
   clientSecret: process.env.GOOGLE_CLIENT_SECRET,
 };
 
-module.exports = { dbConfig, facebookConfig, googleConfig };
+const cloudConfig = {
+  projectId: 'migranthub',
+};
+
+const dialogflowConfig = {
+  credentials: {
+    private_key: process.env.DIALOGFLOW_PRIVATE_KEY,
+    client_email: process.env.DIALOGFLOW_CLIENT_EMAIL,
+  },
+};
+
+module.exports = {
+  dbConfig, facebookConfig, googleConfig, cloudConfig, dialogflowConfig,
+};

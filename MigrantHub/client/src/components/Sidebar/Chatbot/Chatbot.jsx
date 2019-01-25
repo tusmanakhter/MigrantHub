@@ -6,7 +6,7 @@ import Card from "components/Card/Card.jsx";
 import CardHeader from "components/Card/CardHeader.jsx";
 import CardBody from "components/Card/CardBody.jsx";
 import { TextField, withStyles } from '@material-ui/core';
-import ChatBubble from "./ChatBubble";
+import ChatBubble from "components/Sidebar/Chatbot/ChatBubble.jsx";
 import axios from "axios";
 
 class Chatbot extends Component {
