@@ -6,6 +6,7 @@ import ForgotYourPasswordContainer from 'account/forgotYourPassword/ForgotYourPa
 import EmailInfo from 'account/forgotYourPassword/EmailInfo';
 import NewPasswordInfo from 'account/forgotYourPassword/NewPasswordInfo';
 import VerificationCode from 'account/forgotYourPassword/VerificationCode';
+import { FormattedMessage } from 'react-intl';
 
 class ForgotYourPasswordForm extends Component {
     constructor(props) {
@@ -55,13 +56,10 @@ class ForgotYourPasswordForm extends Component {
             qs.stringify({
                 email,
             })).then((response) => {
-            console.log('verify 1');
-
             event.setState({
-                messageFromServer: 'Verification code has been sent'
+                messageFromServer: <FormattedMessage id="forgotpassword.validationcode.sent" />
             });
         }).catch((error) => {
-            console.log('verify 2');
             event.setState({
                 verificationError: true,
                 messageFromServer: error.response.data,
@@ -89,7 +87,11 @@ class ForgotYourPasswordForm extends Component {
     }
 
     render() {
-        const steps = ['Email', 'Verification Code', 'Reset Password'];
+        const steps = [
+            <FormattedMessage id="email" />,
+            <FormattedMessage id="forgotpassword.validationcode" />,
+            <FormattedMessage id="forgotpassword.resetPassword" />,
+        ];
         const { messageFromServer, verificationError } = this.state;
 
         return (

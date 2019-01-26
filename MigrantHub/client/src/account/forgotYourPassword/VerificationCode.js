@@ -5,6 +5,7 @@ import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import validator from 'validator';
+import { injectIntl, intlShape, FormattedMessage } from 'react-intl';
 
 const styles = ({});
 
@@ -14,7 +15,7 @@ class VerificationCode extends Component {
     };
 
     validate = () => {
-        const { verificationCode } = this.props;
+        const { verificationCode, intl } = this.props;
 
         let isError = false;
         const errors = {
@@ -41,17 +42,17 @@ class VerificationCode extends Component {
         return (
             <React.Fragment>
                 <Typography variant="title" gutterBottom>
-                    Verification Code
+                    <FormattedMessage id="forgotpassword.validationcode" />
                 </Typography>
                 <Grid container spacing={24}>
                     <Grid item xs={12}>
                         <Typography variant="subheading" alignLeft color='secondary'>
-                            Enter the verification code that was emailed to you. The code will expire in 1 hour.
+                            <FormattedMessage id="forgotpassword.validationcode.info" />
                         </Typography>
                         <TextField
                             id="verificationCode"
                             name="verificationCode"
-                            label="Verification Code"
+                            label={<FormattedMessage id="forgotpassword.validationcode" />}
                             value={verificationCode}
                             onChange={event => handleChange(event)}
                             fullWidth
@@ -68,7 +69,7 @@ class VerificationCode extends Component {
 VerificationCode.propTypes = {
     verificationCode: PropTypes.string.isRequired,
     handleChange: PropTypes.func.isRequired,
-
+    intl: intlShape.isRequired,
 };
 
-export default withStyles(styles)(VerificationCode);
+export default withStyles(styles)(injectIntl(VerificationCode, { withRef: true }));

@@ -29,6 +29,7 @@
   "home.businessInfo": "MigrantHub facilite la détection et l'utilisation de vos services. Cela aide MigrantHub à se développer et à fournir davantage de services aux nouveaux arrivants. S'inscrire maintenant!",
   "home.signupBusiness": "Commencez comme une entreprise",
   "home.aboutus1": "Nous sommes un projet en accès libre créé par une équipe d'étudiants travaillant avec <a href=\"https://www.therefugeecentre.org\" target=\"_blank\" rel=\"noopener noreferrer\">Le Centre De Réfugiés</a>",
+  "home.getStarted": "Commencer",
   "footer.privacypolicy": "Politique de Confidentialité",
   "footer.faq": "FAQ",
   "login.forgot": "Mot de passe oublié?",
@@ -43,6 +44,7 @@
   "signup.selection.businessSignUp": "Ouvrir un compte Entreprise",
   "signup.register": "Enregistrer",
   "signup.welcome": "Bienvenue à Migranthub!",
+  "signup.login": "Vous pouvez maintenant vous connecter.",
   "signup.terms": "En vous inscrivant, vous acceptez les <a href=\"#\">conditions d'utilisation</a>.",
   "signup.servicehub": "Centre de Service",
   "signup.servicehubDesc": "Une liste gratuite des services disponibles près de chez vous. Un chatbot qui vous aidera à trouver ce dont vous avez besoin.",
@@ -168,5 +170,10 @@
   "account.validation.passwordConfirm": "Confirmer votre mot de passe",
   "account.validation.passwordMatch": "Les mots de passe ne correspondent pas",
   "account.validation.passwordLength": "Mot de passe doit être d'au moins 8 caractères",
-  "corpid.validation.length": "S'il vous plaît entrer 7 chiffres"
+  "corpid.validation.length": "S'il vous plaît entrer 7 chiffres",
+  "forgotpassword.validationcode.info": "Entrez le code de vérification qui vous a été envoyé par courrier électronique. Le code expirera dans 1 heure.",
+  "forgotpassword.validationcode": "Code de Vérification",
+  "forgotpassword.validationcode.sent": "Le code de vérification a été envoyé.",
+  "forgotpassword.resetPassword": "Réinitialiser le Mot de Passe",
+  "forgotpassword.reset": "Réinitialiser"
 }

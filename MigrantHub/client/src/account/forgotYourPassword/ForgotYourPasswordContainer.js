@@ -13,6 +13,7 @@ import Button from "components/CustomButtons/Button.jsx";
 import Card from "components/Card/Card.jsx";
 import CardBody from "components/Card/CardBody.jsx";
 import registerPageStyle from "assets/jss/material-dashboard-pro-react/views/registerPageStyle";
+import { FormattedMessage } from 'react-intl';
 
 class ForgotYourPasswordContainer extends Component {
     constructor(props) {
@@ -37,7 +38,7 @@ class ForgotYourPasswordContainer extends Component {
     getStepContent = this.props.getStepContent;
 
     handleNext = async () => {
-        const error = await this.child.current.validate();
+        const error = await this.child.current._wrappedInstance.validate();
         if (!error) {
             if (this.state.activeStep === this.verifyStep) {
                 await this.props.verifyAccount(this);
@@ -82,7 +83,7 @@ class ForgotYourPasswordContainer extends Component {
                                     <Typography variant="subheading" alignLeft color='secondary'>
                                         {messageFromServer}
                                     </Typography>
-                                    <h2 className={classes.cardTitle}>Reset Your Password</h2>
+                                    <h2 className={classes.cardTitle}><FormattedMessage id="forgotpassword.resetPassword" /></h2>
                                     <Stepper activeStep={activeStep} className={classes.stepper}>
                                         {this.props.steps.map(label => (
                                             <Step key={label}>
@@ -98,14 +99,14 @@ class ForgotYourPasswordContainer extends Component {
                                                         {activeStep === this.props.steps.length ? (
                                                             <React.Fragment>
                                                                 <Typography variant="headline" gutterBottom>
-                                                                    Welcome to MigrantHub.
+                                                                    <FormattedMessage id="signup.welcome" />
                                                                 </Typography>
                                                                 <Typography variant="subheading">
-                                                                    You may now login.
+                                                                    <FormattedMessage id="signup.login" />
                                                                 </Typography>
                                                                 <Link to={`/login`}>
                                                                     <Button round color="primary">
-                                                                        Get started
+                                                                        <FormattedMessage id="home.getStarted" />
                                                                     </Button>
                                                                 </Link>
                                                             </React.Fragment>
@@ -115,7 +116,7 @@ class ForgotYourPasswordContainer extends Component {
                                                                 <div className={classes.buttons}>
                                                                     {activeStep !== 0 && (
                                                                         <Button onClick={this.handleBack} className={classes.button}>
-                                                                            Back
+                                                                            <FormattedMessage id="back" />
                                                                         </Button>
                                                                     )}
                                                                     <Button
@@ -124,7 +125,11 @@ class ForgotYourPasswordContainer extends Component {
                                                                         onClick={this.handleNext}
                                                                         className={classes.button}
                                                                     >
-                                                                        {activeStep === this.props.steps.length - 1 ? 'Reset' : 'Next'}
+                                                                        {activeStep === this.props.steps.length - 1 ?
+                                                                            <FormattedMessage id="forgotpassword.reset" />
+                                                                            :
+                                                                            <FormattedMessage id="next" />
+                                                                        }
                                                                     </Button>
                                                                 </div>
                                                             </React.Fragment>

@@ -13,6 +13,7 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import validator from 'validator';
+import { injectIntl, intlShape, FormattedMessage } from 'react-intl';
 
 const styles = ({});
 
@@ -28,7 +29,7 @@ class NewPasswordInfo extends Component {
     };
 
     validate = () => {
-        const { password, confirmPassword } = this.props;
+        const { password, confirmPassword, intl } = this.props;
 
         let isError = false;
         const errors = {
@@ -37,18 +38,18 @@ class NewPasswordInfo extends Component {
         };
 
         if (validator.isEmpty(password)) {
-            errors.passwordError = 'Password is required';
+            errors.passwordError = `${intl.formatMessage({ id: 'password' })}  ${intl.formatMessage({ id: 'isrequired' })}`;
             isError = true;
         } else if (validator.isEmpty(confirmPassword)) {
-            errors.confirmPasswordError = 'Confirm your password';
+            errors.confirmPasswordError = intl.formatMessage({ id: 'account.validation.passwordConfirm' });
             isError = true;
         } else if (!validator.equals(password, confirmPassword)) {
-            errors.passwordError = 'Passwords do not match';
-            errors.confirmPasswordError = 'Passwords do not match';
+            errors.passwordError = intl.formatMessage({ id: 'account.validation.passwordMatch' });
+            errors.confirmPasswordError = intl.formatMessage({ id: 'account.validation.passwordMatch' });
             isError = true;
         } else if (!validator.isLength(password, { min: 8 })) {
-            errors.passwordError = 'Password must be atleast 8 characters';
-            errors.confirmPasswordError = 'Password must be atleast 8 characters';
+            errors.passwordError = intl.formatMessage({ id: 'account.validation.passwordLength' });
+            errors.confirmPasswordError = intl.formatMessage({ id: 'account.validation.passwordLength' });
             isError = true;
         }
 
@@ -76,7 +77,7 @@ class NewPasswordInfo extends Component {
                                 htmlFor="password"
                                 error={passwordError.length > 0}
                             >
-                                New Password
+                                <FormattedMessage id="password" />
                             </InputLabel>
                             <Input
                                 name="password"
@@ -108,7 +109,7 @@ class NewPasswordInfo extends Component {
                                 htmlFor="password"
                                 error={confirmPasswordError.length > 0 || passwordError.length > 0}
                             >
-                                Confirm New Password
+                                <FormattedMessage id="signup.confirmpassword" />
                             </InputLabel>
                             <Input
                                 name="confirmPassword"
@@ -145,7 +146,7 @@ NewPasswordInfo.propTypes = {
     password: PropTypes.string.isRequired,
     confirmPassword: PropTypes.string.isRequired,
     handleChange: PropTypes.func.isRequired,
-
+    intl: intlShape.isRequired,
 };
 
-export default withStyles(styles)(NewPasswordInfo);
+export default withStyles(styles)(injectIntl(NewPasswordInfo, { withRef: true }));

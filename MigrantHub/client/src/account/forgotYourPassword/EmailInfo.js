@@ -5,6 +5,7 @@ import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import validator from 'validator';
+import { injectIntl, intlShape, FormattedMessage } from 'react-intl';
 
 const styles = ({});
 
@@ -14,7 +15,7 @@ class EmailInfo extends Component {
     };
 
     validate = () => {
-        const { email } = this.props;
+        const { email, intl } = this.props;
 
         let isError = false;
         const errors = {
@@ -22,10 +23,10 @@ class EmailInfo extends Component {
         };
 
         if (validator.isEmpty(email)) {
-            errors.emailError = 'Email is required';
+            errors.emailError = `${intl.formatMessage({ id: 'email' })}  ${intl.formatMessage({ id: 'isrequired' })}`;
             isError = true;
         } else if (!validator.isEmail(email)) {
-            errors.emailError = 'Email is not valid';
+            errors.emailError = `${intl.formatMessage({ id: 'email' })}  ${intl.formatMessage({ id: 'notvalid' })}`;
             isError = true;
         }
 
@@ -44,14 +45,14 @@ class EmailInfo extends Component {
         return (
             <React.Fragment>
                 <Typography variant="title" gutterBottom>
-                    Account Information
+                    <FormattedMessage id="signup.accountinfo" />
                 </Typography>
                 <Grid container spacing={24}>
                     <Grid item xs={12}>
                         <TextField
                             id="email"
                             name="email"
-                            label="Email"
+                            label={<FormattedMessage id="email" />}
                             value={email}
                             onChange={event => handleChange(event)}
                             fullWidth
@@ -68,7 +69,7 @@ class EmailInfo extends Component {
 EmailInfo.propTypes = {
     email: PropTypes.string.isRequired,
     handleChange: PropTypes.func.isRequired,
-
+    intl: intlShape.isRequired,
 };
 
-export default withStyles(styles)(EmailInfo);
+export default withStyles(styles)(injectIntl(EmailInfo, { withRef: true }));

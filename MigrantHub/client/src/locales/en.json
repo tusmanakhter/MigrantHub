@@ -29,6 +29,7 @@
   "home.businessInfo": "MigrantHub makes it easy to get your services noticed and used. This helps MigrantHub grow and provide more services for newcomers. Sign up now!",
   "home.signupBusiness": "Get Started as a Business",
   "home.aboutus1": "We are an open sourced project created by a team of students working with <a href=\"https://www.therefugeecentre.org\" target=\"_blank\" rel=\"noopener noreferrer\">The Refugee Centre</a>",
+  "home.getStarted": "Get Started",
   "footer.privacypolicy": "Privacy Policy",
   "footer.faq": "FAQ",
   "login.forgot": "Forgot Password?",
@@ -43,6 +44,7 @@
   "signup.selection.businessSignUp": "Sign Up for a Business Account",
   "signup.register": "Register",
   "signup.welcome": "Welcome to Migranthub!",
+  "signup.login": "You may now login.",
   "signup.terms": "Upon signing up you agree to the <a href=\"#\">terms and conditions</a>.",
   "signup.servicehub": "Service Hub",
   "signup.servicehubDesc": "A free list of available services near you. A chatbot that will help you find what you need.",
@@ -168,5 +170,10 @@
   "account.validation.passwordConfirm": "Confirm your password",
   "account.validation.passwordMatch": "Passwords do not match",
   "account.validation.passwordLength": "Password must be atleast 8 characters",
-  "corpid.validation.length": "Please enter 7 digits"
+  "corpid.validation.length": "Please enter 7 digits",
+  "forgotpassword.validationcode.info": "Enter the verification code that was emailed to you. The code will expire in 1 hour.",
+  "forgotpassword.validationcode": "Verification Code",
+  "forgotpassword.validationcode.sent": "Verification code has been sent.",
+  "forgotpassword.resetPassword": "Reset Password",
+  "forgotpassword.reset": "Reset"
 }
