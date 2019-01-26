@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { jobStatuses } from 'lib/SignUpConstants';
 import Dropdown from 'components/fields/generic/Dropdown';
+import { FormattedMessage } from 'react-intl';
 
 const JobStatus = (props) => {
   const {
@@ -10,7 +11,7 @@ const JobStatus = (props) => {
   return (
     <Dropdown
       name="jobStatus"
-      label="Job Status"
+      label={<FormattedMessage id="employment.length" />}
       value={jobStatus}
       error={jobStatusError}
       options={jobStatuses}

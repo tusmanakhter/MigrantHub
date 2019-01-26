@@ -7,6 +7,7 @@ import validator from 'validator';
 import SettlingLocation from 'components/fields/other/SettlingLocation';
 import SettlingDuration from 'components/fields/other/SettlingDuration';
 import JoiningReason from 'components/fields/other/JoiningReason';
+import { injectIntl, intlShape, FormattedMessage } from 'react-intl';
 
 const styles = ({});
 class OtherInfo extends Component {
@@ -17,7 +18,7 @@ class OtherInfo extends Component {
   }
 
   validate = () => {
-    const { settlingLocation, joiningReason } = this.props;
+    const { settlingLocation, joiningReason, intl } = this.props;
     let isError = false;
     const errors = {
       settlingLocationError: '',
@@ -25,12 +26,12 @@ class OtherInfo extends Component {
     };
 
     if (validator.isEmpty(settlingLocation)) {
-      errors.settlingLocationError = 'Settling location is required';
+      errors.settlingLocationError = `${intl.formatMessage({ id: 'other.location' })}  ${intl.formatMessage({ id: 'isrequired' })}`;
       isError = true;
     }
 
     if (validator.isEmpty(joiningReason)) {
-      errors.joiningReasonError = 'Joining reason is required';
+      errors.joiningReasonError = `${intl.formatMessage({ id: 'other.reason' })}  ${intl.formatMessage({ id: 'isrequired' })}`;
       isError = true;
     }
 
@@ -53,7 +54,9 @@ class OtherInfo extends Component {
 
     return (
       <React.Fragment>
-        <Typography variant="title" gutterBottom> Other Information </Typography>
+        <Typography variant="title" gutterBottom>
+          <FormattedMessage id="signup.otherinfo" />
+        </Typography>
         <Grid container spacing={24}>
           <Grid item xs={12} sm={6}>
             <SettlingLocation
@@ -89,6 +92,7 @@ OtherInfo.propTypes = {
   settlingLocation: PropTypes.string.isRequired,
   settlingDuration: PropTypes.string.isRequired,
   joiningReason: PropTypes.string.isRequired,
+  intl: intlShape.isRequired,
 };
 
-export default withStyles(styles)(OtherInfo);
+export default withStyles(styles)(injectIntl(OtherInfo, { withRef: true }));

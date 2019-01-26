@@ -20,7 +20,9 @@ const googleConfig = {
 };
 
 const emailConfig = {
-    email: process.env.HOTMAIL_EMAIL,
-    password: process.env.HOTMAIL_PASSWORD,
+  email: process.env.HOTMAIL_EMAIL,
+  password: process.env.HOTMAIL_PASSWORD,
 };
-module.exports = { dbConfig, facebookConfig, googleConfig, emailConfig};
+module.exports = {
+  dbConfig, facebookConfig, googleConfig, emailConfig,
+};

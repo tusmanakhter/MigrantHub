@@ -66,35 +66,34 @@ module.exports = {
 
     const passwordToken = crypto.randomBytes(20).toString('hex');
     const updatePasswordToken = {
-        resetPasswordToken: passwordToken,
-        resetPasswordExpiry: Date.now() + 360000,
+      resetPasswordToken: passwordToken,
+      resetPasswordExpiry: Date.now() + 360000,
     };
 
-    let receiverEmail = userEmail;
-    let subject = 'MigrantHub reset your password';
-    let message = `Verification code: ${passwordToken}`;
+    const receiverEmail = userEmail;
+    const subject = 'MigrantHub reset your password';
+    const message = `Verification code: ${passwordToken}`;
 
     SendEmail.sendEmail(receiverEmail, subject, message);
 
-    return UserRepository.update(userEmail, updatePasswordToken );
+    return UserRepository.update(userEmail, updatePasswordToken);
   },
 
   async resetPassword(userEmail, userPassword, token) {
+    const userExists = await UserRepository.getUser(userEmail);
 
-      const userExists = await UserRepository.getUser(userEmail);
+    if (userExists.resetPasswordToken !== token || userExists.resetPasswordExpiry < Date.now()) {
+      throw new ServerError('Invalid reset password request.', 400, 'Token has expired or invalid');
+    }
 
-      if (userExists.resetPasswordToken !== token || userExists.resetPasswordExpiry < Date.now()) {
-          throw new ServerError('Invalid reset password request.', 400, 'Token has expired or invalid');
-      }
+    const salt = bcrypt.genSaltSync(10);
+    const hash = bcrypt.hashSync(userPassword, salt);
+    const updatePassword = {
+      localAuthentication: {
+        password: hash,
+      },
+    };
 
-      const salt = bcrypt.genSaltSync(10);
-      const hash = bcrypt.hashSync(userPassword, salt);
-      const updatePassword = {
-        localAuthentication : {
-          password: hash,
-        }
-      };
-
-      return UserRepository.update(userEmail, updatePassword );
+    return UserRepository.update(userEmail, updatePassword);
   },
 };

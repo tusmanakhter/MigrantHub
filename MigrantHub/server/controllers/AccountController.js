@@ -43,10 +43,10 @@ module.exports = {
   },
 
   async forgotPassword(userEmail) {
-      return AccountService.forgotPassword(userEmail);
+    return AccountService.forgotPassword(userEmail);
   },
 
   async resetPassword(userEmail, userPassword, token) {
-      return AccountService.resetPassword(userEmail, userPassword, token);
+    return AccountService.resetPassword(userEmail, userPassword, token);
   },
 };

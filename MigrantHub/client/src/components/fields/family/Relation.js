@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { relations } from 'lib/SignUpConstants';
 import Dropdown from 'components/fields/generic/Dropdown';
+import { FormattedMessage } from 'react-intl';
 
 const Relation = (props) => {
   const {
@@ -10,7 +11,7 @@ const Relation = (props) => {
   return (
     <Dropdown
       name="relation"
-      label="Relation to you"
+      label={<FormattedMessage id="family.relation" />}
       value={relation}
       error={relationError}
       options={relations}

@@ -11,9 +11,9 @@ module.exports = {
   },
 
   update(userId, userObject) {
-      return User.findByIdAndUpdate({ _id: userId }, userObject, { new: true })
-          .exec().then(() => Promise.resolve('User has been updated.')).catch((error) => {
-          throw new ServerError('There was an error updating user.', 400, error);
+    return User.findByIdAndUpdate({ _id: userId }, userObject, { new: true })
+      .exec().then(() => Promise.resolve('User has been updated.')).catch((error) => {
+        throw new ServerError('There was an error updating user.', 400, error);
       });
   },
 };
