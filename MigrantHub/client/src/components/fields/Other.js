@@ -1,13 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import TextBox from 'components/fields/generic/TextBox';
+import { FormattedMessage } from 'react-intl';
 
 const Other = (props) => {
   const { other, otherError, handleChange } = props;
   return (
     <TextBox
       name="other"
-      label="Other"
+      label={<FormattedMessage id="other" />}
       placeholder=""
       value={other}
       error={otherError}

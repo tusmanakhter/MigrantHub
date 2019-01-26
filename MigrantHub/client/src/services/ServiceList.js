@@ -12,6 +12,7 @@ import UserTypes from 'lib/UserTypes';
 import QuestionnairePanel from 'components/QuestionnairePanel/QuestionnairePanel';
 import Grid from '@material-ui/core/Grid';
 import NavPanel from 'components/NavPanel/NavPanel';
+import { FormattedMessage } from 'react-intl';
 
 const styles = theme => ({
   mainContainer: {
@@ -143,7 +144,7 @@ class ServiceList extends Component {
                     className={classes.button}
                     onClick={this.setRedirectToServiceForm}
                   >
-                    Create Service
+                    <FormattedMessage id="service.create" />
                   </Button>
                   {type === UserTypes.MIGRANT
                     && (
@@ -153,8 +154,8 @@ class ServiceList extends Component {
                         className={classes.button}
                         onClick={this.setRedirectToSuggestionForm}
                       >
-                        Add Suggestion
-                    </Button>
+                        <FormattedMessage id="service.addsuggestion" />
+                      </Button>
                     )
                   }
                 </div>

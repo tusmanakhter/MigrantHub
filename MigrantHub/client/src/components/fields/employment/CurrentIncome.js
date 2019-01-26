@@ -2,13 +2,14 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { IncomeMask } from 'lib/Masks';
 import MaskedTextbox from 'components/fields/generic/MaskedTextbox';
+import { FormattedMessage } from 'react-intl';
 
 const CurrentIncome = (props) => {
   const { currentIncome, currentIncomeError, handleChange } = props;
   return (
     <MaskedTextbox
       name="currentIncome"
-      label="Current Income (Optional)"
+      label={<FormattedMessage id="employment.income" />}
       placeholder=""
       value={currentIncome}
       error={currentIncomeError}

@@ -11,6 +11,7 @@ import Header from 'components/Header/Header';
 import UserTypes from 'lib/UserTypes';
 import NavPanel from 'components/NavPanel/NavPanel';
 import GridContainer from "components/Grid/GridContainer.jsx";
+import { FormattedMessage } from 'react-intl';
 
 const styles = theme => ({
   mainContainer: {
@@ -118,8 +119,8 @@ class EventList extends Component {
                   className={classes.button}
                   onClick={this.setRedirectToEventForm}
                 >
-                  Create Event
-               </Button>
+                  <FormattedMessage id="event.create" />
+                </Button>
               </div>
             )
           }

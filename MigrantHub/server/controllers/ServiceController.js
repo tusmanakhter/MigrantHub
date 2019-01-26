@@ -23,8 +23,8 @@ module.exports = {
     return ServiceService.createService(user, parsedServiceObj);
   },
 
-  async getServices(userId, searchQuery, search, category, subcategory) {
-    return ServiceService.getServices(userId, searchQuery, search, category, subcategory);
+  async getServices(userId, searchQuery, search, category, subcategory, locale) {
+    return ServiceService.getServices(userId, searchQuery, search, category, subcategory, locale);
   },
 
   async getService(serviceId) {

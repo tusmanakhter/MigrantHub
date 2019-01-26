@@ -2,6 +2,8 @@ import React from "react";
 import Search from "@material-ui/icons/Search";
 import withStyles from '@material-ui/core/styles/withStyles';
 import Card from "components/Card/Card.jsx";
+import { injectIntl, intlShape } from 'react-intl';
+
 
 const styles = theme => ({
   card: {
@@ -21,6 +23,7 @@ const styles = theme => ({
 
 class SearchBar extends React.Component {
   render() {
+    const { intl } = this.props
     return (
       <div>
         <Card style={{ padding: '20px' }}>
@@ -33,7 +36,7 @@ class SearchBar extends React.Component {
             <input
               className="form-control my-0 py-1"
               type="text"
-              placeholder="Search"
+              placeholder={intl.formatMessage({ id: 'search' })}
               aria-label="Search"
             />
           </div>
@@ -43,4 +46,8 @@ class SearchBar extends React.Component {
   }
 }
 
-export default withStyles(styles)(SearchBar);
+SearchBar.propTypes = {
+  intl: intlShape.isRequired,
+};
+
+export default withStyles(styles)(injectIntl(SearchBar));

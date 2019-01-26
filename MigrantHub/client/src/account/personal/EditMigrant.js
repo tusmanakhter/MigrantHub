@@ -190,13 +190,13 @@ class EditMigrant extends Component {
   };
 
   validate = async () => {
-    const contactError = await this.contactChild.current.validate();
-    const personalError = await this.personalChild.current.validate();
-    const langError = await this.langChild.current.validate();
-    const familyError = await this.familyChild.current.validate();
-    const educationError = await this.educationChild.current.validate();
-    const employmentError = await this.employmentChild.current.validate();
-    const otherError = await this.otherChild.current.validate();
+    const contactError = await this.contactChild.current._wrappedInstance.validate();
+    const personalError = await this.personalChild.current._wrappedInstance.validate();
+    const langError = await this.langChild.current._wrappedInstance.validate();
+    const familyError = await this.familyChild.current._wrappedInstance.validate();
+    const educationError = await this.educationChild.current._wrappedInstance.validate();
+    const employmentError = await this.employmentChild.current._wrappedInstance.validate();
+    const otherError = await this.otherChild.current._wrappedInstance.validate();
 
     const errors = [contactError, personalError, langError, familyError,
       educationError, employmentError, otherError];

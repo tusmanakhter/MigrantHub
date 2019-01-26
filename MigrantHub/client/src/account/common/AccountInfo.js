@@ -13,6 +13,7 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import validator from 'validator';
+import { injectIntl, intlShape, FormattedMessage } from 'react-intl';
 
 const styles = ({});
 
@@ -29,7 +30,7 @@ class AccountInfo extends Component {
   };
 
   validate = () => {
-    const { email, password, confirmPassword } = this.props;
+    const { email, password, confirmPassword, intl } = this.props;
 
     let isError = false;
     const errors = {
@@ -39,26 +40,26 @@ class AccountInfo extends Component {
     };
 
     if (validator.isEmpty(email)) {
-      errors.emailError = 'Email is required';
+      errors.emailError = `${intl.formatMessage({ id: 'email' })}  ${intl.formatMessage({ id: 'isrequired' })}`;
       isError = true;
     } else if (!validator.isEmail(email)) {
-      errors.emailError = 'Email is not valid';
+      errors.emailError = `${intl.formatMessage({ id: 'email' })}  ${intl.formatMessage({ id: 'notvalid' })}`;
       isError = true;
     }
 
     if (validator.isEmpty(password)) {
-      errors.passwordError = 'Password is required';
+      errors.passwordError = `${intl.formatMessage({ id: 'password' })}  ${intl.formatMessage({ id: 'isrequired' })}`;
       isError = true;
     } else if (validator.isEmpty(confirmPassword)) {
-      errors.confirmPasswordError = 'Confirm your password';
+      errors.confirmPasswordError = intl.formatMessage({ id: 'account.validation.passwordConfirm' });
       isError = true;
     } else if (!validator.equals(password, confirmPassword)) {
-      errors.passwordError = 'Passwords do not match';
-      errors.confirmPasswordError = 'Passwords do not match';
+      errors.passwordError = intl.formatMessage({ id: 'account.validation.passwordMatch' });
+      errors.confirmPasswordError = intl.formatMessage({ id: 'account.validation.passwordMatch' });
       isError = true;
     } else if (!validator.isLength(password, { min: 8 })) {
-      errors.passwordError = 'Password must be atleast 8 characters';
-      errors.confirmPasswordError = 'Password must be atleast 8 characters';
+      errors.passwordError = intl.formatMessage({ id: 'account.validation.passwordLength' });
+      errors.confirmPasswordError = intl.formatMessage({ id: 'account.validation.passwordLength' });
       isError = true;
     }
 
@@ -81,14 +82,14 @@ class AccountInfo extends Component {
     return (
       <React.Fragment>
         <Typography variant="title" gutterBottom>
-                  Account Information
+          <FormattedMessage id="signup.accountinfo" />
         </Typography>
         <Grid container spacing={24}>
           <Grid item xs={12}>
             <TextField
               id="email"
               name="email"
-              label="Email"
+              label={<FormattedMessage id="email" />}
               value={email}
               onChange={event => handleChange(event)}
               fullWidth
@@ -102,7 +103,7 @@ class AccountInfo extends Component {
                 htmlFor="password"
                 error={passwordError.length > 0}
               >
-Password
+                <FormattedMessage id="password" />
               </InputLabel>
               <Input
                 name="password"
@@ -134,7 +135,7 @@ Password
                 htmlFor="password"
                 error={confirmPasswordError.length > 0 || passwordError.length > 0}
               >
-                              Confirm Password
+                <FormattedMessage id="signup.confirmpassword" />
               </InputLabel>
               <Input
                 name="confirmPassword"
@@ -171,7 +172,7 @@ AccountInfo.propTypes = {
   password: PropTypes.string.isRequired,
   confirmPassword: PropTypes.string.isRequired,
   handleChange: PropTypes.func.isRequired,
-
+  intl: intlShape.isRequired,
 };
 
-export default withStyles(styles)(AccountInfo);
+export default withStyles(styles)(injectIntl(AccountInfo, { withRef: true }));
