@@ -2,13 +2,14 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { PostalCodeMask } from 'lib/Masks';
 import MaskedTextbox from 'components/fields/generic/MaskedTextbox';
+import { FormattedMessage } from 'react-intl';
 
 const PostalCode = (props) => {
   const { postalCode, postalCodeError, handleChange } = props;
   return (
     <MaskedTextbox
       name="postalCode"
-      label="Postal Code"
+      label={<FormattedMessage id="contact.postal" />}
       placeholder=""
       value={postalCode}
       error={postalCodeError}

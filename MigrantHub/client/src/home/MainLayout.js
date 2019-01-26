@@ -56,7 +56,6 @@ class MainLayout extends React.Component {
         suppressScrollX: true,
         suppressScrollY: false
       });
-      document.body.style.overflow = "hidden";
     }
     window.addEventListener("resize", this.resizeFunction);
   }

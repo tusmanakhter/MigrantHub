@@ -6,6 +6,7 @@ import SignUp from 'account/common/SignUp';
 import AccountInfo from 'account/common/AccountInfo';
 import PersonalInfo from 'account/personal/Minimal/PersonalInfo';
 import AdditionalInfo from 'account/personal/Minimal/AdditionalInfo';
+import { FormattedMessage } from 'react-intl';
 
 class SignUpMigrant extends Component {
   getStepContent(step) {
@@ -91,7 +92,11 @@ class SignUpMigrant extends Component {
   }
 
   render() {
-    const steps = ['Account', 'Personal', 'Additional'];
+    const steps = [
+      <FormattedMessage id="signup.account" />,
+      <FormattedMessage id="signup.personal" />,
+      <FormattedMessage id="signup.additional" />,
+    ];
 
     return (
       <React.Fragment>

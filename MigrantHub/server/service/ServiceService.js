@@ -20,9 +20,9 @@ module.exports = {
     throw new ServerError('There was an error creating service.', 400, errors);
   },
 
-  async getServices(userId, searchQuery, search, category, subcategory) {
+  async getServices(userId, searchQuery, search, category, subcategory, locale) {
     let query = {};
-
+    console.log(`logging locale for eslint ${locale}`);
     if (userId !== '') {
       query.user = userId;
     } else if (search === 'true') {

@@ -7,6 +7,7 @@ import validator from 'validator';
 import EducationLevel from 'components/fields/education/EducationLevel';
 import ProficiencyExams from 'components/fields/education/ProficiencyExams';
 import Other from 'components/fields/Other';
+import { injectIntl, intlShape, FormattedMessage } from 'react-intl';
 
 const styles = ({});
 
@@ -16,14 +17,14 @@ class EducationInfo extends Component {
   }
 
   validate = () => {
-    const { educationLevel } = this.props;
+    const { educationLevel, intl } = this.props;
     let isError = false;
     const errors = {
       educationLevelError: '',
     };
 
     if (validator.isEmpty(educationLevel)) {
-      errors.educationLevelError = 'Education level is required';
+      errors.educationLevelError = `${intl.formatMessage({ id: 'educ.level' })}  ${intl.formatMessage({ id: 'isrequired' })}`;
       isError = true;
     }
 
@@ -43,7 +44,9 @@ class EducationInfo extends Component {
 
     return (
       <React.Fragment>
-        <Typography variant="title" gutterBottom> Education Information </Typography>
+        <Typography variant="title" gutterBottom>
+          <FormattedMessage id="signup.educationinfo" />
+        </Typography>
         <Grid container spacing={24}>
           <Grid item xs={12}>
             <EducationLevel
@@ -76,7 +79,7 @@ EducationInfo.propTypes = {
   handleEditSingleObject: PropTypes.func.isRequired,
   educationLevel: PropTypes.string.isRequired,
   proficiencyExams: PropTypes.shape({}).isRequired,
-
+  intl: intlShape.isRequired,
 };
 
-export default withStyles(styles)(EducationInfo);
+export default withStyles(styles)(injectIntl(EducationInfo, { withRef: true }));

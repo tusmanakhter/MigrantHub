@@ -22,6 +22,9 @@ import Icon from "@material-ui/core/Icon";
 import PermIdentity from '@material-ui/icons/PermIdentity';
 import ViewList from '@material-ui/icons/ViewList';
 import Event from '@material-ui/icons/Event';
+import Logout from 'components/Logout';
+import { FormattedMessage } from 'react-intl';
+
 // core components
 import HeaderLinks from "components/Header/HeaderLinks.jsx";
 
@@ -219,7 +222,7 @@ class Sidebar extends React.Component {
                       {rtlActive ? "مع" : <PermIdentity />}
                     </span>
                     <ListItemText
-                      primary={rtlActive ? "ملفي" : "My Profile"}
+                      primary={rtlActive ? "ملفي" : <FormattedMessage id="nav.myprofile" />}
                       disableTypography={true}
                       className={collapseItemText}
                     />
@@ -237,7 +240,7 @@ class Sidebar extends React.Component {
                     </span>
                     <ListItemText
                       primary={
-                        rtlActive ? "تعديل الملف الشخصي" : "Edit Profile"
+                        rtlActive ? "تعديل الملف الشخصي" : <FormattedMessage id="nav.editprofile" />
                       }
                       disableTypography={true}
                       className={collapseItemText}
@@ -255,7 +258,7 @@ class Sidebar extends React.Component {
                       {rtlActive ? "و" : <ViewList />}
                     </span>
                     <ListItemText
-                      primary={rtlActive ? "إعدادات" : "My Services"}
+                      primary={rtlActive ? "إعدادات" : <FormattedMessage id="nav.myservices" />}
                       disableTypography={true}
                       className={collapseItemText}
                     />
@@ -272,7 +275,7 @@ class Sidebar extends React.Component {
                       {rtlActive ? "و" : <Event />}
                     </span>
                     <ListItemText
-                      primary={rtlActive ? "إعدادات" : "My Events"}
+                      primary={rtlActive ? "إعدادات" : <FormattedMessage id="nav.myevents" />}
                       disableTypography={true}
                       className={collapseItemText}
                     />
