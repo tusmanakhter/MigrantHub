@@ -13,10 +13,8 @@ import Button from 'components/CustomButtons/Button';
 import CardBody from "components/Card/CardBody.jsx";
 import CardFooter from "components/Card/CardFooter.jsx";
 import dashboardStyle from "assets/jss/material-dashboard-pro-react/views/dashboardStyle.jsx";
-import ServiceCategories from "./ServiceCategoryMenu1";
+import ServiceCategories from "./ServiceCategoryMenu4";
 import priceImage1 from "assets/img/card-2.jpeg";
-import ArrowDown from "@material-ui/icons/ArrowDropDown";
-import ArrowUp from "@material-ui/icons/ArrowDropUp";
 
 const styles = theme => ({
   ...dashboardStyle,
@@ -28,41 +26,15 @@ class ServiceCategory extends Component {
     this.state = {
       items: [],
       redirectToServiceForm: false,
-      viewCategories: false,
     };
-  }
-
-  handleViewCategories = () => {
-      this.setState(prevState => ({
-          viewCategories: !prevState.viewCategories,
-      }));
   }
 
   render() {
     const { classes } = this.props;
-    const { viewCategories } = this.state;
 
     return (
       <div>
-        <div className={classes.categoryButton}>
-          <Button
-              variant="fab"
-              mini
-              color="primary"
-              aria-label="Add Service date"
-              size="large"
-              justifyContent='center'
-              onClick={event => this.handleViewCategories()}
-              className={classes.button}
-          >
-              {viewCategories ? <ArrowUp /> : <ArrowDown />}
-          </Button>
-            {viewCategories ? <p>Hide Categories</p> : <p>View Categories</p>}
-        </div>
-          {viewCategories ?
-              <ServiceCategories classes={this.props.classes}/>
-              : "" }
-        {/* <ServiceList classes={this.props.classes} location={this.props.location}/> */}
+        <ServiceCategories />
         <Card style={{ padding: '20px' }}>
           <CardHeader>
             <h4 className={classes.cardTitle}>Services</h4>

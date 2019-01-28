@@ -76,10 +76,6 @@ const menuStyle = {
     background: 'white'
 };
 
-const optionList = {
-    position: 'relative',
-};
-
 class Sidebar extends React.Component {
   constructor(props) {
     super(props);
@@ -426,17 +422,23 @@ class Sidebar extends React.Component {
                 {prop.option?
                     <Menu style={{boxShadow:'none', border: 0, color: "inherit"}}>
                         <SubMenu
-                        title={<div>                        <ListItemIcon className={itemIcon}>
-                            {typeof prop.icon === "string" ? (
-                                <Icon>{prop.icon}</Icon>
-                            ) : (
-                                <prop.icon />
-                            )}
-                        </ListItemIcon>
-                            <ListItemText
-                                primary={prop.name}
-                                disableTypography={true}
-                                className={itemText}/></div>}
+                        title={
+                            <div>
+                                <ListItemIcon className={itemIcon}>
+                                    {typeof prop.icon === "string" ? (
+                                        <Icon>{prop.icon}</Icon>
+                                    ) : (
+                                        <prop.icon> </prop.icon>
+                                    )}
+                                </ListItemIcon>
+                                <ListItemText
+                                    primary={prop.name}
+                                    disableTypography={true}
+                                    className={itemText}>
+                                </ListItemText>
+                            </div>}
+                        itemIcon={<Icon/>}
+                        expandIcon={<Icon/>}
                         >
                             <Menu style={menuStyle}>
                                 <prop.option />

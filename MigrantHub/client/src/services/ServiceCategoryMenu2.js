@@ -18,7 +18,7 @@ const styles = theme => ({
     },
 });
 
-class ServiceCategories extends Component {
+class ServiceCategoryMenu2 extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -96,8 +96,8 @@ class ServiceCategories extends Component {
     }
 }
 
-ServiceCategories.propTypes = {
+ServiceCategoryMenu2.propTypes = {
     classes: PropTypes.shape({}).isRequired,
 };
 
-export default withStyles(styles)(ServiceCategories);
+export default withStyles(styles)(ServiceCategoryMenu2);

@@ -168,5 +168,6 @@
   "account.validation.passwordConfirm": "Confirmer votre mot de passe",
   "account.validation.passwordMatch": "Les mots de passe ne correspondent pas",
   "account.validation.passwordLength": "Mot de passe doit être d'au moins 8 caractères",
-  "corpid.validation.length": "S'il vous plaît entrer 7 chiffres"
+  "corpid.validation.length": "S'il vous plaît entrer 7 chiffres",
+  "categories.select": "Choisissez une Catégorie"
 }

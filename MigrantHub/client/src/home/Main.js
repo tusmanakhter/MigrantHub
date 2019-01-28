@@ -10,13 +10,13 @@ import Grid from '@material-ui/core/Grid';
 class MainDashboard extends Component {
 
   render() {
-    const { friendPanelVisibility, serviceCategoryVisibility, SearchBarVisibility } = this.props;
+    const { classes, friendPanelVisibility, serviceCategoryVisibility, SearchBarVisibility } = this.props;
 
     return (
       <React.Fragment>
         <MainLayout>
           <SearchBar />
-          <ServiceMain location={this.props.location} />
+          <ServiceMain />
         </MainLayout>
       </React.Fragment>
     );
