@@ -26,7 +26,7 @@ import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
 import { Redirect } from 'react-router-dom';
 import axios from 'axios';
-import Auth from 'routes/Auth';
+import { AuthConsumer } from 'routes/AuthContext';
 import UserTypes from 'lib/UserTypes';
 import { TextField } from '@material-ui/core';
 import { FormattedMessage } from 'react-intl';
@@ -78,6 +78,7 @@ class Login extends React.Component {
 
   // Send profile data in post body to add to mongodb
   sendLogin(e) {
+    const Auth = this.context;
     axios.post('/api/accounts/login',
       qs.stringify({
         username: e.state.username,
@@ -112,6 +113,7 @@ class Login extends React.Component {
 
   // Send profile data in post body to add to mongodb /api/accounts/auth/facebook
   facebookAuthenticationLogin = (reply) => {
+    const Auth = this.context;
     axios.post('/api/accounts/auth/facebook',
       qs.stringify({
         access_token: reply.accessToken,
@@ -135,6 +137,7 @@ class Login extends React.Component {
 
   // Send profile data in post body to add to mongodb /api/accounts/auth/facebook
   googleAuthenticationLogin = (reply) => {
+    const Auth = this.context;
     axios.post('/api/accounts/auth/google',
       qs.stringify({
         access_token: reply.accessToken,
@@ -272,7 +275,9 @@ class Login extends React.Component {
 }
 
 Login.propTypes = {
-  classes: PropTypes.object.isRequired
+  classes: PropTypes.object.isRequired,
 };
+
+Login.contextType = AuthConsumer;
 
 export default withStyles(loginPageStyle)(Login);

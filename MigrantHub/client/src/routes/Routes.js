@@ -23,7 +23,7 @@ import EventForm from 'events/EventForm';
 import ServiceShare from 'services/ServiceShare';
 import ViewMigrantProfile from 'account/personal/ViewMigrantProfile';
 import ViewBusinessProfile from 'account/business/ViewBusinessProfile';
-import Auth from 'routes/Auth';
+import { AuthConsumer } from 'routes/AuthContext';
 import UsersList from 'People/UsersList';
 import ServiceCategories from 'services/ServiceCategories';
 import FriendPanel from 'components/FriendPanel/FriendPanel';
@@ -37,6 +37,7 @@ class Routes extends Component {
   }
 
   async componentDidMount() {
+    const Auth = this.context;
     await Auth.authenticate();
     this.setState({
       isLoading: false,
@@ -82,5 +83,7 @@ class Routes extends Component {
     );
   }
 }
+
+Routes.contextType = AuthConsumer;
 
 export default Routes;

@@ -1,12 +1,11 @@
 import React from 'react';
 import { Route, Redirect } from 'react-router-dom';
-import Auth from 'routes/Auth';
+import { AuthConsumer } from 'routes/AuthContext';
 import UserTypes from 'lib/UserTypes';
 
-const isLoggedIn = () => {
-  const auth = Auth.isAuthenticated('user');
+const isLoggedIn = (isAuthenticated, user) => {
+  const auth = isAuthenticated('user');
   if (auth === true) {
-    const user = JSON.parse(localStorage.getItem('user'));
     if (user.type === UserTypes.ADMIN) {
       return '/admin/dashboard';
     } else if (user.type === UserTypes.MIGRANT) {
@@ -20,23 +19,27 @@ const isLoggedIn = () => {
 };
 
 const UnprotectedRoute = ({ component: Component, type, ...rest }) => (
-  <Route
-    {...rest}
-    render={(props) => {
-      const path = isLoggedIn();
-      if (path === false) {
-        return <Component {...props} />;
-      } else {
-        return (<Redirect
-          to={{
-            pathname: path,
-            state: { from: props.location },
-          }}
-        />);
-      }
-    }
-    }
-  />
+  <AuthConsumer>
+    {({ isAuthenticated, user }) => (
+      <Route
+        {...rest}
+        render={(props) => {
+          const path = isLoggedIn(isAuthenticated, user);
+          if (path === false) {
+            return <Component {...props} />;
+          } else {
+            return (<Redirect
+              to={{
+                pathname: path,
+                state: { from: props.location },
+              }}
+            />);
+          }
+        }
+        }
+      />
+    )}
+  </AuthConsumer>
 );
 
 export default UnprotectedRoute;
