@@ -15,6 +15,7 @@ import StarRatingComponent from 'react-star-rating-component';
 import axios from 'axios';
 import qs from 'qs';
 import UserTypes from 'lib/UserTypes';
+import { AuthConsumer } from 'routes/AuthContext';
 
 const styles = {
   avatar: {
@@ -35,15 +36,12 @@ class ViewReviews extends Component {
       addReviewMessage: '',
       addReviewError: false,
       currentReviewSet: [],
-      userType: '',
-      userId: '',
     };
   }
 
   componentDidMount() {
     this.getReviews();
-    this.getUser();
-  };
+  }
 
   getReviews = () => {
     var reviews
@@ -116,17 +114,9 @@ class ViewReviews extends Component {
       });
   };
 
-  getUser() {
-    const user = JSON.parse(localStorage.getItem('user'));
-    this.setState({
-      userType: user.type,
-      userId: user.username
-    });
-  }
-
   render() {
     const { serviceTitle, open, scroll, editMode, onClose } = this.props;
-    const { redirectTo, redirectToURL, redirectState, rating, comment, addReviewMessage, addReviewError, currentReviewSet, userType, userId} = this.state;
+    const { redirectTo, redirectToURL, redirectState, rating, comment, addReviewMessage, addReviewError, currentReviewSet } = this.state;
 
     if (redirectTo) {
       return (
@@ -139,118 +129,122 @@ class ViewReviews extends Component {
     }
 
     return (
-      <div>
-        <Dialog
-          open={open}
-          onClose={onClose}
-          scroll={scroll}
-          aria-labelledby="scroll-dialog-title"
-          fullWidth
-          maxWidth="150"
-        >
-          <DialogTitle id="scroll-dialog-title">{serviceTitle}</DialogTitle>
-          <DialogContent>
-              { userType !== UserTypes.ADMIN 
-                && (
-                  <React.Fragment>
-                    <div style={{backgroundColor: "#F0F0F0"}}><div style={{margin: "20px"}}>
-                     <br></br>
-                    <Typography variant="h5" color="inherit" paragraph>
-                      <u>Your Review:</u>
-                      <Grid container alignItems="center" spacing={8}>
-                        <Grid item xs={1}>
-                          <div>
-                            <br></br>
-                            <StarRatingComponent 
-                              name="rate" 
-                              starCount={5}
-                              value={rating}
-                              onStarClick={this.handleStarClick.bind(this)}
-                            />
-                          </div>
-                        </Grid>
-                        <Grid item xs={8}>
-                          <TextField
-                            id="comment"
-                            name="comment"
-                            label="Comment"
-                            multiline
-                            rows="3"
-                            value={comment}
-                            onChange={event => this.handleChange(event)}
-                            fullWidth
-                            helperText={addReviewMessage}
-                            error={addReviewError}
-                          />
-                        </Grid>
-                        <Grid item xs={2}>
-                          <br></br>
-                          <Button onClick={this.handlePostReview} color="primary">
-                            Post Review
-                          </Button>
-                        </Grid>
-                      </Grid>
-                    </Typography>
-                    <br></br>
-                    </div></div>
-                  </React.Fragment>
-                )
-              }
-            <hr></hr>
-            <div style={{margin: "20px"}}>
-              {
-                currentReviewSet.map((review) => {
-                  return (
-                    <div>
-                      <Grid container alignItems="center" spacing={8}>
-                        <Grid item xs={1}>
-                            <div>
-                              <StarRatingComponent 
-                                name="rate" 
-                                editing={false}
-                                starCount={5}
-                                value={review.rating}
+      <AuthConsumer>
+        {({ user }) => (
+          <div>
+            <Dialog
+              open={open}
+              onClose={onClose}
+              scroll={scroll}
+              aria-labelledby="scroll-dialog-title"
+              fullWidth
+              maxWidth="150"
+            >
+              <DialogTitle id="scroll-dialog-title">{serviceTitle}</DialogTitle>
+              <DialogContent>
+                  { user.type !== UserTypes.ADMIN 
+                    && (
+                      <React.Fragment>
+                        <div style={{backgroundColor: "#F0F0F0"}}><div style={{margin: "20px"}}>
+                        <br></br>
+                        <Typography variant="h5" color="inherit" paragraph>
+                          <u>Your Review:</u>
+                          <Grid container alignItems="center" spacing={8}>
+                            <Grid item xs={1}>
+                              <div>
+                                <br></br>
+                                <StarRatingComponent 
+                                  name="rate" 
+                                  starCount={5}
+                                  value={rating}
+                                  onStarClick={this.handleStarClick.bind(this)}
+                                />
+                              </div>
+                            </Grid>
+                            <Grid item xs={8}>
+                              <TextField
+                                id="comment"
+                                name="comment"
+                                label="Comment"
+                                multiline
+                                rows="3"
+                                value={comment}
+                                onChange={event => this.handleChange(event)}
+                                fullWidth
+                                helperText={addReviewMessage}
+                                error={addReviewError}
                               />
-                            </div>
-                        </Grid>
-                        <Grid item xs={7}>
-                          <Typography variant="h5" color="inherit" paragraph>
-                            {review.comment}
-                          </Typography>
-                        </Grid>
-                        <Grid item xs={3}>
-                          <Typography variant="h5" color="inherit" paragraph>
-                            <p>{review.time}</p>
-                          </Typography>
-                        </Grid>
-                        <Grid item xs={1}>
-                        { ((userType === UserTypes.ADMIN) || userId === (review.user))
-                        &&
-                          <Button size="small" color="secondary" onClick={() => {this.handleDeleteReview(review._id)}}>
-                            Delete
-                          </Button>
-                        }
-                        </Grid>
-                      </Grid>
-                      <hr></hr>
-                    </div>
-                  )
-                })
-              }
-            </div>
-          </DialogContent>
-          <DialogActions>
-            {editMode && (
-              <Button onClick={this.handleEdit} color="primary">
-                    Edit
-              </Button>
-            )}
-            <Button onClick={onClose} color="primary">
-              Cancel
-            </Button>
-          </DialogActions>
-        </Dialog>
-      </div>
+                            </Grid>
+                            <Grid item xs={2}>
+                              <br></br>
+                              <Button onClick={this.handlePostReview} color="primary">
+                                Post Review
+                              </Button>
+                            </Grid>
+                          </Grid>
+                        </Typography>
+                        <br></br>
+                        </div></div>
+                      </React.Fragment>
+                    )
+                  }
+                <hr></hr>
+                <div style={{margin: "20px"}}>
+                  {
+                    currentReviewSet.map((review) => {
+                      return (
+                        <div>
+                          <Grid container alignItems="center" spacing={8}>
+                            <Grid item xs={1}>
+                                <div>
+                                  <StarRatingComponent 
+                                    name="rate" 
+                                    editing={false}
+                                    starCount={5}
+                                    value={review.rating}
+                                  />
+                                </div>
+                            </Grid>
+                            <Grid item xs={7}>
+                              <Typography variant="h5" color="inherit" paragraph>
+                                {review.comment}
+                              </Typography>
+                            </Grid>
+                            <Grid item xs={3}>
+                              <Typography variant="h5" color="inherit" paragraph>
+                                <p>{review.time}</p>
+                              </Typography>
+                            </Grid>
+                            <Grid item xs={1}>
+                            { ((user.type === UserTypes.ADMIN) || user.username === (review.user))
+                            &&
+                              <Button size="small" color="secondary" onClick={() => {this.handleDeleteReview(review._id)}}>
+                                Delete
+                              </Button>
+                            }
+                            </Grid>
+                          </Grid>
+                          <hr></hr>
+                        </div>
+                      )
+                    })
+                  }
+                </div>
+              </DialogContent>
+              <DialogActions>
+                {editMode && (
+                  <Button onClick={this.handleEdit} color="primary">
+                        Edit
+                  </Button>
+                )}
+                <Button onClick={onClose} color="primary">
+                  Cancel
+                </Button>
+              </DialogActions>
+            </Dialog>
+          </div>
+        )}
+      </AuthConsumer>
     );
   }
 }

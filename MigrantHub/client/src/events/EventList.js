@@ -12,6 +12,7 @@ import UserTypes from 'lib/UserTypes';
 import NavPanel from 'components/NavPanel/NavPanel';
 import GridContainer from "components/Grid/GridContainer.jsx";
 import { FormattedMessage } from 'react-intl';
+import { AuthConsumer } from 'routes/AuthContext';
 
 const styles = theme => ({
   mainContainer: {
@@ -35,25 +36,15 @@ class EventList extends Component {
     };
 
     this.getData = this.getData.bind(this);
-    this.getUser = this.getUser.bind(this);
   }
 
 
   componentDidMount(props) {
     this.getData(this, props);
-    this.getUser();
   }
 
   componentWillReceiveProps(props) {
     this.getData(this, props);
-    this.getUser();
-  }
-
-  getUser() {
-    const user = JSON.parse(localStorage.getItem('user'));
-    this.setState({
-      type: user.type,
-    });
   }
 
   getData(event, props = this.props) {
@@ -104,48 +95,51 @@ class EventList extends Component {
 
   render() {
     const { classes } = this.props;
-    const { items, editMode, editOwner, type } = this.state;
-
+    const { items, editMode, editOwner } = this.state;
     return (
-      <MainLayout>
-        <div className={classes.mainContainer}>
-          {type !== UserTypes.ADMIN
-            && (
-              <div>
-                {this.renderRedirectToEventForm()}
-                <Button
-                  variant="contained"
-                  color="primary"
-                  className={classes.button}
-                  onClick={this.setRedirectToEventForm}
-                >
-                  <FormattedMessage id="event.create" />
-                </Button>
-              </div>
-            )
-          }
-          <GridContainer>
-            {
-              items.map(item => (
-                <EventItem
-                  eventId={item._id}
-                  eventName={item.eventName}
-                  eventImagePath={item.eventImagePath}
-                  description={item.description}
-                  location={item.location}
-                  dateStart={item.dateStart}
-                  dateEnd={item.dateEnd}
-                  timeStart={item.timeStart}
-                  timeEnd={item.timeEnd}
-                  editMode={editMode}
-                  editOwner={editOwner}
-                  getData={this.getData}
-                />
-              ))
-            }
-          </GridContainer>
-        </div>
-      </MainLayout>
+      <AuthConsumer>
+        {({ user }) => (
+          <MainLayout>
+            <div className={classes.mainContainer}>
+              {user.type !== UserTypes.ADMIN
+                && (
+                  <div>
+                    {this.renderRedirectToEventForm()}
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      className={classes.button}
+                      onClick={this.setRedirectToEventForm}
+                    >
+                      <FormattedMessage id="event.create" />
+                    </Button>
+                  </div>
+                )
+              }
+              <GridContainer>
+                {
+                  items.map(item => (
+                    <EventItem
+                      eventId={item._id}
+                      eventName={item.eventName}
+                      eventImagePath={item.eventImagePath}
+                      description={item.description}
+                      location={item.location}
+                      dateStart={item.dateStart}
+                      dateEnd={item.dateEnd}
+                      timeStart={item.timeStart}
+                      timeEnd={item.timeEnd}
+                      editMode={editMode}
+                      editOwner={editOwner}
+                      getData={this.getData}
+                    />
+                  ))
+                }
+              </GridContainer>
+            </div>
+          </MainLayout>
+        )}
+      </AuthConsumer>
     );
   }
 }

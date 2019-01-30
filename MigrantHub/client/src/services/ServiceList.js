@@ -13,6 +13,7 @@ import QuestionnairePanel from 'components/QuestionnairePanel/QuestionnairePanel
 import Grid from '@material-ui/core/Grid';
 import NavPanel from 'components/NavPanel/NavPanel';
 import { FormattedMessage } from 'react-intl';
+import { AuthConsumer } from 'routes/AuthContext';
 
 const styles = theme => ({
   mainContainer: {
@@ -37,17 +38,14 @@ class ServiceList extends Component {
     };
 
     this.getData = this.getData.bind(this);
-    this.getUser = this.getUser.bind(this);
   }
 
   componentDidMount(props) {
     this.getData(this, props);
-    this.getUser();
   }
 
   componentWillReceiveProps(props) {
     this.getData(this, props);
-    this.getUser();
   }
 
   getData(event, props = this.props) {
@@ -89,13 +87,6 @@ class ServiceList extends Component {
     });
   }
 
-  getUser() {
-    const user = JSON.parse(localStorage.getItem('user'));
-    this.setState({
-      type: user.type,
-    });
-  }
-
   setRedirectToServiceForm = () => {
     this.setState({
       redirectToServiceForm: true,
@@ -128,67 +119,71 @@ class ServiceList extends Component {
 
   render() {
     const { classes, ...rest } = this.props;
-    const { items, editMode, editOwner, type } = this.state;
+    const { items, editMode, editOwner } = this.state;
     return (
-      <React.Fragment>
-        <MainLayout>
-          <div className={classes.mainContainer}>
-            {type !== UserTypes.ADMIN
-              && (
-                <div>
-                  {this.renderRedirectToServiceForm()}
-                  {this.renderRedirectToSuggestionForm()}
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    className={classes.button}
-                    onClick={this.setRedirectToServiceForm}
-                  >
-                    <FormattedMessage id="service.create" />
-                  </Button>
-                  { type === UserTypes.MIGRANT
-                    && (
-                    <Button
-                      variant="contained"
-                      color="primary"
-                      className={classes.button}
-                      onClick={this.setRedirectToSuggestionForm}
-                    >
-                      <FormattedMessage id="service.addsuggestion" />
-                    </Button>
-                    )
+      <AuthConsumer>
+        {({ user }) => (
+          <React.Fragment>
+            <MainLayout>
+              <div className={classes.mainContainer}>
+                {user.type !== UserTypes.ADMIN
+                  && (
+                    <div>
+                      {this.renderRedirectToServiceForm()}
+                      {this.renderRedirectToSuggestionForm()}
+                      <Button
+                        variant="contained"
+                        color="primary"
+                        className={classes.button}
+                        onClick={this.setRedirectToServiceForm}
+                      >
+                        <FormattedMessage id="service.create" />
+                      </Button>
+                      { user.type === UserTypes.MIGRANT
+                        && (
+                        <Button
+                          variant="contained"
+                          color="primary"
+                          className={classes.button}
+                          onClick={this.setRedirectToSuggestionForm}
+                        >
+                          <FormattedMessage id="service.addsuggestion" />
+                        </Button>
+                        )
+                      }
+                    </div>
+                  )
+                }
+                <GridContainer>
+                  {' '}
+                  {
+                    items.map(item => (
+                      <ServiceItem
+                        serviceId={item._id}
+                        serviceTitle={item.serviceTitle}
+                        serviceImagePath={item.serviceImagePath}
+                        serviceDescription={item.serviceDescription}
+                        serviceSummary={item.serviceSummary}
+                        category={item.category}
+                        subcategory={item.subcategory}
+                        serviceLocation={item.location}
+                        serviceDate={item.serviceDate}
+                        serviceHours={item.serviceHours}
+                        editMode={editMode}
+                        editOwner={editOwner}
+                        getData={this.getData}
+                      />
+                    ))
                   }
-                </div>
-              )
-            }
-            <GridContainer>
-              {' '}
-              {
-                items.map(item => (
-                  <ServiceItem
-                    serviceId={item._id}
-                    serviceTitle={item.serviceTitle}
-                    serviceImagePath={item.serviceImagePath}
-                    serviceDescription={item.serviceDescription}
-                    serviceSummary={item.serviceSummary}
-                    category={item.category}
-                    subcategory={item.subcategory}
-                    serviceLocation={item.location}
-                    serviceDate={item.serviceDate}
-                    serviceHours={item.serviceHours}
-                    editMode={editMode}
-                    editOwner={editOwner}
-                    getData={this.getData}
-                  />
-                ))
-              }
-              <Grid item xs={2}>
-                <div className="Panel">{<QuestionnairePanel />}</div>
-              </Grid>
-            </GridContainer >
-          </div >
-        </MainLayout>
-      </React.Fragment>
+                  <Grid item xs={2}>
+                    <div className="Panel">{<QuestionnairePanel />}</div>
+                  </Grid>
+                </GridContainer >
+              </div >
+            </MainLayout>
+          </React.Fragment>
+        )}
+      </AuthConsumer>
     );
   }
 }
