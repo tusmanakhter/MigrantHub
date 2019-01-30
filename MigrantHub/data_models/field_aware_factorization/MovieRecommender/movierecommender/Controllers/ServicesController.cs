@@ -15,10 +15,8 @@ using Microsoft.ML.Runtime.Api;
 using Microsoft.ML.Runtime.Data;
 using Microsoft.ML.Runtime.Learners;
 using Microsoft.ML.Runtime;
-using Microsoft.ML.Runtime.Data;
 using Microsoft.ML.Core.Data;
 using Microsoft.ML.Runtime.Training;
-using Microsoft.ML;
 using Microsoft.ML.StaticPipe;
 using Microsoft.ML.Trainers;
 using System.IO;
@@ -83,7 +81,7 @@ namespace servicerecommender.Controllers
                 WatchedServices.Add(_serviceService.Get(tuple.Item1));
             }
 
-            // 3. Create an Rating Prediction Output Class
+            // 3. Create a Rating Prediction Output Class
             RatingPrediction prediction = null;
             foreach (var service in _serviceService._trendingServices)
             {

@@ -26,10 +26,10 @@ namespace ServiceRecommenderModel
             //Call the following piece of code for splitting the ratings.csv into ratings_train.csv and ratings.test.csv.
             // Program.dataprep();
 
-            //STEP 1: Create MLContext to be shared across the model creation workflow objects 
+            //STEP 1: set up the environment for the ML to take place
             var ctx = new MLContext();
 
-            //STEP 2: Create a reader by defining the schema for reading the service recommendation datasets
+            //STEP 2: create the "reader" by defining the way it should read from the dataset files
             var reader = ctx.Data.TextReader(new TextLoader.Arguments()
             {
                 Separator = ",",
