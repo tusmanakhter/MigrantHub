@@ -2482,6 +2482,140 @@
           "lib/netstandard2.0/Microsoft.IdentityModel.Xml.dll": {}
         }
       },
+      "Microsoft.ML/0.7.0": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.ML.CpuMath": "0.7.0",
+          "Newtonsoft.Json": "10.0.3",
+          "System.CodeDom": "4.4.0",
+          "System.Collections.Immutable": "1.5.0",
+          "System.ComponentModel.Composition": "4.5.0",
+          "System.Memory": "4.5.1",
+          "System.Reflection.Emit.Lightweight": "4.3.0",
+          "System.Threading.Tasks.Dataflow": "4.8.0"
+        },
+        "compile": {
+          "lib/netstandard2.0/Microsoft.ML.Api.dll": {},
+          "lib/netstandard2.0/Microsoft.ML.Core.dll": {},
+          "lib/netstandard2.0/Microsoft.ML.Data.dll": {},
+          "lib/netstandard2.0/Microsoft.ML.Ensemble.dll": {},
+          "lib/netstandard2.0/Microsoft.ML.FastTree.dll": {},
+          "lib/netstandard2.0/Microsoft.ML.KMeansClustering.dll": {},
+          "lib/netstandard2.0/Microsoft.ML.Legacy.dll": {},
+          "lib/netstandard2.0/Microsoft.ML.Maml.dll": {},
+          "lib/netstandard2.0/Microsoft.ML.PCA.dll": {},
+          "lib/netstandard2.0/Microsoft.ML.PipelineInference.dll": {},
+          "lib/netstandard2.0/Microsoft.ML.ResultProcessor.dll": {},
+          "lib/netstandard2.0/Microsoft.ML.SamplesUtils.dll": {},
+          "lib/netstandard2.0/Microsoft.ML.StandardLearners.dll": {},
+          "lib/netstandard2.0/Microsoft.ML.Sweeper.dll": {},
+          "lib/netstandard2.0/Microsoft.ML.Transforms.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/Microsoft.ML.Api.dll": {},
+          "lib/netstandard2.0/Microsoft.ML.Core.dll": {},
+          "lib/netstandard2.0/Microsoft.ML.Data.dll": {},
+          "lib/netstandard2.0/Microsoft.ML.Ensemble.dll": {},
+          "lib/netstandard2.0/Microsoft.ML.FastTree.dll": {},
+          "lib/netstandard2.0/Microsoft.ML.KMeansClustering.dll": {},
+          "lib/netstandard2.0/Microsoft.ML.Legacy.dll": {},
+          "lib/netstandard2.0/Microsoft.ML.Maml.dll": {},
+          "lib/netstandard2.0/Microsoft.ML.PCA.dll": {},
+          "lib/netstandard2.0/Microsoft.ML.PipelineInference.dll": {},
+          "lib/netstandard2.0/Microsoft.ML.ResultProcessor.dll": {},
+          "lib/netstandard2.0/Microsoft.ML.SamplesUtils.dll": {},
+          "lib/netstandard2.0/Microsoft.ML.StandardLearners.dll": {},
+          "lib/netstandard2.0/Microsoft.ML.Sweeper.dll": {},
+          "lib/netstandard2.0/Microsoft.ML.Transforms.dll": {}
+        },
+        "build": {
+          "build/netstandard2.0/Microsoft.ML.props": {},
+          "build/netstandard2.0/Microsoft.ML.targets": {}
+        },
+        "runtimeTargets": {
+          "runtimes/linux-x64/native/libFactorizationMachineNative.so": {
+            "assetType": "native",
+            "rid": "linux-x64"
+          },
+          "runtimes/linux-x64/native/libFastTreeNative.so": {
+            "assetType": "native",
+            "rid": "linux-x64"
+          },
+          "runtimes/linux-x64/native/libLdaNative.so": {
+            "assetType": "native",
+            "rid": "linux-x64"
+          },
+          "runtimes/osx-x64/native/libFactorizationMachineNative.dylib": {
+            "assetType": "native",
+            "rid": "osx-x64"
+          },
+          "runtimes/osx-x64/native/libFastTreeNative.dylib": {
+            "assetType": "native",
+            "rid": "osx-x64"
+          },
+          "runtimes/osx-x64/native/libLdaNative.dylib": {
+            "assetType": "native",
+            "rid": "osx-x64"
+          },
+          "runtimes/win-x64/native/FactorizationMachineNative.dll": {
+            "assetType": "native",
+            "rid": "win-x64"
+          },
+          "runtimes/win-x64/native/FastTreeNative.dll": {
+            "assetType": "native",
+            "rid": "win-x64"
+          },
+          "runtimes/win-x64/native/LdaNative.dll": {
+            "assetType": "native",
+            "rid": "win-x64"
+          },
+          "runtimes/win-x86/native/FactorizationMachineNative.dll": {
+            "assetType": "native",
+            "rid": "win-x86"
+          },
+          "runtimes/win-x86/native/FastTreeNative.dll": {
+            "assetType": "native",
+            "rid": "win-x86"
+          },
+          "runtimes/win-x86/native/LdaNative.dll": {
+            "assetType": "native",
+            "rid": "win-x86"
+          }
+        }
+      },
+      "Microsoft.ML.CpuMath/0.7.0": {
+        "type": "package",
+        "dependencies": {
+          "System.Memory": "4.5.1"
+        },
+        "compile": {
+          "lib/netstandard2.0/Microsoft.ML.CpuMath.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/Microsoft.ML.CpuMath.dll": {}
+        },
+        "build": {
+          "build/netstandard2.0/_._": {}
+        },
+        "runtimeTargets": {
+          "runtimes/linux-x64/native/libCpuMathNative.so": {
+            "assetType": "native",
+            "rid": "linux-x64"
+          },
+          "runtimes/osx-x64/native/libCpuMathNative.dylib": {
+            "assetType": "native",
+            "rid": "osx-x64"
+          },
+          "runtimes/win-x64/native/CpuMathNative.dll": {
+            "assetType": "native",
+            "rid": "win-x64"
+          },
+          "runtimes/win-x86/native/CpuMathNative.dll": {
+            "assetType": "native",
+            "rid": "win-x86"
+          }
+        }
+      },
       "Microsoft.Net.Http.Headers/2.2.0": {
         "type": "package",
         "dependencies": {
@@ -2995,6 +3129,15 @@
           "lib/netcoreapp2.0/_._": {}
         }
       },
+      "System.CodeDom/4.4.0": {
+        "type": "package",
+        "compile": {
+          "ref/netstandard2.0/System.CodeDom.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/System.CodeDom.dll": {}
+        }
+      },
       "System.Collections/4.3.0": {
         "type": "package",
         "dependencies": {
@@ -3078,6 +3221,18 @@
         },
         "runtime": {
           "lib/netcoreapp2.0/_._": {}
+        }
+      },
+      "System.ComponentModel.Composition/4.5.0": {
+        "type": "package",
+        "dependencies": {
+          "System.Security.Permissions": "4.5.0"
+        },
+        "compile": {
+          "ref/netstandard2.0/System.ComponentModel.Composition.dll": {}
+        },
+        "runtime": {
+          "lib/netcoreapp2.0/System.ComponentModel.Composition.dll": {}
         }
       },
       "System.Console/4.3.0": {
@@ -3642,7 +3797,7 @@
           "System.Runtime": "4.3.0"
         },
         "compile": {
-          "ref/netstandard1.0/_._": {}
+          "ref/netstandard1.0/System.Reflection.Emit.Lightweight.dll": {}
         },
         "runtime": {
           "lib/netstandard1.3/System.Reflection.Emit.Lightweight.dll": {}
@@ -4245,6 +4400,15 @@
         },
         "compile": {
           "ref/netstandard1.3/System.Threading.Tasks.dll": {}
+        }
+      },
+      "System.Threading.Tasks.Dataflow/4.8.0": {
+        "type": "package",
+        "compile": {
+          "ref/netcoreapp2.0/_._": {}
+        },
+        "runtime": {
+          "lib/netcoreapp2.0/_._": {}
         }
       },
       "System.Threading.Tasks.Extensions/4.5.1": {
@@ -6811,6 +6975,82 @@
         "microsoft.identitymodel.xml.nuspec"
       ]
     },
+    "Microsoft.ML/0.7.0": {
+      "sha512": "2z7QtJDplQeS+1AMIAziodcZ27HOPcSj2HU+MDirTpyiR5eeMGj/7dXdg7XE+vxUpR+i5fBxqNSF8vxSvUyeVA==",
+      "type": "package",
+      "path": "microsoft.ml/0.7.0",
+      "files": [
+        ".signature.p7s",
+        "LICENSE",
+        "THIRD-PARTY-NOTICES.TXT",
+        "analyzers/dotnet/cs/Microsoft.ML.Analyzer.dll",
+        "build/netstandard2.0/Microsoft.ML.props",
+        "build/netstandard2.0/Microsoft.ML.targets",
+        "lib/netstandard2.0/Microsoft.ML.Api.dll",
+        "lib/netstandard2.0/Microsoft.ML.Api.xml",
+        "lib/netstandard2.0/Microsoft.ML.Core.dll",
+        "lib/netstandard2.0/Microsoft.ML.Core.xml",
+        "lib/netstandard2.0/Microsoft.ML.Data.dll",
+        "lib/netstandard2.0/Microsoft.ML.Data.xml",
+        "lib/netstandard2.0/Microsoft.ML.Ensemble.dll",
+        "lib/netstandard2.0/Microsoft.ML.Ensemble.xml",
+        "lib/netstandard2.0/Microsoft.ML.FastTree.dll",
+        "lib/netstandard2.0/Microsoft.ML.FastTree.xml",
+        "lib/netstandard2.0/Microsoft.ML.KMeansClustering.dll",
+        "lib/netstandard2.0/Microsoft.ML.KMeansClustering.xml",
+        "lib/netstandard2.0/Microsoft.ML.Legacy.dll",
+        "lib/netstandard2.0/Microsoft.ML.Legacy.xml",
+        "lib/netstandard2.0/Microsoft.ML.Maml.dll",
+        "lib/netstandard2.0/Microsoft.ML.Maml.xml",
+        "lib/netstandard2.0/Microsoft.ML.PCA.dll",
+        "lib/netstandard2.0/Microsoft.ML.PCA.xml",
+        "lib/netstandard2.0/Microsoft.ML.PipelineInference.dll",
+        "lib/netstandard2.0/Microsoft.ML.PipelineInference.xml",
+        "lib/netstandard2.0/Microsoft.ML.ResultProcessor.dll",
+        "lib/netstandard2.0/Microsoft.ML.ResultProcessor.xml",
+        "lib/netstandard2.0/Microsoft.ML.SamplesUtils.dll",
+        "lib/netstandard2.0/Microsoft.ML.SamplesUtils.xml",
+        "lib/netstandard2.0/Microsoft.ML.StandardLearners.dll",
+        "lib/netstandard2.0/Microsoft.ML.StandardLearners.xml",
+        "lib/netstandard2.0/Microsoft.ML.Sweeper.dll",
+        "lib/netstandard2.0/Microsoft.ML.Sweeper.xml",
+        "lib/netstandard2.0/Microsoft.ML.Transforms.dll",
+        "lib/netstandard2.0/Microsoft.ML.Transforms.xml",
+        "microsoft.ml.0.7.0.nupkg.sha512",
+        "microsoft.ml.nuspec",
+        "runtimes/linux-x64/native/libFactorizationMachineNative.so",
+        "runtimes/linux-x64/native/libFastTreeNative.so",
+        "runtimes/linux-x64/native/libLdaNative.so",
+        "runtimes/osx-x64/native/libFactorizationMachineNative.dylib",
+        "runtimes/osx-x64/native/libFastTreeNative.dylib",
+        "runtimes/osx-x64/native/libLdaNative.dylib",
+        "runtimes/win-x64/native/FactorizationMachineNative.dll",
+        "runtimes/win-x64/native/FastTreeNative.dll",
+        "runtimes/win-x64/native/LdaNative.dll",
+        "runtimes/win-x86/native/FactorizationMachineNative.dll",
+        "runtimes/win-x86/native/FastTreeNative.dll",
+        "runtimes/win-x86/native/LdaNative.dll"
+      ]
+    },
+    "Microsoft.ML.CpuMath/0.7.0": {
+      "sha512": "12qReYAFZhQNV2dYZyt1exE9oLDeg18xAhgdPpxc/j0otcijF4pA5N15kCTXr8fHIXYkhaXfei75W77sg2Xe2A==",
+      "type": "package",
+      "path": "microsoft.ml.cpumath/0.7.0",
+      "files": [
+        ".signature.p7s",
+        "LICENSE",
+        "THIRD-PARTY-NOTICES.TXT",
+        "build/netstandard2.0/Microsoft.ML.CpuMath.props",
+        "lib/netstandard2.0/Microsoft.ML.CpuMath.dll",
+        "lib/netstandard2.0/Microsoft.ML.CpuMath.xml",
+        "microsoft.ml.cpumath.0.7.0.nupkg.sha512",
+        "microsoft.ml.cpumath.nuspec",
+        "runtimes/linux-x64/native/libCpuMathNative.so",
+        "runtimes/osx-x64/native/libCpuMathNative.dylib",
+        "runtimes/win-x64/native/CpuMathNative.dll",
+        "runtimes/win-x86/native/CpuMathNative.dll"
+      ]
+    },
     "Microsoft.Net.Http.Headers/2.2.0": {
       "sha512": "yFn57woR2lfjUfcoqrc+F8hbmsjTLNu+14FIiGGMUTfvQtZE6xJRwFntp4oMJi99KpMHYX5MOS0mmjRSEwGtLw==",
       "type": "package",
@@ -7749,6 +7989,27 @@
         "version.txt"
       ]
     },
+    "System.CodeDom/4.4.0": {
+      "sha512": "E/lvSfMFPtNflAgdM6AuPU8JbZdqdSoGpU66G7SrduCqdrFyPflaqqV4gN2d0hrCBpu92HaoqpUP5d+g9Itcxw==",
+      "type": "package",
+      "path": "system.codedom/4.4.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "LICENSE.TXT",
+        "THIRD-PARTY-NOTICES.TXT",
+        "lib/net461/System.CodeDom.dll",
+        "lib/netstandard2.0/System.CodeDom.dll",
+        "ref/net461/System.CodeDom.dll",
+        "ref/net461/System.CodeDom.xml",
+        "ref/netstandard2.0/System.CodeDom.dll",
+        "ref/netstandard2.0/System.CodeDom.xml",
+        "system.codedom.4.4.0.nupkg.sha512",
+        "system.codedom.nuspec",
+        "useSharedDesignerContext.txt",
+        "version.txt"
+      ]
+    },
     "System.Collections/4.3.0": {
       "sha512": "3Dcj85/TBdVpL5Zr+gEEBUuFe2icOnLalmEh9hfck1PTYbbyWuZgh4fmm2ysCLTrqLQw6t3TgTyJ+VLp+Qb+Lw==",
       "type": "package",
@@ -8067,6 +8328,40 @@
         "ref/xamarinwatchos10/_._",
         "system.componentmodel.annotations.4.5.0.nupkg.sha512",
         "system.componentmodel.annotations.nuspec",
+        "useSharedDesignerContext.txt",
+        "version.txt"
+      ]
+    },
+    "System.ComponentModel.Composition/4.5.0": {
+      "sha512": "pOLRbg5l0P53ZWs8fAqiLPHb1fJum2H1XoWeO5XV6b/oCzRSSzz5LPtzDUZay2KCNWCn7w38zx1+swei210iJg==",
+      "type": "package",
+      "path": "system.componentmodel.composition/4.5.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "LICENSE.TXT",
+        "THIRD-PARTY-NOTICES.TXT",
+        "lib/MonoAndroid10/_._",
+        "lib/MonoTouch10/_._",
+        "lib/net45/_._",
+        "lib/netcoreapp2.0/System.ComponentModel.Composition.dll",
+        "lib/netstandard2.0/System.ComponentModel.Composition.dll",
+        "lib/uap10.0.16299/_._",
+        "lib/xamarinios10/_._",
+        "lib/xamarinmac20/_._",
+        "lib/xamarintvos10/_._",
+        "lib/xamarinwatchos10/_._",
+        "ref/MonoAndroid10/_._",
+        "ref/MonoTouch10/_._",
+        "ref/net45/_._",
+        "ref/netstandard2.0/System.ComponentModel.Composition.dll",
+        "ref/uap10.0.16299/_._",
+        "ref/xamarinios10/_._",
+        "ref/xamarinmac20/_._",
+        "ref/xamarintvos10/_._",
+        "ref/xamarinwatchos10/_._",
+        "system.componentmodel.composition.4.5.0.nupkg.sha512",
+        "system.componentmodel.composition.nuspec",
         "useSharedDesignerContext.txt",
         "version.txt"
       ]
@@ -11586,6 +11881,31 @@
         "system.threading.tasks.nuspec"
       ]
     },
+    "System.Threading.Tasks.Dataflow/4.8.0": {
+      "sha512": "CyD248zUJP2zTYFGhWZ3CnndgI9rFeyU3CMHHPZugsMenblyQw5GruwS0YaOBp0PdgpPvFhg5pqs0Yns0NvgNQ==",
+      "type": "package",
+      "path": "system.threading.tasks.dataflow/4.8.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "LICENSE.TXT",
+        "THIRD-PARTY-NOTICES.TXT",
+        "lib/netcoreapp2.0/_._",
+        "lib/netstandard1.0/System.Threading.Tasks.Dataflow.dll",
+        "lib/netstandard1.0/System.Threading.Tasks.Dataflow.xml",
+        "lib/netstandard1.1/System.Threading.Tasks.Dataflow.dll",
+        "lib/netstandard1.1/System.Threading.Tasks.Dataflow.xml",
+        "lib/netstandard2.0/System.Threading.Tasks.Dataflow.dll",
+        "lib/netstandard2.0/System.Threading.Tasks.Dataflow.xml",
+        "lib/portable-net45+win8+wpa81/System.Threading.Tasks.Dataflow.dll",
+        "lib/portable-net45+win8+wpa81/System.Threading.Tasks.Dataflow.xml",
+        "ref/netcoreapp2.0/_._",
+        "system.threading.tasks.dataflow.4.8.0.nupkg.sha512",
+        "system.threading.tasks.dataflow.nuspec",
+        "useSharedDesignerContext.txt",
+        "version.txt"
+      ]
+    },
     "System.Threading.Tasks.Extensions/4.5.1": {
       "sha512": "rckdhLJtzQ3EI+0BGuq7dUVtCSnerqAoAmL3S6oMRZ4VMZTL3Rq9DS8IDW57c6PYVebA4O0NbSA1BDvyE18UMA==",
       "type": "package",
@@ -12065,6 +12385,7 @@
     ".NETCoreApp,Version=v2.2": [
       "Microsoft.AspNetCore.App >= 2.2.0",
       "Microsoft.AspNetCore.Razor.Design >= 2.2.0",
+      "Microsoft.ML >= 0.7.0",
       "Microsoft.NETCore.App >= 2.2.0"
     ]
   },
@@ -12075,11 +12396,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/Mira/Projects/Service_Recommender/Service_Recommender/Service_Recommender.csproj",
+      "projectUniqueName": "/Users/Mira/Repository/MigrantHub/MigrantHub/data_models/Service_Recommender/Service_Recommender/Service_Recommender.csproj",
       "projectName": "Service_Recommender",
-      "projectPath": "/Users/Mira/Projects/Service_Recommender/Service_Recommender/Service_Recommender.csproj",
+      "projectPath": "/Users/Mira/Repository/MigrantHub/MigrantHub/data_models/Service_Recommender/Service_Recommender/Service_Recommender.csproj",
       "packagesPath": "/Users/Mira/.nuget/packages/",
-      "outputPath": "/Users/Mira/Projects/Service_Recommender/Service_Recommender/obj",
+      "outputPath": "/Users/Mira/Repository/MigrantHub/MigrantHub/data_models/Service_Recommender/Service_Recommender/obj",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "/usr/local/share/dotnet/sdk/NuGetFallbackFolder"
@@ -12116,6 +12437,10 @@
             "suppressParent": "All",
             "target": "Package",
             "version": "[2.2.0, )"
+          },
+          "Microsoft.ML": {
+            "target": "Package",
+            "version": "[0.7.0, )"
           },
           "Microsoft.NETCore.App": {
             "suppressParent": "All",
