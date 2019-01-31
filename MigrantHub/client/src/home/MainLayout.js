@@ -130,7 +130,9 @@ class MainLayout extends React.Component {
 }
 
 MainLayout.propTypes = {
-  classes: PropTypes.object.isRequired
+  classes: PropTypes.object.isRequired,
+  location: PropTypes.string.isRequired,
+  history: PropTypes.string.isRequired,
 };
 
 export default withStyles(appStyle)(MainLayout);

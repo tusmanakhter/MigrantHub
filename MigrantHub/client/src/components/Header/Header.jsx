@@ -1,43 +1,42 @@
-import React from "react";
-import PropTypes from "prop-types";
-import cx from "classnames";
+import React from 'react';
+import PropTypes from 'prop-types';
+import cx from 'classnames';
 
 // @material-ui/core components
-import withStyles from "@material-ui/core/styles/withStyles";
-import AppBar from "@material-ui/core/AppBar";
-import Toolbar from "@material-ui/core/Toolbar";
-import Hidden from "@material-ui/core/Hidden";
+import withStyles from '@material-ui/core/styles/withStyles';
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
+import Hidden from '@material-ui/core/Hidden';
 
 // material-ui icons
-import Menu from "@material-ui/icons/Menu";
-import MoreVert from "@material-ui/icons/MoreVert";
-import ViewList from "@material-ui/icons/ViewList";
+import Menu from '@material-ui/icons/Menu';
+import MoreVert from '@material-ui/icons/MoreVert';
+import ViewList from '@material-ui/icons/ViewList';
 
 // core components
-import HeaderLinks from "./HeaderLinks";
 import Button from "components/CustomButtons/Button.jsx";
 
 import headerStyle from "assets/jss/material-dashboard-pro-react/components/headerStyle.jsx";
+import HeaderLinks from "./HeaderLinks";
 
 function Header({ ...props }) {
   function makeBrand() {
     var name;
     if (name) {
       return name;
-    } else {
+    } 
       return "Home Page";
-    }
+    
   }
   const { classes, color, rtlActive } = props;
   const appBarClasses = cx({
-    [" " + classes[color]]: color
+    [' ' + classes[color]]: color,
   });
-  const sidebarMinimize =
-    classes.sidebarMinimize +
-    " " +
+  const sidebarMinimize =    `${classes.sidebarMinimize 
+    } ${ 
     cx({
       [classes.sidebarMinimizeRTL]: rtlActive
-    });
+    })}`;
   return (
     <AppBar className={classes.appBar + appBarClasses}>
       <Toolbar className={classes.container}>
@@ -53,7 +52,7 @@ function Header({ ...props }) {
                 <ViewList className={classes.sidebarMiniIcon} />
               </Button>
             ) : (
-                <Button
+              <Button
                   justIcon
                   round
                   color="white"
@@ -61,11 +60,10 @@ function Header({ ...props }) {
                 >
                   <MoreVert className={classes.sidebarMiniIcon} />
                 </Button>
-              )}
+            )}
           </div>
         </Hidden>
-        <div className={classes.flex}>
-        </div>
+        <div className={classes.flex} />
         <Hidden smDown implementation="css">
           <HeaderLinks rtlActive={rtlActive} />
         </Hidden>
@@ -87,8 +85,8 @@ function Header({ ...props }) {
 
 Header.propTypes = {
   classes: PropTypes.object.isRequired,
-  color: PropTypes.oneOf(["primary", "info", "success", "warning", "danger"]),
-  rtlActive: PropTypes.bool
+  color: PropTypes.oneOf(['primary', 'info', 'success', 'warning', 'danger']),
+  rtlActive: PropTypes.bool,
 };
 
 export default withStyles(headerStyle)(Header);
