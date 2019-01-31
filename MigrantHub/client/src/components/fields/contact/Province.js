@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { provinces } from 'lib/SignUpConstants';
 import Dropdown from 'components/fields/generic/Dropdown';
+import { FormattedMessage } from 'react-intl';
 
 const Province = (props) => {
   const {
@@ -11,7 +12,7 @@ const Province = (props) => {
   return (
     <Dropdown
       name="province"
-      label="Province/Territory"
+      label={<FormattedMessage id="contact.province" />}
       value={province}
       error={provinceError}
       options={provinces}

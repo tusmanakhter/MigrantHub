@@ -25,12 +25,15 @@ const auth = {
     });
   },
   unauthenticate() {
-    const user = {
-      authenticated: false,
-      username: null,
-      type: null,
-    };
-    localStorage.setItem('user', JSON.stringify(user));
+    return new Promise((resolve) => {
+      const user = {
+        authenticated: false,
+        username: null,
+        type: null,
+      };
+      localStorage.setItem('user', JSON.stringify(user));
+      resolve('done');
+    });
   },
   isAuthenticated(migrant, business, admin) {
     const user = JSON.parse(localStorage.getItem('user'));

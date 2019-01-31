@@ -23,7 +23,7 @@
 // import TimelinePage from "views/Pages/Timeline.jsx";
 // import RTLSupport from "views/Pages/RTLSupport.jsx";
 // import Dashboard from "../home/Main";
-
+import React from 'react';
 import serviceRoutes from "./Routes";
 
 // @material-ui/icons
@@ -38,11 +38,12 @@ import Timeline from "@material-ui/icons/Timeline";
 import DateRange from "@material-ui/icons/DateRange";
 import People from "@material-ui/icons/People";
 import ServicePage from "../services/ServiceList";
+import { FormattedMessage } from 'react-intl';
 
 var dashRoutes = [
   {
     path: "/services",
-    name: "Service Page",
+    name: <FormattedMessage id="services"/>,
     mini: "SP",
     icon: DashboardIcon,
     component: ServicePage,
@@ -50,14 +51,14 @@ var dashRoutes = [
   },
   {
     path: "/events",
-    name: "Event Page",
+    name: <FormattedMessage id="events"/>,
     mini: "EP",
     icon: DateRange,
     component: ServicePage
   },
   {
     path: "/friends",
-    name: "Friends",
+    name: <FormattedMessage id="friends"/>,
     mini: "FP",
     icon: People,
     component: ServicePage

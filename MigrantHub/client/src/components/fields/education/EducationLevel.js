@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { educationLevels } from 'lib/SignUpConstants';
 import Dropdown from 'components/fields/generic/Dropdown';
+import { FormattedMessage } from 'react-intl';
 
 const EducationLevel = (props) => {
   const {
@@ -10,7 +11,7 @@ const EducationLevel = (props) => {
   return (
     <Dropdown
       name="educationLevel"
-      label="Education Level"
+      label={<FormattedMessage id="educ.level" />}
       value={educationLevel}
       error={educationLevelError}
       options={educationLevels}

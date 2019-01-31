@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { genders } from 'lib/SignUpConstants';
 import RadioOption from 'components/fields/generic/RadioOption';
+import { FormattedMessage } from 'react-intl';
 
 const Gender = (props) => {
   const {
@@ -11,7 +12,7 @@ const Gender = (props) => {
   return (
     <RadioOption
       name="gender"
-      label="Gender"
+      label={<FormattedMessage id="personal.gender" />}
       value={gender}
       error={genderError}
       options={genders}
