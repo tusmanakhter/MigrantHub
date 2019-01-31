@@ -14,6 +14,8 @@ using Microsoft.ML.StaticPipe;
 using Microsoft.ML.Trainers;
 using static Microsoft.ML.Core.Data.SchemaShape;
 using Microsoft.ML.Runtime.Api;
+using Google.Apis.Storage.v1;
+using Google.Cloud.Storage.V1;
 
 namespace Service_Recommender.Controllers
 {
@@ -41,10 +43,28 @@ namespace Service_Recommender.Controllers
         [HttpGet]
         public ActionResult<IEnumerable<string>> Get()
         {
-        
-        string TrainingDataLocation = @"./Data/ratings_train.csv";
-        string TestDataLocation = @"./Data/ratings_test.csv";
-        string ModelPath = @"./Model/model.zip";
+            string googleKeyPath = @"./key.json";
+            System.Environment.SetEnvironmentVariable("GOOGLE_APPLICATION_CREDENTIALS", googleKeyPath);
+
+
+            //download the latest ratings files from the google bucket and store them locally
+            var storage = StorageClient.Create();
+            using (var outputFile = System.IO.File.OpenWrite(@"./Data/ratings_train.csv"))
+            {
+                storage.DownloadObject("data_model_files", "ratings_train.csv", outputFile);
+            }
+            using (var outputFile = System.IO.File.OpenWrite(@"./Data/ratings_test.csv"))
+            {
+                storage.DownloadObject("data_model_files", "ratings_test.csv", outputFile);
+            }
+
+            string TrainingDataLocation = @"./Data/ratings_train.csv";
+            string TestDataLocation = @"./Data/ratings_test.csv";
+            string ModelPath = @"./Model/model.zip";
+
+            //string TrainingDataLocation = @"https://storage.googleapis.com/data_model_files/ratings_train.csv";
+            //string TestDataLocation = @"https://storage.googleapis.com/data_model_files/ratings_test.csv";
+            //string ModelPath = @"./Model/model.zip";
 
             //STEP 1: set up the environment for the ML to take place
             var ctx = new MLContext();
@@ -99,7 +119,7 @@ namespace Service_Recommender.Controllers
             using (var fs = new FileStream(ModelPath, FileMode.Create, FileAccess.Write, FileShare.Write))
                 ctx.Model.Save(model, fs);
 
-            return new string[] { "value1", "value2" };
+            return new string[] { "value1", "value2", System.Environment.GetEnvironmentVariable("GOOGLE_APPLICATION_CREDENTIALS") };
 
         }
 

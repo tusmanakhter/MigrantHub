@@ -9,6 +9,11 @@
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
     <PackageReference Include="Microsoft.ML" Version="0.7.0" />
+    <PackageReference Include="Google.Apis.Storage.v1" Version="1.37.0.1467" />
+    <PackageReference Include="Google.Cloud.Storage.V1" Version="2.2.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Remove=".DS_Store" />
+  </ItemGroup>
 </Project>
