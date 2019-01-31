@@ -27,10 +27,10 @@ namespace Service_Rating_Model.Controllers
         [HttpGet]
         public ActionResult<IEnumerable<string>> Get()
         {
-            string TrainingDataLocation = @"./Data/ratings_train.csv";
-            string TestDataLocation = @"./Data/ratings_test.csv";
-            string DataLocation = @"./Data/ratings.csv";
-            string ModelPath = @"./Model/model.zip";
+            string TrainingDataLocation = @"home/test/MigrantHub/MigrantHub/data_models/Service_Rating_Model/Service_Recommender/Data/ratings_train.csv";
+            string TestDataLocation = @"home/test/MigrantHub/MigrantHub/data_models/Service_Rating_Model/Service_Recommender/Data/ratings_test.csv";
+            string DataLocation = @"home/test/MigrantHub/MigrantHub/data_models/Service_Rating_Model/Service_Recommender/Data/ratings.csv";
+            string ModelPath = @"home/test/MigrantHub/MigrantHub/data_models/Service_Rating_Model/Service_Recommender/Model/model.zip";
             string bucketPath = "data_model_files";
 
             //set up the access to the google storage bucket
@@ -45,7 +45,7 @@ namespace Service_Rating_Model.Controllers
             }
 
             //transforms the data using binary classification and splits the ratings.csv into ratings_train.csv and ratings_test.csv.
-             dataprep();
+            dataprep();
 
             //set up the ML environment and create the "reader" by defining the way it should read from the dataset files
             var ctx = new MLContext();
@@ -77,7 +77,7 @@ namespace Service_Rating_Model.Controllers
                 ctx.Model.Save(model, fs);
 
             //upload the latest model from the local temp path and store it in the google bucket for later use
-            using (var inputFile = System.IO.File.OpenRead(@"./Model/model.zip"))
+            using (var inputFile = System.IO.File.OpenRead(@"home/test/MigrantHub/MigrantHub/data_models/Service_Rating_Model/Service_Recommender/Model/model.zip"))
             {
                 storage.UploadObject(bucketPath, "model.zip", null, inputFile);
             }
@@ -91,7 +91,7 @@ namespace Service_Rating_Model.Controllers
         public static void dataprep()
         {
 
-            string[] dataset = System.IO.File.ReadAllLines(@"./Data/ratings.csv");
+            string[] dataset = System.IO.File.ReadAllLines(@"home/test/MigrantHub/MigrantHub/data_models/Service_Rating_Model/Service_Recommender/Data/ratings.csv");
 
             string[] new_dataset = new string[dataset.Length];
             new_dataset[0] = dataset[0];
@@ -112,8 +112,8 @@ namespace Service_Rating_Model.Controllers
             var sorted = body.Select(line => new { SortKey = Int32.Parse(line.Split(',')[3]), Line = line })
                              .OrderBy(x => x.SortKey)
                              .Select(x => x.Line);
-            System.IO.File.WriteAllLines(@"./Data/ratings_train.csv", dataset.Take(1).Concat(sorted.Take((int)(numLines * 0.9))));
-            System.IO.File.WriteAllLines(@"./Data/ratings_test.csv", dataset.Take(1).Concat(sorted.TakeLast((int)(numLines * 0.1))));
+            System.IO.File.WriteAllLines(@"home/test/MigrantHub/MigrantHub/data_models/Service_Rating_Model/Service_Recommender/Data/ratings_train.csv", dataset.Take(1).Concat(sorted.Take((int)(numLines * 0.9))));
+            System.IO.File.WriteAllLines(@"home/test/MigrantHub/MigrantHub/data_models/Service_Rating_Model/Service_Recommender/Data/ratings_test.csv", dataset.Take(1).Concat(sorted.TakeLast((int)(numLines * 0.1))));
         }
     }
 }
