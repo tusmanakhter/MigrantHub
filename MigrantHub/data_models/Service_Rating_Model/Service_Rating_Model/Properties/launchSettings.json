@@ -4,7 +4,7 @@
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
     "iisExpress": {
-      "applicationUrl": "http://localhost:8128",
+      "applicationUrl": "http://localhost:8060",
       "sslPort": 44310
     }
   },
@@ -12,15 +12,15 @@
     "IIS Express": {
       "commandName": "IISExpress",
       "launchBrowser": true,
-      "launchUrl": "api/recommendation",
+      "launchUrl": "api/model",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "Service_Recommender": {
+    "Service_Rating_Model": {
       "commandName": "Project",
       "launchBrowser": true,
-      "launchUrl": "api/recommendation/1",
+      "launchUrl": "api/model",
       "applicationUrl": "https://localhost:5001;http://localhost:5000",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
