@@ -29,6 +29,7 @@ namespace Service_Rating_Model.Controllers
         {
             string TrainingDataLocation = @"./Data/ratings_train.csv";
             string TestDataLocation = @"./Data/ratings_test.csv";
+            string DataLocation = @"./Data/ratings.csv";
             string ModelPath = @"./Model/model.zip";
             string bucketPath = "data_model_files";
 
@@ -38,14 +39,13 @@ namespace Service_Rating_Model.Controllers
 
             //download the latest ratings files from the google bucket and store them locally for temp use
             var storage = StorageClient.Create();
-            using (var outputFile = System.IO.File.OpenWrite(TrainingDataLocation))
+            using (var outputFile = System.IO.File.OpenWrite(DataLocation))
             {
-                storage.DownloadObject(bucketPath, "ratings_train.csv", outputFile);
+                storage.DownloadObject(bucketPath, "ratings.csv", outputFile);
             }
-            using (var outputFile = System.IO.File.OpenWrite(TestDataLocation))
-            {
-                storage.DownloadObject(bucketPath, "ratings_test.csv", outputFile);
-            }
+
+            //transforms the data using binary classification and splits the ratings.csv into ratings_train.csv and ratings_test.csv.
+             dataprep();
 
             //set up the ML environment and create the "reader" by defining the way it should read from the dataset files
             var ctx = new MLContext();
@@ -83,6 +83,37 @@ namespace Service_Rating_Model.Controllers
             }
 
             return new string[] { "Successfully grabbed the latest ratings and exported their data model to the GCP Storage Bucket " + bucketPath + "! :)" };
+        }
+
+        // the problem needs to be set up as a binary classification problem. So this method:
+        // - goes through all the ratings and replaces the ratings > 3 with 1 (recommended), and ratings < 3 as 0 (not recommended)
+        // - splits the ratings.csv into rating_train.csv and ratings_test.csv used for model training and testing
+        public static void dataprep()
+        {
+
+            string[] dataset = System.IO.File.ReadAllLines(@"./Data/ratings.csv");
+
+            string[] new_dataset = new string[dataset.Length];
+            new_dataset[0] = dataset[0];
+            for (var i = 1; i < dataset.Length; i++)
+            {
+                var line = dataset[i];
+                var lineSplit = line.Split(',');
+                var rating = Double.Parse(lineSplit[2]);
+                rating = rating > 3 ? 1 : 0;
+                lineSplit[2] = rating.ToString();
+                var new_line = string.Join(',', lineSplit);
+                new_dataset[i] = new_line;
+
+            }
+            dataset = new_dataset;
+            var numLines = dataset.Length;
+            var body = dataset.Skip(1);
+            var sorted = body.Select(line => new { SortKey = Int32.Parse(line.Split(',')[3]), Line = line })
+                             .OrderBy(x => x.SortKey)
+                             .Select(x => x.Line);
+            System.IO.File.WriteAllLines(@"./Data/ratings_train.csv", dataset.Take(1).Concat(sorted.Take((int)(numLines * 0.9))));
+            System.IO.File.WriteAllLines(@"./Data/ratings_test.csv", dataset.Take(1).Concat(sorted.TakeLast((int)(numLines * 0.1))));
         }
     }
 }

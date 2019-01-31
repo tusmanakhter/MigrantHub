@@ -12655,11 +12655,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/Mira/Repository/MigrantHub/MigrantHub/data_models/Service_Recommender/Service_Recommender/Service_Rating_Model.csproj",
+      "projectUniqueName": "/Users/Mira/Repository/MigrantHub/MigrantHub/data_models/Service_Rating_Model/Service_Recommender/Service_Rating_Model.csproj",
       "projectName": "Service_Rating_Model",
-      "projectPath": "/Users/Mira/Repository/MigrantHub/MigrantHub/data_models/Service_Recommender/Service_Recommender/Service_Rating_Model.csproj",
+      "projectPath": "/Users/Mira/Repository/MigrantHub/MigrantHub/data_models/Service_Rating_Model/Service_Recommender/Service_Rating_Model.csproj",
       "packagesPath": "/Users/Mira/.nuget/packages/",
-      "outputPath": "/Users/Mira/Repository/MigrantHub/MigrantHub/data_models/Service_Recommender/Service_Recommender/obj",
+      "outputPath": "/Users/Mira/Repository/MigrantHub/MigrantHub/data_models/Service_Rating_Model/Service_Recommender/obj",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "/usr/local/share/dotnet/sdk/NuGetFallbackFolder"
