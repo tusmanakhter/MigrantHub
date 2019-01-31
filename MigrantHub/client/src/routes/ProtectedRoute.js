@@ -1,4 +1,5 @@
 import React from 'react';
+import AppLayout from 'app/AppLayout';
 import { Route, Redirect } from 'react-router-dom';
 import { AuthConsumer } from 'routes/AuthContext';
 
@@ -10,7 +11,9 @@ const ProtectedRoute = ({
       <Route
         {...rest}
         render={props => (isAuthenticated(migrant, business, admin) === true ? (
-          <Component {...props} />
+          <AppLayout>
+            <Component {...props} />
+          </AppLayout>
         ) : (
           <Redirect
             to={{

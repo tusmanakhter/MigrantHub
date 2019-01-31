@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import qs from 'qs';
-import HomeLayout from 'home/HomeLayout';
 import SignUp from 'account/common/SignUp';
 import AccountInfo from 'account/common/AccountInfo';
 import PersonalInfo from 'account/personal/Minimal/PersonalInfo';
@@ -100,13 +99,11 @@ class SignUpMigrant extends Component {
 
     return (
       <React.Fragment>
-        <HomeLayout>
-          <SignUp
-            createAccount={this.createAccount}
-            steps={steps}
-            getStepContent={this.getStepContent}
-          />
-        </HomeLayout>
+        <SignUp
+          createAccount={this.createAccount}
+          steps={steps}
+          getStepContent={this.getStepContent}
+        />
       </React.Fragment>
     );
   }

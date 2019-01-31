@@ -20,6 +20,7 @@
     "material-dashboard-react": "^1.5.0",
     "material-ui-rating": "^2.0.0",
     "mdbreact": "^4.8.1",
+    "perfect-scrollbar": "^1.4.0",
     "prop-types": "^15.6.2",
     "qs": "^6.5.2",
     "react": "^16.5.2",

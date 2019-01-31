@@ -10,10 +10,8 @@ import Checkbox from '@material-ui/core/Checkbox';
 import validator from 'validator';
 import axios from 'axios';
 import { Redirect } from 'react-router-dom';
-import Header from 'components/Header/Header';
 import { provinces } from 'lib/SignUpConstants';
 import { PhoneMask, PostalCodeMask } from 'lib/Masks';
-import NavPanel from 'components/NavPanel/NavPanel';
 
 const qs = require('qs');
 
@@ -572,8 +570,6 @@ class EventForm extends Component {
     return (
       <React.Fragment>
         <div className={classes.mainContainer}>
-          <NavPanel />
-          <Header />
           {messageFromServer.split('\n').map((item, key) => (
             <span key={key}>
               {item}

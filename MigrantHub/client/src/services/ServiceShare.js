@@ -113,14 +113,6 @@ class ServiceShare extends Component {
 
     return (
       <div>
-        <MuiThemeProvider theme={theme}>
-          <Header
-            appLogo={appLogo}
-            appName={appName}
-            userPic={userPic}
-          />
-
-        </MuiThemeProvider>
         <Grid container spacing={24} style={gridStyle}>
             <Grid item xs={12}>
                 <br></br>

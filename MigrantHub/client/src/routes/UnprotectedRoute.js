@@ -1,10 +1,11 @@
 import React from 'react';
+import HomeLayout from 'home/HomeLayout';
 import { Route, Redirect } from 'react-router-dom';
 import { AuthConsumer } from 'routes/AuthContext';
 import UserTypes from 'lib/UserTypes';
 
 const isLoggedIn = (isAuthenticated, user) => {
-  const auth = isAuthenticated('user');
+  const auth = isAuthenticated(false, false, false);
   if (auth === true) {
     if (user.type === UserTypes.ADMIN) {
       return '/admin/dashboard';
@@ -26,7 +27,11 @@ const UnprotectedRoute = ({ component: Component, type, ...rest }) => (
         render={(props) => {
           const path = isLoggedIn(isAuthenticated, user);
           if (path === false) {
-            return <Component {...props} />;
+            return (
+              <HomeLayout>
+                <Component {...props} />
+              </HomeLayout>
+            );
           } else {
             return (<Redirect
               to={{

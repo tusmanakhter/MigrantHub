@@ -614,8 +614,6 @@ class ServiceForm extends Component {
       return (
         <React.Fragment>
           <div className={classes.mainContainer}>
-            <NavPanel />
-            <Header />
             {messageFromServer}
             {this.renderRedirectToAllServices()}
             <Typography variant="title" gutterBottom>

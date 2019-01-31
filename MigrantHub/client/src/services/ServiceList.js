@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import MainLayout from 'home/MainLayout';
 import PropTypes from 'prop-types';
 import withStyles from '@material-ui/core/styles/withStyles';
 import Button from '@material-ui/core/Button';
@@ -124,63 +123,61 @@ class ServiceList extends Component {
       <AuthConsumer>
         {({ user }) => (
           <React.Fragment>
-            <MainLayout>
-              <div className={classes.mainContainer}>
-                {user.type !== UserTypes.ADMIN
-                  && (
-                    <div>
-                      {this.renderRedirectToServiceForm()}
-                      {this.renderRedirectToSuggestionForm()}
+            <div className={classes.mainContainer}>
+              {user.type !== UserTypes.ADMIN
+                && (
+                  <div>
+                    {this.renderRedirectToServiceForm()}
+                    {this.renderRedirectToSuggestionForm()}
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      className={classes.button}
+                      onClick={this.setRedirectToServiceForm}
+                    >
+                      <FormattedMessage id="service.create" />
+                    </Button>
+                    { user.type === UserTypes.MIGRANT
+                      && (
                       <Button
                         variant="contained"
                         color="primary"
                         className={classes.button}
-                        onClick={this.setRedirectToServiceForm}
+                        onClick={this.setRedirectToSuggestionForm}
                       >
-                        <FormattedMessage id="service.create" />
+                        <FormattedMessage id="service.addsuggestion" />
                       </Button>
-                      { user.type === UserTypes.MIGRANT
-                        && (
-                        <Button
-                          variant="contained"
-                          color="primary"
-                          className={classes.button}
-                          onClick={this.setRedirectToSuggestionForm}
-                        >
-                          <FormattedMessage id="service.addsuggestion" />
-                        </Button>
-                        )
-                      }
-                    </div>
-                  )
+                      )
+                    }
+                  </div>
+                )
+              }
+              <GridContainer>
+                {' '}
+                {
+                  items.map(item => (
+                    <ServiceItem
+                      serviceId={item._id}
+                      serviceTitle={item.serviceTitle}
+                      serviceImagePath={item.serviceImagePath}
+                      serviceDescription={item.serviceDescription}
+                      serviceSummary={item.serviceSummary}
+                      category={item.category}
+                      subcategory={item.subcategory}
+                      serviceLocation={item.location}
+                      serviceDate={item.serviceDate}
+                      serviceHours={item.serviceHours}
+                      editMode={editMode}
+                      editOwner={editOwner}
+                      getData={this.getData}
+                    />
+                  ))
                 }
-                <GridContainer>
-                  {' '}
-                  {
-                    items.map(item => (
-                      <ServiceItem
-                        serviceId={item._id}
-                        serviceTitle={item.serviceTitle}
-                        serviceImagePath={item.serviceImagePath}
-                        serviceDescription={item.serviceDescription}
-                        serviceSummary={item.serviceSummary}
-                        category={item.category}
-                        subcategory={item.subcategory}
-                        serviceLocation={item.location}
-                        serviceDate={item.serviceDate}
-                        serviceHours={item.serviceHours}
-                        editMode={editMode}
-                        editOwner={editOwner}
-                        getData={this.getData}
-                      />
-                    ))
-                  }
-                  <Grid item xs={2}>
-                    <div className="Panel">{<QuestionnairePanel />}</div>
-                  </Grid>
-                </GridContainer >
-              </div >
-            </MainLayout>
+                <Grid item xs={2}>
+                  <div className="Panel">{<QuestionnairePanel />}</div>
+                </Grid>
+              </GridContainer >
+            </div >
           </React.Fragment>
         )}
       </AuthConsumer>

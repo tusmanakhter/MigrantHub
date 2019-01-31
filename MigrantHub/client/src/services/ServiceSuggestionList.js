@@ -4,10 +4,7 @@ import withStyles from '@material-ui/core/styles/withStyles';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import axios from 'axios';
-import { AuthConsumer } from 'routes/AuthContext';
 import ServiceSuggestionItem from './ServiceSuggestionItem';
-import Header from '../components/Header/Header';
-import UserTypes from '../lib/UserTypes';
 
 const styles = theme => ({
   root: {
@@ -48,31 +45,26 @@ class ServiceSuggestionList extends Component {
     const { classes } = this.props;
     const { items } = this.state;
     return (
-      <AuthConsumer>
-        {({ user }) => (
-          <React.Fragment>
-            { user.type !== UserTypes.ADMIN && <Header /> }
-            <Grid container spacing={24}>
-              <Grid item xs={12}>
-                <Paper className={classes.root} elevation={2}>
-                  {
-                    items.map(item => (
-                      <ServiceSuggestionItem
-                        serviceSuggestionId={item._id}
-                        serviceTitle={item.serviceTitle}
-                        serviceSummary={item.serviceSummary}
-                        category={item.category}
-                        subcategory={item.subcategory}
-                        getData={this.getData}
-                      />
-                    ))
-                  }
-                </Paper>
-              </Grid>
-            </Grid>
-          </React.Fragment>
-        )}
-      </AuthConsumer>
+      <React.Fragment>
+        <Grid container spacing={24}>
+          <Grid item xs={12}>
+            <Paper className={classes.root} elevation={2}>
+              {
+                items.map(item => (
+                  <ServiceSuggestionItem
+                    serviceSuggestionId={item._id}
+                    serviceTitle={item.serviceTitle}
+                    serviceSummary={item.serviceSummary}
+                    category={item.category}
+                    subcategory={item.subcategory}
+                    getData={this.getData}
+                  />
+                ))
+              }
+            </Paper>
+          </Grid>
+        </Grid>
+      </React.Fragment>
     );
   }
 }

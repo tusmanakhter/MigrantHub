@@ -30,8 +30,10 @@ import { Link } from 'react-router-dom';
 import { injectIntl, intlShape } from 'react-intl';
 
 import headerLinksStyle from "assets/jss/material-dashboard-pro-react/components/headerLinksStyle";
+import { AuthConsumer } from 'routes/AuthContext';
+import UserTypes from 'lib/UserTypes';
 
-class HeaderLinks extends React.Component {
+class BaseHeaderLinks extends React.Component {
   state = {
     open: false,
     search: '',
@@ -40,6 +42,7 @@ class HeaderLinks extends React.Component {
     redirectToURL: '',
     redirectState: {},
   };
+
   handleClick = () => {
     this.setState({ open: !this.state.open });
   };
@@ -107,7 +110,7 @@ class HeaderLinks extends React.Component {
   }
 
   render() {
-    const { classes, rtlActive, intl } = this.props;
+    const { classes, rtlActive, intl, context } = this.props;
     const { open } = this.state;
     const searchButton =
       classes.top +
@@ -128,8 +131,20 @@ class HeaderLinks extends React.Component {
     const managerClasses = classNames({
       [classes.managerClasses]: true
     });
+
+    let path = '/';
+    switch (context.user.type) {
+      case UserTypes.MIGRANT:
+        path = '/migrant/profile';
+        break;
+      case UserTypes.BUSINESS:
+        path = '/business/profile';
+        break;
+      default:
+        break;
+    }
+
     return (
-      
       <div className={wrapper}>
       {this.renderRedirectTo()}
         <TextField
@@ -259,7 +274,7 @@ class HeaderLinks extends React.Component {
             )}
           </Popper>
         </div>
-        <Link to={`/migrant/profile`}>
+        <Link to={path}>
           <Button
             color="transparent"
             aria-label="Person"
@@ -279,6 +294,12 @@ class HeaderLinks extends React.Component {
     );
   }
 }
+
+const HeaderLinks = props => (
+  <AuthConsumer>
+    {context => <BaseHeaderLinks context={context} {...props} />}
+  </AuthConsumer>
+);
 
 HeaderLinks.propTypes = {
   classes: PropTypes.object.isRequired,

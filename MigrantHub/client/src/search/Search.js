@@ -230,13 +230,11 @@ class Search extends Component {
 
     return (
       <div className={classes.mainContainer}>
-        <NavPanel />
-        <Header/>
         <div className={classes.Panel}>{<QuestionnairePanel />}</div>
         {this.renderServices()}
         {this.renderEvents()}
         {this.renderUsers()}
-        </div>
+      </div>
     );
   }
 }

@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import SignUp from 'account/common/SignUp';
 import AccountInfo from 'account/common/AccountInfo';
-import HomeLayout from 'home/HomeLayout';
 import { FormattedMessage } from 'react-intl';
 
 const qs = require('qs');
@@ -50,13 +49,11 @@ class SignUpAdmin extends Component {
 
     return (
       <React.Fragment>
-        <HomeLayout>
-          <SignUp
-            createAccount={this.createAccount}
-            steps={steps}
-            getStepContent={this.getStepContent}
-          />
-        </HomeLayout>
+        <SignUp
+          createAccount={this.createAccount}
+          steps={steps}
+          getStepContent={this.getStepContent}
+        />
       </React.Fragment>
     );
   }

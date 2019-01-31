@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import withStyles from '@material-ui/core/styles/withStyles';
 import Button from '@material-ui/core/Button';
-import MainLayout from 'home/MainLayout';
 import Paper from '@material-ui/core/Paper';
 import axios from 'axios';
 import { Redirect } from 'react-router-dom';
@@ -99,45 +98,43 @@ class EventList extends Component {
     return (
       <AuthConsumer>
         {({ user }) => (
-          <MainLayout>
-            <div className={classes.mainContainer}>
-              {user.type !== UserTypes.ADMIN
-                && (
-                  <div>
-                    {this.renderRedirectToEventForm()}
-                    <Button
-                      variant="contained"
-                      color="primary"
-                      className={classes.button}
-                      onClick={this.setRedirectToEventForm}
-                    >
-                      <FormattedMessage id="event.create" />
-                    </Button>
-                  </div>
-                )
+          <div className={classes.mainContainer}>
+            {user.type !== UserTypes.ADMIN
+              && (
+                <div>
+                  {this.renderRedirectToEventForm()}
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    className={classes.button}
+                    onClick={this.setRedirectToEventForm}
+                  >
+                    <FormattedMessage id="event.create" />
+                  </Button>
+                </div>
+              )
+            }
+            <GridContainer>
+              {
+                items.map(item => (
+                  <EventItem
+                    eventId={item._id}
+                    eventName={item.eventName}
+                    eventImagePath={item.eventImagePath}
+                    description={item.description}
+                    location={item.location}
+                    dateStart={item.dateStart}
+                    dateEnd={item.dateEnd}
+                    timeStart={item.timeStart}
+                    timeEnd={item.timeEnd}
+                    editMode={editMode}
+                    editOwner={editOwner}
+                    getData={this.getData}
+                  />
+                ))
               }
-              <GridContainer>
-                {
-                  items.map(item => (
-                    <EventItem
-                      eventId={item._id}
-                      eventName={item.eventName}
-                      eventImagePath={item.eventImagePath}
-                      description={item.description}
-                      location={item.location}
-                      dateStart={item.dateStart}
-                      dateEnd={item.dateEnd}
-                      timeStart={item.timeStart}
-                      timeEnd={item.timeEnd}
-                      editMode={editMode}
-                      editOwner={editOwner}
-                      getData={this.getData}
-                    />
-                  ))
-                }
-              </GridContainer>
-            </div>
-          </MainLayout>
+            </GridContainer>
+          </div>
         )}
       </AuthConsumer>
     );
