@@ -1,7 +1,7 @@
 
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Service_Recommender", "Service_Recommender\Service_Recommender.csproj", "{ABFD8A0F-101F-4252-97AF-049AB25C640B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Service_Rating_Model", "Service_Recommender\Service_Rating_Model.csproj", "{ABFD8A0F-101F-4252-97AF-049AB25C640B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

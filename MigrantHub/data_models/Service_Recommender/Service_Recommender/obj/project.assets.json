@@ -12655,9 +12655,9 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/Mira/Repository/MigrantHub/MigrantHub/data_models/Service_Recommender/Service_Recommender/Service_Recommender.csproj",
-      "projectName": "Service_Recommender",
-      "projectPath": "/Users/Mira/Repository/MigrantHub/MigrantHub/data_models/Service_Recommender/Service_Recommender/Service_Recommender.csproj",
+      "projectUniqueName": "/Users/Mira/Repository/MigrantHub/MigrantHub/data_models/Service_Recommender/Service_Recommender/Service_Rating_Model.csproj",
+      "projectName": "Service_Rating_Model",
+      "projectPath": "/Users/Mira/Repository/MigrantHub/MigrantHub/data_models/Service_Recommender/Service_Recommender/Service_Rating_Model.csproj",
       "packagesPath": "/Users/Mira/.nuget/packages/",
       "outputPath": "/Users/Mira/Repository/MigrantHub/MigrantHub/data_models/Service_Recommender/Service_Recommender/obj",
       "projectStyle": "PackageReference",
