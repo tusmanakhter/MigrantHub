@@ -79,6 +79,6 @@ mongoose.connect(connectionString, (error) => {
 const database = mongoose.connection;
 database.on('error', console.error.bind(console, 'MongoDB connection error: '));
 
-generateMLData.generateModel1();
+generateMLData.generateServiceRecommendationData();
 
 module.exports = app;

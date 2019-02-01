@@ -19,8 +19,8 @@ namespace Service_Recommender.Controllers
         [HttpGet("{id}")]
         public ActionResult<string> Get(int id)
         {
-            string modelPath = @"./Model/model.zip";
-            string allServicesPath = @"./Model/allServices.csv";
+            string modelPath = @"./model.zip";
+            string allServicesPath = @"./allServices.csv";
             string bucketPath = "data_model_files";
 
             //set up the access to the google storage bucket
