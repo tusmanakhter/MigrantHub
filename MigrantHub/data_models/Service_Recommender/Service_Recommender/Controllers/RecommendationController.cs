@@ -116,6 +116,10 @@ namespace Service_Recommender.Controllers
                 ratings.Add(Tuple.Create(Int32.Parse(serviceId), normalizedscore));
             }
 
+            //Get the top 3 predictions
+            ratings.Sort((x, y) => y.Item2.CompareTo(x.Item2));
+            if (ratings.Count > 3) ratings.RemoveRange(3, ratings.Count - 3);
+
             //return id.ToString();
             var output = string.Join(",", ratings.Select(t => string.Format("[ '{0}', '{1}']", t.Item1, t.Item2)));
             return output;
