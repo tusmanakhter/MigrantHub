@@ -11,18 +11,18 @@ import footerStyle from 'assets/jss/material-dashboard-pro-react/components/foot
 
 function Footer({ ...props }) {
   const {
- classes, fluid, white, rtlActive 
-} = props;
-  let container = cx({
+    classes, fluid, white,
+  } = props;
+  const container = cx({
     [classes.container]: !fluid,
     [classes.containerFluid]: fluid,
     [classes.whiteColor]: white,
   });
-  let anchor =    classes.a
+  const anchor =    classes.a
     + cx({
       [' ' + classes.whiteColor]: white,
     });
-  let block = cx({
+  const block = cx({
     [classes.block]: true,
     [classes.whiteColor]: white,
   });
@@ -32,16 +32,19 @@ function Footer({ ...props }) {
         <div className={classes.left}>
           <List className={classes.list}>
             <ListItem className={classes.inlineBlock}>
-              <a href="/main" className={block}>
-                {rtlActive ? 'الصفحة الرئيسية' : 'Home'}
+              <a href="/" className={block}>
+                {'Home'}
               </a>
+            </ListItem>
+            <ListItem className={classes.inlineBlock}>
+              <LanguageSwitch />
             </ListItem>
           </List>
         </div>
         <p className={classes.right}>
           &copy; {1900 + new Date().getYear()}{' '}
           <a href="https://www.therefugeecentre.org" className={anchor}>
-            {rtlActive ? '' : 'Le Centre des Réfugiés'}
+            {'Le Centre des Réfugiés'}
           </a>
         </p>
       </div>
@@ -53,7 +56,6 @@ Footer.propTypes = {
   classes: PropTypes.object.isRequired,
   fluid: PropTypes.bool,
   white: PropTypes.bool,
-  rtlActive: PropTypes.bool,
 };
 
 export default withStyles(footerStyle)(Footer);
