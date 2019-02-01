@@ -28,6 +28,7 @@ import CardBody from "components/Card/CardBody.jsx";
 import { cardTitle } from "assets/jss/material-dashboard-pro-react.jsx";
 import SweetAlert from "react-bootstrap-sweetalert";
 import sweetAlertStyle from "assets/jss/material-dashboard-pro-react/views/sweetAlertStyle.jsx";
+import { AuthConsumer } from 'routes/AuthContext';
 import AddToCalendar from 'react-add-to-calendar';
 
 const styles = {
@@ -60,7 +61,6 @@ class ViewEvent extends Component {
       redirectTo: false,
       redirectToURL: '',
       redirectState: {},
-      type: '',
       alert: null,
       show: false,
       event: {
@@ -74,10 +74,6 @@ class ViewEvent extends Component {
     this.hideAlert = this.hideAlert.bind(this);
     this.successDelete = this.successDelete.bind(this);
     this.cancelDetele = this.cancelDetele.bind(this);
-  }
-
-  componentDidMount() {
-    this.getUser();
   }
 
   handleEdit = () => {
@@ -102,13 +98,6 @@ class ViewEvent extends Component {
         }
       });
   };
-
-  getUser() {
-    const user = JSON.parse(localStorage.getItem('user'));
-    this.setState({
-      type: user.type,
-    })
-  }
 
   warningWithConfirmAndCancelMessage() {
     this.setState({
@@ -185,7 +174,7 @@ class ViewEvent extends Component {
       classes, eventName, description, dateStart, dateEnd, timeStart, timeEnd,
       location, open, scroll, onClose,
     } = this.props;
-    const { redirectTo, redirectToURL, redirectState, type } = this.state;
+    const { redirectTo, redirectToURL, redirectState } = this.state;
 
     if (redirectTo) {
       return (
@@ -198,165 +187,169 @@ class ViewEvent extends Component {
     }
 
     return (
-      <div>
-        {this.state.alert}
-        <Dialog
-          open={open}
-          onClose={onClose}
-          style={{ backgroundColor: 'transparent' }}
-          overlayStyle={{ backgroundColor: 'transparent' }}
-          PaperProps={{
-            style: {
-              backgroundColor: 'transparent',
-              boxShadow: 'none',
-            },
-          }}
-          scroll={scroll}
-          aria-labelledby="scroll-dialog-title"
-          fullWidth
-          maxWidth="lg"
-          xs={12} sm={12} md={6}
-        >
-          <GridItem>
-            <Card>
-              <CardHeader>
-                <h4 className={classes.cardTitle}>
-                  {eventName} <small> {dateStart.substring(0, 10)}</small>
-                </h4>
-              </CardHeader>
-              <CardBody>
-                <NavPills
-                  color="rose"
-                  horizontal={{
-                    tabsGrid: { xs: 12, sm: 12, md: 4 },
-                    contentGrid: { xs: 12, sm: 12, md: 8 }
-                  }}
-                  tabs={[
-                    {
-                      tabButton: "Description",
-                      tabIcon: Dashboard,
-                      tabContent: (
-                        <span>
-                          <p>
-                            <center>{description}</center>
-                          </p>
-                          <br />
-                          <p>
-                            <b>Start date:</b>
-                            {' '}
-                            {dateStart.substring(0, 10)}
-                            {' '}
-                            <b>End date:</b>
-                            {' '}
-                            {dateEnd.substring(0, 10)}
-                            {' '}
-                            <b>Start time:</b>
-                            {' '}
-                            {timeStart}
-                            {' '}
-                            <b>End time:</b>
-                            {' '}
-                            {timeEnd}
-                          </p>
-                          <p>
-                            {location !== undefined && (
+      <AuthConsumer>
+        {({ user }) => (
+          <div>
+            {this.state.alert}
+            <Dialog
+              open={open}
+              onClose={onClose}
+              style={{ backgroundColor: 'transparent' }}
+              overlayStyle={{ backgroundColor: 'transparent' }}
+              PaperProps={{
+                style: {
+                  backgroundColor: 'transparent',
+                  boxShadow: 'none',
+                },
+              }}
+              scroll={scroll}
+              aria-labelledby="scroll-dialog-title"
+              fullWidth
+              maxWidth="lg"
+              xs={12} sm={12} md={6}
+            >
+              <GridItem>
+                <Card>
+                  <CardHeader>
+                    <h4 className={classes.cardTitle}>
+                      {eventName} <small> {dateStart.substring(0, 10)}</small>
+                    </h4>
+                  </CardHeader>
+                  <CardBody>
+                    <NavPills
+                      color="rose"
+                      horizontal={{
+                        tabsGrid: { xs: 12, sm: 12, md: 4 },
+                        contentGrid: { xs: 12, sm: 12, md: 8 }
+                      }}
+                      tabs={[
+                        {
+                          tabButton: "Description",
+                          tabIcon: Dashboard,
+                          tabContent: (
+                            <span>
                               <p>
-                                <center><h6><b>Location</b></h6></center>
-                                <Grid>
-                                  <b>Address:</b>
-                                  {' '}
-                                  {location.address}
-                                  <br />
-                                  <b>Apartment:</b>
-                                  {' '}
-                                  {location.apartment}
-                                  <br />
-                                  <b>City:</b>
-                                  {' '}
-                                  {location.city}
-                                  <br />
-                                  <b>Province:</b>
-                                  {' '}
-                                  {location.province}
-                                  <br />
-                                  <b>Postal Code:</b>
-                                  {' '}
-                                  {location.postalCode}
-                                  <br />
-                                  <b>Phone Number:</b>
-                                  {' '}
-                                  {location.phoneNumber}
-                                  <br />
-                                </Grid>
+                                <center>{description}</center>
                               </p>
-                            )}
-                          </p>
-                          <hr />
-                          <p>Share Now! <br />
-                            <Button
-                              justIcon
-                              color="transparent">
-                              <Icon className={classNames(classes.icon, "fab fa-facebook-square")} />
-                            </Button>
-                            <Button
-                              justIcon
-                              color="transparent">
-                              <Icon className={classNames(classes.icon, "fab fa-google-plus")} />
-                            </Button>
-                            <Button
-                              justIcon
-                              color="transparent">
-                              <Icon className={classNames(classes.icon, "fab fa-twitter-square")} />
-                            </Button>
-                          </p>
+                              <br />
+                              <p>
+                                <b>Start date:</b>
+                                {' '}
+                                {dateStart.substring(0, 10)}
+                                {' '}
+                                <b>End date:</b>
+                                {' '}
+                                {dateEnd.substring(0, 10)}
+                                {' '}
+                                <b>Start time:</b>
+                                {' '}
+                                {timeStart}
+                                {' '}
+                                <b>End time:</b>
+                                {' '}
+                                {timeEnd}
+                              </p>
+                              <p>
+                                {location !== undefined && (
+                                  <p>
+                                    <center><h6><b>Location</b></h6></center>
+                                    <Grid>
+                                      <b>Address:</b>
+                                      {' '}
+                                      {location.address}
+                                      <br />
+                                      <b>Apartment:</b>
+                                      {' '}
+                                      {location.apartment}
+                                      <br />
+                                      <b>City:</b>
+                                      {' '}
+                                      {location.city}
+                                      <br />
+                                      <b>Province:</b>
+                                      {' '}
+                                      {location.province}
+                                      <br />
+                                      <b>Postal Code:</b>
+                                      {' '}
+                                      {location.postalCode}
+                                      <br />
+                                      <b>Phone Number:</b>
+                                      {' '}
+                                      {location.phoneNumber}
+                                      <br />
+                                    </Grid>
+                                  </p>
+                                )}
+                              </p>
+                              <hr />
+                              <p>Share Now! <br />
+                                <Button
+                                  justIcon
+                                  color="transparent">
+                                  <Icon className={classNames(classes.icon, "fab fa-facebook-square")} />
+                                </Button>
+                                <Button
+                                  justIcon
+                                  color="transparent">
+                                  <Icon className={classNames(classes.icon, "fab fa-google-plus")} />
+                                </Button>
+                                <Button
+                                  justIcon
+                                  color="transparent">
+                                  <Icon className={classNames(classes.icon, "fab fa-twitter-square")} />
+                                </Button>
+                              </p>
 
-                          <AddToCalendar event={this.state.event} />
-                        </span>
+                              <AddToCalendar event={this.state.event} />
+                            </span>
+                          )
+                        },
+                        {
+                          tabButton: "Map",
+                          tabIcon: AddLocation,
+                          tabContent: (
+                            <span>
+                              <CardBody>
+                                <GoogleMaps
+                                  location={location}
+                                />
+                              </CardBody>
+                            </span>
+                          )
+                        }
+                      ]}
+                    />
+                  </CardBody>
+                  <DialogActions>
+                    {user.type === UserTypes.ADMIN
+                      && (
+                        <Button onClick={this.warningWithConfirmAndCancelMessage.bind(this)} color="secondary">
+                          Delete
+                          </Button>
                       )
-                    },
-                    {
-                      tabButton: "Map",
-                      tabIcon: AddLocation,
-                      tabContent: (
-                        <span>
-                          <CardBody>
-                            <GoogleMaps
-                              location={location}
-                            />
-                          </CardBody>
-                        </span>
-                      )
+                    }}
+                      {this.props.editMode &&
+                      <React.Fragment>
+                        <Button onClick={this.warningWithConfirmAndCancelMessage.bind(this)} color="secondary">
+                          Delete
+                            </Button>
+                        <Button onClick={this.handleEdit} color="primary">
+                          Edit
+                            </Button>
+                      </React.Fragment>
                     }
-                  ]}
-                />
-              </CardBody>
-              <DialogActions>
-                {type === UserTypes.ADMIN
-                  && (
-                    <Button onClick={this.warningWithConfirmAndCancelMessage.bind(this)} color="secondary">
-                      Delete
+                    <Button onClick={onClose} color="primary">
+                      Cancel
                       </Button>
-                  )
-                }}
-                  {this.props.editMode &&
-                  <React.Fragment>
-                    <Button onClick={this.warningWithConfirmAndCancelMessage.bind(this)} color="secondary">
-                      Delete
-                        </Button>
-                    <Button onClick={this.handleEdit} color="primary">
-                      Edit
-                        </Button>
-                  </React.Fragment>
-                }
-                <Button onClick={onClose} color="primary">
-                  Cancel
-                  </Button>
-              </DialogActions>
-            </Card>
-          </GridItem>
-        </Dialog>
+                  </DialogActions>
+                </Card>
+              </GridItem>
+            </Dialog>
 
-      </div>
+          </div>
+        )}
+      </AuthConsumer>
     );
   }
 }

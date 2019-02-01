@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
-import HomeLayout from 'home/HomeLayout';
 import SignUp from 'account/common/SignUp';
 import AccountInfo from 'account/common/AccountInfo';
 import ContactInfo from 'account/common/ContactInfo';
@@ -116,13 +115,11 @@ class SignUpBusiness extends Component {
 
     return (
       <React.Fragment>
-        <HomeLayout>
-          <SignUp
-            createAccount={this.createAccount}
-            steps={steps}
-            getStepContent={this.getStepContent}
-          />
-        </HomeLayout>
+        <SignUp
+          createAccount={this.createAccount}
+          steps={steps}
+          getStepContent={this.getStepContent}
+        />
       </React.Fragment>
     );
   }

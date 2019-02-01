@@ -3,7 +3,6 @@ import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import 'App.css';
 import Header from 'components/Header/Header';
-import MainLayout from 'home/MainLayout';
 import GoogleMaps from 'components/GoogleMaps/GoogleMaps';
 import axios from 'axios';
 import qs from 'qs';
@@ -113,76 +112,74 @@ class ServiceShare extends Component {
     } = this.state;
 
     return (
-      <MainLayout>
-        <div>
-          <Grid container spacing={24} style={gridStyle}>
-            <Grid item xs={12}>
-              <br></br>
-              <h4>{this.state.dataRetrieved}</h4>
-            </Grid>
-            <Grid item xs={12}>
-              <h2>{this.state.serviceTitle}</h2>
-            </Grid>
-            <Grid item xs={12}>
-              <h3>{this.state.serviceSummary}</h3>
-            </Grid>
-            <Grid item xs={12}>
-              <h4>{this.state.serviceDescription}</h4>
-            </Grid>
-            {serviceHours !== undefined && (
-              <Grid item xs={12}>
-                {serviceHours.map((member, index) => (
-                  <Grid item xs={12}>
-                    <b>{member.serviceDay}s {member.startTime} to {member.endTime}</b>
-                  </Grid>
-                ))}
-              </Grid>
-            )}
-            {this.state.location !== undefined && (
-              <Grid item xs={12}>
-                <Grid item xs={12}>
-                  Address:
-                  {' '}
-                  {this.state.location.address}
-                </Grid>
-                <Grid item xs={12}>
-                  Apartment:
-                  {' '}
-                  {this.state.location.apartment}
-                </Grid>
-                <Grid item xs={12}>
-                  City:
-                  {' '}
-                  {this.state.location.city}
-                </Grid>
-                <Grid item xs={12}>
-                  Province:
-                  {' '}
-                  {this.state.location.province}
-                </Grid>
-                <Grid item xs={12}>
-                  Postal Code:
-                  {' '}
-                  {this.state.location.postalCode}
-                </Grid>
-                <Grid item xs={12}>
-                  Phone Number:
-                  {' '}
-                  {this.state.location.phoneNumber}
-                </Grid>
-              </Grid>
-            )}
-            {this.state.location !== undefined && (
-              <GoogleMaps
-                location={this.state.location}
-              />
-            )}
-            <Grid item xs={12}>
-              Service Id : {serviceId}
-            </Grid>
+      <div>
+        <Grid container spacing={24} style={gridStyle}>
+          <Grid item xs={12}>
+            <br></br>
+            <h4>{this.state.dataRetrieved}</h4>
           </Grid>
-        </div>
-      </MainLayout>
+          <Grid item xs={12}>
+            <h2>{this.state.serviceTitle}</h2>
+          </Grid>
+          <Grid item xs={12}>
+            <h3>{this.state.serviceSummary}</h3>
+          </Grid>
+          <Grid item xs={12}>
+            <h4>{this.state.serviceDescription}</h4>
+          </Grid>
+          {serviceHours !== undefined && (
+            <Grid item xs={12}>
+              {serviceHours.map((member, index) => (
+                <Grid item xs={12}>
+                  <b>{member.serviceDay}s {member.startTime} to {member.endTime}</b>
+                </Grid>
+              ))}
+            </Grid>
+          )}
+          {this.state.location !== undefined && (
+            <Grid item xs={12}>
+              <Grid item xs={12}>
+                Address:
+                {' '}
+                {this.state.location.address}
+              </Grid>
+              <Grid item xs={12}>
+                Apartment:
+                {' '}
+                {this.state.location.apartment}
+              </Grid>
+              <Grid item xs={12}>
+                City:
+                {' '}
+                {this.state.location.city}
+              </Grid>
+              <Grid item xs={12}>
+                Province:
+                {' '}
+                {this.state.location.province}
+              </Grid>
+              <Grid item xs={12}>
+                Postal Code:
+                {' '}
+                {this.state.location.postalCode}
+              </Grid>
+              <Grid item xs={12}>
+                Phone Number:
+                {' '}
+                {this.state.location.phoneNumber}
+              </Grid>
+            </Grid>
+          )}
+          {this.state.location !== undefined && (
+            <GoogleMaps
+              location={this.state.location}
+            />
+          )}
+          <Grid item xs={12}>
+            Service Id : {serviceId}
+          </Grid>
+        </Grid>
+      </div>
     );
   }
 }

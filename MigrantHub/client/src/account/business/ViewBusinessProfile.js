@@ -6,6 +6,8 @@ import Header from 'components/Header/Header';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
+import { AuthConsumer } from 'routes/AuthContext';
+
 const qs = require('qs');
 
 const styles = theme => ({
@@ -53,7 +55,7 @@ class ViewBusinessProfile extends Component {
   }
 
   getAccount(e) {
-    const user = JSON.parse(localStorage.getItem('user'));
+    const { user } = this.context;
     axios.get('/api/businesses/' + user.username).then((response) => {
       const jsonObj = qs.parse(qs.stringify(response.data));
 
@@ -91,7 +93,6 @@ class ViewBusinessProfile extends Component {
 
     return (
       <React.Fragment>
-        <Header />
           <div className={classes.root}>
               <Grid
                   container spacing={6}
@@ -237,5 +238,7 @@ class ViewBusinessProfile extends Component {
 ViewBusinessProfile.propTypes = {
   classes: PropTypes.shape({}).isRequired,
 };
+
+ViewBusinessProfile.contextType = AuthConsumer;
 
 export default withStyles(styles)(ViewBusinessProfile);
