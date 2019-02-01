@@ -116,8 +116,9 @@ namespace Service_Recommender.Controllers
                 ratings.Add(Tuple.Create(Int32.Parse(serviceId), normalizedscore));
             }
 
-            return id.ToString();
-
+            //return id.ToString();
+            var output = string.Join(",", ratings.Select(t => string.Format("[ '{0}', '{1}']", t.Item1, t.Item2)));
+            return output;
         }
 
         public float Sigmoid(float x)
