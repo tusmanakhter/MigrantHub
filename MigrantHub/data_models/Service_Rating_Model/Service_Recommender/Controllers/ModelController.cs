@@ -29,7 +29,7 @@ namespace Service_Rating_Model.Controllers
         {
             string TrainingDataLocation = "../Data/ratings_train.csv";
             string TestDataLocation = "../Data/ratings_test.csv";
-            string DataLocation = "test/test/test/Data/ratings.csv";
+            string DataLocation = "./ratings.csv";
             string ModelPath = "../Model/model.zip";
             string bucketPath = "data_model_files";
 
