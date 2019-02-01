@@ -1,0 +1,14 @@
+C:\Users\a-mas\MigrantHub\MigrantHub\data_models\Service_Recommender\Service_Recommender\obj\Debug\netcoreapp2.1\Service_Recommender.csprojAssemblyReference.cache
+C:\Users\a-mas\MigrantHub\MigrantHub\data_models\Service_Recommender\Service_Recommender\obj\Debug\netcoreapp2.1\Service_Recommender.csproj.CoreCompileInputs.cache
+C:\Users\a-mas\MigrantHub\MigrantHub\data_models\Service_Recommender\Service_Recommender\obj\Debug\netcoreapp2.1\Service_Recommender.RazorAssemblyInfo.cache
+C:\Users\a-mas\MigrantHub\MigrantHub\data_models\Service_Recommender\Service_Recommender\obj\Debug\netcoreapp2.1\Service_Recommender.RazorAssemblyInfo.cs
+C:\Users\a-mas\MigrantHub\MigrantHub\data_models\Service_Recommender\Service_Recommender\obj\Debug\netcoreapp2.1\Service_Recommender.AssemblyInfoInputs.cache
+C:\Users\a-mas\MigrantHub\MigrantHub\data_models\Service_Recommender\Service_Recommender\obj\Debug\netcoreapp2.1\Service_Recommender.AssemblyInfo.cs
+C:\Users\a-mas\MigrantHub\MigrantHub\data_models\Service_Recommender\Service_Recommender\bin\Debug\netcoreapp2.1\Service_Recommender.deps.json
+C:\Users\a-mas\MigrantHub\MigrantHub\data_models\Service_Recommender\Service_Recommender\bin\Debug\netcoreapp2.1\Service_Recommender.runtimeconfig.json
+C:\Users\a-mas\MigrantHub\MigrantHub\data_models\Service_Recommender\Service_Recommender\bin\Debug\netcoreapp2.1\Service_Recommender.runtimeconfig.dev.json
+C:\Users\a-mas\MigrantHub\MigrantHub\data_models\Service_Recommender\Service_Recommender\bin\Debug\netcoreapp2.1\Service_Recommender.dll
+C:\Users\a-mas\MigrantHub\MigrantHub\data_models\Service_Recommender\Service_Recommender\bin\Debug\netcoreapp2.1\Service_Recommender.pdb
+C:\Users\a-mas\MigrantHub\MigrantHub\data_models\Service_Recommender\Service_Recommender\obj\Debug\netcoreapp2.1\Service_Recommender.RazorTargetAssemblyInfo.cache
+C:\Users\a-mas\MigrantHub\MigrantHub\data_models\Service_Recommender\Service_Recommender\obj\Debug\netcoreapp2.1\Service_Recommender.dll
+C:\Users\a-mas\MigrantHub\MigrantHub\data_models\Service_Recommender\Service_Recommender\obj\Debug\netcoreapp2.1\Service_Recommender.pdb
