@@ -5,6 +5,10 @@ module.exports = {
     return AdminService.getAdmins(user);
   },
 
+  async getAllAdmins() {
+    return AdminService.getAdmins();
+  },
+
   async getDeletedAdmins() {
     return AdminService.getDeletedAdmins();
   },

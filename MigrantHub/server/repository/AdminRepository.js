@@ -16,7 +16,7 @@ module.exports = {
   },
 
   getAdmins(query) {
-    return Admin.find(query, 'email').exec().then(admins => Promise.resolve(admins)).catch((error) => {
+    return Admin.find(query).exec().then(admins => Promise.resolve(admins)).catch((error) => {
       throw new ServerError('There was an error retrieving admins.', 400, error);
     });
   },

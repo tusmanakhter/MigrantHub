@@ -31,26 +31,8 @@ const SidebarLinks = [
     type: [UserTypes.MIGRANT],
   },
   {
-    path: '/admin/dashboard/admins',
+    path: '/admin/dashboard',
     name: <FormattedMessage id="nav.admins" />,
-    icon: DashboardIcon,
-    type: [UserTypes.ADMIN],
-  },
-  {
-    path: '/admin/dashboard/admins/deleted',
-    name: <FormattedMessage id="nav.deleted" />,
-    icon: DashboardIcon,
-    type: [UserTypes.ADMIN],
-  },
-  {
-    path: '/admin/dashboard/admins/rejected',
-    name: <FormattedMessage id="nav.rejected" />,
-    icon: DashboardIcon,
-    type: [UserTypes.ADMIN],
-  },
-  {
-    path: '/admin/dashboard/admins/unapproved',
-    name: <FormattedMessage id="nav.unapproved" />,
     icon: DashboardIcon,
     type: [UserTypes.ADMIN],
   },
