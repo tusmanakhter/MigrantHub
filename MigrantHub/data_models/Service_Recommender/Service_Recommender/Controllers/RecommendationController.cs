@@ -54,17 +54,22 @@ namespace Service_Recommender.Controllers
         public ActionResult<string> Get(int id)
         {
             string modelPath = @"./Model/model.zip";
+            string allServicesPath = @"./Model/allServices.csv";
             string bucketPath = "data_model_files";
 
             //set up the access to the google storage bucket
             string googleKeyPath = @"./key.json";
             System.Environment.SetEnvironmentVariable("GOOGLE_APPLICATION_CREDENTIALS", googleKeyPath);
 
-            //download the latest model from the google bucket and store it locally for temp use
+            //download the latest model and list of all services from the google bucket and store them locally for temp use
             var storage = StorageClient.Create();
             using (var outputFile = System.IO.File.OpenWrite(modelPath))
             {
                 storage.DownloadObject(bucketPath, "model.zip", outputFile);
+            }
+            using (var outputFile = System.IO.File.OpenWrite(allServicesPath))
+            {
+                storage.DownloadObject(bucketPath, "allServices.csv", outputFile);
             }
 
             // create the local environment
@@ -77,11 +82,14 @@ namespace Service_Recommender.Controllers
                 loadedModel = ctx.Model.Load(stream);
             }
 
+            //fetch the list of all service ids and put them into an array
+            string[] serviceIds = System.IO.File.ReadAllLines(allServicesPath);
+
             //create a prediction function
             var predictionfunction = loadedModel.MakePredictionFunction<RatingData, RatingPrediction>(ctx);
 
             List<Tuple<int, float>> ratings = new List<Tuple<int, float>>();
-            List<Tuple<int, int>> ServiceRatings = _profileService.GetProfileWatchedServices(id);
+            //List<Tuple<int, int>> ServiceRatings = _profileService.GetProfileWatchedServices(id);
             //List<Service> WatchedServices = new List<Service>();
 
             //foreach (Tuple<int, int> tuple in ServiceRatings)
@@ -91,19 +99,30 @@ namespace Service_Recommender.Controllers
 
             // find the rating prediction for each service
             RatingPrediction prediction = null;
-            foreach (var service in _serviceService._trendingServices)
+            //foreach (var service in serviceIds)
+            for (var i = 0; i < serviceIds.Length; i++)
             {
+                var serviceLine = serviceIds[i];
+                var serviceLineSplit = serviceLine.Split(',');
+                var serviceId = serviceLineSplit[0];
+                
                 //4. Call the Rating Prediction for each service prediction
-                prediction = predictionfunction.Predict(new RatingData { userId = id.ToString(), serviceId = service.ServiceID.ToString() });
+                prediction = predictionfunction.Predict(new RatingData { userId = id.ToString(), serviceId = serviceId });
 
                 //5. Normalize the prediction scores for the "ratings" b/w 0 - 100
                 var normalizedscore = Sigmoid(prediction.Score);
 
                 //6. Add the score for recommendation of each service in the trending service list
-                ratings.Add(Tuple.Create(service.ServiceID, normalizedscore));
+                ratings.Add(Tuple.Create(Int32.Parse(serviceId), normalizedscore));
             }
 
             return id.ToString();
+
+        }
+
+        public float Sigmoid(float x)
+        {
+            return (float)(100 / (1 + Math.Exp(-x)));
         }
     }
 }
