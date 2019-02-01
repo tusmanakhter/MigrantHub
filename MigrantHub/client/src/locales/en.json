@@ -181,5 +181,6 @@
   "account.validation.passwordConfirm": "Confirm your password",
   "account.validation.passwordMatch": "Passwords do not match",
   "account.validation.passwordLength": "Password must be atleast 8 characters",
-  "corpid.validation.length": "Please enter 7 digits"
+  "corpid.validation.length": "Please enter 7 digits",
+  "categories.select": "Select Category"
 }

@@ -4,6 +4,8 @@ import DateRange from '@material-ui/icons/DateRange';
 import People from '@material-ui/icons/People';
 import UserTypes from 'lib/UserTypes';
 import { FormattedMessage } from 'react-intl';
+import { serviceCategories } from 'lib/ServiceCategories';
+import ServiceCategoryMenu from 'services/ServiceCategoryMenu1'
 
 const SidebarLinks = [
   {
@@ -11,6 +13,7 @@ const SidebarLinks = [
     name: <FormattedMessage id="services" />,
     icon: DashboardIcon,
     type: [UserTypes.ADMIN, UserTypes.BUSINESS, UserTypes.MIGRANT],
+    option: ServiceCategoryMenu
   },
   {
     path: '/services/suggestions',
