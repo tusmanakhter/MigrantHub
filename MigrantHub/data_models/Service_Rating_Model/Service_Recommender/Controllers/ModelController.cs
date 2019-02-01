@@ -98,18 +98,18 @@ namespace Service_Rating_Model.Controllers
             for (var i = 1; i < dataset.Length; i++)
             {
                 var line = dataset[i];
-                var lineSplit = line.Split(',');
+                var lineSplit = line.Split(';');
                 var rating = Double.Parse(lineSplit[2]);
                 rating = rating > 3 ? 1 : 0;
                 lineSplit[2] = rating.ToString();
-                var new_line = string.Join(',', lineSplit);
+                var new_line = string.Join(';', lineSplit);
                 new_dataset[i] = new_line;
 
             }
             dataset = new_dataset;
             var numLines = dataset.Length;
             var body = dataset.Skip(1);
-            var sorted = body.Select(line => new { SortKey = Int32.Parse(line.Split(',')[3]), Line = line })
+            var sorted = body.Select(line => new { SortKey = Int32.Parse(line.Split(';')[3]), Line = line })
                              .OrderBy(x => x.SortKey)
                              .Select(x => x.Line);
             System.IO.File.WriteAllLines("./ratings_train.csv", dataset.Take(1).Concat(sorted.Take((int)(numLines * 0.9))));

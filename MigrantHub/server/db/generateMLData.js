@@ -17,7 +17,7 @@ this.generateServiceRecommendationData = function generateServiceReviewsData() {
   });
 
   // File of service reviews
-  fs.writeFile("../data_models/Service_Rating_Model/Service_Recommender/Data/serviceReviews.csv", "userId,serviceId,ratinguser", function(err){
+  fs.writeFile("../data_models/Service_Rating_Model/Service_Recommender/Data/ratings.csv", "", function(err){
     if(err) {
         console.log(err);
     }
@@ -29,16 +29,16 @@ this.generateServiceRecommendationData = function generateServiceReviewsData() {
     if (err) throw err;
     var dbo = db.db("migranthub");
     dbo.collection("services").find({}).forEach(function(doc) {
-      var text = doc._id + ',' + doc.serviceTitle + '\n';
+      var text = doc._id + ';' + doc.serviceTitle;
       if(!doc.deleted) {
-        fs.appendFile("../data_models/Service_Rating_Model/Service_Recommender/Data/allServices.csv", [text], function(err) {
+        fs.appendFile("../data_models/Service_Rating_Model/Service_Recommender/Data/allServices.csv", [text + '\n'], function(err) {
           if(err) {
               console.log(err);
           }
         })
       }
     }, function(err) {
-      //uploadFile('data_model_files', '../data_models/Service_Rating_Model/Service_Recommender/Data/allServices.csv');
+      uploadFile('data_model_files', '../data_models/Service_Rating_Model/Service_Recommender/Data/allServices.csv');
       if(err) {
         console.log(err);
       }
@@ -50,16 +50,16 @@ this.generateServiceRecommendationData = function generateServiceReviewsData() {
     if (err) throw err;
     var dbo = db.db("migranthub");
     dbo.collection("reviews").find({}).forEach(function(doc) {
-      var text = '\n' + doc.user + ',' + doc.serviceId + ',' + doc.rating;
+      var text = doc.user + ';' + doc.serviceId + ';' + doc.rating + '; 0000';
       if(!doc.deleted) {
-        fs.appendFile("../data_models/Service_Rating_Model/Service_Recommender/Data/ratings.csv", [text], function(err) {
+        fs.appendFile("../data_models/Service_Rating_Model/Service_Recommender/Data/ratings.csv", ['\n' + text], function(err) {
           if(err) {
               console.log(err);
           }
         })
       }
     }, function(err) {
-      //uploadFile('data_model_files', '../data_models/Service_Rating_Model/Service_Recommender/Data/ratings.csv');
+      uploadFile('data_model_files', '../data_models/Service_Rating_Model/Service_Recommender/Data/ratings.csv');
       if(err) {
         console.log(err);
       }

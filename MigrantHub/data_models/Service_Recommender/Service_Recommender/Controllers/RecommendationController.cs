@@ -54,19 +54,19 @@ namespace Service_Recommender.Controllers
             var predictionfunction = loadedModel.MakePredictionFunction<RatingData, RatingPrediction>(ctx);
 
             // find the rating prediction for each service and compile the normalized predictions into a list
-            List<Tuple<int, float>> predictions = new List<Tuple<int, float>>();
+            List<Tuple<String, float>> predictions = new List<Tuple<String, float>>();
 
             RatingPrediction prediction = null;
             for (var i = 0; i < serviceIds.Length; i++)
             {
-                var serviceLine = serviceIds[i].Split(',');
+                var serviceLine = serviceIds[i].Split(';');
                 var serviceId = serviceLine[0];
 
                 prediction = predictionfunction.Predict(new RatingData { userId = id.ToString(), serviceId = serviceId });
 
                 var normalizedscore = Sigmoid(prediction.Score);
 
-                predictions.Add(Tuple.Create(Int32.Parse(serviceId), normalizedscore));
+                predictions.Add(Tuple.Create(serviceId, normalizedscore));
             }
 
             //get the top 3 predictions
@@ -74,7 +74,7 @@ namespace Service_Recommender.Controllers
             if (predictions.Count > 3) predictions.RemoveRange(3, predictions.Count - 3);
 
             //return the predictions in string format
-            var recommendations = string.Join(",", predictions.Select(t => string.Format("[ '{0}', '{1}']", t.Item1, t.Item2)));
+            var recommendations = string.Join(";", predictions.Select(t => string.Format("[ '{0}'; '{1}']", t.Item1, t.Item2)));
 
             return recommendations;
         }
