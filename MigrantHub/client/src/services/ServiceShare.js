@@ -114,70 +114,70 @@ class ServiceShare extends Component {
     return (
       <div>
         <Grid container spacing={24} style={gridStyle}>
+          <Grid item xs={12}>
+            <br></br>
+            <h4>{this.state.dataRetrieved}</h4>
+          </Grid>
+          <Grid item xs={12}>
+            <h2>{this.state.serviceTitle}</h2>
+          </Grid>
+          <Grid item xs={12}>
+            <h3>{this.state.serviceSummary}</h3>
+          </Grid>
+          <Grid item xs={12}>
+            <h4>{this.state.serviceDescription}</h4>
+          </Grid>
+          {serviceHours !== undefined && (
             <Grid item xs={12}>
-                <br></br>
-                <h4>{this.state.dataRetrieved}</h4>
+              {serviceHours.map((member, index) => (
+                <Grid item xs={12}>
+                  <b>{member.serviceDay}s {member.startTime} to {member.endTime}</b>
+                </Grid>
+              ))}
             </Grid>
+          )}
+          {this.state.location !== undefined && (
             <Grid item xs={12}>
-                <h2>{this.state.serviceTitle}</h2>
-            </Grid>
-            <Grid item xs={12}>
-                <h3>{this.state.serviceSummary}</h3>
-            </Grid>
-            <Grid item xs={12}>
-                <h4>{this.state.serviceDescription}</h4>
-            </Grid>
-            {serviceHours !== undefined && (
               <Grid item xs={12}>
-                {serviceHours.map((member, index) => (
-                  <Grid item xs={12}>
-                    <b>{member.serviceDay}s {member.startTime} to {member.endTime}</b>
-                  </Grid>
-                ))}
+                Address:
+                {' '}
+                {this.state.location.address}
               </Grid>
-            )}
-            {this.state.location !== undefined && (
               <Grid item xs={12}>
-                <Grid item xs={12}>
-                  Address:
-                  {' '}
-                  {this.state.location.address}
-                </Grid>
-                <Grid item xs={12}>
-                  Apartment:
-                  {' '}
-                  {this.state.location.apartment}
-                </Grid>
-                <Grid item xs={12}>
-                  City:
-                  {' '}
-                  {this.state.location.city}
-                </Grid>
-                <Grid item xs={12}>
-                  Province:
-                  {' '}
-                  {this.state.location.province}
-                </Grid>
-                <Grid item xs={12}>
-                  Postal Code:
-                  {' '}
-                  {this.state.location.postalCode}
-                </Grid>
-                <Grid item xs={12}>
-                  Phone Number:
-                  {' '}
-                  {this.state.location.phoneNumber}
-                </Grid>
+                Apartment:
+                {' '}
+                {this.state.location.apartment}
               </Grid>
-            )}
-            {this.state.location !== undefined && (
-              <GoogleMaps
-                location={this.state.location}
-              />
-            )}
-            <Grid item xs={12}>
-                Service Id : {serviceId}
+              <Grid item xs={12}>
+                City:
+                {' '}
+                {this.state.location.city}
+              </Grid>
+              <Grid item xs={12}>
+                Province:
+                {' '}
+                {this.state.location.province}
+              </Grid>
+              <Grid item xs={12}>
+                Postal Code:
+                {' '}
+                {this.state.location.postalCode}
+              </Grid>
+              <Grid item xs={12}>
+                Phone Number:
+                {' '}
+                {this.state.location.phoneNumber}
+              </Grid>
             </Grid>
+          )}
+          {this.state.location !== undefined && (
+            <GoogleMaps
+              location={this.state.location}
+            />
+          )}
+          <Grid item xs={12}>
+            Service Id : {serviceId}
+          </Grid>
         </Grid>
       </div>
     );
