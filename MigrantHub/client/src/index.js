@@ -7,6 +7,7 @@ import { BrowserRouter } from 'react-router-dom';
 import registerServiceWorker from 'registerServiceWorker';
 import App from 'App';
 import { IntlProvider } from 'locales/IntlContext';
+import { AuthProvider } from 'routes/AuthContext';
 import { CookiesProvider } from 'react-cookie';
 
 import 'font-awesome/css/font-awesome.min.css';
@@ -18,9 +19,11 @@ require('dotenv').config();
 ReactDOM.render(
   <CookiesProvider>
     <IntlProvider>
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
+      <AuthProvider>
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
+      </AuthProvider>
     </IntlProvider>
   </CookiesProvider>,
   document.getElementById('root'),

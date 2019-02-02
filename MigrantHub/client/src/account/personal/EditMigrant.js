@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import withStyles from '@material-ui/core/styles/withStyles';
 import Button from '@material-ui/core/Button';
 import axios from 'axios';
-import Header from 'components/Header/Header';
 import ContactInfo from 'account/common/ContactInfo';
 import PersonalInfo from 'account/personal/PersonalInfo';
 import LanguageInfo from 'account/personal/LanguageInfo';
@@ -11,11 +10,10 @@ import FamilyInfo from 'account/personal/FamilyInfo';
 import EducationInfo from 'account/personal/EducationInfo';
 import EmploymentInfo from 'account/personal/EmploymentInfo';
 import OtherInfo from 'account/personal/OtherInfo';
-import MainLayout from 'home/MainLayout';
 import { handleChange } from 'helpers/Forms';
 import { handleAutoSuggestChange, handleEditObjectAutosuggest } from 'helpers/Autosuggest';
 import { handleAddObject, handleEditObject, handleEditSingleObject, handleRemoveObject } from 'helpers/Object';
-import NavPanel from 'components/NavPanel/NavPanel';
+import { AuthConsumer } from 'routes/AuthContext';
 
 const qs = require('qs');
 
@@ -95,7 +93,7 @@ class EditMigrant extends Component {
   }
 
   getAccount() {
-    const user = JSON.parse(localStorage.getItem('user'));
+    const { user } = this.context;
     axios.get('/api/migrants/' + user.username).then((response) => {
       if (response.status === 200) {
         const jsonObj = qs.parse(qs.stringify(response.data));
@@ -267,85 +265,83 @@ class EditMigrant extends Component {
 
     return (
       <React.Fragment>
-        <MainLayout>
-          <div className={classes.mainContainer}>
-            <ContactInfo
-              innerRef={this.contactChild}
-              handleChange={this.handleChange}
-              firstName={firstName}
-              lastName={lastName}
-              address={address}
-              apartment={apartment}
-              city={city}
-              province={province}
-              postalCode={postalCode}
-              phoneNumber={phoneNumber}
-            />
-            <PersonalInfo
-              innerRef={this.personalChild}
-              handleChange={this.handleChange}
-              age={age}
-              gender={gender}
-              nationality={nationality}
-              relationshipStatus={relationshipStatus}
-              status={status}
-            />
-            <LanguageInfo
-              innerRef={this.langChild}
-              handleChange={this.handleChange}
-              handleAutoSuggestChange={this.handleAutoSuggestChange}
-              handleAddObject={this.handleAddObject}
-              handleRemoveObject={this.handleRemoveObject}
-              handleEditObjectAutosuggest={this.handleEditObjectAutosuggest}
-              handleEditObject={this.handleEditObject}
-              languages={languages}
-              writingLevel={writingLevel}
-              speakingLevel={speakingLevel}
-              motherTongue={motherTongue}
-            />
-            <FamilyInfo
-              innerRef={this.familyChild}
-              handleAddObject={this.handleAddObject}
-              handleRemoveObject={this.handleRemoveObject}
-              handleEditObject={this.handleEditObject}
-              family={family}
-            />
-            <EducationInfo
-              innerRef={this.educationChild}
-              handleChange={this.handleChange}
-              handleEditSingleObject={this.handleEditSingleObject}
-              educationLevel={educationLevel}
-              proficiencyExams={proficiencyExams}
-            />
-            <EmploymentInfo
-              innerRef={this.employmentChild}
-              handleChange={this.handleChange}
-              handleAddObject={this.handleAddObject}
-              handleRemoveObject={this.handleRemoveObject}
-              handleEditObject={this.handleEditObject}
-              jobStatus={jobStatus}
-              lookingForJob={lookingForJob}
-              currentIncome={currentIncome}
-              workExperience={workExperience}
-            />
-            <OtherInfo
-              innerRef={this.otherChild}
-              handleChange={this.handleChange}
-              handleAutoSuggestChange={this.handleAutoSuggestChange}
-              settlingLocation={settlingLocation}
-              settlingDuration={settlingDuration}
-              joiningReason={joiningReason}
-            />
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={this.handleSave}
-              className={classes.button}
-            >
-              Save
-            </Button>
-          </div>
-        </MainLayout>
+        <div className={classes.mainContainer}>
+          <ContactInfo
+            innerRef={this.contactChild}
+            handleChange={this.handleChange}
+            firstName={firstName}
+            lastName={lastName}
+            address={address}
+            apartment={apartment}
+            city={city}
+            province={province}
+            postalCode={postalCode}
+            phoneNumber={phoneNumber}
+          />
+          <PersonalInfo
+            innerRef={this.personalChild}
+            handleChange={this.handleChange}
+            age={age}
+            gender={gender}
+            nationality={nationality}
+            relationshipStatus={relationshipStatus}
+            status={status}
+          />
+          <LanguageInfo
+            innerRef={this.langChild}
+            handleChange={this.handleChange}
+            handleAutoSuggestChange={this.handleAutoSuggestChange}
+            handleAddObject={this.handleAddObject}
+            handleRemoveObject={this.handleRemoveObject}
+            handleEditObjectAutosuggest={this.handleEditObjectAutosuggest}
+            handleEditObject={this.handleEditObject}
+            languages={languages}
+            writingLevel={writingLevel}
+            speakingLevel={speakingLevel}
+            motherTongue={motherTongue}
+          />
+          <FamilyInfo
+            innerRef={this.familyChild}
+            handleAddObject={this.handleAddObject}
+            handleRemoveObject={this.handleRemoveObject}
+            handleEditObject={this.handleEditObject}
+            family={family}
+          />
+          <EducationInfo
+            innerRef={this.educationChild}
+            handleChange={this.handleChange}
+            handleEditSingleObject={this.handleEditSingleObject}
+            educationLevel={educationLevel}
+            proficiencyExams={proficiencyExams}
+          />
+          <EmploymentInfo
+            innerRef={this.employmentChild}
+            handleChange={this.handleChange}
+            handleAddObject={this.handleAddObject}
+            handleRemoveObject={this.handleRemoveObject}
+            handleEditObject={this.handleEditObject}
+            jobStatus={jobStatus}
+            lookingForJob={lookingForJob}
+            currentIncome={currentIncome}
+            workExperience={workExperience}
+          />
+          <OtherInfo
+            innerRef={this.otherChild}
+            handleChange={this.handleChange}
+            handleAutoSuggestChange={this.handleAutoSuggestChange}
+            settlingLocation={settlingLocation}
+            settlingDuration={settlingDuration}
+            joiningReason={joiningReason}
+          />
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={this.handleSave}
+            className={classes.button}
+          >
+            Save
+          </Button>
+        </div>
       </React.Fragment>
     );
   }
@@ -355,5 +351,7 @@ class EditMigrant extends Component {
 EditMigrant.propTypes = {
   classes: PropTypes.shape({}).isRequired,
 };
+
+EditMigrant.contextType = AuthConsumer;
 
 export default withStyles(styles)(EditMigrant);

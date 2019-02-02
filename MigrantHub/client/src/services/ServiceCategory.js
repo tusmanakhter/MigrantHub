@@ -55,17 +55,14 @@ class ServiceCategory extends Component {
     };
 
     this.getData = this.getData.bind(this);
-    this.getUser = this.getUser.bind(this);
   }
 
   componentDidMount(props) {
     this.getData(this, props);
-    this.getUser();
   }
 
   componentWillReceiveProps(props) {
     this.getData(this, props);
-    this.getUser();
   }
 
   getData(event, props = this.props) {
@@ -102,13 +99,6 @@ class ServiceCategory extends Component {
     });
   }
 
-  getUser() {
-    const user = JSON.parse(localStorage.getItem('user'));
-    this.setState({
-      type: user.type,
-    });
-  }
-
   setRedirectToServiceForm = () => {
     this.setState({
       redirectToServiceForm: true,
@@ -117,7 +107,7 @@ class ServiceCategory extends Component {
 
   render() {
     const { classes } = this.props;
-    const { items, editMode, editOwner, type } = this.state;
+    const { items, editMode, editOwner } = this.state;
     return (
       <div>
         <ServiceCategories classes={this.props.classes}/>
