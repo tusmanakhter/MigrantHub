@@ -26,25 +26,22 @@ import Search from '@material-ui/icons/Search';
 import Button from 'components/CustomButtons/Button.jsx';
 import { Link } from 'react-router-dom';
 import { injectIntl, intlShape } from 'react-intl';
-
-// core components
 import CustomInput from 'components/CustomInput/CustomInput.jsx';
 
 import headerLinksStyle from 'assets/jss/material-dashboard-pro-react/components/headerLinksStyle';
+import { AuthConsumer } from 'routes/AuthContext';
+import UserTypes from 'lib/UserTypes';
 import Logout from '../Logout';
 
-class HeaderLinks extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      open: false,
-      search: '',
-      searchError: '',
-      redirectTo: false,
-      redirectToURL: '',
-      redirectState: {},
-    };
-  }
+class BaseHeaderLinks extends React.Component {
+  state = {
+    open: false,
+    search: '',
+    searchError: '',
+    redirectTo: false,
+    redirectToURL: '',
+    redirectState: {},
+  };
 
   handleClick = () => {
     this.setState({ open: !this.state.open });
@@ -60,7 +57,6 @@ class HeaderLinks extends React.Component {
       this.sendSearch();
     }
   };
-
 
   validate = () => {
     let isError = false;
@@ -120,7 +116,7 @@ class HeaderLinks extends React.Component {
 
   render() {
     const {
-      classes, rtlActive, intl,
+      classes, rtlActive, intl, context,
     } = this.props;
     const { open } = this.state;
     const searchButton = `${classes.top
@@ -141,6 +137,18 @@ class HeaderLinks extends React.Component {
     const managerClasses = classNames({
       [classes.managerClasses]: true,
     });
+
+    let path = '/';
+    switch (context.user.type) {
+      case UserTypes.MIGRANT:
+        path = '/migrant/profile';
+        break;
+      case UserTypes.BUSINESS:
+        path = '/business/profile';
+        break;
+      default:
+        break;
+    }
 
     return (
       <div className={wrapper}>
@@ -166,6 +174,7 @@ class HeaderLinks extends React.Component {
             },
           }}
         />
+
         <Button
           color="white"
           aria-label="edit"
@@ -180,16 +189,19 @@ class HeaderLinks extends React.Component {
         </Button>
         <Link to="/main">
           <Button
-            color="white"
+            color="danger"
             simple
             aria-label="Dashboard"
             justIcon
             className={classes.buttonLink}
+            muiClasses={{
+              label: '',
+            }}
           >
             <Dashboard
               className={
-                `${classes.headerLinksSvg}
-                 ${classes.links}`
+                `${classes.headerLinksSvg
+                } ${classes.links}`
               }
             />
             <Hidden mdUp implementation="css">
@@ -201,7 +213,7 @@ class HeaderLinks extends React.Component {
         </Link>
         <div className={managerClasses}>
           <Button
-            color="default"
+            color="danger"
             simple
             justIcon
             aria-label="Notifications"
@@ -215,8 +227,8 @@ class HeaderLinks extends React.Component {
           >
             <Notifications
               className={
-                `${classes.headerLinksSvg} 
-                ${classes.links}`
+                `${classes.headerLinksSvg
+                } ${classes.links}`
               }
             />
             <span className={classes.notifications}>5</span>
@@ -272,9 +284,9 @@ class HeaderLinks extends React.Component {
             )}
           </Popper>
         </div>
-        <Link to="/migrant/profile">
+        <Link to={path}>
           <Button
-            color="secondary"
+            color="danger"
             simple
             aria-label="Person"
             justIcon
@@ -293,6 +305,12 @@ class HeaderLinks extends React.Component {
     );
   }
 }
+
+const HeaderLinks = props => (
+  <AuthConsumer>
+    {context => <BaseHeaderLinks context={context} {...props} />}
+  </AuthConsumer>
+);
 
 HeaderLinks.propTypes = {
   classes: PropTypes.object.isRequired,

@@ -23,13 +23,14 @@ import EventForm from 'events/EventForm';
 import ServiceShare from 'services/ServiceShare';
 import ViewMigrantProfile from 'account/personal/ViewMigrantProfile';
 import ViewBusinessProfile from 'account/business/ViewBusinessProfile';
-import Auth from 'routes/Auth';
+import { AuthConsumer } from 'routes/AuthContext';
 import UsersList from 'People/UsersList';
 import ServiceCategories from 'services/ServiceCategories';
 import FriendPanel from 'components/FriendPanel/FriendPanel';
 import AccountSelection from 'account/AccountSelection';
 import ServiceSuggestionForm from 'services/ServiceSuggestionForm';
 import ServiceSuggestionList from 'services/ServiceSuggestionList';
+import ForgotYourPasswordForm from 'account/forgotYourPassword/ForgotYourPasswordForm';
 
 class Routes extends Component {
   state = {
@@ -37,6 +38,7 @@ class Routes extends Component {
   }
 
   async componentDidMount() {
+    const Auth = this.context;
     await Auth.authenticate();
     this.setState({
       isLoading: false,
@@ -59,28 +61,31 @@ class Routes extends Component {
         <UnprotectedRoute path="/signup/personal" component={SignUpMigrant} exact />
         <UnprotectedRoute path="/signup/admin" component={SignUpAdmin} exact />
         <UnprotectedRoute path="/login" component={Login} exact />
+        <UnprotectedRoute path="/forgotpassword" component={ForgotYourPasswordForm} exact />
         <Route path="/temphome" component={TempHome} exact />
         <Route path="/temperror" component={TempError} exact />
         <ProtectedRoute path="/editmigrant" component={EditMigrant} migrant exact />
         <ProtectedRoute path="/editbusiness" component={EditBusiness} business exact />
         <ProtectedRoute path="/admin/dashboard" component={AdminDashboard} admin />
-        <Route path="/services/create" component={ServiceForm} exact />
+        <ProtectedRoute path="/services/create" component={ServiceForm} exact />
         <ProtectedRoute path="/services/suggestions/create" component={ServiceSuggestionForm} migrant exact />
         <ProtectedRoute path="/services/suggestions" component={ServiceSuggestionList} business admin exact />
-        <Route path="/services" component={ServiceList} exact />
-        <Route path="/categories" component={ServiceCategories} exact />
-        <Route path="/services/share/:id" render={(props) => <ServiceShare serviceId={props.match.params.id} />} />
-        <Route path="/search" component={Search} exact />
-        <Route path="/events/create" component={EventForm} exact />
-        <Route path="/events" component={EventList} exact />
-        <Route path="/users" component={UsersList} exact />
-        <Route path="/migrant/profile" component={ViewMigrantProfile} exact />
-        <Route path="/business/profile" component={ViewBusinessProfile} exact />
-        <Route path="/friends" component={FriendPanel} exact />
+        <ProtectedRoute path="/services" component={ServiceList} exact />
+        <ProtectedRoute path="/categories" component={ServiceCategories} exact />
+        <ProtectedRoute path="/services/share/:id" component={props => <ServiceShare serviceId={props.match.params.id} />} />
+        <ProtectedRoute path="/search" component={Search} exact />
+        <ProtectedRoute path="/events/create" component={EventForm} exact />
+        <ProtectedRoute path="/events" component={EventList} exact />
+        <ProtectedRoute path="/users" component={UsersList} exact />
+        <ProtectedRoute path="/migrant/profile" component={ViewMigrantProfile} exact />
+        <ProtectedRoute path="/business/profile" component={ViewBusinessProfile} exact />
+        <ProtectedRoute path="/friends" component={FriendPanel} exact />
         <Route component={Error} />
       </Switch>
     );
   }
 }
+
+Routes.contextType = AuthConsumer;
 
 export default Routes;

@@ -10,14 +10,13 @@ import Header from 'components/Header/Header';
 import QuestionnairePanel from 'components/QuestionnairePanel/QuestionnairePanel';
 import NavPanel from 'components/NavPanel/NavPanel';
 import Paper from '@material-ui/core/Paper';
-import MainLayout from 'home/MainLayout';
 
 const styles = theme => ({
   mainContainer: {
     marginLeft: 75,
     paddingTop: 100,
   },
-  serviceContainer: {
+  serviceContainer : {
     float: 'left',
   },
   root: {
@@ -69,8 +68,8 @@ class Search extends Component {
     let subcategory = '';
 
     if (location.state) {
-      searchQuery = location.state.searchQuery;
-      searchMode = location.state.searchMode;
+        searchQuery = location.state.searchQuery;
+        searchMode = location.state.searchMode;
     }
     axios.get('/api/services/', {
       params: {
@@ -93,12 +92,12 @@ class Search extends Component {
     let searchMode = false;
     let editOwnerEmail = '';
 
-    if (location.state) {
-      searchQuery = location.state.searchQuery;
-      searchMode = location.state.searchMode;
-    }
+      if (location.state) {
+        searchQuery = location.state.searchQuery;
+        searchMode = location.state.searchMode;
+      }
 
-    axios.get('/api/events/', {
+      axios.get('/api/events/', {
       params: {
         editOwner: editOwnerEmail,
         searchQuery: searchQuery,
@@ -134,34 +133,34 @@ class Search extends Component {
     const { classes } = this.props;
     const { servicesItem } = this.state;
 
-    if (this.state.servicesItem.length !== 0) {
-      return (
+    if(this.state.servicesItem.length !== 0) {
+        return (
         <div className={classes.serviceContainer}>
-          <h4 className={classes.searchContainer}>Services</h4>
-          <GridContainer>
-            {' '}
-            {
-              servicesItem.map(item => (
-                <ServiceItem
-                  serviceId={item._id}
-                  serviceTitle={item.serviceTitle}
-                  serviceImagePath={item.serviceImagePath}
-                  serviceDescription={item.serviceDescription}
-                  serviceSummary={item.serviceSummary}
-                  category={item.category}
-                  subcategory={item.subcategory}
-                  serviceLocation={item.location}
-                  serviceDate={item.serviceDate}
-                  serviceHours={item.serviceHours}
-                  editMode={item.editMode}
-                  editOwner={item.editOwner}
-                  getServices={this.getServices}
-                />
-              ))
-            }
-          </GridContainer>
+        <h4 className={classes.searchContainer}>Services</h4>
+        <GridContainer>
+        {' '}
+        {
+            servicesItem.map(item => (
+            <ServiceItem
+                serviceId={item._id}
+                serviceTitle={item.serviceTitle}
+                serviceImagePath={item.serviceImagePath}
+                serviceDescription={item.serviceDescription}
+                serviceSummary={item.serviceSummary}
+                category={item.category}
+                subcategory={item.subcategory}
+                serviceLocation={item.location}
+                serviceDate={item.serviceDate}
+                serviceHours={item.serviceHours}
+                editMode={item.editMode}
+                editOwner={item.editOwner}
+                getServices={this.getServices}
+            />
+            ))
+        }
+        </GridContainer>
         </div>
-      );
+        );
     }
   }
 
@@ -169,33 +168,33 @@ class Search extends Component {
     const { classes } = this.props;
     const { eventItem } = this.state;
 
-    if (this.state.eventItem.length !== 0) {
-      return (
+    if(this.state.eventItem.length !== 0) {
+        return (
         <div className={classes.eventContainer}>
-          <h4 className={classes.searchContainer}>Events</h4>
-          <GridContainer>
-            {' '}
-            {
-              eventItem.map(item => (
-                <EventItem
-                  eventId={item._id}
-                  eventName={item.eventName}
-                  eventImagePath={item.eventImagePath}
-                  description={item.description}
-                  location={item.location}
-                  dateStart={item.dateStart}
-                  dateEnd={item.dateEnd}
-                  timeStart={item.timeStart}
-                  timeEnd={item.timeEnd}
-                  editMode={item.editMode}
-                  editOwner={item.editOwner}
-                  getEvents={this.getEvents}
-                />
-              ))
-            }
-          </GridContainer>
+        <h4 className={classes.searchContainer}>Events</h4>
+        <GridContainer>
+        {' '}
+        {
+            eventItem.map(item => (
+              <EventItem
+                eventId={item._id}
+                eventName={item.eventName}
+                eventImagePath={item.eventImagePath}
+                description={item.description}
+                location={item.location}
+                dateStart={item.dateStart}
+                dateEnd={item.dateEnd}
+                timeStart={item.timeStart}
+                timeEnd={item.timeEnd}
+                editMode={item.editMode}
+                editOwner={item.editOwner}
+                getEvents={this.getEvents}
+              />
+            ))
+        }
+        </GridContainer>
         </div>
-      );
+        );
     }
   }
 
@@ -203,13 +202,13 @@ class Search extends Component {
     const { classes } = this.props;
     const { userItem } = this.state;
 
-    if (this.state.userItem.length !== 0) {
-      return (
+    if(this.state.userItem.length !== 0) {
+        return (
         <div className={classes.userContainer}>
-          <h4 className={classes.searchContainer}>People</h4>
-          <Paper className={classes.root} elevation={2}>
-            {' '}
-            {
+        <h4 className={classes.searchContainer}>People</h4>
+        <Paper className={classes.root} elevation={2}>
+          {' '}
+          {
               userItem.map(item => (
                 <UserItem
                   userid={item._id}
@@ -219,25 +218,23 @@ class Search extends Component {
                   getUsers={this.getUsers}
                 />
               ))
-            }
-          </Paper>
+          }
+        </Paper>
         </div>
-      );
+        );
     }
   }
 
   render() {
-    const { classes, location, history } = this.props;
+    const { classes } = this.props;
 
     return (
-      <MainLayout location={location} history={history}>
-        <div className={classes.mainContainer}>
-          <div className={classes.Panel}>{<QuestionnairePanel />}</div>
-          {this.renderServices()}
-          {this.renderEvents()}
-          {this.renderUsers()}
-        </div>
-      </MainLayout>
+      <div className={classes.mainContainer}>
+        <div className={classes.Panel}>{<QuestionnairePanel />}</div>
+        {this.renderServices()}
+        {this.renderEvents()}
+        {this.renderUsers()}
+      </div>
     );
   }
 }
@@ -245,7 +242,6 @@ class Search extends Component {
 Search.propTypes = {
   classes: PropTypes.shape({}).isRequired,
   location: PropTypes.shape({}).isRequired,
-  history: PropTypes.shape({}).isRequired,
 };
 
 export default withStyles(styles)(Search);

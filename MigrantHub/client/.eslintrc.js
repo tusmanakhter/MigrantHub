@@ -13,5 +13,13 @@ module.exports = {
         "import/no-extraneous-dependencies": ["error", {"devDependencies": true, "optionalDependencies": true, "peerDependencies": false}],
         "react/jsx-one-expression-per-line": 0,
         "react/forbid-prop-types": 0,
+    },
+    "settings": {
+        "import/resolver": {
+          "node": {
+            "paths": ["MigrantHub/client/src"],
+            "extensions": [".js", ".jsx"]
+          }
+        }
     }
 };

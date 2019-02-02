@@ -211,7 +211,6 @@ class ServiceSuggestionForm extends Component {
 
     return (
       <React.Fragment>
-        <Header />
         {messageFromServer}
         {this.renderRedirectToAllServices()}
         <Typography variant="title" gutterBottom> Add Suggestion </Typography>

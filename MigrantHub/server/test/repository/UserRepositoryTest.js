@@ -10,7 +10,7 @@ var chai = require('chai');
 var chaiAsPromised = require('chai-as-promised');
 chai.use(chaiAsPromised);
 
-describe('business repository', function () {
+describe('user repository', function () {
     let req = {
         body: AccountFactory.validBusinessAccount(),
         user:{
@@ -27,5 +27,16 @@ describe('business repository', function () {
     it('should throw error, since there was a error findOne user', test(function () {
         this.stub(User, 'findOne').returns({exec: sinon.stub().returns(Promise.reject({}))});
         return chai.assert.isRejected(UserRepository.getUser(req.user._id), ServerError, 'There was an error retrieving user.');
+    }));
+
+    it('should successfully call mongodb findByIdAndUpdate user', test(function () {
+        this.stub(User, 'findByIdAndUpdate').returns({exec: sinon.stub().returns(Promise.resolve({}))});
+        UserRepository.update(req.user._id, {});
+        assert.calledWith(User.findByIdAndUpdate, { _id: req.user._id }, {}, { new: true });
+    }));
+
+    it('should throw error, since there was a error findByIdAndUpdate user', test(function () {
+        this.stub(User, 'findByIdAndUpdate').returns({exec: sinon.stub().returns(Promise.reject({}))});
+        return chai.assert.isRejected(UserRepository.update(req.user._id, {}), ServerError, 'There was an error updating user.');
     }));
 });
