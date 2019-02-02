@@ -61,18 +61,20 @@ module.exports = {
     }
 
     if (typeof serviceObject.serviceHours !== 'undefined') {
+      re = /^\b((1[0-2]|0?[1-9]):([0-5][0-9]) ([AaPp][Mm]))$/;
       serviceObject.serviceHours.forEach((day) => {
         if (validator.isEmpty(day.serviceDay)) {
           errors += '\nService day is required and empty';
         }
         if (validator.isEmpty(day.startTime)) {
           errors += '\nService hour start time required and empty';
-        } else if (!validator.matches(day.startTime, '^[0-9]{2}:[0-9]{2}$')) {
+        } else if (!validator.matches(day.startTime, re)) {
           errors += '\nService hour start time should be in the format 13:57';
         }
         if (validator.isEmpty(day.endTime)) {
           errors += '\nService hour end time required and empty';
-        } else if (!validator.matches(day.endTime, '^[0-9]{2}:[0-9]{2}$')) {
+        } else if (!validator.matches(day.endTime, re)) {
+          console.log(day.endTime);
           errors += '\nService hour end time should be in the format 13:57';
         } else if (day.endTime <= day.startTime) {
           errors += '\nEnd time should be after start time';
