@@ -82,6 +82,11 @@ namespace Service_Rating_Model.Controllers
                 storage.UploadObject(bucketPath, "model.zip", null, inputFile);
             }
 
+            //method should clean up after itself
+            if (System.IO.File.Exists(TrainingDataLocation)) System.IO.File.Delete(TrainingDataLocation);
+            if (System.IO.File.Exists(TestDataLocation)) System.IO.File.Delete(TestDataLocation);
+            if (System.IO.File.Exists(ModelPath)) System.IO.File.Delete(ModelPath);
+
             return new string[] { "Successfully grabbed the latest ratings and exported their data model to the GCP Storage Bucket " + bucketPath + "! :)" };
         }
 
@@ -114,6 +119,9 @@ namespace Service_Rating_Model.Controllers
                              .Select(x => x.Line);
             System.IO.File.WriteAllLines("./ratings_train.csv", dataset.Take(1).Concat(sorted.Take((int)(numLines * 0.9))));
             System.IO.File.WriteAllLines("./ratings_test.csv", dataset.Take(1).Concat(sorted.TakeLast((int)(numLines * 0.1))));
+
+            //method should clean up after itself
+            if (System.IO.File.Exists("./ratings.csv")) System.IO.File.Delete("./ratings.csv");
         }
     }
 }
