@@ -5,6 +5,7 @@ const options = { discriminatorKey: 'type' };
 
 const userSchema = new Schema({
   _id: { type: String, required: true },
+  userType: { type: String, required: true },
   localAuthentication: {
     type: {
       password: { type: String },
@@ -12,6 +13,8 @@ const userSchema = new Schema({
     select: false,
   },
   email: { type: String, required: true },
+  resetPasswordToken: { type: String },
+  resetPasswordExpiry: { type: Date },
   deleted: { type: Boolean, required: true, default: false },
   deletedDate: { type: Date, default: null },
 }, options);
