@@ -61,7 +61,7 @@ module.exports = {
     }
 
     if (typeof serviceObject.serviceHours !== 'undefined') {
-      re = /^\b((1[0-2]|0?[1-9]):([0-5][0-9]) ([AaPp][Mm]))$/;
+      const re = /^\b((1[0-2]|0?[1-9]):([0-5][0-9]) ([AaPp][Mm]))$/;
       serviceObject.serviceHours.forEach((day) => {
         if (validator.isEmpty(day.serviceDay)) {
           errors += '\nService day is required and empty';

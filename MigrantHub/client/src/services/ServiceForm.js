@@ -14,6 +14,7 @@ import { provinces } from 'lib/SignUpConstants';
 import { serviceCategories } from 'lib/ServiceCategories';
 import { PhoneMask, PostalCodeMask } from 'lib/Masks';
 import Clearfix from "components/Clearfix/Clearfix.jsx";
+import moment from 'moment'
 
 // core components
 import GridContainer from "components/Grid/GridContainer.jsx";
@@ -269,6 +270,9 @@ class ServiceForm extends Component {
       this.setState({
         [name]: this.state[name].map((s, _index) => {
           if (_index !== index) return s;
+          if(event !== moment.isMoment()){
+            event = moment(event);
+          }
           return { ...s, [fieldName]: event.format('LT') };
         }),
       });
