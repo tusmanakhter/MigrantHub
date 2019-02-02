@@ -17,7 +17,7 @@ namespace Service_Recommender.Controllers
     {
         // GET api/recommendation/{id}
         [HttpGet("{id}")]
-        public ActionResult<string> Get(int id)
+        public ActionResult<string> Get(string id)
         {
             string modelPath = @"./model.zip";
             string allServicesPath = @"./allServices.csv";
@@ -75,6 +75,10 @@ namespace Service_Recommender.Controllers
 
             //return the predictions in string format
             var recommendations = string.Join(";", predictions.Select(t => string.Format("[ '{0}'; '{1}']", t.Item1, t.Item2)));
+
+            //method should clean up after itself
+            if (System.IO.File.Exists(modelPath)) System.IO.File.Delete(modelPath);
+            if (System.IO.File.Exists(allServicesPath)) System.IO.File.Delete(allServicesPath);
 
             return recommendations;
         }
