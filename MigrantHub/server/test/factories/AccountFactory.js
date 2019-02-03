@@ -40,6 +40,7 @@ module.exports.validMigrantAccount = function() {
         }
     ],
     email : "test@test.com",
+    userType: "local",
     password : "testtest",
     confirmPassword : "testtest",
     firstName : "test",
@@ -110,6 +111,7 @@ module.exports.emptyMigrantAccount = function() {
         }
     ],
     email : "",
+    userType: "",
     password : "",
     confirmPassword : "",
     firstName : "",
@@ -181,6 +183,7 @@ module.exports.invalidNumbersMigrantAccount = function() {
         }
     ],
     email : "lax@hotmail.com",
+    userType: "local",
     password : "$2a$10$U1yloqe8t2ultaLED/XXduPY/msYNk15aFEehh0eACXvStsDewHs2",
     confirmPassword : "$2a$10$U1yloqe8t2ultaLED/XXduPY/msYNk15aFEehh0eACXvStsDewHs2",
     firstName : "Lax",
@@ -211,6 +214,7 @@ module.exports.invalidNumbersMigrantAccount = function() {
 module.exports.validBusinessAccount = function() {
   return {
     email : "test@test.com",
+    userType: "local",
     password : "testtest",
     confirmPassword : "testtest",
     firstName : "test",
@@ -233,6 +237,7 @@ module.exports.validBusinessAccount = function() {
 module.exports.emptyBusinessAccount = function() {
   return {
     email : "",
+    userType: "",
     password : "",
     confirmPassword : "",
     firstName : "",
@@ -255,6 +260,7 @@ module.exports.emptyBusinessAccount = function() {
 module.exports.validAdminAccount = function() {
   return {
     email : "test@test.com",
+    userType: "local",
     password : "testtest",
     confirmPassword : "testtest"
   };
@@ -263,6 +269,7 @@ module.exports.validAdminAccount = function() {
 module.exports.emptyAdminAccount = function() {
   return {
     email : "",
+    userType: "",
     password : "",
     confirmPassword : ""
   };

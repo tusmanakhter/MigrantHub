@@ -11,6 +11,8 @@ router.get('/get/user', controllerHandler(AccountController.getUser, req => [req
 router.post('/create/user', controllerHandler(AccountController.createUser, req => [req.body]));
 router.post('/create/business', controllerHandler(AccountController.createBusiness, req => [req.body]));
 router.post('/create/admin', controllerHandler(AccountController.createAdmin, req => [req.body]));
+router.post('/forgot/user', controllerHandler(AccountController.forgotPassword, req => [req.body.email]));
+router.post('/reset/user', controllerHandler(AccountController.resetPassword, req => [req.body.email, req.body.password, req.body.verificationCode]));
 
 router.post('/login', (req, res, next) => { next(); }, passport.authenticate('local'), (req, res) => {
   const user = {

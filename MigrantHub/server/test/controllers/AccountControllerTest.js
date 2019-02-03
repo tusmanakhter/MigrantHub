@@ -45,8 +45,10 @@ describe('account controller admin', function () {
 describe('account controller user', function () {
     let req = {
         user: {
-          _id: 'test@test.test'
-        }
+          _id: 'test@test.test',
+          password: 'test123'
+        },
+        token: 'abcdefghifhly'
     };
 
     it('should call getUser user service with correct parameters.', test(async function () {
@@ -55,5 +57,16 @@ describe('account controller user', function () {
         assert.calledWith(AccountService.getUser, req.user._id);
     }));
 
+    it('should call forgotPassword account service with correct parameters.', test(async function () {
+        this.stub(AccountService, 'forgotPassword');
+        await AccountController.forgotPassword(req.user._id);
+        assert.calledWith(AccountService.forgotPassword, req.user._id);
+    }));
+
+    it('should call resetPassword account service with correct parameters.', test(async function () {
+        this.stub(AccountService, 'resetPassword');
+        await AccountController.resetPassword(req.user._id, req.user.password, req.token);
+        assert.calledWith(AccountService.resetPassword, req.user._id, req.user.password, req.token);
+    }));
 });
 

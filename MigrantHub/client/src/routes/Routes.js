@@ -29,6 +29,7 @@ import FriendPanel from 'components/FriendPanel/FriendPanel';
 import AccountSelection from 'account/AccountSelection';
 import ServiceSuggestionForm from 'services/ServiceSuggestionForm';
 import ServiceSuggestionList from 'services/ServiceSuggestionList';
+import ForgotYourPasswordForm from 'account/forgotYourPassword/ForgotYourPasswordForm';
 
 class Routes extends Component {
   state = {
@@ -59,6 +60,7 @@ class Routes extends Component {
         <UnprotectedRoute path="/signup/personal" component={SignUpMigrant} exact />
         <UnprotectedRoute path="/signup/admin" component={SignUpAdmin} exact />
         <UnprotectedRoute path="/login" component={Login} exact />
+        <UnprotectedRoute path="/forgotpassword" component={ForgotYourPasswordForm} exact />
         <Route path="/temphome" component={TempHome} exact />
         <Route path="/temperror" component={TempError} exact />
         <ProtectedRoute path="/editmigrant" component={EditMigrant} migrant exact />

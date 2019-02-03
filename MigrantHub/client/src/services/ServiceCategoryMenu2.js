@@ -96,7 +96,7 @@ class ServiceCategoryMenu2 extends Component {
                             <GridItem>
                                 <ServiceCategoryItem
                                     category='All Services'
-                                    onClick={() => this.handleCategoryClick('', '')}
+                                    handleClick={() => this.handleCategoryClick('', '')}
                                     color={'primary'}
                                     className={classes.customCategoryButton}
                                 />
