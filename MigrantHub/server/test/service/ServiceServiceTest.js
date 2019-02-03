@@ -2,6 +2,7 @@ var { assert } = require('sinon');
 var sinon = require('sinon');
 var sinonTest = require('sinon-test');
 var test = sinonTest(sinon);
+var axios = require('axios');
 var ServiceService = require('../../service/ServiceService');
 var ServiceRepository = require('../../repository/ServiceRepository');
 var ServiceFactory = require('../factories/ServiceFactory');
@@ -10,6 +11,7 @@ var { ServerError } = require('../../errors/ServerError');
 var chai = require('chai');
 var chaiAsPromised = require('chai-as-promised');
 chai.use(chaiAsPromised);
+
 
 describe('Service Service', function () {
     let req = {
@@ -101,5 +103,18 @@ describe('Service Service', function () {
         this.stub(ServiceRepository, 'deleteService');
         await ServiceService.deleteService(service._id);
         assert.calledWith(ServiceRepository.deleteService, service._id);
+    }));
+
+    it('should call getServices to retrieve recommended services from getRecommendations service', test(async function () {
+        this.stub(ServiceRepository, 'getServices');
+        this.stub(axios, 'get').returns(Promise.resolve({ data: "[ '5c495110d50aa425309f2da6'; '50'];[ '5c495114d50aa425309f3077'; '50'];[ '5c495114d50aa425309f3071'; '50']" }));
+        await ServiceService.getRecommendations(req.user);
+        assert.calledWith(ServiceRepository.getServices,{ $or: [{ _id: '5c495110d50aa425309f2da6' }, { _id: '5c495114d50aa425309f3077' }, { _id: '5c495114d50aa425309f3071' }], deleted: false });
+    }));
+
+    it('should call getRecommendations services with error', test(async function () {
+        this.stub(ServiceRepository, 'getServices');
+        this.stub(axios, 'get').returns(Promise.reject({}));
+        return chai.assert.isRejected(ServiceService.getRecommendations(req.user), ServerError, 'There was an error retrieving recommended services.');
     }));
 });

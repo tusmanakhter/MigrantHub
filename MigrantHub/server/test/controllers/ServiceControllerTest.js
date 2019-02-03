@@ -60,4 +60,10 @@ describe('Service controller', function () {
         await ServiceController.deleteService(service._id);
         assert.calledWith(ServiceService.deleteService, service._id);
     }));
+
+    it('should call getRecommendations service with correct parameters from getRecommendations controller', test(async function () {
+        this.stub(ServiceService, 'getRecommendations');
+        await ServiceController.getRecommendations(req.user);
+        assert.calledWith(ServiceService.getRecommendations, req.user);
+    }));
 });
