@@ -1,3 +1,5 @@
+/* eslint-disable react/destructuring-assignment */
+/* eslint-disable react/no-access-state-in-setstate */
 import React from 'react';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
@@ -24,9 +26,9 @@ import Search from '@material-ui/icons/Search';
 
 // core components
 import Button from 'components/CustomButtons/Button.jsx';
+import CustomInput from 'components/CustomInput/CustomInput.jsx';
 import { Link } from 'react-router-dom';
 import { injectIntl, intlShape } from 'react-intl';
-import CustomInput from 'components/CustomInput/CustomInput.jsx';
 
 import headerLinksStyle from 'assets/jss/material-dashboard-pro-react/components/headerLinksStyle';
 import { AuthConsumer } from 'routes/AuthContext';
