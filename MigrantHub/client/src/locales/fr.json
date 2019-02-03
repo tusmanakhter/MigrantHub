@@ -197,5 +197,6 @@
   "forgotpassword.validationcode": "Code de Vérification",
   "forgotpassword.validationcode.sent": "Le code de vérification a été envoyé.",
   "forgotpassword.resetPassword": "Réinitialiser le Mot de Passe",
-  "forgotpassword.reset": "Réinitialiser"
+  "forgotpassword.reset": "Réinitialiser",
+  "categories.select": "Choisissez une Catégorie"
 }

@@ -197,5 +197,6 @@
   "forgotpassword.validationcode": "Verification Code",
   "forgotpassword.validationcode.sent": "Verification code has been sent.",
   "forgotpassword.resetPassword": "Reset Password",
-  "forgotpassword.reset": "Reset"
+  "forgotpassword.reset": "Reset",
+  "categories.select": "Select Category"
 }

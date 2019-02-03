@@ -16,13 +16,23 @@ import Icon from '@material-ui/core/Icon';
 import PermIdentity from '@material-ui/icons/PermIdentity';
 import ViewList from '@material-ui/icons/ViewList';
 import Event from '@material-ui/icons/Event';
-import Logout from 'components/Logout';
 import { FormattedMessage } from 'react-intl';
 import HeaderLinks from 'components/Header/HeaderLinks.jsx';
 import sidebarStyle from 'assets/jss/material-dashboard-pro-react/components/sidebarStyle.jsx';
 import avatar from 'assets/img/faces/avatar.jpg';
 import AppSidebarWrapper from 'app/AppSidebarWrapper';
 import { AuthConsumer } from 'routes/AuthContext';
+import Menu, {SubMenu } from 'rc-menu';
+import 'rc-menu/assets/index.css';
+
+const menuStyle = {
+    width: 300,
+    height: 500,
+    overflow: 'auto',
+    position: 'absolute',
+    zIndex: 1000,
+    background: 'white'
+};
 
 class AppSidebar extends React.Component {
   constructor(props) {
@@ -306,24 +316,50 @@ class AppSidebar extends React.Component {
             });
           const { itemIcon } = classes;
           return (
-            <ListItem key={key} className={classes.item}>
-              <NavLink to={prop.path} className={navLinkClasses}>
-                <ListItemIcon className={itemIcon}>
-                  {typeof prop.icon === 'string' ? (
-                    <Icon>{prop.icon}</Icon>
-                  ) : (
-                    <prop.icon />
-                  )}
-                </ListItemIcon>
-                <ListItemText
-                  primary={prop.name}
-                  disableTypography
-                  className={itemText}
-                />
-              </NavLink>
-            </ListItem>
-          );
-        })}
+              <ListItem key={key} className={classes.item}>
+                  {prop.option?
+                      <Menu style={{boxShadow:'none', border: 0, color: "inherit"}}>
+                        <SubMenu
+                            title={
+                              <div>
+                                <ListItemIcon className={itemIcon}>
+                                    {typeof prop.icon === "string" ? (
+                                        <Icon>{prop.icon}</Icon>
+                                    ) : (
+                                        <prop.icon> </prop.icon>
+                                    )}
+                                </ListItemIcon>
+                                <ListItemText
+                                    primary={prop.name}
+                                    disableTypography={true}
+                                    className={itemText}>
+                                </ListItemText>
+                              </div>}
+                            itemIcon={<Icon/>}
+                            expandIcon={<Icon/>}
+                        >
+                          <Menu style={menuStyle}>
+                            <prop.option />
+                          </Menu>
+                        </SubMenu>
+                      </Menu>
+                      :
+                      <NavLink to={prop.path} className={navLinkClasses}>
+                        <ListItemIcon className={itemIcon}>
+                            {typeof prop.icon === "string" ? (
+                                <Icon>{prop.icon}</Icon>
+                            ) : (
+                                <prop.icon />
+                            )}
+                        </ListItemIcon>
+                        <ListItemText
+                            primary={prop.name}
+                            disableTypography={true}
+                            className={itemText}
+                        />
+                      </NavLink>}
+              </ListItem>
+          )})}
       </List>
     );
 

@@ -25,6 +25,7 @@
     "perfect-scrollbar": "^1.4.0",
     "prop-types": "^15.6.2",
     "qs": "^6.5.2",
+    "rc-menu": "^7.4.21",
     "react": "^16.5.2",
     "react-add-to-calendar": "^0.1.5",
     "react-app-polyfill": "^0.1.3",
