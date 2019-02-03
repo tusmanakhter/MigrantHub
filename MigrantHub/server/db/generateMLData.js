@@ -38,7 +38,7 @@ this.generateServiceRecommendationData = function generateServiceReviewsData() {
         })
       }
     }, function(err) {
-      uploadFile('data_model_files', '../data_models/Service_Rating_Model/Service_Recommender/Data/allServices.csv');
+      //uploadFile('data_model_files', '../data_models/Service_Rating_Model/Service_Recommender/Data/allServices.csv');
       if(err) {
         console.log(err);
       }
@@ -59,7 +59,7 @@ this.generateServiceRecommendationData = function generateServiceReviewsData() {
         })
       }
     }, function(err) {
-      uploadFile('data_model_files', '../data_models/Service_Rating_Model/Service_Recommender/Data/ratings.csv');
+      //uploadFile('data_model_files', '../data_models/Service_Rating_Model/Service_Recommender/Data/ratings.csv');
       if(err) {
         console.log(err);
       }
@@ -70,7 +70,7 @@ this.generateServiceRecommendationData = function generateServiceReviewsData() {
 
 // COMMENTED OUT uploadFile() SO IT DOESNT RUN LOCALLY! WILL BE UNCOMMENTED ONCE IN THE CLOUD
 
-// // Upload to Google Storage Bucket
+// Upload to Google Storage Bucket
 // async function uploadFile(bucketName, filename) {
 //   // Imports the Google Cloud client library
 //   const {Storage} = require('@google-cloud/storage');
