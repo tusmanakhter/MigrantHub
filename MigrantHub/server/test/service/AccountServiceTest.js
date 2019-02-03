@@ -12,7 +12,9 @@ var BusinessAccountValidator = require('../../validators/BusinessAccountValidato
 var AdminRepository = require('../../repository/AdminRepository');
 var AdminAccountValidator = require('../../validators/AdminAccountValidator');
 var { ServerError } = require('../../errors/ServerError');
+var SendEmail = require('../../mail/SendEmail');
 var bcrypt = require('bcryptjs');
+var crypto = require('crypto');
 var chai = require('chai');
 var chaiAsPromised = require('chai-as-promised');
 chai.use(chaiAsPromised);
@@ -87,13 +89,55 @@ describe('account service admin', function () {
 describe('account service user', function () {
     let req = {
         user: {
-            _id: 'test@test.test'
-        }
+            _id: 'test@test.test',
+            userType: 'local',
+            password: 'test123',
+            resetPasswordToken: 'abcdefghifhly'
+        },
+        user2: {
+            _id: 'test@test.test',
+            password: 'test123',
+            resetPasswordToken: 'sjdfhskdfhskdf'
+        },
+        token: 'abcdefghifhly'
     };
 
     it('should call getUser user repository with correct parameters.', test(async function () {
         this.stub(UserRepository, 'getUser');
         await AccountService.getUser(req.user._id);
         assert.calledWith(UserRepository.getUser, req.user._id);
+    }));
+
+    it('should call UserRepository repository with no errors to forgotPassword', test(async function () {
+        this.stub(UserRepository, 'getUser').returns(req.user);
+        this.stub(UserRepository, 'update');
+        this.stub(crypto, 'randomBytes').returns('2a10XlWI50RjCbUmZ7tJ');
+        this.stub(Date, 'now').returns('2019-01-25T00:32:22.749Z');
+        this.stub(SendEmail, 'sendEmail');
+        await AccountService.forgotPassword(req.user._id);
+        assert.calledWith(UserRepository.update, req.user._id);
+    }));
+
+    it('should call UserRepository repository with error in validation to forgotPassword', test(function () {
+        this.stub(UserRepository, 'getUser').returns(false);
+        return chai.assert.isRejected(AccountService.forgotPassword(req.user._id), ServerError, 'User does not exist.');
+    }));
+
+    it('should call UserRepository repository with no errors to resetPassword', test(async function () {
+        this.stub(UserRepository, 'getUser').returns(req.user);
+        this.stub(UserRepository, 'update');
+        this.stub(bcrypt, 'hashSync').returns('$2a$10$XlWI50RjCbUmZ7tJFuVoRe9O1UFhtIDJ1PAw62cR5YDwnaQAJcTEK');
+        await AccountService.resetPassword(req.user._id, req.user.password, req.token);
+        let updatePassword = {
+            localAuthentication : {
+                password: '$2a$10$XlWI50RjCbUmZ7tJFuVoRe9O1UFhtIDJ1PAw62cR5YDwnaQAJcTEK',
+            }
+        };
+        assert.calledWith(UserRepository.update, req.user._id, updatePassword);
+    }));
+
+    it('should call UserRepository repository with error in validation to resetPassword', test(function () {
+        this.stub(UserRepository, 'getUser').returns(req.user2);
+        return chai.assert.isRejected(AccountService.resetPassword(req.user._id, req.user.password, req.token), ServerError, 'Invalid reset password request.');
     }));
 });

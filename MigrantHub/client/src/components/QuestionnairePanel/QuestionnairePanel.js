@@ -7,6 +7,7 @@ import axios from 'axios';
 import AnswerTextbox from 'components/fields/questions/AnswerTextbox';
 import AnswerDropdown from 'components/fields/questions/AnswerDropdown';
 import { handleChange } from 'helpers/Forms';
+import { FormattedMessage } from 'react-intl';
 
 class QuestionnairePanel extends Component {
   constructor(props) {
@@ -100,7 +101,9 @@ class QuestionnairePanel extends Component {
         && (
         <Card>
           <CardContent>
-            <p>Please answer this question so we can recommend services to you!</p>
+            <p>
+              <FormattedMessage id="questions.info" />
+            </p>
             <b>{question.question}</b>
             { answerOptions.length > 0
               ? (

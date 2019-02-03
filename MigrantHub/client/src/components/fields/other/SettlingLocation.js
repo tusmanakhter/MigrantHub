@@ -5,6 +5,7 @@ import {
   renderSuggestion, getSuggestionValue,
 } from 'helpers/AutoSuggestCity';
 import AutosuggestTextbox from 'components/fields/generic/AutosuggestTextbox';
+import { FormattedMessage } from 'react-intl';
 
 const SettlingLocation = (props) => {
   const {
@@ -13,7 +14,7 @@ const SettlingLocation = (props) => {
 
   return (
     <AutosuggestTextbox
-      label="Settling Location"
+      label={<FormattedMessage id="other.location" />}
       value={settlingLocation}
       error={settlingLocationError}
       handleAutoSuggestChange={handleAutoSuggestChange}

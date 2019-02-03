@@ -8,6 +8,8 @@ import CardHeader from "components/Card/CardHeader.jsx";
 import GridItem from "components/Grid/GridItem.jsx";
 import GridContainer from "components/Grid/GridContainer.jsx";
 import ServiceCategoryItem from 'services/ServiceCategoryItem';
+import { FormattedMessage } from 'react-intl';
+
 import {
     Navbar, NavbarNav, NavbarToggler, Collapse, NavItem, NavLink, Dropdown,
     DropdownToggle, DropdownMenu, DropdownItem,
@@ -40,7 +42,6 @@ class ServiceCategories extends Component {
     }
 
     handleCategoryClick(category, subcategory){
-        console.log(category);
         let selectedCategory = category;
         this.setState({
             redirectTo: true,
@@ -60,7 +61,9 @@ class ServiceCategories extends Component {
                 <div>
                     <Card style={{ padding: '20px' }}>
                         <CardHeader>
-                            <h4 className={classes.cardTitle}>Category</h4>
+                            <h4 className={classes.cardTitle}>
+                                <FormattedMessage id="category" />
+                            </h4>
                         </CardHeader>
                         <GridContainer>
                     {this.renderRedirectTo()}

@@ -6,6 +6,7 @@ module.exports = {
     const user = new MigrantUser();
     user._id = userObject.email;
     user.email = userObject.email;
+    user.userType = 'local';
     user.localAuthentication = {
       password: userObject.password,
     };

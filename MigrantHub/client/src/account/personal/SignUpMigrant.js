@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import qs from 'qs';
-import HomeLayout from 'home/HomeLayout';
 import SignUp from 'account/common/SignUp';
 import AccountInfo from 'account/common/AccountInfo';
 import PersonalInfo from 'account/personal/Minimal/PersonalInfo';
 import AdditionalInfo from 'account/personal/Minimal/AdditionalInfo';
+import { FormattedMessage } from 'react-intl';
 
 class SignUpMigrant extends Component {
   getStepContent(step) {
@@ -91,17 +91,19 @@ class SignUpMigrant extends Component {
   }
 
   render() {
-    const steps = ['Account', 'Personal', 'Additional'];
+    const steps = [
+      <FormattedMessage id="signup.account" />,
+      <FormattedMessage id="signup.personal" />,
+      <FormattedMessage id="signup.additional" />,
+    ];
 
     return (
       <React.Fragment>
-        <HomeLayout>
-          <SignUp
-            createAccount={this.createAccount}
-            steps={steps}
-            getStepContent={this.getStepContent}
-          />
-        </HomeLayout>
+        <SignUp
+          createAccount={this.createAccount}
+          steps={steps}
+          getStepContent={this.getStepContent}
+        />
       </React.Fragment>
     );
   }

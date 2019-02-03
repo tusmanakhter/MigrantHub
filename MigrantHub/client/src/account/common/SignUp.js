@@ -31,7 +31,7 @@ import Card from "components/Card/Card.jsx";
 import CardBody from "components/Card/CardBody.jsx";
 
 import registerPageStyle from "assets/jss/material-dashboard-pro-react/views/registerPageStyle";
-
+import { FormattedMessage, FormattedHTMLMessage } from 'react-intl';
 
 
 const styles = theme => ({
@@ -153,7 +153,7 @@ class SignUp extends Component {
   getStepContent = this.props.getStepContent
 
   handleNext = async () => {
-    const error = await this.child.current.validate();
+    const error = await this.child.current._wrappedInstance.validate();
     if (!error) {
       this.setState(state => ({
         activeStep: state.activeStep + 1,
@@ -187,7 +187,9 @@ class SignUp extends Component {
             <GridContainer justify="center">
               <GridItem xs={12} sm={12} md={12}>
                 <Card className={classes.cardSignup}>
-                  <h2 className={classes.cardTitle}>Register</h2>
+                  <h2 className={classes.cardTitle}>
+                    <FormattedMessage id="signup.register" />
+                  </h2>
                   <Stepper activeStep={activeStep} className={classes.stepper}>
                     {this.props.steps.map(label => (
                       <Step key={label}>
@@ -199,20 +201,20 @@ class SignUp extends Component {
                     <GridContainer justify="center">
                       <GridItem xs={12} sm={12} md={5}>
                         <InfoArea
-                          title="Service Hub"
-                          description="A free list of available services near you. A chat bot that will help you find what you need."
+                          title={<FormattedMessage id="signup.servicehub" />}
+                          description={<FormattedMessage id="signup.servicehubDesc" />}
                           icon={ListAlt}
                           iconColor="rose"
                         />
                         <InfoArea
-                          title="Event Hub"
-                          description="Create an event or view a list of events happening near you."
+                          title={<FormattedMessage id="signup.eventhub" />}
+                          description={<FormattedMessage id="signup.eventhubDesc" />}
                           icon={CalendarToday}
                           iconColor="primary"
                         />
                         <InfoArea
-                          title="Connect Hub"
-                          description="A built in social media platform that will help you connect with other users."
+                          title={<FormattedMessage id="signup.connecthub" />}
+                          description={<FormattedMessage id="signup.connecthubDesc" />}
                           icon={Group}
                           iconColor="info"
                         />
@@ -223,14 +225,14 @@ class SignUp extends Component {
                             {activeStep === this.props.steps.length ? (
                               <React.Fragment>
                                 <Typography variant="headline" gutterBottom>
-                                  Welcome to MigrantHub.
+                                  <FormattedMessage id="signup.welcome" />
                             </Typography>
                                 <Typography variant="subheading">
-                                  You may now login.
+                                  <FormattedMessage id="signup.login" />
                             </Typography>
                                 <Link to={`/login`}>
                                   <Button round color="primary">
-                                    Get started
+                                    <FormattedMessage id="home.getStarted" />
                                 </Button>
                                 </Link>
                               </React.Fragment>
@@ -240,7 +242,7 @@ class SignUp extends Component {
                                   <div className={classes.buttons}>
                                     {activeStep !== 0 && (
                                       <Button onClick={this.handleBack} className={classes.button}>
-                                        Back
+                                        <FormattedMessage id="back" />
                                       </Button>
                                     )}
                                     <Button
@@ -249,7 +251,14 @@ class SignUp extends Component {
                                       onClick={this.handleNext}
                                       className={classes.button}
                                     >
-                                      {activeStep === this.props.steps.length - 1 ? 'Sign Up' : 'Next'}
+                                      {activeStep === this.props.steps.length - 1 
+                                        ? (
+                                          <FormattedMessage id="signup" />
+                                        )
+                                        : (
+                                          <FormattedMessage id="next" />
+                                        )
+                                      }
                                     </Button>
                                   </div>
                                 </React.Fragment>
@@ -274,12 +283,9 @@ class SignUp extends Component {
                               }}
                             />
                           }
-                          label={
-                            <span>
-                              Upon signing up you agree to the{" "}
-                              <a href="#pablo">terms and conditions</a>.
-                          </span>
-                          }
+                          label={(
+                            <FormattedHTMLMessage id="signup.terms" />
+                          )}
                         />
                       </GridItem>
                     </GridContainer>

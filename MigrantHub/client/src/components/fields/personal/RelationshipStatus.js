@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { relationshipStatuses } from 'lib/SignUpConstants';
 import Dropdown from 'components/fields/generic/Dropdown';
+import { FormattedMessage } from 'react-intl';
 
 const RelationshipStatus = (props) => {
   const {
@@ -11,7 +12,7 @@ const RelationshipStatus = (props) => {
   return (
     <Dropdown
       name="relationshipStatus"
-      label="Relationship Status"
+      label={<FormattedMessage id="personal.relationship" />}
       value={relationshipStatus}
       error={relationshipStatusError}
       options={relationshipStatuses}

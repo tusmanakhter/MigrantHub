@@ -3,11 +3,10 @@ import PropTypes from 'prop-types';
 import withStyles from '@material-ui/core/styles/withStyles';
 import Button from '@material-ui/core/Button';
 import axios from 'axios';
-import Header from 'components/Header/Header';
 import ContactInfo from 'account/common/ContactInfo';
 import AboutInfo from 'account/business/AboutInfo';
 import { handleChange } from 'helpers/Forms';
-import NavPanel from 'components/NavPanel/NavPanel';
+import { AuthConsumer } from 'routes/AuthContext';
 
 const qs = require('qs');
 
@@ -55,7 +54,7 @@ class EditBusiness extends Component {
   }
 
   getAccount(e) {
-    const user = JSON.parse(localStorage.getItem('user'));
+    const { user } = this.context;
     axios.get('/api/businesses/' + user.username).then((response) => {
       const jsonObj = qs.parse(qs.stringify(response.data));
 
@@ -92,8 +91,8 @@ class EditBusiness extends Component {
   };
 
   validate = async () => {
-    const contactError = await this.contactChild.current.validate();
-    const aboutError = await this.aboutChild.current.validate();
+    const contactError = await this.contactChild.current._wrappedInstance.validate();
+    const aboutError = await this.aboutChild.current._wrappedInstance.validate();
 
     const errors = [contactError, aboutError];
     if (errors.indexOf(true) > -1) {
@@ -146,37 +145,35 @@ class EditBusiness extends Component {
     return (
       <React.Fragment>
         <div className={classes.mainContainer}>
-            <Header />
-            <NavPanel />
-              <ContactInfo
-              innerRef={this.contactChild}
-              handleChange={this.handleChange}
-              firstName={firstName}
-              lastName={lastName}
-              address={address}
-              apartment={apartment}
-              city={city}
-              province={province}
-              postalCode={postalCode}
-              phoneNumber={phoneNumber}
-            />
-            <AboutInfo
-              innerRef={this.aboutChild}
-              handleChange={this.handleChange}
-              organizationName={organizationName}
-              orgType={orgType}
-              department={department}
-              serviceType={serviceType}
-              description={description}
-            />
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={this.handleSave}
-              className={classes.button}
-            >
-                  Save
-            </Button>
+          <ContactInfo
+            innerRef={this.contactChild}
+            handleChange={this.handleChange}
+            firstName={firstName}
+            lastName={lastName}
+            address={address}
+            apartment={apartment}
+            city={city}
+            province={province}
+            postalCode={postalCode}
+            phoneNumber={phoneNumber}
+          />
+          <AboutInfo
+            innerRef={this.aboutChild}
+            handleChange={this.handleChange}
+            organizationName={organizationName}
+            orgType={orgType}
+            department={department}
+            serviceType={serviceType}
+            description={description}
+          />
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={this.handleSave}
+            className={classes.button}
+          >
+              Save
+          </Button>
         </div>
       </React.Fragment>
     );
@@ -186,5 +183,7 @@ class EditBusiness extends Component {
 EditBusiness.propTypes = {
   classes: PropTypes.shape({}).isRequired,
 };
+
+EditBusiness.contextType = AuthConsumer;
 
 export default withStyles(styles)(EditBusiness);

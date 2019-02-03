@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Dropdown from 'components/fields/generic/Dropdown';
+import { FormattedMessage } from 'react-intl';
 
 const AnswerDropdown = (props) => {
   const {
@@ -10,7 +11,7 @@ const AnswerDropdown = (props) => {
   return (
     <Dropdown
       name="answer"
-      label="Answer"
+      label={<FormattedMessage id="answer" />}
       value={answer}
       error={answerError}
       options={answers}
