@@ -7,6 +7,7 @@ import Checkbox from '@material-ui/core/Checkbox';
 import PropTypes from 'prop-types';
 import withStyles from '@material-ui/core/styles/withStyles';
 import { proficiencyExaminations } from 'lib/SignUpConstants';
+import { FormattedMessage } from 'react-intl';
 
 const styles = ({
   formControl: {
@@ -24,7 +25,9 @@ const ProficiencyExams = (props) => {
 
   return (
     <FormControl component="fieldset" fullWidth className={classes.formControl}>
-      <FormLabel component="legend">Proficiency Exams</FormLabel>
+      <FormLabel component="legend">
+        <FormattedMessage id="educ.exams" />
+      </FormLabel>
       <FormGroup className={classes.group} name="proficiencyExams">
         {proficiencyExaminations.map(option => (
           <FormControlLabel

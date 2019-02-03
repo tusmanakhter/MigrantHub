@@ -32,28 +32,11 @@ class BusinessMain extends Component {
         appLogo, appName, userPic, navPanelVisibility, navOptions } = this.state;
 
       return (
-        <MuiThemeProvider theme={theme}>
-          <Header
-            appLogo={appLogo}
-            appName={appName}
-            userPic={userPic}
-          />
-          <Logout />
-          <div className="App">
-            <Grid container spacing={8}>
-              <Grid item xs={3}>
-                <div className="Panel">{navPanelVisibility && <NavPanel navOptions={navOptions} />}</div>
-              </Grid>
-              <Grid item xs={6}>
-                <div className="Main-feed">
-                  <h1>
-                      Welcome to your homepage
-                  </h1>
-                </div>
-              </Grid>
-            </Grid>
-          </div>
-        </MuiThemeProvider>
+        <div className="Main-feed">
+          <h1>
+              Welcome to your homepage
+          </h1>
+        </div>
       );
     }
 }

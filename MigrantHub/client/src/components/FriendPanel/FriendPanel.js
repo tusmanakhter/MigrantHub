@@ -9,7 +9,6 @@ import PersonAddDisabled from '@material-ui/icons/PersonAddDisabled';
 import axios from 'axios';
 import yes from 'components/FriendPanel/yes.svg';
 import no from 'components/FriendPanel/no.svg';
-import MainLayout from 'home/MainLayout';
 
 const qs = require('qs');
 
@@ -118,79 +117,77 @@ class FriendPanel extends Component {
 
   render() {
     return (
-      <MainLayout>
-        <div>
-          <Card className="Card-friend-panel">
-            <CardContent>
-              <p>Your list of friends:</p>
-              <ul>
-                {this.state.friendsList.map((list, index) => (
-                  <li key={list.friend_id}>
-                    <img src={list.pic} alt="profile pic" className="User-avatar" />
-                    {list.friend_id}
-                    <IconButton onClick={() => { this.unfriend(this, list.friend_id, index); }} aria-label="Delete">
-                      <PersonAddDisabled fontSize="small" />
-                    </IconButton>
-                    <Grid container spacing={24}>
-                      <Grid
-                        item
-                        xs={12}
-                        sm={4}
-                        id="friendRequest"
-                        name="friendRequest"
-                        value={list.requestFrom}
-                        fullWidth
-                      />
-                    </Grid>
-                  </li>
-                ))}
-              </ul>
-            </CardContent>
-          </Card>
-          <Card className="Card-friend-panel">
-            <CardContent>
-              <p>Your friend requests:</p>
-              <ul>
-                {this.state.friendRequests.map((request, index) => (
-                  <li key={request.id}>
-                    <img src={request.pic} alt="profile pic" className="User-avatar" />
-                    {request.requestFrom}
-                    <Grid container spacing={24}>
-                      <Grid
-                        item
-                        xs={12}
-                        sm={4}
-                        id="friendRequest"
-                        name="friendRequest"
-                        value={request.requestFrom}
-                        fullWidth
-                      />
-                      <Button onClick={() => { this.acceptFriendRequest(this, request._id, request.requestFrom, request.requestTo, index); }} variant="contained" color="primary"><img src={yes} alt="yes" /></Button>
-                      <Button onClick={() => { this.rejectFriendRequest(this, request._id, index); }} variant="contained" color="primary"><img src={no} alt="no" /></Button>
-                    </Grid>
-                  </li>
-                ))}
-              </ul>
-            </CardContent>
-          </Card>
-          <Card className="Card-friend-panel">
-            <CardContent>
-              <p>Add Friends:</p>
-              <TextField
-                id="addFriendTextbox"
-                label="User Email"
-                value={this.state.addFriendTextValue}
-                onChange={event => this.handleAddFriendTextChange(event)}
-                margin="normal"
-                variant="outlined"
-                helperText={this.state.addFriendMessage}
-                error={this.state.addFriendError}
-              />
-              <Button variant="contained" color="primary" onClick={event => this.handleAddFriend()}>Add Friend</Button>
-            </CardContent>
-          </Card>
-        </div>
-      </MainLayout>
+      <div>
+        <Card className="Card-friend-panel">
+          <CardContent>
+            <p>Your list of friends:</p>
+            <ul>
+              {this.state.friendsList.map((list, index) => (
+                <li key={list.friend_id}>
+                  <img src={list.pic} alt="profile pic" className="User-avatar" />
+                  {list.friend_id}
+                  <IconButton onClick={() => { this.unfriend(this, list.friend_id, index); }} aria-label="Delete">
+                    <PersonAddDisabled fontSize="small" />
+                  </IconButton>
+                  <Grid container spacing={24}>
+                    <Grid
+                      item
+                      xs={12}
+                      sm={4}
+                      id="friendRequest"
+                      name="friendRequest"
+                      value={list.requestFrom}
+                      fullWidth
+                    />
+                  </Grid>
+                </li>
+              ))}
+            </ul>
+          </CardContent>
+        </Card>
+        <Card className="Card-friend-panel">
+          <CardContent>
+            <p>Your friend requests:</p>
+            <ul>
+              {this.state.friendRequests.map((request, index) => (
+                <li key={request.id}>
+                  <img src={request.pic} alt="profile pic" className="User-avatar" />
+                  {request.requestFrom}
+                  <Grid container spacing={24}>
+                    <Grid
+                      item
+                      xs={12}
+                      sm={4}
+                      id="friendRequest"
+                      name="friendRequest"
+                      value={request.requestFrom}
+                      fullWidth
+                    />
+                    <Button onClick={() => { this.acceptFriendRequest(this, request._id, request.requestFrom, request.requestTo, index); }} variant="contained" color="primary"><img src={yes} alt="yes" /></Button>
+                    <Button onClick={() => { this.rejectFriendRequest(this, request._id, index); }} variant="contained" color="primary"><img src={no} alt="no" /></Button>
+                  </Grid>
+                </li>
+              ))}
+            </ul>
+          </CardContent>
+        </Card>
+        <Card className="Card-friend-panel">
+          <CardContent>
+            <p>Add Friends:</p>
+            <TextField
+              id="addFriendTextbox"
+              label="User Email"
+              value={this.state.addFriendTextValue}
+              onChange={event => this.handleAddFriendTextChange(event)}
+              margin="normal"
+              variant="outlined"
+              helperText={this.state.addFriendMessage}
+              error={this.state.addFriendError}
+            />
+            <Button variant="contained" color="primary" onClick={event => this.handleAddFriend()}>Add Friend</Button>
+          </CardContent>
+        </Card>
+      </div>
     );
   }
 }

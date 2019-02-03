@@ -5,6 +5,7 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import { Link } from 'react-router-dom';
+import { FormattedMessage } from 'react-intl';
 
 const styles = theme => ({
   root: {
@@ -22,17 +23,20 @@ const styles = theme => ({
   title: {
     display: 'block',
     marginRight: 'auto',
+    [theme.breakpoints.down('xs')]: {
+      marginRight: 'initial',
+    },
   },
   appBar: {
-    [theme.breakpoints.down('sm')]: {
-      padding: '0% 1%',
-    },
     padding: '0% 7.5%',
     background: '#193446',
   },
   toolbar: {
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('xs')]: {
       padding: '0% 1% 0% 2%',
+      display: 'flex',
+      flexDirection: 'column',
+      textAlign: 'center',
     },
   },
   underline: {
@@ -55,8 +59,12 @@ const HomeHeader = (props) => {
           <Typography variant="h6" color="inherit" className={classes.title}>
             <Link to="/">MigrantHub</Link>
           </Typography>
-          <Link to="/login">Log In</Link>
-          <Link to="/signup/account-selection">Sign Up</Link>
+          <Link to="/login">
+            <FormattedMessage id="login" />
+          </Link>
+          <Link to="/signup/account-selection">
+            <FormattedMessage id="signup" />
+          </Link>
         </Toolbar>
       </AppBar>
       <div className={classes.underline} />

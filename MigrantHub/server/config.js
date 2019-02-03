@@ -30,6 +30,11 @@ const dialogflowConfig = {
   },
 };
 
+const emailConfig = {
+  email: process.env.HOTMAIL_EMAIL,
+  password: process.env.HOTMAIL_PASSWORD,
+};
+
 module.exports = {
-  dbConfig, facebookConfig, googleConfig, cloudConfig, dialogflowConfig,
+  dbConfig, facebookConfig, googleConfig, cloudConfig, dialogflowConfig, emailConfig,
 };

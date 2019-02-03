@@ -15,6 +15,9 @@ import GoogleMaps from 'components/GoogleMaps/GoogleMaps';
 import UserTypes from 'lib/UserTypes';
 import SweetAlert from "react-bootstrap-sweetalert";
 import sweetAlertStyle from "assets/jss/material-dashboard-pro-react/views/sweetAlertStyle.jsx";
+import { AuthConsumer } from 'routes/AuthContext';
+import AddToCalendar from 'react-add-to-calendar';
+
 const styles = {
   avatar: {
     backgroundColor: blue[100],
@@ -29,17 +32,19 @@ class ViewService extends Component {
       redirectTo: false,
       redirectToURL: '',
       redirectState: {},
-      type: '',
       alert: null,
       show: false,
+      event: {
+        title: this.props.serviceTitle,
+        description: this.props.serviceDescription,
+        location: 'Montreal, QC',
+        startTime: new Date().toLocaleString(),
+        endTime: new Date().toLocaleString(),
+      }
     };
     this.hideAlert = this.hideAlert.bind(this);
     this.successDelete = this.successDelete.bind(this);
     this.cancelDetele = this.cancelDetele.bind(this);
-  }
-
-  componentDidMount() {
-    this.getUser();
   }
 
   handleEdit = () => {
@@ -64,13 +69,6 @@ class ViewService extends Component {
         }
       });
   };
-
-  getUser() {
-    const user = JSON.parse(localStorage.getItem('user'));
-    this.setState({
-      type: user.type,
-    });
-  }
 
   warningWithConfirmAndCancelMessage() {
     this.setState({
@@ -159,145 +157,150 @@ class ViewService extends Component {
     }
 
     return (
-      <div>
-      {this.state.alert}
-        <Dialog
-          open={open}
-          onClose={onClose}
-          scroll={scroll}
-          aria-labelledby="scroll-dialog-title"
-          fullWidth
-          maxWidth="lg"
-        >
-          <DialogTitle id="scroll-dialog-title" variant="title" align="center">{serviceTitle}</DialogTitle>
-          <DialogContent>
-            <Typography variant="body1" color="inherit" paragraph align="center">
-                Service Category: {category}
-            </Typography>
-            <Typography variant="body1" color="inherit" paragraph align="center">
-              Service SubCategory: {subcategory}
-            </Typography>
-            <Typography variant="body2" color="inherit" paragraph align="center">
-              {serviceSummary}
-            </Typography>
-            <Typography variant="body1" color="inherit" paragraph align="center">
-              {serviceDescription}
-            </Typography>
-
-            {serviceDate !== undefined && (
-              <Grid container spacing={12}>
-                <Typography variant="h5" color="inherit" paragraph>
-                  Service date:
-              </Typography>
-                <Grid container spacing={12}>
-                  <Grid item xs={12}>
-                    Start date:
-                  {' '}
-                    {serviceDate.startDate.substring(0, 10)}
+      <AuthConsumer>
+        {({ user }) => (
+          <div>
+            {this.state.alert}
+            <Dialog
+              open={open}
+              onClose={onClose}
+              scroll={scroll}
+              aria-labelledby="scroll-dialog-title"
+              fullWidth
+              maxWidth="lg"
+            >
+              <DialogTitle id="scroll-dialog-title" variant="title" align="center">{serviceTitle}</DialogTitle>
+              <DialogContent>
+                <Typography variant="body1" color="inherit" paragraph align="center">
+                  Service Category: {category}
+                </Typography>
+                <Typography variant="body1" color="inherit" paragraph align="center">
+                  Service SubCategory: {subcategory}
+                </Typography>
+                <Typography variant="body2" color="inherit" paragraph align="center">
+                  {serviceSummary}
+                </Typography>
+                <Typography variant="body1" color="inherit" paragraph align="center">
+                  {serviceDescription}
+                </Typography>
+                <hr />
+                <AddToCalendar event={this.state.event} />
+                {serviceDate !== undefined && (
+                  <Grid container spacing={12}>
+                    <Typography variant="h5" color="inherit" paragraph>
+                      Service date:
+                  </Typography>
+                    <Grid container spacing={12}>
+                      <Grid item xs={12}>
+                        Start date:
+                      {' '}
+                        {serviceDate.startDate.substring(0, 10)}
+                      </Grid>
+                      <Grid item xs={12}>
+                        End date:
+                      {' '}
+                        {serviceDate.endDate.substring(0, 10)}
+                      </Grid>
+                    </Grid>
                   </Grid>
-                  <Grid item xs={12}>
-                    End date:
-                  {' '}
-                    {serviceDate.endDate.substring(0, 10)}
+                )}
+                {serviceHours.length > 0 ? (
+                  <Typography variant="h5" color="inherit" paragraph>
+                    <br />
+                    Service Hours:
+                  </Typography>
+                ) : ''}
+                {serviceHours.map(item => (
+                  <Grid justify="center" container item xs>
+                    <Grid container spacing={6}>
+                      <Grid item xs={2}>
+                        {item.serviceDay}
+                      </Grid>
+                      <Grid item xs={2}>
+                        Start time:
+                        {' '}
+                        {item.startTime}
+                      </Grid>
+                      <Grid item xs={2}>
+                        End time:
+                        {' '}
+                        {item.endTime}
+                      </Grid>
+                    </Grid>
                   </Grid>
-                </Grid>
-              </Grid>
-            )}
-            {serviceHours.length > 0 ? (
-              <Typography variant="h5" color="inherit" paragraph>
-                <br />
-                Service Hours:
-              </Typography>
-            ) : ''}
-            {serviceHours.map(item => (
-              <Grid justify="center" container item xs>
-                <Grid container spacing={6}>
-                  <Grid item xs={2}>
-                    {item.serviceDay}
+                ))}
+                {serviceLocation !== undefined && (
+                  <Grid container spacing={12}>
+                    <Typography variant="h5" color="inherit" paragraph>
+                      <br />
+                      Location:
+                  </Typography>
+                    <Grid container spacing={12}>
+                      <Grid item xs={12}>
+                        Address:
+                      {' '}
+                        {serviceLocation.address}
+                      </Grid>
+                      <Grid item xs={12}>
+                        Apartment:
+                      {' '}
+                        {serviceLocation.apartment}
+                      </Grid>
+                      <Grid item xs={12}>
+                        City:
+                      {' '}
+                        {serviceLocation.city}
+                      </Grid>
+                      <Grid item xs={12}>
+                        Province:
+                      {' '}
+                        {serviceLocation.province}
+                      </Grid>
+                      <Grid item xs={12}>
+                        Postal Code:
+                      {' '}
+                        {serviceLocation.postalCode}
+                      </Grid>
+                      <Grid item xs={12}>
+                        Phone Number:
+                      {' '}
+                        {serviceLocation.phoneNumber}
+                      </Grid>
+                    </Grid>
                   </Grid>
-                  <Grid item xs={2}>
-                    Start time:
-                    {' '}
-                    {item.startTime}
-                  </Grid>
-                  <Grid item xs={2}>
-                    End time:
-                    {' '}
-                    {item.endTime}
-                  </Grid>
-                </Grid>
-              </Grid>
-            ))}
-            {serviceLocation !== undefined && (
-              <Grid container spacing={12}>
-                <Typography variant="h5" color="inherit" paragraph>
-                  <br />
-                  Location:
-              </Typography>
-                <Grid container spacing={12}>
-                  <Grid item xs={12}>
-                    Address:
-                  {' '}
-                    {serviceLocation.address}
-                  </Grid>
-                  <Grid item xs={12}>
-                    Apartment:
-                  {' '}
-                    {serviceLocation.apartment}
-                  </Grid>
-                  <Grid item xs={12}>
-                    City:
-                  {' '}
-                    {serviceLocation.city}
-                  </Grid>
-                  <Grid item xs={12}>
-                    Province:
-                  {' '}
-                    {serviceLocation.province}
-                  </Grid>
-                  <Grid item xs={12}>
-                    Postal Code:
-                  {' '}
-                    {serviceLocation.postalCode}
-                  </Grid>
-                  <Grid item xs={12}>
-                    Phone Number:
-                  {' '}
-                    {serviceLocation.phoneNumber}
-                  </Grid>
-                </Grid>
-              </Grid>
-            )}
-            {open && serviceLocation !== undefined && (
-              <GoogleMaps
-                location={serviceLocation}
-              />
-            )}
-          </DialogContent>
-          <DialogActions>
-            { type === UserTypes.ADMIN
-              && (
-                <Button onClick={this.warningWithConfirmAndCancelMessage.bind(this)} color="secondary">
-                  Delete
+                )}
+                {open && serviceLocation !== undefined && (
+                  <GoogleMaps
+                    location={serviceLocation}
+                  />
+                )}
+              </DialogContent>
+              <DialogActions>
+                {user.type === UserTypes.ADMIN
+                  && (
+                    <Button onClick={this.warningWithConfirmAndCancelMessage.bind(this)} color="secondary">
+                      Delete
+                    </Button>
+                  )
+                }}
+                {editMode && (
+                  <React.Fragment>
+                    <Button onClick={this.warningWithConfirmAndCancelMessage.bind(this)} color="secondary">
+                      Delete
+                  </Button>
+                    <Button onClick={this.handleEdit} color="primary">
+                      Edit
+                  </Button>
+                  </React.Fragment>
+                )}
+                <Button onClick={onClose} color="primary">
+                  Cancel
                 </Button>
-              )
-            }}
-            {editMode && (
-              <React.Fragment>
-                <Button onClick={this.warningWithConfirmAndCancelMessage.bind(this)} color="secondary">
-                  Delete
-              </Button>
-                <Button onClick={this.handleEdit} color="primary">
-                  Edit
-              </Button>
-              </React.Fragment>
-            )}
-            <Button onClick={onClose} color="primary">
-              Cancel
-            </Button>
-          </DialogActions>
-        </Dialog>
-      </div>
+              </DialogActions>
+            </Dialog>
+          </div>
+        )}
+      </AuthConsumer>
     );
   }
 }

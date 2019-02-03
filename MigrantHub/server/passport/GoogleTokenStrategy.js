@@ -19,6 +19,7 @@ const googleStrategy = new GoogleTokenStrategy({
       const newUser = new User();
       newUser._id = profile.emails[0].value;
       newUser.email = profile.emails[0].value;
+      newUser.userType = 'google';
       newUser.firstName = profile.name.givenName;
       newUser.lastName = profile.name.familyName;
       newUser.googleAuthentication = {
