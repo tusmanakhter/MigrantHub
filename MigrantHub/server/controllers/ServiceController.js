@@ -39,4 +39,8 @@ module.exports = {
   async deleteService(serviceId) {
     return ServiceService.deleteService(serviceId);
   },
+
+  async getRecommendations(user) {
+    return ServiceService.getRecommendations(user);
+  },
 };
