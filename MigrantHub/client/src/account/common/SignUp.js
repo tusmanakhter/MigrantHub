@@ -225,14 +225,14 @@ class SignUp extends Component {
                             {activeStep === this.props.steps.length ? (
                               <React.Fragment>
                                 <Typography variant="headline" gutterBottom>
-                                  Welcome to MigrantHub.
+                                  <FormattedMessage id="signup.welcome" />
                             </Typography>
                                 <Typography variant="subheading">
-                                  You may now login.
+                                  <FormattedMessage id="signup.login" />
                             </Typography>
                                 <Link to={`/login`}>
                                   <Button round color="primary">
-                                    Get started
+                                    <FormattedMessage id="home.getStarted" />
                                 </Button>
                                 </Link>
                               </React.Fragment>

@@ -6,6 +6,7 @@ module.exports = {
     const businessUser = new BusinessUser();
     businessUser._id = businessUserObject.email;
     businessUser.email = businessUserObject.email;
+    businessUser.userType = 'local';
     businessUser.localAuthentication = {
       password: businessUserObject.password,
     };
