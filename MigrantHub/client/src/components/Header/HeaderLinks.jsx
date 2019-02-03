@@ -191,7 +191,7 @@ class BaseHeaderLinks extends React.Component {
         </Button>
         <Link to="/main">
           <Button
-            color="danger"
+            color="info"
             simple
             aria-label="Dashboard"
             justIcon
@@ -215,7 +215,7 @@ class BaseHeaderLinks extends React.Component {
         </Link>
         <div className={managerClasses}>
           <Button
-            color="danger"
+            color="info"
             simple
             justIcon
             aria-label="Notifications"
@@ -288,7 +288,7 @@ class BaseHeaderLinks extends React.Component {
         </div>
         <Link to={path}>
           <Button
-            color="danger"
+            color="info"
             simple
             aria-label="Person"
             justIcon
