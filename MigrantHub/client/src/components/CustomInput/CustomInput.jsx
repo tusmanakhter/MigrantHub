@@ -24,7 +24,7 @@ function CustomInput({ ...props }) {
     white,
     inputRootCustomClasses,
     success,
-    helpText
+    helperText
   } = props;
 
   const labelClasses = classNames({
@@ -78,9 +78,9 @@ function CustomInput({ ...props }) {
         id={id}
         {...inputProps}
       />
-      {helpText !== undefined ? (
+      {helperText !== undefined ? (
         <FormHelperText id={id + "-text"} className={helpTextClasses}>
-          {helpText}
+          {helperText}
         </FormHelperText>
       ) : null}
     </FormControl>
@@ -98,7 +98,7 @@ CustomInput.propTypes = {
   error: PropTypes.bool,
   success: PropTypes.bool,
   white: PropTypes.bool,
-  helpText: PropTypes.node
+  helperText: PropTypes.node
 };
 
 export default withStyles(customInputStyle)(CustomInput);

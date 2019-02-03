@@ -22,8 +22,8 @@ module.exports.validServiceData = function() {
         serviceHours : [
             {
                 serviceDay : "monday",
-                startTime : "08:00",
-                endTime : "17:00"
+                startTime : "08:00 AM",
+                endTime : "12:00 PM"
             },
         ],
     };

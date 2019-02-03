@@ -74,7 +74,6 @@ module.exports = {
         if (validator.isEmpty(day.endTime)) {
           errors += '\nService hour end time required and empty';
         } else if (!validator.matches(day.endTime, re)) {
-          console.log(day.endTime);
           errors += '\nService hour end time should be in the format 13:57';
         } else if (day.endTime <= day.startTime) {
           errors += '\nEnd time should be after start time';

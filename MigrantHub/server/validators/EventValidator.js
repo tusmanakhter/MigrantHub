@@ -54,7 +54,6 @@ module.exports = {
     } else if (validator.isBefore(businessObject.dateStart)) {
       errors += '\nStart date is invalid';
     }
-
     if (validator.isEmpty(businessObject.dateEnd)) {
       errors += '\nEnd date is required';
     } else if (validator.isBefore(businessObject.dateEnd, businessObject.dateStart)) {
@@ -67,8 +66,6 @@ module.exports = {
 
     if (validator.isEmpty(businessObject.timeEnd)) {
       errors += '\nEnd time is required';
-    } else if (businessObject.secondsEnd <= businessObject.secondsStart) {
-      errors += '\nEnd time is invalid';
     }
 
     return errors;

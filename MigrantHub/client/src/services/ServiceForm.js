@@ -63,35 +63,11 @@ const styles = theme => ({
   container: {
     position: 'relative',
   },
-  row: {
-    display: 'inline-block',
-  },
-
-  group: {
-    flexDirection: 'row',
-  },
   formControl: {
     textAlign: 'left',
   },
   select: {
     textAlign: 'left',
-  },
-  timeContainer: {
-    display: 'flex',
-    flexWrap: 'wrap',
-  },
-  textField: {
-    marginLeft: theme.spacing.unit,
-    marginRight: theme.spacing.unit,
-    width: 200,
-  },
-  rightIcon: {
-    marginLeft: theme.spacing.unit,
-  },
-  img: {
-    width: 400,
-    length: 300,
-
   },
 });
 
@@ -359,6 +335,9 @@ class ServiceForm extends Component {
   handleEditSingleObject = (name, fieldName, event) =>  {
     const obj = {};
     obj[name] = { ...this.state[name] };
+    if(event !== moment.isMoment()){
+      event = moment(event);
+    }
     const value = event.format('L');
     obj[name][fieldName] = value;
     this.setState({ [name]: obj[name] });

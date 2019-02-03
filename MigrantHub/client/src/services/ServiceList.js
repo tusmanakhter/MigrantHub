@@ -15,9 +15,6 @@ import { FormattedMessage } from 'react-intl';
 import { AuthConsumer } from 'routes/AuthContext';
 
 const styles = theme => ({
-  mainContainer: {
-    marginLeft: 75,
-  },
   root: {
     ...theme.mixins.gutters(),
     paddingTop: theme.spacing.unit * 2,
