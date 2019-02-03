@@ -41,4 +41,12 @@ module.exports = {
   async getUser(userEmail) {
     return AccountService.getUser(userEmail);
   },
+
+  async forgotPassword(userEmail) {
+    return AccountService.forgotPassword(userEmail);
+  },
+
+  async resetPassword(userEmail, userPassword, token) {
+    return AccountService.resetPassword(userEmail, userPassword, token);
+  },
 };

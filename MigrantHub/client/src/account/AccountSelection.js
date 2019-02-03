@@ -5,9 +5,9 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import Paper from '@material-ui/core/Paper';
-import HomeLayout from 'home/HomeLayout';
 import { Link } from 'react-router-dom';
 import { FaCreditCard, FaAddressCard } from 'react-icons/fa';
+import { FormattedMessage } from 'react-intl';
 
 const styles = theme => ({
   layout: {
@@ -65,47 +65,63 @@ const AccountSelection = (props) => {
 
   return (
     <React.Fragment>
-      <HomeLayout>
-        <Grid container className={classes.title}>
-          <Grid item xs={12}>
-            <Typography variant="h5">Create your MigrantHub account for free!</Typography>
-          </Grid>
+      <Grid container className={classes.title}>
+        <Grid item xs={12}>
+          <Typography variant="h5">
+            <FormattedMessage id="signup.selection.create" />
+          </Typography>
         </Grid>
-        <Grid container spacing={24} className={classes.layout}>
-          <Grid item md={6}>
-            <Paper className={classes.paper}>
-              <div className={classes.section}>
-                <FaAddressCard size="3em" className={classes.icon} />
-                <Typography variant="h5">Personal</Typography>
-                <Typography variant="subtitle1">For people who want to find services</Typography>
-              </div>
-              <Typography variant="body1" className={classes.section}>Lorem ipsum dolor sit amet consectetur adipisicing elit. Laudantium incidunt ipsa exercitationem dolores nobis, aliquam commodi consequuntur tenetur inventore sapiente perferendis illum sint maxime fugit quidem! Ab possimus culpa eaque.</Typography>
-              <ul>
-                <li><Typography variant="body2">Its cool</Typography></li>
-                <li><Typography variant="body2">Its awesome</Typography></li>
-                <li><Typography variant="body2">Its amazing</Typography></li>
-              </ul>
-              <Button variant="contained" component={Link} to="/signup/personal" className={classes.button}>Sign Up for a Personal Account</Button>
-            </Paper>
-          </Grid>
-          <Grid item md={6}>
-            <Paper className={classes.paper}>
-              <div className={classes.section}>
-                <FaCreditCard size="3em" className={classes.icon} />
-                <Typography variant="h5">Business</Typography>
-                <Typography variant="subtitle1">For businesses who want to provide services</Typography>
-              </div>
-              <Typography variant="body1" className={classes.section}>Lorem ipsum dolor sit amet consectetur adipisicing elit. Laudantium incidunt ipsa exercitationem dolores nobis, aliquam commodi consequuntur tenetur inventore sapiente perferendis illum sint maxime fugit quidem! Ab possimus culpa eaque.</Typography>
-              <ul>
-                <li><Typography variant="body2">Its cool</Typography></li>
-                <li><Typography variant="body2">Its awesome</Typography></li>
-                <li><Typography variant="body2">Its amazing</Typography></li>
-              </ul>
-              <Button variant="contained" component={Link} to="/signup/business" className={classes.button}>Sign Up for a Business Account</Button>
-            </Paper>
-          </Grid>
+      </Grid>
+      <Grid container spacing={24} className={classes.layout}>
+        <Grid item md={6}>
+          <Paper className={classes.paper}>
+            <div className={classes.section}>
+              <FaAddressCard size="3em" className={classes.icon} />
+              <Typography variant="h5">
+                <FormattedMessage id="signup.selection.personal" />
+              </Typography>
+              <Typography variant="subtitle1">
+                <FormattedMessage id="signup.selection.personalSubtitle" />
+              </Typography>
+            </div>
+            <Typography variant="body1" className={classes.section}>
+              <FormattedMessage id="signup.selection.personalDesc" />
+            </Typography>
+            <ul>
+              <li><Typography variant="body2"><FormattedMessage id="signup.selection.personal1" /></Typography></li>
+              <li><Typography variant="body2"><FormattedMessage id="signup.selection.personal2" /></Typography></li>
+              <li><Typography variant="body2"><FormattedMessage id="signup.selection.personal3" /></Typography></li>
+            </ul>
+            <Button variant="contained" component={Link} to="/signup/personal" className={classes.button}>
+              <FormattedMessage id="signup.selection.personalSignUp" />
+            </Button>
+          </Paper>
         </Grid>
-      </HomeLayout>
+        <Grid item md={6}>
+          <Paper className={classes.paper}>
+            <div className={classes.section}>
+              <FaCreditCard size="3em" className={classes.icon} />
+              <Typography variant="h5">
+                <FormattedMessage id="signup.selection.business" />
+              </Typography>
+              <Typography variant="subtitle1">
+                <FormattedMessage id="signup.selection.businessSubtitle" />
+              </Typography>
+            </div>
+            <Typography variant="body1" className={classes.section}>
+              <FormattedMessage id="signup.selection.businessDesc" />
+            </Typography>
+            <ul>
+              <li><Typography variant="body2"><FormattedMessage id="signup.selection.business1" /></Typography></li>
+              <li><Typography variant="body2"><FormattedMessage id="signup.selection.business2" /></Typography></li>
+              <li><Typography variant="body2"><FormattedMessage id="signup.selection.business3" /></Typography></li>
+            </ul>
+            <Button variant="contained" component={Link} to="/signup/business" className={classes.button}>
+              <FormattedMessage id="signup.selection.businessSignUp" />
+            </Button>
+          </Paper>
+        </Grid>
+      </Grid>
     </React.Fragment>
   );
 };

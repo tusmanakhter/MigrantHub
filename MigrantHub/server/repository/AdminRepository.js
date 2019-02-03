@@ -6,6 +6,7 @@ module.exports = {
     const admin = new Admin();
     admin._id = adminUserObject.email;
     admin.email = adminUserObject.email;
+    admin.userType = 'local';
     admin.localAuthentication = {
       password: adminUserObject.password,
     };

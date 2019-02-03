@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { joiningReasons } from 'lib/SignUpConstants';
 import Dropdown from 'components/fields/generic/Dropdown';
+import { FormattedMessage } from 'react-intl';
 
 const JoiningReason = (props) => {
   const {
@@ -11,7 +12,7 @@ const JoiningReason = (props) => {
   return (
     <Dropdown
       name="joiningReason"
-      label="Reason for joining"
+      label={<FormattedMessage id="other.reason" />}
       value={joiningReason}
       error={joiningReasonError}
       options={joiningReasons}

@@ -1,13 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Years from 'components/fields/generic/Years';
+import { FormattedMessage } from 'react-intl';
 
 const Age = (props) => {
   const { age, ageError, handleChange } = props;
   return (
     <Years
       name="age"
-      label="Age"
+      label={<FormattedMessage id="personal.age" />}
       value={age}
       error={ageError}
       handleChange={event => handleChange(event)}

@@ -15,6 +15,7 @@ import LookingForJob from 'components/fields/employment/LookingForJob';
 import Title from 'components/fields/employment/Title';
 import Company from 'components/fields/employment/Company';
 import EmploymentLength from 'components/fields/employment/EmploymentLength';
+import { injectIntl, intlShape, FormattedMessage } from 'react-intl';
 
 const styles = theme => ({
   row: {
@@ -37,7 +38,7 @@ class EmploymentInfo extends Component {
   }
 
   validate = () => {
-    const { jobStatus, workExperience } = this.props;
+    const { jobStatus, workExperience, intl } = this.props;
     let isError = false;
     const errors = {
       jobStatusError: '',
@@ -45,7 +46,7 @@ class EmploymentInfo extends Component {
     };
 
     if (validator.isEmpty(jobStatus)) {
-      errors.jobStatusError = 'Job status is required';
+      errors.jobStatusError = `${intl.formatMessage({ id: 'employment.status' })}  ${intl.formatMessage({ id: 'isrequired' })}`;
       isError = true;
     }
 
@@ -55,20 +56,20 @@ class EmploymentInfo extends Component {
       )]);
 
       if (validator.isEmpty(job.title)) {
-        errors.workExperienceError[index].title = 'Title is required';
+        errors.workExperienceError[index].title = `${intl.formatMessage({ id: 'employment.title' })}  ${intl.formatMessage({ id: 'isrequired' })}`;
         isError = true;
       } else if (!validator.isAlpha(job.title)) {
-        errors.workExperienceError[index].title = 'Title is not valid';
+        errors.workExperienceError[index].title = `${intl.formatMessage({ id: 'employment.title' })}  ${intl.formatMessage({ id: 'notvalid' })}`;
         isError = true;
       }
 
       if (validator.isEmpty(job.company)) {
-        errors.workExperienceError[index].company = 'Company is required';
+        errors.workExperienceError[index].company = `${intl.formatMessage({ id: 'employment.company' })}  ${intl.formatMessage({ id: 'isrequired' })}`;
         isError = true;
       }
 
       if (validator.isEmpty(job.years)) {
-        errors.workExperienceError[index].years = 'Employment length is required';
+        errors.workExperienceError[index].years = `${intl.formatMessage({ id: 'employment.length' })}  ${intl.formatMessage({ id: 'isrequired' })}`;
         isError = true;
       }
     });
@@ -90,7 +91,9 @@ class EmploymentInfo extends Component {
 
     return (
       <React.Fragment>
-        <Typography variant="title" gutterBottom> Employment Information </Typography>
+        <Typography variant="title" gutterBottom>
+          <FormattedMessage id="signup.employmentinfo" />
+        </Typography>
         <Grid container spacing={24}>
           <Grid item xs={12} sm={4}>
             <JobStatus
@@ -114,7 +117,9 @@ class EmploymentInfo extends Component {
             />
           </Grid>
           <Grid item xs={12}>
-            <Typography variant="subheading" gutterBottom className={classes.row}> Add work experience </Typography>
+            <Typography variant="subheading" gutterBottom className={classes.row}>
+              <FormattedMessage id="signup.employment.addwork" />
+            </Typography>
             <Button
               variant="fab"
               mini
@@ -180,6 +185,7 @@ EmploymentInfo.propTypes = {
   lookingForJob: PropTypes.string.isRequired,
   currentIncome: PropTypes.string.isRequired,
   workExperience: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+  intl: intlShape.isRequired,
 };
 
-export default withStyles(styles)(EmploymentInfo);
+export default withStyles(styles)(injectIntl(EmploymentInfo, { withRef: true }));

@@ -1,13 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import TextBox from 'components/fields/generic/TextBox';
+import { FormattedMessage } from 'react-intl';
 
 const LastName = (props) => {
   const { lastName, lastNameError, handleChange } = props;
   return (
     <TextBox
       name="lastName"
-      label="Last Name"
+      label={<FormattedMessage id="contact.lastname" />}
       placeholder=""
       value={lastName}
       error={lastNameError}

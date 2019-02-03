@@ -19,4 +19,10 @@ const googleConfig = {
   clientSecret: process.env.GOOGLE_CLIENT_SECRET,
 };
 
-module.exports = { dbConfig, facebookConfig, googleConfig };
+const emailConfig = {
+  email: process.env.HOTMAIL_EMAIL,
+  password: process.env.HOTMAIL_PASSWORD,
+};
+module.exports = {
+  dbConfig, facebookConfig, googleConfig, emailConfig,
+};

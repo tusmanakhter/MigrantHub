@@ -27,10 +27,13 @@ import TextField from '@material-ui/core/TextField';
 import Button from "components/CustomButtons/Button.jsx";
 import Logout from '../Logout';
 import { Link } from 'react-router-dom';
+import { injectIntl, intlShape } from 'react-intl';
 
 import headerLinksStyle from "assets/jss/material-dashboard-pro-react/components/headerLinksStyle";
+import { AuthConsumer } from 'routes/AuthContext';
+import UserTypes from 'lib/UserTypes';
 
-class HeaderLinks extends React.Component {
+class BaseHeaderLinks extends React.Component {
   state = {
     open: false,
     search: '',
@@ -39,6 +42,7 @@ class HeaderLinks extends React.Component {
     redirectToURL: '',
     redirectState: {},
   };
+
   handleClick = () => {
     this.setState({ open: !this.state.open });
   };
@@ -106,7 +110,7 @@ class HeaderLinks extends React.Component {
   }
 
   render() {
-    const { classes, rtlActive } = this.props;
+    const { classes, rtlActive, intl, context } = this.props;
     const { open } = this.state;
     const searchButton =
       classes.top +
@@ -127,14 +131,26 @@ class HeaderLinks extends React.Component {
     const managerClasses = classNames({
       [classes.managerClasses]: true
     });
+
+    let path = '/';
+    switch (context.user.type) {
+      case UserTypes.MIGRANT:
+        path = '/migrant/profile';
+        break;
+      case UserTypes.BUSINESS:
+        path = '/business/profile';
+        break;
+      default:
+        break;
+    }
+
     return (
-      
       <div className={wrapper}>
       {this.renderRedirectTo()}
         <TextField
           id="search" 
           name="search"
-          placeholder="Search…"
+          placeholder={intl.formatMessage({ id: 'search' })}
           value={this.state.search}
           onChange={event => this.handleChange(event)}
           helperText={this.state.searchError}
@@ -258,7 +274,7 @@ class HeaderLinks extends React.Component {
             )}
           </Popper>
         </div>
-        <Link to={`/migrant/profile`}>
+        <Link to={path}>
           <Button
             color="transparent"
             aria-label="Person"
@@ -272,16 +288,23 @@ class HeaderLinks extends React.Component {
               </span>
             </Hidden>
           </Button>
-          <Logout />
         </Link>
+        <Logout />
       </div>
     );
   }
 }
 
+const HeaderLinks = props => (
+  <AuthConsumer>
+    {context => <BaseHeaderLinks context={context} {...props} />}
+  </AuthConsumer>
+);
+
 HeaderLinks.propTypes = {
   classes: PropTypes.object.isRequired,
-  rtlActive: PropTypes.bool
+  rtlActive: PropTypes.bool,
+  intl: intlShape.isRequired,
 };
 
-export default withStyles(headerLinksStyle)(HeaderLinks);
+export default withStyles(headerLinksStyle)(injectIntl(HeaderLinks));

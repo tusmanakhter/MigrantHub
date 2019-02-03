@@ -1,13 +1,11 @@
 import React, { Component } from 'react';
-import MainLayout from 'home/MainLayout';
 import PropTypes from 'prop-types';
 import withStyles from '@material-ui/core/styles/withStyles';
 import axios from 'axios';
-import Header from 'components/Header/Header';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
-import NavPanel from 'components/NavPanel/NavPanel';
+import { AuthConsumer } from 'routes/AuthContext';
 
 const qs = require('qs');
 
@@ -78,7 +76,7 @@ class ViewMigrantProfile extends Component {
   }
 
   getAccount() {
-    const user = JSON.parse(localStorage.getItem('user'));
+    const { user } = this.context;
     axios.get('/api/migrants/' + user.username).then((response) => {
       if (response.status === 200) {
         const jsonObj = qs.parse(qs.stringify(response.data));
@@ -160,360 +158,327 @@ class ViewMigrantProfile extends Component {
 
     return (
       <React.Fragment>
-        <MainLayout>
-          <div className={classes.root}>
-            <Grid
-              container spacing={6}
-              direction="column"
-              justify="flex-start"
-              alignItems="stretch"
-            >
-              <Grid item xs={12}>
-                <Paper className={classes.paper}>
-                  <Typography variant="title" gutterBottom>
-                    Contact Information
-                          </Typography>
-                </Paper>
-              </Grid>
-              <Grid item xs={12}>
-                <Paper className={classes.paper}>
-                  <label className={classes.label}>
-                    First Name:
-                          </label>
-                  {firstName}
-                </Paper>
-              </Grid>
-              <Grid item xs={12}>
-                <Paper className={classes.paper}>
-                  <label className={classes.label}>
-                    Last Name:
-                          </label>
-                  {lastName}
-                </Paper>
-              </Grid>
-              <Grid item xs={12}>
-                <Paper className={classes.paper}>
-                  <label className={classes.label}>
-                    Address:
-                          </label>
-                  {address}
-                </Paper>
-              </Grid>
-              <Grid item xs={12}>
-                <Paper className={classes.paper}>
-                  <label className={classes.label}>
-                    Apartment:
-                          </label>
-                  {apartment}
-                </Paper>
-              </Grid>
-
-              <Grid item xs={12}>
-                <Paper className={classes.paper}>
-                  <label className={classes.label}>
-                    City:
-                          </label>
-                  {city}
-                </Paper>
-              </Grid>
-              <Grid item xs={12}>
-                <Paper className={classes.paper}>
-                  <label className={classes.label}>
-                    Province:
-                          </label>
-                  {province}
-                </Paper>
-              </Grid>
-
-              <Grid item xs={12}>
-                <Paper className={classes.paper}>
-                  <label className={classes.label}>
-                    Postal Code:
-                          </label>
-                  {postalCode}
-                </Paper>
-              </Grid>
-              <Grid item xs={12}>
-                <Paper className={classes.paper}>
-                  <label className={classes.label}>
-                    Phone Number:
-                          </label>
-                  {phoneNumber}
-                </Paper>
-              </Grid>
+        <div className={classes.root}>
+          <Grid
+            container spacing={6}
+            direction="column"
+            justify="flex-start"
+            alignItems="stretch"
+          >
+            <Grid item xs={12}>
+              <Paper className={classes.paper}>
+                <Typography variant="title" gutterBottom>
+                  Contact Information
+                        </Typography>
+              </Paper>
             </Grid>
-            <Grid
-              container spacing={6}
-              direction="column"
-              justify="flex-start"
-              alignItems="stretch"
-            >
-              <Grid item xs={12}>
-                <Paper className={classes.paper}>
-                  <Typography variant="title" gutterBottom>
-                    Personal Information
-                          </Typography>
-                </Paper>
-              </Grid>
-              <Grid item xs={12}>
-                <Paper className={classes.paper}>
-                  <label className={classes.label}>
-                    Age:
-                          </label>
-                  {age}
-                </Paper>
-              </Grid>
-              <Grid item xs={12}>
-                <Paper className={classes.paper}>
-                  <label className={classes.label}>
-                    Gender:
-                          </label>
-                  {gender}
-                </Paper>
-              </Grid>
-              <Grid item xs={12}>
-                <Paper className={classes.paper}>
-                  <label className={classes.label}>
-                    Nationality:
-                          </label>
-                  {nationality}
-                </Paper>
-              </Grid>
-              <Grid item xs={12}>
-                <Paper className={classes.paper}>
-                  <label className={classes.label}>
-                    Relationship Status:
-                          </label>
-                  {relationshipStatus}
-                </Paper>
-              </Grid>
+            <Grid item xs={12}>
+              <Paper className={classes.paper}>
+                <label className={classes.label}>
+                  First Name:
+                        </label>
+                {firstName}
+              </Paper>
+            </Grid>
+            <Grid item xs={12}>
+              <Paper className={classes.paper}>
+                <label className={classes.label}>
+                  Last Name:
+                        </label>
+                {lastName}
+              </Paper>
+            </Grid>
+            <Grid item xs={12}>
+              <Paper className={classes.paper}>
+                <label className={classes.label}>
+                  Address:
+                        </label>
+                {address}
+              </Paper>
+            </Grid>
+            <Grid item xs={12}>
+              <Paper className={classes.paper}>
+                <label className={classes.label}>
+                  Apartment:
+                        </label>
+                {apartment}
+              </Paper>
+            </Grid>
 
-              <Grid item xs={12}>
-                <Paper className={classes.paper}>
-                  <label className={classes.label}>
-                    Status:
-                          </label>
-                  {status}
-                </Paper>
-              </Grid>
-              <Grid item xs={12}>
-                <Paper className={classes.paper}>
-                  <label className={classes.label}>
-                    Province:
-                          </label>
-                  {province}
-                </Paper>
-              </Grid>
+            <Grid item xs={12}>
+              <Paper className={classes.paper}>
+                <label className={classes.label}>
+                  City:
+                        </label>
+                {city}
+              </Paper>
+            </Grid>
+            <Grid item xs={12}>
+              <Paper className={classes.paper}>
+                <label className={classes.label}>
+                  Province:
+                        </label>
+                {province}
+              </Paper>
+            </Grid>
 
-              <Grid item xs={12}>
-                <Paper className={classes.paper}>
-                  <label className={classes.label}>
-                    Postal Code:
-                          </label>
-                  {postalCode}
-                </Paper>
-              </Grid>
-              <Grid item xs={12}>
-                <Paper className={classes.paper}>
-                  <label className={classes.label}>
-                    Phone Number:
-                          </label>
-                  {phoneNumber}
-                </Paper>
-              </Grid>
+            <Grid item xs={12}>
+              <Paper className={classes.paper}>
+                <label className={classes.label}>
+                  Postal Code:
+                        </label>
+                {postalCode}
+              </Paper>
             </Grid>
-            <Grid
-              container spacing={6}
-              direction="column"
-              justify="flex-start"
-              alignItems="stretch"
-            >
-              <Grid item xs={12}>
-                <Paper className={classes.paper}>
-                  <Typography variant="title" gutterBottom>
-                    Language Information
-                          </Typography>
-                </Paper>
-              </Grid>
-              <Grid item xs={12}>
-                <Paper className={classes.paper}>
-                  <label className={classes.label}>
-                    Mother Tongue:
-                          </label>
-                  {motherTongue}
-                </Paper>
-              </Grid>
-              <Grid item xs={12}>
-                <Paper className={classes.paper}>
-                  <label className={classes.label}>
-                    Speaking Level:
-                          </label>
-                  {speakingLevel}
-                </Paper>
-              </Grid>
-              <Grid item xs={12}>
-                <Paper className={classes.paper}>
-                  <label className={classes.label}>
-                    Writing Level:
-                          </label>
-                  {writingLevel}
-                </Paper>
-              </Grid>
-              <Grid item xs={12}>
-                <Paper className={classes.paper}>
-                  <Typography variant="title" gutterBottom>
-                    Additional Languages
-                          </Typography>
-                </Paper>
-              </Grid>
-              {languages.map((language, index) => (
-                <Grid
-                  container spacing={6}
-                  direction="row"
-                  justify="flex-start"
-                  alignItems="stretch"
-                >
-                  <Grid item xs={4}>
-                    <Paper className={classes.paper}>
-                      <label className={classes.label}>
-                        Language:
-                                  </label>
-                      {language.name}
-                    </Paper>
-                  </Grid>
-                  <Grid item xs={4}>
-                    <Paper className={classes.paper}>
-                      <label className={classes.label}>
-                        Writing Level:
-                                  </label>
-                      {language.writingLevel}
-                    </Paper>
-                  </Grid>
-                  <Grid item xs={4}>
-                    <Paper className={classes.paper}>
-                      <label className={classes.label}>
-                        Speaking Level:
-                                  </label>
-                      {language.speakingLevel}
-                    </Paper>
-                  </Grid>
-                </Grid>
-              ))}
+            <Grid item xs={12}>
+              <Paper className={classes.paper}>
+                <label className={classes.label}>
+                  Phone Number:
+                        </label>
+                {phoneNumber}
+              </Paper>
             </Grid>
-            <Grid
-              container spacing={6}
-              direction="column"
-              justify="flex-start"
-              alignItems="stretch"
-            >
-              <Grid item xs={12}>
-                <Paper className={classes.paper}>
-                  <Typography variant="title" gutterBottom>
-                    Family Information
-                          </Typography>
-                </Paper>
-              </Grid>
-              {family.map((member, index) => (
-                <Grid
-                  container spacing={6}
-                  direction="row"
-                  justify="flex-start"
-                  alignItems="stretch"
-                >
-                  <Grid item xs={3}>
-                    <Paper className={classes.paper}>
-                      <label className={classes.label}>
-                        Age:
-                              </label>
-                      {member.age}
-                    </Paper>
-                  </Grid>
-                  <Grid item xs={3}>
-                    <Paper className={classes.paper}>
-                      <label className={classes.label}>
-                        Relationship Status:
-                                  </label>
-                      {member.relationshipStatus}
-                    </Paper>
-                  </Grid>
-                  <Grid item xs={3}>
-                    <Paper className={classes.paper}>
-                      <label className={classes.label}>
-                        Relation:
-                                  </label>
-                      {member.relation}
-                    </Paper>
-                  </Grid>
-                  <Grid item xs={3}>
-                    <Paper className={classes.paper}>
-                      <label className={classes.label}>
-                        Gender:
-                                  </label>
-                      {member.gender}
-                    </Paper>
-                  </Grid>
-                </Grid>
-              ))}
+          </Grid>
+          <Grid
+            container spacing={6}
+            direction="column"
+            justify="flex-start"
+            alignItems="stretch"
+          >
+            <Grid item xs={12}>
+              <Paper className={classes.paper}>
+                <Typography variant="title" gutterBottom>
+                  Personal Information
+                        </Typography>
+              </Paper>
             </Grid>
-            <Grid
-              container spacing={6}
-              direction="column"
-              justify="flex-start"
-              alignItems="stretch"
-            >
-              <Grid item xs={12}>
-                <Paper className={classes.paper}>
-                  <Typography variant="title" gutterBottom>
-                    Education Information
-                          </Typography>
-                </Paper>
-              </Grid>
-              <Grid item xs={12}>
-                <Paper className={classes.paper}>
-                  <label className={classes.label}>
-                    Education Level:
-                          </label>
-                  {educationLevel}
-                </Paper>
-              </Grid>
-              <Grid item xs={12}>
-                <Paper className={classes.paper}>
-                  <Typography variant="title" gutterBottom>
-                    Proficiency Exams
-                          </Typography>
-                </Paper>
-              </Grid>
+            <Grid item xs={12}>
+              <Paper className={classes.paper}>
+                <label className={classes.label}>
+                  Age:
+                        </label>
+                {age}
+              </Paper>
+            </Grid>
+            <Grid item xs={12}>
+              <Paper className={classes.paper}>
+                <label className={classes.label}>
+                  Gender:
+                        </label>
+                {gender}
+              </Paper>
+            </Grid>
+            <Grid item xs={12}>
+              <Paper className={classes.paper}>
+                <label className={classes.label}>
+                  Nationality:
+                        </label>
+                {nationality}
+              </Paper>
+            </Grid>
+            <Grid item xs={12}>
+              <Paper className={classes.paper}>
+                <label className={classes.label}>
+                  Relationship Status:
+                        </label>
+                {relationshipStatus}
+              </Paper>
+            </Grid>
+
+            <Grid item xs={12}>
+              <Paper className={classes.paper}>
+                <label className={classes.label}>
+                  Status:
+                        </label>
+                {status}
+              </Paper>
+            </Grid>
+            <Grid item xs={12}>
+              <Paper className={classes.paper}>
+                <label className={classes.label}>
+                  Province:
+                        </label>
+                {province}
+              </Paper>
+            </Grid>
+
+            <Grid item xs={12}>
+              <Paper className={classes.paper}>
+                <label className={classes.label}>
+                  Postal Code:
+                        </label>
+                {postalCode}
+              </Paper>
+            </Grid>
+            <Grid item xs={12}>
+              <Paper className={classes.paper}>
+                <label className={classes.label}>
+                  Phone Number:
+                        </label>
+                {phoneNumber}
+              </Paper>
+            </Grid>
+          </Grid>
+          <Grid
+            container spacing={6}
+            direction="column"
+            justify="flex-start"
+            alignItems="stretch"
+          >
+            <Grid item xs={12}>
+              <Paper className={classes.paper}>
+                <Typography variant="title" gutterBottom>
+                  Language Information
+                        </Typography>
+              </Paper>
+            </Grid>
+            <Grid item xs={12}>
+              <Paper className={classes.paper}>
+                <label className={classes.label}>
+                  Mother Tongue:
+                        </label>
+                {motherTongue}
+              </Paper>
+            </Grid>
+            <Grid item xs={12}>
+              <Paper className={classes.paper}>
+                <label className={classes.label}>
+                  Speaking Level:
+                        </label>
+                {speakingLevel}
+              </Paper>
+            </Grid>
+            <Grid item xs={12}>
+              <Paper className={classes.paper}>
+                <label className={classes.label}>
+                  Writing Level:
+                        </label>
+                {writingLevel}
+              </Paper>
+            </Grid>
+            <Grid item xs={12}>
+              <Paper className={classes.paper}>
+                <Typography variant="title" gutterBottom>
+                  Additional Languages
+                        </Typography>
+              </Paper>
+            </Grid>
+            {languages.map((language, index) => (
               <Grid
                 container spacing={6}
-                direction="column"
+                direction="row"
                 justify="flex-start"
                 alignItems="stretch"
               >
-                <Grid item xs={12}>
+                <Grid item xs={4}>
                   <Paper className={classes.paper}>
                     <label className={classes.label}>
-                      IELTS:
-                              </label>
-                    {proficiencyExams.ielts ? ('True') : ('False')}
+                      Language:
+                                </label>
+                    {language.name}
                   </Paper>
                 </Grid>
-                <Grid item xs={12}>
+                <Grid item xs={4}>
                   <Paper className={classes.paper}>
                     <label className={classes.label}>
-                      French:
-                              </label>
-                    {proficiencyExams.french ? ('True') : ('False')}
+                      Writing Level:
+                                </label>
+                    {language.writingLevel}
                   </Paper>
                 </Grid>
-                <Grid item xs={12}>
+                <Grid item xs={4}>
                   <Paper className={classes.paper}>
                     <label className={classes.label}>
-                      Others:
-                              </label>
-                    {proficiencyExams.others}
+                      Speaking Level:
+                                </label>
+                    {language.speakingLevel}
                   </Paper>
                 </Grid>
               </Grid>
+            ))}
+          </Grid>
+          <Grid
+            container spacing={6}
+            direction="column"
+            justify="flex-start"
+            alignItems="stretch"
+          >
+            <Grid item xs={12}>
+              <Paper className={classes.paper}>
+                <Typography variant="title" gutterBottom>
+                  Family Information
+                        </Typography>
+              </Paper>
+            </Grid>
+            {family.map((member, index) => (
+              <Grid
+                container spacing={6}
+                direction="row"
+                justify="flex-start"
+                alignItems="stretch"
+              >
+                <Grid item xs={3}>
+                  <Paper className={classes.paper}>
+                    <label className={classes.label}>
+                      Age:
+                            </label>
+                    {member.age}
+                  </Paper>
+                </Grid>
+                <Grid item xs={3}>
+                  <Paper className={classes.paper}>
+                    <label className={classes.label}>
+                      Relationship Status:
+                                </label>
+                    {member.relationshipStatus}
+                  </Paper>
+                </Grid>
+                <Grid item xs={3}>
+                  <Paper className={classes.paper}>
+                    <label className={classes.label}>
+                      Relation:
+                                </label>
+                    {member.relation}
+                  </Paper>
+                </Grid>
+                <Grid item xs={3}>
+                  <Paper className={classes.paper}>
+                    <label className={classes.label}>
+                      Gender:
+                                </label>
+                    {member.gender}
+                  </Paper>
+                </Grid>
+              </Grid>
+            ))}
+          </Grid>
+          <Grid
+            container spacing={6}
+            direction="column"
+            justify="flex-start"
+            alignItems="stretch"
+          >
+            <Grid item xs={12}>
+              <Paper className={classes.paper}>
+                <Typography variant="title" gutterBottom>
+                  Education Information
+                        </Typography>
+              </Paper>
+            </Grid>
+            <Grid item xs={12}>
+              <Paper className={classes.paper}>
+                <label className={classes.label}>
+                  Education Level:
+                        </label>
+                {educationLevel}
+              </Paper>
+            </Grid>
+            <Grid item xs={12}>
+              <Paper className={classes.paper}>
+                <Typography variant="title" gutterBottom>
+                  Proficiency Exams
+                        </Typography>
+              </Paper>
             </Grid>
             <Grid
               container spacing={6}
@@ -523,124 +488,155 @@ class ViewMigrantProfile extends Component {
             >
               <Grid item xs={12}>
                 <Paper className={classes.paper}>
-                  <Typography variant="title" gutterBottom>
-                    Employment Information
-                          </Typography>
+                  <label className={classes.label}>
+                    IELTS:
+                            </label>
+                  {proficiencyExams.ielts ? ('True') : ('False')}
                 </Paper>
               </Grid>
               <Grid item xs={12}>
                 <Paper className={classes.paper}>
                   <label className={classes.label}>
-                    Job Status:
-                          </label>
-                  {jobStatus}
+                    French:
+                            </label>
+                  {proficiencyExams.french ? ('True') : ('False')}
                 </Paper>
               </Grid>
               <Grid item xs={12}>
                 <Paper className={classes.paper}>
                   <label className={classes.label}>
-                    Looking For Job:
-                          </label>
-                  {lookingForJob}
+                    Others:
+                            </label>
+                  {proficiencyExams.others}
                 </Paper>
               </Grid>
-              <Grid item xs={12}>
-                <Paper className={classes.paper}>
-                  <label className={classes.label}>
-                    Current Income:
-                          </label>
-                  {currentIncome}
-                </Paper>
-              </Grid>
-              <Grid item xs={12}>
-                <Paper className={classes.paper}>
-                  <Typography variant="title" gutterBottom>
-                    Work Experience:
-                          </Typography>
-                </Paper>
-              </Grid>
-              {workExperience.map((work, index) => (
-                <Grid
-                  container spacing={6}
-                  direction="row"
-                  justify="flex-start"
-                  alignItems="stretch"
-                >
-                  <Grid item xs={3}>
-                    <Paper className={classes.paper}>
-                      <label className={classes.label}>
-                        Title:
-                                  </label>
-                      {work.title}
-                    </Paper>
-                  </Grid>
-                  <Grid item xs={3}>
-                    <Paper className={classes.paper}>
-                      <label className={classes.label}>
-                        Company:
-                                  </label>
-                      {work.company}
-                    </Paper>
-                  </Grid>
-                  <Grid item xs={3}>
-                    <Paper className={classes.paper}>
-                      <label className={classes.label}>
-                        Years:
-                                  </label>
-                      {work.years}
-                    </Paper>
-                  </Grid>
-                  <Grid item xs={3}>
-                    <Paper className={classes.paper}>
-                      <label className={classes.label}>
-                        Gender:
-                                  </label>
-                      {work.gender}
-                    </Paper>
-                  </Grid>
+            </Grid>
+          </Grid>
+          <Grid
+            container spacing={6}
+            direction="column"
+            justify="flex-start"
+            alignItems="stretch"
+          >
+            <Grid item xs={12}>
+              <Paper className={classes.paper}>
+                <Typography variant="title" gutterBottom>
+                  Employment Information
+                        </Typography>
+              </Paper>
+            </Grid>
+            <Grid item xs={12}>
+              <Paper className={classes.paper}>
+                <label className={classes.label}>
+                  Job Status:
+                        </label>
+                {jobStatus}
+              </Paper>
+            </Grid>
+            <Grid item xs={12}>
+              <Paper className={classes.paper}>
+                <label className={classes.label}>
+                  Looking For Job:
+                        </label>
+                {lookingForJob}
+              </Paper>
+            </Grid>
+            <Grid item xs={12}>
+              <Paper className={classes.paper}>
+                <label className={classes.label}>
+                  Current Income:
+                        </label>
+                {currentIncome}
+              </Paper>
+            </Grid>
+            <Grid item xs={12}>
+              <Paper className={classes.paper}>
+                <Typography variant="title" gutterBottom>
+                  Work Experience:
+                        </Typography>
+              </Paper>
+            </Grid>
+            {workExperience.map((work, index) => (
+              <Grid
+                container spacing={6}
+                direction="row"
+                justify="flex-start"
+                alignItems="stretch"
+              >
+                <Grid item xs={3}>
+                  <Paper className={classes.paper}>
+                    <label className={classes.label}>
+                      Title:
+                                </label>
+                    {work.title}
+                  </Paper>
                 </Grid>
-              ))}
+                <Grid item xs={3}>
+                  <Paper className={classes.paper}>
+                    <label className={classes.label}>
+                      Company:
+                                </label>
+                    {work.company}
+                  </Paper>
+                </Grid>
+                <Grid item xs={3}>
+                  <Paper className={classes.paper}>
+                    <label className={classes.label}>
+                      Years:
+                                </label>
+                    {work.years}
+                  </Paper>
+                </Grid>
+                <Grid item xs={3}>
+                  <Paper className={classes.paper}>
+                    <label className={classes.label}>
+                      Gender:
+                                </label>
+                    {work.gender}
+                  </Paper>
+                </Grid>
+              </Grid>
+            ))}
+          </Grid>
+          <Grid
+            container spacing={6}
+            direction="column"
+            justify="flex-start"
+            alignItems="stretch"
+          >
+            <Grid item xs={12}>
+              <Paper className={classes.paper}>
+                <Typography variant="title" gutterBottom>
+                  Employment Information
+                        </Typography>
+              </Paper>
             </Grid>
-            <Grid
-              container spacing={6}
-              direction="column"
-              justify="flex-start"
-              alignItems="stretch"
-            >
-              <Grid item xs={12}>
-                <Paper className={classes.paper}>
-                  <Typography variant="title" gutterBottom>
-                    Employment Information
-                          </Typography>
-                </Paper>
-              </Grid>
-              <Grid item xs={12}>
-                <Paper className={classes.paper}>
-                  <label className={classes.label}>
-                    Settling Location:
-                          </label>
-                  {settlingLocation}
-                </Paper>
-              </Grid>
-              <Grid item xs={12}>
-                <Paper className={classes.paper}>
-                  <label className={classes.label}>
-                    Settling Duration:
-                          </label>
-                  {settlingDuration}
-                </Paper>
-              </Grid>
-              <Grid item xs={12}>
-                <Paper className={classes.paper}>
-                  <label className={classes.label}>
-                    Joining Reason:
-                          </label>
-                  {joiningReason}
-                </Paper>
-              </Grid>
+            <Grid item xs={12}>
+              <Paper className={classes.paper}>
+                <label className={classes.label}>
+                  Settling Location:
+                        </label>
+                {settlingLocation}
+              </Paper>
             </Grid>
-          </div>
-        </MainLayout>
+            <Grid item xs={12}>
+              <Paper className={classes.paper}>
+                <label className={classes.label}>
+                  Settling Duration:
+                        </label>
+                {settlingDuration}
+              </Paper>
+            </Grid>
+            <Grid item xs={12}>
+              <Paper className={classes.paper}>
+                <label className={classes.label}>
+                  Joining Reason:
+                        </label>
+                {joiningReason}
+              </Paper>
+            </Grid>
+          </Grid>
+        </div>
       </React.Fragment>
     );
   }
@@ -649,5 +645,7 @@ class ViewMigrantProfile extends Component {
 ViewMigrantProfile.propTypes = {
   classes: PropTypes.shape({}).isRequired,
 };
+
+ViewMigrantProfile.contextType = AuthConsumer;
 
 export default withStyles(styles)(ViewMigrantProfile);

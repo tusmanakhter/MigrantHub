@@ -8,6 +8,7 @@ import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
+import { AuthConsumer } from 'routes/AuthContext';
 import UserTypes from '../lib/UserTypes';
 
 const styles = {
@@ -20,24 +21,6 @@ const styles = {
 };
 
 class ServiceItem extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      type: '',
-    };
-  }
-
-  componentDidMount() {
-    this.getUser();
-  }
-
-  getUser() {
-    const user = JSON.parse(localStorage.getItem('user'));
-    this.setState({
-      type: user.type,
-    });
-  }
-
   handleDelete = () => {
     const { serviceSuggestionId, getData } = this.props;
     axios.delete('/api/services/suggestions/' + serviceSuggestionId)
@@ -49,36 +32,39 @@ class ServiceItem extends Component {
   };
 
   render() {
-    const { type } = this.state;
     const {
       classes, serviceTitle, serviceSummary, category, subcategory,
     } = this.props;
     return (
-      <Card className={classes.card}>
-        <CardActionArea>
-          <CardContent>
-            <Typography gutterBottom variant="headline" component="h2">
-              {serviceTitle}
-            </Typography>
-            <Typography component="p">
-              {serviceSummary}
-            </Typography>
-            <Typography variant="body1" color="inherit" paragraph align="center">
-              Service Category: {category}
-            </Typography>
-            <Typography variant="body1" color="inherit" paragraph align="center">
-              Service Subcategory: {subcategory}
-            </Typography>
-          </CardContent>
-        </CardActionArea>
-        <CardActions>
-          { type === UserTypes.ADMIN
-            && (
-              <Button onClick={this.handleDelete} color="secondary"> Delete </Button>
-            )
-          }
-        </CardActions>
-      </Card>
+      <AuthConsumer>
+        {({ user }) => (
+          <Card className={classes.card}>
+            <CardActionArea>
+              <CardContent>
+                <Typography gutterBottom variant="headline" component="h2">
+                  {serviceTitle}
+                </Typography>
+                <Typography component="p">
+                  {serviceSummary}
+                </Typography>
+                <Typography variant="body1" color="inherit" paragraph align="center">
+                  Service Category: {category}
+                </Typography>
+                <Typography variant="body1" color="inherit" paragraph align="center">
+                  Service Subcategory: {subcategory}
+                </Typography>
+              </CardContent>
+            </CardActionArea>
+            <CardActions>
+              { user.type === UserTypes.ADMIN
+                && (
+                  <Button onClick={this.handleDelete} color="secondary"> Delete </Button>
+                )
+              }
+            </CardActions>
+          </Card>
+        )}
+      </AuthConsumer>
     );
   }
 }
