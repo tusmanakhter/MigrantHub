@@ -198,7 +198,7 @@ class ViewService extends Component {
                     <NavPills
                       color="rose"
                       horizontal={{
-                        tabsGrid: { xs: 12, sm: 12, md: 4 },
+                        tabsGrid: { xs: 12, sm: 12, md: 2 },
                         contentGrid: { xs: 12, sm: 12, md: 8 }
                       }}
                       tabs={[
