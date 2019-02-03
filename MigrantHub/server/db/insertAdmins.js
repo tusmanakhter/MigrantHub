@@ -1,7 +1,12 @@
 #! /usr/bin/env node
+
 const faker = require('faker');
 const mongoose = require('mongoose');
+const { dbConfig } = require('../config');
 const Admin = require('../models/Admin');
+
+const { db: { host, port, name } } = dbConfig;
+const connectionString = `mongodb://${host}:${port}/${name}`;
 
 async function insertAdmins() {
   const promises = [];
@@ -22,6 +27,7 @@ async function insertAdmins() {
       admin.deletedDate = null;
     }
     admin.type = 'admin';
+    admin.userType = 'local';
     admin.email = faker.internet.email();
     admin.localAuthentication = {};
     admin.localAuthentication.password = faker.random.number(32);
@@ -31,9 +37,11 @@ async function insertAdmins() {
 }
 
 async function run() {
-  mongoose.connect('mongodb://127.0.0.1:27017/migranthub');
+  console.log('Starting admin seeding...');
+  mongoose.connect(connectionString);
   await insertAdmins();
   mongoose.disconnect();
+  console.log('Admin seeding complete');
 }
 
 run();
