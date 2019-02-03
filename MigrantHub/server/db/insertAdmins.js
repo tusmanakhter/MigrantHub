@@ -12,7 +12,9 @@ async function insertAdmins() {
   const promises = [];
   for (let i = 0; i < 100; i += 1) {
     const admin = new Admin();
-    admin._id = faker.internet.email();
+    const email = faker.internet.email();
+
+    admin._id = email;
     admin.authorized = faker.random.boolean();
     admin.rejected = faker.random.boolean();
     if (admin.rejected === true) {
@@ -28,7 +30,7 @@ async function insertAdmins() {
     }
     admin.type = 'admin';
     admin.userType = 'local';
-    admin.email = faker.internet.email();
+    admin.email = email;
     admin.localAuthentication = {};
     admin.localAuthentication.password = faker.random.number(32);
     promises.push(admin.save());
