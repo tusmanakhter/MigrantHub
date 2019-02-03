@@ -14,28 +14,27 @@ import MoreVert from '@material-ui/icons/MoreVert';
 import ViewList from '@material-ui/icons/ViewList';
 
 // core components
-import Button from "components/CustomButtons/Button.jsx";
+import Button from 'components/CustomButtons/Button.jsx';
 
-import headerStyle from "assets/jss/material-dashboard-pro-react/components/headerStyle.jsx";
-import HeaderLinks from "./HeaderLinks";
+import headerStyle from 'assets/jss/material-dashboard-pro-react/components/headerStyle.jsx';
+import HeaderLinks from './HeaderLinks';
 
 function Header({ ...props }) {
   function makeBrand() {
-    var name;
+    let name;
     if (name) {
       return name;
-    } 
-      return "Home Page";
-    
+    }
+    return 'Home Page';
   }
   const { classes, color, rtlActive } = props;
   const appBarClasses = cx({
-    [' ' + classes[color]]: color,
+    [` ${classes[color]}`]: color,
   });
-  const sidebarMinimize =    `${classes.sidebarMinimize 
-    } ${ 
+  const sidebarMinimize = `${classes.sidebarMinimize
+  } ${
     cx({
-      [classes.sidebarMinimizeRTL]: rtlActive
+      [classes.sidebarMinimizeRTL]: rtlActive,
     })}`;
   return (
     <AppBar className={classes.appBar + appBarClasses}>
