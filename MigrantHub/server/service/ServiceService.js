@@ -98,10 +98,9 @@ module.exports = {
           console.log(error);
       });
 
-    //const result = response.match(/[A-Za-z_0-9]{5,}/g);
-    query = { $or: [{ _id: '5c3a7985174f8e3c8ce7e99e' }, { _id: '5c3a792f174f8e3c8ce7e99d' }, { _id: '5c3a7911174f8e3c8ce7e99c' }] };
+    const result = response.match(/[A-Za-z_0-9]{5,}/g);
 
-    //query = { $or: [{ _id: result[0] }, { _id: result[1] }, { _id: result[2] }] };
+    query = { $or: [{ _id: result[0] }, { _id: result[1] }, { _id: result[2] }] };
     query.deleted = false;
 
     return ServiceRepository.getServices(query);
