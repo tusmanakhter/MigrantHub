@@ -90,15 +90,13 @@ module.exports = {
   async getRecommendations(user) {
     let query = {};
 
-    const response = await axios.get('http://35.203.89.239:8080/api/recommendation/' + user._id)
-      .then(response => {
-          return response.data;  
-      })
-      .catch(error => {
-          console.log(error);
+    const recommendedIds = await axios.get(`http://35.203.89.239:8080/api/recommendation/${user._id}`)
+      .then(response => response.data)
+      .catch((error) => {
+        throw new ServerError('There was an error retrieving recommended services.', 400, error);
       });
 
-    const result = response.match(/[A-Za-z_0-9]{5,}/g);
+    const result = recommendedIds.match(/[A-Za-z_0-9]{5,}/g);
 
     query = { $or: [{ _id: result[0] }, { _id: result[1] }, { _id: result[2] }] };
     query.deleted = false;
