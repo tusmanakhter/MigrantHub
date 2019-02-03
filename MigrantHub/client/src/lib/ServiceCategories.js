@@ -3,7 +3,7 @@ export const serviceCategories = [
         SubCategories: [
             {  value:  'CommunityOrganizations' , label: 'Community Organizations' }
         ]},
-    {  value:  'Automobile Accidents' , label: 'Accidents' },
+    {  value:  'AutomobileAccidents' , label: 'Accidents' },
     {  value:  'Welfare' , label: 'Welfare' },
     {  value:  'CommunityOrganizations' , label: 'Community Organizations' },
     {  value:  'BudgetAndDebtProblems' , label: 'Budget And Debt Problems' },
@@ -22,11 +22,13 @@ export const serviceCategories = [
             {  value:  'JobSearch' , label: 'Job Search' },
         ]},
     {  value:  'EmploymentInsurance' , label: 'Employment Insurance' },
+    {  value:  'CommunityOrganizations' , label: 'Community Organizations' },
     {  value:  'FamilyBenefits' , label: 'Family Benefits' },
     {  value:  'Women' , label: 'Women' },
     {  value:  'Immigration' , label: 'Immigration' },
+    {  value:  'Passport' , label: 'Passport' },
     {  value:  'IncomeTaxes' , label: 'Income Taxes' },
-    {  value:  'ResourcesForLgbtqPeople' , label: 'Resources For Lgbtq+ People' },
+    {  value:  'ResourcesForLGBTQPeople' , label: 'Resources For Lgbtq+ People' },
     {  value:  'Housing' , label: 'Housing' },
     {  value:  'ApartmentSearch' , label: 'Apartment Search' },
     {  value:  'InfoForLandlords' , label: 'Info For Landlords' },
@@ -36,9 +38,9 @@ export const serviceCategories = [
     {  value:  'Seniors' , label: 'Seniors',
         SubCategories: [
             {  value:  'CommunityOrganizations' , label: 'Community Organizations' },
-            {  value:  'Seniors’VolunteerSupportServices' , label: 'Seniors’ Volunteer Support Services' },
-            {  value:  'Seniors’MealDelivery' , label: 'Seniors’ Meal Delivery' },
-            {  value:  'Seniors’Miscellaneous' , label: 'Seniors’ Miscellaneous' }
+            {  value:  'SeniorsVolunteerSupportServices' , label: 'Seniors’ Volunteer Support Services' },
+            {  value:  'SeniorsMealDelivery' , label: 'Seniors’ Meal Delivery' },
+            {  value:  'SeniorsMiscellaneous' , label: 'Seniors’ Miscellaneous' }
         ]},
     {  value:  'DisabledPeople' , label: 'Disabled People',
         SubCategories: [
@@ -54,7 +56,7 @@ export const serviceCategories = [
             {  value:  'CommunityOrganizations' , label: 'Community Organizations' },
             {  value:  'Hospitals' , label: 'Hospitals' }
         ]},
-    {  value:  'InformationReferralServices' , label: 'Information & Referral Services' },
+    {  value:  'InformationAndReferralServices' , label: 'Information & Referral Services' },
     {  value:  'LegalAid' , label: 'Legal Aid',
         SubCategories: [
             {  value:  'CommunityLegalClinics' , label: 'Community Legal Clinics' },
