@@ -30,54 +30,21 @@ class ServiceRecommendation extends Component {
     super(props);
     this.state = {
       items: [],
-      editMode: '',
-      editOwner: '',
     };
 
     this.getData = this.getData.bind(this);
   }
 
-  componentDidMount(props) {
-    this.getData(this, props);
+  componentDidMount() {
+    this.getData(this);
   }
 
-  componentWillReceiveProps(props) {
-    this.getData(this, props);
+  componentWillReceiveProps() {
+    this.getData(this);
   }
 
-  getData(event, props = this.props) {
-    const { location } = props;
-    let editOwnerEmail = '';
-    let searchQuery = '';
-    let searchMode = false;
-    let category = '';
-    let subcategory = '';
-
-    if (location.state) {
-      if (location.state.editMode) {
-        this.setState({
-          editMode: location.state.editMode,
-          editOwner: location.state.editOwner,
-        });
-
-        editOwnerEmail = location.state.editOwner;
-      } else if (location.state.searchMode) {
-        searchMode = location.state.searchMode;
-        searchQuery = location.state.searchQuery;
-      } else if (location.state.category) {
-        category = location.state.category;
-        subcategory = location.state.subcategory;
-      }
-    }
-    axios.get('/api/services/', {
-      params: {
-        editOwner: editOwnerEmail,
-        searchQuery: searchQuery,
-        search: searchMode,
-        category: category,
-        subcategory: subcategory,
-      },
-    }).then((response) => {
+  getData() {
+    axios.get('/api/services/recommendations').then((response) => {
       this.setState({
         items: response.data,
       });
@@ -86,7 +53,7 @@ class ServiceRecommendation extends Component {
 
   render() {
     const { classes, ...rest } = this.props;
-    const { items, editMode, editOwner } = this.state;
+    const { items } = this.state;
     return (
       <Card style={{ padding: '20px' }}>
         <CardHeader>
@@ -109,8 +76,8 @@ class ServiceRecommendation extends Component {
                       serviceLocation={item.location}
                       serviceDate={item.serviceDate}
                       serviceHours={item.serviceHours}
-                      editMode={editMode}
-                      editOwner={editOwner}
+                      editMode={item.editMode}
+                      editOwner={item.editOwner}
                       getData={this.getData}
                     />
                   ))
