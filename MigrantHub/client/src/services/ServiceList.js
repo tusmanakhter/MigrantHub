@@ -15,9 +15,6 @@ import { FormattedMessage } from 'react-intl';
 import { AuthConsumer } from 'routes/AuthContext';
 
 const styles = theme => ({
-  mainContainer: {
-    marginLeft: 75,
-  },
   root: {
     ...theme.mixins.gutters(),
     paddingTop: theme.spacing.unit * 2,
@@ -173,11 +170,13 @@ class ServiceList extends Component {
                     />
                   ))
                 }
-                <Grid item xs={2}>
-                  <div className="Panel">{<QuestionnairePanel />}</div>
-                </Grid>
-              </GridContainer >
-            </div >
+                {user.type === UserTypes.MIGRANT && (
+                  <Grid item xs={2}>
+                    <div className="Panel">{<QuestionnairePanel />}</div>
+                  </Grid>
+                )}
+              </GridContainer>
+            </div>
           </React.Fragment>
         )}
       </AuthConsumer>

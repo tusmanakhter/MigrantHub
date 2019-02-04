@@ -13,5 +13,6 @@ router.use('/friend', ensureUser, ensureRole(UserTypes.MIGRANT), require('./Frie
 router.use('/events', ensureUser, require('./Events'));
 router.use('/questions', ensureUser, ensureRole(UserTypes.MIGRANT), require('./Questions'));
 router.use('/useranswers', ensureUser, ensureRole(UserTypes.MIGRANT), require('./UserAnswers'));
+router.use('/chatbot', ensureUser, require('./Chatbot'));
 
 module.exports = router;

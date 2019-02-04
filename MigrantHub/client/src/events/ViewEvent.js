@@ -1,13 +1,10 @@
 import React, { Component } from 'react';
 import withStyles from '@material-ui/core/styles/withStyles';
 import classNames from "classnames";
-import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import PropTypes from 'prop-types';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogTitle from '@material-ui/core/DialogTitle';
 //import Button from '@material-ui/core/Button';
 import Button from "components/CustomButtons/Button.jsx";
 import Icon from "@material-ui/core/Icon";
@@ -34,24 +31,6 @@ import AddToCalendar from 'react-add-to-calendar';
 const styles = {
   cardTitle,
   sweetAlertStyle,
-  pageSubcategoriesTitle: {
-    color: "#3C4858",
-    textDecoration: "none",
-    textAlign: "center"
-  },
-  cardCategory: {
-    margin: "0",
-    color: "#999999"
-  },
-  avatar: {
-    backgroundColor: blue[100],
-    color: blue[600],
-  },
-  cardIconTitle: {
-    ...cardTitle,
-    marginTop: "15px",
-    marginBottom: "0px"
-  }
 };
 
 class ViewEvent extends Component {
@@ -219,7 +198,7 @@ class ViewEvent extends Component {
                     <NavPills
                       color="rose"
                       horizontal={{
-                        tabsGrid: { xs: 12, sm: 12, md: 4 },
+                        tabsGrid: { xs: 12, sm: 12, md: 2 },
                         contentGrid: { xs: 12, sm: 12, md: 8 }
                       }}
                       tabs={[

@@ -4,6 +4,8 @@ import DateRange from '@material-ui/icons/DateRange';
 import People from '@material-ui/icons/People';
 import UserTypes from 'lib/UserTypes';
 import { FormattedMessage } from 'react-intl';
+import { serviceCategories } from 'lib/ServiceCategories';
+import ServiceCategoryMenu from 'services/ServiceCategoryMenu1'
 
 const SidebarLinks = [
   {
@@ -11,6 +13,7 @@ const SidebarLinks = [
     name: <FormattedMessage id="services" />,
     icon: DashboardIcon,
     type: [UserTypes.ADMIN, UserTypes.BUSINESS, UserTypes.MIGRANT],
+    option: ServiceCategoryMenu
   },
   {
     path: '/services/suggestions',
@@ -31,26 +34,8 @@ const SidebarLinks = [
     type: [UserTypes.MIGRANT],
   },
   {
-    path: '/admin/dashboard/admins',
+    path: '/admin/dashboard',
     name: <FormattedMessage id="nav.admins" />,
-    icon: DashboardIcon,
-    type: [UserTypes.ADMIN],
-  },
-  {
-    path: '/admin/dashboard/admins/deleted',
-    name: <FormattedMessage id="nav.deleted" />,
-    icon: DashboardIcon,
-    type: [UserTypes.ADMIN],
-  },
-  {
-    path: '/admin/dashboard/admins/rejected',
-    name: <FormattedMessage id="nav.rejected" />,
-    icon: DashboardIcon,
-    type: [UserTypes.ADMIN],
-  },
-  {
-    path: '/admin/dashboard/admins/unapproved',
-    name: <FormattedMessage id="nav.unapproved" />,
     icon: DashboardIcon,
     type: [UserTypes.ADMIN],
   },

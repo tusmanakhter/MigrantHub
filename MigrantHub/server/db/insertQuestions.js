@@ -1,13 +1,34 @@
-var db = connect('127.0.0.1:27017/migranthub')
-print('Database created');
+#! /usr/bin/env node
 
-var yesOption = { optionNumber: 1, answerBody: 'Yes' };
-var noOption = { optionNumber: 2, answerBody: 'No' };
-var yesNoOptions = [yesOption, noOption];
+const mongoose = require('mongoose');
+const { dbConfig } = require('../config');
+const { Question } = require('../models/questions/Question');
 
-db.questions.insert({ question: 'Do you have kids?', answerOptions: yesNoOptions });
-db.questions.insert({ question: 'Do you speak french?', answerOptions: yesNoOptions });
-db.questions.insert({ question: 'Are you a student?', answerOptions: yesNoOptions });
-db.questions.insert({ question: 'Do you play sports?', answerOptions: yesNoOptions });
+const { db: { host, port, name } } = dbConfig;
+const connectionString = `mongodb://${host}:${port}/${name}`;
 
-print('Questions created');
+const yesOption = { optionNumber: 1, answerBody: 'Yes' };
+const noOption = { optionNumber: 2, answerBody: 'No' };
+const yesNoOptions = [yesOption, noOption];
+const questions = ['Do you have kids?', 'Do you speak french?', 'Are you a student?', 'Do you play sports?'];
+
+async function insertQuestions() {
+  const promises = [];
+  for (let i = 0; i < questions.length; i += 1) {
+    const question = new Question();
+    question.question = questions[i];
+    question.answerOptions = yesNoOptions;
+    promises.push(question.save());
+  }
+  await Promise.all(promises);
+}
+
+async function run() {
+  console.log('Starting question seeding...');
+  mongoose.connect(connectionString);
+  await insertQuestions();
+  mongoose.disconnect();
+  console.log('Question seeding complete');
+}
+
+run();

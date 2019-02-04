@@ -2,29 +2,20 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import withStyles from '@material-ui/core/styles/withStyles';
 import axios from 'axios';
-import refugiecenterlogo from 'assets/img/card-1.jpeg'
-import Folder from "@material-ui/icons/Folder";
-import Pages from "@material-ui/icons/Pages";
 import Tooltip from "@material-ui/core/Tooltip";
-import CardMedia from '@material-ui/core/CardMedia';
 import Place from "@material-ui/icons/Place";
 import ArtTrack from "@material-ui/icons/ArtTrack";
 import RateReview from "@material-ui/icons/RateReview";
 import Share from "@material-ui/icons/Share";
 import GridItem from "components/Grid/GridItem.jsx";
-import GridContainer from "components/Grid/GridContainer.jsx";
 import Card from "components/Card/Card.jsx";
 import CardHeader from "components/Card/CardHeader.jsx";
 import Button from 'components/CustomButtons/Button';
-import CardIcon from "components/Card/CardIcon.jsx";
 import CardBody from "components/Card/CardBody.jsx";
 import CardFooter from "components/Card/CardFooter.jsx";
 import dashboardStyle from "assets/jss/material-dashboard-pro-react/views/dashboardStyle.jsx";
-import ServiceCategories from "./ServiceCategories";
-import ServiceList from "./ServiceList";
-
+import ServiceCategories from "./ServiceCategoryMenu2";
 import priceImage1 from "assets/img/card-2.jpeg";
-
 
 const styles = theme => ({
   ...dashboardStyle,
@@ -43,75 +34,16 @@ const styles = theme => ({
   },
 });
 
-class ServiceCategory extends Component {
+class ServiceMain extends Component {
   constructor(props) {
-    super(props);
-    this.state = {
-      items: [],
-      redirectToServiceForm: false,
-      editMode: '',
-      editOwner: '',
-      searchMode: false,
-    };
-
-    this.getData = this.getData.bind(this);
-  }
-
-  componentDidMount(props) {
-    this.getData(this, props);
-  }
-
-  componentWillReceiveProps(props) {
-    this.getData(this, props);
-  }
-
-  getData(event, props = this.props) {
-    const { location } = props;
-    const { searchMode } = this.state;
-    let editOwnerEmail = '';
-    let searchQuery = '';
-
-    if (location.state) {
-      if (location.state.editMode) {
-        this.setState({
-          editMode: location.state.editMode,
-          editOwner: location.state.editOwner,
-        });
-
-        editOwnerEmail = location.state.editOwner;
-      } else if (location.state.searchMode) {
-        this.setState({
-          searchMode: searchMode,
-        });
-        searchQuery = location.state.searchQuery;
-      }
-    }
-    axios.get('/api/services/', {
-      params: {
-        editOwner: editOwnerEmail,
-        searchQuery: searchQuery,
-        search: searchMode,
-      },
-    }).then((response) => {
-      this.setState({
-        items: response.data,
-      });
-    });
-  }
-
-  setRedirectToServiceForm = () => {
-    this.setState({
-      redirectToServiceForm: true,
-    });
+        super(props);
   }
 
   render() {
     const { classes } = this.props;
-    const { items, editMode, editOwner } = this.state;
     return (
       <div>
         <ServiceCategories classes={this.props.classes}/>
-        {/* <ServiceList classes={this.props.classes} location={this.props.location}/> */}
         <Card style={{ padding: '20px' }}>
           <CardHeader>
             <h4 className={classes.cardTitle}>Services</h4>
@@ -183,9 +115,9 @@ class ServiceCategory extends Component {
   }
 }
 
-ServiceCategory.propTypes = {
+ServiceMain.propTypes = {
   classes: PropTypes.shape({}).isRequired,
   location: PropTypes.shape({}).isRequired,
 };
 
-export default withStyles(styles)(ServiceCategory);
+export default withStyles(styles)(ServiceMain);

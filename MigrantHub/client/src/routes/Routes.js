@@ -25,7 +25,6 @@ import ViewMigrantProfile from 'account/personal/ViewMigrantProfile';
 import ViewBusinessProfile from 'account/business/ViewBusinessProfile';
 import { AuthConsumer } from 'routes/AuthContext';
 import UsersList from 'People/UsersList';
-import ServiceCategories from 'services/ServiceCategories';
 import FriendPanel from 'components/FriendPanel/FriendPanel';
 import AccountSelection from 'account/AccountSelection';
 import ServiceSuggestionForm from 'services/ServiceSuggestionForm';
@@ -71,7 +70,6 @@ class Routes extends Component {
         <ProtectedRoute path="/services/suggestions/create" component={ServiceSuggestionForm} migrant exact />
         <ProtectedRoute path="/services/suggestions" component={ServiceSuggestionList} business admin exact />
         <ProtectedRoute path="/services" component={ServiceList} exact />
-        <ProtectedRoute path="/categories" component={ServiceCategories} exact />
         <ProtectedRoute path="/services/share/:id" component={props => <ServiceShare serviceId={props.match.params.id} />} />
         <ProtectedRoute path="/search" component={Search} exact />
         <ProtectedRoute path="/events/create" component={EventForm} exact />

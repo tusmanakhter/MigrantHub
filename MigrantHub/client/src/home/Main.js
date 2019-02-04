@@ -1,17 +1,16 @@
 import React, { Component } from 'react';
-import ServiceCategory from 'services/ServiceCategory';
+import ServiceMain from 'services/ServiceMain';
 import ServiceRecommendation from 'services/ServiceRecommendation';
 import SearchBar from 'components/SearchBar';
 
 class MainDashboard extends Component {
 
   render() {
-    const { friendPanelVisibility, serviceCategoryVisibility, SearchBarVisibility } = this.props;
 
     return (
       <React.Fragment>
         <SearchBar />
-        <ServiceCategory location={this.props.location} />
+        <ServiceMain />
         <ServiceRecommendation location={this.props.location} />
       </React.Fragment>
     );
