@@ -3,7 +3,6 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@babel/core": "^7.2.2",
     "@material-ui/core": "^3.8.2",
     "@material-ui/icons": "^3.0.2",
     "animated": "^0.2.2",
