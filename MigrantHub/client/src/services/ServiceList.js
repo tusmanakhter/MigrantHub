@@ -235,9 +235,11 @@ class ServiceList extends Component {
                     />
                   ))
                 }
-                <Grid item xs={2}>
-                  <div className="Panel">{<QuestionnairePanel />}</div>
-                </Grid>
+                {user.type === UserTypes.MIGRANT && (
+                  <Grid item xs={2}>
+                    <div className="Panel">{<QuestionnairePanel />}</div>
+                  </Grid>
+                )}
               </GridContainer>
             </div>
           </React.Fragment>

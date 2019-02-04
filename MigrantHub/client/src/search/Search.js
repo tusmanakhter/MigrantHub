@@ -10,6 +10,8 @@ import Header from 'components/Header/Header';
 import QuestionnairePanel from 'components/QuestionnairePanel/QuestionnairePanel';
 import NavPanel from 'components/NavPanel/NavPanel';
 import Paper from '@material-ui/core/Paper';
+import UserTypes from 'lib/UserTypes';
+import { AuthConsumer } from 'routes/AuthContext';
 
 const styles = theme => ({
   mainContainer: {
@@ -229,12 +231,18 @@ class Search extends Component {
     const { classes } = this.props;
 
     return (
-      <div className={classes.mainContainer}>
-        <div className={classes.Panel}>{<QuestionnairePanel />}</div>
-        {this.renderServices()}
-        {this.renderEvents()}
-        {this.renderUsers()}
-      </div>
+      <AuthConsumer>
+        {({ user }) => (
+          <div className={classes.mainContainer}>
+            { user.type === UserTypes.MIGRANT
+              && <div className={classes.Panel}>{<QuestionnairePanel />}</div>
+            }
+            {this.renderServices()}
+            {this.renderEvents()}
+            {this.renderUsers()}
+          </div>
+        )}
+      </AuthConsumer>
     );
   }
 }

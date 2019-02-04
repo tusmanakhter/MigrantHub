@@ -172,10 +172,20 @@
   "nav.myservices": "Mes Services",
   "nav.myevents": "Mes Événements",
   "nav.servicesuggestions": "Suggestions de Service",
-  "nav.admins": "Admins",
-  "nav.rejected": "Rejeté",
-  "nav.deleted": "Supprimé",
   "nav.unapproved": "Non Approuvé",
+  "nav.admins": "Admins",
+  "rejected": "Rejeté",
+  "deleted": "Supprimé",
+  "authorized": "Autorisé",
+  "rejectedDate": "Date de Rejet",
+  "deletedDate": "Date Supprimée",
+  "actions": "Actions",
+  "table.previous": "Précédent",
+  "table.next": "Suivant",
+  "table.rows": "rangées",
+  "table.of": "de",
+  "table.loading": "Chargement...",
+  "table.noData": "Aucune rangée trouvée",
   "service.create": "Créer un Service",
   "service.infobox": "Vous pouvez créer un service ou ajouter une suggestion",
   "service.addsuggestion": "Ajouter une Suggestion",
@@ -192,7 +202,12 @@
   "forgotpassword.validationcode.sent": "Le code de vérification a été envoyé.",
   "forgotpassword.resetPassword": "Réinitialiser le Mot de Passe",
   "forgotpassword.reset": "Réinitialiser",
+<<<<<<< HEAD
   "profile.progress": "La progression de votre profil",
   "profile.progressdesc": "Augmentez la progression de votre profil en fournissant plus d'informations. Une progression importante vous aidera à vous fournir des solutions optiques.",
   "profile.legalwarn": "Veuillez lire nos conditions générales pour comprendre comment nous gérons vos informations personnelles en toute sécurité."
 }
+=======
+  "categories.select": "Choisissez une Catégorie"
+}
+>>>>>>> master

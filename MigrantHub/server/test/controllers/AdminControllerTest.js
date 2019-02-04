@@ -21,6 +21,12 @@ describe('admin controller', function () {
         assert.calledWith(AdminService.getAdmins, req.user);
     }));
 
+    it('should call admin service getAdmins with no parameters', test(async function () {
+        this.stub(AdminService, 'getAdmins');
+        await AdminController.getAllAdmins();
+        assert.called(AdminService.getAdmins);
+    }));
+
     it('should call admin service getDeletedAdmins with correct parameters', test(async function () {
         this.stub(AdminService, 'getDeletedAdmins');
         await AdminController.getDeletedAdmins();

@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import PerfectScrollbar from 'perfect-scrollbar';
 import withStyles from '@material-ui/core/styles/withStyles';
 import sidebarStyle from 'assets/jss/material-dashboard-pro-react/components/sidebarStyle';
+import Chatbot from 'components/Sidebar/Chatbot/Chatbot.jsx';
 
 let ps;
 
@@ -44,6 +45,7 @@ class SidebarWrapper extends React.Component {
         {user}
         {headerLinks}
         {links}
+        <Chatbot/>
       </div>
     );
   }
