@@ -10,7 +10,6 @@ import CloseIcon from '@material-ui/icons/Close';
 import RestoreIcon from '@material-ui/icons/Restore';
 import { injectIntl, intlShape, FormattedMessage } from 'react-intl';
 import 'react-table/react-table.css';
-import 'assets/scss/material-dashboard-pro-react/plugins/_plugin-react-table.scss';
 
 class AdminMain extends Component {
   constructor(props) {

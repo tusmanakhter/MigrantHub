@@ -13,6 +13,7 @@ import { CookiesProvider } from 'react-cookie';
 import 'font-awesome/css/font-awesome.min.css';
 import 'bootstrap-css-only/css/bootstrap.min.css';
 import 'mdbreact/dist/css/mdb.css';
+import 'assets/scss/material-dashboard-pro-react.scss';
 
 require('dotenv').config();
 

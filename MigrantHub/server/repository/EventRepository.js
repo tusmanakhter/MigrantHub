@@ -13,10 +13,8 @@ module.exports = {
     event.dateStart = eventObject.dateStart;
     event.dateEnd = eventObject.dateEnd;
     event.timeStart = eventObject.timeStart;
-    event.secondsStart = eventObject.secondsStart;
     event.timeEnd = eventObject.timeEnd;
     event.repeat = eventObject.repeat;
-    event.secondsEnd = eventObject.secondsEnd;
     event.eventImagePath = eventObject.eventImagePath;
     event.dateCreated = eventObject.dateCreated;
 

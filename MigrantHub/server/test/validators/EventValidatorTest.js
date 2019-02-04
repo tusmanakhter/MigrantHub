@@ -9,7 +9,7 @@ describe('EventValidator()', function () {
         assert.equal(errors, "");
     });
 
-    it('Invalid create event data should return a string with all the errors', async function () {
+    it('Invalid create event data should return a string with all the errors, empty', async function () {
         var expectedErrors =
             "\nEvent name is required" +
             "\nDescription is required" +
@@ -29,7 +29,7 @@ describe('EventValidator()', function () {
         assert.equal(forcedErrors, expectedErrors);
     });
 
-    it('Invalid create event data should return a string with all the errors', async function () {
+    it('Invalid create event data should return a string with all the errors, invalid', async function () {
         var expectedErrors =
             "\nDescription must be at least 10 characters" +
             "\nCity is invalid" +
@@ -38,8 +38,7 @@ describe('EventValidator()', function () {
             "\nPhone number is invalid" +
             "\nPhone number should be in the format (123) 456-7890" +
             "\nStart date is invalid" +
-            "\nEnd date is invalid" +
-            "\nEnd time is invalid";
+            "\nEnd date is invalid"
 
         let forcedErrors = await EventValidator.eventValidator(EventFactory.invalidNumbersCreateEventData());
         assert.equal(forcedErrors, expectedErrors);
