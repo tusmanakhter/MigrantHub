@@ -5,6 +5,10 @@ const dbConfig = {
     host: process.env.MONGO_HOST || 'localhost',
     port: parseInt(process.env.MONGO_PORT, 10) || 27017,
     name: process.env.MONGO_NAME || 'migranthub',
+    user: process.env.MONGO_USER || '',
+    pass: process.env.MONGO_PASS || '',
+    options: process.env.MONGO_OPTIONS || '',
+    atlas: process.env.MONGO_ATLAS || false,
   },
 };
 
@@ -35,6 +39,39 @@ const emailConfig = {
   password: process.env.HOTMAIL_PASSWORD,
 };
 
+const dbConnectionString = () => {
+  const {
+    db: {
+      host, port, name, user, pass, options, atlas,
+    },
+  } = dbConfig;
+
+  let authString = '';
+  if (user && pass) {
+    authString = `${user}:${pass}@`;
+  }
+
+  let optionsString = '';
+  if (options) {
+    optionsString = `?${options}`;
+  }
+
+  let connectionString = '';
+  if (atlas) {
+    connectionString = `mongodb://${authString}${host}/${name}${optionsString}`;
+  } else {
+    connectionString = `mongodb://${authString}${host}:${port}/${name}${optionsString}`;
+  }
+
+  return connectionString;
+};
+
 module.exports = {
-  dbConfig, facebookConfig, googleConfig, cloudConfig, dialogflowConfig, emailConfig,
+  dbConfig,
+  facebookConfig,
+  googleConfig,
+  cloudConfig,
+  dialogflowConfig,
+  emailConfig,
+  dbConnectionString,
 };

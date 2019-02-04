@@ -2,11 +2,10 @@
 
 const faker = require('faker');
 const mongoose = require('mongoose');
-const { dbConfig } = require('../config');
+const { dbConnectionString } = require('../config');
 const Admin = require('../models/Admin');
 
-const { db: { host, port, name } } = dbConfig;
-const connectionString = `mongodb://${host}:${port}/${name}`;
+const connectionString = dbConnectionString();
 
 async function insertAdmins() {
   const promises = [];
