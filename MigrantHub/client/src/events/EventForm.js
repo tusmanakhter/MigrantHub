@@ -39,7 +39,6 @@ import extendedFormsStyle from "assets/jss/material-dashboard-pro-react/views/ex
 import regularFormsStyle from "assets/jss/material-dashboard-pro-react/views/regularFormsStyle";
 import defaultImage from "assets/img/image_placeholder.jpg";
 import defaultAvatar from "assets/img/placeholder.jpg";
-import 'assets/scss/material-dashboard-pro-react.scss';
 import qs from 'qs';
 
 const visibilities = [
@@ -807,6 +806,7 @@ class EventForm extends Component {
                             }}
                           onChange={(moment) => this.handleMoment("dateStart",moment, 'L')}
                           value={dateStart}
+                          locale="en"
                         />
                         <FormHelperText error={dateStartError.length > 0}>{dateStartError}</FormHelperText>
                       </FormControl>
@@ -826,6 +826,7 @@ class EventForm extends Component {
                             id="dateEnd"
                           onChange={(moment) =>  this.handleMoment("dateEnd",moment, 'L')}
                           value={dateEnd}
+                          locale="en"
                         />
                         <FormHelperText error={dateEndError.length > 0}>{dateEndError}</FormHelperText>
                       </FormControl>
@@ -860,6 +861,7 @@ class EventForm extends Component {
                               value={timeStart}
                               helperText={timeStartError}
                               error={timeStartError.length > 0}
+                              locale="en"
                             />
                             <FormHelperText error={timeStartError.length > 0}>{timeStartError}</FormHelperText>
                             </FormControl>
@@ -877,6 +879,7 @@ class EventForm extends Component {
                                 onChange={(moment) =>  this.handleMoment("timeEnd",moment, 'LT')}
                                 helperText={timeEndError}
                                 error={timeEndError.length > 0}
+                                locale="en"
                               />
                               <FormHelperText error={timeEndError.length > 0}>{timeEndError}</FormHelperText>
                             </FormControl>

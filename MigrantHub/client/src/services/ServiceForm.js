@@ -43,7 +43,6 @@ import extendedFormsStyle from "assets/jss/material-dashboard-pro-react/views/ex
 import regularFormsStyle from "assets/jss/material-dashboard-pro-react/views/regularFormsStyle";
 import defaultImage from "assets/img/image_placeholder.jpg";
 import defaultAvatar from "assets/img/placeholder.jpg";
-import 'assets/scss/material-dashboard-pro-react.scss';
 
 const dayOfTheWeek = [
   { value: 'monday', label: 'Monday' },
@@ -903,6 +902,7 @@ class ServiceForm extends Component {
                             }}
                           onChange={(event) => this.handleEditSingleObject('serviceDate', 'startDate', event)}
                           value={serviceDate.startDate}
+                          locale="en"
                         />
                         <FormHelperText error={startDateError.length > 0}>{startDateError}</FormHelperText>
                       </FormControl>
@@ -922,6 +922,7 @@ class ServiceForm extends Component {
                             id="endDate"
                           onChange={(event) => this.handleEditSingleObject('serviceDate', 'endDate', event)}
                           value={serviceDate.endDate}
+                          locale="en"
                         />
                         <FormHelperText error={endDateError.length > 0}>{endDateError}</FormHelperText>
                       </FormControl>
@@ -1024,6 +1025,7 @@ class ServiceForm extends Component {
                               value={member.startTime}
                               helperText={this.objectErrorText('serviceHoursError', index, 'startTime')}
                               error={this.objectErrorText('serviceHoursError', index, 'startTime').length > 0}
+                              locale="en"
                             />
                             <FormHelperText error={this.objectErrorText('serviceHoursError', index, 'startTime').length > 0}>{this.objectErrorText('serviceHoursError', index, 'startTime')}</FormHelperText>
                             </FormControl>
@@ -1041,6 +1043,7 @@ class ServiceForm extends Component {
                                 onChange={(event) => this.handleEditObject('serviceHours', 'endTime', index, event)}
                                 helperText={this.objectErrorText('serviceHoursError', index, 'endTime')}
                                 error={this.objectErrorText('serviceHoursError', index, 'endTime').length > 0}
+                                locale="en"
                               />
                               <FormHelperText error={this.objectErrorText('serviceHoursError', index, 'endTime').length > 0}>{this.objectErrorText('serviceHoursError', index, 'endTime')}</FormHelperText>
                             </FormControl>
