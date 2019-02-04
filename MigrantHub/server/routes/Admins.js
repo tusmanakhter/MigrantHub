@@ -5,6 +5,7 @@ const AdminController = require('../controllers/AdminController');
 const { controllerHandler } = require('../controllers/ControllerUtils');
 
 router.get('/', controllerHandler(AdminController.getAdmins, req => [req.user]));
+router.get('/all', controllerHandler(AdminController.getAllAdmins, () => []));
 router.get('/deleted', controllerHandler(AdminController.getDeletedAdmins, () => []));
 router.get('/rejected', controllerHandler(AdminController.getRejectedAdmins, () => []));
 router.get('/unapproved', controllerHandler(AdminController.getUnapprovedAdmins, () => []));

@@ -1,3 +1,5 @@
+#! /usr/bin/env node
+
 const mongoose = require('mongoose');
 const { dbConfig } = require('../config');
 const fs = require('fs');

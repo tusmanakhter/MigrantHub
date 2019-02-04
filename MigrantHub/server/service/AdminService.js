@@ -3,9 +3,12 @@ const { ServerError } = require('../errors/ServerError');
 
 module.exports = {
   async getAdmins(user) {
-    const query = {
-      _id: { $ne: user._id }, authorized: true, rejected: false, deleted: false,
-    };
+    let query = {};
+    if (user) {
+      query = {
+        _id: { $ne: user._id }, authorized: true, rejected: false, deleted: false,
+      };
+    }
     return AdminRepository.getAdmins(query);
   },
 
