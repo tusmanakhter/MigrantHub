@@ -16,7 +16,6 @@
   },
   "dependencies": {
     "app-root-path": "^2.1.0",
-    "babel-loader": "^7.1.5",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.18.3",
     "concurrently": "^4.0.1",
