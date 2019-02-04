@@ -1,14 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
-import Grid from '@material-ui/core/Grid';
-import Paper from '@material-ui/core/Paper';
-import Typography from '@material-ui/core/Typography';
 import { AuthConsumer } from 'routes/AuthContext';
-//
+
 // @material-ui/core components
 import withStyles from '@material-ui/core/styles/withStyles';
-import InputLabel from '@material-ui/core/InputLabel';
 
 // @material-ui/icons
 import PermIdentity from '@material-ui/icons/PermIdentity';
@@ -16,17 +12,13 @@ import PermIdentity from '@material-ui/icons/PermIdentity';
 // core components
 import GridContainer from 'components/Grid/GridContainer.jsx';
 import GridItem from 'components/Grid/GridItem.jsx';
-import Button from 'components/CustomButtons/Button.jsx';
-import CustomInput from 'components/CustomInput/CustomInput.jsx';
 import Clearfix from 'components/Clearfix/Clearfix.jsx';
 import Card from 'components/Card/Card.jsx';
 import CardBody from 'components/Card/CardBody.jsx';
 import CardHeader from 'components/Card/CardHeader.jsx';
 import CardIcon from 'components/Card/CardIcon.jsx';
-import CardAvatar from 'components/Card/CardAvatar.jsx';
 import CustomLinearProgress from 'components/CustomLinearProgress/CustomLinearProgress.jsx';
-
-import avatar from 'assets/img/faces/marc.jpg';
+import { FormattedMessage } from 'react-intl';
 
 const qs = require('qs');
 
@@ -186,18 +178,16 @@ class ViewMigrantProfile extends Component {
       <React.Fragment>
         <div className={classes.root}>
           <GridItem>
-            <legend>Your profile progress </legend>
+            <legend> <FormattedMessage id="profile.progress" /> </legend>
             {accountProgress}%
             <CustomLinearProgress
               variant="determinate"
               color="info"
               value={accountProgress}
             />
-            <h6>Increase your profile progress by providing more information.
-              A high profile progress will help us provide you with optimal solutions.
-            </h6>
+            <h6><FormattedMessage id="profile.progressdesc" /></h6>
             <small>
-              <br /><i>Please read our <b>terms</b> and <b>conditions</b> to understand how we safely manage your personal info.</i>
+              <br /><i><b><FormattedMessage id="profile.legalwarn" /></b></i>
             </small>
           </GridItem>
           <div>
@@ -208,12 +198,8 @@ class ViewMigrantProfile extends Component {
                     <CardIcon color="warning">
                       <PermIdentity />
                     </CardIcon>
-                    <h4 className={classes.cardIconTitle}>
-                      Edit Profile - <small>Complete your profile</small>
-                    </h4>
                   </CardHeader>
                   <CardBody>
-
                     <GridContainer>
                       <GridItem xs={12} sm={12} md={6}>
                         First Name

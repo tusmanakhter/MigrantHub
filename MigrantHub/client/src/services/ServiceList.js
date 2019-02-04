@@ -156,7 +156,7 @@ class ServiceList extends Component {
                                 <Card>
                                   <CardHeader>
                                     <h6 className={classes.cardTitle}>
-                                      Create a service or provide any suggestions
+                                      <FormattedMessage id="service.infobox" />
                                     </h6>
                                   </CardHeader>
                                   <CardBody>
@@ -172,7 +172,7 @@ class ServiceList extends Component {
                                       && (
                                         <Button
                                           variant="contained"
-                                          color="warning"
+                                          color="info"
                                           className={classes.button}
                                           onClick={this.setRedirectToSuggestionForm}
                                         >
@@ -192,11 +192,11 @@ class ServiceList extends Component {
                                 <Card>
                                   <CardHeader>
                                     <h4 className={classes.cardTitle}>
-                                      Legal info of the product
+                                      <FormattedMessage id="legalboxtitle" />
                                     </h4>
                                   </CardHeader>
                                   <CardBody>
-                                    <p>Please review our <b> terms</b> and <b>conditions</b></p>
+                                    <p><b><FormattedMessage id="legalbox" /></b></p>
                                     <br />
                                     MigrantHub ©
                                   </CardBody>
