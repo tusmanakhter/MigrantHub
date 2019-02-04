@@ -5,6 +5,20 @@ import Button from '@material-ui/core/Button';
 import axios from 'axios';
 import ContactInfo from 'account/common/ContactInfo';
 import AboutInfo from 'account/business/AboutInfo';
+
+// @material-ui/icons
+import PermIdentity from '@material-ui/icons/PermIdentity';
+
+// core components
+import GridContainer from 'components/Grid/GridContainer.jsx';
+import GridItem from 'components/Grid/GridItem.jsx';
+import Clearfix from 'components/Clearfix/Clearfix.jsx';
+import Card from 'components/Card/Card.jsx';
+import CardBody from 'components/Card/CardBody.jsx';
+import CardHeader from 'components/Card/CardHeader.jsx';
+import CardIcon from 'components/Card/CardIcon.jsx';
+import CustomLinearProgress from 'components/CustomLinearProgress/CustomLinearProgress.jsx';
+
 import { handleChange } from 'helpers/Forms';
 import { AuthConsumer } from 'routes/AuthContext';
 
@@ -55,7 +69,7 @@ class EditBusiness extends Component {
 
   getAccount(e) {
     const { user } = this.context;
-    axios.get('/api/businesses/' + user.username).then((response) => {
+    axios.get(`/api/businesses/${user.username}`).then((response) => {
       const jsonObj = qs.parse(qs.stringify(response.data));
 
       if (response.status === 200) {
@@ -79,7 +93,7 @@ class EditBusiness extends Component {
           description: jsonObj.description,
         });
       }
-    })
+    });
   }
 
   handleSave = async () => {
@@ -107,7 +121,7 @@ class EditBusiness extends Component {
       city, province, postalCode, phoneNumber, organizationName, orgType,
       department, serviceType, description,
     } = this.state;
-    axios.put('/api/businesses/' + email,
+    axios.put(`/api/businesses/${email}`,
       qs.stringify({
         email,
         corpId,
@@ -172,7 +186,7 @@ class EditBusiness extends Component {
             onClick={this.handleSave}
             className={classes.button}
           >
-              Save
+            Save
           </Button>
         </div>
       </React.Fragment>

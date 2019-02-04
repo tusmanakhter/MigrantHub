@@ -2,32 +2,48 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import withStyles from '@material-ui/core/styles/withStyles';
 import axios from 'axios';
-import Header from 'components/Header/Header';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import { AuthConsumer } from 'routes/AuthContext';
 
+// @material-ui/icons
+import PermIdentity from '@material-ui/icons/PermIdentity';
+
+// core components
+import GridContainer from 'components/Grid/GridContainer.jsx';
+import GridItem from 'components/Grid/GridItem.jsx';
+import Clearfix from 'components/Clearfix/Clearfix.jsx';
+import Card from 'components/Card/Card.jsx';
+import CardBody from 'components/Card/CardBody.jsx';
+import CardHeader from 'components/Card/CardHeader.jsx';
+import CardIcon from 'components/Card/CardIcon.jsx';
+import CustomLinearProgress from 'components/CustomLinearProgress/CustomLinearProgress.jsx';
+
+// @material-ui/core components
+import { FormattedMessage } from 'react-intl';
+
 const qs = require('qs');
 
 const styles = theme => ({
-    root: {
-        flexGrow: 1,
-    },
-    paper: {
-        padding: theme.spacing.unit * 2,
-        textAlign: 'left',
-        color: theme.palette.text.secondary,
-    },
-    label: {
-        fontWeight: 'bold',
-    }
+  root: {
+    flexGrow: 1,
+  },
+  paper: {
+    padding: theme.spacing.unit * 2,
+    textAlign: 'left',
+    color: theme.palette.text.secondary,
+  },
+  label: {
+    fontWeight: 'bold',
+  },
 });
 
 class ViewBusinessProfile extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      accountProgress: '',
       firstName: '',
       lastName: '',
       address: '',
@@ -56,7 +72,7 @@ class ViewBusinessProfile extends Component {
 
   getAccount(e) {
     const { user } = this.context;
-    axios.get('/api/businesses/' + user.username).then((response) => {
+    axios.get(`/api/businesses/${user.username}`).then((response) => {
       const jsonObj = qs.parse(qs.stringify(response.data));
 
       if (response.status === 200) {
@@ -80,7 +96,7 @@ class ViewBusinessProfile extends Component {
           description: jsonObj.description,
         });
       }
-    })
+    });
   }
 
   render() {
@@ -88,148 +104,112 @@ class ViewBusinessProfile extends Component {
 
     const {
       firstName, lastName, address, apartment, city, province, postalCode, phoneNumber,
-      organizationName, department, orgType, serviceType, description,
+      organizationName, department, orgType, serviceType, description, accountProgress,
     } = this.state;
 
     return (
       <React.Fragment>
-          <div className={classes.root}>
-              <Grid
-                  container spacing={6}
-                  direction="column"
-                  justify="flex-start"
-                  alignItems="stretch"
-              >
-                  <Grid item xs={12}>
-                      <Paper className={classes.paper}>
-                          <Typography variant="title" gutterBottom>
-                              Contact Information
-                          </Typography>
-                      </Paper>
-                  </Grid>
-                  <Grid item xs={12}>
-                      <Paper className={classes.paper}>
-                          <label className={classes.label}>
-                              First Name:
-                          </label>
-                          {firstName}
-                      </Paper>
-                  </Grid>
-                  <Grid item xs={12}>
-                      <Paper className={classes.paper}>
-                          <label className={classes.label}>
-                              Last Name:
-                          </label>
-                          {lastName}
-                      </Paper>
-                  </Grid>
-                  <Grid item xs={12}>
-                      <Paper className={classes.paper}>
-                          <label className={classes.label}>
-                              Address:
-                          </label>
-                          {address}
-                      </Paper>
-                  </Grid>
-                  <Grid item xs={12}>
-                      <Paper className={classes.paper}>
-                          <label className={classes.label}>
-                              Apartment:
-                          </label>
-                          {apartment}
-                      </Paper>
-                  </Grid>
-
-                  <Grid item xs={12}>
-                      <Paper className={classes.paper}>
-                          <label className={classes.label}>
-                              City:
-                          </label>
-                          {city}
-                      </Paper>
-                  </Grid>
-                  <Grid item xs={12}>
-                      <Paper className={classes.paper}>
-                          <label className={classes.label}>
-                              Province:
-                          </label>
-                          {province}
-                      </Paper>
-                  </Grid>
-
-                  <Grid item xs={12}>
-                      <Paper className={classes.paper}>
-                          <label className={classes.label}>
-                              Postal Code:
-                          </label>
-                          {postalCode}
-                      </Paper>
-                  </Grid>
-                  <Grid item xs={12}>
-                      <Paper className={classes.paper}>
-                          <label className={classes.label}>
-                              Phone Number:
-                          </label>
-                          {phoneNumber}
-                      </Paper>
-                  </Grid>
-              </Grid>
-              <Grid
-                  container spacing={6}
-                  direction="column"
-                  justify="flex-start"
-                  alignItems="stretch"
-              >
-                  <Grid item xs={12}>
-                      <Paper className={classes.paper}>
-                          <Typography variant="title" gutterBottom>
-                              About Information
-                          </Typography>
-                      </Paper>
-                  </Grid>
-                  <Grid item xs={12}>
-                      <Paper className={classes.paper}>
-                          <label className={classes.label}>
-                              Organization Name:
-                          </label>
-                          {organizationName}
-                      </Paper>
-                  </Grid>
-                  <Grid item xs={12}>
-                      <Paper className={classes.paper}>
-                          <label className={classes.label}>
-                              Organization Type:
-                          </label>
-                          {orgType}
-                      </Paper>
-                  </Grid>
-                  <Grid item xs={12}>
-                      <Paper className={classes.paper}>
-                          <label className={classes.label}>
-                              Department:
-                          </label>
-                          {department}
-                      </Paper>
-                  </Grid>
-                  <Grid item xs={12}>
-                      <Paper className={classes.paper}>
-                          <label className={classes.label}>
-                              Service Type:
-                          </label>
-                          {serviceType}
-                      </Paper>
-                  </Grid>
-
-                  <Grid item xs={12}>
-                      <Paper className={classes.paper}>
-                          <label className={classes.label}>
-                              Description:
-                          </label>
-                          {description}
-                      </Paper>
-                  </Grid>
-              </Grid>
-          </div>
+        <div className={classes.root}>
+          <GridItem>
+            <legend> <FormattedMessage id="profile.progress" /> </legend>
+            <h6><FormattedMessage id="profile.progressdesc" /></h6>
+            <small>
+              <br /><i><b><FormattedMessage id="profile.legalwarn" /></b></i>
+            </small>
+          </GridItem>
+          <GridContainer justify="center">
+            <GridItem xs={11}>
+              <Card>
+                <CardHeader color="info" icon>
+                  <CardIcon color="warning">
+                    <PermIdentity />
+                  </CardIcon>
+                </CardHeader>
+                <CardBody>
+                  <GridContainer>
+                    <GridItem xs={12} sm={12} md={6}>
+                      First Name
+                      <p><b>{firstName || 'N/A'}</b></p>
+                    </GridItem>
+                    <GridItem xs={12} sm={12} md={6}>
+                      Last Name
+                      <p><b>{lastName || 'N/A'}</b></p>
+                    </GridItem>
+                  </GridContainer>
+                  <br />
+                  <hr />
+                  <b>PERSONAL INFORMATION</b>
+                  <br />
+                  <hr />
+                  <br />
+                  <GridContainer>
+                    <GridItem xs={12} sm={12} md={4}>
+                      Address
+                      <p><b>{address || 'N/A'}</b></p>
+                    </GridItem>
+                    <GridItem xs={12} sm={12} md={4}>
+                      Appartment
+                      <p><b>{apartment || 'N/A'}</b></p>
+                    </GridItem>
+                    <GridItem xs={12} sm={12} md={4}>
+                      City
+                      <p><b>{city || 'N/A'}</b></p>
+                    </GridItem>
+                    <GridItem xs={12} sm={12} md={4}>
+                      Povince
+                      <p><b>{province || 'N/A'}</b></p>
+                    </GridItem>
+                    <GridItem xs={12} sm={12} md={4}>
+                      PostalCode
+                      <p><b>{postalCode}</b></p>
+                    </GridItem>
+                    <GridItem xs={12} sm={12} md={4}>
+                      Phone Number
+                      <p><b>{phoneNumber}</b></p>
+                    </GridItem>
+                  </GridContainer>
+                  <Clearfix />
+                </CardBody>
+              </Card>
+            </GridItem>
+          </GridContainer>
+          <GridContainer justify="center">
+            <GridItem xs={11}>
+              <Card>
+                <CardBody>
+                  <br />
+                  <hr />
+                  <b>About Information</b>
+                  <br />
+                  <hr />
+                  <br />
+                  <GridContainer>
+                    <GridItem xs={12} sm={12} md={4}>
+                      Organization Name
+                      <p><b>{organizationName || 'N/A'}</b></p>
+                    </GridItem>
+                    <GridItem xs={12} sm={12} md={4}>
+                      Speaking Level
+                      <p><b>{orgType || 'N/A'}</b></p>
+                    </GridItem>
+                    <GridItem xs={12} sm={12} md={4}>
+                      Department
+                      <p><b>{department || 'N/A'}</b></p>
+                    </GridItem>
+                    <GridItem xs={12} sm={12} md={4}>
+                      Department
+                      <p><b>{serviceType || 'N/A'}</b></p>
+                    </GridItem>
+                    <GridItem xs={12} sm={12} md={4}>
+                      Description
+                      <p><b>{description || 'N/A'}</b></p>
+                    </GridItem>
+                  </GridContainer>
+                </CardBody>
+              </Card>
+            </GridItem>
+          </GridContainer>
+        </div>
       </React.Fragment>
     );
   }
