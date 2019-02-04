@@ -84,9 +84,9 @@ class SignUpMigrant extends Component {
         messageFromServer: response.data,
       });
     }).catch((error) => {
-        event.setState({
-            messageFromServer: error.response.data,
-        });
+      event.setState({
+        messageFromServer: error.response.data,
+      });
     });
   }
 

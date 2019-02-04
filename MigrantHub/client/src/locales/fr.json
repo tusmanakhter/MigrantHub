@@ -202,12 +202,8 @@
   "forgotpassword.validationcode.sent": "Le code de vérification a été envoyé.",
   "forgotpassword.resetPassword": "Réinitialiser le Mot de Passe",
   "forgotpassword.reset": "Réinitialiser",
-<<<<<<< HEAD
+  "categories.select": "Choisissez une Catégorie",
   "profile.progress": "La progression de votre profil",
   "profile.progressdesc": "Augmentez la progression de votre profil en fournissant plus d'informations. Une progression importante vous aidera à vous fournir des solutions optiques.",
   "profile.legalwarn": "Veuillez lire nos conditions générales pour comprendre comment nous gérons vos informations personnelles en toute sécurité."
 }
-=======
-  "categories.select": "Choisissez une Catégorie"
-}
->>>>>>> master
