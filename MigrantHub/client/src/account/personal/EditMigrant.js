@@ -22,10 +22,6 @@ import {
 } from 'helpers/Object';
 import { AuthConsumer } from 'routes/AuthContext';
 
-
-import sweetAlertStyle from 'assets/jss/material-dashboard-pro-react/views/sweetAlertStyle.jsx';
-
-
 const qs = require('qs');
 
 const styles = theme => ({
@@ -42,7 +38,6 @@ class EditMigrant extends React.Component {
     super(props);
     this.state = {
       alert: null,
-      show: false,
       email: '',
       password: '',
       confirmPassword: '',
@@ -80,7 +75,6 @@ class EditMigrant extends React.Component {
     };
 
     this.hideAlert = this.hideAlert.bind(this);
-
     this.contactChild = React.createRef();
     this.personalChild = React.createRef();
     this.langChild = React.createRef();
@@ -88,7 +82,6 @@ class EditMigrant extends React.Component {
     this.educationChild = React.createRef();
     this.employmentChild = React.createRef();
     this.otherChild = React.createRef();
-
     this.getAccount = this.getAccount.bind(this);
     this.handleChange = handleChange.bind(this);
     this.handleAutoSuggestChange = handleAutoSuggestChange.bind(this);

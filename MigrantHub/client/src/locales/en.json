@@ -203,12 +203,8 @@
   "forgotpassword.validationcode.sent": "Verification code has been sent.",
   "forgotpassword.resetPassword": "Reset Password",
   "forgotpassword.reset": "Reset",
-<<<<<<< HEAD
+  "categories.select": "Select Category",
   "profile.progress": "Your profile progress",
   "profile.progressdesc": "Increase your profile progress by providing more information. A high profile progress will help us provide you with optical solutions.",
   "profile.legalwarn": "Please read our terms and conditions to understand how we safely manage your personal info."
 }
-=======
-  "categories.select": "Select Category"
-}
->>>>>>> master
