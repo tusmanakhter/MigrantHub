@@ -3,8 +3,9 @@ const express = require('express');
 const fs = require('fs');
 
 var MongoClient = require('mongodb').MongoClient;
-const { db: { host, port, name } } = dbConfig;
-const url = `mongodb://${host}:${port}/${name}`;
+const { dbConnectionString } = require('../config');
+
+const url = dbConnectionString();
 
 this.generateServiceRecommendationData = function generateServiceReviewsData() {
 

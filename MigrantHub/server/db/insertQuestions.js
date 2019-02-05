@@ -1,11 +1,10 @@
 #! /usr/bin/env node
 
 const mongoose = require('mongoose');
-const { dbConfig } = require('../config');
+const { dbConnectionString } = require('../config');
 const { Question } = require('../models/questions/Question');
 
-const { db: { host, port, name } } = dbConfig;
-const connectionString = `mongodb://${host}:${port}/${name}`;
+const connectionString = dbConnectionString();
 
 const yesOption = { optionNumber: 1, answerBody: 'Yes' };
 const noOption = { optionNumber: 2, answerBody: 'No' };

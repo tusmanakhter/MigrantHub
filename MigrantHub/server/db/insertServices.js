@@ -1,14 +1,12 @@
 #! /usr/bin/env node
 
 const mongoose = require('mongoose');
-const { dbConfig } = require('../config');
+const { dbConnectionString } = require('../config');
 const fs = require('fs');
 
 const Service = require('../models/Service');
 
-//MongoDB-Mongoose Connection
-const { db: { host, port, name } } = dbConfig;
-const connectionString = `mongodb://${host}:${port}/${name}`;
+const connectionString = dbConnectionString();
 
 mongoose.Promise = global.Promise;
 mongoose.connect(connectionString, (error) => {
