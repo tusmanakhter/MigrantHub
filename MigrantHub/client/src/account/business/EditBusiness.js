@@ -1,10 +1,18 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import withStyles from '@material-ui/core/styles/withStyles';
-import Button from '@material-ui/core/Button';
 import axios from 'axios';
 import ContactInfo from 'account/common/ContactInfo';
 import AboutInfo from 'account/business/AboutInfo';
+
+// core components
+import GridContainer from 'components/Grid/GridContainer.jsx';
+import GridItem from 'components/Grid/GridItem.jsx';
+import Card from 'components/Card/Card.jsx';
+import CardBody from 'components/Card/CardBody.jsx';
+import SweetAlert from 'react-bootstrap-sweetalert';
+import Button from 'components/CustomButtons/Button.jsx';
+
 import { handleChange } from 'helpers/Forms';
 import { AuthConsumer } from 'routes/AuthContext';
 
@@ -15,7 +23,6 @@ const styles = ({
     textAlign: 'left',
   },
   mainContainer: {
-    marginLeft: 75,
   },
 });
 
@@ -23,6 +30,7 @@ class EditBusiness extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      alert: null,
       firstName: '',
       lastName: '',
       address: '',
@@ -40,7 +48,7 @@ class EditBusiness extends Component {
 
     this.contactChild = React.createRef();
     this.aboutChild = React.createRef();
-
+    this.hideAlert = this.hideAlert.bind(this);
     this.getAccount = this.getAccount.bind(this);
     this.handleChange = handleChange.bind(this);
   }
@@ -55,7 +63,7 @@ class EditBusiness extends Component {
 
   getAccount(e) {
     const { user } = this.context;
-    axios.get('/api/businesses/' + user.username).then((response) => {
+    axios.get(`/api/businesses/${user.username}`).then((response) => {
       const jsonObj = qs.parse(qs.stringify(response.data));
 
       if (response.status === 200) {
@@ -79,7 +87,7 @@ class EditBusiness extends Component {
           description: jsonObj.description,
         });
       }
-    })
+    });
   }
 
   handleSave = async () => {
@@ -101,13 +109,37 @@ class EditBusiness extends Component {
     return false;
   }
 
+  titleAndTextAlert() {
+    this.setState({
+      alert: (
+        <SweetAlert
+          style={{ display: 'block', marginTop: '-100px' }}
+          onConfirm={() => this.hideAlert()}
+          onCancel={() => this.hideAlert()}
+          confirmBtnCssClass={
+            `${this.props.classes.button} ${this.props.classes.info}`
+          }
+        >
+          Update Successful
+        </SweetAlert>
+      ),
+    });
+    this.handleSave();
+  }
+
+  hideAlert() {
+    this.setState({
+      alert: null,
+    });
+  }
+
   updateAccount() {
     const {
       email, password, confirmPassword, corpId, firstName, lastName, address, apartment,
       city, province, postalCode, phoneNumber, organizationName, orgType,
       department, serviceType, description,
     } = this.state;
-    axios.put('/api/businesses/' + email,
+    axios.put(`/api/businesses/${email}`,
       qs.stringify({
         email,
         corpId,
@@ -144,36 +176,65 @@ class EditBusiness extends Component {
 
     return (
       <React.Fragment>
+        {this.state.alert}
         <div className={classes.mainContainer}>
-          <ContactInfo
-            innerRef={this.contactChild}
-            handleChange={this.handleChange}
-            firstName={firstName}
-            lastName={lastName}
-            address={address}
-            apartment={apartment}
-            city={city}
-            province={province}
-            postalCode={postalCode}
-            phoneNumber={phoneNumber}
-          />
-          <AboutInfo
-            innerRef={this.aboutChild}
-            handleChange={this.handleChange}
-            organizationName={organizationName}
-            orgType={orgType}
-            department={department}
-            serviceType={serviceType}
-            description={description}
-          />
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={this.handleSave}
-            className={classes.button}
-          >
-              Save
-          </Button>
+          <GridContainer justify="center">
+            <GridItem xs={11}>
+              <Card>
+                <CardBody>
+                  <div className={classes.center}>
+                    <ContactInfo
+                      innerRef={this.contactChild}
+                      handleChange={this.handleChange}
+                      firstName={firstName}
+                      lastName={lastName}
+                      address={address}
+                      apartment={apartment}
+                      city={city}
+                      province={province}
+                      postalCode={postalCode}
+                      phoneNumber={phoneNumber}
+                    />
+                  </div>
+                </CardBody>
+              </Card>
+            </GridItem>
+          </GridContainer>
+          <GridContainer justify="center">
+            <GridItem xs={11}>
+              <Card>
+                <CardBody>
+                  <AboutInfo
+                    innerRef={this.aboutChild}
+                    handleChange={this.handleChange}
+                    organizationName={organizationName}
+                    orgType={orgType}
+                    department={department}
+                    serviceType={serviceType}
+                    description={description}
+                  />
+                </CardBody>
+              </Card>
+            </GridItem>
+          </GridContainer>
+          <GridContainer justify="center">
+            <GridItem xs={11}>
+              <Card>
+                <CardBody>
+                  <div className={classes.center}>
+                    <h5>Save your changes</h5>
+                    <Button
+                      color="warning"
+                      onClick={this.titleAndTextAlert.bind(this)}
+                    >
+                      Update
+                    </Button>
+                  </div>
+                </CardBody>
+              </Card>
+            </GridItem>
+          </GridContainer>
+
         </div>
       </React.Fragment>
     );
