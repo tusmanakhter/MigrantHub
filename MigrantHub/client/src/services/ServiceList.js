@@ -25,9 +25,6 @@ import CardHeader from 'components/Card/CardHeader.jsx';
 import CardBody from 'components/Card/CardBody.jsx';
 
 const styles = theme => ({
-  mainContainer: {
-    marginLeft: 75,
-  },
   root: {
     ...theme.mixins.gutters(),
     paddingTop: theme.spacing.unit * 2,

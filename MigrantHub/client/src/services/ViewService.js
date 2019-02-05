@@ -1,15 +1,12 @@
 import React, { Component } from 'react';
 import withStyles from '@material-ui/core/styles/withStyles';
-import Typography from '@material-ui/core/Typography';
+import classNames from "classnames";
 import Grid from '@material-ui/core/Grid';
 import PropTypes from 'prop-types';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import Button from '@material-ui/core/Button';
-import blue from '@material-ui/core/colors/blue';
 import { Redirect } from 'react-router-dom';
+import blue from '@material-ui/core/colors/blue';
 import axios from 'axios';
 import GoogleMaps from 'components/GoogleMaps/GoogleMaps';
 import UserTypes from 'lib/UserTypes';
@@ -17,12 +14,24 @@ import SweetAlert from "react-bootstrap-sweetalert";
 import sweetAlertStyle from "assets/jss/material-dashboard-pro-react/views/sweetAlertStyle.jsx";
 import { AuthConsumer } from 'routes/AuthContext';
 import AddToCalendar from 'react-add-to-calendar';
+//import Button from '@material-ui/core/Button';
+
+import Button from "components/CustomButtons/Button.jsx";
+import Icon from "@material-ui/core/Icon";
+// @material-ui/icons
+import AddLocation from "@material-ui/icons/AddLocation";
+import Dashboard from "@material-ui/icons/Dashboard";
+
+import GridItem from "components/Grid/GridItem.jsx";
+import NavPills from "components/NavPills/NavPills.jsx";
+import Card from "components/Card/Card.jsx";
+import CardHeader from "components/Card/CardHeader.jsx";
+import CardBody from "components/Card/CardBody.jsx";
+import { cardTitle } from "assets/jss/material-dashboard-pro-react.jsx";
 
 const styles = {
-  avatar: {
-    backgroundColor: blue[100],
-    color: blue[600],
-  },
+  cardTitle,
+  sweetAlertStyle,
 };
 
 class ViewService extends Component {
@@ -164,139 +173,182 @@ class ViewService extends Component {
             <Dialog
               open={open}
               onClose={onClose}
+              style={{ backgroundColor: 'transparent' }}
+              overlayStyle={{ backgroundColor: 'transparent' }}
+              PaperProps={{
+                style: {
+                  backgroundColor: 'transparent',
+                  boxShadow: 'none',
+                },
+              }}
               scroll={scroll}
               aria-labelledby="scroll-dialog-title"
               fullWidth
               maxWidth="lg"
+              xs={12} sm={12} md={6}
             >
-              <DialogTitle id="scroll-dialog-title" variant="title" align="center">{serviceTitle}</DialogTitle>
-              <DialogContent>
-                <Typography variant="body1" color="inherit" paragraph align="center">
-                  Service Category: {category}
-                </Typography>
-                <Typography variant="body1" color="inherit" paragraph align="center">
-                  Service SubCategory: {subcategory}
-                </Typography>
-                <Typography variant="body2" color="inherit" paragraph align="center">
-                  {serviceSummary}
-                </Typography>
-                <Typography variant="body1" color="inherit" paragraph align="center">
-                  {serviceDescription}
-                </Typography>
-                <hr />
-                <AddToCalendar event={this.state.event} />
-                {serviceDate !== undefined && (
-                  <Grid container spacing={12}>
-                    <Typography variant="h5" color="inherit" paragraph>
-                      Service date:
-                  </Typography>
-                    <Grid container spacing={12}>
-                      <Grid item xs={12}>
-                        Start date:
-                      {' '}
-                        {serviceDate.startDate.substring(0, 10)}
-                      </Grid>
-                      <Grid item xs={12}>
-                        End date:
-                      {' '}
-                        {serviceDate.endDate.substring(0, 10)}
-                      </Grid>
-                    </Grid>
-                  </Grid>
-                )}
-                {serviceHours.length > 0 ? (
-                  <Typography variant="h5" color="inherit" paragraph>
-                    <br />
-                    Service Hours:
-                  </Typography>
-                ) : ''}
-                {serviceHours.map(item => (
-                  <Grid justify="center" container item xs>
-                    <Grid container spacing={6}>
-                      <Grid item xs={2}>
-                        {item.serviceDay}
-                      </Grid>
-                      <Grid item xs={2}>
-                        Start time:
-                        {' '}
-                        {item.startTime}
-                      </Grid>
-                      <Grid item xs={2}>
-                        End time:
-                        {' '}
-                        {item.endTime}
-                      </Grid>
-                    </Grid>
-                  </Grid>
-                ))}
-                {serviceLocation !== undefined && (
-                  <Grid container spacing={12}>
-                    <Typography variant="h5" color="inherit" paragraph>
-                      <br />
-                      Location:
-                  </Typography>
-                    <Grid container spacing={12}>
-                      <Grid item xs={12}>
-                        Address:
-                      {' '}
-                        {serviceLocation.address}
-                      </Grid>
-                      <Grid item xs={12}>
-                        Apartment:
-                      {' '}
-                        {serviceLocation.apartment}
-                      </Grid>
-                      <Grid item xs={12}>
-                        City:
-                      {' '}
-                        {serviceLocation.city}
-                      </Grid>
-                      <Grid item xs={12}>
-                        Province:
-                      {' '}
-                        {serviceLocation.province}
-                      </Grid>
-                      <Grid item xs={12}>
-                        Postal Code:
-                      {' '}
-                        {serviceLocation.postalCode}
-                      </Grid>
-                      <Grid item xs={12}>
-                        Phone Number:
-                      {' '}
-                        {serviceLocation.phoneNumber}
-                      </Grid>
-                    </Grid>
-                  </Grid>
-                )}
-                {open && serviceLocation !== undefined && (
-                  <GoogleMaps
-                    location={serviceLocation}
-                  />
-                )}
-              </DialogContent>
-              <DialogActions>
-                {user.type === UserTypes.ADMIN
-                  && (
-                    <Button onClick={this.warningWithConfirmAndCancelMessage.bind(this)} color="secondary">
-                      Delete
-                    </Button>
-                  )
-                }}
-                {editMode && (
-                  <React.Fragment>
-                    <Button onClick={this.warningWithConfirmAndCancelMessage.bind(this)} color="secondary">
-                      Delete
-                  </Button>
-                    <Button onClick={this.handleEdit} color="primary">
-                      Edit
-                  </Button>
-                  </React.Fragment>
-                )}
-                <Button onClick={onClose} color="primary">
-                  Cancel
-                </Button>
-              </DialogActions>
+            <GridItem>
+                <Card>
+                  <CardHeader>
+                    <h4 className={classes.cardTitle}>
+                      {serviceTitle}
+                    </h4>
+                  </CardHeader>
+                  <CardBody>
+                    <NavPills
+                      color="rose"
+                      horizontal={{
+                        tabsGrid: { xs: 12, sm: 12, md: 2 },
+                        contentGrid: { xs: 12, sm: 12, md: 8 }
+                      }}
+                      tabs={[
+                        {
+                          tabButton: "Description",
+                          tabIcon: Dashboard,
+                          tabContent: (
+                            <span>
+                               <p>
+                                <b>Service Category:</b> {category}
+                              </p>
+                              <p>
+                                <b>Service SubCategory:</b> {subcategory}
+                              </p>
+                              <br />
+                              <p>
+                                <center>{serviceSummary}</center>
+                              </p>
+                              <br />
+                              <p>
+                                <center>{serviceDescription}</center>
+                              </p>
+                              <br />
+                              {serviceDate !== undefined && (
+                              <p>
+                                <b>Start date:</b>
+                                {' '}
+                                {serviceDate.startDate.substring(0, 10)}
+                                {' '}
+                                <b>End date:</b>
+                                {' '}
+                                {serviceDate.endDate.substring(0, 10)}
+                              </p>
+                                )}
+                              {serviceHours.map(item => (
+                              <p>
+                                {' '}
+                                <b>Week Day:</b>
+                                {' '}
+                                {item.serviceDay}
+                                {' '}
+                                <b>Start time:</b>
+                                {' '}
+                                {item.startTime}
+                                {' '}
+                                <b>End time:</b>
+                                {' '}
+                                {item.endTime}
+                              </p>
+                              ))}
+                              <p>
+                                {serviceLocation !== undefined && (
+                                  <p>
+                                    <center><h6><b>Location</b></h6></center>
+                                    <Grid>
+                                      <b>Address:</b>
+                                      {' '}
+                                      {serviceLocation.address}
+                                      <br />
+                                      <b>Apartment:</b>
+                                      {' '}
+                                      {serviceLocation.apartment}
+                                      <br />
+                                      <b>City:</b>
+                                      {' '}
+                                      {serviceLocation.city}
+                                      <br />
+                                      <b>Province:</b>
+                                      {' '}
+                                      {serviceLocation.province}
+                                      <br />
+                                      <b>Postal Code:</b>
+                                      {' '}
+                                      {serviceLocation.postalCode}
+                                      <br />
+                                      <b>Phone Number:</b>
+                                      {' '}
+                                      {serviceLocation.phoneNumber}
+                                      <br />
+                                    </Grid>
+                                  </p>
+                                )}
+                              </p>
+                              <hr />
+                              <p>Share Now! <br />
+                                <Button
+                                  justIcon
+                                  color="transparent">
+                                  <Icon className={classNames(classes.icon, "fab fa-facebook-square")} />
+                                </Button>
+                                <Button
+                                  justIcon
+                                  color="transparent">
+                                  <Icon className={classNames(classes.icon, "fab fa-google-plus")} />
+                                </Button>
+                                <Button
+                                  justIcon
+                                  color="transparent">
+                                  <Icon className={classNames(classes.icon, "fab fa-twitter-square")} />
+                                </Button>
+                              </p>
+
+                              <AddToCalendar event={this.state.event} />
+                            </span>
+                          )
+                        },
+                        {
+                          tabButton: "Map",
+                          tabIcon: AddLocation,
+                          tabContent: (
+                            <span>
+                              <CardBody>
+                              {serviceLocation !== undefined ? 
+                                <GoogleMaps
+                                  location={serviceLocation}
+                                />
+                              : <GoogleMaps
+                                  location="Montreal, QC"
+                                />}
+                              </CardBody>
+                            </span>
+                          )
+                        }
+                      ]}
+                    />
+                  </CardBody>
+                  <DialogActions>
+                    {user.type === UserTypes.ADMIN
+                      && (
+                        <Button onClick={this.warningWithConfirmAndCancelMessage.bind(this)} color="secondary">
+                          Delete
+                          </Button>
+                      )
+                    }}
+                      {this.props.editMode &&
+                      <React.Fragment>
+                        <Button onClick={this.warningWithConfirmAndCancelMessage.bind(this)} color="secondary">
+                          Delete
+                            </Button>
+                        <Button onClick={this.handleEdit} color="primary">
+                          Edit
+                            </Button>
+                      </React.Fragment>
+                    }
+                    <Button onClick={onClose} color="primary">
+                      Cancel
+                      </Button>
+                  </DialogActions>
+                </Card>
+              </GridItem>
             </Dialog>
           </div>
         )}
@@ -334,4 +386,4 @@ ViewService.propTypes = {
   getData: PropTypes.func.isRequired,
 };
 
-export default withStyles(sweetAlertStyle)(ViewService);
+export default withStyles(styles)(ViewService);

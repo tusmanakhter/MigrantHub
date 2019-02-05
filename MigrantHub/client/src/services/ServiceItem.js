@@ -72,7 +72,7 @@ class ServiceItem extends Component {
     } = this.props;
     const { openService, openReviews, scroll } = this.state;
     return (
-      <GridItem xs={12} sm={6} md={2}>
+      <GridItem xs={12} sm={6} md={4}>
         <Card product className={classes.cardHover}>
               <CardHeader image className={classes.cardHeaderHover}>
                 <a href="#pablo" onClick={this.handleClickOpen}>
