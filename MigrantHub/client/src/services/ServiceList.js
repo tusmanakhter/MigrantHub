@@ -208,7 +208,7 @@ class ServiceList extends Component {
                 )
               }
               <h5 className={classes.pageSubcategoriesTitle}>
-                Browse available services
+                <FormattedMessage id="service.browse" />
               </h5>
               <hr />
               <GridContainer>

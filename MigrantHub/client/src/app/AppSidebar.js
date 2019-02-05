@@ -22,16 +22,16 @@ import sidebarStyle from 'assets/jss/material-dashboard-pro-react/components/sid
 import avatar from 'assets/img/faces/avatar.jpg';
 import AppSidebarWrapper from 'app/AppSidebarWrapper';
 import { AuthConsumer } from 'routes/AuthContext';
-import Menu, {SubMenu } from 'rc-menu';
+import Menu, { SubMenu } from 'rc-menu';
 import 'rc-menu/assets/index.css';
 
 const menuStyle = {
-    width: 300,
-    height: 500,
-    overflow: 'auto',
-    position: 'absolute',
-    zIndex: 1000,
-    background: 'white'
+  width: 300,
+  height: 500,
+  overflow: 'auto',
+  position: 'absolute',
+  zIndex: 1500,
+  background: 'white',
 };
 
 class AppSidebar extends React.Component {
@@ -133,7 +133,7 @@ class AppSidebar extends React.Component {
               <List className={`${classes.list} ${classes.collapseList}`}>
                 <ListItem className={classes.collapseItem}>
                   <NavLink
-                    to="#"
+                    to={user.type === UserTypes.MIGRANT ? '/migrant/profile' : user.type === UserTypes.BUSINESS ? '/business/profile' : '/'}
                     className={
                       `${classes.itemLink} ${classes.userCollapseLinks}`
                     }
@@ -313,50 +313,55 @@ class AppSidebar extends React.Component {
             })}`;
           const { itemIcon } = classes;
           return (
-              <ListItem key={key} className={classes.item}>
-                  {prop.option?
-                      <Menu style={{boxShadow:'none', border: 0, color: "inherit"}}>
-                        <SubMenu
-                            title={
-                              <div>
-                                <ListItemIcon className={itemIcon}>
-                                    {typeof prop.icon === "string" ? (
-                                        <Icon>{prop.icon}</Icon>
-                                    ) : (
-                                        <prop.icon> </prop.icon>
-                                    )}
-                                </ListItemIcon>
-                                <ListItemText
-                                    primary={prop.name}
-                                    disableTypography={true}
-                                    className={itemText}>
-                                </ListItemText>
-                              </div>}
-                            itemIcon={<Icon/>}
-                            expandIcon={<Icon/>}
-                        >
-                          <Menu style={menuStyle}>
-                            <prop.option />
-                          </Menu>
-                        </SubMenu>
-                      </Menu>
-                      :
-                      <NavLink to={prop.path} className={navLinkClasses}>
-                        <ListItemIcon className={itemIcon}>
-                            {typeof prop.icon === "string" ? (
-                                <Icon>{prop.icon}</Icon>
+            <ListItem key={key} className={classes.item}>
+              {prop.option
+                ? (
+                  <Menu style={{ boxShadow: 'none', border: 0, color: 'inherit' }}>
+                    <SubMenu
+                      title={(
+                        <div>
+                          <ListItemIcon className={itemIcon}>
+                            {typeof prop.icon === 'string' ? (
+                              <Icon>{prop.icon}</Icon>
                             ) : (
-                                <prop.icon />
+                              <prop.icon />
                             )}
-                        </ListItemIcon>
-                        <ListItemText
+                          </ListItemIcon>
+                          <ListItemText
                             primary={prop.name}
-                            disableTypography={true}
+                            disableTypography
                             className={itemText}
-                        />
-                      </NavLink>}
-              </ListItem>
-          )})}
+                          />
+                        </div>
+                      )}
+                      itemIcon={<Icon />}
+                      expandIcon={<Icon />}
+                    >
+                      <Menu style={menuStyle}>
+                        <prop.option />
+                      </Menu>
+                    </SubMenu>
+                  </Menu>
+                )
+                : (
+                  <NavLink to={prop.path} className={navLinkClasses}>
+                    <ListItemIcon className={itemIcon}>
+                      {typeof prop.icon === 'string' ? (
+                        <Icon>{prop.icon}</Icon>
+                      ) : (
+                        <prop.icon />
+                      )}
+                    </ListItemIcon>
+                    <ListItemText
+                      primary={prop.name}
+                      disableTypography
+                      className={itemText}
+                    />
+                  </NavLink>
+                )}
+            </ListItem>
+          );
+        })}
       </List>
     );
 

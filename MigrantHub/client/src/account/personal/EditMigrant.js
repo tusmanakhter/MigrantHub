@@ -29,7 +29,6 @@ const styles = theme => ({
     margin: theme.spacing.unit,
   },
   mainContainer: {
-    marginLeft: 75,
   },
 });
 
@@ -298,7 +297,7 @@ class EditMigrant extends React.Component {
       <React.Fragment>
         {this.state.alert}
         <div className={classes.mainContainer}>
-          <GridContainer>
+          <GridContainer justify="center">
             <GridItem xs={11}>
               <Card>
                 <CardBody>
@@ -318,7 +317,7 @@ class EditMigrant extends React.Component {
               </Card>
             </GridItem>
           </GridContainer>
-          <GridContainer>
+          <GridContainer justify="center">
             <GridItem xs={11}>
               <Card>
                 <CardBody>
@@ -335,7 +334,7 @@ class EditMigrant extends React.Component {
               </Card>
             </GridItem>
           </GridContainer>
-          <GridContainer>
+          <GridContainer justify="center">
             <GridItem xs={11}>
               <Card>
                 <CardBody>
@@ -356,7 +355,7 @@ class EditMigrant extends React.Component {
               </Card>
             </GridItem>
           </GridContainer>
-          <GridContainer>
+          <GridContainer justify="center">
             <GridItem xs={11}>
               <Card>
                 <CardBody>
@@ -371,7 +370,7 @@ class EditMigrant extends React.Component {
               </Card>
             </GridItem>
           </GridContainer>
-          <GridContainer>
+          <GridContainer justify="center">
             <GridItem xs={11}>
               <Card>
                 <CardBody>
@@ -386,7 +385,7 @@ class EditMigrant extends React.Component {
               </Card>
             </GridItem>
           </GridContainer>
-          <GridContainer>
+          <GridContainer justify="center">
             <GridItem xs={11}>
               <Card>
                 <CardBody>
@@ -405,7 +404,7 @@ class EditMigrant extends React.Component {
               </Card>
             </GridItem>
           </GridContainer>
-          <GridContainer>
+          <GridContainer justify="center">
             <GridItem xs={11}>
               <Card>
                 <CardBody>
@@ -421,22 +420,23 @@ class EditMigrant extends React.Component {
               </Card>
             </GridItem>
           </GridContainer>
-
-          <GridItem xs={11}>
-            <Card>
-              <CardBody>
-                <div className={classes.center}>
-                  <h5>Save your changes</h5>
-                  <Button
-                    color="warning"
-                    onClick={this.titleAndTextAlert.bind(this)}
-                  >
-                    Update
-                  </Button>
-                </div>
-              </CardBody>
-            </Card>
-          </GridItem>
+          <GridContainer justify="center">
+            <GridItem xs={11}>
+              <Card>
+                <CardBody>
+                  <div className={classes.center}>
+                    <h5>Save your changes</h5>
+                    <Button
+                      color="warning"
+                      onClick={this.titleAndTextAlert.bind(this)}
+                    >
+                      Update
+                    </Button>
+                  </div>
+                </CardBody>
+              </Card>
+            </GridItem>
+          </GridContainer>
         </div>
       </React.Fragment>
     );

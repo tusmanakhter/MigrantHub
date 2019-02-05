@@ -164,9 +164,8 @@ class BaseHeaderLinks extends React.Component {
             name: 'search',
             placeholder: intl.formatMessage({ id: 'search' }),
             value: this.state.search,
-            onChange: event => this.handleChange(event),
-            helperText: this.state.searchError,
             error: this.state.searchError.length > 0,
+            onChange: event => this.handleChange(event),
             classes: {
               root: classes.inputRoot,
               input: classes.multilineColor,
@@ -175,6 +174,8 @@ class BaseHeaderLinks extends React.Component {
               className: classes.searchInput,
             },
           }}
+          helperText={this.state.searchError}
+          error={this.state.searchError.length > 0}
         />
 
         <Button

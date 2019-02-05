@@ -169,6 +169,10 @@ class EventList extends Component {
                 />
               </GridItem>
             </GridContainer>
+            <h5 className={classes.pageSubcategoriesTitle}>
+              <FormattedMessage id="event.browse" />
+            </h5>
+            <hr />
             <GridContainer>
               {
                 items.map(item => (

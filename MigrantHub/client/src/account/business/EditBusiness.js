@@ -23,7 +23,6 @@ const styles = ({
     textAlign: 'left',
   },
   mainContainer: {
-    marginLeft: 75,
   },
 });
 
@@ -179,27 +178,29 @@ class EditBusiness extends Component {
       <React.Fragment>
         {this.state.alert}
         <div className={classes.mainContainer}>
-          <GridItem xs={11}>
-            <Card>
-              <CardBody>
-                <div className={classes.center}>
-                  <ContactInfo
-                    innerRef={this.contactChild}
-                    handleChange={this.handleChange}
-                    firstName={firstName}
-                    lastName={lastName}
-                    address={address}
-                    apartment={apartment}
-                    city={city}
-                    province={province}
-                    postalCode={postalCode}
-                    phoneNumber={phoneNumber}
-                  />
-                </div>
-              </CardBody>
-            </Card>
-          </GridItem>
-          <GridContainer>
+          <GridContainer justify="center">
+            <GridItem xs={11}>
+              <Card>
+                <CardBody>
+                  <div className={classes.center}>
+                    <ContactInfo
+                      innerRef={this.contactChild}
+                      handleChange={this.handleChange}
+                      firstName={firstName}
+                      lastName={lastName}
+                      address={address}
+                      apartment={apartment}
+                      city={city}
+                      province={province}
+                      postalCode={postalCode}
+                      phoneNumber={phoneNumber}
+                    />
+                  </div>
+                </CardBody>
+              </Card>
+            </GridItem>
+          </GridContainer>
+          <GridContainer justify="center">
             <GridItem xs={11}>
               <Card>
                 <CardBody>
@@ -216,7 +217,7 @@ class EditBusiness extends Component {
               </Card>
             </GridItem>
           </GridContainer>
-          <GridContainer>
+          <GridContainer justify="center">
             <GridItem xs={11}>
               <Card>
                 <CardBody>

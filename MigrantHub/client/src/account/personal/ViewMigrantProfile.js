@@ -25,7 +25,6 @@ const qs = require('qs');
 const styles = theme => ({
   root: {
     flexGrow: 1,
-    marginLeft: 75,
   },
   paper: {
     padding: theme.spacing.unit * 2,
@@ -177,7 +176,7 @@ class ViewMigrantProfile extends Component {
     return (
       <React.Fragment>
         <div className={classes.root}>
-          <GridItem>
+          <GridItem justify="center">
             <legend> <FormattedMessage id="profile.progress" /> </legend>
             {accountProgress}%
             <CustomLinearProgress
@@ -191,7 +190,7 @@ class ViewMigrantProfile extends Component {
             </small>
           </GridItem>
           <div>
-            <GridContainer>
+            <GridContainer justify="center">
               <GridItem xs={11}>
                 <Card>
                   <CardHeader color="info" icon>
@@ -244,7 +243,7 @@ class ViewMigrantProfile extends Component {
               </GridItem>
             </GridContainer>
           </div>
-          <GridContainer>
+          <GridContainer justify="center">
             <GridItem xs={11}>
               <Card>
                 <CardBody>
@@ -300,7 +299,7 @@ class ViewMigrantProfile extends Component {
               </Card>
             </GridItem>
           </GridContainer>
-          <GridContainer>
+          <GridContainer justify="center">
             <GridItem xs={11}>
               <Card>
                 <CardBody>

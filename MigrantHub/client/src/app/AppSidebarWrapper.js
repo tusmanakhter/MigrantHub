@@ -45,7 +45,7 @@ class SidebarWrapper extends React.Component {
         {user}
         {headerLinks}
         {links}
-        <Chatbot/>
+        <Chatbot />
       </div>
     );
   }
