@@ -28,6 +28,9 @@ var styles = {
     fontFamily: "'Roboto', 'Helvetica', 'Arial', sans-serif",
     marginBottom: "3px",
     textDecoration: "none"
+  },
+  Recommendation: {
+    color: "green",
   }
 };
 
@@ -136,7 +139,7 @@ class ServiceItem extends Component {
                   {serviceLocation ? (<div><Place />{serviceLocation.city}</div>) : (<div><Place/>Canada</div>)}
                 </div>
                 <div className={`${classes.stats} ${classes.productStats}`}>
-                  {percentageMatch ? (<div><Star />Recommendation: {percentageMatch}%</div>) : (<div></div>)}
+                  {percentageMatch ? (<div className={classes.Recommendation}><Star />Recommendation: {percentageMatch}%</div>) : (<div></div>)}
                 </div>
               </CardFooter>
             </Card>
