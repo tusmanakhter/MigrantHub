@@ -123,11 +123,13 @@ module.exports = {
 
     const services = await ServiceRepository.getServices(query);
 
-    Object.keys(services).forEach((serviceIndex) => {
-      const percentageMatch = results.services.filter(item => item.id == services[serviceIndex]._id);
-      services[serviceIndex] = JSON.parse(JSON.stringify(services[serviceIndex]));
-      services[serviceIndex].percentageMatch = percentageMatch[0].percentageMatch;
-    });
+    if (services !== undefined) {
+      Object.keys(services).forEach((serviceIndex) => {
+        const percentageMatch = results.services.filter(item => item.id == services[serviceIndex]._id);
+        services[serviceIndex] = JSON.parse(JSON.stringify(services[serviceIndex]));
+        services[serviceIndex].percentageMatch = percentageMatch[0].percentageMatch;
+      });
+    }
 
     return Promise.resolve(services);
   },
