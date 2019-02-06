@@ -76,6 +76,7 @@ class ServiceRecommendation extends Component {
                       serviceLocation={item.location}
                       serviceDate={item.serviceDate}
                       serviceHours={item.serviceHours}
+                      percentageMatch={item.percentageMatch}
                       editMode={item.editMode}
                       editOwner={item.editOwner}
                       getData={this.getData}

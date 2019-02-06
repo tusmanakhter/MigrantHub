@@ -100,13 +100,35 @@ module.exports = {
         throw new ServerError('There was an error retrieving recommended services.', 400, error);
       });
 
-    const result = recommendedIds.match(/[A-Za-z_0-9]{5,}/g);
+    const serviceIds = recommendedIds.match(/[A-Za-z_0-9]{5,}/g);
+    const percentageValue = recommendedIds.match(/'[0-9]{1,3}'/g);
 
-    query = { $or: [{ _id: result[0] }, { _id: result[1] }, { _id: result[2] }] };
+    const results = {
+      services: [],
+    };
+
+    Object.keys(serviceIds).forEach((idIndex) => {
+      results.services[idIndex] = {
+        id: serviceIds[idIndex],
+        percentageMatch: percentageValue[idIndex].replace(/'/gi, ''),
+      };
+    });
+
+    query = {
+      $or: [{ _id: results.services[0].id }, { _id: results.services[1].id },
+        { _id: results.services[2].id }],
+    };
+
     query.deleted = false;
 
-    return ServiceRepository.getServices(query);
+    const services = await ServiceRepository.getServices(query);
+
+    Object.keys(services).forEach((serviceIndex) => {
+      const percentageMatch = results.services.filter(item => item.id == services[serviceIndex]._id);
+      services[serviceIndex] = JSON.parse(JSON.stringify(services[serviceIndex]));
+      services[serviceIndex].percentageMatch = percentageMatch[0].percentageMatch;
+    });
+
+    return Promise.resolve(services);
   },
-
-
 };
