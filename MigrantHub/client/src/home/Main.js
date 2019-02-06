@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import ServiceCategories from 'services/ServiceCategoryMenu2';
 import PropTypes from 'prop-types';
-import ServiceMain from 'services/ServiceMain';
 import ServiceRecommendation from 'services/ServiceRecommendation';
 
 class Main extends Component {
