@@ -1,18 +1,28 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import withStyles from '@material-ui/core/styles/withStyles';
-import Button from '@material-ui/core/Button';
-import GridContainer from "components/Grid/GridContainer.jsx";
 import { Redirect } from 'react-router-dom';
 import axios from 'axios';
 import ServiceItem from 'services/ServiceItem';
-import Header from 'components/Header/Header';
+import Button from 'components/CustomButtons/Button.jsx';
 import UserTypes from 'lib/UserTypes';
 import QuestionnairePanel from 'components/QuestionnairePanel/QuestionnairePanel';
 import Grid from '@material-ui/core/Grid';
-import NavPanel from 'components/NavPanel/NavPanel';
 import { FormattedMessage } from 'react-intl';
 import { AuthConsumer } from 'routes/AuthContext';
+
+// @material-ui/icons
+import Info from '@material-ui/icons/Info';
+import Gavel from '@material-ui/icons/Gavel';
+import HelpOutline from '@material-ui/icons/HelpOutline';
+
+// core components
+import GridContainer from 'components/Grid/GridContainer.jsx';
+import GridItem from 'components/Grid/GridItem.jsx';
+import NavPills from 'components/NavPills/NavPills.jsx';
+import Card from 'components/Card/Card.jsx';
+import CardHeader from 'components/Card/CardHeader.jsx';
+import CardBody from 'components/Card/CardBody.jsx';
 
 const styles = theme => ({
   root: {
@@ -71,10 +81,10 @@ class ServiceList extends Component {
     axios.get('/api/services/', {
       params: {
         editOwner: editOwnerEmail,
-        searchQuery: searchQuery,
+        searchQuery,
         search: searchMode,
-        category: category,
-        subcategory: subcategory,
+        category,
+        subcategory,
       },
     }).then((response) => {
       this.setState({
@@ -126,29 +136,81 @@ class ServiceList extends Component {
                   <div>
                     {this.renderRedirectToServiceForm()}
                     {this.renderRedirectToSuggestionForm()}
-                    <Button
-                      variant="contained"
-                      color="primary"
-                      className={classes.button}
-                      onClick={this.setRedirectToServiceForm}
-                    >
-                      <FormattedMessage id="service.create" />
-                    </Button>
-                    { user.type === UserTypes.MIGRANT
-                      && (
-                      <Button
-                        variant="contained"
-                        color="primary"
-                        className={classes.button}
-                        onClick={this.setRedirectToSuggestionForm}
-                      >
-                        <FormattedMessage id="service.addsuggestion" />
-                      </Button>
-                      )
-                    }
+                    <GridContainer justify="center">
+                      <GridItem xs={12} sm={12} md={8}>
+                        <h3 className={classes.pageSubcategoriesTitle}>
+                          <FormattedMessage id="services" />
+                        </h3>
+                        <hr />
+                        <NavPills
+                          color="warning"
+                          alignCenter
+                          tabs={[
+                            {
+                              tabButton: 'Description',
+                              tabIcon: Info,
+                              tabContent: (
+                                <Card>
+                                  <CardHeader>
+                                    <h6 className={classes.cardTitle}>
+                                      <FormattedMessage id="service.infobox" />
+                                    </h6>
+                                  </CardHeader>
+                                  <CardBody>
+                                    <Button
+                                      variant="contained"
+                                      color="info"
+                                      className={classes.button}
+                                      onClick={this.setRedirectToServiceForm}
+                                    >
+                                      <FormattedMessage id="service.create" />
+                                    </Button>
+                                    {user.type === UserTypes.MIGRANT
+                                      && (
+                                        <Button
+                                          variant="contained"
+                                          color="info"
+                                          className={classes.button}
+                                          onClick={this.setRedirectToSuggestionForm}
+                                        >
+                                          <FormattedMessage id="service.addsuggestion" />
+                                        </Button>
+                                      )
+                                    }
+                                    <br />
+                                  </CardBody>
+                                </Card>
+                              ),
+                            },
+                            {
+                              tabButton: 'Legal Info',
+                              tabIcon: Gavel,
+                              tabContent: (
+                                <Card>
+                                  <CardHeader>
+                                    <h4 className={classes.cardTitle}>
+                                      <FormattedMessage id="legalboxtitle" />
+                                    </h4>
+                                  </CardHeader>
+                                  <CardBody>
+                                    <p><b><FormattedMessage id="legalbox" /></b></p>
+                                    <br />
+                                    MigrantHub ©
+                                  </CardBody>
+                                </Card>
+                              ),
+                            },
+                          ]}
+                        />
+                      </GridItem>
+                    </GridContainer>
                   </div>
                 )
               }
+              <h5 className={classes.pageSubcategoriesTitle}>
+                <FormattedMessage id="service.browse" />
+              </h5>
+              <hr />
               <GridContainer>
                 {' '}
                 {
