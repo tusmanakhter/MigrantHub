@@ -7,30 +7,32 @@ import { Link } from 'react-router-dom';
 import Typography from '@material-ui/core/Typography';
 import { handleChange } from 'helpers/Forms';
 import { handleAutoSuggestChange, handleEditObjectAutosuggest } from 'helpers/Autosuggest';
-import { handleAddObject, handleEditObject, handleEditSingleObject, handleRemoveObject } from 'helpers/Object';
+import {
+  handleAddObject, handleEditObject, handleEditSingleObject, handleRemoveObject,
+} from 'helpers/Object';
 
 // @material-ui/core components
-import withStyles from "@material-ui/core/styles/withStyles";
-import InputAdornment from "@material-ui/core/InputAdornment";
-import Checkbox from "@material-ui/core/Checkbox";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Icon from "@material-ui/core/Icon";
+import withStyles from '@material-ui/core/styles/withStyles';
+import InputAdornment from '@material-ui/core/InputAdornment';
+import Checkbox from '@material-ui/core/Checkbox';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Icon from '@material-ui/core/Icon';
 
 // @material-ui/icons
-import Group from "@material-ui/icons/Group";
-import ListAlt from "@material-ui/icons/ListAlt";
-import CalendarToday from "@material-ui/icons/CalendarToday";
-import Check from "@material-ui/icons/Check";
+import Group from '@material-ui/icons/Group';
+import ListAlt from '@material-ui/icons/ListAlt';
+import CalendarToday from '@material-ui/icons/CalendarToday';
+import Check from '@material-ui/icons/Check';
 
 // core components
-import GridContainer from "components/Grid/GridContainer.jsx";
-import GridItem from "components/Grid/GridItem.jsx";
-import Button from "components/CustomButtons/Button.jsx";
-import InfoArea from "components/InfoArea/InfoArea.jsx";
-import Card from "components/Card/Card.jsx";
-import CardBody from "components/Card/CardBody.jsx";
+import GridContainer from 'components/Grid/GridContainer.jsx';
+import GridItem from 'components/Grid/GridItem.jsx';
+import Button from 'components/CustomButtons/Button.jsx';
+import InfoArea from 'components/InfoArea/InfoArea.jsx';
+import Card from 'components/Card/Card.jsx';
+import CardBody from 'components/Card/CardBody.jsx';
 
-import registerPageStyle from "assets/jss/material-dashboard-pro-react/views/registerPageStyle";
+import registerPageStyle from 'assets/jss/material-dashboard-pro-react/views/registerPageStyle';
 import { FormattedMessage, FormattedHTMLMessage } from 'react-intl';
 
 
@@ -226,18 +228,18 @@ class SignUp extends Component {
                               <React.Fragment>
                                 <Typography variant="headline" gutterBottom>
                                   <FormattedMessage id="signup.welcome" />
-                            </Typography>
+                                </Typography>
                                 <Typography variant="subheading">
                                   <FormattedMessage id="signup.login" />
-                            </Typography>
-                                <Link to={`/login`}>
+                                </Typography>
+                                <Link to="/login">
                                   <Button round color="primary">
                                     <FormattedMessage id="home.getStarted" />
-                                </Button>
+                                  </Button>
                                 </Link>
                               </React.Fragment>
                             ) : (
-                                <React.Fragment>
+                              <React.Fragment>
                                   {this.getStepContent(activeStep)}
                                   <div className={classes.buttons}>
                                     {activeStep !== 0 && (
@@ -251,7 +253,7 @@ class SignUp extends Component {
                                       onClick={this.handleNext}
                                       className={classes.button}
                                     >
-                                      {activeStep === this.props.steps.length - 1 
+                                      {activeStep === this.props.steps.length - 1
                                         ? (
                                           <FormattedMessage id="signup" />
                                         )
@@ -262,15 +264,15 @@ class SignUp extends Component {
                                     </Button>
                                   </div>
                                 </React.Fragment>
-                              )}
+                            )}
                           </React.Fragment>
                         </form>
                         <FormControlLabel
                           classes={{
                             root: classes.checkboxLabelControl,
-                            label: classes.checkboxLabel
+                            label: classes.checkboxLabel,
                           }}
-                          control={
+                          control={(
                             <Checkbox
                               tabIndex={-1}
                               checkedIcon={
@@ -279,10 +281,10 @@ class SignUp extends Component {
                               icon={<Check className={classes.uncheckedIcon} />}
                               classes={{
                                 checked: classes.checked,
-                                root: classes.checkRoot
+                                root: classes.checkRoot,
                               }}
                             />
-                          }
+                          )}
                           label={(
                             <FormattedHTMLMessage id="signup.terms" />
                           )}

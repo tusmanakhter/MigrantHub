@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
-import Button from '@material-ui/core/Button';
+import Button from 'components/CustomButtons/Button.jsx';
+import GridContainer from 'components/Grid/GridContainer.jsx';
 import axios from 'axios';
 import { AuthConsumer } from 'routes/AuthContext';
 import { FormattedMessage } from 'react-intl';
@@ -21,7 +22,7 @@ class Logout extends Component {
   render() {
     return (
       <React.Fragment>
-        <Button color="" onClick={this.logout}>
+        <Button color="info" round size="sm" onClick={this.logout}>
           <FormattedMessage id="logout" />
         </Button>
       </React.Fragment>

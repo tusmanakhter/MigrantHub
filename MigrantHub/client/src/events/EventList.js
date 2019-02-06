@@ -1,17 +1,26 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import withStyles from '@material-ui/core/styles/withStyles';
-import Button from '@material-ui/core/Button';
-import Paper from '@material-ui/core/Paper';
 import axios from 'axios';
 import { Redirect } from 'react-router-dom';
 import EventItem from 'events/EventItem';
-import Header from 'components/Header/Header';
 import UserTypes from 'lib/UserTypes';
-import NavPanel from 'components/NavPanel/NavPanel';
-import GridContainer from "components/Grid/GridContainer.jsx";
 import { FormattedMessage } from 'react-intl';
 import { AuthConsumer } from 'routes/AuthContext';
+
+
+// @material-ui/icons
+import Info from '@material-ui/icons/Info';
+import Gavel from '@material-ui/icons/Gavel';
+
+// core components
+import GridContainer from 'components/Grid/GridContainer.jsx';
+import GridItem from 'components/Grid/GridItem.jsx';
+import NavPills from 'components/NavPills/NavPills.jsx';
+import Card from 'components/Card/Card.jsx';
+import CardHeader from 'components/Card/CardHeader.jsx';
+import CardBody from 'components/Card/CardBody.jsx';
+import Button from 'components/CustomButtons/Button.jsx';
 
 const styles = theme => ({
   root: {
@@ -65,7 +74,7 @@ class EventList extends Component {
     axios.get('/api/events/', {
       params: {
         editOwner: editOwnerEmail,
-        searchQuery: searchQuery,
+        searchQuery,
         search: searchMode,
       },
     }).then((response) => {
@@ -96,21 +105,74 @@ class EventList extends Component {
       <AuthConsumer>
         {({ user }) => (
           <div className={classes.mainContainer}>
-            {user.type !== UserTypes.ADMIN
-              && (
-                <div>
-                  {this.renderRedirectToEventForm()}
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    className={classes.button}
-                    onClick={this.setRedirectToEventForm}
-                  >
-                    <FormattedMessage id="event.create" />
-                  </Button>
-                </div>
-              )
-            }
+            <GridContainer justify="center">
+              <GridItem xs={12} sm={12} md={8}>
+                <h3 className={classes.pageSubcategoriesTitle}>
+                  <FormattedMessage id="events" />
+                </h3>
+                <hr />
+                <NavPills
+                  color="warning"
+                  alignCenter
+                  tabs={[
+                    {
+                      tabButton: 'Description',
+                      tabIcon: Info,
+                      tabContent: (
+                        <Card>
+                          <CardHeader>
+
+                            <h6 className={classes.cardTitle}>
+                              <FormattedMessage id="event.infobox" />
+                            </h6>
+                          </CardHeader>
+                          <CardBody>
+                            {user.type !== UserTypes.ADMIN
+                              && (
+                                <div>
+                                  {this.renderRedirectToEventForm()}
+                                  <Button
+                                    variant="contained"
+                                    color="info"
+                                    className={classes.button}
+                                    onClick={this.setRedirectToEventForm}
+                                  >
+                                    <FormattedMessage id="event.create" />
+                                  </Button>
+                                </div>
+                              )
+                            }
+                            <br />
+                          </CardBody>
+                        </Card>
+                      ),
+                    },
+                    {
+                      tabButton: 'Legal Info',
+                      tabIcon: Gavel,
+                      tabContent: (
+                        <Card>
+                          <CardHeader>
+                            <h4 className={classes.cardTitle}>
+                              <FormattedMessage id="legalboxtitle" />
+                            </h4>
+                          </CardHeader>
+                          <CardBody>
+                            <p><b><FormattedMessage id="legalbox" /></b></p>
+                            <br />
+                            MigrantHub ©
+                          </CardBody>
+                        </Card>
+                      ),
+                    },
+                  ]}
+                />
+              </GridItem>
+            </GridContainer>
+            <h5 className={classes.pageSubcategoriesTitle}>
+              <FormattedMessage id="event.browse" />
+            </h5>
+            <hr />
             <GridContainer>
               {
                 items.map(item => (
