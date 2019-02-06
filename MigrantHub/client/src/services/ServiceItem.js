@@ -4,6 +4,7 @@ import { withStyles } from '@material-ui/core/styles';
 import Tooltip from "@material-ui/core/Tooltip";
 import CardMedia from '@material-ui/core/CardMedia';
 import Place from "@material-ui/icons/Place";
+import Star from "@material-ui/icons/Star";
 import Button from "components/CustomButtons/Button.jsx";
 import ViewService from 'services/ViewService';
 import ViewReviews from 'services/ViewReviews';
@@ -27,6 +28,9 @@ var styles = {
     fontFamily: "'Roboto', 'Helvetica', 'Arial', sans-serif",
     marginBottom: "3px",
     textDecoration: "none"
+  },
+  Recommendation: {
+    color: "green",
   }
 };
 
@@ -68,7 +72,7 @@ class ServiceItem extends Component {
     const {
       classes, serviceId, serviceTitle, serviceSummary, serviceDescription, getData,
       serviceImagePath, serviceLocation, serviceDate, serviceHours, editMode, editOwner,
-      category, subcategory,
+      category, subcategory, percentageMatch,
     } = this.props;
     const { openService, openReviews, scroll } = this.state;
     return (
@@ -133,6 +137,9 @@ class ServiceItem extends Component {
               <CardFooter product>
                 <div className={`${classes.stats} ${classes.productStats}`}>
                   {serviceLocation ? (<div><Place />{serviceLocation.city}</div>) : (<div><Place/>Canada</div>)}
+                </div>
+                <div className={`${classes.stats} ${classes.productStats}`}>
+                  {percentageMatch ? (<div className={classes.Recommendation}><Star />Recommendation: {percentageMatch}%</div>) : (<div></div>)}
                 </div>
               </CardFooter>
             </Card>
