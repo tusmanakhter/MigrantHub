@@ -93,7 +93,7 @@ class LanguageInfo extends Component {
 
     return (
       <React.Fragment>
-        <Typography variant="title" gutterBottom>
+        <Typography variant="h6" gutterBottom>
           <FormattedMessage id="signup.languageinfo" />
         </Typography>
         <Grid container spacing={24}>
@@ -119,7 +119,7 @@ class LanguageInfo extends Component {
             />
           </Grid>
           <Grid item xs={12}>
-            <Typography variant="subheading" gutterBottom className={classes.row}>
+            <Typography variant="subtitle1" gutterBottom className={classes.row}>
               <FormattedMessage id="signup.language.add" />
             </Typography>
             <Button

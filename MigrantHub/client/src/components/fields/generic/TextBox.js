@@ -23,7 +23,7 @@ const TextBox = (props) => {
 
 TextBox.propTypes = {
   name: PropTypes.string.isRequired,
-  label: PropTypes.string.isRequired,
+  label: PropTypes.oneOfType([PropTypes.string, PropTypes.shape({})]).isRequired,
   value: PropTypes.string.isRequired,
   placeholder: PropTypes.string.isRequired,
   error: PropTypes.string.isRequired,

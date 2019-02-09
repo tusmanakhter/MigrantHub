@@ -216,6 +216,7 @@ class ServiceList extends Component {
                 {
                   items.map(item => (
                     <ServiceItem
+                      key={item._id}
                       serviceId={item._id}
                       serviceTitle={item.serviceTitle}
                       serviceImagePath={item.serviceImagePath}

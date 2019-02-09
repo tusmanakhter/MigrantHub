@@ -46,9 +46,13 @@ const LanguageSwitch = (props) => {
   );
 };
 
+LanguageSwitch.defaultProps = {
+  dark: false,
+};
+
 LanguageSwitch.propTypes = {
   classes: PropTypes.object.isRequired,
-  dark: PropTypes.bool.isRequired,
+  dark: PropTypes.bool,
 };
 
 export default withStyles(styles)(LanguageSwitch);

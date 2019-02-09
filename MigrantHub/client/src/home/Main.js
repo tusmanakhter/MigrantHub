@@ -10,17 +10,23 @@ class Main extends Component {
   }
 
   render() {
+    const { location, classes } = this.props;
     return (
       <React.Fragment>
-        <ServiceRecommendation location={this.props.location} />
-        <ServiceCategories classes={this.props.classes}/>
+        <ServiceRecommendation location={location} />
+        <ServiceCategories classes={classes} />
       </React.Fragment>
     );
   }
 }
 
+Main.defaultProps = {
+  classes: {},
+};
+
 Main.propTypes = {
-  location: PropTypes.string.isRequired,
+  classes: PropTypes.shape({}),
+  location: PropTypes.shape({}).isRequired,
 };
 
 export default Main;

@@ -55,7 +55,7 @@ const RadioOption = (props) => {
 RadioOption.propTypes = {
   classes: PropTypes.shape({}).isRequired,
   name: PropTypes.string.isRequired,
-  label: PropTypes.string.isRequired,
+  label: PropTypes.oneOfType([PropTypes.string, PropTypes.shape({})]).isRequired,
   value: PropTypes.string.isRequired,
   error: PropTypes.string.isRequired,
   options: PropTypes.arrayOf(PropTypes.shape({})).isRequired,

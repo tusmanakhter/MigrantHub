@@ -92,7 +92,7 @@ class ServiceCategoryMenu2 extends Component {
               <h4>Service Categories</h4>
             </CardHeader>
             {this.renderRedirectTo()}
-            <GridContainer direction="row" spacing="16">
+            <GridContainer direction="row" spacing={16}>
               <GridItem>
                 <ServiceCategoryItem
                   category="All Services"
@@ -111,11 +111,11 @@ class ServiceCategoryMenu2 extends Component {
                         <GridContainer direction="column">
                           <GridItem>
                             <Button
-                              variant="contain"
+                              variant="contained"
                               color="primary"
                               aria-label="Select Category"
-                              size="large"
-                              justifyContent="center"
+                              size="lg"
+                              justifycontent="center"
                               className={classes.customCategoryButton}
                             >
                               <Add style={{ height: 105, width: 105, paddingBottom: 25 }} />

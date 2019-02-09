@@ -33,7 +33,7 @@ import Card from 'components/Card/Card.jsx';
 import CardBody from 'components/Card/CardBody.jsx';
 
 import registerPageStyle from 'assets/jss/material-dashboard-pro-react/views/registerPageStyle';
-import { FormattedMessage, FormattedHTMLMessage } from 'react-intl';
+import { injectIntl, intlShape, FormattedMessage, FormattedHTMLMessage } from 'react-intl';
 
 
 const styles = theme => ({
@@ -179,7 +179,7 @@ class SignUp extends Component {
   };
 
   render() {
-    const { classes } = this.props;
+    const { classes, intl } = this.props;
     const { activeStep } = this.state;
 
     return (
@@ -203,20 +203,20 @@ class SignUp extends Component {
                     <GridContainer justify="center">
                       <GridItem xs={12} sm={12} md={5}>
                         <InfoArea
-                          title={<FormattedMessage id="signup.servicehub" />}
-                          description={<FormattedMessage id="signup.servicehubDesc" />}
+                          title={intl.formatMessage({ id: 'signup.servicehub' })}
+                          description={intl.formatMessage({ id: 'signup.servicehubDesc' })}
                           icon={ListAlt}
                           iconColor="rose"
                         />
                         <InfoArea
-                          title={<FormattedMessage id="signup.eventhub" />}
-                          description={<FormattedMessage id="signup.eventhubDesc" />}
+                          title={intl.formatMessage({ id: 'signup.eventhub' })}
+                          description={intl.formatMessage({ id: 'signup.eventhubDesc' })}
                           icon={CalendarToday}
                           iconColor="primary"
                         />
                         <InfoArea
-                          title={<FormattedMessage id="signup.connecthub" />}
-                          description={<FormattedMessage id="signup.connecthubDesc" />}
+                          title={intl.formatMessage({ id: 'signup.connecthub' })}
+                          description={intl.formatMessage({ id: 'signup.connecthubDesc' })}
                           icon={Group}
                           iconColor="info"
                         />
@@ -226,10 +226,10 @@ class SignUp extends Component {
                           <React.Fragment>
                             {activeStep === this.props.steps.length ? (
                               <React.Fragment>
-                                <Typography variant="headline" gutterBottom>
+                                <Typography variant="h5" gutterBottom>
                                   <FormattedMessage id="signup.welcome" />
                                 </Typography>
-                                <Typography variant="subheading">
+                                <Typography variant="subtitle1">
                                   <FormattedMessage id="signup.login" />
                                 </Typography>
                                 <Link to="/login">
@@ -304,6 +304,7 @@ class SignUp extends Component {
 
 SignUp.propTypes = {
   classes: PropTypes.object.isRequired,
+  intl: intlShape.isRequired,
 };
 
-export default withStyles(registerPageStyle)(SignUp);
+export default withStyles(registerPageStyle)(injectIntl(SignUp));

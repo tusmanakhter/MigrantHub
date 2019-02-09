@@ -41,16 +41,16 @@ class ServiceItem extends Component {
           <Card className={classes.card}>
             <CardActionArea>
               <CardContent>
-                <Typography gutterBottom variant="headline" component="h2">
+                <Typography gutterBottom variant="h5" component="h2">
                   {serviceTitle}
                 </Typography>
                 <Typography component="p">
                   {serviceSummary}
                 </Typography>
-                <Typography variant="body1" color="inherit" paragraph align="center">
+                <Typography variant="body2" color="inherit" paragraph align="center">
                   Service Category: {category}
                 </Typography>
-                <Typography variant="body1" color="inherit" paragraph align="center">
+                <Typography variant="body2" color="inherit" paragraph align="center">
                   Service Subcategory: {subcategory}
                 </Typography>
               </CardContent>
