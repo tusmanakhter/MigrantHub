@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import withStyles from '@material-ui/core/styles/withStyles';
 import GridContainer from "components/Grid/GridContainer.jsx";
 import axios from 'axios';
-import ServiceItem from 'services/ServiceItem';
+import ServiceCard from 'services/ServiceCard';
 import dashboardStyle from "assets/jss/material-dashboard-pro-react/views/dashboardStyle.jsx";
 import Card from "components/Card/Card.jsx";
 import CardHeader from "components/Card/CardHeader.jsx";
@@ -65,7 +65,7 @@ class ServiceRecommendation extends Component {
               {' '}
               {
                   items.map(item => (
-                    <ServiceItem
+                    <ServiceCard
                       serviceId={item._id}
                       serviceTitle={item.serviceTitle}
                       serviceImagePath={item.serviceImagePath}

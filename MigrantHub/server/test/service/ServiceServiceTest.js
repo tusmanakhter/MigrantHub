@@ -7,6 +7,7 @@ var ServiceService = require('../../service/ServiceService');
 var ServiceRepository = require('../../repository/ServiceRepository');
 var ServiceFactory = require('../factories/ServiceFactory');
 var ServiceValidator = require('../../validators/ServiceValidator');
+var ReviewRepository = require('../../repository/ReviewRepository');
 var { ServerError } = require('../../errors/ServerError');
 var chai = require('chai');
 var chaiAsPromised = require('chai-as-promised');
@@ -54,25 +55,29 @@ describe('Service Service', function () {
     }));
 
     it('should call getServices to retrieve search services from getServices service', test(async function () {
-        this.stub(ServiceRepository, 'getServices');
+        this.stub(ServiceRepository, 'getServices').returns([]);
+        this.stub(ReviewRepository, 'getAverageRating').returns([]);
         await ServiceService.getServices('', req.query.searchQuery, req.query.search, '', '');
         assert.calledWith(ServiceRepository.getServices, { '$or': [{ serviceTitle: /test/gi }, { serviceSummary: /test/gi }], deleted: false });
     }));
 
     it('should call getServices to retrieve users services from getServices service', test(async function () {
-        this.stub(ServiceRepository, 'getServices');
+        this.stub(ServiceRepository, 'getServices').returns([]);
+        this.stub(ReviewRepository, 'getAverageRating').returns([]);
         await ServiceService.getServices(req.query.editOwner, '', '');
         assert.calledWith(ServiceRepository.getServices, { deleted: false, user: "test@test.com" });
     }));
 
     it('should call getServices to retrieve a categories services from getServices service', test(async function () {
-        this.stub(ServiceRepository, 'getServices');
+        this.stub(ServiceRepository, 'getServices').returns([]);
+        this.stub(ReviewRepository, 'getAverageRating').returns([]);
         await ServiceService.getServices('', '', '', service.category, service.subcategory);
         assert.calledWith(ServiceRepository.getServices, { deleted: false, category: service.category, subcategory: service.subcategory });
     }));
 
     it('should call getServices to retrieve all services from getServices service', test(async function () {
-        this.stub(ServiceRepository, 'getServices');
+        this.stub(ServiceRepository, 'getServices').returns([]);
+        this.stub(ReviewRepository, 'getAverageRating').returns([]);
         await ServiceService.getServices('', '', '', '', '');
         assert.calledWith(ServiceRepository.getServices, { deleted: false });
     }));

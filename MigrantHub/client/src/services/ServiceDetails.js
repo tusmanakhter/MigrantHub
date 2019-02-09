@@ -2,10 +2,11 @@ import React, { Component } from 'react';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import 'App.css';
-import Header from 'components/Header/Header';
 import GoogleMaps from 'components/GoogleMaps/GoogleMaps';
 import axios from 'axios';
 import qs from 'qs';
+import AddToCalendar from 'react-add-to-calendar';
+import Reviews from 'services/Reviews';
 
 const theme = createMuiTheme({
   palette: {
@@ -27,7 +28,7 @@ class ServiceShare extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      serviceId: this.props.serviceId,
+      serviceId: props.match.params.id,
       serviceTitle: '',
       serviceSummary: '',
       serviceDescription: '',
@@ -50,9 +51,9 @@ class ServiceShare extends Component {
   }
 
   getData(event, props = this.props) {
-    axios.get('/api/services/' + this.props.serviceId, {
+    axios.get('/api/services/' + this.state.serviceId, {
       params: {
-        _id: this.props.serviceId,
+        _id: this.state.serviceId,
       },
     }).then((response) => {
       const parsedObj = qs.parse(qs.stringify(response.data));
@@ -98,34 +99,29 @@ class ServiceShare extends Component {
         serviceImagePath: parsedObj.serviceImagePath,
         tempServiceImagePath: parsedObj.serviceImagePath,
         serviceImageName: imageName,
-        dataRetrieved: 'You can share this page\'s url!',
       });
     });
   }
 
   render() {
     const {
-      appLogo, appName, userPic, serviceId,
+      appLogo, appName, userPic,
     } = this.props;
     const {
-      serviceHours,
+      serviceId, serviceTitle, serviceSummary, serviceDescription, serviceHours, location,
     } = this.state;
 
     return (
       <div>
         <Grid container spacing={24} style={gridStyle}>
           <Grid item xs={12}>
-            <br></br>
-            <h4>{this.state.dataRetrieved}</h4>
+            <h2>{serviceTitle}</h2>
           </Grid>
           <Grid item xs={12}>
-            <h2>{this.state.serviceTitle}</h2>
+            <h3>{serviceSummary}</h3>
           </Grid>
           <Grid item xs={12}>
-            <h3>{this.state.serviceSummary}</h3>
-          </Grid>
-          <Grid item xs={12}>
-            <h4>{this.state.serviceDescription}</h4>
+            <h4>{serviceDescription}</h4>
           </Grid>
           {serviceHours !== undefined && (
             <Grid item xs={12}>
@@ -136,47 +132,50 @@ class ServiceShare extends Component {
               ))}
             </Grid>
           )}
-          {this.state.location !== undefined && (
+          {location !== undefined && (
             <Grid item xs={12}>
               <Grid item xs={12}>
                 Address:
                 {' '}
-                {this.state.location.address}
+                {location.address}
               </Grid>
               <Grid item xs={12}>
                 Apartment:
                 {' '}
-                {this.state.location.apartment}
+                {location.apartment}
               </Grid>
               <Grid item xs={12}>
                 City:
                 {' '}
-                {this.state.location.city}
+                {location.city}
               </Grid>
               <Grid item xs={12}>
                 Province:
                 {' '}
-                {this.state.location.province}
+                {location.province}
               </Grid>
               <Grid item xs={12}>
                 Postal Code:
                 {' '}
-                {this.state.location.postalCode}
+                {location.postalCode}
               </Grid>
               <Grid item xs={12}>
                 Phone Number:
                 {' '}
-                {this.state.location.phoneNumber}
+                {location.phoneNumber}
               </Grid>
             </Grid>
           )}
-          {this.state.location !== undefined && (
+          {location !== undefined && (
             <GoogleMaps
-              location={this.state.location}
+              location={location}
             />
           )}
           <Grid item xs={12}>
             Service Id : {serviceId}
+          </Grid>
+          <Grid item xs={12}>
+            <Reviews serviceId={serviceId} serviceTitle={serviceTitle} />
           </Grid>
         </Grid>
       </div>

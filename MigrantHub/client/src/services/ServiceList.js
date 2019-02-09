@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import withStyles from '@material-ui/core/styles/withStyles';
 import { Redirect } from 'react-router-dom';
 import axios from 'axios';
-import ServiceItem from 'services/ServiceItem';
+import ServiceCard from 'services/ServiceCard';
 import Button from 'components/CustomButtons/Button.jsx';
 import UserTypes from 'lib/UserTypes';
 import QuestionnairePanel from 'components/QuestionnairePanel/QuestionnairePanel';
@@ -41,21 +41,43 @@ class ServiceList extends Component {
       redirectToSuggestionForm: false,
       editMode: '',
       editOwner: '',
+      offset: 0,
+      limit: 20,
+      moreData: true,
     };
-
-    this.getData = this.getData.bind(this);
+    this.fetchData();
   }
 
-  componentDidMount(props) {
-    this.getData(this, props);
+  setRedirectToServiceForm = () => {
+    this.setState({
+      redirectToServiceForm: true,
+    });
   }
 
-  componentWillReceiveProps(props) {
-    this.getData(this, props);
+  renderRedirectToServiceForm = () => {
+    const { redirectToServiceForm } = this.state;
+    if (redirectToServiceForm) {
+      return <Redirect to="/services/create" />;
+    }
   }
 
-  getData(event, props = this.props) {
-    const { location } = props;
+  setRedirectToSuggestionForm = () => {
+    this.setState({
+      redirectToSuggestionForm: true,
+    });
+  }
+
+  renderRedirectToSuggestionForm = () => {
+    const { redirectToSuggestionForm } = this.state;
+    if (redirectToSuggestionForm) {
+      return <Redirect to="/services/suggestions/create" />;
+    }
+  }
+
+  fetchData = () => {
+    const { location } = this.props;
+    const { offset, limit, moreData } = this.state;
+
     let editOwnerEmail = '';
     let searchQuery = '';
     let searchMode = false;
@@ -85,47 +107,25 @@ class ServiceList extends Component {
         search: searchMode,
         category,
         subcategory,
+        offset,
+        limit,
       },
     }).then((response) => {
-      this.setState({
-        items: response.data,
-      });
+      if (response.data.length === 0) {
+        this.setState({ moreData: false });
+      } else {
+        this.setState(prevState => ({
+          items: prevState.items.concat(response.data),
+          offset: prevState.offset + response.data.length,
+        }));
+      }
     });
-  }
-
-  setRedirectToServiceForm = () => {
-    this.setState({
-      redirectToServiceForm: true,
-    });
-  }
-
-  renderRedirectToServiceForm = () => {
-    const { redirectToServiceForm } = this.state;
-    if (redirectToServiceForm) {
-      return <Redirect to="/services/create" />;
-    }
-  }
-
-  handleDrawerToggle = () => {
-    this.setState({ mobileOpen: !this.state.mobileOpen });
-  };
-
-  setRedirectToSuggestionForm = () => {
-    this.setState({
-      redirectToSuggestionForm: true,
-    });
-  }
-
-  renderRedirectToSuggestionForm = () => {
-    const { redirectToSuggestionForm } = this.state;
-    if (redirectToSuggestionForm) {
-      return <Redirect to="/services/suggestions/create" />;
-    }
   }
 
   render() {
-    const { classes, ...rest } = this.props;
-    const { items, editMode, editOwner } = this.state;
+    const { classes } = this.props;
+    const { items, editMode, editOwner, moreData } = this.state;
+
     return (
       <AuthConsumer>
         {({ user }) => (
@@ -200,6 +200,17 @@ class ServiceList extends Component {
                                 </Card>
                               ),
                             },
+                            {
+                              tabButton: 'Personalization',
+                              tabIcon: HelpOutline,
+                              tabContent: (
+                                <>
+                                  {user.type === UserTypes.MIGRANT && (
+                                    <QuestionnairePanel />
+                                  )}
+                                </>
+                              ),
+                            },
                           ]}
                         />
                       </GridItem>
@@ -211,33 +222,46 @@ class ServiceList extends Component {
                 <FormattedMessage id="service.browse" />
               </h5>
               <hr />
-              <GridContainer>
+              <Grid container spacing={16} alignItems="center" justify="center">
                 {' '}
                 {
                   items.map(item => (
-                    <ServiceItem
-                      serviceId={item._id}
-                      serviceTitle={item.serviceTitle}
-                      serviceImagePath={item.serviceImagePath}
-                      serviceDescription={item.serviceDescription}
-                      serviceSummary={item.serviceSummary}
-                      category={item.category}
-                      subcategory={item.subcategory}
-                      serviceLocation={item.location}
-                      serviceDate={item.serviceDate}
-                      serviceHours={item.serviceHours}
-                      editMode={editMode}
-                      editOwner={editOwner}
-                      getData={this.getData}
-                    />
+                    <Grid item>
+                      <ServiceCard
+                        serviceId={item._id}
+                        serviceTitle={item.serviceTitle}
+                        serviceImagePath={item.serviceImagePath}
+                        serviceDescription={item.serviceDescription}
+                        serviceSummary={item.serviceSummary}
+                        category={item.category}
+                        subcategory={item.subcategory}
+                        serviceLocation={item.location}
+                        serviceDate={item.serviceDate}
+                        serviceHours={item.serviceHours}
+                        editMode={editMode}
+                        editOwner={editOwner}
+                        rating={item.avgRating}
+                        count={item.countRating}
+                        getData={this.getData}
+                      />
+                    </Grid>
                   ))
                 }
-                {user.type === UserTypes.MIGRANT && (
-                  <Grid item xs={2}>
-                    <div className="Panel">{<QuestionnairePanel />}</div>
-                  </Grid>
-                )}
-              </GridContainer>
+              </Grid>
+              <Grid container spacing={16} alignItems="center" justify="center">
+                <Grid item>
+                  {moreData && (
+                    <Button
+                      variant="contained"
+                      color="info"
+                      className={classes.button}
+                      onClick={this.fetchData}
+                    >
+                      Load More
+                    </Button>
+                  )}
+                </Grid>
+              </Grid>
             </div>
           </React.Fragment>
         )}

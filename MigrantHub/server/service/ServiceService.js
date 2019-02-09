@@ -2,6 +2,7 @@ const fs = require('fs-extra');
 const axios = require('axios');
 const ServiceValidator = require('../validators/ServiceValidator');
 const ServiceRepository = require('../repository/ServiceRepository');
+const ReviewRepository = require('../repository/ReviewRepository');
 const { ServerError } = require('../errors/ServerError');
 
 module.exports = {
@@ -21,7 +22,7 @@ module.exports = {
     throw new ServerError('There was an error creating service.', 400, errors);
   },
 
-  async getServices(userId, searchQuery, search, category, subcategory, locale) {
+  async getServices(userId, searchQuery, search, category, subcategory, locale, offset, limit) {
     let query = {};
     console.log(`logging locale for eslint ${locale}`);
     if (userId !== '') {
@@ -39,7 +40,21 @@ module.exports = {
     }
 
     query.deleted = false;
-    return ServiceRepository.getServices(query);
+    let services = await ServiceRepository.getServices(query, offset, limit);
+    services = await services.map(async (service) => {
+      const updatedService = service.toObject();
+      const avg = await ReviewRepository.getAverageRating(service._id.toString());
+      let average = 0;
+      let count = 0;
+      if (avg[0] !== undefined) {
+        average = avg[0].avgRating;
+        count = avg[0].countRating;
+      }
+      updatedService.avgRating = average;
+      updatedService.countRating = count;
+      return updatedService;
+    });
+    return Promise.all(services);
   },
 
   async getService(serviceId) {

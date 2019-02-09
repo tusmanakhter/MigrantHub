@@ -10,7 +10,7 @@ router.use('/:id/reviews', require('./Reviews'));
 router.use('/suggestions', require('./ServiceSuggestions'));
 
 router.get('/recommendations', controllerHandler(ServiceController.getRecommendations, req => [req.user]));
-router.get('/', controllerHandler(ServiceController.getServices, req => [req.query.editOwner, req.query.searchQuery, req.query.search, req.query.category, req.query.subcategory, req.cookies.locale]));
+router.get('/', controllerHandler(ServiceController.getServices, req => [req.query.editOwner, req.query.searchQuery, req.query.search, req.query.category, req.query.subcategory, req.cookies.locale, req.query.offset, req.query.limit]));
 router.get('/:id', controllerHandler(ServiceController.getService, req => [req.query._id]));
 router.post('/', ServiceController.upload.single('serviceImage'),
   controllerHandler(ServiceController.createService, req => [req.user, req.body.serviceDetails]));

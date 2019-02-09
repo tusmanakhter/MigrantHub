@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import withStyles from '@material-ui/core/styles/withStyles';
 import GridContainer from "components/Grid/GridContainer.jsx";
 import axios from 'axios';
-import ServiceItem from 'services/ServiceItem';
+import ServiceCard from 'services/ServiceCard';
 import EventItem from 'events/EventItem';
 import UserItem from 'People/UserItem';
 import Header from 'components/Header/Header';
@@ -143,7 +143,7 @@ class Search extends Component {
         {' '}
         {
             servicesItem.map(item => (
-            <ServiceItem
+            <ServiceCard
                 serviceId={item._id}
                 serviceTitle={item.serviceTitle}
                 serviceImagePath={item.serviceImagePath}

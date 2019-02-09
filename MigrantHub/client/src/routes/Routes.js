@@ -20,7 +20,7 @@ import ServiceList from 'services/ServiceList';
 import Search from 'search/Search';
 import EventList from 'events/EventList';
 import EventForm from 'events/EventForm';
-import ServiceShare from 'services/ServiceShare';
+import ServiceDetails from 'services/ServiceDetails';
 import ViewMigrantProfile from 'account/personal/ViewMigrantProfile';
 import ViewBusinessProfile from 'account/business/ViewBusinessProfile';
 import { AuthConsumer } from 'routes/AuthContext';
@@ -70,7 +70,7 @@ class Routes extends Component {
         <ProtectedRoute path="/services/suggestions/create" component={ServiceSuggestionForm} migrant exact />
         <ProtectedRoute path="/services/suggestions" component={ServiceSuggestionList} business admin exact />
         <ProtectedRoute path="/services" component={ServiceList} exact />
-        <ProtectedRoute path="/services/share/:id" component={props => <ServiceShare serviceId={props.match.params.id} />} />
+        <ProtectedRoute path="/services/:id" component={ServiceDetails} />
         <ProtectedRoute path="/search" component={Search} exact />
         <ProtectedRoute path="/events/create" component={EventForm} exact />
         <ProtectedRoute path="/events" component={EventList} exact />
