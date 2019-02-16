@@ -40,13 +40,13 @@ class ServiceItem extends Component {
     this.state = {
       openService: false,
       openReviews: false,
-      scroll: 'paper'
+      scroll: 'paper',
     };
   }
 
   handleViewReviews = () => {
     this.setState({
-      openReviews: true
+      openReviews: true,
     });
   };
 
@@ -59,7 +59,7 @@ class ServiceItem extends Component {
   handleClose = () => {
     this.setState({
       openService: false,
-      openReviews: false
+      openReviews: false,
     });
   };
 
@@ -143,33 +143,38 @@ class ServiceItem extends Component {
                 </div>
               </CardFooter>
             </Card>
-            
-        <ViewService
-          open={openService}
-          scroll={scroll}
-          onClose={this.handleClose}
-          serviceId={serviceId}
-          serviceTitle={serviceTitle}
-          serviceImagePath={serviceImagePath}
-          serviceDescription={serviceDescription}
-          serviceSummary={serviceSummary}
-          category={category}
-          subcategory={subcategory}
-          serviceLocation={serviceLocation}
-          serviceDate={serviceDate}
-          serviceHours={serviceHours}
-          editMode={editMode}
-          editOwner={editOwner}
-          getData={getData}
-        />
-        <ViewReviews
-          open={openReviews}
-          scroll={scroll}
-          onClose={this.handleClose}
-          serviceId={serviceId}
-          serviceTitle={serviceTitle}
-          editMode={editMode}
-        />
+        {openService
+        && (
+          <ViewService
+            open={openService}
+            scroll={scroll}
+            onClose={this.handleClose}
+            serviceId={serviceId}
+            serviceTitle={serviceTitle}
+            serviceImagePath={serviceImagePath}
+            serviceDescription={serviceDescription}
+            serviceSummary={serviceSummary}
+            category={category}
+            subcategory={subcategory}
+            serviceLocation={serviceLocation}
+            serviceDate={serviceDate}
+            serviceHours={serviceHours}
+            editMode={editMode}
+            editOwner={editOwner}
+            getData={getData}
+          />
+        )}
+        {openReviews
+        && (
+          <ViewReviews
+            open={openReviews}
+            scroll={scroll}
+            onClose={this.handleClose}
+            serviceId={serviceId}
+            serviceTitle={serviceTitle}
+            editMode={editMode}
+          />
+        )}
       </GridItem>
     );
   }
