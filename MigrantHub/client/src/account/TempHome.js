@@ -5,7 +5,7 @@ class TempHome extends Component {
   render() {
     return (
       <React.Fragment>
-        <Typography variant="title" gutterBottom>
+        <Typography variant="h6" gutterBottom>
                     Successfully Logged In
         </Typography>
       </React.Fragment>

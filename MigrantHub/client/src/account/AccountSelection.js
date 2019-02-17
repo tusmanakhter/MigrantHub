@@ -84,13 +84,13 @@ const AccountSelection = (props) => {
                 <FormattedMessage id="signup.selection.personalSubtitle" />
               </Typography>
             </div>
-            <Typography variant="body1" className={classes.section}>
+            <Typography variant="body2" className={classes.section}>
               <FormattedMessage id="signup.selection.personalDesc" />
             </Typography>
             <ul>
-              <li><Typography variant="body2"><FormattedMessage id="signup.selection.personal1" /></Typography></li>
-              <li><Typography variant="body2"><FormattedMessage id="signup.selection.personal2" /></Typography></li>
-              <li><Typography variant="body2"><FormattedMessage id="signup.selection.personal3" /></Typography></li>
+              <li><Typography variant="subtitle2"><FormattedMessage id="signup.selection.personal1" /></Typography></li>
+              <li><Typography variant="subtitle2"><FormattedMessage id="signup.selection.personal2" /></Typography></li>
+              <li><Typography variant="subtitle2"><FormattedMessage id="signup.selection.personal3" /></Typography></li>
             </ul>
             <Button variant="contained" component={Link} to="/signup/personal" className={classes.button}>
               <FormattedMessage id="signup.selection.personalSignUp" />
@@ -108,13 +108,13 @@ const AccountSelection = (props) => {
                 <FormattedMessage id="signup.selection.businessSubtitle" />
               </Typography>
             </div>
-            <Typography variant="body1" className={classes.section}>
+            <Typography variant="body2" className={classes.section}>
               <FormattedMessage id="signup.selection.businessDesc" />
             </Typography>
             <ul>
-              <li><Typography variant="body2"><FormattedMessage id="signup.selection.business1" /></Typography></li>
-              <li><Typography variant="body2"><FormattedMessage id="signup.selection.business2" /></Typography></li>
-              <li><Typography variant="body2"><FormattedMessage id="signup.selection.business3" /></Typography></li>
+              <li><Typography variant="subtitle2"><FormattedMessage id="signup.selection.business1" /></Typography></li>
+              <li><Typography variant="subtitle2"><FormattedMessage id="signup.selection.business2" /></Typography></li>
+              <li><Typography variant="subtitle2"><FormattedMessage id="signup.selection.business3" /></Typography></li>
             </ul>
             <Button variant="contained" component={Link} to="/signup/business" className={classes.button}>
               <FormattedMessage id="signup.selection.businessSignUp" />

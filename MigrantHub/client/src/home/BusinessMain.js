@@ -3,9 +3,6 @@ import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import logo from 'logo.svg';
 import 'App.css';
-import NavPanel from 'components/NavPanel/NavPanel';
-import Header from 'components/Header/Header';
-import Logout from 'components/Logout';
 
 const theme = createMuiTheme({
   palette: {

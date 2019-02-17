@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import Button from 'components/CustomButtons/Button.jsx';
-import GridContainer from 'components/Grid/GridContainer.jsx';
 import axios from 'axios';
 import { AuthConsumer } from 'routes/AuthContext';
 import { FormattedMessage } from 'react-intl';
@@ -33,6 +32,6 @@ Logout.propTypes = {
   history: PropTypes.shape({}).isRequired,
 };
 
-Logout.contextType = AuthConsumer;
-
 export default withRouter(Logout);
+
+Logout.contextType = AuthConsumer;

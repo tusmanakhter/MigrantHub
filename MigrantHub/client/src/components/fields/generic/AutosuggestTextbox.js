@@ -81,7 +81,7 @@ class AutosuggestTextbox extends Component {
 
 AutosuggestTextbox.propTypes = {
   classes: PropTypes.shape({}).isRequired,
-  label: PropTypes.string.isRequired,
+  label: PropTypes.oneOfType([PropTypes.string, PropTypes.shape({})]).isRequired,
   value: PropTypes.string.isRequired,
   error: PropTypes.string.isRequired,
   handleAutoSuggestChange: PropTypes.func.isRequired,

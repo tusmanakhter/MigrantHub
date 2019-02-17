@@ -81,7 +81,7 @@ class AccountInfo extends Component {
 
     return (
       <React.Fragment>
-        <Typography variant="title" gutterBottom>
+        <Typography variant="h6" gutterBottom>
           <FormattedMessage id="signup.accountinfo" />
         </Typography>
         <Grid container spacing={24}>

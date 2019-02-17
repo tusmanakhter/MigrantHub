@@ -91,7 +91,7 @@ class EmploymentInfo extends Component {
 
     return (
       <React.Fragment>
-        <Typography variant="title" gutterBottom>
+        <Typography variant="h6" gutterBottom>
           <FormattedMessage id="signup.employmentinfo" />
         </Typography>
         <Grid container spacing={24}>
@@ -117,7 +117,7 @@ class EmploymentInfo extends Component {
             />
           </Grid>
           <Grid item xs={12}>
-            <Typography variant="subheading" gutterBottom className={classes.row}>
+            <Typography variant="subtitle1" gutterBottom className={classes.row}>
               <FormattedMessage id="signup.employment.addwork" />
             </Typography>
             <Button

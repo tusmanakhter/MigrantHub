@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import withStyles from '@material-ui/core/styles/withStyles';
 import Paper from '@material-ui/core/Paper';
 import axios from 'axios';
-import Header from 'components/Header/Header';
+import Header from 'app/Header';
 import UserItem from 'People/UserItem';
 
 const styles = theme => ({

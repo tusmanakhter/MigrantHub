@@ -41,12 +41,12 @@ class VerificationCode extends Component {
 
         return (
             <React.Fragment>
-                <Typography variant="title" gutterBottom>
+                <Typography variant="h6" gutterBottom>
                     <FormattedMessage id="forgotpassword.validationcode" />
                 </Typography>
                 <Grid container spacing={24}>
                     <Grid item xs={12}>
-                        <Typography variant="subheading" alignLeft color='secondary'>
+                        <Typography variant="subtitle1" alignLeft color='secondary'>
                             <FormattedMessage id="forgotpassword.validationcode.info" />
                         </Typography>
                         <TextField

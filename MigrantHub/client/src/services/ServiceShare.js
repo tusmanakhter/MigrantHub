@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import 'App.css';
-import Header from 'components/Header/Header';
 import GoogleMaps from 'components/GoogleMaps/GoogleMaps';
 import axios from 'axios';
 import qs from 'qs';

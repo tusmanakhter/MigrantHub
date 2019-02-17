@@ -67,7 +67,7 @@ class NewPasswordInfo extends Component {
 
         return (
             <React.Fragment>
-                <Typography variant="title" gutterBottom>
+                <Typography variant="h6" gutterBottom>
                     Account Information
                 </Typography>
                 <Grid container spacing={24}>

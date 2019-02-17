@@ -80,7 +80,7 @@ class ForgotYourPasswordContainer extends Component {
                         <GridContainer justify="center">
                             <GridItem xs={12} sm={12} md={12}>
                                 <Card className={classes.cardSignup}>
-                                    <Typography variant="subheading" alignLeft color='secondary'>
+                                    <Typography variant="subtitle1" alignLeft color='secondary'>
                                         {messageFromServer}
                                     </Typography>
                                     <h2 className={classes.cardTitle}><FormattedMessage id="forgotpassword.resetPassword" /></h2>
@@ -98,10 +98,10 @@ class ForgotYourPasswordContainer extends Component {
                                                     <React.Fragment>
                                                         {activeStep === this.props.steps.length ? (
                                                             <React.Fragment>
-                                                                <Typography variant="headline" gutterBottom>
+                                                                <Typography variant="h5" gutterBottom>
                                                                     <FormattedMessage id="signup.welcome" />
                                                                 </Typography>
-                                                                <Typography variant="subheading">
+                                                                <Typography variant="subtitle1">
                                                                     <FormattedMessage id="signup.login" />
                                                                 </Typography>
                                                                 <Link to={`/login`}>
