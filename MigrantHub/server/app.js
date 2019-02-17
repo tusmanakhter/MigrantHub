@@ -67,7 +67,10 @@ app.use((err, req, res, next) => {
 // MongoDB/Mongoose Connection
 const connectionString = dbConnectionString();
 mongoose.Promise = global.Promise;
-mongoose.connect(connectionString, (error) => {
+mongoose.connect(connectionString, {
+  useCreateIndex: true,
+  useNewUrlParser: true,
+}, (error) => {
   if (error) {
     console.error('Check if MongoDB is installed and running.');
     throw error;

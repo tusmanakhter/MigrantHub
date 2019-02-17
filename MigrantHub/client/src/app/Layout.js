@@ -5,9 +5,9 @@ import SidebarLinks from 'routes/SidebarLinks';
 import PerfectScrollbar from 'perfect-scrollbar';
 import 'perfect-scrollbar/css/perfect-scrollbar.css';
 import withStyles from '@material-ui/core/styles/withStyles';
-import Header from 'components/Header/Header.jsx';
-import Footer from 'components/Footer/Footer';
-import Sidebar from 'app/AppSidebar';
+import Header from 'app/Header';
+import Footer from 'app/Footer';
+import Sidebar from 'app/Sidebar';
 import appStyle from 'assets/jss/material-dashboard-pro-react/layouts/dashboardStyle';
 import image from 'assets/img/sidebar-2.jpg';
 import logo from 'assets/img/logo-white.svg';
@@ -15,7 +15,7 @@ import { withRouter } from 'react-router';
 
 let ps;
 
-class AppLayout extends React.Component {
+class Layout extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -126,8 +126,8 @@ class AppLayout extends React.Component {
   }
 }
 
-AppLayout.propTypes = {
+Layout.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default withRouter(withStyles(appStyle)(AppLayout));
+export default withRouter(withStyles(appStyle)(Layout));

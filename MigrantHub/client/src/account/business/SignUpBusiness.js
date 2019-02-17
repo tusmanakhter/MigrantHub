@@ -125,9 +125,4 @@ class SignUpBusiness extends Component {
   }
 }
 
-SignUpBusiness.propTypes = {
-  classes: PropTypes.shape({}).isRequired,
-  family: PropTypes.shape({}).isRequired,
-};
-
 export default SignUpBusiness;

@@ -34,11 +34,15 @@ const ServiceCategoryItem = (props) => {
     );
 };
 
+ServiceCategoryItem.defaultProps = {
+  size: '0',
+};
+
 ServiceCategoryItem.propTypes = {
-    category: PropTypes.string.isRequired,
-    color: PropTypes.string.isRequired,
-    size: PropTypes.string.isRequired,
-    handleClick: PropTypes.func.isRequired,
+  category: PropTypes.string.isRequired,
+  color: PropTypes.string.isRequired,
+  size: PropTypes.string,
+  handleClick: PropTypes.func.isRequired,
 };
 
 export default ServiceCategoryItem;

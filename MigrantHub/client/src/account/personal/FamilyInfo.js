@@ -99,12 +99,12 @@ class FamilyInfo extends Component {
 
     return (
       <React.Fragment>
-        <Typography variant="title" gutterBottom>
+        <Typography variant="h6" gutterBottom>
           <FormattedMessage id="signup.familyinfo" />
         </Typography>
         <Grid container spacing={24}>
           <Grid item xs={12}>
-            <Typography variant="subheading" gutterBottom className={classes.row}>
+            <Typography variant="subtitle1" gutterBottom className={classes.row}>
               <FormattedMessage id="signup.family.addfam" />
             </Typography>
             <Button
@@ -121,7 +121,7 @@ class FamilyInfo extends Component {
           {family.map((member, index) => (
             <React.Fragment key={index}>
               <Paper className={classes.paper}>
-                <Typography variant="subheading" align="left" gutterBottom>
+                <Typography variant="subtitle1" align="left" gutterBottom>
                   <FormattedMessage id="signup.family.member" />
                   {' '}
                   {index + 1}

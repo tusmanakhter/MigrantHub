@@ -54,7 +54,7 @@ class IdInfo extends Component {
 
     return (
       <React.Fragment>
-        <Typography variant="title" gutterBottom>
+        <Typography variant="h6" gutterBottom>
           <FormattedMessage id="business.corpVerification" />
         </Typography>
         <i>
@@ -93,7 +93,7 @@ class IdInfo extends Component {
 IdInfo.propTypes = {
   classes: PropTypes.shape({}).isRequired,
   handleChange: PropTypes.func.isRequired,
-  corpId: PropTypes.number.isRequired,
+  corpId: PropTypes.string.isRequired,
   intl: intlShape.isRequired,
 };
 

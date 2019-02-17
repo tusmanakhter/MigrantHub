@@ -17,10 +17,10 @@ import PermIdentity from '@material-ui/icons/PermIdentity';
 import ViewList from '@material-ui/icons/ViewList';
 import Event from '@material-ui/icons/Event';
 import { FormattedMessage } from 'react-intl';
-import HeaderLinks from 'components/Header/HeaderLinks.jsx';
+import HeaderLinks from 'app/HeaderLinks';
 import sidebarStyle from 'assets/jss/material-dashboard-pro-react/components/sidebarStyle.jsx';
 import avatar from 'assets/img/faces/avatar.jpg';
-import AppSidebarWrapper from 'app/AppSidebarWrapper';
+import SidebarWrapper from 'app/SidebarWrapper';
 import { AuthConsumer } from 'routes/AuthContext';
 import Menu, { SubMenu } from 'rc-menu';
 import 'rc-menu/assets/index.css';
@@ -34,7 +34,7 @@ const menuStyle = {
   background: 'white',
 };
 
-class AppSidebar extends React.Component {
+class Sidebar extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -420,7 +420,7 @@ class AppSidebar extends React.Component {
             }}
           >
             {brand}
-            <AppSidebarWrapper
+            <SidebarWrapper
               className={sidebarWrapper}
               user={userComponent}
               headerLinks={<HeaderLinks />}
@@ -446,7 +446,7 @@ class AppSidebar extends React.Component {
             }}
           >
             {brand}
-            <AppSidebarWrapper
+            <SidebarWrapper
               className={sidebarWrapper}
               user={userComponent}
               links={links}
@@ -464,11 +464,11 @@ class AppSidebar extends React.Component {
   }
 }
 
-AppSidebar.defaultProps = {
+Sidebar.defaultProps = {
   bgColor: 'blue',
 };
 
-AppSidebar.propTypes = {
+Sidebar.propTypes = {
   classes: PropTypes.object.isRequired,
   bgColor: PropTypes.oneOf(['white', 'black', 'blue']),
   rtlActive: PropTypes.bool,
@@ -487,6 +487,6 @@ AppSidebar.propTypes = {
   routes: PropTypes.arrayOf(PropTypes.object),
 };
 
-AppSidebar.contextType = AuthConsumer;
+Sidebar.contextType = AuthConsumer;
 
-export default withStyles(sidebarStyle)(AppSidebar);
+export default withStyles(sidebarStyle)(Sidebar);

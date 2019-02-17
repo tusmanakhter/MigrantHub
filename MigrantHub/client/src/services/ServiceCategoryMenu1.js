@@ -76,6 +76,7 @@ class ServiceCategoryMenu1 extends Component {
                   title={category.label}
                   popupClassName={classes.submenu}
                   onTitleClick={() => this.handleCategoryClick(category.value, '')}
+                  key={category._id}
                 >
                   {category.SubCategories.map(subcategory => (
                     <MenuItem
