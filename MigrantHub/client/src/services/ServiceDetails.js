@@ -7,13 +7,19 @@ import axios from 'axios';
 import qs from 'qs';
 import AddToCalendar from 'react-add-to-calendar';
 import Reviews from 'services/Reviews';
+import withStyles from '@material-ui/core/styles/withStyles';
+import { Link, Redirect } from 'react-router-dom';
+import Button from 'components/CustomButtons/Button';
+import { cardTitle } from 'assets/jss/material-dashboard-pro-react';
+import SweetAlert from 'react-bootstrap-sweetalert';
+import sweetAlertStyle from 'assets/jss/material-dashboard-pro-react/views/sweetAlertStyle';
+import { AuthConsumer } from 'routes/AuthContext';
+import UserTypes from 'lib/UserTypes';
 
-const theme = createMuiTheme({
-  palette: {
-    primary: { main: '#153345' },
-    secondary: { main: '#E2B39A' },
-  },
-});
+const styles = {
+  cardTitle,
+  sweetAlertStyle,
+};
 
 var gridStyle = {
   backgroundColor: 'white',
@@ -24,7 +30,7 @@ var buttonStyle = {
   color: 'black',
 };
 
-class ServiceShare extends Component {
+class ServiceDetails extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -38,8 +44,15 @@ class ServiceShare extends Component {
       serviceImagePath: '',
       tempServiceImagePath: '',
       serviceImageName: '',
-      dataRetrieved: 'Sorry this is not a valid link to share'
+      dataRetrieved: 'Sorry this is not a valid link to share',
+      alert: null,
+      redirect: false,
     };
+
+    this.hideAlert = this.hideAlert.bind(this);
+    this.successDelete = this.successDelete.bind(this);
+    this.cancelDelete = this.cancelDelete.bind(this);
+    this.warningWithConfirmAndCancelMessage = this.warningWithConfirmAndCancelMessage.bind(this);
   }
 
   componentDidMount(props) {
@@ -99,7 +112,91 @@ class ServiceShare extends Component {
         serviceImagePath: parsedObj.serviceImagePath,
         tempServiceImagePath: parsedObj.serviceImagePath,
         serviceImageName: imageName,
+        serviceOwner: parsedObj.user,
       });
+    });
+  }
+
+  handleDelete = () => {
+    const { serviceId } = this.state;
+
+    axios.delete('/api/services/' + serviceId)
+      .then((response) => {
+        if (response.status === 200) {
+          this.setState({
+            redirect: true,
+          });
+        }
+      });
+  };
+
+  warningWithConfirmAndCancelMessage() {
+    this.setState({
+      alert: (
+        <SweetAlert
+          warning
+          style={{ display: "block", marginTop: "-100px" }}
+          title="Are you sure?"
+          onConfirm={() => this.successDelete()}
+          onCancel={() => this.cancelDelete()}
+          confirmBtnCssClass={
+            this.props.classes.button + " " + this.props.classes.success
+          }
+          cancelBtnCssClass={
+            this.props.classes.button + " " + this.props.classes.danger
+          }
+          confirmBtnText="Yes, delete it!"
+          cancelBtnText="Cancel"
+          showCancel
+        >
+          You will not be able to recover this service!
+        </SweetAlert>
+      ),
+    });
+  }
+
+  successDelete() {
+    this.setState({
+      alert: (
+        <SweetAlert
+          success
+          style={{ display: "block", marginTop: "-100px" }}
+          title="Deleted!"
+          onConfirm={() => this.hideAlert()}
+          onCancel={() => this.hideAlert()}
+          confirmBtnCssClass={
+            this.props.classes.button + " " + this.props.classes.success
+          }
+        >
+          Your service has been deleted.
+        </SweetAlert>
+      ),
+    });
+    this.handleDelete();
+  }
+
+  cancelDelete() {
+    this.setState({
+      alert: (
+        <SweetAlert
+          danger
+          style={{ display: "block", marginTop: "-100px" }}
+          title="Cancelled"
+          onConfirm={() => this.hideAlert()}
+          onCancel={() => this.hideAlert()}
+          confirmBtnCssClass={
+            this.props.classes.button + " " + this.props.classes.success
+          }
+        >
+          Your service file is safe :)
+        </SweetAlert>
+      ),
+    });
+  }
+
+  hideAlert() {
+    this.setState({
+      alert: null,
     });
   }
 
@@ -108,11 +205,20 @@ class ServiceShare extends Component {
       appLogo, appName, userPic,
     } = this.props;
     const {
-      serviceId, serviceTitle, serviceSummary, serviceDescription, serviceHours, location,
+      serviceId, serviceTitle, serviceSummary, serviceDescription, serviceHours, location, alert, serviceOwner, redirect,
     } = this.state;
 
+    if (redirect) {
+      return (
+        <Redirect to="/services" />
+      );
+    }
+
     return (
+      <AuthConsumer>
+        {({ user }) => (
       <div>
+        {alert}
         <Grid container spacing={24} style={gridStyle}>
           <Grid item xs={12}>
             <h2>{serviceTitle}</h2>
@@ -177,10 +283,34 @@ class ServiceShare extends Component {
           <Grid item xs={12}>
             <Reviews serviceId={serviceId} serviceTitle={serviceTitle} />
           </Grid>
+          <Grid item xs={12}>
+            {user.type === UserTypes.ADMIN
+              && (
+                <Button onClick={this.warningWithConfirmAndCancelMessage} color="secondary">
+                  Delete
+                </Button>
+              )
+            }
+            {user.username === serviceOwner && (
+              <React.Fragment>
+                <Button onClick={this.warningWithConfirmAndCancelMessage} color="secondary">
+                  Delete
+                </Button>
+                <Button
+                  color="primary"
+                  component={props => <Link to={{ pathname: '/services/create', state: { editMode: true, serviceId } }} {...props} />}
+                >
+                  Edit
+                </Button>
+              </React.Fragment>
+            )}
+          </Grid>
         </Grid>
       </div>
+        )}
+      </AuthConsumer>
     );
   }
 }
 
-export default ServiceShare;
+export default withStyles(styles)(ServiceDetails);

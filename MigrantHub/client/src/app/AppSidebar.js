@@ -70,7 +70,8 @@ class AppSidebar extends React.Component {
     }
   }
 
-  openCollapse(collapse) {
+  openCollapse(event, collapse) {
+    event.preventDefault();
     const st = {};
     st[collapse] = !this.state[collapse];
     this.setState(st);
@@ -116,7 +117,7 @@ class AppSidebar extends React.Component {
             <NavLink
               to="#"
               className={`${classes.itemLink} ${classes.userCollapseButton}`}
-              onClick={() => this.openCollapse('openAvatar')}
+              onClick={event => this.openCollapse(event, 'openAvatar')}
             >
               <ListItemText
                 primary={`${firstName} ${lastName}`}
@@ -247,7 +248,7 @@ class AppSidebar extends React.Component {
                 <NavLink
                   to="#"
                   className={navLinkClasses}
-                  onClick={() => this.openCollapse(prop.state)}
+                  onClick={event => this.openCollapse(event, prop.state)}
                 >
                   <ListItemIcon className={itemIcon}>
                     {typeof prop.icon === 'string' ? (

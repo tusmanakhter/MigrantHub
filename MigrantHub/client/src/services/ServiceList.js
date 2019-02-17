@@ -39,13 +39,21 @@ class ServiceList extends Component {
       items: [],
       redirectToServiceForm: false,
       redirectToSuggestionForm: false,
-      editMode: '',
-      editOwner: '',
       offset: 0,
       limit: 20,
       moreData: true,
     };
-    this.fetchData();
+  }
+
+  componentDidMount() {
+    this.fetchData(false, this.props);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const { location } = this.props;
+    if (nextProps.location !== location) {
+      this.fetchData(true, nextProps);
+    }
   }
 
   setRedirectToServiceForm = () => {
@@ -74,9 +82,10 @@ class ServiceList extends Component {
     }
   }
 
-  fetchData = () => {
-    const { location } = this.props;
-    const { offset, limit, moreData } = this.state;
+  fetchData = (redirect, props) => {
+    const { location } = props;
+    const { limit, moreData } = this.state;
+    let { offset } = this.state;
 
     let editOwnerEmail = '';
     let searchQuery = '';
@@ -86,11 +95,6 @@ class ServiceList extends Component {
 
     if (location.state) {
       if (location.state.editMode) {
-        this.setState({
-          editMode: location.state.editMode,
-          editOwner: location.state.editOwner,
-        });
-
         editOwnerEmail = location.state.editOwner;
       } else if (location.state.searchMode) {
         searchMode = location.state.searchMode;
@@ -100,6 +104,11 @@ class ServiceList extends Component {
         subcategory = location.state.subcategory;
       }
     }
+
+    if (redirect) {
+      offset = 0;
+    }
+
     axios.get('/api/services/', {
       params: {
         editOwner: editOwnerEmail,
@@ -112,7 +121,17 @@ class ServiceList extends Component {
       },
     }).then((response) => {
       if (response.data.length === 0) {
-        this.setState({ moreData: false });
+        if (redirect) {
+          this.setState({ items: [], moreData: false });
+        } else {
+          this.setState({ moreData: false });
+        }
+      } else if (redirect) {
+        this.setState({
+          items: response.data,
+          moreData: true,
+          offset: offset + response.data.length,
+        });
       } else {
         this.setState(prevState => ({
           items: prevState.items.concat(response.data),
@@ -124,7 +143,7 @@ class ServiceList extends Component {
 
   render() {
     const { classes } = this.props;
-    const { items, editMode, editOwner, moreData } = this.state;
+    const { items, moreData } = this.state;
 
     return (
       <AuthConsumer>
@@ -238,11 +257,8 @@ class ServiceList extends Component {
                         serviceLocation={item.location}
                         serviceDate={item.serviceDate}
                         serviceHours={item.serviceHours}
-                        editMode={editMode}
-                        editOwner={editOwner}
                         rating={item.avgRating}
                         count={item.countRating}
-                        getData={this.getData}
                       />
                     </Grid>
                   ))
@@ -255,7 +271,7 @@ class ServiceList extends Component {
                       variant="contained"
                       color="info"
                       className={classes.button}
-                      onClick={this.fetchData}
+                      onClick={() => this.fetchData(false, this.props)}
                     >
                       Load More
                     </Button>
