@@ -226,9 +226,6 @@ class Reviews extends Component {
                 Edit
               </Button>
             )}
-            <Button onClick={onClose} color="primary">
-              Cancel
-            </Button>
           </div>
         )}
       </AuthConsumer>

@@ -273,9 +273,11 @@ class ServiceDetails extends Component {
             </Grid>
           )}
           {location !== undefined && (
-            <GoogleMaps
-              location={location}
-            />
+            <Grid item xs={12}>
+              <GoogleMaps
+                location={location}
+              />
+            </Grid>
           )}
           <Grid item xs={12}>
             Service Id : {serviceId}
