@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import withStyles from '@material-ui/core/styles/withStyles';
 import { Redirect } from 'react-router-dom';
 import axios from 'axios';
-import ServiceItem from 'services/ServiceItem';
+import ServiceCard from 'services/ServiceCard';
 import Button from 'components/CustomButtons/Button.jsx';
 import UserTypes from 'lib/UserTypes';
 import QuestionnairePanel from 'components/QuestionnairePanel/QuestionnairePanel';
@@ -39,58 +39,21 @@ class ServiceList extends Component {
       items: [],
       redirectToServiceForm: false,
       redirectToSuggestionForm: false,
-      editMode: '',
-      editOwner: '',
+      offset: 0,
+      limit: 20,
+      moreData: true,
     };
-
-    this.getData = this.getData.bind(this);
   }
 
-  componentDidMount(props) {
-    this.getData(this, props);
+  componentDidMount() {
+    this.fetchData(false, this.props);
   }
 
-  componentWillReceiveProps(props) {
-    this.getData(this, props);
-  }
-
-  getData(event, props = this.props) {
-    const { location } = props;
-    let editOwnerEmail = '';
-    let searchQuery = '';
-    let searchMode = false;
-    let category = '';
-    let subcategory = '';
-
-    if (location.state) {
-      if (location.state.editMode) {
-        this.setState({
-          editMode: location.state.editMode,
-          editOwner: location.state.editOwner,
-        });
-
-        editOwnerEmail = location.state.editOwner;
-      } else if (location.state.searchMode) {
-        searchMode = location.state.searchMode;
-        searchQuery = location.state.searchQuery;
-      } else if (location.state.category) {
-        category = location.state.category;
-        subcategory = location.state.subcategory;
-      }
+  componentWillReceiveProps(nextProps) {
+    const { location } = this.props;
+    if (nextProps.location !== location) {
+      this.fetchData(true, nextProps);
     }
-    axios.get('/api/services/', {
-      params: {
-        editOwner: editOwnerEmail,
-        searchQuery,
-        search: searchMode,
-        category,
-        subcategory,
-      },
-    }).then((response) => {
-      this.setState({
-        items: response.data,
-      });
-    });
   }
 
   setRedirectToServiceForm = () => {
@@ -106,10 +69,6 @@ class ServiceList extends Component {
     }
   }
 
-  handleDrawerToggle = () => {
-    this.setState({ mobileOpen: !this.state.mobileOpen });
-  };
-
   setRedirectToSuggestionForm = () => {
     this.setState({
       redirectToSuggestionForm: true,
@@ -123,9 +82,69 @@ class ServiceList extends Component {
     }
   }
 
+  fetchData = (redirect, props) => {
+    const { location } = props;
+    const { limit, moreData } = this.state;
+    let { offset } = this.state;
+
+    let editOwnerEmail = '';
+    let searchQuery = '';
+    let searchMode = false;
+    let category = '';
+    let subcategory = '';
+
+    if (location.state) {
+      if (location.state.editMode) {
+        editOwnerEmail = location.state.editOwner;
+      } else if (location.state.searchMode) {
+        searchMode = location.state.searchMode;
+        searchQuery = location.state.searchQuery;
+      } else if (location.state.category) {
+        category = location.state.category;
+        subcategory = location.state.subcategory;
+      }
+    }
+
+    if (redirect) {
+      offset = 0;
+    }
+
+    axios.get('/api/services/', {
+      params: {
+        editOwner: editOwnerEmail,
+        searchQuery,
+        search: searchMode,
+        category,
+        subcategory,
+        offset,
+        limit,
+      },
+    }).then((response) => {
+      if (response.data.length === 0) {
+        if (redirect) {
+          this.setState({ items: [], moreData: false });
+        } else {
+          this.setState({ moreData: false });
+        }
+      } else if (redirect) {
+        this.setState({
+          items: response.data,
+          moreData: true,
+          offset: offset + response.data.length,
+        });
+      } else {
+        this.setState(prevState => ({
+          items: prevState.items.concat(response.data),
+          offset: prevState.offset + response.data.length,
+        }));
+      }
+    });
+  }
+
   render() {
-    const { classes, ...rest } = this.props;
-    const { items, editMode, editOwner } = this.state;
+    const { classes } = this.props;
+    const { items, moreData } = this.state;
+
     return (
       <AuthConsumer>
         {({ user }) => (
@@ -200,6 +219,17 @@ class ServiceList extends Component {
                                 </Card>
                               ),
                             },
+                            {
+                              tabButton: 'Personalization',
+                              tabIcon: HelpOutline,
+                              tabContent: (
+                                <>
+                                  {user.type === UserTypes.MIGRANT && (
+                                    <QuestionnairePanel />
+                                  )}
+                                </>
+                              ),
+                            },
                           ]}
                         />
                       </GridItem>
@@ -211,34 +241,43 @@ class ServiceList extends Component {
                 <FormattedMessage id="service.browse" />
               </h5>
               <hr />
-              <GridContainer>
+              <Grid container spacing={16} alignItems="center" justify="center">
                 {' '}
                 {
                   items.map(item => (
-                    <ServiceItem
-                      key={item._id}
-                      serviceId={item._id}
-                      serviceTitle={item.serviceTitle}
-                      serviceImagePath={item.serviceImagePath}
-                      serviceDescription={item.serviceDescription}
-                      serviceSummary={item.serviceSummary}
-                      category={item.category}
-                      subcategory={item.subcategory}
-                      serviceLocation={item.location}
-                      serviceDate={item.serviceDate}
-                      serviceHours={item.serviceHours}
-                      editMode={editMode}
-                      editOwner={editOwner}
-                      getData={this.getData}
-                    />
+                    <Grid item>
+                      <ServiceCard
+                        serviceId={item._id}
+                        serviceTitle={item.serviceTitle}
+                        serviceImagePath={item.serviceImagePath}
+                        serviceDescription={item.serviceDescription}
+                        serviceSummary={item.serviceSummary}
+                        category={item.category}
+                        subcategory={item.subcategory}
+                        serviceLocation={item.location}
+                        serviceDate={item.serviceDate}
+                        serviceHours={item.serviceHours}
+                        rating={item.avgRating}
+                        count={item.countRating}
+                      />
+                    </Grid>
                   ))
                 }
-                {user.type === UserTypes.MIGRANT && (
-                  <Grid item xs={2}>
-                    <div className="Panel">{<QuestionnairePanel />}</div>
-                  </Grid>
-                )}
-              </GridContainer>
+              </Grid>
+              <Grid container spacing={16} alignItems="center" justify="center">
+                <Grid item>
+                  {moreData && (
+                    <Button
+                      variant="contained"
+                      color="info"
+                      className={classes.button}
+                      onClick={() => this.fetchData(false, this.props)}
+                    >
+                      Load More
+                    </Button>
+                  )}
+                </Grid>
+              </Grid>
             </div>
           </React.Fragment>
         )}

@@ -34,4 +34,21 @@ module.exports = {
       throw new ServerError('There was an error deleting review.', 400, error);
     });
   },
+
+  getAverageRating(serviceId) {
+    return Review.aggregate(
+      [
+        { $match: { serviceId, deleted: false } },
+        {
+          $group: {
+            _id: '$serviceId',
+            avgRating: { $avg: '$rating' },
+            countRating: { $sum: 1 },
+          },
+        },
+      ],
+    ).exec().then(review => Promise.resolve(review)).catch((error) => {
+      throw new ServerError('There was an error retrieving review average rating.', 400, error);
+    });
+  },
 };
