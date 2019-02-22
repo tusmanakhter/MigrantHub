@@ -102,7 +102,7 @@ class ServiceDetails extends Component {
           warning
           style={{ display: "block", marginTop: "-100px" }}
           title="Are you sure?"
-          onConfirm={() => this.successDelete()}
+          onConfirm={() => this.handleDelete()}
           onCancel={() => this.cancelDetele()}
           confirmBtnCssClass={
             this.props.classes.button + " " + this.props.classes.success
@@ -237,6 +237,7 @@ class ServiceDetails extends Component {
           });
         }
       });
+      this.hideAlert();
   };
 
   warningWithConfirmAndCancelMessage() {
@@ -271,7 +272,7 @@ class ServiceDetails extends Component {
           success
           style={{ display: "block", marginTop: "-100px" }}
           title="Deleted!"
-          onConfirm={() => this.hideAlert()}
+          onConfirm={() => this.handleDelete()}
           onCancel={() => this.hideAlert()}
           confirmBtnCssClass={
             this.props.classes.button + " " + this.props.classes.success
@@ -281,7 +282,6 @@ class ServiceDetails extends Component {
         </SweetAlert>
       ),
     });
-    this.handleDelete();
   }
 
   cancelDelete() {
@@ -300,12 +300,6 @@ class ServiceDetails extends Component {
           Your service file is safe :)
         </SweetAlert>
       ),
-    });
-  }
-
-  hideAlert() {
-    this.setState({
-      alert: null,
     });
   }
 
