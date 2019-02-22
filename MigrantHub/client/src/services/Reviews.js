@@ -177,7 +177,7 @@ class Reviews extends Component {
                                   name="comment"
                                   label="Comment"
                                   multiline
-                                  rows="3"
+                                  rows="2"
                                   value={comment}
                                   onChange={event => this.handleChange(event)}
                                   fullWidth

@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
-import { Redirect } from 'react-router-dom';
+import { Redirect, Link } from 'react-router-dom';
 import Grid from '@material-ui/core/Grid';
 import 'App.css';
 import GoogleMaps from 'components/GoogleMaps/GoogleMaps';
@@ -51,6 +50,7 @@ class ServiceDetails extends Component {
       serviceImagePath: '',
       tempServiceImagePath: '',
       serviceImageName: '',
+      redirect: false,
       dataRetrieved: 'Sorry this is not a valid link to share',
       redirectTo: false,
       redirectToURL: '',
@@ -65,9 +65,11 @@ class ServiceDetails extends Component {
         endTime: new Date().toLocaleString(),
       }
     };
+
     this.hideAlert = this.hideAlert.bind(this);
     this.successDelete = this.successDelete.bind(this);
-    this.cancelDetele = this.cancelDetele.bind(this);
+    this.cancelDelete = this.cancelDelete.bind(this);
+    this.warningWithConfirmAndCancelMessage = this.warningWithConfirmAndCancelMessage.bind(this);
   }
 
   handleEdit = () => {
@@ -219,7 +221,91 @@ class ServiceDetails extends Component {
         serviceImagePath: parsedObj.serviceImagePath,
         tempServiceImagePath: parsedObj.serviceImagePath,
         serviceImageName: imageName,
+        serviceOwner: parsedObj.user,
       });
+    });
+  }
+
+  handleDelete = () => {
+    const { serviceId } = this.state;
+
+    axios.delete('/api/services/' + serviceId)
+      .then((response) => {
+        if (response.status === 200) {
+          this.setState({
+            redirect: true,
+          });
+        }
+      });
+  };
+
+  warningWithConfirmAndCancelMessage() {
+    this.setState({
+      alert: (
+        <SweetAlert
+          warning
+          style={{ display: "block", marginTop: "-100px" }}
+          title="Are you sure?"
+          onConfirm={() => this.successDelete()}
+          onCancel={() => this.cancelDelete()}
+          confirmBtnCssClass={
+            this.props.classes.button + " " + this.props.classes.success
+          }
+          cancelBtnCssClass={
+            this.props.classes.button + " " + this.props.classes.danger
+          }
+          confirmBtnText="Yes, delete it!"
+          cancelBtnText="Cancel"
+          showCancel
+        >
+          You will not be able to recover this service!
+        </SweetAlert>
+      ),
+    });
+  }
+
+  successDelete() {
+    this.setState({
+      alert: (
+        <SweetAlert
+          success
+          style={{ display: "block", marginTop: "-100px" }}
+          title="Deleted!"
+          onConfirm={() => this.hideAlert()}
+          onCancel={() => this.hideAlert()}
+          confirmBtnCssClass={
+            this.props.classes.button + " " + this.props.classes.success
+          }
+        >
+          Your service has been deleted.
+        </SweetAlert>
+      ),
+    });
+    this.handleDelete();
+  }
+
+  cancelDelete() {
+    this.setState({
+      alert: (
+        <SweetAlert
+          danger
+          style={{ display: "block", marginTop: "-100px" }}
+          title="Cancelled"
+          onConfirm={() => this.hideAlert()}
+          onCancel={() => this.hideAlert()}
+          confirmBtnCssClass={
+            this.props.classes.button + " " + this.props.classes.success
+          }
+        >
+          Your service file is safe :)
+        </SweetAlert>
+      ),
+    });
+  }
+
+  hideAlert() {
+    this.setState({
+      alert: null,
     });
   }
 
@@ -228,16 +314,13 @@ class ServiceDetails extends Component {
       classes, editMode, onClose
     } = this.props;
     const {
-      redirectTo, redirectToURL, redirectState, type, serviceId, serviceTitle, serviceSummary, serviceDescription, serviceHours, location,
+      serviceId, serviceTitle, serviceSummary, serviceDescription, serviceHours, location, alert, serviceOwner, redirect,
     } = this.state;
     let icon = { 'calendar-plus-o': 'left'};
-    if (redirectTo) {
+
+    if (redirect) {
       return (
-        <Redirect to={{
-          pathname: redirectToURL,
-          state: redirectState,
-        }}
-        />
+        <Redirect to="/services" />
       );
     }
 
@@ -245,7 +328,7 @@ class ServiceDetails extends Component {
       <AuthConsumer>
         {({ user }) => (
       <div>
-        {this.state.alert}
+        {alert}
       <GridItem xs={12} sm={12} md={12} lg={12}>
       <Card>
         <CardHeader color="rose" icon>
@@ -332,23 +415,28 @@ class ServiceDetails extends Component {
         </Card>
         </GridItem>
         
-        {user.type === UserTypes.ADMIN
-          && (
-            <Button onClick={this.warningWithConfirmAndCancelMessage.bind(this)} color="secondary">
-              Delete
-              </Button>
-          )
-        }
-          {this.props.editMode &&
-          <React.Fragment>
-            <Button onClick={this.warningWithConfirmAndCancelMessage.bind(this)} color="secondary">
-              Delete
-                </Button>
-            <Button onClick={this.handleEdit} color="primary">
-              Edit
-                </Button>
-          </React.Fragment>
-        }
+         <Grid item xs={12}>
+	            {user.type === UserTypes.ADMIN
+	              && (
+	                <Button onClick={this.warningWithConfirmAndCancelMessage} color="secondary">
+	                  Delete
+	                </Button>
+	              )
+	            }
+	            {user.username === serviceOwner && (
+	              <React.Fragment>
+	                <Button onClick={this.warningWithConfirmAndCancelMessage} color="danger">
+	                  Delete
+	                </Button>
+	                <Button
+	                  color="primary"
+	                  component={props => <Link to={{ pathname: '/services/create', state: { editMode: true, serviceId } }} {...props} />}
+	                >
+	                  Edit
+	                </Button>
+	              </React.Fragment>
+	            )}
+	          </Grid>
       </div>
       )}
       </AuthConsumer>

@@ -40,7 +40,7 @@ const ServiceCard = (props) => {
   return (
     <Card>
       <CardActionArea
-        component={props => <Link to={`/services/${serviceId}`} {...props} />}
+        component={cardProps => <Link to={`/services/${serviceId}`} {...cardProps} />}
         className={classes.card}
       >
         <CardMedia
@@ -107,9 +107,6 @@ ServiceCard.propTypes = {
     startTime: PropTypes.string.isRequired,
     endTime: PropTypes.string.isRequired,
   }]).isRequired,
-  editOwner: PropTypes.string.isRequired,
-  editMode: PropTypes.bool.isRequired,
-  getData: PropTypes.func.isRequired,
 };
 
 export default withStyles(styles)(ServiceCard);
