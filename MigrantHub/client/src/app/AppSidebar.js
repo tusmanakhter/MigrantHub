@@ -401,8 +401,6 @@ class AppSidebar extends React.Component {
       cx({
         [classes.drawerPaperMini]:
           this.props.miniActive && this.state.miniActive,
-        [classes.sidebarWrapperWithPerfectScrollbar]:
-          navigator.platform.indexOf('Win') > -1,
       })}`;
     return (
       <div ref="mainPanel">

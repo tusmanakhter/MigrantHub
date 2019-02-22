@@ -2,8 +2,6 @@ import React from 'react';
 import cx from 'classnames';
 import PropTypes from 'prop-types';
 import SidebarLinks from 'routes/SidebarLinks';
-import PerfectScrollbar from 'perfect-scrollbar';
-import 'perfect-scrollbar/css/perfect-scrollbar.css';
 import withStyles from '@material-ui/core/styles/withStyles';
 import Header from 'components/Header/Header.jsx';
 import Footer from 'components/Footer/Footer';
@@ -31,12 +29,6 @@ class AppLayout extends React.Component {
   }
 
   componentDidMount() {
-    if (navigator.platform.indexOf('Win') > -1) {
-      ps = new PerfectScrollbar(this.mainPanel, {
-        suppressScrollX: true,
-        suppressScrollY: false,
-      });
-    }
     window.addEventListener('resize', this.resizeFunction);
   }
 
@@ -88,8 +80,6 @@ class AppLayout extends React.Component {
       ' ' +
       cx({
         [classes.mainPanelSidebarMini]: this.state.miniActive,
-        [classes.mainPanelWithPerfectScrollbar]:
-          navigator.platform.indexOf('Win') > -1
       });
     const { children } = this.props;
     const { mobileOpen, miniActive } = this.state;
