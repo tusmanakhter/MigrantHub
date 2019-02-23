@@ -6,7 +6,7 @@ const { ensureIsOwner } = require('../middleware/AuthMiddleware');
 const { controllerHandler } = require('../controllers/ControllerUtils');
 const Event = require('../models/Event');
 
-router.get('/', controllerHandler(EventController.getEvents, req => [req.query.editOwner, req.query.searchQuery, req.query.search]));
+router.get('/', controllerHandler(EventController.getEvents, req => [req.query.editOwner, req.query.searchQuery, req.query.search, req.query.offset, req.query.limit]));
 router.get('/:id', controllerHandler(EventController.getEvent, req => [req.query._id]));
 router.post('/', EventController.upload.single('eventImage'),
   controllerHandler(EventController.createEvent, req => [req.user, req.body.eventDetails]));

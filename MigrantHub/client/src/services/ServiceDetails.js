@@ -188,7 +188,7 @@ class ServiceDetails extends Component {
             this.props.classes.button + " " + this.props.classes.success
           }
         >
-          Your service file is safe :)
+          Your service is safe :)
         </SweetAlert>
       ),
     });

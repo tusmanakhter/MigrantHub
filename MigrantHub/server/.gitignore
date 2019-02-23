@@ -17,3 +17,4 @@
 .env.test.local
 .env.production.local
 
+/uploads
