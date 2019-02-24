@@ -49,6 +49,7 @@
     "react-star-rating-component": "^1.4.1",
     "react-table": "^6.9.0",
     "react-text-mask": "^5.4.3",
+    "react-toastify": "^4.5.2",
     "react-transition-group": "^2.5.0",
     "recompose": "^0.30.0",
     "typeface-roboto": "0.0.54",

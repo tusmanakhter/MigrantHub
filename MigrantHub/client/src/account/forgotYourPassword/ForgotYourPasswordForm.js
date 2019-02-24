@@ -96,16 +96,14 @@ class ForgotYourPasswordForm extends Component {
 
         return (
             <React.Fragment>
-                <HomeLayout>
-                    <ForgotYourPasswordContainer
-                        resetPassword={this.resetPassword}
-                        verifyAccount={this.verifyAccount}
-                        steps={steps}
-                        getStepContent={this.getStepContent}
-                        verificationError={verificationError}
-                        messageFromServer={messageFromServer}
-                    />
-                </HomeLayout>
+                <ForgotYourPasswordContainer
+                    resetPassword={this.resetPassword}
+                    verifyAccount={this.verifyAccount}
+                    steps={steps}
+                    getStepContent={this.getStepContent}
+                    verificationError={verificationError}
+                    messageFromServer={messageFromServer}
+                />
             </React.Fragment>
         );
     }
