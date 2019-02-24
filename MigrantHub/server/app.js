@@ -22,6 +22,12 @@ app.use(cookieParser());
 app.use(bodyParser.json({ limit: '50mb' }));
 app.use(bodyParser.urlencoded({ limit: '50mb', extended: false }));
 
+if (process.env.NODE_ENV === 'production') {
+  app.use(morgan(':remote-addr [:date[clf]] ":method :url HTTP/:http-version" :status ":referrer"', { stream: logger.streamProd }));
+} else {
+  app.use(morgan(':remote-addr [:date[clf]] ":method :url HTTP/:http-version" :status ":referrer"', { stream: logger.streamDev }));
+}
+
 app.use(
   expressSession({
     secret: 'publication-biology',
@@ -43,10 +49,8 @@ if (process.env.NODE_ENV === 'production') {
   app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, '../client/build/index.html'));
   });
-  app.use(morgan(':remote-addr [:date[clf]] ":method :url HTTP/:http-version" :status ":referrer"', { stream: logger.streamProd }));
 } else {
   app.use(express.static(path.join(__dirname, 'public')));
-  app.use(morgan(':remote-addr [:date[clf]] ":method :url HTTP/:http-version" :status ":referrer"', { stream: logger.streamDev }));
 }
 
 app.use((err, req, res, next) => {
@@ -67,7 +71,10 @@ app.use((err, req, res, next) => {
 // MongoDB/Mongoose Connection
 const connectionString = dbConnectionString();
 mongoose.Promise = global.Promise;
-mongoose.connect(connectionString, (error) => {
+mongoose.connect(connectionString, {
+  useCreateIndex: true,
+  useNewUrlParser: true,
+}, (error) => {
   if (error) {
     console.error('Check if MongoDB is installed and running.');
     throw error;

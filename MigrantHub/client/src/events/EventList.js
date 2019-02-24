@@ -3,8 +3,9 @@ import PropTypes from 'prop-types';
 import withStyles from '@material-ui/core/styles/withStyles';
 import axios from 'axios';
 import { Redirect } from 'react-router-dom';
-import EventItem from 'events/EventItem';
+import EventCard from 'events/EventCard';
 import UserTypes from 'lib/UserTypes';
+import Grid from '@material-ui/core/Grid';
 import { FormattedMessage } from 'react-intl';
 import { AuthConsumer } from 'routes/AuthContext';
 
@@ -36,24 +37,29 @@ class EventList extends Component {
     this.state = {
       items: [],
       redirectToEventForm: false,
-      editMode: '',
-      editOwner: '',
+      offset: 0,
+      limit: 20,
+      moreData: true,
     };
-
-    this.getData = this.getData.bind(this);
   }
 
 
-  componentDidMount(props) {
-    this.getData(this, props);
+  componentDidMount() {
+    this.fetchData(false, this.props);
   }
 
-  componentWillReceiveProps(props) {
-    this.getData(this, props);
+  componentWillReceiveProps(nextProps) {
+    const { location } = this.props;
+    if (nextProps.location !== location) {
+      this.fetchData(true, nextProps);
+    }
   }
 
-  getData(event, props = this.props) {
+  fetchData = (redirect, props) => {
     const { location } = props;
+    const { limit } = this.state;
+    let { offset } = this.state;
+
     let searchQuery = '';
     let searchMode = false;
 
@@ -71,16 +77,38 @@ class EventList extends Component {
         searchQuery = location.state.searchQuery;
       }
     }
+
+    if (redirect) {
+      offset = 0;
+    }
+
     axios.get('/api/events/', {
       params: {
         editOwner: editOwnerEmail,
         searchQuery,
         search: searchMode,
+        offset,
+        limit,
       },
     }).then((response) => {
-      this.setState({
-        items: response.data,
-      });
+      if (response.data.length === 0) {
+        if (redirect) {
+          this.setState({ items: [], moreData: false });
+        } else {
+          this.setState({ moreData: false });
+        }
+      } else if (redirect) {
+        this.setState({
+          items: response.data,
+          moreData: true,
+          offset: offset + response.data.length,
+        });
+      } else {
+        this.setState(prevState => ({
+          items: prevState.items.concat(response.data),
+          offset: prevState.offset + response.data.length,
+        }));
+      }
     });
   }
 
@@ -100,7 +128,7 @@ class EventList extends Component {
 
   render() {
     const { classes } = this.props;
-    const { items, editMode, editOwner } = this.state;
+    const { items, moreData } = this.state;
     return (
       <AuthConsumer>
         {({ user }) => (
@@ -173,26 +201,37 @@ class EventList extends Component {
               <FormattedMessage id="event.browse" />
             </h5>
             <hr />
-            <GridContainer>
+            <Grid container spacing={16} alignItems="center" justify="center">
               {
                 items.map(item => (
-                  <EventItem
+                  <EventCard
                     eventId={item._id}
                     eventName={item.eventName}
                     eventImagePath={item.eventImagePath}
-                    description={item.description}
-                    location={item.location}
+                    eventDescription={item.description}
+                    eventLocation={item.location}
                     dateStart={item.dateStart}
                     dateEnd={item.dateEnd}
                     timeStart={item.timeStart}
                     timeEnd={item.timeEnd}
-                    editMode={editMode}
-                    editOwner={editOwner}
-                    getData={this.getData}
                   />
                 ))
               }
-            </GridContainer>
+            </Grid>
+            <Grid container spacing={16} alignItems="center" justify="center">
+              <Grid item>
+                {moreData && (
+                  <Button
+                    variant="contained"
+                    color="info"
+                    className={classes.button}
+                    onClick={() => this.fetchData(false, this.props)}
+                  >
+                    Load More
+                  </Button>
+                )}
+              </Grid>
+            </Grid>
           </div>
         )}
       </AuthConsumer>

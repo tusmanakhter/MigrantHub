@@ -21,6 +21,7 @@ import Search from 'search/Search';
 import EventList from 'events/EventList';
 import EventForm from 'events/EventForm';
 import ServiceDetails from 'services/ServiceDetails';
+import EventDetails from 'events/EventDetails';
 import ViewMigrantProfile from 'account/personal/ViewMigrantProfile';
 import ViewBusinessProfile from 'account/business/ViewBusinessProfile';
 import { AuthConsumer } from 'routes/AuthContext';
@@ -74,6 +75,7 @@ class Routes extends Component {
         <ProtectedRoute path="/search" component={Search} exact />
         <ProtectedRoute path="/events/create" component={EventForm} exact />
         <ProtectedRoute path="/events" component={EventList} exact />
+        <ProtectedRoute path="/events/:id" component={EventDetails} />
         <ProtectedRoute path="/users" component={UsersList} exact />
         <ProtectedRoute path="/migrant/profile" component={ViewMigrantProfile} exact />
         <ProtectedRoute path="/business/profile" component={ViewBusinessProfile} exact />

@@ -33,7 +33,7 @@ module.exports = {
     return EventRepository.getEvent(query);
   },
 
-  async getEvents(userId, searchQuery, search) {
+  async getEvents(userId, searchQuery, search, offset, limit) {
     let query = {};
 
     if (userId !== '') {
@@ -45,7 +45,7 @@ module.exports = {
     }
     query.deleted = false;
 
-    return EventRepository.getEvents(query);
+    return EventRepository.getEvents(query, offset, limit);
   },
 
   async updateEvent(user, parsedEventObject) {

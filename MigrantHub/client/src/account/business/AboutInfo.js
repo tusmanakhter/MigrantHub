@@ -79,7 +79,7 @@ class AboutInfo extends Component {
 
     return (
       <React.Fragment>
-        <Typography variant="title" gutterBottom>
+        <Typography variant="h6" gutterBottom>
           <FormattedMessage id="signup.about" />
         </Typography>
         <Grid container spacing={24}>

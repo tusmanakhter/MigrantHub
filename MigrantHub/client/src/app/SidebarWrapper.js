@@ -35,10 +35,10 @@ class SidebarWrapper extends React.Component {
 }
 
 SidebarWrapper.propTypes = {
-  className: PropTypes.object.isRequired,
-  user: PropTypes.string.isRequired,
-  headerLinks: PropTypes.string.isRequired,
-  links: PropTypes.string.isRequired,
+  className: PropTypes.string.isRequired,
+  user: PropTypes.shape({}).isRequired,
+  headerLinks: PropTypes.oneOfType([PropTypes.string, PropTypes.shape({})]),
+  links: PropTypes.shape({}).isRequired,
 };
 
 export default withStyles(sidebarStyle)(SidebarWrapper);

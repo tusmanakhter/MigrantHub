@@ -10,7 +10,6 @@ import validator from 'validator';
 import axios from 'axios';
 import { Redirect } from 'react-router-dom';
 import qs from 'qs';
-import Header from '../components/Header/Header';
 import { serviceCategories } from '../lib/ServiceCategories';
 
 const styles = theme => ({
@@ -213,7 +212,7 @@ class ServiceSuggestionForm extends Component {
       <React.Fragment>
         {messageFromServer}
         {this.renderRedirectToAllServices()}
-        <Typography variant="title" gutterBottom> Add Suggestion </Typography>
+        <Typography variant="h6" gutterBottom> Add Suggestion </Typography>
         <Grid container spacing={24}>
           <Grid item xs={12}>
             <TextField

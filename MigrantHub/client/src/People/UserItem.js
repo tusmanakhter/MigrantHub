@@ -32,7 +32,7 @@ class UserItem extends Component {
       <Card className={classes.card}>
         <CardActionArea>
           <CardContent>
-            <Typography gutterBottom variant="headline" component="h2">
+            <Typography gutterBottom variant="h5" component="h2">
               {firstName + ' ' + lastName}
             </Typography>
             <Typography component="p">

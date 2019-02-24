@@ -4,11 +4,9 @@ import withStyles from '@material-ui/core/styles/withStyles';
 import GridContainer from "components/Grid/GridContainer.jsx";
 import axios from 'axios';
 import ServiceCard from 'services/ServiceCard';
-import EventItem from 'events/EventItem';
+import EventCard from 'events/EventCard';
 import UserItem from 'People/UserItem';
-import Header from 'components/Header/Header';
 import QuestionnairePanel from 'components/QuestionnairePanel/QuestionnairePanel';
-import NavPanel from 'components/NavPanel/NavPanel';
 import Paper from '@material-ui/core/Paper';
 import UserTypes from 'lib/UserTypes';
 import { AuthConsumer } from 'routes/AuthContext';
@@ -178,7 +176,7 @@ class Search extends Component {
         {' '}
         {
             eventItem.map(item => (
-              <EventItem
+              <EventCard
                 eventId={item._id}
                 eventName={item.eventName}
                 eventImagePath={item.eventImagePath}

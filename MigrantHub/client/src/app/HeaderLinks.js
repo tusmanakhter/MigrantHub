@@ -33,7 +33,7 @@ import { injectIntl, intlShape } from 'react-intl';
 import headerLinksStyle from 'assets/jss/material-dashboard-pro-react/components/headerLinksStyle';
 import { AuthConsumer } from 'routes/AuthContext';
 import UserTypes from 'lib/UserTypes';
-import Logout from '../Logout';
+import Logout from '../components/Logout';
 
 class BaseHeaderLinks extends React.Component {
   state = {
