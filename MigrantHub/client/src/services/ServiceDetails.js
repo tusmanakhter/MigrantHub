@@ -5,7 +5,6 @@ import 'App.css';
 import GoogleMaps from 'components/GoogleMaps/GoogleMaps';
 import axios from 'axios';
 import qs from 'qs';
-import PropTypes from 'prop-types';
 import AddToCalendar from 'react-add-to-calendar';
 import withStyles from "@material-ui/core/styles/withStyles";
 import { AuthConsumer } from 'routes/AuthContext';
@@ -21,7 +20,7 @@ import { cardTitle } from "assets/jss/material-dashboard-pro-react.jsx";
 import SweetAlert from "react-bootstrap-sweetalert";
 import sweetAlertStyle from "assets/jss/material-dashboard-pro-react/views/sweetAlertStyle.jsx";
 import Button from "components/CustomButtons/Button.jsx";
-
+import moment from 'moment';
 
 const styles = {
   ...sweetAlertStyle,
@@ -70,98 +69,6 @@ class ServiceDetails extends Component {
     this.successDelete = this.successDelete.bind(this);
     this.cancelDelete = this.cancelDelete.bind(this);
     this.warningWithConfirmAndCancelMessage = this.warningWithConfirmAndCancelMessage.bind(this);
-  }
-
-  handleEdit = () => {
-    const { serviceId } = this.props;
-    this.setState({
-      redirectTo: true,
-      redirectToURL: '/services/create',
-      redirectState: {
-        editMode: true,
-        serviceId,
-      },
-    });
-  }
-
-  handleDelete = () => {
-    const { serviceId, onClose, getData } = this.props;
-    axios.delete('/api/services/' + serviceId)
-      .then((response) => {
-        if (response.status === 200) {
-          onClose();
-          getData();
-        }
-      });
-  };
-
-  warningWithConfirmAndCancelMessage() {
-    this.setState({
-      alert: (
-        <SweetAlert
-          warning
-          style={{ display: "block", marginTop: "-100px" }}
-          title="Are you sure?"
-          onConfirm={() => this.handleDelete()}
-          onCancel={() => this.cancelDetele()}
-          confirmBtnCssClass={
-            this.props.classes.button + " " + this.props.classes.success
-          }
-          cancelBtnCssClass={
-            this.props.classes.button + " " + this.props.classes.danger
-          }
-          confirmBtnText="Yes, delete it!"
-          cancelBtnText="Cancel"
-          showCancel
-        >
-          You will not be able to recover this service!
-        </SweetAlert>
-      )
-    });
-  }
-
-  successDelete() {
-    this.setState({
-      alert: (
-        <SweetAlert
-          success
-          style={{ display: "block", marginTop: "-100px" }}
-          title="Deleted!"
-          onConfirm={() => this.hideAlert()}
-          onCancel={() => this.hideAlert()}
-          confirmBtnCssClass={
-            this.props.classes.button + " " + this.props.classes.success
-          }
-        >
-          Your service has been deleted.
-        </SweetAlert>
-      )
-    });
-    this.handleDelete();
-  }
-  cancelDetele() {
-    this.setState({
-      alert: (
-        <SweetAlert
-          danger
-          style={{ display: "block", marginTop: "-100px" }}
-          title="Cancelled"
-          onConfirm={() => this.hideAlert()}
-          onCancel={() => this.hideAlert()}
-          confirmBtnCssClass={
-            this.props.classes.button + " " + this.props.classes.success
-          }
-        >
-          Your service is safe :)
-        </SweetAlert>
-      )
-    });
-  }
-
-  hideAlert() {
-    this.setState({
-      alert: null
-    });
   }
 
   componentDidMount(props) {
@@ -297,18 +204,24 @@ class ServiceDetails extends Component {
             this.props.classes.button + " " + this.props.classes.success
           }
         >
-          Your service file is safe :)
+          Your service is safe :)
         </SweetAlert>
       ),
     });
   }
 
+  hideAlert() {
+    this.setState({
+      alert: null
+    });
+  }
+
   render() {
     const {
-      classes, editMode, onClose
+      classes,
     } = this.props;
     const {
-      serviceId, serviceTitle, serviceSummary, serviceDescription, serviceHours, location, alert, serviceOwner, redirect,
+      serviceId, serviceTitle, serviceSummary, serviceDescription, serviceDate, serviceHours, location, alert, serviceOwner, redirect,
     } = this.state;
     let icon = { 'calendar-plus-o': 'left'};
 
@@ -383,7 +296,14 @@ class ServiceDetails extends Component {
               </GridItem>
             </div>
           )}
-          
+
+          {serviceDate !== undefined &&  (
+          <GridItem  xs={12} sm={8} md={8} lg={4} align='left'>
+            <h5><b> Date </b></h5>
+              From {moment(serviceDate.startDate).format('MMM D YYYY')} until {moment(serviceDate.endDate).format('MMM D YYYY')}
+          </GridItem>
+          )}
+
           {serviceHours !== undefined && serviceHours.length !== 0 && (
             <GridItem xs={12} sm={8} md={8} lg={4} align='left'>
               <h5><b> Time </b></h5>
@@ -407,38 +327,34 @@ class ServiceDetails extends Component {
           <Reviews serviceId={serviceId} serviceTitle={serviceTitle} />
           </CardBody>
         </Card>
-        </GridItem>
-        
+      </GridItem>
          <Grid item xs={12}>
-	            {user.type === UserTypes.ADMIN
-	              && (
-	                <Button onClick={this.warningWithConfirmAndCancelMessage} color="secondary">
-	                  Delete
-	                </Button>
-	              )
-	            }
-	            {user.username === serviceOwner && (
-	              <React.Fragment>
-	                <Button onClick={this.warningWithConfirmAndCancelMessage} color="danger">
-	                  Delete
-	                </Button>
-	                <Button
-	                  color="primary"
-	                  component={props => <Link to={{ pathname: '/services/create', state: { editMode: true, serviceId } }} {...props} />}
-	                >
-	                  Edit
-	                </Button>
-	              </React.Fragment>
-	            )}
-	          </Grid>
+          {user.type === UserTypes.ADMIN
+            && (
+              <Button onClick={this.warningWithConfirmAndCancelMessage} color="danger">
+                Delete
+              </Button>
+            )
+          }
+          {user.username === serviceOwner && (
+            <React.Fragment>
+              <Button onClick={this.warningWithConfirmAndCancelMessage} color="danger">
+                Delete
+              </Button>
+              <Button
+                color="primary"
+                component={props => <Link to={{ pathname: '/services/create', state: { editMode: true, serviceId } }} {...props} />}
+              >
+                Edit
+              </Button>
+            </React.Fragment>
+          )}
+        </Grid>
       </div>
       )}
       </AuthConsumer>
     );
   }
 }
-ServiceDetails.propTypes = {
-  onClose: PropTypes.func.isRequired,
-  editMode: PropTypes.bool.isRequired,
-};
+
 export default withStyles(styles)(ServiceDetails);

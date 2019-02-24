@@ -202,19 +202,22 @@ class EventList extends Component {
             </h5>
             <hr />
             <Grid container spacing={16} alignItems="center" justify="center">
+            {' '}
               {
                 items.map(item => (
-                  <EventCard
-                    eventId={item._id}
-                    eventName={item.eventName}
-                    eventImagePath={item.eventImagePath}
-                    eventDescription={item.description}
-                    eventLocation={item.location}
-                    dateStart={item.dateStart}
-                    dateEnd={item.dateEnd}
-                    timeStart={item.timeStart}
-                    timeEnd={item.timeEnd}
-                  />
+                  <GridItem>
+                    <EventCard
+                      eventId={item._id}
+                      eventName={item.eventName}
+                      eventImagePath={item.eventImagePath}
+                      eventDescription={item.description}
+                      eventLocation={item.location}
+                      dateStart={item.dateStart}
+                      dateEnd={item.dateEnd}
+                      timeStart={item.timeStart}
+                      timeEnd={item.timeEnd}
+                    />
+                  </GridItem>
                 ))
               }
             </Grid>
