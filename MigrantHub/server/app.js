@@ -12,6 +12,8 @@ const { dbConnectionString } = require('./config');
 const passport = require('./passport');
 const { logger, formatMessage } = require('./config/winston');
 
+const generateMLData = require('./db/generateMLData');
+
 const app = express();
 
 require('dotenv').config();
@@ -82,5 +84,7 @@ mongoose.connect(connectionString, {
 });
 const database = mongoose.connection;
 database.on('error', console.error.bind(console, 'MongoDB connection error: '));
+
+generateMLData.generateServiceRecommendationData();
 
 module.exports = app;

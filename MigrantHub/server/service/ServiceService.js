@@ -150,4 +150,48 @@ module.exports = {
 
     return Promise.resolve(services);
   },
+
+  async getRecommendation(user) {
+    let query = {};
+
+    const recommendedIds = await axios.get(`http://35.203.89.239:8080/api/recommendation/${user._id}`)
+      .then(response => response.data)
+      .catch((error) => {
+        throw new ServerError('There was an error retrieving a recommended service.', 400, error);
+      });
+
+    const serviceIds = recommendedIds.match(/[A-Za-z_0-9]{5,}/g);
+    const percentageValue = recommendedIds.match(/'[0-9]{1,3}'/g);
+
+    const results = {
+      services: [],
+    };
+
+    Object.keys(serviceIds).forEach((idIndex) => {
+      results.services[idIndex] = {
+        id: serviceIds[idIndex],
+        percentageMatch: percentageValue[idIndex].replace(/'/gi, ''),
+      };
+    });
+
+    query = {
+      $or: [{ _id: results.services[0].id }],
+    };
+
+    query.deleted = false;
+
+    const services = await ServiceRepository.getServices(query);
+
+    if (services !== undefined) {
+      Object.keys(services).forEach((serviceIndex) => {
+        const percentageMatch = results.services.filter(
+          item => item.id === String(services[serviceIndex]._id),
+        );
+        services[serviceIndex] = JSON.parse(JSON.stringify(services[serviceIndex]));
+        services[serviceIndex].percentageMatch = percentageMatch[0].percentageMatch;
+      });
+    }
+
+    return Promise.resolve(services);
+  },
 };

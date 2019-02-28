@@ -122,4 +122,17 @@ describe('Service Service', function () {
         this.stub(axios, 'get').returns(Promise.reject({}));
         return chai.assert.isRejected(ServiceService.getRecommendations(req.user), ServerError, 'There was an error retrieving recommended services.');
     }));
+
+    it('should call getService to retrieve a recommended service from getRecommendation service', test(async function () {
+        this.stub(ServiceRepository, 'getServices');
+        this.stub(axios, 'get').returns(Promise.resolve({ data: "[ '5c495110d50aa425309f2da6'; '50'];[ '5c495114d50aa425309f3077'; '50'];[ '5c495114d50aa425309f3071'; '50']" }));
+        await ServiceService.getRecommendation(req.user);
+        assert.calledWith(ServiceRepository.getServices,{ $or: [{ _id: '5c495110d50aa425309f2da6' }], deleted: false });
+    }));
+
+    it('should call getRecommendation service with error', test(async function () {
+        this.stub(ServiceRepository, 'getServices');
+        this.stub(axios, 'get').returns(Promise.reject({}));
+        return chai.assert.isRejected(ServiceService.getRecommendation(req.user), ServerError, 'There was an error retrieving a recommended service.');
+    }));
 });

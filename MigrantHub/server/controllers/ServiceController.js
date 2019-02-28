@@ -44,4 +44,8 @@ module.exports = {
   async getRecommendations(user) {
     return ServiceService.getRecommendations(user);
   },
+
+  async getRecommendation(user) {
+    return ServiceService.getRecommendation(user);
+  },
 };

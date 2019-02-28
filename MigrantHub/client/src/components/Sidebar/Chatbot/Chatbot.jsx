@@ -7,7 +7,9 @@ import CardHeader from "components/Card/CardHeader.jsx";
 import CardBody from "components/Card/CardBody.jsx";
 import { TextField, withStyles } from '@material-ui/core';
 import ChatBubble from "components/Sidebar/Chatbot/ChatBubble.jsx";
+import { Redirect } from 'react-router-dom';
 import axios from "axios";
+import { watchFile } from "fs";
 
 class Chatbot extends Component {
   constructor(props) {
@@ -16,11 +18,14 @@ class Chatbot extends Component {
       userMessage: '',
       userRequest: '',
       conversation: [],
+      redirectToRecommendation: false,
+      recommendationItems: [],
+      items: [],
     };
   }
 
   componentDidMount() {
-
+    this.getRecommendationServiceData();
   }
 
   handleChange = event => {
@@ -50,15 +55,25 @@ class Chatbot extends Component {
         userRequest: this.state.userRequest,
       },
     }).then((response) => {
-      const msg = {
-        type: 1,
-        image: '',
-        text: response.data,
-      };
-
-      this.setState({
-        conversation: [...this.state.conversation, msg],
+      response.data.fulfillmentMessages.forEach(element => {
+        const msg = {
+          type: 1,
+          image: '',
+          text: element.text.text
+        };
+        this.setState({
+          redirectToRecommendation: false,
+          conversation: [...this.state.conversation, msg],
+        });
       });
+
+      let intent = response.data.intent.displayName;
+      if(intent === 'Recommendation Service'){
+        this.setState({
+          redirectToRecommendation: true,
+        });
+        // return this.renderRedirectToRecommendationService();
+      }
     })
   }
 
@@ -68,9 +83,34 @@ class Chatbot extends Component {
     }
   }
 
+  getRecommendationServiceData() {
+    axios.get('/api/services/recommendation').then((response) => {
+      this.setState({
+        items: response.data,
+      });
+    });
+  }
+
+  renderRedirectToRecommendationService = () => {
+    const redirectToRecommendation = this.state.redirectToRecommendation;
+    if (redirectToRecommendation) {
+      let serviceId = this.state.items._id;
+      this.setState({
+        redirectToRecommendation: false,
+      });
+      if(serviceId != undefined){
+        return <Redirect to={`/services/${serviceId}`} />;
+      }
+      else{
+        this.getRecommendationServiceData();
+      }
+    }
+  }
+
   render() {
     return (
       < div >
+      {this.renderRedirectToRecommendationService()}
         <GridItem>
           <Card>
             <CardHeader>
@@ -83,7 +123,7 @@ class Chatbot extends Component {
                 id="username"
                 name="username"
                 label="Try me!"
-                placeholder="Type 'Help' for help"
+                placeholder="Say Hi!"
                 value={this.state.userMessage}
                 onChange={event => this.handleChange(event)}
                 onKeyDown={event => this.keyPress(event)}
