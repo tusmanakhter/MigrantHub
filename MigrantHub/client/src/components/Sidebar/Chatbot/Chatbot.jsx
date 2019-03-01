@@ -9,7 +9,6 @@ import { TextField, withStyles } from '@material-ui/core';
 import ChatBubble from "components/Sidebar/Chatbot/ChatBubble.jsx";
 import { Redirect } from 'react-router-dom';
 import axios from "axios";
-import { watchFile } from "fs";
 
 class Chatbot extends Component {
   constructor(props) {
@@ -19,13 +18,15 @@ class Chatbot extends Component {
       userRequest: '',
       conversation: [],
       redirectToRecommendation: false,
-      recommendationItems: [],
-      items: [],
+      suggestServiceId: 0,
+      finishedSuggestionServiceFetch: false,
+      redirectToAllServices: false,
+      redirectToAllEvents: false,
     };
   }
 
   componentDidMount() {
-    this.getRecommendationServiceData();
+
   }
 
   handleChange = event => {
@@ -72,7 +73,17 @@ class Chatbot extends Component {
         this.setState({
           redirectToRecommendation: true,
         });
-        // return this.renderRedirectToRecommendationService();
+        this.renderRedirectToRecommendationService();
+      }
+      else if(intent == 'help - services'){
+        this.setState({
+          redirectToAllServices: true,
+        });
+      }
+      else if(intent == 'help - events'){
+        this.setState({
+          redirectToAllEvents: true,
+        });
       }
     })
   }
@@ -83,34 +94,40 @@ class Chatbot extends Component {
     }
   }
 
-  getRecommendationServiceData() {
-    axios.get('/api/services/recommendation').then((response) => {
-      this.setState({
-        items: response.data,
-      });
-    });
-  }
-
   renderRedirectToRecommendationService = () => {
     const redirectToRecommendation = this.state.redirectToRecommendation;
     if (redirectToRecommendation) {
-      let serviceId = this.state.items._id;
-      this.setState({
-        redirectToRecommendation: false,
+      axios.get('/api/services/recommendations').then((response) => {
+        this.setState({
+          suggestServiceId: response.data[0]._id,
+          finishedSuggestionServiceFetch: true,
+        });
       });
-      if(serviceId != undefined){
-        return <Redirect to={`/services/${serviceId}`} />;
-      }
-      else{
-        this.getRecommendationServiceData();
-      }
     }
   }
 
   render() {
+    if(this.state.redirectToRecommendation && this.state.serviceId != 0 && this.state.finishedSuggestionServiceFetch){
+      this.setState({
+        redirectToRecommendation: false,
+        finishedSuggestionServiceFetch: false,
+      });
+      return <Redirect to={`/services/${this.state.suggestServiceId}`} />
+    }
+    else if(this.state.redirectToAllServices){
+      this.setState({
+        redirectToAllServices: false,
+      });
+      return <Redirect to="/services" />
+    }
+    else if(this.state.redirectToAllEvents){
+      this.setState({
+        redirectToAllEvents: false,
+      });
+      return <Redirect to="/events" />
+    }
     return (
       < div >
-      {this.renderRedirectToRecommendationService()}
         <GridItem>
           <Card>
             <CardHeader>
