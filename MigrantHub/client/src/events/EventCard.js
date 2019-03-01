@@ -13,6 +13,7 @@ import moment from 'moment';
 const styles = {
   card: {
     maxWidth: 345,
+    minWidth: 345,
     minHeight: 350,
     textAlign: 'left',
   },
@@ -56,8 +57,8 @@ const EventCard = (props) => {
             {eventDescription}
           </Typography>
           <Typography variant="subtitle1">
-            {moment(dateStart).format('MMM D YYYY')} @ {moment(timeStart).format('H:MM')}<br />
-            {moment(dateEnd).format('MMM D YYYY')} @ {moment(timeEnd).format('H:MM')}
+            {moment(dateStart).format('MMM D YYYY')} @ {timeStart}<br />
+            {moment(dateEnd).format('MMM D YYYY')} @ {timeEnd}
           </Typography>
           <div className={classes.locationContainer}>
             {eventLocation

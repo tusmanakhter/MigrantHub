@@ -62,7 +62,7 @@ class ServiceDetails extends Component {
         location: 'Montreal, QC',
         startTime: new Date().toLocaleString(),
         endTime: new Date().toLocaleString(),
-      }
+      },
     };
 
     this.hideAlert = this.hideAlert.bind(this);
@@ -312,11 +312,6 @@ class ServiceDetails extends Component {
                   {member.serviceDay} from {member.startTime} to {member.endTime}
                 </Grid>
               ))}
-            </GridItem>
-          )}
-          { location !== undefined  && location.address !== '' && serviceHours !== undefined && serviceHours.length !== 0 && (
-            <GridItem xs={12} sm={8} md={8} lg={4} align='left'>
-              <Card><AddToCalendar event={this.state.event} buttonTemplate={icon}/></Card>
             </GridItem>
           )}
           {location !== undefined && location.address !== '' && (
