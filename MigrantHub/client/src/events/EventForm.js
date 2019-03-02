@@ -39,6 +39,8 @@ import extendedFormsStyle from "assets/jss/material-dashboard-pro-react/views/ex
 import regularFormsStyle from "assets/jss/material-dashboard-pro-react/views/regularFormsStyle";
 import defaultImage from "assets/img/image_placeholder.jpg";
 import defaultAvatar from "assets/img/placeholder.jpg";
+import { toast } from 'react-toastify';
+
 import qs from 'qs';
 
 const visibilities = [
@@ -584,10 +586,7 @@ class EventForm extends Component {
         messageFromServer: response.data,
       });
       if (response.status === 200) {
-        this.setState({
-          redirectTo: true,
-          redirectToAllEvents: true,
-        });
+        toast.success('Updated event!');
       }
     }).catch((error) => {
       this.setState({

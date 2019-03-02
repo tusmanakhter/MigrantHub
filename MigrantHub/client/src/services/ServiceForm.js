@@ -43,6 +43,7 @@ import extendedFormsStyle from "assets/jss/material-dashboard-pro-react/views/ex
 import regularFormsStyle from "assets/jss/material-dashboard-pro-react/views/regularFormsStyle";
 import defaultImage from "assets/img/image_placeholder.jpg";
 import defaultAvatar from "assets/img/placeholder.jpg";
+import { toast } from 'react-toastify';
 
 const dayOfTheWeek = [
   { value: 'monday', label: 'Monday' },
@@ -624,9 +625,7 @@ class ServiceForm extends Component {
         },
       }).then((response) => {
       if (response.status === 200) {
-        this.setState({
-          redirectToAllServices: true,
-        });
+        toast.success('Updated service!');
       }
     }).catch((error) => {
       this.setState({
