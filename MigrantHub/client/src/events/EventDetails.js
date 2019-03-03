@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import 'App.css';
 import GoogleMaps from 'components/GoogleMaps/GoogleMaps';
@@ -9,6 +8,12 @@ import AddToCalendar from 'react-add-to-calendar';
 import withStyles from '@material-ui/core/styles/withStyles';
 import { Link, Redirect } from 'react-router-dom';
 import Button from 'components/CustomButtons/Button';
+import GridContainer from 'components/Grid/GridContainer';
+import GridItem from 'components/Grid/GridItem';
+import Card from 'components/Card/Card';
+import CardBody from 'components/Card/CardBody';
+import CardIcon from 'components/Card/CardIcon';
+import CardHeader from 'components/Card/CardHeader';
 import { cardTitle } from 'assets/jss/material-dashboard-pro-react';
 import SweetAlert from 'react-bootstrap-sweetalert';
 import sweetAlertStyle from 'assets/jss/material-dashboard-pro-react/views/sweetAlertStyle';
@@ -17,17 +22,16 @@ import UserTypes from 'lib/UserTypes';
 import moment from 'moment';
 
 const styles = {
-  cardTitle,
-  sweetAlertStyle,
-};
-
-var gridStyle = {
-  backgroundColor: 'white',
-  marginTop: '20px',
-};
-
-var buttonStyle = {
-  color: 'black',
+  ...sweetAlertStyle,
+  cardIconTitle: {
+    ...cardTitle,
+    marginTop: '15px',
+    marginBottom: '0px',
+  },
+  gridStyle: {
+    backgroundColor: 'white',
+    marginTop: '20px',
+  },
 };
 
 class EventDetails extends Component {
@@ -45,6 +49,13 @@ class EventDetails extends Component {
       eventImagePath: '',
       alert: null,
       redirect: false,
+      event: {
+        title: '',
+        description: '',
+        location: '',
+        startTime: '',
+        endTime: '',
+      },
     };
 
     this.hideAlert = this.hideAlert.bind(this);
@@ -62,7 +73,7 @@ class EventDetails extends Component {
   }
 
   getData() {
-    axios.get('/api/events/' + this.state.eventId, {
+    axios.get(`/api/events/${this.state.eventId}`, {
       params: {
         _id: this.state.eventId,
       },
@@ -92,6 +103,13 @@ class EventDetails extends Component {
         timeEnd: parsedObj.timeEnd,
         eventImagePath: parsedObj.eventImagePath,
         eventOwner: parsedObj.user,
+        event: {
+          title: parsedObj.eventName,
+          description: parsedObj.description,
+          location: tempLocation.address,
+          startTime: moment(moment(parsedObj.dateStart).format('MMM D YYYY') + parsedObj.timeStart, ['MMM D YYYYh:mm A']).format(),
+          endTime: moment(moment(parsedObj.dateEnd).format('MMM D YYYY') + parsedObj.timeEnd, ['MMM D YYYYh:mm A']).format(),
+        },
       });
     });
   }
@@ -99,7 +117,7 @@ class EventDetails extends Component {
   handleDelete = () => {
     const { eventId } = this.state;
 
-    axios.delete('/api/events/' + eventId)
+    axios.delete(`/api/events/${eventId}`)
       .then((response) => {
         if (response.status === 200) {
           this.setState({
@@ -114,15 +132,15 @@ class EventDetails extends Component {
       alert: (
         <SweetAlert
           warning
-          style={{ display: "block", marginTop: "-100px" }}
+          style={{ display: 'block', marginTop: '-100px' }}
           title="Are you sure?"
           onConfirm={() => this.successDelete()}
           onCancel={() => this.cancelDelete()}
           confirmBtnCssClass={
-            this.props.classes.button + " " + this.props.classes.success
+            `${this.props.classes.button} ${this.props.classes.success}`
           }
           cancelBtnCssClass={
-            this.props.classes.button + " " + this.props.classes.danger
+            `${this.props.classes.button} ${this.props.classes.danger}`
           }
           confirmBtnText="Yes, delete it!"
           cancelBtnText="Cancel"
@@ -139,12 +157,12 @@ class EventDetails extends Component {
       alert: (
         <SweetAlert
           success
-          style={{ display: "block", marginTop: "-100px" }}
+          style={{ display: 'block', marginTop: '-100px' }}
           title="Deleted!"
           onConfirm={() => this.hideAlert()}
           onCancel={() => this.hideAlert()}
           confirmBtnCssClass={
-            this.props.classes.button + " " + this.props.classes.success
+            `${this.props.classes.button} ${this.props.classes.success}`
           }
         >
           Your event has been deleted.
@@ -159,12 +177,12 @@ class EventDetails extends Component {
       alert: (
         <SweetAlert
           danger
-          style={{ display: "block", marginTop: "-100px" }}
+          style={{ display: 'block', marginTop: '-100px' }}
           title="Cancelled"
           onConfirm={() => this.hideAlert()}
           onCancel={() => this.hideAlert()}
           confirmBtnCssClass={
-            this.props.classes.button + " " + this.props.classes.success
+            `${this.props.classes.button} ${this.props.classes.success}`
           }
         >
           Your event is safe :)
@@ -181,11 +199,12 @@ class EventDetails extends Component {
 
   render() {
     const {
-      appLogo, appName, userPic,
+      classes,
     } = this.props;
     const {
       eventId, eventName, eventDescription, dateStart, dateEnd, timeStart, timeEnd, location, eventOwner, alert, redirect,
     } = this.state;
+    const icon = { 'calendar-plus-o': 'left' };
 
     if (redirect) {
       return (
@@ -198,88 +217,106 @@ class EventDetails extends Component {
         {({ user }) => (
           <div>
             {alert}
-            <Grid container spacing={24} style={gridStyle}>
-              <Grid item xs={12}>
-                <h2>{eventName}</h2>
-              </Grid>
-              <Grid item xs={12}>
-                <h3>{eventDescription}</h3>
-              </Grid>
-              <Grid item xs={12}>
-                <h3>{moment(dateStart).format('MMM D YYYY')} @ {moment(timeStart).format('H:MM')}</h3>
-              </Grid>
-              <Grid item xs={12}>
-                <h3>{moment(dateEnd).format('MMM D YYYY')} @ {moment(timeEnd).format('H:MM')}</h3>
-              </Grid>
-              {location !== undefined && (
-                <Grid item xs={12}>
-                  <Grid item xs={12}>
-                    Address:
-                    {' '}
-                    {location.address}
-                  </Grid>
-                  <Grid item xs={12}>
-                    Apartment:
-                    {' '}
-                    {location.apartment}
-                  </Grid>
-                  <Grid item xs={12}>
-                    City:
-                    {' '}
-                    {location.city}
-                  </Grid>
-                  <Grid item xs={12}>
-                    Province:
-                    {' '}
-                    {location.province}
-                  </Grid>
-                  <Grid item xs={12}>
-                    Postal Code:
-                    {' '}
-                    {location.postalCode}
-                  </Grid>
-                  <Grid item xs={12}>
-                    Phone Number:
-                    {' '}
-                    {location.phoneNumber}
-                  </Grid>
-                </Grid>
+            <GridItem xs={12} sm={12} md={12} lg={12}>
+              <Card>
+                <CardHeader color="rose" icon>
+                  <CardIcon color="rose">
+                    <h4><b>Event</b></h4>
+                  </CardIcon>
+                  <h4 className={classes.cardIconTitle}><b>{eventName}</b></h4>
+                </CardHeader>
+                <CardBody>
+                  <GridItem xs={12} align="left">
+                    <h5><b> Description </b></h5>
+                    <h3>{eventDescription}</h3>
+                  </GridItem>
+
+                  {location !== undefined && location.address !== '' && (
+                    <div>
+                      <GridItem xs={12} sm={12} md={12} lg={12} align="left">
+                        <h5><b> Location </b></h5>
+                      </GridItem>
+                      <GridItem>
+                        <GridContainer xs={12} sm={12} md={12} lg={12} align="left">
+                          <GridItem xs={12} sm={4} md={4} lg={2}>
+                            <h6>Address</h6>
+                            {' '}
+                            {location.address}
+                          </GridItem>
+                          {location.apartment !== '' && (
+                            <GridItem xs={12} sm={2} md={2} lg={2}>
+                              <h6>Apartment</h6>
+                              {' '}
+                              {location.apartment}
+                            </GridItem>
+                          )}
+                          <GridItem xs={12} sm={4} md={4} lg={3}>
+                            <h6>City</h6>
+                            {' '}
+                            {location.city}
+                          </GridItem>
+                          <GridItem xs={12} sm={4} md={4} lg={2}>
+                            <h6>Province</h6>
+                            {' '}
+                            {location.province}
+                          </GridItem>
+                          <GridItem xs={12} sm={4} md={4} lg={2}>
+                            <h6>Postal Code</h6>
+                            {' '}
+                            {location.postalCode}
+                          </GridItem>
+                          <GridItem xs={12} sm={4} md={4} lg={2}>
+                            <h6>Phone Number</h6>
+                            {' '}
+                            {location.phoneNumber}
+                          </GridItem>
+                        </GridContainer>
+                      </GridItem>
+                    </div>
+                  )}
+                  <GridItem xs={12} sm={8} md={8} lg={4} align="left">
+                    <h5><b> Time </b></h5>
+                    <GridItem xs={12}>
+                      From {moment(dateStart).format('MMM D YYYY')} at {timeStart}
+                    </GridItem>
+                    <GridItem xs={12}>
+                      Until {moment(dateEnd).format('MMM D YYYY')} at {timeEnd}
+                    </GridItem>
+                  </GridItem>
+                  {location !== undefined && location.address !== '' && timeStart !== undefined && (
+                    <GridItem xs={12} sm={8} md={8} lg={4} align="left">
+                      <Card><AddToCalendar event={this.state.event} buttonTemplate={icon} /></Card>
+                    </GridItem>
+                  )}
+                  {location !== undefined && location.address !== '' && (
+                    <GoogleMaps
+                      location={location}
+                    />
+                  )}
+                </CardBody>
+              </Card>
+            </GridItem>
+            <Grid item xs={12}>
+              {user.type === UserTypes.ADMIN
+                && (
+                  <Button onClick={this.warningWithConfirmAndCancelMessage} color="danger">
+                    Delete
+                  </Button>
+                )
+              }
+              {user.username === eventOwner && (
+                <React.Fragment>
+                  <Button onClick={this.warningWithConfirmAndCancelMessage} color="danger">
+                    Delete
+                  </Button>
+                  <Button
+                    color="primary"
+                    component={props => <Link to={{ pathname: '/events/create', state: { editMode: true, eventId } }} {...props} />}
+                  >
+                    Edit
+                  </Button>
+                </React.Fragment>
               )}
-              {location !== undefined && (
-                <Grid item xs={12}>
-                  <GoogleMaps
-                    location={location}
-                  />
-                </Grid>
-              )}
-              <Grid item xs={12}>
-                Event Id : {eventId}
-              </Grid>
-              <Grid item xs={12}>
-                <AddToCalendar />
-              </Grid>
-              <Grid item xs={12}>
-                {user.type === UserTypes.ADMIN
-                  && (
-                    <Button onClick={this.warningWithConfirmAndCancelMessage} color="secondary">
-                      Delete
-                    </Button>
-                  )
-                }
-                {user.username === eventOwner && (
-                  <React.Fragment>
-                    <Button onClick={this.warningWithConfirmAndCancelMessage} color="secondary">
-                      Delete
-                    </Button>
-                    <Button
-                      color="primary"
-                      component={props => <Link to={{ pathname: '/events/create', state: { editMode: true, eventId } }} {...props} />}
-                    >
-                      Edit
-                    </Button>
-                  </React.Fragment>
-                )}
-              </Grid>
             </Grid>
           </div>
         )}

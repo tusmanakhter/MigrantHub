@@ -14,7 +14,8 @@ import { provinces } from 'lib/SignUpConstants';
 import { serviceCategories } from 'lib/ServiceCategories';
 import { PhoneMask, PostalCodeMask } from 'lib/Masks';
 import Clearfix from "components/Clearfix/Clearfix.jsx";
-import moment from 'moment'
+import moment from 'moment';
+import SweetAlert from "react-bootstrap-sweetalert";
 
 // core components
 import GridContainer from "components/Grid/GridContainer.jsx";
@@ -124,7 +125,10 @@ class ServiceForm extends Component {
         // Server response
       messageFromServer: '',
       redirectToAllServices: false,
+      alert: null,
+      show: false,
     };
+    this.hideAlert = this.hideAlert.bind(this);
     this.imageRef=React.createRef();
     this.handleChange = this.handleChange.bind(this);
     this.handleImageChange = this.handleImageChange.bind(this);
@@ -146,6 +150,29 @@ class ServiceForm extends Component {
     if (location.state) {
       this.getData(this);
     }
+  }
+
+  autoCloseAlert() {
+    this.setState({
+      alert: (
+        <SweetAlert
+          style={{ display: "block", marginTop: "-100px" }}
+          title="Update Successful"
+          onConfirm={() => this.hideAlert()}
+          showConfirm={false}
+        >
+          This will close in 2 seconds.
+        </SweetAlert>
+      )
+    });
+    setTimeout(this.hideAlert, 2000);
+  }
+
+  hideAlert() {
+    this.setState({
+      alert: null
+    });
+    this.updateService();
   }
 
   componentWillReceiveProps() {
@@ -643,7 +670,7 @@ class ServiceForm extends Component {
       serviceDescription, serviceHours, serviceDate, location,
       addLocation, addServiceDate, serviceHoursCount, messageFromServer, editMode,
       category, categoryError, subcategory, subcategoryError,
-      subcategoriesArray, file, imagePreviewUrl
+      subcategoriesArray, file, imagePreviewUrl, alert
     } = this.state;
 
     return (
@@ -656,7 +683,7 @@ class ServiceForm extends Component {
               </span>
             ))}
             {this.renderRedirectToAllServices()}
-
+            {alert}
           <GridItem xs={12} sm={12} md={12}>
             <Card>
               <CardHeader color="success" text>
@@ -1253,7 +1280,7 @@ class ServiceForm extends Component {
                       <Button
                         variant="contained"
                         color="primary"
-                        onClick={this.handleUpdate}
+                        onClick={this.autoCloseAlert.bind(this)}
                         className={classes.button}
                       >
                       Edit
