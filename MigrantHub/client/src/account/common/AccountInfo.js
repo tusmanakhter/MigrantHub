@@ -58,7 +58,7 @@ class AccountInfo extends Component {
     var userExists = await this.checkForExistingUser(email);
 
     if (userExists) {
-      errors.emailError = `The user already exists`;
+      errors.emailError = `${intl.formatMessage({ id: 'email' })}  ${intl.formatMessage({ id: 'alreadyexists' })}`;
       isError = true;
     }
 
