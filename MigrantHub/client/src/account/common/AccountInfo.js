@@ -13,6 +13,7 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import validator from 'validator';
+import axios from 'axios';
 import { injectIntl, intlShape, FormattedMessage } from 'react-intl';
 
 const styles = ({});
@@ -29,7 +30,14 @@ class AccountInfo extends Component {
     this.setState(state => ({ showPassword: !state.showPassword }));
   };
 
-  validate = () => {
+  async checkForExistingUser(email) {
+    const response = await axios.get(`/api/accounts/get/user/${email}`);
+
+    return response.data !== "" ? true : false
+    
+  }
+
+  async validate() {
     const { email, password, confirmPassword, intl } = this.props;
 
     let isError = false;
@@ -44,6 +52,13 @@ class AccountInfo extends Component {
       isError = true;
     } else if (!validator.isEmail(email)) {
       errors.emailError = `${intl.formatMessage({ id: 'email' })}  ${intl.formatMessage({ id: 'notvalid' })}`;
+      isError = true;
+    }
+
+    var userExists = await this.checkForExistingUser(email);
+
+    if (userExists) {
+      errors.emailError = `The user already exists`;
       isError = true;
     }
 
