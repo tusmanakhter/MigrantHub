@@ -84,7 +84,7 @@ class ServiceList extends Component {
 
   fetchData = (redirect, props) => {
     const { location } = props;
-    const { limit, moreData } = this.state;
+    const { limit } = this.state;
     let { offset } = this.state;
 
     let editOwnerEmail = '';

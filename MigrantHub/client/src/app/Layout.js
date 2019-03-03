@@ -11,7 +11,6 @@ import image from 'assets/img/sidebar-2.jpg';
 import logo from 'assets/img/logo-white.svg';
 import { withRouter } from 'react-router';
 
-let ps;
 
 class Layout extends React.Component {
   constructor(props) {
@@ -46,9 +45,6 @@ class Layout extends React.Component {
   }
 
   componentWillUnmount() {
-    if (navigator.platform.indexOf('Win') > -1) {
-      ps.destroy();
-    }
     window.removeEventListener('resize', this.resizeFunction);
   }
 

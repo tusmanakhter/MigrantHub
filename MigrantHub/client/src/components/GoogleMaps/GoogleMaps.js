@@ -29,13 +29,14 @@ const styles = {
 const GoogleMapWithMarker = compose(
     withProps({
         googleMapURL: `https://maps.googleapis.com/maps/api/js?${process.env.REACT_APP_GOOGLE_API_KEY}&v=3.exp&libraries=geometry,drawing,places`,
-        loadingElement: <div style={{ height: '100%' }} />,
-        containerElement: <div style={{ height: '300px' }}/>,
-        mapElement: <div style={{ height: '100%' }} />,
+        loadingElement: <div style={{ height: `100%` }} />,
+        containerElement: <div />,
+	    mapElement: <div style={{ height: '400px' }} />,
         originLat: 45.5017,
         originLng: -73.5673,
         isMarkerShown: false,
         dataRetrieved: false,
+        
     }),
     withScriptjs,
     withGoogleMap,

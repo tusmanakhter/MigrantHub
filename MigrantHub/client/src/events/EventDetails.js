@@ -66,7 +66,6 @@ class EventDetails extends Component {
 
   componentDidMount(props) {
     this.getData(this, props);
-    console.log(this.props.location.address);
   }
 
   componentWillReceiveProps(props) {

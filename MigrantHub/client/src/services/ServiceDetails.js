@@ -51,11 +51,7 @@ class ServiceDetails extends Component {
       serviceImageName: '',
       redirect: false,
       dataRetrieved: 'Sorry this is not a valid link to share',
-      redirectTo: false,
-      redirectToURL: '',
-      redirectState: {},
       alert: null,
-      show: false,
       event: {
         title: this.props.serviceTitle,
         description: this.props.serviceDescription,
