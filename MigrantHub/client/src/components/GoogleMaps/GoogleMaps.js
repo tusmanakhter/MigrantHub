@@ -5,21 +5,38 @@ import { compose, withProps, lifecycle, withStateHandlers  } from 'recompose';
 import {
     withScriptjs, withGoogleMap, GoogleMap, Marker, DirectionsRenderer,
 } from 'react-google-maps';
+import AddLocation from "@material-ui/icons/AddLocation";
+import withStyles from "@material-ui/core/styles/withStyles";
 import axios from 'axios';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
+import GridContainer from "components/Grid/GridContainer.jsx";
+import GridItem from "components/Grid/GridItem.jsx";
+import Card from "components/Card/Card.jsx";
+import CardBody from "components/Card/CardBody.jsx";
+import CardIcon from "components/Card/CardIcon.jsx";
+import CardHeader from "components/Card/CardHeader.jsx";
+import { cardTitle } from "assets/jss/material-dashboard-pro-react.jsx";
+
+const styles = {
+    cardIconTitle: {
+      ...cardTitle,
+      marginTop: "15px",
+      marginBottom: "0px"
+    }
+  };
 
 const GoogleMapWithMarker = compose(
     withProps({
         googleMapURL: `https://maps.googleapis.com/maps/api/js?${process.env.REACT_APP_GOOGLE_API_KEY}&v=3.exp&libraries=geometry,drawing,places`,
-        loadingElement: <div style={{ height: '100%' }} />,
+        loadingElement: <div style={{ height: `100%` }} />,
         containerElement: <div />,
-        mapElement: <div style={{ height: '400px' }} />,
+	    mapElement: <div style={{ height: '400px' }} />,
         originLat: 45.5017,
         originLng: -73.5673,
         isMarkerShown: false,
         dataRetrieved: false,
+        
     }),
     withScriptjs,
     withGoogleMap,
@@ -130,18 +147,22 @@ class GoogleMaps extends Component {
         });
     };
     render() {
-        const { location } = this.props;
+        const { location, classes } = this.props;
         const { directionType } = this.state;
 
         return (
-            <Grid container spacing={12}>
-                <Typography variant="h5" color="inherit" paragraph>
-                    Directions:
-                </Typography>
-                <Grid item xs={12}>
-                    <b>Note:</b> Direction only available if you entered a address in your profile.
-                </Grid>
-                <Grid item xs={12}>
+            <center>
+        <GridItem xs={12} sm={12} md={12} lg={12}>
+            <Card>
+                <CardHeader color="rose" icon>
+                    <CardIcon color="rose">
+                    <AddLocation />
+                    </CardIcon>
+                    <h4 className={classes.cardIconTitle}>Map</h4>
+                </CardHeader>
+                <CardBody>
+                <GridContainer>
+                <GridItem xs={12}>
                     <Button size="small" color="primary" onClick={()=>this.handleDirectionTypeChange('BICYCLING')}>
                         BICYCLING
                     </Button>
@@ -154,14 +175,18 @@ class GoogleMaps extends Component {
                     <Button size="small" color="primary" onClick={()=>this.handleDirectionTypeChange('WALKING')}>
                         WALKING
                     </Button>
-                </Grid>
-                <Grid item xs={12}>
+                </GridItem>
+                <GridItem xs={12} sm={12} md={12} lg={12}>
                     <GoogleMapWithMarker
                         location={ location }
                         directionType={ directionType }
                     />
-                </Grid>
-            </Grid>
+                </GridItem>
+                </GridContainer>
+                </CardBody>
+            </Card>
+        </GridItem>
+            </center>
         );
     }
 }
@@ -170,4 +195,4 @@ GoogleMaps.propTypes = {
     location: PropTypes.shape({}).isRequired,
 };
 
-export default GoogleMaps;
+export default withStyles(styles)(GoogleMaps);

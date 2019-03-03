@@ -444,9 +444,6 @@ const sidebarStyle = theme => ({
     color: "inherit",
     paddingBottom: "30px"
   },
-  sidebarWrapperWithPerfectScrollbar: {
-    overflow: "hidden !important"
-  },
   user: {
     paddingBottom: "20px",
     margin: "20px auto 0",
