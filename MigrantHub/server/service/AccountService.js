@@ -20,7 +20,14 @@ module.exports = {
       const hash = bcrypt.hashSync(migrantUserObject.password, salt);
       migrantUserObject.password = hash;
 
-      return MigrantRepository.createUser(migrantUserObject);
+      await MigrantRepository.createUser(migrantUserObject);
+
+      const receiverEmail = migrantUserObject.email;
+      const subject = 'MigrantHub: Account Confirmation';
+      const message = 'You have successfully created your MigrantHub user account. You are now able to login to the application.';
+      SendEmail.sendEmail(receiverEmail, subject, message);
+
+      return Promise.resolve('Migrant User has been created.');
     }
     throw new ServerError('There was an error creating migrant user.', 400, errors);
   },
@@ -34,7 +41,14 @@ module.exports = {
       const hash = bcrypt.hashSync(businessUserObject.password, salt);
       businessUserObject.password = hash;
 
-      return BusinessRepository.createBusiness(businessUserObject);
+      await BusinessRepository.createBusiness(businessUserObject);
+
+      const receiverEmail = businessUserObject.email;
+      const subject = 'MigrantHub: Account Confirmation';
+      const message = 'You have successfully created your MigrantHub business account. You are now able to login to the application.';
+      SendEmail.sendEmail(receiverEmail, subject, message);
+
+      return Promise.resolve('Business user has been created.');
     }
     throw new ServerError('There was an error creating business user.', 400, errors);
   },
@@ -48,7 +62,14 @@ module.exports = {
       const hash = bcrypt.hashSync(adminUserObject.password, salt);
       adminUserObject.password = hash;
 
-      return AdminRepository.createAdmin(adminUserObject);
+      await AdminRepository.createAdmin(adminUserObject);
+
+      const receiverEmail = adminUserObject.email;
+      const subject = 'MigrantHub: Account Confirmation';
+      const message = 'You have successfully created your MigrantHub admin account. You may login once you have been authorized.';
+      SendEmail.sendEmail(receiverEmail, subject, message);
+
+      return Promise.resolve('Admin user has been created.');
     }
     throw new ServerError('There was an error creating admin user.', 400, errors);
   },
