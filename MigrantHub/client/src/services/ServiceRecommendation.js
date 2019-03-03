@@ -7,6 +7,7 @@ import ServiceCard from 'services/ServiceCard';
 import dashboardStyle from "assets/jss/material-dashboard-pro-react/views/dashboardStyle.jsx";
 import Card from "components/Card/Card.jsx";
 import CardHeader from "components/Card/CardHeader.jsx";
+import { FormattedMessage } from 'react-intl';
 
 const styles = theme => ({
   ...dashboardStyle,
@@ -57,7 +58,7 @@ class ServiceRecommendation extends Component {
     return (
       <Card style={{ padding: '20px' }}>
         <CardHeader>
-          <h4 className={classes.cardTitle}>Suggested Services</h4>
+          <h4 className={classes.cardTitle}><FormattedMessage id="service.suggested" /></h4>
         </CardHeader>
         <React.Fragment>
           <div className={classes.mainContainer}>
