@@ -2,8 +2,6 @@ import React from 'react';
 import cx from 'classnames';
 import PropTypes from 'prop-types';
 import SidebarLinks from 'routes/SidebarLinks';
-import PerfectScrollbar from 'perfect-scrollbar';
-import 'perfect-scrollbar/css/perfect-scrollbar.css';
 import withStyles from '@material-ui/core/styles/withStyles';
 import Header from 'app/Header';
 import Footer from 'app/Footer';
@@ -13,7 +11,6 @@ import image from 'assets/img/sidebar-2.jpg';
 import logo from 'assets/img/logo-white.svg';
 import { withRouter } from 'react-router';
 
-let ps;
 
 class Layout extends React.Component {
   constructor(props) {
@@ -31,12 +28,6 @@ class Layout extends React.Component {
   }
 
   componentDidMount() {
-    if (navigator.platform.indexOf('Win') > -1) {
-      ps = new PerfectScrollbar(this.mainPanel, {
-        suppressScrollX: true,
-        suppressScrollY: false,
-      });
-    }
     window.addEventListener('resize', this.resizeFunction);
   }
 
@@ -54,9 +45,6 @@ class Layout extends React.Component {
   }
 
   componentWillUnmount() {
-    if (navigator.platform.indexOf('Win') > -1) {
-      ps.destroy();
-    }
     window.removeEventListener('resize', this.resizeFunction);
   }
 
@@ -88,8 +76,6 @@ class Layout extends React.Component {
       ' ' +
       cx({
         [classes.mainPanelSidebarMini]: this.state.miniActive,
-        [classes.mainPanelWithPerfectScrollbar]:
-          navigator.platform.indexOf('Win') > -1
       });
     const { children } = this.props;
     const { mobileOpen, miniActive } = this.state;

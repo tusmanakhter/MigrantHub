@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 
 // core components
 import Button from "components/CustomButtons/Button.jsx";
+import { injectIntl, intlShape, FormattedMessage } from 'react-intl';
 
 class ImageUpload extends React.Component {
   constructor(props) {
@@ -42,19 +43,19 @@ class ImageUpload extends React.Component {
         <div>
           {file === null ? (
             <Button {...addButtonProps} onClick={() => handleClick()}>
-              {avatar ? "Add Photo" : "Select image"}
+              {avatar ? <FormattedMessage id="form.select.photo" /> : <FormattedMessage id="form.select.image" /> }
             </Button>
           ) : (
             <span>
               <Button {...changeButtonProps} onClick={() => handleClick()}>
-                Change
+                <FormattedMessage id="form.change" />
               </Button>
               {avatar ? <br /> : null}
               <Button
                 {...removeButtonProps}
                 onClick={handleRemove}
               >
-                <i className="fas fa-times" /> Remove
+                <i className="fas fa-times" /> <FormattedMessage id="form.remove" />
               </Button>
             </span>
           )}
@@ -68,7 +69,8 @@ ImageUpload.propTypes = {
   avatar: PropTypes.bool,
   addButtonProps: PropTypes.object,
   changeButtonProps: PropTypes.object,
-  removeButtonProps: PropTypes.object
+  removeButtonProps: PropTypes.object,
+  intl: intlShape.isRequired,
 };
 
-export default ImageUpload;
+export default (injectIntl(ImageUpload));

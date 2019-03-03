@@ -84,7 +84,7 @@ class ServiceList extends Component {
 
   fetchData = (redirect, props) => {
     const { location } = props;
-    const { limit, moreData } = this.state;
+    const { limit } = this.state;
     let { offset } = this.state;
 
     let editOwnerEmail = '';
@@ -245,7 +245,7 @@ class ServiceList extends Component {
                 {' '}
                 {
                   items.map(item => (
-                    <Grid item>
+                    <GridItem>
                       <ServiceCard
                         serviceId={item._id}
                         serviceTitle={item.serviceTitle}
@@ -260,7 +260,7 @@ class ServiceList extends Component {
                         rating={item.avgRating}
                         count={item.countRating}
                       />
-                    </Grid>
+                    </GridItem>
                   ))
                 }
               </Grid>

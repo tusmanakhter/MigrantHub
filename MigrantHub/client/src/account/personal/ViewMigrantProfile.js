@@ -98,6 +98,9 @@ class ViewMigrantProfile extends Component {
         let tempWorkExperience;
         let tempFamily;
         let tempProficiencyExams;
+        let tempLookingForJob;
+        let tempJobStatus;
+        let tempJoiningReason;
 
         if (jsonObj.languages !== undefined) {
           tempLanguages = jsonObj.languages;
@@ -121,6 +124,34 @@ class ViewMigrantProfile extends Component {
           tempProficiencyExams = jsonObj.proficiencyExams;
         } else {
           tempProficiencyExams = [];
+        }
+
+        if (jsonObj.lookingForJob === 'true') {
+          tempLookingForJob = 'Yes';
+        } else if (jsonObj.lookingForJob === 'false') {
+          tempLookingForJob = 'No';
+        } else {
+          tempLookingForJob = 'N/A';
+        }
+
+        if (jsonObj.jobStatus === 'fulltime') {
+          tempJobStatus = 'Full Time';
+        } else if (jsonObj.jobStatus === 'parttime') {
+          tempJobStatus = 'Part Time';
+        } else if (jsonObj.jobStatus === 'unemployed') {
+          tempJobStatus = 'Unemployed';
+        } else if (jsonObj.jobStatus === 'student') {
+          tempJobStatus = 'Student';
+        } else {
+          tempJobStatus = 'N/A';
+        }
+
+        if (jsonObj.joiningReason === 'findjob') {
+          tempJoiningReason = 'Find Job';
+        } else if (jsonObj.joiningReason === 'help') {
+          tempJoiningReason = 'Help';
+        } else {
+          tempJoiningReason = 'N/A';
         }
 
         this.setState({
@@ -147,13 +178,13 @@ class ViewMigrantProfile extends Component {
           family: tempFamily,
           educationLevel: jsonObj.educationLevel,
           proficiencyExams: tempProficiencyExams,
-          jobStatus: jsonObj.jobStatus,
-          lookingForJob: jsonObj.lookingForJob,
+          jobStatus: tempJobStatus,
+          lookingForJob: tempLookingForJob,
           currentIncome: jsonObj.currentIncome,
           workExperience: tempWorkExperience,
           settlingLocation: jsonObj.settlingLocation,
           settlingDuration: jsonObj.settlingDuration,
-          joiningReason: jsonObj.joiningReason,
+          joiningReason: tempJoiningReason,
         });
         const progress = Object.keys(jsonObj).map((key, index) => (jsonObj.key !== null ? jsonObj.key : ''));
         this.setState({
@@ -199,6 +230,12 @@ class ViewMigrantProfile extends Component {
                     </CardIcon>
                   </CardHeader>
                   <CardBody>
+                    <br />
+                    <hr />
+                    <b>CONTACT INFORMATION</b>
+                    <br />
+                    <hr />
+                    <br />
                     <GridContainer>
                       <GridItem xs={12} sm={12} md={6}>
                         First Name
@@ -208,33 +245,29 @@ class ViewMigrantProfile extends Component {
                         Last Name
                         <p><b>{lastName || 'N/A'}</b></p>
                       </GridItem>
-                    </GridContainer>
-                    <br />
-                    <hr />
-                    <b>PERSONAL INFORMATION</b>
-                    <br />
-                    <hr />
-                    <br />
-                    <GridContainer>
-                      <GridItem xs={12} sm={12} md={4}>
-                        Age
-                        <p><b>{age || 'N/A'}</b></p>
+                      <GridItem xs={12} sm={12} md={6}>
+                        Address
+                        <p><b>{address || 'N/A'}</b></p>
                       </GridItem>
-                      <GridItem xs={12} sm={12} md={4}>
-                        Gender
-                        <p><b>{gender || 'N/A'}</b></p>
+                      <GridItem xs={12} sm={12} md={6}>
+                        Apartment
+                        <p><b>{apartment || 'N/A'}</b></p>
                       </GridItem>
-                      <GridItem xs={12} sm={12} md={4}>
-                        Nationality
-                        <p><b>{nationality || 'N/A'}</b></p>
+                      <GridItem xs={12} sm={12} md={6}>
+                        City
+                        <p><b>{city || 'N/A'}</b></p>
                       </GridItem>
-                      <GridItem xs={12} sm={12} md={4}>
-                        Relationship Status
-                        <p><b>{relationshipStatus || 'N/A'}</b></p>
+                      <GridItem xs={12} sm={12} md={6}>
+                        Province
+                        <p><b>{province || 'N/A'}</b></p>
                       </GridItem>
-                      <GridItem xs={12} sm={12} md={4}>
-                        Status
-                        <p><b>{status}</b></p>
+                      <GridItem xs={12} sm={12} md={6}>
+                        Postal Code
+                        <p><b>{postalCode || 'N/A'}</b></p>
+                      </GridItem>
+                      <GridItem xs={12} sm={12} md={6}>
+                        Phone Number
+                        <p><b>{phoneNumber || 'N/A'}</b></p>
                       </GridItem>
                     </GridContainer>
                     <Clearfix />
@@ -243,6 +276,42 @@ class ViewMigrantProfile extends Component {
               </GridItem>
             </GridContainer>
           </div>
+          <GridContainer justify="center">
+            <GridItem xs={11}>
+              <Card>
+                <CardBody>
+                  <br />
+                  <hr />
+                  <b>PERSONAL INFORMATION</b>
+                  <br />
+                  <hr />
+                  <br />
+                  <GridContainer>
+                    <GridItem xs={12} sm={12} md={4}>
+                      Age
+                      <p><b>{age || 'N/A'}</b></p>
+                    </GridItem>
+                    <GridItem xs={12} sm={12} md={4}>
+                      Gender
+                      <p><b>{gender || 'N/A'}</b></p>
+                    </GridItem>
+                    <GridItem xs={12} sm={12} md={4}>
+                      Nationality
+                      <p><b>{nationality || 'N/A'}</b></p>
+                    </GridItem>
+                    <GridItem xs={12} sm={12} md={4}>
+                      Relationship Status
+                      <p><b>{relationshipStatus || 'N/A'}</b></p>
+                    </GridItem>
+                    <GridItem xs={12} sm={12} md={4}>
+                      Status
+                      <p><b>{status}</b></p>
+                    </GridItem>
+                  </GridContainer>
+                </CardBody>
+              </Card>
+            </GridItem>
+          </GridContainer>
           <GridContainer justify="center">
             <GridItem xs={11}>
               <Card>
@@ -267,6 +336,14 @@ class ViewMigrantProfile extends Component {
                       <p><b>{writingLevel || 'N/A'}</b></p>
                     </GridItem>
                   </GridContainer>
+                </CardBody>
+              </Card>
+            </GridItem>
+          </GridContainer>
+          <GridContainer justify="center">
+            <GridItem xs={11}>
+              <Card>
+                <CardBody>
                   <br />
                   <hr />
                   <b>EDUCATION INFORMATION</b>
@@ -276,7 +353,7 @@ class ViewMigrantProfile extends Component {
                   <GridContainer>
                     <GridItem xs={12} sm={12} md={4}>
                       Education Level
-                      <p><b>{motherTongue || 'N/A'}</b></p>
+                      <p><b>{educationLevel || 'N/A'}</b></p>
                     </GridItem>
                   </GridContainer>
                   <br />
@@ -288,11 +365,15 @@ class ViewMigrantProfile extends Component {
                   <GridContainer>
                     <GridItem xs={12} sm={12} md={4}>
                       IELTS
-                      <p><b>{proficiencyExams.ielts ? ('True') : ('False')}</b></p>
+                      <p><b>{proficiencyExams.ielts === 'true' ? ('Yes') : ('No')}</b></p>
                     </GridItem>
                     <GridItem xs={12} sm={12} md={4}>
                       French
-                      <p><b>{proficiencyExams.french ? ('True') : ('False')}</b></p>
+                      <p><b>{proficiencyExams.french === 'true' ? ('Yes') : ('No')}</b></p>
+                    </GridItem>
+                    <GridItem xs={12} sm={12} md={4}>
+                      Other
+                      <p><b>{proficiencyExams.others !== undefined && proficiencyExams.others !== '' ? (proficiencyExams.others) : ('N/A')}</b></p>
                     </GridItem>
                   </GridContainer>
                 </CardBody>
@@ -311,17 +392,29 @@ class ViewMigrantProfile extends Component {
                   <br />
                   <GridContainer>
                     <GridItem xs={12} sm={12} md={4}>
-                      Looking for a job
-                      <p><b>{lookingForJob || 'N/A'}</b></p>
+                      Job Status
+                      <p><b>{jobStatus || 'N/A'}</b></p>
                     </GridItem>
                     <GridItem xs={12} sm={12} md={4}>
-                      Current Income
+                      Current Income ($)
                       <p><b>{currentIncome || 'N/A'}</b></p>
                     </GridItem>
+                    <GridItem xs={12} sm={12} md={4}>
+                      Looking for a job
+                      <p><b>{lookingForJob}</b></p>
+                      </GridItem>
                   </GridContainer>
+                </CardBody>
+              </Card>
+            </GridItem>
+          </GridContainer>
+          <GridContainer justify="center">
+            <GridItem xs={11}>
+              <Card>
+                <CardBody>
                   <br />
                   <hr />
-                  <b>SETTLING INFORMATION</b>
+                  <b>OTHER INFORMATION</b>
                   <br />
                   <hr />
                   <br />
@@ -331,8 +424,12 @@ class ViewMigrantProfile extends Component {
                       <p><b>{settlingLocation || 'N/A'}</b></p>
                     </GridItem>
                     <GridItem xs={12} sm={12} md={4}>
-                      Duration
+                      Duration (Years)
                       <p><b>{settlingDuration || 'N/A'}</b></p>
+                    </GridItem>
+                    <GridItem xs={12} sm={12} md={4}>
+                      Joining Reason
+                      <p><b>{joiningReason || 'N/A'}</b></p>
                     </GridItem>
                   </GridContainer>
                 </CardBody>

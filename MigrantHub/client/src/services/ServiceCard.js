@@ -14,6 +14,7 @@ import StarRatingComponent from 'react-star-rating-component';
 const styles = {
   card: {
     maxWidth: 345,
+    minWidth: 345,
     minHeight: 350,
     textAlign: 'left',
   },

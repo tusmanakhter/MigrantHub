@@ -6,6 +6,8 @@ import localesFR from 'react-intl/locale-data/fr';
 import messagesEN from 'locales/en.json';
 import messagesFR from 'locales/fr.json';
 import { withCookies, Cookies } from 'react-cookie';
+import moment from 'moment';
+import 'moment/locale/fr';
 
 addLocaleData([...localesEN, ...localesFR]);
 
@@ -19,6 +21,7 @@ class IntlProviderWrapper extends React.Component {
 
     this.switchToEnglish = () => {
       cookies.set('locale', 'en', { path: '/' });
+      moment.locale('en');
       this.setState(
         { locale: 'en', messages: messagesEN },
       );
@@ -26,12 +29,18 @@ class IntlProviderWrapper extends React.Component {
 
     this.switchToFrench = () => {
       cookies.set('locale', 'fr', { path: '/' });
+      moment.locale('fr');
       this.setState(
         { locale: 'fr', messages: messagesFR },
       );
     };
 
-    const locale = cookies.get('locale') || 'en';
+    let locale = cookies.get('locale');
+    if (!locale) {
+      cookies.set('locale', 'en', { path: '/' });
+      locale = 'en';
+    }
+    moment.locale(locale);
 
     let messages = messagesEN;
     if (locale === 'fr') {

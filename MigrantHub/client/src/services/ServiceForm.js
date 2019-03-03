@@ -14,7 +14,9 @@ import { provinces } from 'lib/SignUpConstants';
 import { serviceCategories } from 'lib/ServiceCategories';
 import { PhoneMask, PostalCodeMask } from 'lib/Masks';
 import Clearfix from "components/Clearfix/Clearfix.jsx";
-import moment from 'moment'
+import moment from 'moment';
+import SweetAlert from "react-bootstrap-sweetalert";
+import { injectIntl, intlShape, FormattedMessage } from 'react-intl';
 
 // core components
 import GridContainer from "components/Grid/GridContainer.jsx";
@@ -43,6 +45,7 @@ import extendedFormsStyle from "assets/jss/material-dashboard-pro-react/views/ex
 import regularFormsStyle from "assets/jss/material-dashboard-pro-react/views/regularFormsStyle";
 import defaultImage from "assets/img/image_placeholder.jpg";
 import defaultAvatar from "assets/img/placeholder.jpg";
+import { toast } from 'react-toastify';
 
 const dayOfTheWeek = [
   { value: 'monday', label: 'Monday' },
@@ -123,7 +126,10 @@ class ServiceForm extends Component {
         // Server response
       messageFromServer: '',
       redirectToAllServices: false,
+      alert: null,
+      show: false,
     };
+    this.hideAlert = this.hideAlert.bind(this);
     this.imageRef=React.createRef();
     this.handleChange = this.handleChange.bind(this);
     this.handleImageChange = this.handleImageChange.bind(this);
@@ -145,6 +151,29 @@ class ServiceForm extends Component {
     if (location.state) {
       this.getData(this);
     }
+  }
+
+  autoCloseAlert() {
+    this.setState({
+      alert: (
+        <SweetAlert
+          style={{ display: "block", marginTop: "-100px" }}
+          title="Update Successful"
+          onConfirm={() => this.hideAlert()}
+          showConfirm={false}
+        >
+          This will close in 2 seconds.
+        </SweetAlert>
+      )
+    });
+    setTimeout(this.hideAlert, 2000);
+  }
+
+  hideAlert() {
+    this.setState({
+      alert: null
+    });
+    this.updateService();
   }
 
   componentWillReceiveProps() {
@@ -387,6 +416,7 @@ class ServiceForm extends Component {
 
   validate = () => {
     let isError = false;
+      const { intl } = this.props;
 
     const {
       serviceTitle, serviceSummary, serviceDescription, serviceHours, serviceDate,
@@ -413,30 +443,30 @@ class ServiceForm extends Component {
     };
 
     if (validator.isEmpty(serviceTitle)) {
-      errors.serviceTitleError = 'Title is required';
+      errors.serviceTitleError = `${intl.formatMessage({ id: 'form.title' })}  ${intl.formatMessage({ id: 'isrequired' })}`;
       isError = true;
     }
     if (validator.isEmpty(serviceSummary)) {
-      errors.serviceSummaryError = 'Service summary is required';
+      errors.serviceSummaryError = `${intl.formatMessage({ id: 'form.summary' })}  ${intl.formatMessage({ id: 'isrequired' })}`;
       isError = true;
     }
     if (validator.isEmpty(serviceDescription)) {
-      errors.serviceDescriptionError = 'Service description is required';
+      errors.serviceDescriptionError = `${intl.formatMessage({ id: 'form.description' })}  ${intl.formatMessage({ id: 'isrequired' })}`;
       isError = true;
     }
     if (validator.isEmpty(category)) {
-        errors.categoryError = 'Service category is required';
+        errors.categoryError = `${intl.formatMessage({ id: 'form.category' })}  ${intl.formatMessage({ id: 'isrequired' })}`;
         isError = true;
     }
     if (subcategoriesArray.length > 0) {
         if (validator.isEmpty(subcategory)) {
-            errors.subcategoryError = 'Service sub-category is required';
+            errors.subcategoryError = `${intl.formatMessage({ id: 'form.subcategory' })}  ${intl.formatMessage({ id: 'isrequired' })}`;
             isError = true;
         }
     }
     if (serviceImage !== null) {
       if (!validator.matches(serviceImageName, '.([.jpg]|[.jpeg]|[.png])$')) {
-        errors.serviceImageError = 'Invalid image format. Should be either .jpg, .jpeg or .png';
+        errors.serviceImageError = `${intl.formatMessage({ id: 'form.image' })}  ${intl.formatMessage({ id: 'notvalid' })} .jpg, .jpeg or .png`;
         isError = true;
       }
     }
@@ -444,48 +474,48 @@ class ServiceForm extends Component {
       const date = new Date();
       const todaysDate = (`${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`);
       if (validator.isEmpty(serviceDate.startDate)) {
-        errors.startDateError = 'Start date is required';
+        errors.startDateError = `${intl.formatMessage({ id: 'form.day.start' })}  ${intl.formatMessage({ id: 'isrequired' })}`;
         isError = true;
       } else if (validator.isBefore(serviceDate.startDate, todaysDate)) {
-        errors.startDateError = 'Start date is invalid';
+        errors.startDateError = `${intl.formatMessage({ id: 'form.day.start' })}  ${intl.formatMessage({ id: 'notvalid' })}`;
         isError = true;
       }
       if (validator.isEmpty(serviceDate.endDate)) {
-        errors.endDateError = 'End date is required';
+        errors.endDateError = `${intl.formatMessage({ id: 'form.day.end' })}  ${intl.formatMessage({ id: 'isrequired' })}`;
         isError = true;
       } else if (validator.isBefore(serviceDate.endDate, serviceDate.startDate)) {
-        errors.endDateError = 'End date should be after start date';
+        errors.endDateError = `${intl.formatMessage({ id: 'form.day.end' })}  ${intl.formatMessage({ id: 'notvalid' })}`;
         isError = true;
       }
     }
     if (addLocation) {
       if (validator.isEmpty(location.address)) {
-        errors.addressError = 'Address is required';
+        errors.addressError = `${intl.formatMessage({ id: 'contact.address' })}  ${intl.formatMessage({ id: 'isrequired' })}`;
         isError = true;
       }
       if (validator.isEmpty(location.city)) {
-        errors.cityError = 'City is required';
+        errors.cityError = `${intl.formatMessage({ id: 'contact.city' })}  ${intl.formatMessage({ id: 'isrequired' })}`;
         isError = true;
       } else if (!validator.isAlpha(location.city)) {
-        errors.cityError = 'This is not a valid city';
+        errors.cityError = `${intl.formatMessage({ id: 'contact.city' })}  ${intl.formatMessage({ id: 'notvalid' })}`;
         isError = true;
       }
       if (validator.isEmpty(location.province)) {
-        errors.provinceError = 'Province is required';
+        errors.provinceError = `${intl.formatMessage({ id: 'contact.province' })}  ${intl.formatMessage({ id: 'isrequired' })}`;
         isError = true;
       }
       if (validator.isEmpty(location.postalCode)) {
-        errors.postalCodeError = 'Postal code is required';
+          errors.postalCodeError = `${intl.formatMessage({ id: 'contact.postal' })}  ${intl.formatMessage({ id: 'isrequired' })}`;
         isError = true;
       } else if (!validator.isLength(location.postalCode, { min: 7, max: 7 })) {
-        errors.postalCodeError = 'Postal code is invalid';
+        errors.postalCodeError = `${intl.formatMessage({ id: 'contact.postal' })}  ${intl.formatMessage({ id: 'notvalid' })}`;
         isError = true;
       }
       if (validator.isEmpty(location.phoneNumber)) {
-        errors.phoneNumberError = 'Phone number is required';
+        errors.phoneNumberError = `${intl.formatMessage({ id: 'contact.phone' })}  ${intl.formatMessage({ id: 'isrequired' })}`;
         isError = true;
       } else if (!validator.isLength(location.phoneNumber, { min: 14, max: 14 })) {
-        errors.phoneNumberError = 'Phone number is invalid';
+        errors.phoneNumberError = `${intl.formatMessage({ id: 'contact.phone' })}  ${intl.formatMessage({ id: 'notvalid' })}`;
         isError = true;
       }
     }
@@ -495,18 +525,18 @@ class ServiceForm extends Component {
         JSON.stringify(serviceHoursObject),
       )]);
       if (validator.isEmpty(member.startTime)) {
-        errors.serviceHoursError[index].startTime = 'Start time is required';
+        errors.serviceHoursError[index].startTime = `${intl.formatMessage({ id: 'form.time.start' })}  ${intl.formatMessage({ id: 'isrequired' })}`;
         isError = true;
       }
       if (validator.isEmpty(member.endTime)) {
-        errors.serviceHoursError[index].endTime = 'End time is required';
+        errors.serviceHoursError[index].endTime = `${intl.formatMessage({ id: 'form.time.end' })}  ${intl.formatMessage({ id: 'isrequired' })}`;
         isError = true;
       } else if (member.endTime <= member.startTime) {
-        errors.serviceHoursError[index].endTime = 'End time should be after start time';
+        errors.serviceHoursError[index].endTime = `${intl.formatMessage({ id: 'form.time.end' })}  ${intl.formatMessage({ id: 'notvalid' })}`;
         isError = true;
       }
       if (validator.isEmpty(member.serviceDay)) {
-        errors.serviceHoursError[index].serviceDay = 'Service day is required';
+        errors.serviceHoursError[index].serviceDay = `${intl.formatMessage({ id: 'form.day' })}  ${intl.formatMessage({ id: 'isrequired' })}`;
         isError = true;
       }
     });
@@ -624,9 +654,7 @@ class ServiceForm extends Component {
         },
       }).then((response) => {
       if (response.status === 200) {
-        this.setState({
-          redirectToAllServices: true,
-        });
+        toast.success('Updated service!');
       }
     }).catch((error) => {
       this.setState({
@@ -644,7 +672,7 @@ class ServiceForm extends Component {
       serviceDescription, serviceHours, serviceDate, location,
       addLocation, addServiceDate, serviceHoursCount, messageFromServer, editMode,
       category, categoryError, subcategory, subcategoryError,
-      subcategoriesArray, file, imagePreviewUrl
+      subcategoriesArray, file, imagePreviewUrl, alert
     } = this.state;
 
     return (
@@ -657,12 +685,12 @@ class ServiceForm extends Component {
               </span>
             ))}
             {this.renderRedirectToAllServices()}
-
+            {alert}
           <GridItem xs={12} sm={12} md={12}>
             <Card>
               <CardHeader color="success" text>
                 <CardText color="success">
-                  <h4>Service Form</h4>
+                  <h4><FormattedMessage id="service.form" /></h4>
                 </CardText>
               </CardHeader>
               <CardBody>
@@ -698,7 +726,7 @@ class ServiceForm extends Component {
                     <GridItem xs={12} sm={12} md={12}>
                       <CustomInput
                         className={classes.input}
-                        labelText="Service Title"
+                        labelText={<FormattedMessage id="form.title" />}
                         formControlProps={{
                           fullWidth: true
                         }}
@@ -722,7 +750,7 @@ class ServiceForm extends Component {
                         htmlFor="simple-select"
                         className={classes.selectLabel}
                       >
-                        Choose Category
+                        <FormattedMessage id="form.select.category" />
                       </InputLabel>
                       <Select
                         MenuProps={{
@@ -738,7 +766,7 @@ class ServiceForm extends Component {
                         }}
                         name="category"
                         select
-                        label="Category"
+                        label={<FormattedMessage id="form.select.category" />}
                         onChange={event => this.handleCategoryChange(event)}
                         fullWidth
                         helperText={categoryError}
@@ -748,7 +776,7 @@ class ServiceForm extends Component {
                           disabled
                           classes={{ root: classes.selectMenuItem }}
                         >
-                        Choose Category
+                          <FormattedMessage id="form.select.category" />
                         </MenuItem>
                         {serviceCategories.map(option => (
                         <MenuItem 
@@ -767,11 +795,10 @@ class ServiceForm extends Component {
                     </GridItem>
                     <GridItem xs={12} sm={6} md={4} lg={4}>
                       <FormControl
-                        fullWidth
                         className={classes.selectFormControl}
                           name="subcategory"
                           select
-                          label="SubCategory"
+                          label={<FormattedMessage id="form.select.subcategory" />}
                           onChange={event => this.handleChange(event)}
                           fullWidth
                           helperText={subcategoryError}
@@ -781,7 +808,7 @@ class ServiceForm extends Component {
                           htmlFor="simple-select"
                           className={classes.selectLabel}
                         >
-                          Choose Subcategory
+                          <FormattedMessage id="form.select.subcategory" />
                         </InputLabel>
                         <Select
                           MenuProps={{
@@ -803,7 +830,7 @@ class ServiceForm extends Component {
                                 root: classes.selectMenuItem
                               }}
                             >
-                              Choose Subcategory
+                              <FormattedMessage id="form.select.subcategory" />
                             </MenuItem>
                             {subcategoriesArray.map(option => (
                               <MenuItem 
@@ -822,7 +849,7 @@ class ServiceForm extends Component {
                     </GridItem>
                     <GridItem xs={12} sm={12} md={12}>
                       <CustomInput
-                        labelText="Service Summary"
+                        labelText={<FormattedMessage id="form.summary" />}
                         formControlProps={{
                           fullWidth: true
                         }}
@@ -838,7 +865,7 @@ class ServiceForm extends Component {
                     </GridItem>
                     <GridItem xs={12} sm={12} md={12}>
                       <CustomInput
-                        labelText="Service Description"
+                        labelText={<FormattedMessage id="form.description" />}
                         formControlProps={{
                           fullWidth: true
                         }}
@@ -861,7 +888,10 @@ class ServiceForm extends Component {
                         <CardIcon color="success">
                           <Today />
                         </CardIcon>
-                        <h4 className={classes.cardIconTitle}>Date (Optional)</h4>
+                        <h4 className={classes.cardIconTitle}>
+                          <FormattedMessage id="form.date" />
+                          (<FormattedMessage id="form.optional" />)
+                        </h4>
                       </CardHeader>
                       <CardBody>
                         <GridItem>
@@ -890,7 +920,7 @@ class ServiceForm extends Component {
                         {addServiceDate === true && (
                         <GridContainer>
                         <GridItem xs={6} sm={6} md={6}>
-                        <InputLabel className={classes.label}>Start date</InputLabel>
+                        <InputLabel className={classes.label}><FormattedMessage id="form.day.start" /></InputLabel>
                         <br />
                       <FormControl fullWidth>
                         <Datetime
@@ -908,7 +938,7 @@ class ServiceForm extends Component {
                       </FormControl>
                       </GridItem>
                       <GridItem xs={6} sm={6} md={6}>
-                      <InputLabel className={classes.label}>End date</InputLabel>
+                      <InputLabel className={classes.label}><FormattedMessage id="form.day.end" /></InputLabel>
                         <br />
                       <FormControl fullWidth>
                         <Datetime
@@ -938,7 +968,10 @@ class ServiceForm extends Component {
                         <CardIcon color="success">
                           <AvTimer />
                         </CardIcon>
-                        <h4 className={classes.cardIconTitle}>Day Time (Optional)</h4>
+                        <h4 className={classes.cardIconTitle}>
+                          <FormattedMessage id="form.time" />
+                          (<FormattedMessage id="form.optional" />)
+                        </h4>
                       </CardHeader>
                       <CardBody>
                         {serviceHoursCount < 7 && (
@@ -963,7 +996,7 @@ class ServiceForm extends Component {
                               htmlFor="simple-select"
                               className={classes.selectLabel}
                             >
-                              Choose Day
+                              <FormattedMessage id="form.select.day" />
                             </InputLabel>
                             <Select
                               MenuProps={{
@@ -975,7 +1008,7 @@ class ServiceForm extends Component {
                               value={member.serviceDay}
                               inputProps={{
                                 name: "serviceDay",
-                                
+
                               }}
                               id="serviceDay"
                               onChange={this.handleEditObjectServiceDay('serviceHours', index)}
@@ -1004,13 +1037,13 @@ class ServiceForm extends Component {
                             <FormHelperText error={this.objectErrorText('serviceHoursError', index, 'serviceDay').length > 0}>{this.objectErrorText('serviceHoursError', index, 'serviceDay')}</FormHelperText>
                           </GridItem>
                           <GridItem xs={12} sm={12} md={6} lg={3} >
-                            <InputLabel className={classes.label}>Start Time</InputLabel>
+                            <InputLabel className={classes.label}><FormattedMessage id="form.time.start" /></InputLabel>
                             <br />
                             <FormControl fullWidth>
                             <Datetime
                               dateFormat={false}
                               inputProps={{ 
-                                placeholder: "Start Time",
+                                placeholder: "HH:MM AM/PM",
                                 id:"startTime",
                                 name:"startTime",
                                 value:member.startTime,
@@ -1031,12 +1064,14 @@ class ServiceForm extends Component {
                             </FormControl>
                           </GridItem>
                           <GridItem xs={12} sm={12} md={6} lg={3} >
-                            <InputLabel className={classes.label}>End Time</InputLabel>
+                            <InputLabel className={classes.label}><FormattedMessage id="form.time.end" /></InputLabel>
                               <br />
                             <FormControl fullWidth>
                               <Datetime
                                 dateFormat={false}
-                                inputProps={{ placeholder: "End Time" }}
+                                inputProps={{
+                                  placeholder: "HH:MM AM/PM",
+                                }}
                                 id="endTime"
                                 name="endTime"
                                 value={member.endTime}
@@ -1073,7 +1108,10 @@ class ServiceForm extends Component {
                       <CardIcon color="success">
                         <Location />
                       </CardIcon>
-                      <h4 className={classes.cardIconTitle}>Location (Optional)</h4>
+                      <h4 className={classes.cardIconTitle}>
+                        <FormattedMessage id="form.location" />
+                        (<FormattedMessage id="form.optional" />)
+                      </h4>
                     </CardHeader>
                     <CardBody>
                     {addLocation ? 
@@ -1104,7 +1142,7 @@ class ServiceForm extends Component {
                         <GridItem xs={4} sm={4} md={4} lg={4}>
                           <CustomInput
                           className={classes.input}
-                            labelText="Address"
+                            labelText={<FormattedMessage id="contact.address" />}
                             formControlProps={{
                               fullWidth: true
                             }}
@@ -1120,7 +1158,7 @@ class ServiceForm extends Component {
                         </GridItem>
                         <GridItem xs={4} sm={4} md={4} lg={4}>
                           <CustomInput
-                            labelText="City"
+                            labelText={<FormattedMessage id="contact.city" />}
                             formControlProps={{
                               fullWidth: true
                             }}
@@ -1136,7 +1174,7 @@ class ServiceForm extends Component {
                         </GridItem>
                         <GridItem xs={2} sm={2} md={2} lg={2}>
                           <CustomInput
-                            labelText="Apartment"
+                            labelText={<FormattedMessage id="contact.apartment" />}
                             id="apartment"
                             formControlProps={{
                               fullWidth: true
@@ -1179,7 +1217,7 @@ class ServiceForm extends Component {
                             onChange={this.handleEditLocationObject('location', 'province')}
                             name="province"
                             select
-                            label="Province/Territory"
+                            label={<FormattedMessage id="contact.province" />}
                             fullWidth
                             helperText={provinceError}
                             error={provinceError.length > 0}
@@ -1190,7 +1228,7 @@ class ServiceForm extends Component {
                               root: classes.selectMenuItem
                             }}
                           >
-                            Province
+                            <FormattedMessage id="contact.province" />
                           </MenuItem>
                           {provinces.map(option => (
                             <MenuItem key={option.value} value={option.value}>
@@ -1203,7 +1241,7 @@ class ServiceForm extends Component {
                         </GridItem>
                         <GridItem xs={4} sm={4} md={4} lg={4}>
                           <CustomInput
-                            labelText="Postal Code"
+                            labelText={<FormattedMessage id="contact.postal" />}
                             formControlProps={{
                               fullWidth: true
                             }}
@@ -1220,7 +1258,7 @@ class ServiceForm extends Component {
                         </GridItem>
                         <GridItem xs={4} sm={4} md={12} lg={4}>
                           <CustomInput
-                            labelText="Phone Number"
+                            labelText={<FormattedMessage id="contact.phone" />}
                             id="phoneNumber"
                             formControlProps={{
                               fullWidth: true
@@ -1248,16 +1286,16 @@ class ServiceForm extends Component {
                         onClick={(event) => this.handleSubmit(event)}
                         className={classes.button}
                       >
-                      Create
+                        <FormattedMessage id="form.create" />
                       </Button>
                     ) : (
                       <Button
                         variant="contained"
                         color="primary"
-                        onClick={this.handleUpdate}
+                        onClick={this.autoCloseAlert.bind(this)}
                         className={classes.button}
                       >
-                      Edit
+                        <FormattedMessage id="form.edit" />
                       </Button>
                     )}
                     <Clearfix />
@@ -1274,6 +1312,7 @@ class ServiceForm extends Component {
 ServiceForm.propTypes = {
   classes: PropTypes.shape({}).isRequired,
   location: PropTypes.shape({}).isRequired,
+  intl: intlShape.isRequired,
 };
 
-export default withStyles(styles)(ServiceForm);
+export default withStyles(styles)(injectIntl(ServiceForm));

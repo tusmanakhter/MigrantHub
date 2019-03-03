@@ -13,6 +13,7 @@ import 'font-awesome/css/font-awesome.min.css';
 import 'bootstrap-css-only/css/bootstrap.min.css';
 import 'mdbreact/dist/css/mdb.css';
 import 'assets/scss/material-dashboard-pro-react.scss';
+import 'react-toastify/dist/ReactToastify.css';
 
 require('dotenv').config();
 

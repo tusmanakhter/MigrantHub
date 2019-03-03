@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { Redirect } from 'react-router-dom';
 
 // @material-ui/core components
 import withStyles from "@material-ui/core/styles/withStyles";
@@ -8,8 +9,6 @@ import Icon from "@material-ui/core/Icon";
 // core components
 import GridContainer from "components/Grid/GridContainer.jsx";
 import GridItem from "components/Grid/GridItem.jsx";
-import Input from '@material-ui/core/Input';
-import CustomInput from "components/CustomInput/CustomInput.jsx";
 import Button from "components/CustomButtons/Button.jsx";
 import Card from "components/Card/Card.jsx";
 import CardBody from "components/Card/CardBody.jsx";
@@ -17,36 +16,32 @@ import CardHeader from "components/Card/CardHeader.jsx";
 import CardFooter from "components/Card/CardFooter.jsx";
 import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props'
 import { GoogleLogin } from 'react-google-login';
-
+import validator from 'validator';
 import loginPageStyle from "assets/jss/material-dashboard-pro-react/views/loginPageStyle.jsx";
 import classNames from "classnames";
-import IconButton from '@material-ui/core/IconButton';
-import Visibility from '@material-ui/icons/Visibility';
-import VisibilityOff from '@material-ui/icons/VisibilityOff';
-import { Redirect } from 'react-router-dom';
 import axios from 'axios';
 import { AuthConsumer } from 'routes/AuthContext';
-import UserTypes from 'lib/UserTypes';
 import { TextField } from '@material-ui/core';
-import { FormattedMessage } from 'react-intl';
+import { injectIntl, intlShape, FormattedMessage } from 'react-intl';
+import { toast } from 'react-toastify';
 
 const qs = require('qs');
 
 
-class Login extends React.Component {
-  state = {
-    showPassword: false,
-    redirectTo: false,
-    redirectToURL: '',
-
-  }
+class BaseLogin extends React.Component {
   constructor(props) {
     super(props);
     // we use this to make the card to appear after the page has been rendered
     this.state = {
-      cardAnimaton: "cardHidden"
+      cardAnimaton: "cardHidden",
+      showPassword: false,
+      email: '',
+      password: '',
+      emailError: '',
+      passwordError: '',
     };
   }
+
   componentDidMount() {
     // we add a hidden class to the card and after 700 ms we delete it and the transition appears
     this.timeOutFunction = setTimeout(
@@ -56,6 +51,7 @@ class Login extends React.Component {
       700
     );
   }
+
   componentWillUnmount() {
     clearTimeout(this.timeOutFunction);
     this.timeOutFunction = null;
@@ -72,40 +68,28 @@ class Login extends React.Component {
   }
 
   handleSubmit = () => {
-    this.sendLogin(this);
+    const error = this.validate();
+    if (!error) {
+      this.sendLogin(this);
+    }
   };
 
   // Send profile data in post body to add to mongodb
   sendLogin(e) {
-    const Auth = this.context;
+    const { context } = this.props;
+    const Auth = context;
     axios.post('/api/accounts/login',
       qs.stringify({
-        username: e.state.username,
+        username: e.state.email,
         password: e.state.password,
       })).then(async (response) => {
         if (response.status === 200) {
           await Auth.authenticate();
-          if (response.data.type === UserTypes.ADMIN) {
-            this.setState({
-              redirectTo: true,
-              redirectToURL: '/admin/dashboard',
-            });
-          } else if (response.data.type === UserTypes.MIGRANT) {
-            this.setState({
-              redirectTo: true,
-              redirectToURL: '/main',
-            });
-          } else if (response.data.type === UserTypes.BUSINESS) {
-            this.setState({
-              redirectTo: true,
-              redirectToURL: '/businessmain',
-            });
-          }
         }
       }).catch((error) => {
+        toast.error('Incorrect email or password.');
         this.setState({
-          redirectTo: true,
-          redirectToURL: '/TempError',
+          password: '',
         });
       });
   }
@@ -117,21 +101,12 @@ class Login extends React.Component {
       qs.stringify({
         access_token: reply.accessToken,
       })).then(async (response) => {
-        if (response.status === 200) {
-          await Auth.authenticate();
-          if (response.data.type === UserTypes.MIGRANT) {
-            this.setState({
-              redirectTo: true,
-              redirectToURL: '/main',
-            });
-          }
-        }
-      }).catch((error) => {
-        this.setState({
-          redirectTo: true,
-          redirectToURL: '/TempError',
-        });
-      });
+      if (response.status === 200) {
+        await Auth.authenticate();
+      }
+    }).catch(() => {
+      toast.error('Incorrect Facebook login.');
+    });
   };
 
   // Send profile data in post body to add to mongodb /api/accounts/auth/facebook
@@ -141,45 +116,63 @@ class Login extends React.Component {
       qs.stringify({
         access_token: reply.accessToken,
       })).then(async (response) => {
-        if (response.status === 200) {
-          await Auth.authenticate();
-          if (response.data.type === UserTypes.MIGRANT) {
-            this.setState({
-              redirectTo: true,
-              redirectToURL: '/main',
-            });
-          }
-        }
-      }).catch(() => {
-        this.setState({
-          redirectTo: true,
-          redirectToURL: '/TempError',
-        });
-      });
-  };
-
-  onLoginFailure = () => {
-    this.setState({
-      redirectTo: true,
-      redirectToURL: '/TempError',
+      if (response.status === 200) {
+        await Auth.authenticate();
+      }
+    }).catch(() => {
+      toast.error('Incorrect Google login.');
     });
   };
 
+  onLoginFailure = () => {
+    toast.error('Incorrect Google login.');
+  };
+
     forgotPassword = () => {
-        this.setState({
-            redirectTo: true,
-            redirectToURL: '/forgotpassword',
-        });
+      this.setState({
+        redirectTo: true,
+        redirectToURL: '/forgotpassword',
+      });
     };
+
+  validate = () => {
+    const { email, password } = this.state;
+    const { intl } = this.props;
+
+    let isError = false;
+    const errors = {
+      emailError: '',
+      passwordError: '',
+    };
+
+    if (validator.isEmpty(email)) {
+      errors.emailError = `${intl.formatMessage({ id: 'email' })}  ${intl.formatMessage({ id: 'isrequired' })}`;
+      isError = true;
+    } else if (!validator.isEmail(email)) {
+      errors.emailError = `${intl.formatMessage({ id: 'email' })}  ${intl.formatMessage({ id: 'notvalid' })}`;
+      isError = true;
+    }
+
+    if (validator.isEmpty(password)) {
+      errors.passwordError = `${intl.formatMessage({ id: 'password' })}  ${intl.formatMessage({ id: 'isrequired' })}`;
+      isError = true;
+    }
+
+    this.setState(prevState => ({
+      ...prevState,
+      ...errors,
+    }));
+
+    return isError;
+  }
 
   render() {
     if (this.state.redirectTo) {
-      return <Redirect to={this.state.redirectToURL} />;
+        return <Redirect to={this.state.redirectToURL} />;
     }
-    const { classes } = this.props;
 
-    const username = this.props.username;
-    const password = this.props.password;
+    const { email, password, emailError, passwordError } = this.state;
+    const { classes } = this.props;
 
     return (
       <React.Fragment>
@@ -187,7 +180,7 @@ class Login extends React.Component {
           <div className={classes.container}>
             <GridContainer justify="center">
               <GridItem xs={12} sm={6} md={4}>
-                <form className={classes.form}>
+                <form className={classes.form} onSubmit={e => e.preventDefault()}>
                   <Card login className={classes[this.state.cardAnimaton]}>
                     <CardBody>
                       <CardHeader
@@ -237,12 +230,14 @@ class Login extends React.Component {
                         </font>
                       </h6>
                       <TextField
-                        id="username"
-                        name="username"
+                        id="email"
+                        name="email"
                         label={<FormattedMessage id="email" />}
-                        value={username}
+                        value={email}
                         onChange={event => this.handleChange(event)}
                         fullWidth
+                        helperText={emailError}
+                        error={emailError.length > 0}
                       />
                       <TextField
                         id="password"
@@ -252,10 +247,13 @@ class Login extends React.Component {
                         value={password}
                         onChange={event => this.handleChange(event)}
                         fullWidth
+                        helperText={passwordError}
+                        error={passwordError.length > 0}
                       />
                     </CardBody>
                     <CardFooter className={classes.justifyContentCenter}>
                       <Button color="warning" simple size="lg" block
+                        type="submit"
                         fullWidth
                         variant="contained"
                         onClick={this.handleSubmit}
@@ -265,10 +263,10 @@ class Login extends React.Component {
                       </Button>
                     </CardFooter>
                     <Button
-                        variant="outlined"
-                        className={classes.button}
-                        onClick={this.forgotPassword}>
-                        <FormattedMessage id="login.forgot" />
+                      variant="outlined"
+                      className={classes.button}
+                      onClick={this.forgotPassword}>
+                      <FormattedMessage id="login.forgot" />
                     </Button>
                   </Card>
                 </form>
@@ -281,10 +279,15 @@ class Login extends React.Component {
   }
 }
 
+const Login = props => (
+  <AuthConsumer>
+    {context => <BaseLogin context={context} {...props} />}
+  </AuthConsumer>
+);
+
 Login.propTypes = {
   classes: PropTypes.object.isRequired,
+  intl: intlShape.isRequired,
 };
 
-Login.contextType = AuthConsumer;
-
-export default withStyles(loginPageStyle)(Login);
+export default withStyles(loginPageStyle)(injectIntl(Login));

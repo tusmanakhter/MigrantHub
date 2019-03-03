@@ -19,7 +19,9 @@ import Event from '@material-ui/icons/Event';
 import { FormattedMessage } from 'react-intl';
 import HeaderLinks from 'app/HeaderLinks';
 import sidebarStyle from 'assets/jss/material-dashboard-pro-react/components/sidebarStyle.jsx';
-import avatar from 'assets/img/faces/avatar.jpg';
+import man from 'assets/img/faces/man.png'
+import woman from 'assets/img/faces/woman.png'
+import other from 'assets/img/faces/other.png'
 import SidebarWrapper from 'app/SidebarWrapper';
 import { AuthConsumer } from 'routes/AuthContext';
 import Menu, { SubMenu } from 'rc-menu';
@@ -63,10 +65,23 @@ class Sidebar extends React.Component {
             email: response.data.email,
             firstName: response.data.firstName,
             lastName: response.data.lastName,
+            gender: response.data.gender,
             dataRetrieved: true,
           });
         }
       });
+    }
+  }
+
+  getAvatar(gender){
+    if(gender == 'female'){
+      return woman;
+    }
+    else if(gender == 'male'){
+      return man;
+    }
+    else{
+      return other;
     }
   }
 
@@ -83,7 +98,7 @@ class Sidebar extends React.Component {
     } = this.props;
 
     const {
-      email, firstName, lastName,
+      email, firstName, lastName, gender
     } = this.state;
 
     const { caret, collapseItemMini, photo } = classes;
@@ -110,7 +125,7 @@ class Sidebar extends React.Component {
     const userComponent = (
       <div className={userWrapperClass}>
         <div className={photo}>
-          <img src={avatar} className={classes.avatarImg} alt="..." />
+          <img src={this.getAvatar(gender)} className={classes.avatarImg} alt="..." />
         </div>
         <List className={classes.list}>
           <ListItem className={`${classes.item} ${classes.userItem}`}>
@@ -401,8 +416,6 @@ class Sidebar extends React.Component {
       cx({
         [classes.drawerPaperMini]:
           this.props.miniActive && this.state.miniActive,
-        [classes.sidebarWrapperWithPerfectScrollbar]:
-          navigator.platform.indexOf('Win') > -1,
       })}`;
     return (
       <div ref="mainPanel">
