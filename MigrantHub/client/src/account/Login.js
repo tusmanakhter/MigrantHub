@@ -66,6 +66,12 @@ class BaseLogin extends React.Component {
     });
   }
 
+  handleCheckForEnter = (event) => {
+    if (event.key === 'Enter') {
+      this.handleSubmit();
+    }
+  }
+
   handleSubmit = () => {
     const error = this.validate();
     if (!error) {
@@ -245,6 +251,7 @@ class BaseLogin extends React.Component {
                         fullWidth
                         helperText={passwordError}
                         error={passwordError.length > 0}
+                        onKeyPress={event => this.handleCheckForEnter(event)}
                       />
                     </CardBody>
                     <CardFooter className={classes.justifyContentCenter}>
