@@ -35,6 +35,7 @@ export const relationshipStatuses = [
   { value: 'single', label: <FormattedMessage id="relationship.single" /> },
   { value: 'divorced', label: <FormattedMessage id="relationship.divorced" /> },
   { value: 'widowed', label: <FormattedMessage id="relationship.widowed" /> },
+  { value: 'separated', label: <FormattedMessage id="relationship.separated" /> },
 ];
 
 export const joiningReasons = [
