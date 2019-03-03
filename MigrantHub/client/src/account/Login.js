@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { Redirect } from 'react-router-dom';
 
 // @material-ui/core components
 import withStyles from "@material-ui/core/styles/withStyles";
@@ -166,8 +167,11 @@ class BaseLogin extends React.Component {
   }
 
   render() {
-    const { email, password, emailError, passwordError } = this.state;
+    if (this.state.redirectTo) {
+        return <Redirect to={this.state.redirectToURL} />;
+    }
 
+    const { email, password, emailError, passwordError } = this.state;
     const { classes } = this.props;
 
     return (
