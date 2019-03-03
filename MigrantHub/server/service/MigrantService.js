@@ -2,8 +2,8 @@ const MigrantRepository = require('../repository/MigrantRepository');
 
 
 module.exports = {
-  async getMigrantUser(businessUserId) {
-    return MigrantRepository.getMigrantUser(businessUserId);
+  async getMigrantUser(migrantUserId) {
+    return MigrantRepository.getMigrantUser(migrantUserId);
   },
 
   async editMigrantUser(migrantUserId, parsedMigrantUserObject) {

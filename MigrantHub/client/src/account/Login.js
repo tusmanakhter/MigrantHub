@@ -176,7 +176,7 @@ class BaseLogin extends React.Component {
           <div className={classes.container}>
             <GridContainer justify="center">
               <GridItem xs={12} sm={6} md={4}>
-                <form className={classes.form}>
+                <form className={classes.form} onSubmit={e => e.preventDefault()}>
                   <Card login className={classes[this.state.cardAnimaton]}>
                     <CardBody>
                       <CardHeader
@@ -249,6 +249,7 @@ class BaseLogin extends React.Component {
                     </CardBody>
                     <CardFooter className={classes.justifyContentCenter}>
                       <Button color="warning" simple size="lg" block
+                        type="submit"
                         fullWidth
                         variant="contained"
                         onClick={this.handleSubmit}
