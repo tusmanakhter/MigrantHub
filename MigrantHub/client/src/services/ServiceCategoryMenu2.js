@@ -89,7 +89,7 @@ class ServiceCategoryMenu2 extends Component {
         <div>
           <Card style={{ padding: '20px' }}>
             <CardHeader>
-              <h4>Service Categories</h4>
+              <h4><FormattedMessage id="service.categories" /></h4>
             </CardHeader>
             {this.renderRedirectTo()}
             <GridContainer direction="row" spacing={16}>
