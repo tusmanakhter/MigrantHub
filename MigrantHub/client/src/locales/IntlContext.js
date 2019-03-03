@@ -35,7 +35,11 @@ class IntlProviderWrapper extends React.Component {
       );
     };
 
-    const locale = cookies.get('locale') || 'en';
+    let locale = cookies.get('locale');
+    if (!locale) {
+      cookies.set('locale', 'en', { path: '/' });
+      locale = 'en';
+    }
     moment.locale(locale);
 
     let messages = messagesEN;
