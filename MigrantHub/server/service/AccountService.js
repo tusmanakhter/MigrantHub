@@ -9,11 +9,14 @@ const AdminRepository = require('../repository/AdminRepository');
 const UserRepository = require('../repository/UserRepository');
 const { ServerError } = require('../errors/ServerError');
 const SendEmail = require('../mail/SendEmail');
+const { SignupConfirmationEmail } = require('../mail/EmailMessages');
 
 module.exports = {
   async createUser(parsedMigrantUserObject) {
     const migrantUserObject = parsedMigrantUserObject;
     const errors = await MigrantAccountValidator.migrantAccountValidator(migrantUserObject);
+    const { title, user } = SignupConfirmationEmail;
+    const { message } = user;
 
     if (errors === '') {
       const salt = bcrypt.genSaltSync(10);
@@ -23,9 +26,7 @@ module.exports = {
       await MigrantRepository.createUser(migrantUserObject);
 
       const receiverEmail = migrantUserObject.email;
-      const subject = 'MigrantHub: Account Confirmation';
-      const message = 'You have successfully created your MigrantHub user account. You are now able to login to the application.';
-      SendEmail.sendEmail(receiverEmail, subject, message);
+      SendEmail.sendEmail(receiverEmail, title, message);
 
       return Promise.resolve('Migrant User has been created.');
     }
@@ -35,7 +36,8 @@ module.exports = {
   async createBusiness(parsedBusinessUserObject) {
     const businessUserObject = parsedBusinessUserObject;
     const errors = await BusinessAccountValidator.businessAccountValidator(businessUserObject);
-
+    const { title, business } = SignupConfirmationEmail;
+    const { message } = business;
     if (errors === '') {
       const salt = bcrypt.genSaltSync(10);
       const hash = bcrypt.hashSync(businessUserObject.password, salt);
@@ -44,9 +46,7 @@ module.exports = {
       await BusinessRepository.createBusiness(businessUserObject);
 
       const receiverEmail = businessUserObject.email;
-      const subject = 'MigrantHub: Account Confirmation';
-      const message = 'You have successfully created your MigrantHub business account. You are now able to login to the application.';
-      SendEmail.sendEmail(receiverEmail, subject, message);
+      SendEmail.sendEmail(receiverEmail, title, message);
 
       return Promise.resolve('Business user has been created.');
     }
@@ -56,6 +56,8 @@ module.exports = {
   async createAdmin(parsedAdminUserObject) {
     const adminUserObject = parsedAdminUserObject;
     const errors = await AdminAccountValidator.adminAccountValidator(adminUserObject);
+    const { title, admin } = SignupConfirmationEmail;
+    const { message } = admin;
 
     if (errors === '') {
       const salt = bcrypt.genSaltSync(10);
@@ -65,9 +67,7 @@ module.exports = {
       await AdminRepository.createAdmin(adminUserObject);
 
       const receiverEmail = adminUserObject.email;
-      const subject = 'MigrantHub: Account Confirmation';
-      const message = 'You have successfully created your MigrantHub admin account. You may login once you have been authorized.';
-      SendEmail.sendEmail(receiverEmail, subject, message);
+      SendEmail.sendEmail(receiverEmail, title, message);
 
       return Promise.resolve('Admin user has been created.');
     }
@@ -92,8 +92,8 @@ module.exports = {
     };
 
     const receiverEmail = userEmail;
-    const subject = 'MigrantHub reset your password';
-    const message = `Verification code: ${passwordToken}`;
+    const subject = 'MigrantHub Reset Password/MigrantHub Réinitialiser le mot de passe';
+    const message = `French message will follow.<br /><br />Verification code: ${passwordToken} <br /><br /> Code de Vérification: ${passwordToken}`;
 
     SendEmail.sendEmail(receiverEmail, subject, message);
 
