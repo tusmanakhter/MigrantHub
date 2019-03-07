@@ -29,7 +29,7 @@ const styles = theme => ({
   },
   appBar: {
     padding: '0% 7.5%',
-    background: '#193446',
+    background: theme.palette.primary.main,
   },
   toolbar: {
     [theme.breakpoints.down('xs')]: {

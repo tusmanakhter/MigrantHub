@@ -23,10 +23,12 @@ const styles = theme => ({
     alignItems: 'center',
     margin: 0,
     padding: '0% 20% 0% 20%',
+    background: theme.palette.common.white,
   },
   title: {
     width: 'auto',
-    margin: 20,
+    padding: 20,
+    background: theme.palette.common.white,
   },
   paper: {
     [theme.breakpoints.down('xs')]: {
@@ -41,6 +43,7 @@ const styles = theme => ({
     textAlign: 'left',
     margin: 'auto',
     padding: `${theme.spacing.unit * 5}px ${theme.spacing.unit * 6}px ${theme.spacing.unit * 6}px`,
+    border: `1px solid ${theme.palette.borders.main}`,
   },
   icon: {
     marginTop: 5,
@@ -51,7 +54,7 @@ const styles = theme => ({
     marginBottom: 10,
   },
   button: {
-    background: '#193446',
+    background: theme.palette.secondary.main,
     color: 'white',
     margin: 'auto',
     padding: 10,
@@ -64,7 +67,7 @@ const AccountSelection = (props) => {
   const { classes } = props;
 
   return (
-    <React.Fragment>
+    <>
       <Grid container className={classes.title}>
         <Grid item xs={12}>
           <Typography variant="h5">
@@ -74,7 +77,10 @@ const AccountSelection = (props) => {
       </Grid>
       <Grid container spacing={24} className={classes.layout}>
         <Grid item md={6}>
-          <Paper className={classes.paper}>
+          <Paper
+            className={classes.paper}
+            elevation={0}
+          >
             <div className={classes.section}>
               <FaAddressCard size="3em" className={classes.icon} />
               <Typography variant="h5">
@@ -98,7 +104,10 @@ const AccountSelection = (props) => {
           </Paper>
         </Grid>
         <Grid item md={6}>
-          <Paper className={classes.paper}>
+          <Paper
+            className={classes.paper}
+            elevation={0}
+          >
             <div className={classes.section}>
               <FaCreditCard size="3em" className={classes.icon} />
               <Typography variant="h5">
@@ -122,7 +131,7 @@ const AccountSelection = (props) => {
           </Paper>
         </Grid>
       </Grid>
-    </React.Fragment>
+    </>
   );
 };
 

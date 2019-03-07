@@ -4,9 +4,8 @@
 
 import {
   container,
-  cardTitle
-} from "assets/jss/material-dashboard-pro-react.jsx";
-import Background from "../../../img/login.jpeg";
+  cardTitle,
+} from "assets/jss/material-dashboard-pro-react";
 
 const loginPageStyle = theme => ({
   login: {
@@ -14,8 +13,7 @@ const loginPageStyle = theme => ({
     flexGrow: 1,
     display: 'flex',
     alignItems: 'center',
-    backgroundImage: `url(${Background})`,
-    backgroundColor: 'black',
+    backgroundColor: theme.palette.white,
     backgroundSize: 'cover',
   },
   container: {
@@ -23,7 +21,7 @@ const loginPageStyle = theme => ({
     zIndex: "4",
     [theme.breakpoints.down("sm")]: {
       paddingBottom: "100px"
-    }
+    },
   },
   cardTitle: {
     ...cardTitle,
@@ -52,8 +50,12 @@ const loginPageStyle = theme => ({
     opacity: "0",
     transform: "translate3d(0, -60px, 0)"
   },
+  card: {
+    backgroundColor: theme.palette.lightgreen,
+  },
   cardHeader: {
-    marginBottom: "20px"
+    marginBottom: "20px",
+    background: theme.palette.green,
   },
   socialLine: {
     padding: "0.9375rem 0"

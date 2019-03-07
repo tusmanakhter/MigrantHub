@@ -11,7 +11,7 @@ const styles = theme => ({
   root: {
     display: 'flex',
     alignItems: 'center',
-    background: '#193446',
+    background: theme.palette.primary.main,
     color: 'white',
     flexGrow: 1,
     padding: '10px 20px 10px 20px',

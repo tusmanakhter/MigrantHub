@@ -45,7 +45,7 @@ class BaseLogin extends React.Component {
     // we add a hidden class to the card and after 700 ms we delete it and the transition appears
     this.timeOutFunction = setTimeout(
       function () {
-        this.setState({ cardAnimaton: "" });
+        this.setState({ cardAnimaton: "card" });
       }.bind(this),
       700
     );
