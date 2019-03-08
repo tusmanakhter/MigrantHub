@@ -1,71 +1,144 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Redirect } from 'react-router-dom';
-
-// @material-ui/core components
-import withStyles from "@material-ui/core/styles/withStyles";
-import Icon from "@material-ui/core/Icon";
-
-// core components
-import GridContainer from "components/Grid/GridContainer.jsx";
-import GridItem from "components/Grid/GridItem.jsx";
-import Button from "components/CustomButtons/Button.jsx";
-import Card from "components/Card/Card.jsx";
-import CardBody from "components/Card/CardBody.jsx";
-import CardHeader from "components/Card/CardHeader.jsx";
-import CardFooter from "components/Card/CardFooter.jsx";
-import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props'
+import withStyles from '@material-ui/core/styles/withStyles';
+import Typography from '@material-ui/core/Typography';
+import FacebookLogin from 'react-facebook-login';
 import { GoogleLogin } from 'react-google-login';
 import validator from 'validator';
-import loginPageStyle from "assets/jss/material-dashboard-pro-react/views/loginPageStyle.jsx";
-import classNames from "classnames";
 import axios from 'axios';
 import { AuthConsumer } from 'routes/AuthContext';
-import { TextField } from '@material-ui/core';
 import { injectIntl, intlShape, FormattedMessage } from 'react-intl';
 import { toast } from 'react-toastify';
+import Button from '@material-ui/core/Button';
+import TextBox from 'components/fields/generic/TextBox';
+import Link from '@material-ui/core/Link';
+import Divider from '@material-ui/core/Divider';
+import { Link as RouterLink } from 'react-router-dom';
+import { handleChange } from 'helpers/Forms';
+import { Close } from '@material-ui/icons';
+import logo from 'assets/img/logo-1.png';
 
 const qs = require('qs');
 
-
-class BaseLogin extends React.Component {
+const styles = theme => ({
+  layout: {
+    flexGrow: 1,
+    height: '100%',
+    width: 'auto',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    background: theme.palette.common.white,
+  },
+  content: {
+    width: 288,
+  },
+  login: {
+    height: '100%',
+    flexGrow: 1,
+    display: 'flex',
+    alignItems: 'center',
+    backgroundColor: theme.palette.white,
+    backgroundSize: 'cover',
+  },
+  facebookBtn: {
+    fontWeight: 500,
+    fontSize: 14,
+    width: '100%',
+    height: 46,
+    padding: 11,
+    borderRadius: 4,
+    background: '#3b5998',
+    color: 'white',
+    border: '0px transparent',
+    textAlign: 'center',
+    display: 'inline-block',
+    '&:hover': {
+      background: '#355088',
+      cursor: 'pointer',
+    },
+    fontFamily: 'inherit',
+  },
+  googleBtn: {
+    fontWeight: 500,
+    fontSize: 14,
+    width: '100%',
+    height: 46,
+    padding: 11,
+    borderRadius: '4px !important',
+    background: '#db3236 !important',
+    color: 'white !important',
+    border: '0px transparent !important',
+    textAlign: 'center',
+    display: 'inline-block !important',
+    '&:hover': {
+      background: '#C52D30 !important',
+      opacity: '1 !important',
+    },
+  },
+  textbox: {
+    height: 24,
+    padding: 11,
+  },
+  facebook: {
+    marginBottom: 8,
+    '& > span': {
+      transition: 'unset !important',
+    },
+  },
+  item: {
+    marginBottom: 16,
+  },
+  dividerWithText: {
+    marginTop: 16,
+    marginBottom: 16,
+    display: 'flex',
+    alignItems: 'center',
+  },
+  divider: {
+    flexShrink: 1,
+    width: '100%',
+    margin: 5,
+  },
+  dividerText: {
+    margin: '0px 5px 0px 5px',
+  },
+  close: {
+    position: 'fixed',
+    top: 33,
+    right: 33,
+    color: 'inherit',
+    '& a:hover': {
+      color: 'black',
+      transform: 'scale(1.1)',
+    },
+  },
+  logo: {
+    position: 'fixed',
+    top: 33,
+    left: 33,
+  },
+  loginBtn: {
+    textTransform: 'unset',
+  },
+});
+class BaseLogin extends Component {
   constructor(props) {
     super(props);
-    // we use this to make the card to appear after the page has been rendered
     this.state = {
-      cardAnimaton: "cardHidden",
       showPassword: false,
       email: '',
       password: '',
       emailError: '',
       passwordError: '',
     };
-  }
 
-  componentDidMount() {
-    // we add a hidden class to the card and after 700 ms we delete it and the transition appears
-    this.timeOutFunction = setTimeout(
-      function () {
-        this.setState({ cardAnimaton: "card" });
-      }.bind(this),
-      700
-    );
-  }
-
-  componentWillUnmount() {
-    clearTimeout(this.timeOutFunction);
-    this.timeOutFunction = null;
+    this.handleChange = handleChange.bind(this);
   }
 
   handleClickShowPassword = () => {
     this.setState(state => ({ showPassword: !state.showPassword }));
   };
-
-  handleChange = (event) => {
-    this.setState({
-      [event.target.name]: event.target.value,
-    });
-  }
 
   handleSubmit = () => {
     const error = this.validate();
@@ -73,26 +146,6 @@ class BaseLogin extends React.Component {
       this.sendLogin(this);
     }
   };
-
-  // Send profile data in post body to add to mongodb
-  sendLogin(e) {
-    const { context } = this.props;
-    const Auth = context;
-    axios.post('/api/accounts/login',
-      qs.stringify({
-        username: e.state.email,
-        password: e.state.password,
-      })).then(async (response) => {
-        if (response.status === 200) {
-          await Auth.authenticate();
-        }
-      }).catch((error) => {
-        toast.error('Incorrect email or password.');
-        this.setState({
-          password: '',
-        });
-      });
-  }
 
   // Send profile data in post body to add to mongodb /api/accounts/auth/facebook
   facebookAuthenticationLogin = (reply) => {
@@ -128,13 +181,6 @@ class BaseLogin extends React.Component {
     toast.error('Incorrect Google login.');
   };
 
-    forgotPassword = () => {
-      this.setState({
-        redirectTo: true,
-        redirectToURL: '/forgotpassword',
-      });
-    };
-
   validate = () => {
     const { email, password } = this.state;
     const { intl } = this.props;
@@ -166,115 +212,131 @@ class BaseLogin extends React.Component {
     return isError;
   }
 
-  render() {
-    if (this.state.redirectTo) {
-        return <Redirect to={this.state.redirectToURL} />;
-    }
+  // Send profile data in post body to add to mongodb
+  sendLogin(e) {
+    const { context } = this.props;
+    const Auth = context;
+    axios.post('/api/accounts/login',
+      qs.stringify({
+        username: e.state.email,
+        password: e.state.password,
+      })).then(async (response) => {
+      if (response.status === 200) {
+        await Auth.authenticate();
+      }
+    }).catch(() => {
+      toast.error('Incorrect email or password.');
+      this.setState({
+        password: '',
+      });
+    });
+  }
 
-    const { email, password, emailError, passwordError } = this.state;
-    const { classes } = this.props;
+  render() {
+    const {
+      email, password, emailError, passwordError,
+    } = this.state;
+
+    const { classes, history } = this.props;
 
     return (
-      <React.Fragment>
-        <div className={classes.login}>
-          <div className={classes.container}>
-            <GridContainer justify="center">
-              <GridItem xs={12} sm={6} md={4}>
-                <form className={classes.form} onSubmit={e => e.preventDefault()}>
-                  <Card login className={classes[this.state.cardAnimaton]}>
-                    <CardBody>
-                      <CardHeader
-                        className={`${classes.cardHeader} ${classes.textCenter}`}
-                        color="warning"
-                      >
-                        <h4 className={classes.cardTitle}>
-                          <FormattedMessage id="login" />
-                        </h4>
-                        <h6 className={classes.cardTitle}>
-                          <b>
-                            <FormattedMessage id="login.social" />
-                          </b>
-                        </h6>
-                        <div className={classes.socialLine}>
-                          <FacebookLogin
-                            appId={process.env.REACT_APP_FACEBOOK_APP_ID}
-                            autoLoad={false}
-                            fields="name, email"
-                            callback={this.facebookAuthenticationLogin}
-                            render={renderProps => (
-                              <Button onClick={renderProps.onClick}
-                                justIcon
-                                color="transparent">
-                                <Icon className={classNames(classes.icon, "fab fa-facebook-square")} />
-                              </Button>
-                            )}
-                          />
-                          <GoogleLogin
-                            clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}
-                            buttonText="Login"
-                            onSuccess={this.googleAuthenticationLogin}
-                            onFailure={() => this.onLoginFailure}
-                            render={renderProps => (
-                              <Button onClick={renderProps.onClick}
-                                justIcon
-                                color="transparent">
-                                <Icon className={classNames(classes.icon, "fab fa-google-plus")} />
-                              </Button>
-                            )}
-                          />
-                        </div>
-                      </CardHeader>
-                      <h6>
-                        <font color="gray"><br />
-                          <FormattedMessage id="login.already" />
-                        </font>
-                      </h6>
-                      <TextField
-                        id="email"
-                        name="email"
-                        label={<FormattedMessage id="email" />}
-                        value={email}
-                        onChange={event => this.handleChange(event)}
-                        fullWidth
-                        helperText={emailError}
-                        error={emailError.length > 0}
-                      />
-                      <TextField
-                        id="password"
-                        name="password"
-                        type="password"
-                        label={<FormattedMessage id="password" />}
-                        value={password}
-                        onChange={event => this.handleChange(event)}
-                        fullWidth
-                        helperText={passwordError}
-                        error={passwordError.length > 0}
-                      />
-                    </CardBody>
-                    <CardFooter className={classes.justifyContentCenter}>
-                      <Button color="warning" simple size="lg" block
-                        type="submit"
-                        fullWidth
-                        variant="contained"
-                        onClick={this.handleSubmit}
-                        className={classes.submit}
-                      >
-                        <FormattedMessage id="login" />
-                      </Button>
-                    </CardFooter>
-                    <Button
-                      variant="outlined"
-                      className={classes.button}
-                      onClick={this.forgotPassword}>
-                      <FormattedMessage id="login.forgot" />
-                    </Button>
-                  </Card>
-                </form>
-              </GridItem>
-            </GridContainer>
+      <div className={classes.layout}>
+        <div className={classes.logo}>
+          <RouterLink to="/">
+            <img src={logo} alt="Home" />
+          </RouterLink>
+        </div>
+        <div className={classes.close}>
+          <a role="button" onClick={() => history.goBack()} className={classes.close}>
+            <Close fontSize="large" />
+          </a>
+        </div>
+        <div className={classes.content}>
+          <div className={classes.item}>
+            <Typography variant="h5">Log in to MigrantHub</Typography>
           </div>
-        </div >
-      </React.Fragment>
+          <div className={classes.facebook}>
+            <FacebookLogin
+              appId={process.env.REACT_APP_FACEBOOK_APP_ID}
+              autoLoad={false}
+              fields="name, email"
+              textButton="Log in with Facebook"
+              callback={this.facebookAuthenticationLogin}
+              cssClass={classes.facebookBtn}
+              icon={<i className="fa fa-facebook" style={{ marginRight: '5px' }} />}
+            />
+          </div>
+          <div className={classes.google}>
+            <GoogleLogin
+              clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}
+              buttonText="Log in with Google"
+              onSuccess={this.googleAuthenticationLogin}
+              onFailure={() => this.onLoginFailure}
+              className={classes.googleBtn}
+              icon={false}
+            >
+              <i className="fa fa-google" style={{ marginRight: '5px' }} />
+              <span>Log in with Google</span>
+            </GoogleLogin>
+          </div>
+          <div className={classes.dividerWithText}>
+            <Divider className={classes.divider} />
+            <span className={classes.dividerText}>or</span>
+            <Divider className={classes.divider} />
+          </div>
+          <form onSubmit={e => e.preventDefault()}>
+            <div className={classes.item}>
+              <TextBox
+                name="email"
+                label={<FormattedMessage id="email" />}
+                value={email}
+                handleChange={event => this.handleChange(event)}
+                variant="outlined"
+                error={emailError}
+                inputClass={classes.textbox}
+                margin="dense"
+              />
+            </div>
+            <div className={classes.item}>
+              <TextBox
+                name="password"
+                type="password"
+                label={<FormattedMessage id="password" />}
+                value={password}
+                handleChange={event => this.handleChange(event)}
+                variant="outlined"
+                error={passwordError}
+                inputClass={classes.textbox}
+                margin="dense"
+              />
+            </div>
+            <div className={classes.item}>
+              <Button
+                type="submit"
+                color="secondary"
+                fullWidth
+                variant="contained"
+                onClick={this.handleSubmit}
+                className={classes.loginBtn}
+              >
+                <FormattedMessage id="login" />
+              </Button>
+            </div>
+          </form>
+          <div className={classes.item}>
+            <Link
+              component={RouterLink}
+              to="/forgotpassword"
+            >
+              <FormattedMessage id="login.forgot" />
+            </Link>
+          </div>
+          <div className={classes.item}>
+            <Divider />
+          </div>
+          <Typography>Don't have an account? <Link component={RouterLink} to="/signup/account-selection">Sign up.</Link></Typography>
+        </div>
+      </div>
     );
   }
 }
@@ -290,4 +352,4 @@ Login.propTypes = {
   intl: intlShape.isRequired,
 };
 
-export default withStyles(loginPageStyle)(injectIntl(Login));
+export default withStyles(styles)(injectIntl(Login));

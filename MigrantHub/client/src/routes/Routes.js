@@ -79,7 +79,7 @@ class Routes extends Component {
           <UnprotectedRoute path="/signup/business" component={SignUpBusiness} exact />
           <UnprotectedRoute path="/signup/personal" component={SignUpMigrant} exact />
           <UnprotectedRoute path="/signup/admin" component={SignUpAdmin} exact />
-          <UnprotectedRoute path="/login" component={Login} exact />
+          <UnprotectedRoute path="/login" component={Login} disableLayout exact />
           <UnprotectedRoute path="/forgotpassword" component={ForgotYourPasswordForm} exact />
           <ProtectedRoute path="/editmigrant" component={EditMigrant} migrant exact />
           <ProtectedRoute path="/editbusiness" component={EditBusiness} business exact />

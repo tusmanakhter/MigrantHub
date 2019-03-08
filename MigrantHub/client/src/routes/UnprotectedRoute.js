@@ -19,7 +19,7 @@ const isLoggedIn = (isAuthenticated, user) => {
   }
 };
 
-const UnprotectedRoute = ({ component: Component, type, ...rest }) => (
+const UnprotectedRoute = ({ component: Component, disableLayout, ...rest }) => (
   <AuthConsumer>
     {({ isAuthenticated, user }) => (
       <Route
@@ -27,19 +27,25 @@ const UnprotectedRoute = ({ component: Component, type, ...rest }) => (
         render={(props) => {
           const path = isLoggedIn(isAuthenticated, user);
           if (path === false) {
+            if (disableLayout) {
+              return (
+                <Component {...props} />
+              );
+            }
             return (
               <HomeLayout>
                 <Component {...props} />
               </HomeLayout>
             );
-          } else {
-            return (<Redirect
+          }
+          return (
+            <Redirect
               to={{
                 pathname: path,
                 state: { from: props.location },
               }}
-            />);
-          }
+            />
+          );
         }
         }
       />
