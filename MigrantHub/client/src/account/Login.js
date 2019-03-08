@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { Redirect } from 'react-router-dom';
 
 // @material-ui/core components
 import withStyles from "@material-ui/core/styles/withStyles";
@@ -166,8 +167,11 @@ class BaseLogin extends React.Component {
   }
 
   render() {
-    const { email, password, emailError, passwordError } = this.state;
+    if (this.state.redirectTo) {
+        return <Redirect to={this.state.redirectToURL} />;
+    }
 
+    const { email, password, emailError, passwordError } = this.state;
     const { classes } = this.props;
 
     return (
@@ -176,7 +180,7 @@ class BaseLogin extends React.Component {
           <div className={classes.container}>
             <GridContainer justify="center">
               <GridItem xs={12} sm={6} md={4}>
-                <form className={classes.form}>
+                <form className={classes.form} onSubmit={e => e.preventDefault()}>
                   <Card login className={classes[this.state.cardAnimaton]}>
                     <CardBody>
                       <CardHeader
@@ -249,6 +253,7 @@ class BaseLogin extends React.Component {
                     </CardBody>
                     <CardFooter className={classes.justifyContentCenter}>
                       <Button color="warning" simple size="lg" block
+                        type="submit"
                         fullWidth
                         variant="contained"
                         onClick={this.handleSubmit}

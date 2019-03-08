@@ -15,8 +15,8 @@ module.exports = {
 
     // Send request and get result
     const responses = await sessionClient.detectIntent(request);
-    const result = responses[0].queryResult;
+    const results = responses[0].queryResult;
 
-    return result.fulfillmentText;
+    return results;
   },
 };

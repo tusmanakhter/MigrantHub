@@ -8,6 +8,7 @@ const { controllerHandler } = require('../controllers/ControllerUtils');
 router.get('/', controllerHandler(AccountController.getCurrentUser, req => [req.user]));
 router.get('/get/type', controllerHandler(AccountController.getUserType, req => [req.user]));
 router.get('/get/user', controllerHandler(AccountController.getUser, req => [req.user._id]));
+router.get('/get/user/:id', controllerHandler(AccountController.getUser, req => [req.params.id]));
 router.post('/create/user', controllerHandler(AccountController.createUser, req => [req.body]));
 router.post('/create/business', controllerHandler(AccountController.createBusiness, req => [req.body]));
 router.post('/create/admin', controllerHandler(AccountController.createAdmin, req => [req.body]));

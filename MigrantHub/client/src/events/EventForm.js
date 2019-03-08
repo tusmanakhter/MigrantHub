@@ -11,6 +11,7 @@ import { PhoneMask, PostalCodeMask } from 'lib/Masks';
 import Clearfix from "components/Clearfix/Clearfix.jsx";
 import moment from 'moment'
 import FormData from 'form-data';
+import { injectIntl, intlShape, FormattedMessage } from 'react-intl';
 
 // core components
 import GridContainer from "components/Grid/GridContainer.jsx";
@@ -196,6 +197,7 @@ class EventForm extends Component {
   }
 
   validate = () => {
+    const { intl } = this.props;
     const {
       eventName, description, location, dateStart, dateEnd, timeStart,
       timeEnd, eventImageName, eventImage, visibility, repeat
@@ -221,91 +223,91 @@ class EventForm extends Component {
     };
 
     if (validator.isEmpty(eventName)) {
-      errors.eventNameError = 'Event name is required';
+      errors.eventNameError = `${intl.formatMessage({ id: 'form.title' })}  ${intl.formatMessage({ id: 'isrequired' })}`;
       isError = true;
     }
 
     if (validator.isEmpty(visibility)) {
-      errors.visibilityError = 'Visibility field is required';
+      errors.visibilityError = `${intl.formatMessage({ id: 'form.visibility' })}  ${intl.formatMessage({ id: 'isrequired' })}`;
       isError = true;
     }
 
     if (validator.isEmpty(repeat)) {
-      errors.repeatError = 'Repeat field is required';
+      errors.repeatError = `${intl.formatMessage({ id: 'form.repeat' })}  ${intl.formatMessage({ id: 'isrequired' })}`;
       isError = true;
     }
 
     if (validator.isEmpty(description)) {
-      errors.descriptionError = 'Description is required';
+      errors.descriptionError = `${intl.formatMessage({ id: 'form.description' })}  ${intl.formatMessage({ id: 'isrequired' })}`;
       isError = true;
     } else if (!validator.isLength(description, { min: 10 })) {
-      errors.descriptionError = 'Description must be at least 10 characters';
+      errors.descriptionError = `${intl.formatMessage({ id: 'form.description' })}  ${intl.formatMessage({ id: 'form.min.char.10' })}`;
       isError = true;
     }
 
     if (validator.isEmpty(location.address)) {
-      errors.addressError = 'Address is required';
+      errors.addressError = `${intl.formatMessage({ id: 'contact.address' })}  ${intl.formatMessage({ id: 'isrequired' })}`;
       isError = true;
     }
 
     if (validator.isEmpty(location.city)) {
-      errors.cityError = 'City is required';
+      errors.cityError = `${intl.formatMessage({ id: 'contact.city' })}  ${intl.formatMessage({ id: 'isrequired' })}`;
       isError = true;
     } else if (validator.isNumeric(location.city)) {
-      errors.cityError = 'City is invalid';
+      errors.cityError = `${intl.formatMessage({ id: 'contact.city' })}  ${intl.formatMessage({ id: 'notvalid' })}`;
       isError = true;
     }
 
     if (validator.isEmpty(location.province)) {
-      errors.provinceError = 'Province is required';
+      errors.provinceError = `${intl.formatMessage({ id: 'contact.province' })}  ${intl.formatMessage({ id: 'isrequired' })}`;
       isError = true;
     }
 
     if (validator.isEmpty(location.postalCode)) {
-      errors.postalCodeError = 'Postal code is required';
+      errors.postalCodeError = `${intl.formatMessage({ id: 'contact.postal' })}  ${intl.formatMessage({ id: 'isrequired' })}`;
       isError = true;
     } else if (!validator.isLength(location.postalCode, { min: 7, max: 7 })) {
-      errors.postalCodeError = 'Postal code is invalid';
+      errors.postalCodeError = `${intl.formatMessage({ id: 'contact.postal' })}  ${intl.formatMessage({ id: 'notvalid' })}`;
       isError = true;
     }
 
     if (validator.isEmpty(location.phoneNumber)) {
-      errors.phoneNumberError = 'Phone number is required';
+      errors.phoneNumberError = `${intl.formatMessage({ id: 'contact.phone' })}  ${intl.formatMessage({ id: 'isrequired' })}`;
       isError = true;
     } else if (!validator.isLength(location.phoneNumber, { min: 14, max: 14 })) {
-      errors.phoneNumberError = 'Phone number is invalid';
+      errors.phoneNumberError = `${intl.formatMessage({ id: 'contact.phone' })}  ${intl.formatMessage({ id: 'notvalid' })}`;
       isError = true;
     }
 
     if (validator.isEmpty(dateStart)) {
-      errors.dateStartError = 'Start date is required';
+      errors.dateStartError = `${intl.formatMessage({ id: 'form.day.start' })}  ${intl.formatMessage({ id: 'isrequired' })}`;
       isError = true;
     } else if (validator.isBefore(dateStart)) {
-      errors.dateStartError = 'Start date is invalid';
+      errors.dateStartError = `${intl.formatMessage({ id: 'form.day.start' })}  ${intl.formatMessage({ id: 'notvalid' })}`;
       isError = true;
     }
 
     if (validator.isEmpty(dateEnd)) {
-      errors.dateEndError = 'End date is required';
+      errors.dateEndError = `${intl.formatMessage({ id: 'form.day.end' })}  ${intl.formatMessage({ id: 'isrequired' })}`;
       isError = true;
     } else if (validator.isBefore(dateEnd, dateStart)) {
-      errors.dateEndError = 'End date is invalid';
+      errors.dateEndError = `${intl.formatMessage({ id: 'form.day.end' })}  ${intl.formatMessage({ id: 'notvalid' })}`;
       isError = true;
     }
 
     if (validator.isEmpty(timeStart)) {
-      errors.timeStartError = 'Start time is required';
+      errors.timeStartError = `${intl.formatMessage({ id: 'form.time.start' })}  ${intl.formatMessage({ id: 'isrequired' })}`;
       isError = true;
     }
 
     if (validator.isEmpty(timeEnd)) {
-      errors.timeEndError = 'End time is required';
+      errors.timeEndError = `${intl.formatMessage({ id: 'form.time.end' })}  ${intl.formatMessage({ id: 'isrequired' })}`;
       isError = true;
     }
 
     if (eventImage !== null) {
       if (!validator.matches(eventImageName, '.([.jpg]|[.jpeg]|[.png])$')) {
-        errors.eventImageError = 'Invalid image format. Should be either .jpg, .jpeg or .png';
+        errors.eventImageError = `${intl.formatMessage({ id: 'form.image' })}  ${intl.formatMessage({ id: 'notvalid' })} .jpg, .jpeg or .png`;
         isError = true;
       }
     }
@@ -619,7 +621,7 @@ class EventForm extends Component {
             <Card>
               <CardHeader color="success" text>
                 <CardText color="success">
-                  <h4>Event Form</h4>
+                  <h4><FormattedMessage id="event.form" /></h4>
                 </CardText>
               </CardHeader>
               <CardBody>
@@ -655,7 +657,7 @@ class EventForm extends Component {
                     <GridItem xs={12} sm={12} md={12}>
                       <CustomInput
                         className={classes.input}
-                        labelText="Event Title"
+                        labelText={<FormattedMessage id="form.title" />}
                         formControlProps={{
                           fullWidth: true
                         }}
@@ -679,7 +681,7 @@ class EventForm extends Component {
                         htmlFor="simple-select"
                         className={classes.selectLabel}
                       >
-                        Choose Visibility
+                      <FormattedMessage id="form.select.visibility" />
                       </InputLabel>
                       <Select
                         MenuProps={{
@@ -703,7 +705,7 @@ class EventForm extends Component {
                           disabled
                           classes={{ root: classes.selectMenuItem }}
                         >
-                        Choose Visibility
+                        <FormattedMessage id="form.select.visibility" />
                         </MenuItem>
                         {visibilities.map(option => (
                           <MenuItem key={option.value} value={option.value}>
@@ -718,17 +720,16 @@ class EventForm extends Component {
                       <FormControl
                         fullWidth
                         className={classes.selectFormControl}
-                          name="repeat"
-                          select
-                          label="Repeat"
-                          onChange={event => this.handleChange(event)}
-                          fullWidth
+                        name="repeat"
+                        select
+                        label="Repeat"
+                        onChange={event => this.handleChange(event)}
                       >
                         <InputLabel
                           htmlFor="simple-select"
                           className={classes.selectLabel}
                         >
-                          Select Repeat
+                          <FormattedMessage id="form.select.repeat" />
                         </InputLabel>
                         <Select
                           MenuProps={{
@@ -750,7 +751,7 @@ class EventForm extends Component {
                                 root: classes.selectMenuItem
                               }}
                             >
-                              Select Repeat
+                              <FormattedMessage id="form.select.repeat" />
                             </MenuItem>
                             {repeats.map(option => (
                               <MenuItem key={option.value} value={option.value}>
@@ -763,7 +764,7 @@ class EventForm extends Component {
                     </GridItem>
                     <GridItem xs={12} sm={12} md={12}>
                       <CustomInput
-                        labelText="Event Description"
+                        labelText={<FormattedMessage id="form.description" />}
                         formControlProps={{
                           fullWidth: true
                         }}
@@ -786,14 +787,14 @@ class EventForm extends Component {
                         <CardIcon color="success">
                           <Today />
                         </CardIcon>
-                        <h4 className={classes.cardIconTitle}>Date</h4>
+                        <h4 className={classes.cardIconTitle}><FormattedMessage id="form.date" /></h4>
                       </CardHeader>
                       <CardBody>
                         <GridItem>
                         </GridItem>
                         <GridContainer>
                         <GridItem xs={6} sm={6} md={6}>
-                        <InputLabel className={classes.label}>Start date</InputLabel>
+                        <InputLabel className={classes.label}><FormattedMessage id="form.day.start" /></InputLabel>
                         <br />
                       <FormControl fullWidth>
                         <Datetime
@@ -811,7 +812,7 @@ class EventForm extends Component {
                       </FormControl>
                       </GridItem>
                       <GridItem xs={6} sm={6} md={6}>
-                      <InputLabel className={classes.label}>End date</InputLabel>
+                      <InputLabel className={classes.label}><FormattedMessage id="form.day.end" /></InputLabel>
                         <br />
                       <FormControl fullWidth>
                         <Datetime
@@ -840,19 +841,19 @@ class EventForm extends Component {
                         <CardIcon color="success">
                           <AvTimer />
                         </CardIcon>
-                        <h4 className={classes.cardIconTitle}>Day Time</h4>
+                        <h4 className={classes.cardIconTitle}><FormattedMessage id="form.time" /></h4>
                       </CardHeader>
                       <CardBody>
                         <React.Fragment>
                         <GridContainer>
                           <GridItem xs={12} sm={12} md={6} lg={3} >
-                            <InputLabel className={classes.label}>Start Time</InputLabel>
+                            <InputLabel className={classes.label}><FormattedMessage id="form.time.start" /></InputLabel>
                             <br />
                             <FormControl fullWidth>
                             <Datetime
                               dateFormat={false}
                               inputProps={{ 
-                              placeholder: "Start Time",
+                              placeholder: "HH:MM AM/PM",
                               }}
                               id="timeStart"
                               name="timeStart"
@@ -866,12 +867,12 @@ class EventForm extends Component {
                             </FormControl>
                           </GridItem>
                           <GridItem xs={12} sm={12} md={6} lg={3} >
-                            <InputLabel className={classes.label}>End Time</InputLabel>
+                            <InputLabel className={classes.label}><FormattedMessage id="form.time.end" /></InputLabel>
                               <br />
                             <FormControl fullWidth>
                               <Datetime
                                 dateFormat={false}
-                                inputProps={{ placeholder: "End Time" }}
+                                inputProps={{ placeholder: "HH:MM AM/PM" }}
                                 id="timeEnd"
                                 name="timeEnd"
                                 value={timeEnd}
@@ -902,7 +903,7 @@ class EventForm extends Component {
                         <GridItem xs={4} sm={4} md={4} lg={4}>
                           <CustomInput
                           className={classes.input}
-                            labelText="Address"
+                            labelText={<FormattedMessage id="contact.address" />}
                             formControlProps={{
                               fullWidth: true
                             }}
@@ -918,7 +919,7 @@ class EventForm extends Component {
                         </GridItem>
                         <GridItem xs={4} sm={4} md={4} lg={4}>
                           <CustomInput
-                            labelText="City"
+                            labelText={<FormattedMessage id="contact.city" />}
                             formControlProps={{
                               fullWidth: true
                             }}
@@ -934,7 +935,7 @@ class EventForm extends Component {
                         </GridItem>
                         <GridItem xs={2} sm={2} md={2} lg={2}>
                           <CustomInput
-                            labelText="Apartment"
+                            labelText={<FormattedMessage id="contact.apartment" />}
                             id="apartment"
                             formControlProps={{
                               fullWidth: true
@@ -977,7 +978,7 @@ class EventForm extends Component {
                             onChange={this.handleEditLocationObject('location', 'province')}
                             name="province"
                             select
-                            label="Province/Territory"
+                            label={<FormattedMessage id="contact.province" />}
                             fullWidth
                             helperText={provinceError}
                             error={provinceError.length > 0}
@@ -988,7 +989,7 @@ class EventForm extends Component {
                               root: classes.selectMenuItem
                             }}
                           >
-                            Province
+                            <FormattedMessage id="contact.province" />
                           </MenuItem>
                           {provinces.map(option => (
                             <MenuItem key={option.value} value={option.value}>
@@ -1001,7 +1002,7 @@ class EventForm extends Component {
                         </GridItem>
                         <GridItem xs={4} sm={4} md={4} lg={4}>
                           <CustomInput
-                            labelText="Postal Code"
+                            labelText={<FormattedMessage id="contact.postal" />}
                             formControlProps={{
                               fullWidth: true
                             }}
@@ -1018,7 +1019,7 @@ class EventForm extends Component {
                         </GridItem>
                         <GridItem xs={4} sm={4} md={12} lg={4}>
                           <CustomInput
-                            labelText="Phone Number"
+                            labelText={<FormattedMessage id="contact.phone" />}
                             id="phoneNumber"
                             formControlProps={{
                               fullWidth: true
@@ -1071,6 +1072,7 @@ class EventForm extends Component {
 EventForm.propTypes = {
   classes: PropTypes.shape({}).isRequired,
   location: PropTypes.shape({}).isRequired,
+  intl: intlShape.isRequired,
 };
   
-export default withStyles(styles)(EventForm);
+export default withStyles(styles)(injectIntl(EventForm));

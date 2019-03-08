@@ -51,9 +51,6 @@ class PersonalInfo extends Component {
     if (validator.isEmpty(nationality)) {
       errors.nationalityError = `${intl.formatMessage({ id: 'personal.nationality' })}  ${intl.formatMessage({ id: 'isrequired' })}`;
       isError = true;
-    } else if (!validator.isAlpha(nationality)) {
-      errors.nationalityError = `${intl.formatMessage({ id: 'personal.nationality' })}  ${intl.formatMessage({ id: 'notvalid' })}`;
-      isError = true;
     }
 
     if (validator.isEmpty(relationshipStatus)) {

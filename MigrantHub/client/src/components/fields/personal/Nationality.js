@@ -1,17 +1,18 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import TextBox from 'components/fields/generic/TextBox';
 import { FormattedMessage } from 'react-intl';
+import Dropdown from 'components/fields/generic/Dropdown';
+import { countries } from 'lib/SignUpConstants';
 
 const Nationality = (props) => {
   const { nationality, nationalityError, handleChange } = props;
   return (
-    <TextBox
+    <Dropdown
       name="nationality"
       label={<FormattedMessage id="personal.nationality" />}
-      placeholder=""
       value={nationality}
       error={nationalityError}
+      options={countries}
       handleChange={event => handleChange(event)}
     />
   );

@@ -11,7 +11,7 @@ const JobStatus = (props) => {
   return (
     <Dropdown
       name="jobStatus"
-      label={<FormattedMessage id="employment.length" />}
+      label={<FormattedMessage id="employment.status" />}
       value={jobStatus}
       error={jobStatusError}
       options={jobStatuses}
