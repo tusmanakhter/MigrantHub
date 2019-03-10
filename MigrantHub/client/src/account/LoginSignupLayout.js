@@ -25,8 +25,10 @@ const styles = theme => ({
     [theme.breakpoints.down('xs')]: {
       width: 288,
       paddingBottom: 10,
+      marginTop: -95,
     },
     width: 380,
+    marginTop: -115,
   },
   close: {
     color: 'inherit',
@@ -42,6 +44,7 @@ const styles = theme => ({
     padding: 20,
     flexShrink: 0,
     display: 'flex',
+    alignItems: 'center',
     justifyContent: 'space-between',
   },
 });

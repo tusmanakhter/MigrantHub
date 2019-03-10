@@ -51,7 +51,7 @@ class SignUp extends Component {
     const { activeStep } = this.state;
     const { createAccount, validate, steps } = this.props;
 
-    const isValid = validate(activeStep);
+    const isValid = await validate(activeStep);
 
     if (isValid) {
       if (activeStep === steps.length - 1) {
@@ -74,11 +74,6 @@ class SignUp extends Component {
   };
 
   handleBack = () => {
-    const { activeStep } = this.state;
-    const { goBack } = this.props;
-
-    goBack(activeStep - 1);
-
     this.setState(state => ({
       activeStep: state.activeStep - 1,
     }));
@@ -113,29 +108,48 @@ class SignUp extends Component {
 
     return (
       <>
-        <Stepper alternativeLabel activeStep={activeStep} className={classes.stepper}>
-          {steps.map(label => (
-            <Step key={label}>
-              <StepLabel>{label}</StepLabel>
-            </Step>
-          ))}
-        </Stepper>
-        <form onSubmit={e => e.preventDefault()}>
-          {this.getStepContent(activeStep)}
-          <div className={classes.buttons}>
-            <div className={classes.item}>
-              <Button
-                type="submit"
-                color="primary"
-                variant="contained"
-                onClick={this.handleBack}
-                className={classes.btn}
-                disabled={activeStep === 0}
-              >
-                <BackIcon />
-                <FormattedMessage id="back" style={{ marginRight: 5 }} />
-              </Button>
-            </div>
+        {steps.length !== 1 ? (
+          <>
+            <Stepper alternativeLabel activeStep={activeStep} className={classes.stepper}>
+              {steps.map(label => (
+                <Step key={label}>
+                  <StepLabel>{label}</StepLabel>
+                </Step>
+              ))}
+            </Stepper>
+            <form onSubmit={e => e.preventDefault()}>
+              {this.getStepContent(activeStep)}
+              <div className={classes.buttons}>
+                <div className={classes.item}>
+                  <Button
+                    type="submit"
+                    color="primary"
+                    variant="contained"
+                    onClick={this.handleBack}
+                    className={classes.btn}
+                    disabled={activeStep === 0}
+                  >
+                    <BackIcon />
+                    <FormattedMessage id="back" style={{ marginRight: 5 }} />
+                  </Button>
+                </div>
+                <div className={classes.item}>
+                  <Button
+                    type="submit"
+                    color="primary"
+                    variant="contained"
+                    onClick={this.handleNext}
+                    className={classes.btn}
+                  >
+                    {nextButtonMessage}
+                  </Button>
+                </div>
+              </div>
+            </form>
+          </>
+        ) : (
+          <form onSubmit={e => e.preventDefault()}>
+            {this.getStepContent()}
             <div className={classes.item}>
               <Button
                 type="submit"
@@ -143,12 +157,13 @@ class SignUp extends Component {
                 variant="contained"
                 onClick={this.handleNext}
                 className={classes.btn}
+                fullWidth
               >
                 {nextButtonMessage}
               </Button>
             </div>
-          </div>
-        </form>
+          </form>
+        )}
         <div className={classes.terms}>
           <FormattedHTMLMessage id="signup.terms" />
         </div>
@@ -162,7 +177,6 @@ SignUp.propTypes = {
   steps: PropTypes.array.isRequired,
   getStepContent: PropTypes.func.isRequired,
   validate: PropTypes.func.isRequired,
-  goBack: PropTypes.func.isRequired,
 };
 
 export default withStyles(styles)(injectIntl(SignUp));

@@ -54,11 +54,11 @@ const styles = theme => ({
   },
 });
 
-class BaseSignup extends Component {
+class BaseSignupMigrant extends Component {
   constructor(props) {
     super(props);
 
-    this.validator = new FormValidator(Validations.migrant_signup_step1);
+    this.validator = new FormValidator(Validations.migrantSignup);
 
     this.state = {
       activeStep: 0,
@@ -86,13 +86,10 @@ class BaseSignup extends Component {
   getStepContent = (step) => {
     const {
       email, password, showPassword,
-      firstName, lastName,
+      firstName, lastName, age, gender, nationality,
+      relationshipStatus, status, educationLevel,
+      jobStatus, settlingLocation, joiningReason,
       validation,
-    } = this.state;
-
-    const {
-      age, gender, nationality, relationshipStatus, status,
-      educationLevel, jobStatus, settlingLocation, joiningReason,
     } = this.state;
 
     const { classes } = this.props;
@@ -270,50 +267,29 @@ class BaseSignup extends Component {
   }
 
   validate = (step) => {
-    const validation = this.validator.validate(this.state);
-    this.setState({ validation });
-
     switch (step) {
       case 0:
-        if (validation.isValid) {
-          this.validator = new FormValidator(Validations.migrant_signup_step2);
-          this.setState({
-            validation: this.validator.valid(),
-          });
-        }
-        return validation.isValid;
+        this.validator = new FormValidator(Validations.migrantSignupStep1);
+        break;
       case 1:
-        if (validation.isValid) {
-          this.validator = new FormValidator(Validations.migrant_signup_step3);
-          this.setState({
-            validation: this.validator.valid(),
-          });
-        }
-        return validation.isValid;
+        this.validator = new FormValidator(Validations.migrantSignupStep2);
+        break;
       case 2:
-        return validation.isValid;
+        this.validator = new FormValidator(Validations.migrantSignupStep3);
+        break;
       default:
         throw new Error('Unknown step');
     }
-  }
 
-  goBack = (step) => {
-    switch (step) {
-      case 0:
-        this.validator = new FormValidator(Validations.migrant_signup_step1);
-        this.setState({
-          validation: this.validator.valid(),
-        });
-        break;
-      case 1:
-        this.validator = new FormValidator(Validations.migrant_signup_step2);
-        this.setState({
-          validation: this.validator.valid(),
-        });
-        break;
-      default:
-        throw new Error('Unknown step');
-    }
+    const validation = this.validator.validate(this.state);
+    this.setState(prevState => ({
+      validation: {
+        ...prevState.validation,
+        ...validation,
+      },
+    }));
+
+    return validation.isValid;
   }
 
   handleClickShowPassword = () => {
@@ -384,7 +360,6 @@ class BaseSignup extends Component {
             steps={steps}
             getStepContent={this.getStepContent}
             validate={this.validate}
-            goBack={this.goBack}
           />
         </div>
         <DividerWithText text="or" />
@@ -405,15 +380,15 @@ class BaseSignup extends Component {
   }
 }
 
-const SignUp = props => (
+const SignUpMigrant = props => (
   <AuthConsumer>
-    {context => <BaseSignup context={context} {...props} />}
+    {context => <BaseSignupMigrant context={context} {...props} />}
   </AuthConsumer>
 );
 
-BaseSignup.propTypes = {
+BaseSignupMigrant.propTypes = {
   classes: PropTypes.object.isRequired,
   intl: intlShape.isRequired,
 };
 
-export default withStyles(styles)(injectIntl(SignUp));
+export default withStyles(styles)(injectIntl(SignUpMigrant));
