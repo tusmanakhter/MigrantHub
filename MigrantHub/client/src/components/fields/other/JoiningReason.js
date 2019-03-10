@@ -7,6 +7,7 @@ import { FormattedMessage } from 'react-intl';
 const JoiningReason = (props) => {
   const {
     joiningReason, joiningReasonError, handleChange,
+    variant, margin, inputClass,
   } = props;
 
   return (
@@ -17,14 +18,26 @@ const JoiningReason = (props) => {
       error={joiningReasonError}
       options={joiningReasons}
       handleChange={event => handleChange(event)}
+      variant={variant}
+      inputClass={inputClass}
+      margin={margin}
     />
   );
+};
+
+JoiningReason.defaultProps = {
+  variant: 'standard',
+  inputClass: '',
+  margin: '',
 };
 
 JoiningReason.propTypes = {
   joiningReason: PropTypes.string.isRequired,
   joiningReasonError: PropTypes.string.isRequired,
   handleChange: PropTypes.func.isRequired,
+  variant: PropTypes.string,
+  inputClass: PropTypes.string,
+  margin: PropTypes.string,
 };
 
 export default JoiningReason;

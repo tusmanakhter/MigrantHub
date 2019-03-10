@@ -13,7 +13,7 @@ const qs = require('qs');
 class SignUpBusiness extends Component {
   getStepContent(step) {
     const {
-      email, password, confirmPassword, corpId, firstName, lastName, address, apartment,
+      email, password, corpId, firstName, lastName, address, apartment,
       city, province, postalCode, phoneNumber, organizationName, orgType,
       department, serviceType, description,
     } = this.state;
@@ -25,7 +25,6 @@ class SignUpBusiness extends Component {
             handleChange={this.handleChange}
             email={email}
             password={password}
-            confirmPassword={confirmPassword}
           />
         );
       case 1:
@@ -71,7 +70,7 @@ class SignUpBusiness extends Component {
   // Send profile data in post body to add to mongodb
   createAccount(event) {
     const {
-      email, password, confirmPassword, corpId, firstName, lastName, address, apartment,
+      email, password, corpId, firstName, lastName, address, apartment,
       city, province, postalCode, phoneNumber, organizationName, orgType,
       department, serviceType, description,
     } = event.state;
@@ -80,7 +79,6 @@ class SignUpBusiness extends Component {
         email,
         corpId,
         password,
-        confirmPassword,
         firstName,
         lastName,
         address,

@@ -8,7 +8,7 @@ const qs = require('qs');
 
 class SignUpAdmin extends Component {
   getStepContent(step) {
-    const { email, password, confirmPassword } = this.state;
+    const { email, password } = this.state;
 
     switch (step) {
       case 0:
@@ -18,7 +18,6 @@ class SignUpAdmin extends Component {
             handleChange={this.handleChange}
             email={email}
             password={password}
-            confirmPassword={confirmPassword}
           />
         );
       default:
@@ -32,7 +31,6 @@ class SignUpAdmin extends Component {
       qs.stringify({
         email: e.state.email,
         password: e.state.password,
-        confirmPassword: e.state.confirmPassword,
       })).then((response) => {
       e.setState({
         messageFromServer: response.data,

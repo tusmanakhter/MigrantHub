@@ -130,7 +130,7 @@ const HomeLayout = (props) => {
                 <Link to="/login">
                   <FormattedMessage id="login" />
                 </Link>
-                <Link to="/signup/account-selection">
+                <Link to="/signup/personal">
                   <FormattedMessage id="signup" />
                 </Link>
               </Toolbar>

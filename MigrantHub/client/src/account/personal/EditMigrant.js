@@ -39,7 +39,6 @@ class EditMigrant extends React.Component {
       alert: null,
       email: '',
       password: '',
-      confirmPassword: '',
       firstName: '',
       lastName: '',
       address: '',
@@ -153,7 +152,6 @@ class EditMigrant extends React.Component {
         this.setState({
           email: jsonObj.email,
           password: jsonObj.password,
-          confirmPassword: jsonObj.confirmPassword,
           firstName: jsonObj.firstName,
           lastName: jsonObj.lastName,
           address: jsonObj.address,
@@ -236,7 +234,7 @@ class EditMigrant extends React.Component {
 
   updateAccount(e) {
     const {
-      email, password, confirmPassword, firstName, lastName, address, apartment, city, province,
+      email, password, firstName, lastName, address, apartment, city, province,
       postalCode, phoneNumber, age, gender, nationality, relationshipStatus, status,
       languages, writingLevel, speakingLevel, motherTongue, family, educationLevel,
       proficiencyExams, jobStatus, lookingForJob, currentIncome, workExperience,
@@ -247,7 +245,6 @@ class EditMigrant extends React.Component {
       qs.stringify({
         email,
         password,
-        confirmPassword,
         firstName,
         lastName,
         address,

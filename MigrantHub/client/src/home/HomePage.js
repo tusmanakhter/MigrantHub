@@ -39,7 +39,7 @@ const styles = theme => ({
     },
     color: 'black',
     padding: '3% 20% 3% 20%',
-    background: theme.palette.secondary.superlight,
+    background: theme.palette.secondary.light,
   },
   button: {
     margin: theme.spacing.unit,
@@ -102,7 +102,7 @@ const HomePage = (props) => {
             </Typography>
           </Grid>
           <Grid item xs={12} className={classes.buttons}>
-            <Button variant="contained" component={Link} to="/signup/account-selection" className={[classes.button, classes.signUpButton].join(' ')}>
+            <Button variant="contained" component={Link} to="/signup/personal" className={[classes.button, classes.signUpButton].join(' ')}>
               <FormattedMessage id="signup" />
             </Button>
             <Button variant="outlined" className={[classes.button, classes.aboutButton].join(' ')}>

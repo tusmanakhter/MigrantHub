@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 
 const TextBox = (props) => {
   const {
-    name, label, value, error, placeholder,
+    name, label, value, error, placeholder, endAdornment,
     variant, type, inputClass, margin, handleChange,
 
   } = props;
@@ -22,6 +22,7 @@ const TextBox = (props) => {
       variant={variant}
       type={type}
       InputProps={{
+        endAdornment,
         classes: {
           input: inputClass,
         },
@@ -38,7 +39,8 @@ TextBox.defaultProps = {
   type: '',
   placeholder: '',
   inputClass: '',
-  margin: '',
+  margin: null,
+  endAdornment: null,
 };
 
 TextBox.propTypes = {
@@ -52,6 +54,7 @@ TextBox.propTypes = {
   variant: PropTypes.string,
   inputClass: PropTypes.string,
   margin: PropTypes.string,
+  endAdornment: PropTypes.node,
 };
 
 export default TextBox;

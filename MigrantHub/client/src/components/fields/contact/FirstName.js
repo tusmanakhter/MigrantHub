@@ -4,7 +4,10 @@ import TextBox from 'components/fields/generic/TextBox';
 import { FormattedMessage } from 'react-intl';
 
 const FirstName = (props) => {
-  const { firstName, firstNameError, handleChange } = props;
+  const {
+    firstName, firstNameError, variant, margin, inputClass, handleChange,
+  } = props;
+
   return (
     <TextBox
       name="firstName"
@@ -13,14 +16,26 @@ const FirstName = (props) => {
       value={firstName}
       error={firstNameError}
       handleChange={event => handleChange(event)}
+      variant={variant}
+      inputClass={inputClass}
+      margin={margin}
     />
   );
+};
+
+FirstName.defaultProps = {
+  variant: 'standard',
+  inputClass: '',
+  margin: '',
 };
 
 FirstName.propTypes = {
   firstName: PropTypes.string.isRequired,
   firstNameError: PropTypes.string.isRequired,
   handleChange: PropTypes.func.isRequired,
+  variant: PropTypes.string,
+  inputClass: PropTypes.string,
+  margin: PropTypes.string,
 };
 
 export default FirstName;

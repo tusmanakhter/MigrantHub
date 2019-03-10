@@ -10,6 +10,7 @@ import { FormattedMessage } from 'react-intl';
 const SettlingLocation = (props) => {
   const {
     settlingLocation, settlingLocationError, handleAutoSuggestChange,
+    variant, margin, inputClass,
   } = props;
 
   return (
@@ -22,14 +23,26 @@ const SettlingLocation = (props) => {
       handleSuggestionsFetchRequested={handleSuggestionsFetchRequested}
       renderSuggestion={renderSuggestion}
       getSuggestionValue={getSuggestionValue}
+      variant={variant}
+      inputClass={inputClass}
+      margin={margin}
     />
   );
+};
+
+SettlingLocation.defaultProps = {
+  variant: 'standard',
+  inputClass: '',
+  margin: '',
 };
 
 SettlingLocation.propTypes = {
   settlingLocation: PropTypes.string.isRequired,
   settlingLocationError: PropTypes.string.isRequired,
   handleAutoSuggestChange: PropTypes.func.isRequired,
+  variant: PropTypes.string,
+  inputClass: PropTypes.string,
+  margin: PropTypes.string,
 };
 
 export default SettlingLocation;
