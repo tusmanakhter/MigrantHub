@@ -14,14 +14,29 @@ const theme = createMuiTheme({
       main: '#fff',
     },
     primary: {
-      light: '#617dff',
-      main: '#0251d6',
-      dark: '#002aa3',
+      light: '#51598c',
+      main: '#24305e',
+      dark: '#000734',
     },
     secondary: {
-      light: '#ffab89',
-      main: '#fa7a5b',
-      dark: '#c24a30',
+      light: '#ff9e9a',
+      main: '#f76c6c',
+      dark: '#bf3a41',
+    },
+    third: {
+      light: '#daffff',
+      main: '#a8d0e6',
+      dark: '#789fb4',
+    },
+    fourth: {
+      light: '#ffffd3',
+      main: '#f8e9a1',
+      dark: '#c4b772',
+    },
+    fifth: {
+      light: '#6772b5',
+      main: '#374785',
+      dark: '#002058',
     },
     error: {
       light: '#e57373',
@@ -37,6 +52,7 @@ const theme = createMuiTheme({
     borders: {
       main: '#bcbcbc',
     },
+    contrastThreshold: 0.1,
   },
 });
 

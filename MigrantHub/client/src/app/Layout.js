@@ -7,8 +7,7 @@ import Header from 'app/Header';
 import Footer from 'app/Footer';
 import Sidebar from 'app/Sidebar';
 import appStyle from 'assets/jss/material-dashboard-pro-react/layouts/dashboardStyle';
-import image from 'assets/img/sidebar-2.jpg';
-import logo from 'assets/img/logo-white.svg';
+import logo from 'assets/img/logo_transparent.png';
 import { withRouter } from 'react-router';
 
 
@@ -86,11 +85,10 @@ class Layout extends React.Component {
             routes={SidebarLinks}
             logoText="Migrant Hub"
             logo={logo}
-            image={image}
             handleDrawerToggle={this.handleDrawerToggle}
             open={mobileOpen}
             color="blue"
-            bgColor="black"
+            bgColor="blue"
             miniActive={miniActive}
             {...rest}
           />
