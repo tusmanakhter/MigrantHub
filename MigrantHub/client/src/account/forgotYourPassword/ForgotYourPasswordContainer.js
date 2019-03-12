@@ -26,7 +26,6 @@ class ForgotYourPasswordContainer extends Component {
         activeStep: 0,
         email: '',
         password: '',
-        confirmPassword: '',
         verificationCode: '',
         messageFromServer: '',
         verificationError: false,

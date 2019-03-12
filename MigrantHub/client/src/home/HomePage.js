@@ -23,12 +23,13 @@ const styles = theme => ({
     textAlign: 'center',
     color: 'white',
     padding: '10% 25% 7% 25%',
-    background: '#193446',
+    background: theme.palette.primary.main,
   },
   business: {
     [theme.breakpoints.down('sm')]: {
       padding: '3%',
     },
+    background: theme.palette.common.white,
     color: 'black',
     padding: '3% 20% 3% 20%',
   },
@@ -38,7 +39,7 @@ const styles = theme => ({
     },
     color: 'black',
     padding: '3% 20% 3% 20%',
-    background: '#e9c77b',
+    background: theme.palette.secondary.light,
   },
   button: {
     margin: theme.spacing.unit,
@@ -68,17 +69,17 @@ const styles = theme => ({
     },
   },
   signUpButton: {
-    background: '#e9c77b',
-    color: '#193446',
+    background: theme.palette.common.white,
+    color: theme.palette.primary.main,
     width: 150,
   },
   aboutButton: {
-    borderColor: '#e9c77b',
-    color: '#e9c77b',
+    borderColor: theme.palette.common.white,
+    color: theme.palette.common.white,
     width: 150,
   },
   businessButton: {
-    background: '#193446',
+    background: theme.palette.secondary.main,
     color: 'white',
   },
 });
@@ -101,7 +102,7 @@ const HomePage = (props) => {
             </Typography>
           </Grid>
           <Grid item xs={12} className={classes.buttons}>
-            <Button variant="contained" component={Link} to="/signup/account-selection" className={[classes.button, classes.signUpButton].join(' ')}>
+            <Button variant="contained" component={Link} to="/signup/personal" className={[classes.button, classes.signUpButton].join(' ')}>
               <FormattedMessage id="signup" />
             </Button>
             <Button variant="outlined" className={[classes.button, classes.aboutButton].join(' ')}>

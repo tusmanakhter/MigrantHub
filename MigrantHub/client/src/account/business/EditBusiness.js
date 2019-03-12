@@ -71,7 +71,6 @@ class EditBusiness extends Component {
           email: jsonObj.email,
           corpId: jsonObj.corpId,
           password: jsonObj.password,
-          confirmPassword: jsonObj.confirmPassword,
           firstName: jsonObj.firstName,
           lastName: jsonObj.lastName,
           address: jsonObj.address,
@@ -135,7 +134,7 @@ class EditBusiness extends Component {
 
   updateAccount() {
     const {
-      email, password, confirmPassword, corpId, firstName, lastName, address, apartment,
+      email, password, corpId, firstName, lastName, address, apartment,
       city, province, postalCode, phoneNumber, organizationName, orgType,
       department, serviceType, description,
     } = this.state;
@@ -144,7 +143,6 @@ class EditBusiness extends Component {
         email,
         corpId,
         password,
-        confirmPassword,
         firstName,
         lastName,
         address,

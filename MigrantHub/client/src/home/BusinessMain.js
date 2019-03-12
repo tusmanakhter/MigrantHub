@@ -1,15 +1,6 @@
 import React, { Component } from 'react';
-import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
-import Grid from '@material-ui/core/Grid';
 import logo from 'logo.svg';
 import 'App.css';
-
-const theme = createMuiTheme({
-  palette: {
-    primary: { main: '#153345' },
-    secondary: { main: '#E2B39A' },
-  },
-});
 
 class BusinessMain extends Component {
     state = {

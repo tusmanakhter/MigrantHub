@@ -13,6 +13,7 @@ const styles = ({
 const Dropdown = (props) => {
   const {
     classes, name, label, value, error, options, handleChange,
+    variant, inputClass, endAdornment, margin,
   } = props;
   return (
     <TextField
@@ -25,6 +26,16 @@ const Dropdown = (props) => {
       fullWidth
       helperText={error}
       error={error.length > 0}
+      variant={variant}
+      InputProps={{
+        endAdornment,
+        classes: {
+          input: inputClass,
+        },
+      }}
+      InputLabelProps={{
+        margin,
+      }}
     >
       {options.map(option => (
         <MenuItem key={option.value} value={option.value}>
@@ -35,6 +46,13 @@ const Dropdown = (props) => {
   );
 };
 
+Dropdown.defaultProps = {
+  variant: 'standard',
+  inputClass: '',
+  margin: null,
+  endAdornment: null,
+};
+
 Dropdown.propTypes = {
   classes: PropTypes.shape({}).isRequired,
   name: PropTypes.string.isRequired,
@@ -43,6 +61,10 @@ Dropdown.propTypes = {
   error: PropTypes.string.isRequired,
   options: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   handleChange: PropTypes.func.isRequired,
+  variant: PropTypes.string,
+  inputClass: PropTypes.string,
+  margin: PropTypes.string,
+  endAdornment: PropTypes.node,
 };
 
 export default withStyles(styles)(Dropdown);

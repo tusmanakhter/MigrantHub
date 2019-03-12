@@ -5,7 +5,9 @@ import PropTypes from 'prop-types';
 const MaskedTextbox = (props) => {
   const {
     name, label, value, error, placeholder, mask, handleChange,
+    variant, margin, inputClass,
   } = props;
+
   return (
     <TextField
       id={name}
@@ -20,8 +22,17 @@ const MaskedTextbox = (props) => {
       InputProps={{
         inputComponent: mask,
       }}
+      variant={variant}
+      inputClass={inputClass}
+      margin={margin}
     />
   );
+};
+
+MaskedTextbox.defaultProps = {
+  variant: 'standard',
+  inputClass: '',
+  margin: '',
 };
 
 MaskedTextbox.propTypes = {
@@ -32,6 +43,9 @@ MaskedTextbox.propTypes = {
   error: PropTypes.string.isRequired,
   mask: PropTypes.func.isRequired,
   handleChange: PropTypes.func.isRequired,
+  variant: PropTypes.string,
+  inputClass: PropTypes.string,
+  margin: PropTypes.string,
 };
 
 export default MaskedTextbox;

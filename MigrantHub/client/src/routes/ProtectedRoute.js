@@ -4,25 +4,34 @@ import { Route, Redirect } from 'react-router-dom';
 import { AuthConsumer } from 'routes/AuthContext';
 
 const ProtectedRoute = ({
-  component: Component, migrant, business, admin, ...rest
+  component: Component, migrant, business, admin, disableLayout, ...rest
 }) => (
   <AuthConsumer>
     {({ isAuthenticated }) => (
       <Route
         {...rest}
-        render={props => (isAuthenticated(migrant, business, admin) === true ? (
-          <Layout>
-            <Component {...props} />
-          </Layout>
-        ) : (
-          <Redirect
-            to={{
-              pathname: '/login',
-              state: { from: props.location },
-            }}
-          />
-        ))
-        }
+        render={(props) => {
+          if (isAuthenticated(migrant, business, admin) === true) {
+            if (disableLayout) {
+              return (
+                <Component {...props} />
+              );
+            }
+            return (
+              <Layout>
+                <Component {...props} />
+              </Layout>
+            );
+          }
+          return (
+            <Redirect
+              to={{
+                pathname: '/login',
+                state: { from: props.location },
+              }}
+            />
+          );
+        }}
       />
     )}
   </AuthConsumer>

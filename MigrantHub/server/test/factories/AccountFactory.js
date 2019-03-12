@@ -42,7 +42,6 @@ module.exports.validMigrantAccount = function() {
     email : "test@test.com",
     userType: "local",
     password : "testtest",
-    confirmPassword : "testtest",
     firstName : "test",
     lastName : "test",
     address : "1455 Boulevard de Maisonneuve O",
@@ -113,7 +112,6 @@ module.exports.emptyMigrantAccount = function() {
     email : "",
     userType: "",
     password : "",
-    confirmPassword : "",
     firstName : "",
     lastName : "",
     address : "",
@@ -185,7 +183,6 @@ module.exports.invalidNumbersMigrantAccount = function() {
     email : "lax@hotmail.com",
     userType: "local",
     password : "$2a$10$U1yloqe8t2ultaLED/XXduPY/msYNk15aFEehh0eACXvStsDewHs2",
-    confirmPassword : "$2a$10$U1yloqe8t2ultaLED/XXduPY/msYNk15aFEehh0eACXvStsDewHs2",
     firstName : "Lax",
     lastName : "Test",
     address : "1455 Boulevard de Maisonneuve O",
@@ -216,7 +213,6 @@ module.exports.validBusinessAccount = function() {
     email : "test@test.com",
     userType: "local",
     password : "testtest",
-    confirmPassword : "testtest",
     firstName : "test",
     lastName : "test",
     address : "1455 Boulevard de Maisonneuve O",
@@ -239,7 +235,6 @@ module.exports.emptyBusinessAccount = function() {
     email : "",
     userType: "",
     password : "",
-    confirmPassword : "",
     firstName : "",
     lastName : "",
     address : "1",
@@ -262,7 +257,6 @@ module.exports.validAdminAccount = function() {
     email : "test@test.com",
     userType: "local",
     password : "testtest",
-    confirmPassword : "testtest"
   };
 };
 
@@ -271,6 +265,5 @@ module.exports.emptyAdminAccount = function() {
     email : "",
     userType: "",
     password : "",
-    confirmPassword : ""
   };
 };

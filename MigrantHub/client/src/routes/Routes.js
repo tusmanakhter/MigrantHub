@@ -45,13 +45,6 @@ class Routes extends Component {
     });
   }
 
-  componentWillReceiveProps(nextProps) {
-    const { location } = this.props;
-    if (nextProps.location !== location) {
-      toast.dismiss();
-    }
-  }
-
   render() {
     const { isLoading } = this.state;
 
@@ -76,10 +69,10 @@ class Routes extends Component {
           <ProtectedRoute path="/main" component={Main} migrant exact />
           <ProtectedRoute path="/businessmain" component={BusinessMain} business exact />
           <UnprotectedRoute path="/signup/account-selection" component={AccountSelection} exact />
-          <UnprotectedRoute path="/signup/business" component={SignUpBusiness} exact />
-          <UnprotectedRoute path="/signup/personal" component={SignUpMigrant} exact />
-          <UnprotectedRoute path="/signup/admin" component={SignUpAdmin} exact />
-          <UnprotectedRoute path="/login" component={Login} exact />
+          <UnprotectedRoute path="/signup/business" component={SignUpBusiness} disableLayout exact />
+          <UnprotectedRoute path="/signup/personal" component={SignUpMigrant} disableLayout exact />
+          <UnprotectedRoute path="/signup/admin" component={SignUpAdmin} disableLayout exact />
+          <UnprotectedRoute path="/login" component={Login} disableLayout exact />
           <UnprotectedRoute path="/forgotpassword" component={ForgotYourPasswordForm} exact />
           <ProtectedRoute path="/editmigrant" component={EditMigrant} migrant exact />
           <ProtectedRoute path="/editbusiness" component={EditBusiness} business exact />

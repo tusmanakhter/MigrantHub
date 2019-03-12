@@ -23,7 +23,6 @@ class AccountInfo extends Component {
     showPassword: false,
     emailError: '',
     passwordError: '',
-    confirmPasswordError: '',
   }
 
   handleClickShowPassword = () => {
@@ -38,13 +37,12 @@ class AccountInfo extends Component {
   }
 
   async validate() {
-    const { email, password, confirmPassword, intl } = this.props;
+    const { email, password, intl } = this.props;
 
     let isError = false;
     const errors = {
       emailError: '',
       passwordError: '',
-      confirmPasswordError: '',
     };
 
     if (validator.isEmpty(email)) {
@@ -65,16 +63,8 @@ class AccountInfo extends Component {
     if (validator.isEmpty(password)) {
       errors.passwordError = `${intl.formatMessage({ id: 'password' })}  ${intl.formatMessage({ id: 'isrequired' })}`;
       isError = true;
-    } else if (validator.isEmpty(confirmPassword)) {
-      errors.confirmPasswordError = intl.formatMessage({ id: 'account.validation.passwordConfirm' });
-      isError = true;
-    } else if (!validator.equals(password, confirmPassword)) {
-      errors.passwordError = intl.formatMessage({ id: 'account.validation.passwordMatch' });
-      errors.confirmPasswordError = intl.formatMessage({ id: 'account.validation.passwordMatch' });
-      isError = true;
     } else if (!validator.isLength(password, { min: 8 })) {
       errors.passwordError = intl.formatMessage({ id: 'account.validation.passwordLength' });
-      errors.confirmPasswordError = intl.formatMessage({ id: 'account.validation.passwordLength' });
       isError = true;
     }
 
@@ -88,10 +78,10 @@ class AccountInfo extends Component {
 
   render() {
     const {
-      email, password, confirmPassword, handleChange,
+      email, password, handleChange,
     } = this.props;
     const {
-      showPassword, passwordError, emailError, confirmPasswordError,
+      showPassword, passwordError, emailError,
     } = this.state;
 
     return (
@@ -144,38 +134,6 @@ class AccountInfo extends Component {
               </FormHelperText>
             </FormControl>
           </Grid>
-          <Grid item xs={12} sm={6}>
-            <FormControl margin="normal" fullWidth>
-              <InputLabel
-                htmlFor="password"
-                error={confirmPasswordError.length > 0 || passwordError.length > 0}
-              >
-                <FormattedMessage id="signup.confirmpassword" />
-              </InputLabel>
-              <Input
-                name="confirmPassword"
-                type={showPassword ? 'text' : 'password'}
-                value={confirmPassword}
-                onChange={event => handleChange(event)}
-                error={confirmPasswordError.length > 0 || passwordError.length > 0}
-                endAdornment={(
-                  <InputAdornment position="end">
-                    <IconButton
-                      aria-label="Toggle password visibility"
-                      onClick={this.handleClickShowPassword}
-                    >
-                      {showPassword ? <VisibilityOff /> : <Visibility />}
-                    </IconButton>
-                  </InputAdornment>
-)}
-              />
-              <FormHelperText
-                error={confirmPasswordError.length > 0 || passwordError.length > 0}
-              >
-                {confirmPasswordError}
-              </FormHelperText>
-            </FormControl>
-          </Grid>
         </Grid>
       </React.Fragment>
     );
@@ -185,7 +143,6 @@ class AccountInfo extends Component {
 AccountInfo.propTypes = {
   email: PropTypes.string.isRequired,
   password: PropTypes.string.isRequired,
-  confirmPassword: PropTypes.string.isRequired,
   handleChange: PropTypes.func.isRequired,
   intl: intlShape.isRequired,
 };

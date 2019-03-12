@@ -11,7 +11,7 @@ const styles = theme => ({
   },
   suggestionsContainerOpen: {
     position: 'absolute',
-    zIndex: 1,
+    zIndex: 999,
     marginTop: theme.spacing.unit,
     left: 0,
     right: 0,
@@ -39,6 +39,7 @@ class AutosuggestTextbox extends Component {
   render() {
     const {
       classes, label, value, error, handleAutoSuggestChange, renderSuggestion, getSuggestionValue,
+      variant, inputClass, margin,
     } = this.props;
 
     const { suggestions } = this.state;
@@ -56,12 +57,18 @@ class AutosuggestTextbox extends Component {
       <Autosuggest
         {...autosuggestProps}
         inputProps={{
-          classes,
           label,
           value,
           onChange: handleAutoSuggestChange,
           helperText: error,
           error: error.length > 0,
+          variant,
+          InputLabelProps: {
+            margin,
+          },
+          classes: {
+            input: inputClass,
+          },
         }}
         theme={{
           container: classes.container,
@@ -79,6 +86,12 @@ class AutosuggestTextbox extends Component {
   }
 }
 
+AutosuggestTextbox.defaultProps = {
+  variant: 'standard',
+  inputClass: '',
+  margin: '',
+};
+
 AutosuggestTextbox.propTypes = {
   classes: PropTypes.shape({}).isRequired,
   label: PropTypes.oneOfType([PropTypes.string, PropTypes.shape({})]).isRequired,
@@ -89,6 +102,9 @@ AutosuggestTextbox.propTypes = {
   handleSuggestionsFetchRequested: PropTypes.func.isRequired,
   renderSuggestion: PropTypes.func.isRequired,
   getSuggestionValue: PropTypes.func.isRequired,
+  variant: PropTypes.string,
+  inputClass: PropTypes.string,
+  margin: PropTypes.string,
 };
 
 export default withStyles(styles)(AutosuggestTextbox);

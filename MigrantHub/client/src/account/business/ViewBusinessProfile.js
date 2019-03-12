@@ -80,7 +80,6 @@ class ViewBusinessProfile extends Component {
           email: jsonObj.email,
           corpId: jsonObj.corpId,
           password: jsonObj.password,
-          confirmPassword: jsonObj.confirmPassword,
           firstName: jsonObj.firstName,
           lastName: jsonObj.lastName,
           address: jsonObj.address,

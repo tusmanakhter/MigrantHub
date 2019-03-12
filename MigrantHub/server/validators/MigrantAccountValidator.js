@@ -12,10 +12,6 @@ module.exports = {
     }
     if (validator.isEmpty(migrantObject.password)) {
       errors += '\nPassword is empty';
-    } else if (validator.isEmpty(migrantObject.confirmPassword)) {
-      errors += '\nConfirm password is empty';
-    } else if (!validator.equals(migrantObject.password, migrantObject.confirmPassword)) {
-      errors += '\nPasswords do not match';
     } else if (!validator.isLength(migrantObject.password, { min: 8 })) {
       errors += '\nPassword must be atleast 8 characters';
     }

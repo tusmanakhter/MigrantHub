@@ -43,7 +43,6 @@ class ViewMigrantProfile extends Component {
       accountProgress: 0,
       email: '',
       password: '',
-      confirmPassword: '',
       firstName: '',
       lastName: '',
       address: '',
@@ -157,7 +156,6 @@ class ViewMigrantProfile extends Component {
         this.setState({
           email: jsonObj.email,
           password: jsonObj.password,
-          confirmPassword: jsonObj.confirmPassword,
           firstName: jsonObj.firstName,
           lastName: jsonObj.lastName,
           address: jsonObj.address,
