@@ -12,7 +12,7 @@ var { ServerError } = require('../../errors/ServerError');
 var chai = require('chai');
 var chaiAsPromised = require('chai-as-promised');
 chai.use(chaiAsPromised);
-
+var recommendationServiceConfig = require('../../config');
 
 describe('Service Service', function () {
     let req = {
@@ -113,6 +113,7 @@ describe('Service Service', function () {
     it('should call getServices to retrieve recommended services from getRecommendations service', test(async function () {
         this.stub(ServiceRepository, 'getServices');
         this.stub(axios, 'get').returns(Promise.resolve({ data: "[ '5c495110d50aa425309f2da6'; '50'];[ '5c495114d50aa425309f3077'; '50'];[ '5c495114d50aa425309f3071'; '50']" }));
+        this.stub(recommendationServiceConfig, 'recommendationServiceConnectionString').returns('');
         await ServiceService.getRecommendations(req.user);
         assert.calledWith(ServiceRepository.getServices,{ $or: [{ _id: '5c495110d50aa425309f2da6' }, { _id: '5c495114d50aa425309f3077' }, { _id: '5c495114d50aa425309f3071' }], deleted: false });
     }));
