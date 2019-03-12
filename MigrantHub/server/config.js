@@ -12,6 +12,16 @@ const dbConfig = {
   },
 };
 
+const recommendationServiceConfig = {
+  recommendationService: {
+    protocol: process.env.RECOMMENDATION_SERVICE_PROTOCOL || 'http://',
+    domain: process.env.RECOMMENDATION_SERVICE_DOMAIN || 'localhost',
+    path: process.env.RECOMMENDATION_SERVICE_PATH || 'api/recommendation',
+    port: parseInt(process.env.RECOMMENDATION_SERVICE_PORT, 10) || 8128,
+  },
+};
+
+
 const facebookConfig = {
   clientID: process.env.FACEBOOK_APP_ID,
   clientSecret: process.env.FACEBOOK_APP_SECRET,
@@ -66,6 +76,23 @@ const dbConnectionString = () => {
   return connectionString;
 };
 
+const recommendationServiceConnectionString = () => {
+  const {
+    recommendationService: {
+      protocol, domain, path, port,
+    },
+  } = recommendationServiceConfig;
+
+  let portString = '';
+  if (port) {
+    portString = `:${port}`;
+  }
+
+  const connectionString = `${protocol}${domain}${portString}/${path}`;
+
+  return connectionString;
+};
+
 module.exports = {
   dbConfig,
   facebookConfig,
@@ -74,4 +101,5 @@ module.exports = {
   dialogflowConfig,
   emailConfig,
   dbConnectionString,
+  recommendationServiceConnectionString,
 };

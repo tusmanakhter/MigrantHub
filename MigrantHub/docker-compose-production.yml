@@ -22,7 +22,7 @@ services:
     ports:
       - "8060:80"
     environment:
-      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_ENVIRONMENT=Production
   service_recommender:
     build:
       context: ./data_models/Service_Recommender
@@ -30,6 +30,6 @@ services:
     ports:
       - "8128:80"
     environment:
-      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_ENVIRONMENT=Production
 volumes:
   dbdata:
