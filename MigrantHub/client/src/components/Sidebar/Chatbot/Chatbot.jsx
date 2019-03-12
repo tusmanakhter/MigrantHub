@@ -1,21 +1,15 @@
 import React, { Component } from "react";
 
 // core components
-import GridItem from "components/Grid/GridItem.jsx";
-import Card from "components/Card/Card.jsx";
-import CardHeader from "components/Card/CardHeader.jsx";
-import CardBody from "components/Card/CardBody.jsx";
-import { TextField, withStyles } from '@material-ui/core';
-import ChatBubble from "components/Sidebar/Chatbot/ChatBubble.jsx";
+import { Chat, addResponseMessage } from "components/Sidebar/Chatbot/react-chatbot-popup";
 import { Redirect } from 'react-router-dom';
+import logo from 'assets/img/logo_transparent.png';
 import axios from "axios";
 
 class Chatbot extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      userMessage: '',
-      userRequest: '',
       conversation: [],
       redirectToRecommendation: false,
       suggestServiceId: 0,
@@ -29,43 +23,19 @@ class Chatbot extends Component {
 
   }
 
-  handleChange = event => {
-    this.setState({
-      userMessage: event.target.value,
-      userRequest: event.target.value,
-    });
-  }
-
-  handleSubmit = event => {
-    event.preventDefault();
-    if(!this.state.userMessage.trim()) return;
-
-    const msg = {
-      type: 0,
-      image: '',
-      text: this.state.userMessage,
-    };
-
-    this.setState({
-      userMessage: '',
-      conversation: [...this.state.conversation, msg],
-    });
+  handleSubmit = (newMessage) => {
+    if(!newMessage.trim()) return;
 
     axios.get('api/chatbot/', {
       params: {
-        userRequest: this.state.userRequest,
+        userRequest: newMessage,
       },
     }).then((response) => {
       response.data.fulfillmentMessages.forEach(element => {
-        const msg = {
-          type: 1,
-          image: '',
-          text: element.text.text
-        };
         this.setState({
           redirectToRecommendation: false,
-          conversation: [...this.state.conversation, msg],
         });
+        addResponseMessage(element.text.text[0])
       });
 
       let intent = response.data.intent.displayName;
@@ -127,32 +97,13 @@ class Chatbot extends Component {
       return <Redirect to="/events" />
     }
     return (
-      < div >
-        <GridItem>
-          <Card>
-            <CardHeader>
-              <h6>Chatbot</h6>
-              <hr />
-            </CardHeader>
-            <CardBody>
-              <ChatBubble messages={this.state.conversation}/>
-              <TextField
-                id="username"
-                name="username"
-                label="Try me!"
-                placeholder="Say Hi!"
-                value={this.state.userMessage}
-                onChange={event => this.handleChange(event)}
-                onKeyDown={event => this.keyPress(event)}
-                fullWidth
-              />
-            </CardBody>
-          </Card>
-        </GridItem>
-      </div >
+      <Chat 
+      handleNewUserMessage={this.handleSubmit} 
+      profileAvatar={logo}
+      title="MigrantHub Chat"
+      />
     )
   }
-
 }
 
 export default (Chatbot);

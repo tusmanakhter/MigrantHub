@@ -42,6 +42,7 @@
     "passport-google-token": "^0.1.2",
     "passport-local": "^1.0.0",
     "qs": "^6.5.2",
+    "react-chat-popup": "^1.1.2",
     "string-similarity": "^3.0.0",
     "validator": "^10.8.0",
     "winston": "^3.1.0"
