@@ -28,5 +28,21 @@ services:
      image: mongo:latest
      volumes:
        - dbdata:/data/db
+  service_rating_model:
+    build:
+      context: ./data_models/Service_Rating_Model
+      dockerfile: Service_Recommender/Dockerfile
+    ports:
+      - "8060:80"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+  service_recommender:
+    build:
+      context: ./data_models/Service_Recommender
+      dockerfile: Service_Recommender/Dockerfile
+    ports:
+      - "8128:80"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
 volumes:
   dbdata:
