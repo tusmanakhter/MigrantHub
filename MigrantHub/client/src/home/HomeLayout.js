@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
@@ -114,60 +114,73 @@ const styles = theme => ({
   },
 });
 
-const HomeLayout = (props) => {
-  const { classes, children } = props;
+class HomeLayout extends Component {
 
-  return (
-    <React.Fragment>
-      <div className={classes.layout}>
-        <div className={classes.content}>
-          <div className={classes.header}>
-            <AppBar position="static" className={classes.appBar}>
-              <Toolbar className={classes.toolbar}>
-                <Typography variant="h6" color="inherit" className={classes.title}>
-                  <Link to="/">MigrantHub</Link>
-                </Typography>
-                <Link to="/login">
-                  <FormattedMessage id="login" />
-                </Link>
-                <Link to="/signup/personal">
-                  <FormattedMessage id="signup" />
-                </Link>
-              </Toolbar>
-            </AppBar>
-            <div className={classes.underline} />
+  componentDidMount() {
+    const script = document.createElement('script');
+    script.src = '//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';
+    script.async = true;
+    document.head.appendChild(script);
+    const script2 = document.createElement('script');
+    script2.appendChild(document.createTextNode("function googleTranslateElementInit() {new google.translate.TranslateElement({pageLanguage: 'en'}, 'google_translate_element');}"));
+    document.head.appendChild(script2);
+  }
+
+  render() {
+    const { classes, children } = this.props;
+
+    return (
+      <React.Fragment>
+        <div className={classes.layout}>
+          <div className={classes.content}>
+            <div className={classes.header}>
+              <AppBar position="static" className={classes.appBar}>
+                <Toolbar className={classes.toolbar}>
+                  <Typography variant="h6" color="inherit" className={classes.title}>
+                    <Link to="/">MigrantHub</Link>
+                  </Typography>
+                  <Link to="/login">
+                    <FormattedMessage id="login" />
+                  </Link>
+                  <Link to="/signup/personal">
+                    <FormattedMessage id="signup" />
+                  </Link>
+                </Toolbar>
+              </AppBar>
+              <div className={classes.underline} />
+            </div>
+            { children }
           </div>
-          { children }
-        </div>
-        <div className={classes.footer}>
-          <div className={classes.root}>
-            <Typography variant="subtitle2" color="inherit" component={Link} to="/">
-              <FormattedMessage id="home" />
-            </Typography>
-            <Typography variant="subtitle2" color="inherit">
-              <FormattedMessage id="footer.privacypolicy" />
-            </Typography>
-            <Typography variant="subtitle2" color="inherit">
-              <FormattedMessage id="footer.faq" />
-            </Typography>
-            <Typography variant="subtitle2" color="inherit">
-              <FormattedMessage id="contact" />
-            </Typography>
-            <Typography variant="subtitle2" color="inherit" className={classes.copyright}>
-              <FaRegCopyright />
-              <p className={classes.iconText}>2019 MigrantHub</p>
-            </Typography>
-            <div className={classes.right}>
-              <div className={classes.languageSwitcher}>
-                <LanguageSwitch dark />
+          <div className={classes.footer}>
+            <div className={classes.root}>
+              <Typography variant="subtitle2" color="inherit" component={Link} to="/">
+                <FormattedMessage id="home" />
+              </Typography>
+              <Typography variant="subtitle2" color="inherit">
+                <FormattedMessage id="footer.privacypolicy" />
+              </Typography>
+              <Typography variant="subtitle2" color="inherit">
+                <FormattedMessage id="footer.faq" />
+              </Typography>
+              <Typography variant="subtitle2" color="inherit">
+                <FormattedMessage id="contact" />
+              </Typography>
+              <Typography variant="subtitle2" color="inherit" className={classes.copyright}>
+                <FaRegCopyright />
+                <p className={classes.iconText}>2019 MigrantHub</p>
+              </Typography>
+              <div className={classes.right}>
+                <div className={classes.languageSwitcher}>
+                  <div id="google_translate_element" />
+                </div>
+                <a href="https://github.com/tusmanakhter/MigrantHub" target="_blank" rel="noopener noreferrer" className={classes.center}><FaGithub size="2em" /></a>
               </div>
-              <a href="https://github.com/tusmanakhter/MigrantHub" target="_blank" rel="noopener noreferrer" className={classes.center}><FaGithub size="2em" /></a>
             </div>
           </div>
         </div>
-      </div>
-    </React.Fragment>
-  );
+      </React.Fragment>
+    );
+  }
 };
 
 HomeLayout.propTypes = {

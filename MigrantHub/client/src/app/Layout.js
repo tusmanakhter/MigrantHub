@@ -28,6 +28,13 @@ class Layout extends React.Component {
 
   componentDidMount() {
     window.addEventListener('resize', this.resizeFunction);
+    const script = document.createElement('script');
+    script.src = '//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';
+    script.async = true;
+    document.head.appendChild(script);
+    const script2 = document.createElement('script');
+    script2.appendChild(document.createTextNode("function googleTranslateElementInit() {new google.translate.TranslateElement({pageLanguage: 'en'}, 'google_translate_element');}"));
+    document.head.appendChild(script2);
   }
 
 
