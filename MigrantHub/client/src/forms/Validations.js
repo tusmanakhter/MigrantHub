@@ -329,6 +329,34 @@ const rules = {
       .concat(this.passwordSignup);
     return rule;
   },
+  rating: [
+      {
+          field: 'rating',
+          method: validator.isEmpty,
+          validWhen: false,
+          message: 'Rating is required',
+      },
+      {
+          field: 'rating',
+          method: validator.isInt,
+          args: [{ min: 1, max: 5 }],
+          validWhen: true,
+          message: 'Rating is not valid',
+      },
+  ],
+  comment: [
+      {
+          field: 'comment',
+          method: validator.isEmpty,
+          validWhen: false,
+          message: 'Comment is required',
+      },
+  ],
+  get reviewPost() {
+      const rule = this.rating
+          .concat(this.comment);
+      return rule;
+  },
 };
 
 export default rules;

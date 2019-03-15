@@ -59,6 +59,8 @@ class ServiceDetails extends Component {
         startTime: new Date().toLocaleString(),
         endTime: new Date().toLocaleString(),
       },
+      serviceAverageRating: 0,
+      serviceRatingCount: 0,
     };
 
     this.hideAlert = this.hideAlert.bind(this);
@@ -125,6 +127,8 @@ class ServiceDetails extends Component {
         tempServiceImagePath: parsedObj.serviceImagePath,
         serviceImageName: imageName,
         serviceOwner: parsedObj.user,
+        serviceAverageRating: parsedObj.averageRating,
+        serviceRatingCount: parsedObj.countRating,
       });
     });
   }
@@ -212,12 +216,17 @@ class ServiceDetails extends Component {
     });
   }
 
+  handleReviewUpdate(){
+      this.getData(this, this.props);
+  }
+
   render() {
     const {
       classes,
     } = this.props;
     const {
-      serviceId, serviceTitle, serviceSummary, serviceDescription, serviceDate, serviceHours, location, alert, serviceOwner, redirect,
+      serviceId, serviceTitle, serviceSummary, serviceDescription, serviceDate, serviceHours,
+        location, alert, serviceOwner, redirect, serviceAverageRating, serviceRatingCount
     } = this.state;
     let icon = { 'calendar-plus-o': 'left'};
 
@@ -315,7 +324,13 @@ class ServiceDetails extends Component {
               location={location}
             />
           )}
-          <Reviews serviceId={serviceId} serviceTitle={serviceTitle} />
+          <Reviews
+              serviceId={serviceId}
+              serviceTitle={serviceTitle}
+              avgRating={serviceAverageRating}
+              countRating={serviceRatingCount}
+              handleUpdate={()=>this.handleReviewUpdate()}
+          />
           </CardBody>
         </Card>
       </GridItem>
