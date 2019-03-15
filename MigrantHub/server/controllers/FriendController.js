@@ -173,10 +173,7 @@ module.exports = {
     const { searchQuery } = req.query;
     let query = {};
 
-    const tempSearchQuery = searchQuery;
-    const regex = new RegExp(tempSearchQuery.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&'), 'gi');
-    query = { $or: [{ firstName: regex }, { lastName: regex }] };
-
+    query = ({ $text: { $search: searchQuery } });
     query.deleted = false;
 
     User.find(query, (err, users) => {

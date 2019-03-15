@@ -29,9 +29,7 @@ module.exports = {
     if (userId !== '') {
       query.user = userId;
     } else if (search === 'true') {
-      const tempSearchQuery = searchQuery;
-      const regex = new RegExp(tempSearchQuery.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&'), 'gi');
-      query = { $or: [{ serviceTitle: regex }, { serviceSummary: regex }] };
+      query = ({ $text: { $search: searchQuery } });
     } else if (category !== '') {
       if (subcategory === '') {
         query = { category };

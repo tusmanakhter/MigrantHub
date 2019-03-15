@@ -16,7 +16,7 @@ const styles = theme => ({
     marginLeft: 75,
     paddingTop: 100,
   },
-  serviceContainer : {
+  serviceContainer: {
     float: 'left',
   },
   root: {
@@ -39,33 +39,33 @@ class Search extends Component {
     this.state = {
       servicesItem: [],
       eventItem: [],
-      userItem: [],
+      // userItem: [],
     };
 
     this.getServices = this.getServices.bind(this);
     this.getEvents = this.getEvents.bind(this);
-    this.getUsers = this.getUsers.bind(this);
+    // this.getUsers = this.getUsers.bind(this);
   }
 
   componentDidMount(props) {
     this.getServices(this, props);
     this.getEvents(this, props);
-    this.getUsers(this, props);
+    // this.getUsers(this, props);
   }
 
   componentWillReceiveProps(props) {
     this.getServices(this, props);
     this.getEvents(this, props);
-    this.getUsers(this, props);
+    // this.getUsers(this, props);
   }
 
   getServices(event, props = this.props) {
     const { location } = props;
-    let editOwnerEmail = '';
+    const editOwnerEmail = '';
     let searchQuery = '';
     let searchMode = false;
-    let category = '';
-    let subcategory = '';
+    const category = '';
+    const subcategory = '';
 
     if (location.state) {
         searchQuery = location.state.searchQuery;
@@ -90,7 +90,7 @@ class Search extends Component {
     const { location } = props;
     let searchQuery = '';
     let searchMode = false;
-    let editOwnerEmail = '';
+    const editOwnerEmail = '';
 
       if (location.state) {
         searchQuery = location.state.searchQuery;
@@ -110,6 +110,7 @@ class Search extends Component {
     });
   }
 
+  /*
   getUsers(event, props = this.props) {
     const { location } = props;
     let searchQuery = '';
@@ -128,39 +129,40 @@ class Search extends Component {
       });
     });
   }
+  */
 
   renderServices() {
     const { classes } = this.props;
     const { servicesItem } = this.state;
 
     if(this.state.servicesItem.length !== 0) {
-        return (
+      return (
         <div className={classes.serviceContainer}>
-        <h4 className={classes.searchContainer}>Services</h4>
-        <GridContainer>
-        {' '}
-        {
-            servicesItem.map(item => (
-            <ServiceCard
-                serviceId={item._id}
-                serviceTitle={item.serviceTitle}
-                serviceImagePath={item.serviceImagePath}
-                serviceDescription={item.serviceDescription}
-                serviceSummary={item.serviceSummary}
-                category={item.category}
-                subcategory={item.subcategory}
-                serviceLocation={item.location}
-                serviceDate={item.serviceDate}
-                serviceHours={item.serviceHours}
-                editMode={item.editMode}
-                editOwner={item.editOwner}
-                getServices={this.getServices}
-            />
-            ))
-        }
-        </GridContainer>
+          <h4 className={classes.searchContainer}>Services</h4>
+          <GridContainer>
+            {' '}
+            {
+                servicesItem.map(item => (
+                  <ServiceCard
+                    serviceId={item._id}
+                    serviceTitle={item.serviceTitle}
+                    serviceImagePath={item.serviceImagePath}
+                    serviceDescription={item.serviceDescription}
+                    serviceSummary={item.serviceSummary}
+                    category={item.category}
+                    subcategory={item.subcategory}
+                    serviceLocation={item.location}
+                    serviceDate={item.serviceDate}
+                    serviceHours={item.serviceHours}
+                    editMode={item.editMode}
+                    editOwner={item.editOwner}
+                    getServices={this.getServices}
+                  />
+                ))
+            }
+          </GridContainer>
         </div>
-        );
+      );
     }
   }
 
@@ -169,35 +171,36 @@ class Search extends Component {
     const { eventItem } = this.state;
 
     if(this.state.eventItem.length !== 0) {
-        return (
+      return (
         <div className={classes.eventContainer}>
-        <h4 className={classes.searchContainer}>Events</h4>
-        <GridContainer>
-        {' '}
-        {
-            eventItem.map(item => (
-              <EventCard
-                eventId={item._id}
-                eventName={item.eventName}
-                eventImagePath={item.eventImagePath}
-                description={item.description}
-                location={item.location}
-                dateStart={item.dateStart}
-                dateEnd={item.dateEnd}
-                timeStart={item.timeStart}
-                timeEnd={item.timeEnd}
-                editMode={item.editMode}
-                editOwner={item.editOwner}
-                getEvents={this.getEvents}
-              />
-            ))
-        }
-        </GridContainer>
+          <h4 className={classes.searchContainer}>Events</h4>
+          <GridContainer>
+            {' '}
+            {
+                eventItem.map(item => (
+                  <EventCard
+                    eventId={item._id}
+                    eventName={item.eventName}
+                    eventImagePath={item.eventImagePath}
+                    description={item.description}
+                    location={item.location}
+                    dateStart={item.dateStart}
+                    dateEnd={item.dateEnd}
+                    timeStart={item.timeStart}
+                    timeEnd={item.timeEnd}
+                    editMode={item.editMode}
+                    editOwner={item.editOwner}
+                    getEvents={this.getEvents}
+                  />
+                ))
+            }
+          </GridContainer>
         </div>
-        );
+      );
     }
   }
 
+  /*
   renderUsers() {
     const { classes } = this.props;
     const { userItem } = this.state;
@@ -224,6 +227,7 @@ class Search extends Component {
         );
     }
   }
+  */
 
   render() {
     const { classes } = this.props;
@@ -237,7 +241,6 @@ class Search extends Component {
             }
             {this.renderServices()}
             {this.renderEvents()}
-            {this.renderUsers()}
           </div>
         )}
       </AuthConsumer>
