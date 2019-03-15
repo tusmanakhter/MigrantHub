@@ -18,8 +18,8 @@ const facebookStrategy = new FacebookTokenStrategy({
     }
     if (!user) {
       const newUser = new User();
-      newUser._id = profile.emails[0].value;
-      newUser.email = profile.emails[0].value;
+      newUser._id = profile.emails[0].value.toLowerCase();
+      newUser.email = profile.emails[0].value.toLowerCase();
       newUser.userType = 'facebook';
       newUser.firstName = profile.name.givenName;
       newUser.lastName = profile.name.familyName;

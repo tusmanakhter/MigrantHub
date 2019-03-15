@@ -4,14 +4,14 @@ const { ServerError } = require('../errors/ServerError');
 module.exports = {
 
   getUser(userId) {
-    return User.findOne({ _id: userId }).exec()
+    return User.findOne({ _id: userId.toLowerCase() }).exec()
       .then(user => Promise.resolve(user)).catch((error) => {
         throw new ServerError('There was an error retrieving user.', 400, error);
       });
   },
 
   update(userId, userObject) {
-    return User.findByIdAndUpdate({ _id: userId }, userObject, { new: true })
+    return User.findByIdAndUpdate({ _id: userId.toLowerCase() }, userObject, { new: true })
       .exec().then(() => Promise.resolve('User has been updated.')).catch((error) => {
         throw new ServerError('There was an error updating user.', 400, error);
       });
