@@ -4,8 +4,8 @@ const { ServerError } = require('../errors/ServerError');
 module.exports = {
   createAdmin(adminUserObject) {
     const admin = new Admin();
-    admin._id = adminUserObject.email;
-    admin.email = adminUserObject.email;
+    admin._id = adminUserObject.email.toLowerCase();
+    admin.email = adminUserObject.email.toLowerCase();
     admin.userType = 'local';
     admin.localAuthentication = {
       password: adminUserObject.password,
@@ -23,7 +23,7 @@ module.exports = {
   },
 
   updateAdminStatus(adminId, query) {
-    return Admin.updateOne({ _id: adminId }, query).exec().then(() => Promise.resolve('Admin has been updated.')).catch((error) => {
+    return Admin.updateOne({ _id: adminId.toLowerCase() }, query).exec().then(() => Promise.resolve('Admin has been updated.')).catch((error) => {
       throw new ServerError('There was an error updating admin.', 400, error);
     });
   },

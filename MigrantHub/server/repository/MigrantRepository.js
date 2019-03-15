@@ -4,8 +4,8 @@ const { ServerError } = require('../errors/ServerError');
 module.exports = {
   createUser(userObject) {
     const user = new MigrantUser();
-    user._id = userObject.email;
-    user.email = userObject.email;
+    user._id = userObject.email.toLowerCase();
+    user.email = userObject.email.toLowerCase();
     user.userType = 'local';
     user.localAuthentication = {
       password: userObject.password,
@@ -28,16 +28,16 @@ module.exports = {
   },
 
   getMigrantUser(migrantUserId) {
-    return MigrantUser.findOne({ _id: migrantUserId }).exec()
+    return MigrantUser.findOne({ _id: migrantUserId.toLowerCase() }).exec()
       .then(migrantUser => Promise.resolve(migrantUser)).catch((error) => {
         throw new ServerError('There was an error retrieving migrant user.', 400, error);
       });
   },
 
   editMigrantUser(migrantUserId, migrantUserObject) {
-    return MigrantUser.findByIdAndUpdate({ _id: migrantUserId }, migrantUserObject, { new: true })
-      .exec().then(() => Promise.resolve('Migrant user has been updated.')).catch((error) => {
-        throw new ServerError('There was an error retrieving updating migrant user.', 400, error);
-      });
+    return MigrantUser.findByIdAndUpdate({ _id: migrantUserId.toLowerCase() }, migrantUserObject,
+      { new: true }).exec().then(() => Promise.resolve('Migrant user has been updated.')).catch((error) => {
+      throw new ServerError('There was an error retrieving updating migrant user.', 400, error);
+    });
   },
 };
