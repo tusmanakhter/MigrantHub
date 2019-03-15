@@ -176,13 +176,13 @@ module.exports = {
     query = ({ $text: { $search: searchQuery } });
     query.deleted = false;
 
-    User.find(query, (err, users) => {
+    User.find(query, { score: { $meta: 'textScore' } }, (err, users) => {
       if (err) {
         logger.error(formatMessage(req.ip, req.method, req.originalUrl, req.httpVersion,
           err.status, req.referer, 'AccountController.viewUsers', err.message));
         return res.status(400).send('There was an error getting users.');
       }
       return res.status(200).send(users);
-    });
+    }).sort({ score: { $meta: 'textScore' } });
   },
 };

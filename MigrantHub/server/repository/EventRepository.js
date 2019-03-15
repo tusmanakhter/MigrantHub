@@ -37,9 +37,10 @@ module.exports = {
           throw new ServerError('There was an error retrieving events.', 400, error);
         });
     }
-    return Event.find(query).exec().then(events => Promise.resolve(events)).catch((error) => {
-      throw new ServerError('There was an error retrieving events.', 400, error);
-    });
+    return Event.find(query, { score: { $meta: 'textScore' } }).sort({ score: { $meta: 'textScore' } }).exec().then(events => Promise.resolve(events))
+      .catch((error) => {
+        throw new ServerError('There was an error retrieving events.', 400, error);
+      });
   },
 
   updateEvent(eventObject) {
