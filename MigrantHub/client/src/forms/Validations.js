@@ -1,4 +1,28 @@
 import validator from 'validator';
+import axios from 'axios';
+
+const checkEmailTaken = async (email) => {
+  try {
+    const response = await axios.head(`/api/accounts/${email}`);
+    if (response.status === 200) {
+      return true;
+    }
+  } catch (e) {
+    if (e.response.status === 404) {
+      return false;
+    }
+  }
+};
+
+const validateCorpId = async (corpId) => {
+  const urlForIdValidation = `https://www.ic.gc.ca/app/scr/cc/CorporationsCanada/api/corporations/${corpId}.json?lang=eng`;
+  const response = await fetch(urlForIdValidation);
+  const json = await response.json();
+  if (json[0] === `could not find corporation ${corpId}`) {
+    return false;
+  }
+  return true;
+};
 
 const rules = {
   email: [
@@ -15,6 +39,15 @@ const rules = {
       message: 'Email is not valid',
     },
   ],
+  get emailSignup() {
+    const additionalRules = [{
+      field: 'email',
+      method: checkEmailTaken,
+      validWhen: false,
+      message: 'Email already taken',
+    }];
+    return this.email.concat(additionalRules);
+  },
   password: [
     {
       field: 'password',
@@ -159,6 +192,12 @@ const rules = {
       validWhen: true,
       message: 'Corporation Id must be a 7 digit number',
     },
+    {
+      field: 'corpId',
+      method: validateCorpId,
+      validWhen: true,
+      message: 'Corporation Id is not valid',
+    },
   ],
   address: [
     {
@@ -264,7 +303,7 @@ const rules = {
     return this.email.concat(this.password);
   },
   get migrantSignupStep1() {
-    const rule = this.email
+    const rule = this.emailSignup
       .concat(this.passwordSignup)
       .concat(this.firstName)
       .concat(this.lastName);
@@ -292,7 +331,7 @@ const rules = {
     return rule;
   },
   get businessSignupStep1() {
-    const rule = this.email
+    const rule = this.emailSignup
       .concat(this.passwordSignup)
       .concat(this.firstName)
       .concat(this.lastName);
@@ -325,7 +364,7 @@ const rules = {
     return rule;
   },
   get adminSignup() {
-    const rule = this.email
+    const rule = this.emailSignup
       .concat(this.passwordSignup);
     return rule;
   },
