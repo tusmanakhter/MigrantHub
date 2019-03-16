@@ -155,7 +155,7 @@ class EventList extends Component {
                             </h6>
                           </CardHeader>
                           <CardBody>
-                            {user.type !== UserTypes.ADMIN
+                            {user.type == UserTypes.MERCHANT
                               && (
                                 <div>
                                   {this.renderRedirectToEventForm()}
