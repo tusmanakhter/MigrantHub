@@ -6,7 +6,6 @@ module.exports = {
 
   async createReview(user, parsedReviewObject) {
     const errors = await ReviewValidator.reviewValidator(parsedReviewObject);
-
     if (errors === '') {
       return ReviewRepository.createReview(user._id, parsedReviewObject);
     }

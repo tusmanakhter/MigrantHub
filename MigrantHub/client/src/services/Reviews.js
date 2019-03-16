@@ -1,48 +1,32 @@
 import React, { Component } from 'react';
 import withStyles from '@material-ui/core/styles/withStyles';
-import Typography from '@material-ui/core/Typography';
-import TextField from '@material-ui/core/TextField';
 import PropTypes from 'prop-types';
 import Button from '@material-ui/core/Button';
 import blue from '@material-ui/core/colors/blue';
 import Grid from '@material-ui/core/Grid';
-import { Redirect } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import StarRatingComponent from 'react-star-rating-component';
 import axios from 'axios';
-import qs from 'qs';
 import UserTypes from 'lib/UserTypes';
 import { AuthConsumer } from 'routes/AuthContext';
-
-// @material-ui/icons
 import Review from "@material-ui/icons/RateReview";
-
-// core components
 import GridItem from "components/Grid/GridItem.jsx";
 import Card from "components/Card/Card.jsx";
 import CardBody from "components/Card/CardBody.jsx";
 import CardIcon from "components/Card/CardIcon.jsx";
 import CardHeader from "components/Card/CardHeader.jsx";
-
 import { cardTitle } from "assets/jss/material-dashboard-pro-react.jsx";
 import { toast } from 'react-toastify';
-import FormValidator from 'forms/FormValidator';
-import Validations from 'forms/Validations';
-import DeleteIcon from '@material-ui/icons/Delete';
-import CircularProgress from '@material-ui/core/CircularProgress';
+import SweetAlert from "react-bootstrap-sweetalert";
+import sweetAlertStyle from "assets/jss/material-dashboard-pro-react/views/sweetAlertStyle.jsx";
+import moment from 'moment';
 
 const styles = {
-  avatar: {
-    backgroundColor: blue[100],
-    color: blue[600],
-  },
-  cardIconTitle: {
-    ...cardTitle,
-    marginTop: "15px",
-    marginBottom: "0px"
-  },
-    ratingStar: {
-        width: "24px",
-        height: "24px",
+    ...sweetAlertStyle,
+    cardIconTitle: {
+        ...cardTitle,
+        marginTop: "15px",
+        marginBottom: "0px"
     }
 };
 
@@ -50,83 +34,47 @@ class Reviews extends Component {
   constructor(props) {
     super(props);
 
-      this.validator = new FormValidator(Validations.reviewPost);
-
       this.state = {
-      redirectTo: false,
-      redirectToURL: '',
-      redirectState: {},
-      rating: 1,
-      comment: '',
-      addReviewMessage: '',
-      addReviewError: false,
       currentReviewSet: [],
-      validation: this.validator.valid(),
-      postLoading: false,
-      deleteLoading: false,
-    };
+      alert: null,
+      };
+
+      this.hideAlert = this.hideAlert.bind(this);
+      this.cancelDelete = this.cancelDelete.bind(this);
+      this.warningWithConfirmAndCancelMessage = this.warningWithConfirmAndCancelMessage.bind(this);
   }
 
   componentDidMount() {
     this.getReviews();
   }
 
-    componentWillReceiveProps(props) {
-
-    }
-
-  getReviews = () => {
-    var reviews
-    //get all reviews for the service
-    axios.get('/api/services/' + this.props.serviceId + '/reviews/', {
-      params: {
-        serviceId: this.props.serviceId,
-      },
-    })
-    .then((response) => {
-      reviews = response.data
-      if (reviews) {
-        this.setState({
-          currentReviewSet: reviews
-        })
-      }
-    });
-  }
-
-  handleStarClick(nextValue, prevValue, name) {
-    this.setState({ rating: nextValue });
-  }
-
-  handleChange = (event) => {
-    this.setState({
-      [event.target.name]: event.target.value,
-    });
-  }
-
-    handlePostReview = async () => {
-        try {
-            const result = await axios.post('/api/services/' + this.props.serviceId + '/reviews/', qs.stringify({
+    getReviews = () => {
+        var reviews;
+        //get all reviews for the service
+        axios.get('/api/services/' + this.props.serviceId + '/reviews/', {
+            params: {
                 serviceId: this.props.serviceId,
-                rating: this.state.rating,
-                comment: this.state.comment
-            }))
-            if (result.status === 200) {
-                toast.success('Review Posted.');
-                this.getReviews();
+            },
+        })
+        .then((response) => {
+            reviews = response.data
+            if (reviews) {
+                this.setState({
+                    currentReviewSet: reviews
+                })
             }
-            return false;
-        } catch (e) {
-            toast.error('Error posting review.');
-            return true;
-        }
-    }
+        });
+    };
 
     handleDeleteReview = async (id) => {
+        this.hideAlert();
         try {
-            const result = await axios.delete('/api/services/' + this.props.serviceId + '/reviews/' + id)
+            const result = await axios.delete('/api/services/' + this.props.serviceId + '/reviews/' + id);
             if (result.status === 200) {
                 toast.success('Review Deleted');
-                this.getReviews();          }
+                this.getReviews();
+                this.props.handleUpdate();
+            }
             return false;
         } catch (e) {
             toast.error('Error deleting review.');
@@ -134,84 +82,65 @@ class Reviews extends Component {
         }
     };
 
-    validate = () => {
-        const validation = this.validator.validate(this.state);
-        this.setState(prevState => ({
-            validation: {
-                ...prevState.validation,
-                ...validation,
-            },
-        }));
-
-        return validation.isValid;
-    };
-
-    handlePost = async () => {
-        const isValid = await this.validate();
-
-        if (isValid) {
-            this.setState({
-               postLoading: true,
-            });
-            await this.handlePostReview();
-            this.props.handleUpdate();
-
-            this.setState({
-                postLoading: false,
-            });
-        }
-    };
-
-    handleDelete = async (id) => {
+    warningWithConfirmAndCancelMessage(id) {
         this.setState({
-            deleteLoading: true,
+            alert: (
+                <SweetAlert
+                    warning
+                    style={{ display: "block", marginTop: "-100px" }}
+                    title="Are you sure?"
+                    onConfirm={() => this.handleDeleteReview(id)}
+                    onCancel={() => this.cancelDelete()}
+                    confirmBtnCssClass={
+                        this.props.classes.button + " " + this.props.classes.success
+                    }
+                    cancelBtnCssClass={
+                        this.props.classes.button + " " + this.props.classes.danger
+                    }
+                    confirmBtnText="Yes, delete it!"
+                    cancelBtnText="Cancel"
+                    showCancel
+                >
+                    You will not be able to recover this service!
+                </SweetAlert>
+            ),
         });
-        await this.handleDeleteReview(id);
-        this.props.handleUpdate();
+    }
 
+    cancelDelete() {
         this.setState({
-            deleteLoading: false,
+            alert: (
+                <SweetAlert
+                    danger
+                    style={{ display: "block", marginTop: "-100px" }}
+                    title="Cancelled"
+                    onConfirm={() => this.hideAlert()}
+                    onCancel={() => this.hideAlert()}
+                    confirmBtnCssClass={
+                        this.props.classes.button + " " + this.props.classes.success
+                    }
+                >
+                    Review Cancelled
+                </SweetAlert>
+            ),
         });
-    };
+    }
+
+    hideAlert() {
+        this.setState({
+            alert: null
+        });
+    }
 
   render() {
-      const { classes, avgRating, countRating } = this.props;
-      const { rating, comment, validation, currentReviewSet, postLoading, deleteLoading } = this.state;
-
-      let postReviewButtonMessage;
-      if (postLoading) {
-          postReviewButtonMessage = (
-              <>
-              <CircularProgress size={30} color="inherit" />
-              </>
-          );
-      } else {
-          postReviewButtonMessage = (
-              <>
-              Post Review
-              </>
-          );
-      }
-
-      let deleteReviewButtonMessage;
-      if (deleteLoading) {
-          deleteReviewButtonMessage = (
-              <>
-              <CircularProgress size={30} color="inherit" />
-              </>
-          );
-      } else {
-          deleteReviewButtonMessage = (
-              <>
-              <DeleteIcon style={{ marginLeft: 5 }} />
-              Delete Review
-              </>
-          );
-      }
+      const { classes, serviceId, avgRating, countRating } = this.props;
+      const { currentReviewSet, alert } = this.state;
 
     return (
       <GridItem xs={12} sm={12} md={12}>
-        <Card>
+          {alert}
+
+          <Card>
           <CardHeader color="rose" icon>
             <CardIcon color="rose">
               <Review />
@@ -230,7 +159,6 @@ class Reviews extends Component {
                   />
                   {`(${countRating} ratings)`}
               </h4>
-
           </CardHeader>
           <CardBody>
             <AuthConsumer>
@@ -241,43 +169,19 @@ class Reviews extends Component {
                         <div>
                           <br></br>
                             <Grid container alignItems="center" spacing={8}>
-                                <GridItem lg={2} md={2} sm={12} xs={12}>
-                                    <br></br>
-                                    <StarRatingComponent
-                                        name="rate"
-                                        starCount={5}
-                                        value={rating}
-                                        onStarClick={this.handleStarClick.bind(this)}
-                                    />
-                                </GridItem>
-                                <GridItem lg={8} md={8} sm={12} xs={12}>
-                                <TextField
-                                  id="comment"
-                                  name="comment"
-                                  label="Comment"
-                                  value={comment}
-                                  onChange={event => this.handleChange(event)}
-                                  fullWidth
-                                  helperText={validation.comment.message}
-                                  error={validation.comment.message.length > 0}
-                                  multiline
-                                  rows="2"
-                                />
-                              </GridItem>
                                 {(currentReviewSet.find(reviewObject => reviewObject.user===user.username))==undefined ?
-                                    <GridItem lg={2} md={2} sm={12} xs={12}>
-                                <br></br>
-                                  <Button
-                                      type="submit"
-                                      color="primary"
-                                      variant="contained"
-                                      onClick={this.handlePost}
-                                      className={classes.btn}
-                                  >
-                                      {postReviewButtonMessage}
-                                  </Button>
-                              </GridItem>
-                                    : ''}
+                                    <GridItem lg={12} md={12} sm={12} xs={12}>
+                                        <br></br>
+                                        <Button
+                                            color="primary"
+                                            variant="contained"
+                                            component={props => <Link to={`/services/review/create/${serviceId}`} {...props} />}
+                                        >
+                                            Add Review
+                                        </Button>
+                                    </GridItem>
+                                    : ''
+                                }
                             </Grid>
                           <br></br>
                         </div>
@@ -288,42 +192,50 @@ class Reviews extends Component {
                     {
                       currentReviewSet.map( review => (
                           <div>
-                            <Grid container alignItems="center" spacing={8}>
-                                <GridItem lg={2} md={2} sm={12} xs={12}>
-                                  <div>
-                                    <StarRatingComponent
-                                      name="userRate"
-                                      editing={false}
-                                      starCount={5}
-                                      value={review.rating}
-                                    />
-                                  </div>
-                              </GridItem>
+                            <Grid container alignContent="center" spacing={8}>
                                 <GridItem lg={6} md={6} sm={12} xs={12}>
-                                <Typography variant="h5" color="inherit" paragraph>
-                                  {review.comment}
-                                </Typography>
-                              </GridItem>
-                                <GridItem lg={2} md={2} sm={12} xs={12}>
-                                    <Typography variant="h6" color="inherit" paragraph>
-                                        <p>{review.time}</p>
-                                    </Typography>
+                                    <Grid container alignContent="flex-start" spacing={8}>
+                                        <GridItem lg={12} md={12} sm={12} xs={12} align='left'>
+                                            <b>{review.user}</b>
+                                        </GridItem>
+                                        <GridItem lg={12} md={12} sm={12} xs={12} align='left'>
+                                          <div>
+                                            <StarRatingComponent
+                                              name="userRate"
+                                              editing={false}
+                                              starCount={5}
+                                              value={review.rating}
+                                            />
+                                          </div>
+                                        </GridItem>
+                                        <GridItem lg={12} md={12} sm={12} xs={12} align='left'>
+                                            <p>{moment(review.time).format('MMM DD, YYYY')}</p>
+                                        </GridItem>
+                                    </Grid>
                                 </GridItem>
-                                { ((user.type === UserTypes.ADMIN) || user.username === (review.user))
-                                &&
-                                <GridItem lg={2} md={2} sm={12} xs={12}>
-                                    <br></br>
-                                    <Button
-                                        type="submit"
-                                        color="secondary"
-                                        variant="contained"
-                                        onClick={()=>this.handleDelete(review._id)}
-                                        className={classes.btn}
-                                    >
-                                        {deleteReviewButtonMessage}
-                                    </Button>
+                                <GridItem lg={6} md={6} sm={12} xs={12}>
+                                    <Grid container alignContent="center" spacing={8}>
+                                        <GridItem lg={12} md={12} sm={12} xs={12} align='left'>
+                                            <b>{review.title}</b>
+                                        </GridItem>
+                                        <GridItem lg={12} md={12} sm={12} xs={12} align='left'>
+                                            <p>{review.comment}</p>
+                                        </GridItem>
+                                        { ((user.type === UserTypes.ADMIN) || user.username === (review.user))
+                                        &&
+                                        <GridItem lg={12} md={12} sm={12} xs={12} align='left'>
+                                            <Button
+                                                onClick={()=>this.warningWithConfirmAndCancelMessage(review._id)}
+                                                color="primary"
+                                                variant="contained"
+                                            >
+                                                Delete
+                                            </Button>
+                                            <br />
+                                        </GridItem>
+                                        }
+                                    </Grid>
                                 </GridItem>
-                                }
                             </Grid>
                             <hr></hr>
                           </div>
@@ -341,12 +253,11 @@ class Reviews extends Component {
 }
 
 Reviews.propTypes = {
-  serviceId: PropTypes.string.isRequired,
-  serviceTitle: PropTypes.string.isRequired,
-  scroll: PropTypes.string.isRequired,
-  open: PropTypes.bool.isRequired,
-  onClose: PropTypes.func.isRequired,
-  editMode: PropTypes.bool.isRequired,
+    serviceId: PropTypes.string.isRequired,
+    serviceTitle: PropTypes.string.isRequired,
+    avgRating: PropTypes.string.isRequired,
+    countRating: PropTypes.string.isRequired,
+    handleUpdate: PropTypes.func.isRequired,
 };
 
 export default withStyles(styles)(Reviews);

@@ -54,6 +54,12 @@ describe('Review Controller', function () {
         assert.calledWith(ReviewService.getReviews, 'query');
     }));
 
+    it('should call getReview service with correct parameters', test(async function () {
+        this.stub(ReviewService, 'getReview');
+        await ReviewController.getReview(req.user._id, req.serviceId)
+        assert.calledWith(ReviewService.getReview, req.user._id, req.serviceId);
+    }));
+
     it('should call deleteReview service with correct parameters', test(async function () {
         this.stub(ReviewService, 'deleteReview');
         await ReviewController.deleteReview('review id')

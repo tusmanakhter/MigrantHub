@@ -88,13 +88,7 @@ ServiceCard.propTypes = {
   classes: PropTypes.shape({}).isRequired,
   serviceId: PropTypes.string.isRequired,
   serviceTitle: PropTypes.string.isRequired,
-  serviceSummary: PropTypes.string.isRequired,
-  serviceDescription: PropTypes.string.isRequired,
   serviceImagePath: PropTypes.string.isRequired,
-  serviceDate: PropTypes.shape({
-    startDate: PropTypes.string.isRequired,
-    endDate: PropTypes.string.isRequired,
-  }).isRequired,
   serviceLocation: PropTypes.shape({
     address: PropTypes.string.isRequired,
     apartment: PropTypes.string.isRequired,
@@ -103,11 +97,8 @@ ServiceCard.propTypes = {
     postalCode: PropTypes.string.isRequired,
     phoneNumber: PropTypes.string.isRequired,
   }).isRequired,
-  serviceHours: PropTypes.shape([{
-    serviceDay: PropTypes.string.isRequired,
-    startTime: PropTypes.string.isRequired,
-    endTime: PropTypes.string.isRequired,
-  }]).isRequired,
+    count: PropTypes.string.isRequired,
+    rating: PropTypes.string.isRequired,
 };
 
 export default withStyles(styles)(ServiceCard);

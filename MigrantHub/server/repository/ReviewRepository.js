@@ -8,6 +8,7 @@ module.exports = {
     review.user = reviewUser;
     review.serviceId = parsedReviewObject.serviceId;
     review.rating = parsedReviewObject.rating;
+    review.title = parsedReviewObject.title;
     review.comment = parsedReviewObject.comment;
     return review.save().then(() => Promise.resolve('Review has been created.')).catch((error) => {
       throw new ServerError('There was an error creating the review.', 400, error);

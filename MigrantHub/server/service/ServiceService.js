@@ -68,7 +68,6 @@ module.exports = {
 
     const service = await ServiceRepository.getService(query);
     const updatedService = JSON.parse(JSON.stringify(service));
-    console.log(updatedService);
     const avg = await ReviewRepository.getAverageRating(updatedService._id.toString());
     let average = 0;
     let count = 0;

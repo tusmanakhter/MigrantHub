@@ -8,6 +8,7 @@ const Review = require('../models/Review');
 const { controllerHandler } = require('../controllers/ControllerUtils');
 
 router.get('/', controllerHandler(ReviewController.getReviews, req => [req.query]));
+router.get('/review', controllerHandler(ReviewController.getReview, req => [req.user, req.query._id]));
 router.post('/', ensureRole(UserTypes.MIGRANT), controllerHandler(ReviewController.createReview, req => [req.user, req.body]));
 router.delete('/:id', ensureIsOwner(Review, true, false, true), controllerHandler(ReviewController.deleteReview, req => [req.params.id]));
 
