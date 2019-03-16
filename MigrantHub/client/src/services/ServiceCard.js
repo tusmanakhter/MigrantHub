@@ -97,8 +97,8 @@ ServiceCard.propTypes = {
     postalCode: PropTypes.string.isRequired,
     phoneNumber: PropTypes.string.isRequired,
   }).isRequired,
-    count: PropTypes.string.isRequired,
-    rating: PropTypes.string.isRequired,
+  count: PropTypes.string.isRequired,
+  rating: PropTypes.string.isRequired,
 };
 
 export default withStyles(styles)(ServiceCard);

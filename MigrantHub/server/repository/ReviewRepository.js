@@ -6,6 +6,8 @@ module.exports = {
   createReview(reviewUser, parsedReviewObject) {
     const review = new Review();
     review.user = reviewUser;
+    review.firstName = parsedReviewObject.firstName;
+    review.lastName = parsedReviewObject.lastName;
     review.serviceId = parsedReviewObject.serviceId;
     review.rating = parsedReviewObject.rating;
     review.title = parsedReviewObject.title;

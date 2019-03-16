@@ -41,8 +41,8 @@ module.exports = {
     return ReviewService.getReviews(query);
   },
 
-  async getReview(user, serviceId) {
-    return ReviewService.getReview(user, serviceId);
+  async reviewExists(user, serviceId) {
+    return ReviewService.reviewExists(user, serviceId);
   },
 
   async deleteReview(reviewId) {
