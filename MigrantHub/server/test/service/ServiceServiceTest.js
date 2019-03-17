@@ -58,7 +58,7 @@ describe('Service Service', function () {
         this.stub(ServiceRepository, 'getServices').returns([]);
         this.stub(ReviewRepository, 'getAverageRating').returns([]);
         await ServiceService.getServices('', req.query.searchQuery, req.query.search, '', '');
-        assert.calledWith(ServiceRepository.getServices, { '$or': [{ serviceTitle: /test/gi }, { serviceSummary: /test/gi }], deleted: false });
+        assert.calledWith(ServiceRepository.getServices, {  $text: { $search: req.query.searchQuery }, deleted: false });
     }));
 
     it('should call getServices to retrieve users services from getServices service', test(async function () {

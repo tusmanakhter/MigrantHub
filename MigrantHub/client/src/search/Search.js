@@ -126,36 +126,35 @@ class Search extends Component {
     if(this.state.servicesItem.length !== 0) {
       return (
         <div className={classes.mainContainer}>
-        <h5 className={classes.pageSubcategoriesTitle}>
+          <h5 className={classes.pageSubcategoriesTitle}>
           Services Search Results
-        </h5>
-        <hr />
-        <Grid container spacing={16} alignItems="center" justify="center">
-          {' '}
-          {
-            servicesItem.map(item => (
-              <GridItem>
-                <ServiceCard
-                  serviceId={item._id}
-                  serviceTitle={item.serviceTitle}
-                  serviceImagePath={item.serviceImagePath}
-                  serviceDescription={item.serviceDescription}
-                  serviceSummary={item.serviceSummary}
-                  category={item.category}
-                  subcategory={item.subcategory}
-                  serviceLocation={item.location}
-                  serviceDate={item.serviceDate}
-                  serviceHours={item.serviceHours}
-                  rating={item.avgRating}
-                  count={item.countRating}
-                />
-              </GridItem>
-            ))
-          }
-        </Grid>
-      </div>
-    );
-  }
+          </h5>
+          <Grid container spacing={16} alignItems="center" justify="center">
+            {' '}
+            {
+              servicesItem.map(item => (
+                <GridItem>
+                  <ServiceCard
+                    serviceId={item._id}
+                    serviceTitle={item.serviceTitle}
+                    serviceImagePath={item.serviceImagePath}
+                    serviceDescription={item.serviceDescription}
+                    serviceSummary={item.serviceSummary}
+                    category={item.category}
+                    subcategory={item.subcategory}
+                    serviceLocation={item.location}
+                    serviceDate={item.serviceDate}
+                    serviceHours={item.serviceHours}
+                    rating={item.avgRating}
+                    count={item.countRating}
+                  />
+                </GridItem>
+              ))
+            }
+          </Grid>
+        </div>
+      );
+    }
   }
 
   renderEvents() {
@@ -165,32 +164,31 @@ class Search extends Component {
     if(this.state.eventItem.length !== 0) {
       return (
         <div className={classes.mainContainer}>
-        <h5 className={classes.pageSubcategoriesTitle}>
+          <h5 className={classes.pageSubcategoriesTitle}>
           Events Search Results
-        </h5>
-        <hr />
-        <Grid container spacing={16} alignItems="center" justify="center">
+          </h5>
+          <Grid container spacing={16} alignItems="center" justify="center">
             {' '}
-              {
-                eventItem.map(item => (
-                  <GridItem>
-                    <EventCard
-                      eventId={item._id}
-                      eventName={item.eventName}
-                      eventImagePath={item.eventImagePath}
-                      eventDescription={item.description}
-                      eventLocation={item.location}
-                      dateStart={item.dateStart}
-                      dateEnd={item.dateEnd}
-                      timeStart={item.timeStart}
-                      timeEnd={item.timeEnd}
-                    />
-                  </GridItem>
-                ))
-              }
-            </Grid>
-            </div>
-          );
+            {
+              eventItem.map(item => (
+                <GridItem>
+                  <EventCard
+                    eventId={item._id}
+                    eventName={item.eventName}
+                    eventImagePath={item.eventImagePath}
+                    eventDescription={item.description}
+                    eventLocation={item.location}
+                    dateStart={item.dateStart}
+                    dateEnd={item.dateEnd}
+                    timeStart={item.timeStart}
+                    timeEnd={item.timeEnd}
+                  />
+                </GridItem>
+              ))
+            }
+          </Grid>
+        </div>
+      );
     }
   }
 
