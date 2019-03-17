@@ -130,6 +130,7 @@ class BugForm extends Component {
       if (response.status === 200) {
         this.setState({
           messageFromServer: response.data,
+          displaySuccessMessage: true,
         });
       }
     }).catch((error) => {
@@ -142,7 +143,7 @@ class BugForm extends Component {
   render() {
     const {
       bugName, description, displaySuccessMessage, bugNameError, descriptionError,
-      messageFromServer, editMode
+      messageFromServer
     } = this.state;
     const { classes } = this.props;
     return (

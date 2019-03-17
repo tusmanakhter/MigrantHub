@@ -11,6 +11,7 @@ router.use('/businesses', ensureUser, ensureRole(UserTypes.BUSINESS), require('.
 router.use('/services', ensureUser, require('./Services'));
 router.use('/friend', ensureUser, ensureRole(UserTypes.MIGRANT), require('./Friend'));
 router.use('/events', ensureUser, require('./Events'));
+router.use('/bugs', ensureUser, require('./Bugs'));
 router.use('/questions', ensureUser, ensureRole(UserTypes.MIGRANT), require('./Questions'));
 router.use('/useranswers', ensureUser, ensureRole(UserTypes.MIGRANT), require('./UserAnswers'));
 router.use('/chatbot', ensureUser, require('./Chatbot'));
