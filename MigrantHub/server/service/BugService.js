@@ -1,4 +1,3 @@
-const fs = require('fs-extra');
 const BugValidator = require('../validators/BugValidator');
 const BugRepository = require('../repository/BugRepository');
 const { ServerError } = require('../errors/ServerError');
