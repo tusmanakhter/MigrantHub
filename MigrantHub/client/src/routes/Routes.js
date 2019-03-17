@@ -85,7 +85,7 @@ class Routes extends Component {
           <ProtectedRoute path="/services" component={ServiceList} exact />
           <ProtectedRoute path="/services/:id" component={ServiceDetails} />
           <ProtectedRoute path="/search" component={Search} exact />
-          <ProtectedRoute path="/events/create" component={EventForm} exact />
+          <ProtectedRoute path="/events/create" component={EventForm} business exact />
           <ProtectedRoute path="/events" component={EventList} exact />
           <ProtectedRoute path="/events/:id" component={EventDetails} />
           <ProtectedRoute path="/users" component={UsersList} exact />
