@@ -1,35 +1,23 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import withStyles from '@material-ui/core/styles/withStyles';
-import GridContainer from "components/Grid/GridContainer.jsx";
 import axios from 'axios';
 import ServiceCard from 'services/ServiceCard';
 import EventCard from 'events/EventCard';
 import UserItem from 'People/UserItem';
-import QuestionnairePanel from 'components/QuestionnairePanel/QuestionnairePanel';
 import Paper from '@material-ui/core/Paper';
-import UserTypes from 'lib/UserTypes';
 import { AuthConsumer } from 'routes/AuthContext';
+import GridItem from 'components/Grid/GridItem.jsx';
+import Grid from '@material-ui/core/Grid';
 
 const styles = theme => ({
-  mainContainer: {
-    marginLeft: 75,
-    paddingTop: 100,
-  },
-  serviceContainer: {
-    float: 'left',
-  },
   root: {
     ...theme.mixins.gutters(),
     paddingTop: theme.spacing.unit * 2,
     paddingBottom: theme.spacing.unit * 2,
   },
-  Panel: {
-    float: 'right',
-    position: 'absolute',
-    right: 0,
-    paddingTop: 25,
-    width: '25%',
+  mainContainer: {
+    paddingTop: 15,
   },
 });
 
@@ -137,33 +125,37 @@ class Search extends Component {
 
     if(this.state.servicesItem.length !== 0) {
       return (
-        <div className={classes.serviceContainer}>
-          <h4 className={classes.searchContainer}>Services</h4>
-          <GridContainer>
-            {' '}
-            {
-                servicesItem.map(item => (
-                  <ServiceCard
-                    serviceId={item._id}
-                    serviceTitle={item.serviceTitle}
-                    serviceImagePath={item.serviceImagePath}
-                    serviceDescription={item.serviceDescription}
-                    serviceSummary={item.serviceSummary}
-                    category={item.category}
-                    subcategory={item.subcategory}
-                    serviceLocation={item.location}
-                    serviceDate={item.serviceDate}
-                    serviceHours={item.serviceHours}
-                    editMode={item.editMode}
-                    editOwner={item.editOwner}
-                    getServices={this.getServices}
-                  />
-                ))
-            }
-          </GridContainer>
-        </div>
-      );
-    }
+        <div className={classes.mainContainer}>
+        <h5 className={classes.pageSubcategoriesTitle}>
+          Services Search Results
+        </h5>
+        <hr />
+        <Grid container spacing={16} alignItems="center" justify="center">
+          {' '}
+          {
+            servicesItem.map(item => (
+              <GridItem>
+                <ServiceCard
+                  serviceId={item._id}
+                  serviceTitle={item.serviceTitle}
+                  serviceImagePath={item.serviceImagePath}
+                  serviceDescription={item.serviceDescription}
+                  serviceSummary={item.serviceSummary}
+                  category={item.category}
+                  subcategory={item.subcategory}
+                  serviceLocation={item.location}
+                  serviceDate={item.serviceDate}
+                  serviceHours={item.serviceHours}
+                  rating={item.avgRating}
+                  count={item.countRating}
+                />
+              </GridItem>
+            ))
+          }
+        </Grid>
+      </div>
+    );
+  }
   }
 
   renderEvents() {
@@ -172,31 +164,33 @@ class Search extends Component {
 
     if(this.state.eventItem.length !== 0) {
       return (
-        <div className={classes.eventContainer}>
-          <h4 className={classes.searchContainer}>Events</h4>
-          <GridContainer>
+        <div className={classes.mainContainer}>
+        <h5 className={classes.pageSubcategoriesTitle}>
+          Events Search Results
+        </h5>
+        <hr />
+        <Grid container spacing={16} alignItems="center" justify="center">
             {' '}
-            {
+              {
                 eventItem.map(item => (
-                  <EventCard
-                    eventId={item._id}
-                    eventName={item.eventName}
-                    eventImagePath={item.eventImagePath}
-                    description={item.description}
-                    location={item.location}
-                    dateStart={item.dateStart}
-                    dateEnd={item.dateEnd}
-                    timeStart={item.timeStart}
-                    timeEnd={item.timeEnd}
-                    editMode={item.editMode}
-                    editOwner={item.editOwner}
-                    getEvents={this.getEvents}
-                  />
+                  <GridItem>
+                    <EventCard
+                      eventId={item._id}
+                      eventName={item.eventName}
+                      eventImagePath={item.eventImagePath}
+                      eventDescription={item.description}
+                      eventLocation={item.location}
+                      dateStart={item.dateStart}
+                      dateEnd={item.dateEnd}
+                      timeStart={item.timeStart}
+                      timeEnd={item.timeEnd}
+                    />
+                  </GridItem>
                 ))
-            }
-          </GridContainer>
-        </div>
-      );
+              }
+            </Grid>
+            </div>
+          );
     }
   }
 
@@ -235,13 +229,12 @@ class Search extends Component {
     return (
       <AuthConsumer>
         {({ user }) => (
-          <div className={classes.mainContainer}>
-            { user.type === UserTypes.MIGRANT
-              && <div className={classes.Panel}>{<QuestionnairePanel />}</div>
-            }
-            {this.renderServices()}
-            {this.renderEvents()}
-          </div>
+          <React.Fragment>
+            <div>
+              {this.renderServices()}
+              {this.renderEvents()}
+            </div>
+          </React.Fragment>
         )}
       </AuthConsumer>
     );

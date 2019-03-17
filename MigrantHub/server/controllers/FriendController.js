@@ -169,20 +169,24 @@ module.exports = {
     });
   },
 
+  // view users will continue to use regex
+  // this won't be used for now as friends functionality is on pause
   viewUsers(req, res) {
     const { searchQuery } = req.query;
     let query = {};
 
-    query = ({ $text: { $search: searchQuery } });
+    const tempSearchQuery = searchQuery;
+    const regex = new RegExp(tempSearchQuery.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&'), 'gi');
+    query = { $or: [{ firstName: regex }, { lastName: regex }] };
     query.deleted = false;
 
-    User.find(query, { score: { $meta: 'textScore' } }, (err, users) => {
+    User.find(query, (err, users) => {
       if (err) {
         logger.error(formatMessage(req.ip, req.method, req.originalUrl, req.httpVersion,
           err.status, req.referer, 'AccountController.viewUsers', err.message));
         return res.status(400).send('There was an error getting users.');
       }
       return res.status(200).send(users);
-    }).sort({ score: { $meta: 'textScore' } });
+    });
   },
 };
