@@ -31,6 +31,7 @@ import AccountSelection from 'account/AccountSelection';
 import ServiceSuggestionForm from 'services/ServiceSuggestionForm';
 import ServiceSuggestionList from 'services/ServiceSuggestionList';
 import ForgotYourPasswordForm from 'account/forgotYourPassword/ForgotYourPasswordForm';
+import CreateReview from 'services/CreateReview';
 
 class Routes extends Component {
   state = {
@@ -78,6 +79,7 @@ class Routes extends Component {
           <ProtectedRoute path="/editbusiness" component={EditBusiness} business exact />
           <ProtectedRoute path="/admin/dashboard" component={AdminDashboard} admin />
           <ProtectedRoute path="/services/create" component={ServiceForm} exact />
+          <ProtectedRoute path="/services/review/create/:id" component={CreateReview} exact />
           <ProtectedRoute path="/services/suggestions/create" component={ServiceSuggestionForm} migrant exact />
           <ProtectedRoute path="/services/suggestions" component={ServiceSuggestionList} business admin exact />
           <ProtectedRoute path="/services" component={ServiceList} exact />

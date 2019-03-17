@@ -5,10 +5,12 @@ const { ServerError } = require('../errors/ServerError');
 module.exports = {
 
   async createReview(user, parsedReviewObject) {
-    const errors = await ReviewValidator.reviewValidator(parsedReviewObject);
-
+    const reviewObject = parsedReviewObject;
+    const errors = await ReviewValidator.reviewValidator(reviewObject);
     if (errors === '') {
-      return ReviewRepository.createReview(user._id, parsedReviewObject);
+      reviewObject.firstName = user.firstName;
+      reviewObject.lastName = user.lastName;
+      return ReviewRepository.createReview(user._id, reviewObject);
     }
     throw new ServerError('There was an error creating the review.', 400, errors);
   },
@@ -19,6 +21,15 @@ module.exports = {
     query.serviceId = serviceId;
     query.deleted = false;
     return ReviewRepository.getReview(query);
+  },
+
+  async reviewExists(user, serviceId) {
+    const review = await this.getReview(user, serviceId);
+    console.log(review);
+    if (review != null) {
+      return Promise.resolve('Review Exists.');
+    }
+    throw new ServerError('Review does not exist.', 400, '');
   },
 
   async getReviews(query) {

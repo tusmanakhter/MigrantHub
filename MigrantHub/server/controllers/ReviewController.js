@@ -41,6 +41,10 @@ module.exports = {
     return ReviewService.getReviews(query);
   },
 
+  async reviewExists(user, serviceId) {
+    return ReviewService.reviewExists(user, serviceId);
+  },
+
   async deleteReview(reviewId) {
     return ReviewService.deleteReview(reviewId);
   },
