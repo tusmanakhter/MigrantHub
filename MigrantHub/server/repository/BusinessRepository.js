@@ -4,8 +4,8 @@ const { ServerError } = require('../errors/ServerError');
 module.exports = {
   createBusiness(businessUserObject) {
     const businessUser = new BusinessUser();
-    businessUser._id = businessUserObject.email;
-    businessUser.email = businessUserObject.email;
+    businessUser._id = businessUserObject.email.toLowerCase();
+    businessUser.email = businessUserObject.email.toLowerCase();
     businessUser.userType = 'local';
     businessUser.localAuthentication = {
       password: businessUserObject.password,
@@ -31,14 +31,14 @@ module.exports = {
   },
 
   getBusinessUser(businessUserId) {
-    return BusinessUser.findOne({ _id: businessUserId }).exec()
+    return BusinessUser.findOne({ _id: businessUserId.toLowerCase() }).exec()
       .then(businessUser => Promise.resolve(businessUser)).catch((error) => {
         throw new ServerError('There was an error retrieving business user.', 400, error);
       });
   },
 
   editBusinessUser(businessUserId, businessUserObject) {
-    return BusinessUser.findByIdAndUpdate({ _id: businessUserId }, businessUserObject,
+    return BusinessUser.findByIdAndUpdate({ _id: businessUserId.toLowerCase() }, businessUserObject,
       { new: true }).exec().then(() => Promise.resolve('Business user has been updated.')).catch((error) => {
       throw new ServerError('There was an error retrieving updating business user.', 400, error);
     });

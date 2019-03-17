@@ -83,7 +83,8 @@ describe('Service Service', function () {
     }));
 
     it('should call getService repository with correct parameters from getService service', test(async function () {
-        this.stub(ServiceRepository, 'getService');
+        this.stub(ServiceRepository, 'getService').returns({_id: "5bda52305ccfd051484ea790" });
+        this.stub(ReviewRepository, 'getAverageRating').returns([]);
         await ServiceService.getService(service._id);
         assert.calledWith(ServiceRepository.getService, { _id: "5bda52305ccfd051484ea790", deleted: false } );
     }));

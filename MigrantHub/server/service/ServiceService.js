@@ -64,7 +64,21 @@ module.exports = {
     }
     query.deleted = false;
 
-    return ServiceRepository.getService(query);
+    const service = await ServiceRepository.getService(query);
+    const updatedService = JSON.parse(JSON.stringify(service));
+    const avg = await ReviewRepository.getAverageRating(updatedService._id.toString());
+    let average = 0;
+    let count = 0;
+
+    if (avg[0] !== undefined) {
+      average = avg[0].avgRating;
+      count = avg[0].countRating;
+    }
+
+    updatedService.averageRating = average;
+    updatedService.countRating = count;
+
+    return Promise.resolve(updatedService);
   },
 
   async updateService(user, parsedServiceObj) {

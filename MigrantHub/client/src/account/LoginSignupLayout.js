@@ -22,10 +22,15 @@ const styles = theme => ({
     justifyContent: 'center',
   },
   content: {
-    [theme.breakpoints.down('xs')]: {
+    [theme.breakpoints.down('s')]: {
       width: 288,
       paddingBottom: 10,
       marginTop: -95,
+    },
+    [theme.breakpoints.down('xs')]: {
+      width: 288,
+      paddingBottom: 5,
+      marginTop: 0,
     },
     width: 380,
     marginTop: -115,

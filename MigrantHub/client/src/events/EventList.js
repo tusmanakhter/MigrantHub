@@ -149,13 +149,19 @@ class EventList extends Component {
                       tabContent: (
                         <Card>
                           <CardHeader>
-
                             <h6 className={classes.cardTitle}>
-                              <FormattedMessage id="event.infobox" />
+                              { 
+                                user.type === UserTypes.BUSINESS &&
+                                <FormattedMessage id="event.infobox.merchant" />
+                              }
+                              {
+                                user.type !== UserTypes.BUSINESS &&
+                                <FormattedMessage id="event.infobox" />
+                              }
                             </h6>
                           </CardHeader>
                           <CardBody>
-                            {user.type !== UserTypes.ADMIN
+                            { user.type === UserTypes.BUSINESS
                               && (
                                 <div>
                                   {this.renderRedirectToEventForm()}
