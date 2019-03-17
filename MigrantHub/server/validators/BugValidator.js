@@ -11,8 +11,6 @@ module.exports = {
 
     if (validator.isEmpty(bugObject.description)) {
       errors += '\nDescription is required';
-    } else if (!validator.isLength(bugObject.description, { min: 10 })) {
-      errors += '\nDescription must be at least 10 characters';
     }
 
     return errors;
