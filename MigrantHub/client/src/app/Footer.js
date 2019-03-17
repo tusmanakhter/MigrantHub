@@ -35,8 +35,7 @@ function Footer({ ...props }) {
               <a href="/" className={block}>
                 {'Home'}
               </a>
-            </ListItem>    
-            <div className={classes.inlineBlock} id="google_translate_element" />
+            </ListItem>
           </List>
         </div>
         <p className={classes.right}>
