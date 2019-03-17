@@ -48,7 +48,17 @@ describe('Service Service', function () {
     it('should call getReview repository with correct parameters', test(async function () {
         this.stub(ReviewRepository, 'getReview');
         await ReviewService.getReview(req.user, service._id);
-        assert.calledWith(ReviewRepository.getReview, { deleted: false, serviceId: "5bda52305ccfd051484ea790", user: "test@test.com" } );
+        assert.calledWith(ReviewRepository.getReview, { deleted: false, serviceId: '5bda52305ccfd051484ea790', user: 'test@test.com' } );
+    }));
+
+    it('should call getReview service with correct parameters', test(async function () {
+      this.stub(ReviewService, 'getReview').returns(Promise.resolve({}));
+      chai.assert.isFulfilled(ReviewService.reviewExists(req.user, service._id), 'Review Exists.');
+    }));
+
+    it('should call getReview service with correct parameters', test(async function () {
+      this.stub(ReviewService, 'getReview').returns(Promise.reject({}));
+      chai.assert.isRejected(ReviewService.reviewExists(req.user, service._id), ServerError, 'Review does not exist.');
     }));
 
     it('should call getReviews with correct parameters', test(async function () {
