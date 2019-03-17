@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Datetime from "react-datetime";
+import Datetime from 'react-datetime';
 import PropTypes from 'prop-types';
 import withStyles from '@material-ui/core/styles/withStyles';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -8,38 +8,38 @@ import axios from 'axios';
 import { Redirect } from 'react-router-dom';
 import { provinces } from 'lib/SignUpConstants';
 import { PhoneMask, PostalCodeMask } from 'lib/Masks';
-import Clearfix from "components/Clearfix/Clearfix.jsx";
-import moment from 'moment'
+import Clearfix from 'components/Clearfix/Clearfix.jsx';
+import moment from 'moment';
 import FormData from 'form-data';
 import { injectIntl, intlShape, FormattedMessage } from 'react-intl';
 
 // core components
-import GridContainer from "components/Grid/GridContainer.jsx";
-import GridItem from "components/Grid/GridItem.jsx";
-import CustomInput from "components/CustomInput/CustomInput.jsx";
-import Button from "components/CustomButtons/Button.jsx";
-import Card from "components/Card/Card.jsx";
-import CardHeader from "components/Card/CardHeader.jsx";
-import CardText from "components/Card/CardText.jsx";
-import CardIcon from "components/Card/CardIcon.jsx";
-import CardBody from "components/Card/CardBody.jsx";
-import ImageUpload from "components/CustomUpload/ImageUpload.jsx";
+import GridContainer from 'components/Grid/GridContainer.jsx';
+import GridItem from 'components/Grid/GridItem.jsx';
+import CustomInput from 'components/CustomInput/CustomInput.jsx';
+import Button from '@material-ui/core/Button';
+import Card from 'components/Card/Card.jsx';
+import CardHeader from 'components/Card/CardHeader.jsx';
+import CardText from 'components/Card/CardText.jsx';
+import CardIcon from 'components/Card/CardIcon.jsx';
+import CardBody from 'components/Card/CardBody.jsx';
+import ImageUpload from 'components/CustomUpload/ImageUpload.jsx';
 
 // @material-ui/core components
-import FormControl from "@material-ui/core/FormControl";
-import InputLabel from "@material-ui/core/InputLabel";
-import Select from "@material-ui/core/Select";
+import FormControl from '@material-ui/core/FormControl';
+import InputLabel from '@material-ui/core/InputLabel';
+import Select from '@material-ui/core/Select';
 import { FormHelperText } from '@material-ui/core';
 
 // @material-ui/icons
-import Today from "@material-ui/icons/Today";
-import Location from "@material-ui/icons/Map";
-import AvTimer from "@material-ui/icons/AvTimer";
+import Today from '@material-ui/icons/Today';
+import Location from '@material-ui/icons/Map';
+import AvTimer from '@material-ui/icons/AvTimer';
 
-import extendedFormsStyle from "assets/jss/material-dashboard-pro-react/views/extendedFormsStyle.jsx";
-import regularFormsStyle from "assets/jss/material-dashboard-pro-react/views/regularFormsStyle";
-import defaultImage from "assets/img/image_placeholder.jpg";
-import defaultAvatar from "assets/img/placeholder.jpg";
+import extendedFormsStyle from 'assets/jss/material-dashboard-pro-react/views/extendedFormsStyle.jsx';
+import regularFormsStyle from 'assets/jss/material-dashboard-pro-react/views/regularFormsStyle';
+import defaultImage from 'assets/img/image_placeholder.jpg';
+import defaultAvatar from 'assets/img/placeholder.jpg';
 import { toast } from 'react-toastify';
 
 import qs from 'qs';
@@ -130,7 +130,7 @@ class EventForm extends Component {
       messageFromServer: '',
       redirectToAllEvents: false,
     };
-    this.imageRef=React.createRef();
+    this.imageRef = React.createRef();
     this.handleChange = this.handleChange.bind(this);
     this.handleImageChange = this.handleImageChange.bind(this);
     this.handleClick = this.handleClick.bind(this);
@@ -168,7 +168,7 @@ class EventForm extends Component {
         eventId,
       });
 
-      axios.get('/api/events/' + eventId, {
+      axios.get(`/api/events/${eventId}`, {
         params: {
           _id: eventId,
         },
@@ -200,7 +200,7 @@ class EventForm extends Component {
     const { intl } = this.props;
     const {
       eventName, description, location, dateStart, dateEnd, timeStart,
-      timeEnd, eventImageName, eventImage, visibility, repeat
+      timeEnd, eventImageName, eventImage, visibility, repeat,
     } = this.state;
 
     let isError = false;
@@ -325,9 +325,9 @@ class EventForm extends Component {
       [event.target.name]: event.target.value,
     });
   }
-  
-  handleMoment = (fieldName, momentObj , formatType) => {
-    if(momentObj !== moment.isMoment()){
+
+  handleMoment = (fieldName, momentObj, formatType) => {
+    if (momentObj !== moment.isMoment()) {
       momentObj = moment(momentObj);
     }
     this.setState({
@@ -370,27 +370,6 @@ class EventForm extends Component {
     }
   };
 
-  handleUploadImage = (event) => {
-    const { tempEventImagePath } = this.state;
-
-    if (tempEventImagePath !== '') {
-      URL.revokeObjectURL(tempEventImagePath);
-    }
-    if (event.target.files[0] !== undefined) {
-      this.setState({
-        eventImage: event.target.files[0],
-        eventImageName: event.target.files[0].name,
-        tempEventImagePath: window.URL.createObjectURL(event.target.files[0]),
-      });
-    } else {
-      this.setState({
-        eventImage: null,
-        eventImageName: '',
-        tempEventImagePath: '',
-      });
-    }
-  }
-
   handleUpdate = () => {
     const {
       timeStart, timeEnd, visibility, province, repeat,
@@ -426,21 +405,6 @@ class EventForm extends Component {
     }
   };
 
-
-  handleAddObject = (name, object) => {
-    this.state.eventHoursCount += 1;
-    this.setState({
-      [name]: this.state[name].concat([object]),
-    });
-  }
-
-  handleRemoveObject = (name, index) => {
-    this.state.eventHoursCount -= 1;
-    this.setState({
-      [name]: this.state[name].filter((s, _index) => _index !== index),
-    });
-  }
-
   handleEditLocationObject = (name, fieldName) => (event) => {
     const obj = {};
     obj[name] = { ...this.state[name] };
@@ -451,14 +415,14 @@ class EventForm extends Component {
 
   handleImageChange(e) {
     e.preventDefault();
-    let reader = new FileReader();
-    let file = e.target.files[0];
-    
+    const reader = new FileReader();
+    const file = e.target.files[0];
+
     reader.onloadend = () => {
       this.setState({
-        file: file,
+        file,
         eventImageName: file.name,
-        imagePreviewUrl: reader.result
+        imagePreviewUrl: reader.result,
       });
     };
     reader.readAsDataURL(file);
@@ -468,11 +432,11 @@ class EventForm extends Component {
     this.setState({
       file: null,
       eventImageName: '',
-      imagePreviewUrl: this.props.avatar ? defaultAvatar : defaultImage
+      imagePreviewUrl: this.props.avatar ? defaultAvatar : defaultImage,
     });
     this.imageRef.current.value = null;
   }
-    
+
   handleClick() {
     this.imageRef.current.click();
   }
@@ -481,14 +445,14 @@ class EventForm extends Component {
   createEvent = () => {
     const {
       user, dateCreated, visibility, eventName, description, location,
-      dateStart, dateEnd, timeStart, timeEnd, repeat, eventImageName, file
+      dateStart, dateEnd, timeStart, timeEnd, repeat, eventImageName, file,
     } = this.state;
 
     let tempImageName = 'montrealCity.png';
     if (eventImageName !== '') {
       tempImageName = eventImageName;
     }
-    console.log("EventImageName: "+eventImageName);
+    console.log(`EventImageName: ${eventImageName}`);
     const date = new Date();
     const todaysDate = (`${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`);
 
@@ -524,9 +488,9 @@ class EventForm extends Component {
         });
       }
     }).catch((error) => {
-        this.setState({
-            messageFromServer: error.response.data,
-        });
+      this.setState({
+        messageFromServer: error.response.data,
+      });
     });
   }
 
@@ -541,7 +505,7 @@ class EventForm extends Component {
     const {
       eventId, visibility, eventName, description, location,
       dateStart, dateEnd, timeStart, timeEnd, repeat,
-      eventImageName, eventImage, eventImagePath, setDefaultImage, file
+      eventImageName, eventImage, eventImagePath, setDefaultImage, file,
     } = this.state;
 
     let tempImageName = eventImageName;
@@ -579,7 +543,7 @@ class EventForm extends Component {
       eventImageName: tempImageName,
     }));
 
-    axios.put('/api/events/' + eventId, formData, {
+    axios.put(`/api/events/${eventId}`, formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
       },
@@ -603,8 +567,8 @@ class EventForm extends Component {
       dateEnd, timeStart, timeEnd, repeat, eventNameError, visibilityError, repeatError, descriptionError,
       addressError, apartmentError, cityError, provinceError, postalCodeError,
       phoneNumberError, dateStartError, dateEndError, timeStartError, timeEndError,
-      tempEventImagePath, eventImageError, messageFromServer, editMode, setDefaultImage,
-      file, imagePreviewUrl
+      eventImageError, messageFromServer, editMode,
+      file, imagePreviewUrl,
     } = this.state;
     const { classes } = this.props;
     return (
@@ -617,462 +581,471 @@ class EventForm extends Component {
             </span>
           ))}
           {this.renderRedirectToAllEvents()}
-          <GridItem xs={12} sm={12} md={12}>
-            <Card>
-              <CardHeader color="success" text>
-                <CardText color="success">
-                  <h4><FormattedMessage id="event.form" /></h4>
-                </CardText>
-              </CardHeader>
-              <CardBody>
-                <form>
-                  <center>
-                    <GridItem xs={12} sm={6} md={6} lg={4}>
-                      <ImageUpload
-                        id="eventImage"
-                        addButtonProps={{
-                          color: "grey",
-                          round: true
-                        }}
-                        changeButtonProps={{
-                          color: "primary",
-                          round: true
-                        }}
-                        removeButtonProps={{
-                          color: "danger",
-                          round: true
-                        }}
-                        handleClick={this.handleClick}
-                        handleImageChange={this.handleImageChange}
-                        handleRemove={this.handleRemove}
-                        file={file}
-                        imagePreviewUrl={imagePreviewUrl}
-                        imageRef={this.imageRef}
-                        helperText={eventImageError}
-                        error={eventImageError.length > 0}
+          <GridContainer>
+            <GridItem lg={12} md={12} sm={12} xs={12}>
+              <Card>
+                <CardHeader color="rose" text>
+                  <CardText color="rose">
+                    <h4><FormattedMessage id="event.form" /></h4>
+                  </CardText>
+                </CardHeader>
+                <CardBody>
+                  <form>
+                    <GridContainer>
+                      <GridItem lg={4} md={4} sm={12} xs={12}>
+                        <ImageUpload
+                          id="eventImage"
+                          addButtonProps={{
+                            color: 'grey',
+                            round: true,
+                          }}
+                          changeButtonProps={{
+                            color: 'success',
+                            round: true,
+                          }}
+                          removeButtonProps={{
+                            color: 'danger',
+                            round: true,
+                          }}
+                          handleClick={this.handleClick}
+                          handleImageChange={this.handleImageChange}
+                          handleRemove={this.handleRemove}
+                          file={file}
+                          imagePreviewUrl={imagePreviewUrl}
+                          imageRef={this.imageRef}
+                          helperText={eventImageError}
+                          error={eventImageError.length > 0}
                         />
-                    </GridItem>
-                  </center>
-                  <GridContainer>
-                    <GridItem xs={12} sm={12} md={12}>
-                      <CustomInput
-                        className={classes.input}
-                        labelText={<FormattedMessage id="form.title" />}
-                        formControlProps={{
-                          fullWidth: true
-                        }}
-                        inputProps={{
-                          id:"eventName",
-                          name:"eventName",
-                          value:eventName,
-                          onChange: event => this.handleChange(event),
-                        }}
-                        fullWidth
-                        helperText={eventNameError}
-                        error={eventNameError.length > 0}
-                      />
-                    </GridItem>
-                    <GridItem xs={12} sm={6} md={4} lg={4}>
-                      <FormControl
-                        fullWidth
-                        className={classes.selectFormControl}
-                      >
-                      <InputLabel
-                        htmlFor="simple-select"
-                        className={classes.selectLabel}
-                      >
-                      <FormattedMessage id="form.select.visibility" />
-                      </InputLabel>
-                      <Select
-                        MenuProps={{
-                          className: classes.selectMenu
-                        }}
-                        classes={{
-                          select: classes.select
-                        }}
-                        value={visibility}
-                        inputProps={{
-                          name: "visibility",
-                          id: "visibility"
-                        }}
-                        name="visibility"
-                        select
-                        label="Visibility"
-                        onChange={event => this.handleChange(event)}
-                        fullWidth
-                      >
-                        <MenuItem
-                          disabled
-                          classes={{ root: classes.selectMenuItem }}
-                        >
-                        <FormattedMessage id="form.select.visibility" />
-                        </MenuItem>
-                        {visibilities.map(option => (
-                          <MenuItem key={option.value} value={option.value}>
-                            {option.label}
-                          </MenuItem>
-                        ))}
-                      </Select>
-                      </FormControl>
-                      <FormHelperText error={visibilityError.length > 0}>{visibilityError}</FormHelperText>
-                    </GridItem>
-                    <GridItem xs={12} sm={6} md={4} lg={4}>
-                      <FormControl
-                        fullWidth
-                        className={classes.selectFormControl}
-                        name="repeat"
-                        select
-                        label="Repeat"
-                        onChange={event => this.handleChange(event)}
-                      >
-                        <InputLabel
-                          htmlFor="simple-select"
-                          className={classes.selectLabel}
-                        >
-                          <FormattedMessage id="form.select.repeat" />
-                        </InputLabel>
-                        <Select
-                          MenuProps={{
-                            className: classes.selectMenu
-                          }}
-                          classes={{
-                            select: classes.select
-                          }}
-                          value={repeat}
-                          onChange={event => this.handleChange(event)}
-                          inputProps={{
-                            name: "repeat",
-                            id: "repeat"
-                          }}
-                          >
-                            <MenuItem
-                              disabled
-                              classes={{
-                                root: classes.selectMenuItem
-                              }}
-                            >
-                              <FormattedMessage id="form.select.repeat" />
-                            </MenuItem>
-                            {repeats.map(option => (
-                              <MenuItem key={option.value} value={option.value}>
-                                {option.label}
-                              </MenuItem>
-                            ))}
-                        </Select>
-                      </FormControl>
-                      <FormHelperText error={repeatError.length > 0}>{repeatError}</FormHelperText>
-                    </GridItem>
-                    <GridItem xs={12} sm={12} md={12}>
-                      <CustomInput
-                        labelText={<FormattedMessage id="form.description" />}
-                        formControlProps={{
-                          fullWidth: true
-                        }}
-                        inputProps={{
-                          multiline: true,
-                          rows: 5,
-                          name:"description",
-                          id:"description",
-                          onChange: event => this.handleChange(event),
-                          error:descriptionError.length > 0
-                        }}
-                        value={description}
-                        helperText={descriptionError}
-                        error={descriptionError.length > 0}
-                      />
-                  </GridItem>
-                    <GridItem xs={12} sm={12} md={12}>
-                    <Card>
-                      <CardHeader color="success" icon>
-                        <CardIcon color="success">
-                          <Today />
-                        </CardIcon>
-                        <h4 className={classes.cardIconTitle}><FormattedMessage id="form.date" /></h4>
-                      </CardHeader>
-                      <CardBody>
-                        <GridItem>
-                        </GridItem>
-                        <GridContainer>
-                        <GridItem xs={6} sm={6} md={6}>
-                        <InputLabel className={classes.label}><FormattedMessage id="form.day.start" /></InputLabel>
-                        <br />
-                      <FormControl fullWidth>
-                        <Datetime
-                          timeFormat={false}
-                          inputProps={{ 
-                            placeholder: "MM/DD/YYYY",
-                            id:"dateStart",
-                            name:"dateStart",
-                            }}
-                          onChange={(moment) => this.handleMoment("dateStart",moment, 'L')}
-                          value={dateStart}
-                          locale="en"
-                        />
-                        <FormHelperText error={dateStartError.length > 0}>{dateStartError}</FormHelperText>
-                      </FormControl>
                       </GridItem>
-                      <GridItem xs={6} sm={6} md={6}>
-                      <InputLabel className={classes.label}><FormattedMessage id="form.day.end" /></InputLabel>
-                        <br />
-                      <FormControl fullWidth>
-                        <Datetime
-                          timeFormat={false}
-                          inputProps={{ 
-                            placeholder: "MM/DD/YYYY",
-                            name:"dateEnd",
-                            id:"dateEnd",
-                            }}
-                            name="dateEnd"
-                            id="dateEnd"
-                          onChange={(moment) =>  this.handleMoment("dateEnd",moment, 'L')}
-                          value={dateEnd}
-                          locale="en"
-                        />
-                        <FormHelperText error={dateEndError.length > 0}>{dateEndError}</FormHelperText>
-                      </FormControl>
-                      </GridItem>
-                      </GridContainer>
-                      </CardBody>
-                    </Card>
-                    </GridItem>
-                    <GridItem xs={12} sm={12} md={12}>
-                    <Card>
-                      <CardHeader color="success" icon>
-                        <CardIcon color="success">
-                          <AvTimer />
-                        </CardIcon>
-                        <h4 className={classes.cardIconTitle}><FormattedMessage id="form.time" /></h4>
-                      </CardHeader>
-                      <CardBody>
-                        <React.Fragment>
+                      <GridItem lg={8} md={8} sm={12} xs={12}>
                         <GridContainer>
-                          <GridItem xs={12} sm={12} md={6} lg={3} >
-                            <InputLabel className={classes.label}><FormattedMessage id="form.time.start" /></InputLabel>
-                            <br />
-                            <FormControl fullWidth>
-                            <Datetime
-                              dateFormat={false}
-                              inputProps={{ 
-                              placeholder: "HH:MM AM/PM",
+                          <GridItem lg={4} md={4} sm={12} xs={12}>
+                            <CustomInput
+                              className={classes.input}
+                              labelText={<FormattedMessage id="form.title" />}
+                              formControlProps={{
+                                fullWidth: true,
                               }}
-                              id="timeStart"
-                              name="timeStart"
-                              onChange={(moment) =>  this.handleMoment("timeStart",moment, 'LT')}
-                              value={timeStart}
-                              helperText={timeStartError}
-                              error={timeStartError.length > 0}
-                              locale="en"
+                              inputProps={{
+                                id: 'eventName',
+                                name: 'eventName',
+                                value: eventName,
+                                onChange: event => this.handleChange(event),
+                              }}
+                              fullWidth
+                              helperText={eventNameError}
+                              error={eventNameError.length > 0}
                             />
-                            <FormHelperText error={timeStartError.length > 0}>{timeStartError}</FormHelperText>
-                            </FormControl>
                           </GridItem>
-                          <GridItem xs={12} sm={12} md={6} lg={3} >
-                            <InputLabel className={classes.label}><FormattedMessage id="form.time.end" /></InputLabel>
-                              <br />
-                            <FormControl fullWidth>
-                              <Datetime
-                                dateFormat={false}
-                                inputProps={{ placeholder: "HH:MM AM/PM" }}
-                                id="timeEnd"
-                                name="timeEnd"
-                                value={timeEnd}
-                                onChange={(moment) =>  this.handleMoment("timeEnd",moment, 'LT')}
-                                helperText={timeEndError}
-                                error={timeEndError.length > 0}
-                                locale="en"
-                              />
-                              <FormHelperText error={timeEndError.length > 0}>{timeEndError}</FormHelperText>
+                          <GridItem lg={4} md={4} sm={12} xs={12}>
+                            <FormControl
+                              fullWidth
+                              className={classes.selectFormControl}
+                            >
+                              <InputLabel
+                                htmlFor="simple-select"
+                                className={classes.selectLabel}
+                              >
+                                <FormattedMessage id="form.select.visibility" />
+                              </InputLabel>
+                              <Select
+                                MenuProps={{
+                                  className: classes.selectMenu,
+                                }}
+                                classes={{
+                                  select: classes.select,
+                                }}
+                                value={visibility}
+                                inputProps={{
+                                  name: 'visibility',
+                                  id: 'visibility',
+                                }}
+                                name="visibility"
+                                select
+                                label="Visibility"
+                                onChange={event => this.handleChange(event)}
+                                fullWidth
+                              >
+                                <MenuItem
+                                  disabled
+                                  classes={{ root: classes.selectMenuItem }}
+                                >
+                                  <FormattedMessage id="form.select.visibility" />
+                                </MenuItem>
+                                {visibilities.map(option => (
+                                  <MenuItem key={option.value} value={option.value}>
+                                    {option.label}
+                                  </MenuItem>
+                                ))}
+                              </Select>
                             </FormControl>
+                            <FormHelperText error={visibilityError.length > 0}>{visibilityError}</FormHelperText>
+                          </GridItem>
+                          <GridItem lg={4} md={4} sm={12} xs={12}>
+                            <FormControl
+                              fullWidth
+                              className={classes.selectFormControl}
+                              name="repeat"
+                              select
+                              label="Repeat"
+                              onChange={event => this.handleChange(event)}
+                            >
+                              <InputLabel
+                                htmlFor="simple-select"
+                                className={classes.selectLabel}
+                              >
+                                <FormattedMessage id="form.select.repeat" />
+                              </InputLabel>
+                              <Select
+                                MenuProps={{
+                                  className: classes.selectMenu,
+                                }}
+                                classes={{
+                                  select: classes.select,
+                                }}
+                                value={repeat}
+                                onChange={event => this.handleChange(event)}
+                                inputProps={{
+                                  name: 'repeat',
+                                  id: 'repeat',
+                                }}
+                              >
+                                <MenuItem
+                                  disabled
+                                  classes={{
+                                    root: classes.selectMenuItem,
+                                  }}
+                                >
+                                  <FormattedMessage id="form.select.repeat" />
+                                </MenuItem>
+                                {repeats.map(option => (
+                                  <MenuItem key={option.value} value={option.value}>
+                                    {option.label}
+                                  </MenuItem>
+                                ))}
+                              </Select>
+                            </FormControl>
+                            <FormHelperText error={repeatError.length > 0}>{repeatError}</FormHelperText>
+                          </GridItem>
+                          <GridItem lg={12} md={12} sm={12} xs={12}>
+                            <CustomInput
+                              labelText={<FormattedMessage id="form.description" />}
+                              formControlProps={{
+                                fullWidth: true,
+                              }}
+                              inputProps={{
+                                multiline: true,
+                                rows: 5,
+                                name: 'description',
+                                id: 'description',
+                                onChange: event => this.handleChange(event),
+                                error: descriptionError.length > 0,
+                              }}
+                              value={description}
+                              helperText={descriptionError}
+                              error={descriptionError.length > 0}
+                            />
                           </GridItem>
                         </GridContainer>
-                      </React.Fragment>
-                      </CardBody>
-                    </Card>
-                    </GridItem>
-                  </GridContainer>
-                  <Card>
-                    <CardHeader color="success" icon>
-                      <CardIcon color="success">
-                        <Location />
-                      </CardIcon>
-                      <h4 className={classes.cardIconTitle}>Location</h4>
-                    </CardHeader>
-                    <CardBody>
-                    <GridItem>
-                      <GridContainer>
-                        <GridItem xs={4} sm={4} md={4} lg={4}>
-                          <CustomInput
-                          className={classes.input}
-                            labelText={<FormattedMessage id="contact.address" />}
-                            formControlProps={{
-                              fullWidth: true
-                            }}
-                            inputProps={{
-                              name:"address",
-                              id:"address",
-                              value:location.address,
-                              onChange: this.handleEditLocationObject('location', 'address'),
-                            }}
-                            helperText={addressError}
-                            error={addressError.length > 0}
-                          />
-                        </GridItem>
-                        <GridItem xs={4} sm={4} md={4} lg={4}>
-                          <CustomInput
-                            labelText={<FormattedMessage id="contact.city" />}
-                            formControlProps={{
-                              fullWidth: true
-                            }}
-                            inputProps={{
-                              name:"city",
-                              id:"city",
-                              value:location.city,
-                              onChange: this.handleEditLocationObject('location', 'city'),
-                            }}
-                            helperText={cityError}
-                            error={cityError.length > 0}
-                          />
-                        </GridItem>
-                        <GridItem xs={2} sm={2} md={2} lg={2}>
-                          <CustomInput
-                            labelText={<FormattedMessage id="contact.apartment" />}
-                            id="apartment"
-                            formControlProps={{
-                              fullWidth: true
-                            }}
-                            inputProps={{
-                              name:"apartment",
-                              id:"apartment",
-                              value:location.apartment,
-                              onChange: this.handleEditLocationObject('location', 'apartment'),
-                            }}
-                            helperText={apartmentError}
-                            error={apartmentError.length > 0}
-                          />
-                        </GridItem>
-                      </GridContainer>
-                      <GridContainer>
-                        <GridItem xs={4} sm={4} md={4} lg={4}>
-                          <FormControl
-                            fullWidth
-                            className={classes.selectFormControl}
-                          >
-                          <InputLabel
-                            htmlFor="simple-select"
-                            className={classes.selectLabel}
-                          >
-                            Province
-                          </InputLabel>
-                          <Select
-                            MenuProps={{
-                              className: classes.selectMenu
-                            }}
-                            classes={{
-                              select: classes.select
-                            }}
-                            value={location.province}
-                            inputProps={{
-                              name: "province",
-                            }}
-                            id="province"
-                            onChange={this.handleEditLocationObject('location', 'province')}
-                            name="province"
-                            select
-                            label={<FormattedMessage id="contact.province" />}
-                            fullWidth
-                            helperText={provinceError}
-                            error={provinceError.length > 0}
-                          >
-                          <MenuItem
-                            disabled
-                            classes={{
-                              root: classes.selectMenuItem
-                            }}
-                          >
-                            <FormattedMessage id="contact.province" />
-                          </MenuItem>
-                          {provinces.map(option => (
-                            <MenuItem key={option.value} value={option.value}>
-                              {option.label}
-                            </MenuItem>
-                          ))}
-                          </Select>
-                          </FormControl>
-                          <FormHelperText error={provinceError.length > 0}>{provinceError}</FormHelperText>
-                        </GridItem>
-                        <GridItem xs={4} sm={4} md={4} lg={4}>
-                          <CustomInput
-                            labelText={<FormattedMessage id="contact.postal" />}
-                            formControlProps={{
-                              fullWidth: true
-                            }}
-                            inputProps={{
-                              name:"postalCode",
-                              id:"postalCode",
-                              value:location.postalCode.toUpperCase(),
-                              onChange: this.handleEditLocationObject('location', 'postalCode'),
-                              inputComponent: PostalCodeMask,
-                            }}
-                            helperText={postalCodeError}
-                            error={postalCodeError.length > 0}
-                          />
-                        </GridItem>
-                        <GridItem xs={4} sm={4} md={12} lg={4}>
-                          <CustomInput
-                            labelText={<FormattedMessage id="contact.phone" />}
-                            id="phoneNumber"
-                            formControlProps={{
-                              fullWidth: true
-                            }}
-                            inputProps={{
-                              name:"phoneNumber",
-                              id:"phoneNumber",
-                              value:location.phoneNumber,
-                              onChange: this.handleEditLocationObject('location', 'phoneNumber'),
-                              inputComponent: PhoneMask,
-                            }}
-                            helperText={phoneNumberError}
-                            error={phoneNumberError.length > 0}
-                          />
-                        </GridItem>
-                      </GridContainer>
-                    </GridItem>
-                    </CardBody>
-                  </Card>
+                      </GridItem>
+                      <GridItem lg={6} md={6} sm={12} xs={12}>
+                        <GridContainer>
+                          <GridItem lg={12} md={12} sm={12} xs={12}>
+                            <Card>
+                              <CardHeader color="rose" icon>
+                                <CardIcon color="rose">
+                                  <Today />
+                                </CardIcon>
+                                <h4 className={classes.cardIconTitle}><FormattedMessage id="form.date" /></h4>
+                              </CardHeader>
+                              <CardBody>
+                                <GridItem />
+                                <GridContainer>
+                                  <GridItem lg={6} md={6} sm={12} xs={12}>
+                                    <InputLabel className={classes.label}><FormattedMessage id="form.day.start" /></InputLabel>
+                                    <br />
+                                    <FormControl fullWidth>
+                                      <Datetime
+                                        timeFormat={false}
+                                        inputProps={{
+                                          placeholder: 'MM/DD/YYYY',
+                                          id: 'dateStart',
+                                          name: 'dateStart',
+                                        }}
+                                        onChange={moment => this.handleMoment('dateStart', moment, 'L')}
+                                        value={dateStart}
+                                        locale="en"
+                                      />
+                                      <FormHelperText error={dateStartError.length > 0}>{dateStartError}</FormHelperText>
+                                    </FormControl>
+                                  </GridItem>
+                                  <GridItem lg={6} md={6} sm={12} xs={12}>
+                                    <InputLabel className={classes.label}><FormattedMessage id="form.day.end" /></InputLabel>
+                                    <br />
+                                    <FormControl fullWidth>
+                                      <Datetime
+                                        timeFormat={false}
+                                        inputProps={{
+                                          placeholder: 'MM/DD/YYYY',
+                                          name: 'dateEnd',
+                                          id: 'dateEnd',
+                                        }}
+                                        name="dateEnd"
+                                        id="dateEnd"
+                                        onChange={moment => this.handleMoment('dateEnd', moment, 'L')}
+                                        value={dateEnd}
+                                        locale="en"
+                                      />
+                                      <FormHelperText error={dateEndError.length > 0}>{dateEndError}</FormHelperText>
+                                    </FormControl>
+                                  </GridItem>
+                                </GridContainer>
+                              </CardBody>
+                            </Card>
+                          </GridItem>
+                          <GridItem lg={12} md={12} sm={12} xs={12}>
+                            <Card>
+                              <CardHeader color="rose" icon>
+                                <CardIcon color="rose">
+                                  <AvTimer />
+                                </CardIcon>
+                                <h4 className={classes.cardIconTitle}><FormattedMessage id="form.time" /></h4>
+                              </CardHeader>
+                              <CardBody>
+                                <React.Fragment>
+                                  <GridContainer>
+                                    <GridItem lg={6} md={6} sm={12} xs={12}>
+                                      <InputLabel className={classes.label}><FormattedMessage id="form.time.start" /></InputLabel>
+                                      <br />
+                                      <FormControl fullWidth>
+                                        <Datetime
+                                          dateFormat={false}
+                                          inputProps={{
+                                            placeholder: 'HH:MM AM/PM',
+                                          }}
+                                          id="timeStart"
+                                          name="timeStart"
+                                          onChange={moment => this.handleMoment('timeStart', moment, 'LT')}
+                                          value={timeStart}
+                                          helperText={timeStartError}
+                                          error={timeStartError.length > 0}
+                                          locale="en"
+                                        />
+                                        <FormHelperText error={timeStartError.length > 0}>{timeStartError}</FormHelperText>
+                                      </FormControl>
+                                    </GridItem>
+                                    <GridItem lg={6} md={6} sm={12} xs={12}>
+                                      <InputLabel className={classes.label}><FormattedMessage id="form.time.end" /></InputLabel>
+                                      <br />
+                                      <FormControl fullWidth>
+                                        <Datetime
+                                          dateFormat={false}
+                                          inputProps={{ placeholder: 'HH:MM AM/PM' }}
+                                          id="timeEnd"
+                                          name="timeEnd"
+                                          value={timeEnd}
+                                          onChange={moment => this.handleMoment('timeEnd', moment, 'LT')}
+                                          helperText={timeEndError}
+                                          error={timeEndError.length > 0}
+                                          locale="en"
+                                        />
+                                        <FormHelperText error={timeEndError.length > 0}>{timeEndError}</FormHelperText>
+                                      </FormControl>
+                                    </GridItem>
+                                  </GridContainer>
+                                </React.Fragment>
+                              </CardBody>
+                            </Card>
+                          </GridItem>
+                        </GridContainer>
+                      </GridItem>
+                      <GridItem lg={6} md={6} sm={12} xs={12}>
+                        <Card>
+                          <CardHeader color="rose" icon>
+                            <CardIcon color="rose">
+                              <Location />
+                            </CardIcon>
+                            <h4 className={classes.cardIconTitle}>Location</h4>
+                          </CardHeader>
+                          <CardBody>
+                            <GridItem>
+                              <GridContainer>
+                                <GridItem lg={4} md={4} sm={12} xs={12}>
+                                  <CustomInput
+                                    className={classes.input}
+                                    labelText={<FormattedMessage id="contact.address" />}
+                                    formControlProps={{
+                                      fullWidth: true,
+                                    }}
+                                    inputProps={{
+                                      name: 'address',
+                                      id: 'address',
+                                      value: location.address,
+                                      onChange: this.handleEditLocationObject('location', 'address'),
+                                    }}
+                                    helperText={addressError}
+                                    error={addressError.length > 0}
+                                  />
+                                </GridItem>
+                                <GridItem lg={4} md={4} sm={12} xs={12}>
+                                  <CustomInput
+                                    labelText={<FormattedMessage id="contact.city" />}
+                                    formControlProps={{
+                                      fullWidth: true,
+                                    }}
+                                    inputProps={{
+                                      name: 'city',
+                                      id: 'city',
+                                      value: location.city,
+                                      onChange: this.handleEditLocationObject('location', 'city'),
+                                    }}
+                                    helperText={cityError}
+                                    error={cityError.length > 0}
+                                  />
+                                </GridItem>
+                                <GridItem lg={4} md={4} sm={12} xs={12}>
+                                  <CustomInput
+                                    labelText={<FormattedMessage id="contact.apartment" />}
+                                    id="apartment"
+                                    formControlProps={{
+                                      fullWidth: true,
+                                    }}
+                                    inputProps={{
+                                      name: 'apartment',
+                                      id: 'apartment',
+                                      value: location.apartment,
+                                      onChange: this.handleEditLocationObject('location', 'apartment'),
+                                    }}
+                                    helperText={apartmentError}
+                                    error={apartmentError.length > 0}
+                                  />
+                                </GridItem>
+                              </GridContainer>
+                              <GridContainer>
+                                <GridItem lg={4} md={4} sm={12} xs={12}>
+                                  <FormControl
+                                    fullWidth
+                                    className={classes.selectFormControl}
+                                  >
+                                    <InputLabel
+                                      htmlFor="simple-select"
+                                      className={classes.selectLabel}
+                                    >
+                                      Province
+                                    </InputLabel>
+                                    <Select
+                                      MenuProps={{
+                                        className: classes.selectMenu,
+                                      }}
+                                      classes={{
+                                        select: classes.select,
+                                      }}
+                                      value={location.province}
+                                      inputProps={{
+                                        name: 'province',
+                                      }}
+                                      id="province"
+                                      onChange={this.handleEditLocationObject('location', 'province')}
+                                      name="province"
+                                      select
+                                      label={<FormattedMessage id="contact.province" />}
+                                      fullWidth
+                                      helperText={provinceError}
+                                      error={provinceError.length > 0}
+                                    >
+                                      <MenuItem
+                                        disabled
+                                        classes={{
+                                          root: classes.selectMenuItem,
+                                        }}
+                                      >
+                                        <FormattedMessage id="contact.province" />
+                                      </MenuItem>
+                                      {provinces.map(option => (
+                                        <MenuItem key={option.value} value={option.value}>
+                                          {option.label}
+                                        </MenuItem>
+                                      ))}
+                                    </Select>
+                                  </FormControl>
+                                  <FormHelperText error={provinceError.length > 0}>{provinceError}</FormHelperText>
+                                </GridItem>
+                                <GridItem lg={4} md={4} sm={12} xs={12}>
+                                  <CustomInput
+                                    labelText={<FormattedMessage id="contact.postal" />}
+                                    formControlProps={{
+                                      fullWidth: true,
+                                    }}
+                                    inputProps={{
+                                      name: 'postalCode',
+                                      id: 'postalCode',
+                                      value: location.postalCode.toUpperCase(),
+                                      onChange: this.handleEditLocationObject('location', 'postalCode'),
+                                      inputComponent: PostalCodeMask,
+                                    }}
+                                    helperText={postalCodeError}
+                                    error={postalCodeError.length > 0}
+                                  />
+                                </GridItem>
+                                <GridItem lg={4} md={4} sm={12} xs={12}>
+                                  <CustomInput
+                                    labelText={<FormattedMessage id="contact.phone" />}
+                                    id="phoneNumber"
+                                    formControlProps={{
+                                      fullWidth: true,
+                                    }}
+                                    inputProps={{
+                                      name: 'phoneNumber',
+                                      id: 'phoneNumber',
+                                      value: location.phoneNumber,
+                                      onChange: this.handleEditLocationObject('location', 'phoneNumber'),
+                                      inputComponent: PhoneMask,
+                                    }}
+                                    helperText={phoneNumberError}
+                                    error={phoneNumberError.length > 0}
+                                  />
+                                </GridItem>
+                              </GridContainer>
+                            </GridItem>
+                          </CardBody>
+                        </Card>
+                      </GridItem>
+                    </GridContainer>
                     {!editMode ? (
                       <Button
                         variant="contained"
-                        color="primary"
-                        onClick={(event) => this.handleSubmit(event)}
+                        color="secondary"
+                        onClick={event => this.handleSubmit(event)}
                         className={classes.button}
                       >
-                      Create
+                        Create
                       </Button>
                     ) : (
                       <Button
                         variant="contained"
-                        color="primary"
+                        color="secondary"
                         onClick={this.handleUpdate}
                         className={classes.button}
                       >
-                      Edit
+                        Edit
                       </Button>
                     )}
                     <Clearfix />
-                </form>
-              </CardBody>
-            </Card>
-          </GridItem>
+                  </form>
+                </CardBody>
+              </Card>
+            </GridItem>
+          </GridContainer>
         </div>
       </React.Fragment>
     );
   }
 }
-  
+
 EventForm.propTypes = {
   classes: PropTypes.shape({}).isRequired,
   location: PropTypes.shape({}).isRequired,
   intl: intlShape.isRequired,
 };
-  
+
 export default withStyles(styles)(injectIntl(EventForm));
