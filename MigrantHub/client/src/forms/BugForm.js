@@ -210,6 +210,10 @@ class BugForm extends Component {
                   >
                     <FormattedMessage id="report" />
                   </Button>
+                  <br/>
+                  { displaySuccessMessage &&
+                    <FormattedMessage id="congrats.reported.bug" />
+                  }
                   <Clearfix />
                 </form>
               </CardBody>
