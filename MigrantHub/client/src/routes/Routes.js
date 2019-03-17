@@ -20,6 +20,7 @@ import ServiceList from 'services/ServiceList';
 import Search from 'search/Search';
 import EventList from 'events/EventList';
 import EventForm from 'events/EventForm';
+import BugForm from 'forms/BugForm';
 import ServiceDetails from 'services/ServiceDetails';
 import EventDetails from 'events/EventDetails';
 import ViewMigrantProfile from 'account/personal/ViewMigrantProfile';
@@ -84,6 +85,7 @@ class Routes extends Component {
           <ProtectedRoute path="/services/:id" component={ServiceDetails} />
           <ProtectedRoute path="/search" component={Search} exact />
           <ProtectedRoute path="/events/create" component={EventForm} exact />
+          <ProtectedRoute path="/bugs/report" component={BugForm} exact />
           <ProtectedRoute path="/events" component={EventList} exact />
           <ProtectedRoute path="/events/:id" component={EventDetails} />
           <ProtectedRoute path="/users" component={UsersList} exact />

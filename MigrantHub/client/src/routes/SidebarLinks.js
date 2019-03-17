@@ -1,5 +1,6 @@
 import React from 'react';
 import DashboardIcon from '@material-ui/icons/Dashboard';
+import BugIcon from '@material-ui/icons/BugReport';
 import DateRange from '@material-ui/icons/DateRange';
 import People from '@material-ui/icons/People';
 import UserTypes from 'lib/UserTypes';
@@ -38,6 +39,12 @@ const SidebarLinks = [
     name: <FormattedMessage id="nav.admins" />,
     icon: DashboardIcon,
     type: [UserTypes.ADMIN],
+  },
+  {
+    path: '/bugs/report',
+    name: <FormattedMessage id="report.bug" />,
+    icon: BugIcon,
+    type: [UserTypes.ADMIN, UserTypes.BUSINESS, UserTypes.MIGRANT],
   },
 ];
 

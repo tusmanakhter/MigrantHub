@@ -34,7 +34,6 @@ import headerLinksStyle from 'assets/jss/material-dashboard-pro-react/components
 import { AuthConsumer } from 'routes/AuthContext';
 import UserTypes from 'lib/UserTypes';
 import Logout from '../components/Logout';
-import ReportBug from '../components/ReportBug';
 
 class BaseHeaderLinks extends React.Component {
   state = {
@@ -304,7 +303,6 @@ class BaseHeaderLinks extends React.Component {
             </Hidden>
           </Button>
         </Link>
-        <ReportBug />
         <Logout />
       </div>
     );
