@@ -66,6 +66,7 @@ function Header({ ...props }) {
         <Hidden smDown implementation="css">
           <HeaderLinks rtlActive={rtlActive} />
         </Hidden>
+        <div className={classes.inlineBlock} id="google_translate_element" />
         <Hidden mdUp implementation="css">
           <Button
             className={classes.appResponsive}
