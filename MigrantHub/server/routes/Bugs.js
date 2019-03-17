@@ -4,6 +4,6 @@ const router = express.Router();
 const BugController = require('../controllers/BugController');
 const { controllerHandler } = require('../controllers/ControllerUtils');
 
-router.post('/', controllerHandler(BugController.createBug, req => [req.user, req.body.BugDetails]));
+router.post('/', controllerHandler(BugController.createBug, req => [req.user, req.body]));
 
 module.exports = router;

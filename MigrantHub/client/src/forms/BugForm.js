@@ -41,6 +41,7 @@ class BugForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      user: '',
       bugName: '',
       description: '',
       displaySuccessMessage: false,
@@ -58,7 +59,7 @@ class BugForm extends Component {
   validate = () => {
     const { intl } = this.props;
     const {
-      bugName, description, displaySuccessMessage
+      bugName, description
     } = this.state;
 
     let isError = false;
@@ -94,14 +95,14 @@ class BugForm extends Component {
     });
   }
 
-  handleMoment = (fieldName, momentObj, formatType) => {
-    if (momentObj !== moment.isMoment()) {
-      momentObj = moment(momentObj);
-    }
-    this.setState({
-      [fieldName]: momentObj.format(formatType),
-    });
-  }
+  // handleMoment = (fieldName, momentObj, formatType) => {
+  //   if (momentObj !== moment.isMoment()) {
+  //     momentObj = moment(momentObj);
+  //   }
+  //   this.setState({
+  //     [fieldName]: momentObj.format(formatType),
+  //   });
+  // }
 
   handleSubmit = () => {
     const error = this.validate();
@@ -113,20 +114,16 @@ class BugForm extends Component {
   // Send bug data in post body to add to mongodb
   createBug = () => {
     const {
-      bugName, description
+      user, bugName, description
     } = this.state;
+    
+    const formData = {
+      user: user,
+      bugName: bugName,
+      description: description
+    };
 
-    const formData = new FormData();
-    formData.append('bugDetails', qs.stringify({
-      bugName,
-      description
-    }));
-
-    axios.post('/api/bugs/', formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
-    }).then((response) => {
+    axios.post('/api/bugs/', formData).then((response) => {
       if (response.status === 200) {
         this.setState({
           messageFromServer: response.data,

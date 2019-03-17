@@ -5,13 +5,13 @@ const { ServerError } = require('../errors/ServerError');
 
 module.exports = {
 
-  async createEvent(user, parsedBugObject) {
+  async createBug(user, parsedBugObject) {
     const bugObject = parsedBugObject;
     const date = new Date();
-    const errors = await BugValidator.BugValidator(bugObject);
+    const errors = await BugValidator.bugValidator(bugObject);
 
     if (errors === '') {
-      eventObject.dateCreated = date;
+      bugObject.dateCreated = date;
       return BugRepository.createBug(user._id, bugObject);
     }
     throw new ServerError('There was an error creating the bug.', 400, errors);
