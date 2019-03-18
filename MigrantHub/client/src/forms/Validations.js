@@ -252,6 +252,14 @@ const rules = {
       message: 'Service type is required',
     },
   ],
+  title: [
+    {
+      field: 'title',
+      method: validator.isEmpty,
+      validWhen: false,
+      message: 'Title is required',
+    },
+  ],
   description: [
     {
       field: 'description',
@@ -355,6 +363,11 @@ const rules = {
   get reviewPost() {
     const rule = this.rating
       .concat(this.comment);
+    return rule;
+  },
+  get createBug() {
+    const rule = this.title
+      .concat(this.description);
     return rule;
   },
 };
