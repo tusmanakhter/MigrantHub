@@ -291,6 +291,14 @@ const rules = {
       message: 'Service type is required',
     },
   ],
+  title: [
+    {
+      field: 'title',
+      method: validator.isEmpty,
+      validWhen: false,
+      message: 'Title is required',
+    },
+  ],
   description: [
     {
       field: 'description',
@@ -366,6 +374,39 @@ const rules = {
   get adminSignup() {
     const rule = this.emailSignup
       .concat(this.passwordSignup);
+    return rule;
+  },
+  rating: [
+    {
+      field: 'rating',
+      method: validator.isEmpty,
+      validWhen: false,
+      message: 'Rating is required',
+    },
+    {
+      field: 'rating',
+      method: validator.isInt,
+      args: [{ min: 1, max: 5 }],
+      validWhen: true,
+      message: 'Rating is not valid',
+    },
+  ],
+  comment: [
+    {
+      field: 'comment',
+      method: validator.isEmpty,
+      validWhen: false,
+      message: 'Comment is required',
+    },
+  ],
+  get reviewPost() {
+    const rule = this.rating
+      .concat(this.comment);
+    return rule;
+  },
+  get createBug() {
+    const rule = this.title
+      .concat(this.description);
     return rule;
   },
 };

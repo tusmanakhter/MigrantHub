@@ -5,34 +5,32 @@ import 'App.css';
 import GoogleMaps from 'components/GoogleMaps/GoogleMaps';
 import axios from 'axios';
 import qs from 'qs';
-import AddToCalendar from 'react-add-to-calendar';
-import withStyles from "@material-ui/core/styles/withStyles";
+import withStyles from '@material-ui/core/styles/withStyles';
 import { AuthConsumer } from 'routes/AuthContext';
 import UserTypes from 'lib/UserTypes';
 import Reviews from 'services/Reviews';
-import GridContainer from "components/Grid/GridContainer.jsx";
-import GridItem from "components/Grid/GridItem.jsx";
-import Card from "components/Card/Card.jsx";
-import CardBody from "components/Card/CardBody.jsx";
-import CardIcon from "components/Card/CardIcon.jsx";
-import CardHeader from "components/Card/CardHeader.jsx";
-import { cardTitle } from "assets/jss/material-dashboard-pro-react.jsx";
-import SweetAlert from "react-bootstrap-sweetalert";
-import sweetAlertStyle from "assets/jss/material-dashboard-pro-react/views/sweetAlertStyle.jsx";
-import Button from "components/CustomButtons/Button.jsx";
+import GridContainer from 'components/Grid/GridContainer.jsx';
+import GridItem from 'components/Grid/GridItem.jsx';
+import Card from 'components/Card/Card.jsx';
+import CardBody from 'components/Card/CardBody.jsx';
+import CardIcon from 'components/Card/CardIcon.jsx';
+import CardHeader from 'components/Card/CardHeader.jsx';
+import { cardTitle } from 'assets/jss/material-dashboard-pro-react.jsx';
+import SweetAlert from 'react-bootstrap-sweetalert';
+import sweetAlertStyle from 'assets/jss/material-dashboard-pro-react/views/sweetAlertStyle.jsx';
+import Button from 'components/CustomButtons/Button.jsx';
 import moment from 'moment';
 
 const styles = {
   ...sweetAlertStyle,
   cardIconTitle: {
     ...cardTitle,
-    marginTop: "15px",
-    marginBottom: "0px",
+    marginTop: '15px',
+    marginBottom: '0px',
   },
-  gridStyle: {
-    backgroundColor: 'white',
-    marginTop: '20px',
-  }
+  gridStyleSmallPadding: {
+    marginTop: '2px',
+  },
 };
 
 class ServiceDetails extends Component {
@@ -59,6 +57,8 @@ class ServiceDetails extends Component {
         startTime: new Date().toLocaleString(),
         endTime: new Date().toLocaleString(),
       },
+      serviceAverageRating: 0,
+      serviceRatingCount: 0,
     };
 
     this.hideAlert = this.hideAlert.bind(this);
@@ -76,7 +76,7 @@ class ServiceDetails extends Component {
   }
 
   getData(event, props = this.props) {
-    axios.get('/api/services/' + this.state.serviceId, {
+    axios.get(`/api/services/${this.state.serviceId}`, {
       params: {
         _id: this.state.serviceId,
       },
@@ -125,227 +125,246 @@ class ServiceDetails extends Component {
         tempServiceImagePath: parsedObj.serviceImagePath,
         serviceImageName: imageName,
         serviceOwner: parsedObj.user,
+        serviceAverageRating: parsedObj.averageRating,
+        serviceRatingCount: parsedObj.countRating,
       });
     });
   }
 
-  handleDelete = () => {
-    const { serviceId } = this.state;
+    handleDelete = () => {
+      const { serviceId } = this.state;
 
-    axios.delete('/api/services/' + serviceId)
-      .then((response) => {
-        if (response.status === 200) {
-          this.setState({
-            redirect: true,
-          });
-        }
-      });
+      axios.delete(`/api/services/${serviceId}`)
+        .then((response) => {
+          if (response.status === 200) {
+            this.setState({
+              redirect: true,
+            });
+          }
+        });
       this.hideAlert();
-  };
+    };
 
-  warningWithConfirmAndCancelMessage() {
-    this.setState({
-      alert: (
-        <SweetAlert
-          warning
-          style={{ display: "block", marginTop: "-100px" }}
-          title="Are you sure?"
-          onConfirm={() => this.successDelete()}
-          onCancel={() => this.cancelDelete()}
-          confirmBtnCssClass={
-            this.props.classes.button + " " + this.props.classes.success
-          }
-          cancelBtnCssClass={
-            this.props.classes.button + " " + this.props.classes.danger
-          }
-          confirmBtnText="Yes, delete it!"
-          cancelBtnText="Cancel"
-          showCancel
-        >
-          You will not be able to recover this service!
-        </SweetAlert>
-      ),
-    });
-  }
-
-  successDelete() {
-    this.setState({
-      alert: (
-        <SweetAlert
-          success
-          style={{ display: "block", marginTop: "-100px" }}
-          title="Deleted!"
-          onConfirm={() => this.handleDelete()}
-          onCancel={() => this.hideAlert()}
-          confirmBtnCssClass={
-            this.props.classes.button + " " + this.props.classes.success
-          }
-        >
-          Your service has been deleted.
-        </SweetAlert>
-      ),
-    });
-  }
-
-  cancelDelete() {
-    this.setState({
-      alert: (
-        <SweetAlert
-          danger
-          style={{ display: "block", marginTop: "-100px" }}
-          title="Cancelled"
-          onConfirm={() => this.hideAlert()}
-          onCancel={() => this.hideAlert()}
-          confirmBtnCssClass={
-            this.props.classes.button + " " + this.props.classes.success
-          }
-        >
-          Your service is safe :)
-        </SweetAlert>
-      ),
-    });
-  }
-
-  hideAlert() {
-    this.setState({
-      alert: null
-    });
-  }
-
-  render() {
-    const {
-      classes,
-    } = this.props;
-    const {
-      serviceId, serviceTitle, serviceSummary, serviceDescription, serviceDate, serviceHours, location, alert, serviceOwner, redirect,
-    } = this.state;
-    let icon = { 'calendar-plus-o': 'left'};
-
-    if (redirect) {
-      return (
-        <Redirect to="/services" />
-      );
+    warningWithConfirmAndCancelMessage() {
+      this.setState({
+        alert: (
+          <SweetAlert
+            warning
+            style={{ display: 'block', marginTop: '-100px' }}
+            title="Are you sure?"
+            onConfirm={() => this.successDelete()}
+            onCancel={() => this.cancelDelete()}
+            confirmBtnCssClass={
+                        `${this.props.classes.button} ${this.props.classes.success}`
+                    }
+            cancelBtnCssClass={
+                        `${this.props.classes.button} ${this.props.classes.danger}`
+                    }
+            confirmBtnText="Yes, delete it!"
+            cancelBtnText="Cancel"
+            showCancel
+          >
+                  You will not be able to recover this service!
+          </SweetAlert>
+        ),
+      });
     }
 
-    return (
-      <AuthConsumer>
-        {({ user }) => (
-      <div>
-        {alert}
-      <GridItem xs={12} sm={12} md={12} lg={12}>
-      <Card>
-        <CardHeader color="rose" icon>
-          <CardIcon color="rose">
-            <h4><b>Service</b></h4>
-          </CardIcon>
-          <h4 className={classes.cardIconTitle}><b>{serviceTitle}</b></h4>
-        </CardHeader>
-        <CardBody>
-          <GridItem xs={12} align='left'>
-          <h5><b> Summary </b></h5>
-            <p>{serviceSummary}</p>
-          </GridItem>
-          <GridItem xs={12} align='left'>
-          <h5><b> Description </b></h5>
-            <p>{serviceDescription}</p>
-          </GridItem>
-          {location !== undefined  && location.address !== '' && (
+    successDelete() {
+      this.setState({
+        alert: (
+          <SweetAlert
+            success
+            style={{ display: 'block', marginTop: '-100px' }}
+            title="Deleted!"
+            onConfirm={() => this.handleDelete()}
+            onCancel={() => this.hideAlert()}
+            confirmBtnCssClass={
+                        `${this.props.classes.button} ${this.props.classes.success}`
+                    }
+          >
+                  Your service has been deleted.
+          </SweetAlert>
+        ),
+      });
+    }
+
+    cancelDelete() {
+      this.setState({
+        alert: (
+          <SweetAlert
+            danger
+            style={{ display: 'block', marginTop: '-100px' }}
+            title="Cancelled"
+            onConfirm={() => this.hideAlert()}
+            onCancel={() => this.hideAlert()}
+            confirmBtnCssClass={
+                        `${this.props.classes.button} ${this.props.classes.success}`
+                    }
+          >
+                  Your service is safe :)
+          </SweetAlert>
+        ),
+      });
+    }
+
+    hideAlert() {
+      this.setState({
+        alert: null,
+      });
+    }
+
+    handleReviewUpdate() {
+      this.getData(this, this.props);
+    }
+
+    render() {
+      const {
+        classes,
+      } = this.props;
+      const {
+        serviceId, serviceTitle, serviceSummary, serviceDescription, serviceDate, serviceHours,
+        location, alert, serviceOwner, redirect, serviceAverageRating, serviceRatingCount,
+      } = this.state;
+      const icon = { 'calendar-plus-o': 'left' };
+
+      if (redirect) {
+        return (
+          <Redirect to="/services" />
+        );
+      }
+
+      return (
+        <AuthConsumer>
+          {({ user }) => (
             <div>
-            <GridItem xs={12} sm={12} md={12} lg={12} align='left'>
-              <h5><b> Location </b></h5>
-            </GridItem>
-            <GridItem>
-            <GridContainer xs={12} sm={12} md={12} lg={12} align='left'>
-              <GridItem xs={12} sm={4} md={4} lg={2}>
-              <h6>Address</h6>
-                {' '}
-                {location.address}
+              {alert}
+              <GridItem xs={12} sm={12} md={12} lg={12}>
+                <Card>
+                  <CardHeader color="rose" icon>
+                    <CardIcon color="rose">
+                      <h4><b>Service</b></h4>
+                    </CardIcon>
+                    <h4 className={classes.cardIconTitle}><b>{serviceTitle}</b></h4>
+                  </CardHeader>
+                  <CardBody>
+                    <GridItem xs={12} align="left">
+                      <h5><b> Summary </b></h5>
+                      <p>{serviceSummary}</p>
+                    </GridItem>
+                    <GridItem xs={12} align="left">
+                      <h5><b> Description </b></h5>
+                      <p>{serviceDescription}</p>
+                    </GridItem>
+                    {location !== undefined && location.address !== '' && (
+                      <div style={{}}>
+                        <GridItem xs={12} sm={12} md={12} lg={12} align="left">
+                          <h5><b> Location </b></h5>
+                        </GridItem>
+                        <GridItem>
+                          <GridContainer xs={12} sm={12} md={12} lg={12} align="left">
+                                <GridItem xs={12} sm={4} md={4} lg={2}>
+                                  <h6>Address</h6>
+                                  {' '}
+                                  {location.address}
+                                </GridItem>
+                                {location.apartment !== '' && (
+                                <GridItem xs={12} sm={2} md={2} lg={2}>
+                                      <h6>Apartment</h6>
+                                      {' '}
+                                      {location.apartment}
+                                    </GridItem>
+                                )}
+                                <GridItem xs={12} sm={4} md={4} lg={3}>
+                                  <h6>City</h6>
+                                  {' '}
+                                  {location.city}
+                                </GridItem>
+                                <GridItem xs={12} sm={4} md={4} lg={2}>
+                                  <h6>Province</h6>
+                                  {' '}
+                                  {location.province}
+                                </GridItem>
+                                <GridItem xs={12} sm={4} md={4} lg={2}>
+                                  <h6>Postal Code</h6>
+                                  {' '}
+                                  {location.postalCode}
+                                </GridItem>
+                                <GridItem xs={12} sm={4} md={4} lg={2}>
+                                  <h6>Phone Number</h6>
+                                  {' '}
+                                  {location.phoneNumber}
+                                </GridItem>
+                              </GridContainer>
+                        </GridItem>
+                      </div>
+                    )}
+
+                    {serviceDate !== undefined && (
+                      <GridItem xs={12} sm={8} md={8} lg={4} align="left">
+                        <h5><b> Date </b></h5>
+                                    From {moment(serviceDate.startDate).format('MMM D YYYY')} until {moment(serviceDate.endDate).format('MMM D YYYY')}
+                      </GridItem>
+                    )}
+
+                    {serviceHours !== undefined && serviceHours.length !== 0 && (
+                      <GridItem xs={12} sm={8} md={8} lg={4} align="left">
+                        <h5><b> Time </b></h5>
+                        {serviceHours.map((member, index) => (
+                          <Grid item xs={12}>
+                                {member.serviceDay} from {member.startTime} to {member.endTime}
+                              </Grid>
+                        ))}
+                      </GridItem>
+                    )}
+                    <Grid container spacing={1}>
+                      {location !== undefined && location.address !== '' && (
+                        <Grid item lg={6} md={6} sm={12} xs={12} className={classes.gridStyleSmallPadding}>
+                          <GoogleMaps
+                                location={location}
+                              />
+                        </Grid>
+                      )}
+                      <Grid item lg={6} md={6} sm={12} xs={12} className={classes.gridStyleSmallPadding}>
+                        <Reviews
+                            serviceId={serviceId}
+                            serviceTitle={serviceTitle}
+                            avgRating={serviceAverageRating}
+                            countRating={serviceRatingCount}
+                            handleUpdate={() => this.handleReviewUpdate()}
+                          />
+                      </Grid>
+                    </Grid>
+                  </CardBody>
+                </Card>
               </GridItem>
-              {location.apartment !=='' && (
-                <GridItem xs={12} sm={2} md={2} lg={2}>
-                <h6>Apartment</h6>
-                  {' '}
-                  {location.apartment}
-                </GridItem>
-              )}
-              <GridItem xs={12} sm={4} md={4} lg={3}>
-              <h6>City</h6>
-                {' '}
-                {location.city}
-              </GridItem>
-              <GridItem  xs={12} sm={4} md={4} lg={2}>
-              <h6>Province</h6>
-                {' '}
-                {location.province}
-              </GridItem>
-              <GridItem xs={12} sm={4} md={4} lg={2}>
-              <h6>Postal Code</h6>
-                {' '}
-                {location.postalCode}
-              </GridItem>
-              <GridItem xs={12} sm={4} md={4} lg={2}>
-                <h6>Phone Number</h6>
-                {' '}
-                {location.phoneNumber}
-              </GridItem>
-              </GridContainer>
-              </GridItem>
+              <Grid item xs={12}>
+                {user.type === UserTypes.ADMIN
+                          && (
+                          <Button onClick={this.warningWithConfirmAndCancelMessage} color="danger">
+                                Delete
+                          </Button>
+                          )
+                          }
+                {user.username === serviceOwner && (
+                  <React.Fragment>
+                    <Button onClick={this.warningWithConfirmAndCancelMessage} color="danger">
+                                  Delete
+                    </Button>
+                    <Button
+                      color="primary"
+                      component={props => <Link to={{ pathname: '/services/create', state: { editMode: true, serviceId } }} {...props} />}
+                    >
+                                  Edit
+                    </Button>
+                  </React.Fragment>
+                )}
+              </Grid>
             </div>
           )}
-
-          {serviceDate !== undefined &&  (
-          <GridItem  xs={12} sm={8} md={8} lg={4} align='left'>
-            <h5><b> Date </b></h5>
-              From {moment(serviceDate.startDate).format('MMM D YYYY')} until {moment(serviceDate.endDate).format('MMM D YYYY')}
-          </GridItem>
-          )}
-
-          {serviceHours !== undefined && serviceHours.length !== 0 && (
-            <GridItem xs={12} sm={8} md={8} lg={4} align='left'>
-              <h5><b> Time </b></h5>
-              {serviceHours.map((member, index) => (
-                <Grid item xs={12}>
-                  {member.serviceDay} from {member.startTime} to {member.endTime}
-                </Grid>
-              ))}
-            </GridItem>
-          )}
-          {location !== undefined && location.address !== '' && (
-            <GoogleMaps
-              location={location}
-            />
-          )}
-          <Reviews serviceId={serviceId} serviceTitle={serviceTitle} />
-          </CardBody>
-        </Card>
-      </GridItem>
-         <Grid item xs={12}>
-          {user.type === UserTypes.ADMIN
-            && (
-              <Button onClick={this.warningWithConfirmAndCancelMessage} color="danger">
-                Delete
-              </Button>
-            )
-          }
-          {user.username === serviceOwner && (
-            <React.Fragment>
-              <Button onClick={this.warningWithConfirmAndCancelMessage} color="danger">
-                Delete
-              </Button>
-              <Button
-                color="primary"
-                component={props => <Link to={{ pathname: '/services/create', state: { editMode: true, serviceId } }} {...props} />}
-              >
-                Edit
-              </Button>
-            </React.Fragment>
-          )}
-        </Grid>
-      </div>
-      )}
-      </AuthConsumer>
-    );
-  }
+        </AuthConsumer>
+      );
+    }
 }
 
 export default withStyles(styles)(ServiceDetails);

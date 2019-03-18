@@ -145,6 +145,9 @@ class HomeLayout extends Component {
                   <Link to="/signup/personal">
                     <FormattedMessage id="signup" />
                   </Link>
+                  <div className={classes.languageSwitcher}>
+                    <div id="google_translate_element" />
+                  </div>
                 </Toolbar>
               </AppBar>
               <div className={classes.underline} />
@@ -170,9 +173,6 @@ class HomeLayout extends Component {
                 <p className={classes.iconText}>2019 MigrantHub</p>
               </Typography>
               <div className={classes.right}>
-                <div className={classes.languageSwitcher}>
-                  <div id="google_translate_element" />
-                </div>
                 <a href="https://github.com/tusmanakhter/MigrantHub" target="_blank" rel="noopener noreferrer" className={classes.center}><FaGithub size="2em" /></a>
               </div>
             </div>

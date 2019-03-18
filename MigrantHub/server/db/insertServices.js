@@ -138,7 +138,7 @@ function createDocRecurse(err) {
         }
       }
 
-      doc.serviceImagePath = "uploads/default/villeDeMontreal.png";
+      doc.serviceImagePath = "/uploads/default/villeDeMontreal.png";
     });
     doc.save(createDocRecurse);
   }

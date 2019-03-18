@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Datetime from "react-datetime";
+import Datetime from 'react-datetime';
 import PropTypes from 'prop-types';
 import withStyles from '@material-ui/core/styles/withStyles';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -13,38 +13,38 @@ import qs from 'qs';
 import { provinces } from 'lib/SignUpConstants';
 import { serviceCategories } from 'lib/ServiceCategories';
 import { PhoneMask, PostalCodeMask } from 'lib/Masks';
-import Clearfix from "components/Clearfix/Clearfix.jsx";
+import Clearfix from 'components/Clearfix/Clearfix.jsx';
 import moment from 'moment';
-import SweetAlert from "react-bootstrap-sweetalert";
+import SweetAlert from 'react-bootstrap-sweetalert';
 import { injectIntl, intlShape, FormattedMessage } from 'react-intl';
 
 // core components
-import GridContainer from "components/Grid/GridContainer.jsx";
-import GridItem from "components/Grid/GridItem.jsx";
-import CustomInput from "components/CustomInput/CustomInput.jsx";
-import Button from "components/CustomButtons/Button.jsx";
-import Card from "components/Card/Card.jsx";
-import CardHeader from "components/Card/CardHeader.jsx";
-import CardText from "components/Card/CardText.jsx";
-import CardIcon from "components/Card/CardIcon.jsx";
-import CardBody from "components/Card/CardBody.jsx";
-import ImageUpload from "components/CustomUpload/ImageUpload.jsx";
+import GridContainer from 'components/Grid/GridContainer.jsx';
+import GridItem from 'components/Grid/GridItem.jsx';
+import CustomInput from 'components/CustomInput/CustomInput.jsx';
+import Button from '@material-ui/core/Button';
+import Card from 'components/Card/Card.jsx';
+import CardHeader from 'components/Card/CardHeader.jsx';
+import CardText from 'components/Card/CardText.jsx';
+import CardIcon from 'components/Card/CardIcon.jsx';
+import CardBody from 'components/Card/CardBody.jsx';
+import ImageUpload from 'components/CustomUpload/ImageUpload.jsx';
 
 // @material-ui/core components
-import FormControl from "@material-ui/core/FormControl";
-import InputLabel from "@material-ui/core/InputLabel";
-import Select from "@material-ui/core/Select";
+import FormControl from '@material-ui/core/FormControl';
+import InputLabel from '@material-ui/core/InputLabel';
+import Select from '@material-ui/core/Select';
 import { FormHelperText, Grid } from '@material-ui/core';
 
 // @material-ui/icons
-import Today from "@material-ui/icons/Today";
-import Location from "@material-ui/icons/Map";
-import AvTimer from "@material-ui/icons/AvTimer";
+import Today from '@material-ui/icons/Today';
+import Location from '@material-ui/icons/Map';
+import AvTimer from '@material-ui/icons/AvTimer';
 
-import extendedFormsStyle from "assets/jss/material-dashboard-pro-react/views/extendedFormsStyle.jsx";
-import regularFormsStyle from "assets/jss/material-dashboard-pro-react/views/regularFormsStyle";
-import defaultImage from "assets/img/image_placeholder.jpg";
-import defaultAvatar from "assets/img/placeholder.jpg";
+import extendedFormsStyle from 'assets/jss/material-dashboard-pro-react/views/extendedFormsStyle.jsx';
+import regularFormsStyle from 'assets/jss/material-dashboard-pro-react/views/regularFormsStyle';
+import defaultImage from 'assets/img/image_placeholder.jpg';
+import defaultAvatar from 'assets/img/placeholder.jpg';
 import { toast } from 'react-toastify';
 
 const dayOfTheWeek = [
@@ -123,14 +123,13 @@ class ServiceForm extends Component {
       category: '',
       subcategory: '',
       subcategoriesArray: [],
-        // Server response
+      // Server response
       messageFromServer: '',
       redirectToAllServices: false,
       alert: null,
-      show: false,
     };
     this.hideAlert = this.hideAlert.bind(this);
-    this.imageRef=React.createRef();
+    this.imageRef = React.createRef();
     this.handleChange = this.handleChange.bind(this);
     this.handleImageChange = this.handleImageChange.bind(this);
     this.handleClick = this.handleClick.bind(this);
@@ -145,7 +144,7 @@ class ServiceForm extends Component {
   handleChange(event) {
     this.setState({ [event.target.name]: event.target.value });
   }
-  
+
   componentDidMount() {
     const { location } = this.props;
     if (location.state) {
@@ -157,21 +156,21 @@ class ServiceForm extends Component {
     this.setState({
       alert: (
         <SweetAlert
-          style={{ display: "block", marginTop: "-100px" }}
+          style={{ display: 'block', marginTop: '-100px' }}
           title="Update Successful"
           onConfirm={() => this.hideAlert()}
           showConfirm={false}
         >
           This will close in 2 seconds.
         </SweetAlert>
-      )
+      ),
     });
     setTimeout(this.hideAlert, 2000);
   }
 
   hideAlert() {
     this.setState({
-      alert: null
+      alert: null,
     });
     this.updateService();
   }
@@ -270,11 +269,11 @@ class ServiceForm extends Component {
   }
 
   handleEditObject= (name, fieldName, index, event) => {
-    if(event!== undefined){
+    if (event !== undefined) {
       this.setState({
         [name]: this.state[name].map((s, _index) => {
           if (_index !== index) return s;
-          if(event !== moment.isMoment()){
+          if (event !== moment.isMoment()) {
             event = moment(event);
           }
           return { ...s, [fieldName]: event.format('LT') };
@@ -293,23 +292,23 @@ class ServiceForm extends Component {
   }
 
   handleCategoryChange = (event) => {
-      this.setState({
-          [event.target.name]: event.target.value,
-          subcategoriesArray: [],
-          subcategory: '',
-      });
+    this.setState({
+      [event.target.name]: event.target.value,
+      subcategoriesArray: [],
+      subcategory: '',
+    });
 
-      this.handleSubCategoryChange(event.target.value)
+    this.handleSubCategoryChange(event.target.value);
   }
 
   handleSubCategoryChange = (value) => {
-      let tempArray = serviceCategories.find(x => x.value === value).SubCategories;
+    const tempArray = serviceCategories.find(x => x.value === value).SubCategories;
 
-      if(tempArray) {
-          this.setState({
-              subcategoriesArray: tempArray,
-          });
-      }
+    if (tempArray) {
+      this.setState({
+        subcategoriesArray: tempArray,
+      });
+    }
   }
 
   handleAddLocation = () => {
@@ -324,27 +323,6 @@ class ServiceForm extends Component {
     }));
   }
 
-  handleUploadImage = (event) => {
-    const { tempServiceImagePath } = this.state;
-
-    if (tempServiceImagePath !== '') {
-      URL.revokeObjectURL(tempServiceImagePath);
-    }
-
-    if (event.target.files[0] !== undefined) {
-      this.setState({
-        serviceImage: event.target.files[0],
-        serviceImageName: event.target.files[0].name,
-        tempServiceImagePath: window.URL.createObjectURL(event.target.files[0]),
-      });
-    } else {
-      this.setState({
-        serviceImage: null,
-        serviceImageName: '',
-        tempServiceImagePath: '',
-      });
-    }
-  }
 
   handleSubmit = (event) => {
     const error = this.validate();
@@ -360,10 +338,10 @@ class ServiceForm extends Component {
     }
   }
 
-  handleEditSingleObject = (name, fieldName, event) =>  {
+  handleEditSingleObject = (name, fieldName, event) => {
     const obj = {};
     obj[name] = { ...this.state[name] };
-    if(event !== moment.isMoment()){
+    if (event !== moment.isMoment()) {
       event = moment(event);
     }
     const value = event.format('L');
@@ -381,28 +359,28 @@ class ServiceForm extends Component {
 
   handleImageChange(e) {
     e.preventDefault();
-    let reader = new FileReader();
-    let file = e.target.files[0];
-    
+    const reader = new FileReader();
+    const file = e.target.files[0];
+
     reader.onloadend = () => {
       this.setState({
-        file: file,
+        file,
         serviceImageName: file.name,
-        imagePreviewUrl: reader.result
+        imagePreviewUrl: reader.result,
       });
     };
     reader.readAsDataURL(file);
   }
-  
+
   handleRemove() {
     this.setState({
       file: null,
       serviceImageName: '',
-      imagePreviewUrl: this.props.avatar ? defaultAvatar : defaultImage
+      imagePreviewUrl: this.props.avatar ? defaultAvatar : defaultImage,
     });
     this.imageRef.current.value = null;
   }
-    
+
   handleClick() {
     this.imageRef.current.click();
   }
@@ -416,7 +394,7 @@ class ServiceForm extends Component {
 
   validate = () => {
     let isError = false;
-      const { intl } = this.props;
+    const { intl } = this.props;
 
     const {
       serviceTitle, serviceSummary, serviceDescription, serviceHours, serviceDate,
@@ -455,14 +433,14 @@ class ServiceForm extends Component {
       isError = true;
     }
     if (validator.isEmpty(category)) {
-        errors.categoryError = `${intl.formatMessage({ id: 'form.category' })}  ${intl.formatMessage({ id: 'isrequired' })}`;
-        isError = true;
+      errors.categoryError = `${intl.formatMessage({ id: 'form.category' })}  ${intl.formatMessage({ id: 'isrequired' })}`;
+      isError = true;
     }
     if (subcategoriesArray.length > 0) {
-        if (validator.isEmpty(subcategory)) {
-            errors.subcategoryError = `${intl.formatMessage({ id: 'form.subcategory' })}  ${intl.formatMessage({ id: 'isrequired' })}`;
-            isError = true;
-        }
+      if (validator.isEmpty(subcategory)) {
+        errors.subcategoryError = `${intl.formatMessage({ id: 'form.subcategory' })}  ${intl.formatMessage({ id: 'isrequired' })}`;
+        isError = true;
+      }
     }
     if (serviceImage !== null) {
       if (!validator.matches(serviceImageName, '.([.jpg]|[.jpeg]|[.png])$')) {
@@ -505,7 +483,7 @@ class ServiceForm extends Component {
         isError = true;
       }
       if (validator.isEmpty(location.postalCode)) {
-          errors.postalCodeError = `${intl.formatMessage({ id: 'contact.postal' })}  ${intl.formatMessage({ id: 'isrequired' })}`;
+        errors.postalCodeError = `${intl.formatMessage({ id: 'contact.postal' })}  ${intl.formatMessage({ id: 'isrequired' })}`;
         isError = true;
       } else if (!validator.isLength(location.postalCode, { min: 7, max: 7 })) {
         errors.postalCodeError = `${intl.formatMessage({ id: 'contact.postal' })}  ${intl.formatMessage({ id: 'notvalid' })}`;
@@ -554,7 +532,7 @@ class ServiceForm extends Component {
   createService = (event) => {
     const {
       serviceTitle, serviceSummary, serviceDescription, serviceHours, serviceDate,
-      location, addLocation, serviceImageName, addServiceDate, category, subcategory, file
+      location, addLocation, serviceImageName, addServiceDate, category, subcategory, file,
     } = this.state;
 
     event.preventDefault();
@@ -607,7 +585,7 @@ class ServiceForm extends Component {
     const {
       serviceId, serviceTitle, serviceSummary, serviceDescription, serviceHours, serviceDate,
       location, addLocation, addServiceDate, serviceImageName, serviceImage, serviceImagePath,
-      setDefaultImage, category, subcategory, file
+      setDefaultImage, category, subcategory, file,
     } = this.state;
 
     let tempImageName = serviceImageName;
@@ -647,7 +625,7 @@ class ServiceForm extends Component {
       serviceImagePath,
     }));
 
-    axios.put('/api/services/' + serviceId, formData,
+    axios.put(`/api/services/${serviceId}`, formData,
       {
         headers: {
           'Content-Type': 'multipart/form-data',
@@ -672,618 +650,633 @@ class ServiceForm extends Component {
       serviceDescription, serviceHours, serviceDate, location,
       addLocation, addServiceDate, serviceHoursCount, messageFromServer, editMode,
       category, categoryError, subcategory, subcategoryError,
-      subcategoriesArray, file, imagePreviewUrl, alert
+      subcategoriesArray, file, imagePreviewUrl, alert,
     } = this.state;
 
     return (
       <React.Fragment>
-          <div className={classes.mainContainer}>
-            {messageFromServer.split('\n').map((item, key) => (
-              <span key={key}>
-                {item}
-                <br />
-              </span>
-            ))}
-            {this.renderRedirectToAllServices()}
-            {alert}
-          <GridItem xs={12} sm={12} md={12}>
-            <Card>
-              <CardHeader color="success" text>
-                <CardText color="success">
-                  <h4><FormattedMessage id="service.form" /></h4>
-                </CardText>
-              </CardHeader>
-              <CardBody>
-                <form>
-                  <center>
-                    <GridItem xs={12} sm={6} md={6} lg={4}>
-                      <ImageUpload
-                        id="serviceImage"
-                        addButtonProps={{
-                          color: "grey",
-                          round: true
-                        }}
-                        changeButtonProps={{
-                          color: "primary",
-                          round: true
-                        }}
-                        removeButtonProps={{
-                          color: "danger",
-                          round: true
-                        }}
-                        handleClick={this.handleClick}
-                        handleImageChange={this.handleImageChange}
-                        handleRemove={this.handleRemove}
-                        file={file}
-                        imagePreviewUrl={imagePreviewUrl}
-                        imageRef={this.imageRef}
-                        helperText={serviceImageError}
-                        error={serviceImageError.length > 0}
+        <div className={classes.mainContainer}>
+          {messageFromServer.split('\n').map((item, key) => (
+            <span key={key}>
+              {item}
+              <br />
+            </span>
+          ))}
+          {this.renderRedirectToAllServices()}
+          {alert}
+          <GridContainer>
+            <GridItem lg={12} md={12} sm={12} xs={12}>
+              <Card>
+                <CardHeader color="rose" text>
+                  <CardText color="rose">
+                    <h4><FormattedMessage id="service.form" /></h4>
+                  </CardText>
+                </CardHeader>
+                <CardBody>
+                  <form>
+                    <GridContainer>
+                      <GridItem lg={5} md={5} sm={12} xs={12}>
+                        <ImageUpload
+                          id="serviceImage"
+                          addButtonProps={{
+                            color: 'grey',
+                            round: true,
+                          }}
+                          changeButtonProps={{
+                            color: 'success',
+                            round: true,
+                          }}
+                          removeButtonProps={{
+                            color: 'danger',
+                            round: true,
+                          }}
+                          handleClick={this.handleClick}
+                          handleImageChange={this.handleImageChange}
+                          handleRemove={this.handleRemove}
+                          file={file}
+                          imagePreviewUrl={imagePreviewUrl}
+                          imageRef={this.imageRef}
+                          helperText={serviceImageError}
+                          error={serviceImageError.length > 0}
                         />
-                    </GridItem>
-                  </center>
-                  <GridContainer>
-                    <GridItem xs={12} sm={12} md={12}>
-                      <CustomInput
-                        className={classes.input}
-                        labelText={<FormattedMessage id="form.title" />}
-                        formControlProps={{
-                          fullWidth: true
-                        }}
-                        inputProps={{
-                          id:"serviceTitle",
-                          name:"serviceTitle",
-                          value:serviceTitle,
-                          onChange: event => this.handleChange(event),
-                        }}
-                        fullWidth
-                        helperText={serviceTitleError}
-                        error={serviceTitleError.length > 0}
-                      />
-                    </GridItem>
-                    <GridItem xs={12} sm={6} md={4} lg={4}>
-                      <FormControl
-                        fullWidth
-                        className={classes.selectFormControl}
-                      >
-                      <InputLabel
-                        htmlFor="simple-select"
-                        className={classes.selectLabel}
-                      >
-                        <FormattedMessage id="form.select.category" />
-                      </InputLabel>
-                      <Select
-                        MenuProps={{
-                          className: classes.selectMenu
-                        }}
-                        classes={{
-                          select: classes.select
-                        }}
-                        value={category}
-                        inputProps={{
-                          name: "category",
-                          id: "category"
-                        }}
-                        name="category"
-                        select
-                        label={<FormattedMessage id="form.select.category" />}
-                        onChange={event => this.handleCategoryChange(event)}
-                        fullWidth
-                        helperText={categoryError}
-                        error={categoryError.length > 0}
-                      >
-                        <MenuItem
-                          disabled
-                          classes={{ root: classes.selectMenuItem }}
-                        >
-                          <FormattedMessage id="form.select.category" />
-                        </MenuItem>
-                        {serviceCategories.map(option => (
-                        <MenuItem 
-                        classes={{
-                          root: classes.selectMenuItem,
-                          selected: classes.selectMenuItemSelected
-                        }}
-                        key={option.value} 
-                        value={option.value}>
-                        {option.label}
-                        </MenuItem>
-                        ))}
-                      </Select>
-                      </FormControl>
-                      <FormHelperText error={categoryError.length > 0}>{categoryError}</FormHelperText>
-                    </GridItem>
-                    <GridItem xs={12} sm={6} md={4} lg={4}>
-                      <FormControl
-                        className={classes.selectFormControl}
-                          name="subcategory"
-                          select
-                          label={<FormattedMessage id="form.select.subcategory" />}
-                          onChange={event => this.handleChange(event)}
-                          fullWidth
-                          helperText={subcategoryError}
-                          error={subcategoryError.length > 0}
-                      >
-                        <InputLabel
-                          htmlFor="simple-select"
-                          className={classes.selectLabel}
-                        >
-                          <FormattedMessage id="form.select.subcategory" />
-                        </InputLabel>
-                        <Select
-                          MenuProps={{
-                            className: classes.selectMenu
-                          }}
-                          classes={{
-                            select: classes.select
-                          }}
-                          value={subcategory}
-                          onChange={event => this.handleChange(event)}
-                          inputProps={{
-                            name: "subcategory",
-                            id: "subcategory"
-                          }}
-                          >
-                            <MenuItem
-                              disabled
-                              classes={{
-                                root: classes.selectMenuItem
-                              }}
-                            >
-                              <FormattedMessage id="form.select.subcategory" />
-                            </MenuItem>
-                            {subcategoriesArray.map(option => (
-                              <MenuItem 
-                              classes={{
-                                root: classes.selectMenuItem,
-                                selected: classes.selectMenuItemSelected
-                              }}
-                              key={option.value} 
-                              value={option.value}>
-                              {option.label}
-                              </MenuItem>
-                            ))}
-                        </Select>
-                      </FormControl>
-                      <FormHelperText error={subcategoryError.length > 0}>{subcategoryError}</FormHelperText>
-                    </GridItem>
-                    <GridItem xs={12} sm={12} md={12}>
-                      <CustomInput
-                        labelText={<FormattedMessage id="form.summary" />}
-                        formControlProps={{
-                          fullWidth: true
-                        }}
-                        inputProps={{
-                          name:"serviceSummary",
-                          id:"serviceSummary",
-                          value:serviceSummary,
-                          onChange: event => this.handleChange(event)
-                        }}
-                        helperText={serviceSummaryError}
-                        error={serviceSummaryError.length > 0}
-                      />
-                    </GridItem>
-                    <GridItem xs={12} sm={12} md={12}>
-                      <CustomInput
-                        labelText={<FormattedMessage id="form.description" />}
-                        formControlProps={{
-                          fullWidth: true
-                        }}
-                        inputProps={{
-                          multiline: true,
-                          rows: 5,
-                          name:"serviceDescription",
-                          id:"serviceDescription",
-                          onChange: event => this.handleChange(event),
-                          error:serviceDescriptionError.length > 0
-                        }}
-                        value={serviceDescription}
-                        helperText={serviceDescriptionError}
-                        error={serviceDescriptionError.length > 0}
-                      />
-                  </GridItem>
-                    <GridItem xs={12} sm={12} md={12}>
-                    <Card>
-                      <CardHeader color="success" icon>
-                        <CardIcon color="success">
-                          <Today />
-                        </CardIcon>
-                        <h4 className={classes.cardIconTitle}>
-                          <FormattedMessage id="form.date" />
-                          (<FormattedMessage id="form.optional" />)
-                        </h4>
-                      </CardHeader>
-                      <CardBody>
-                        <GridItem>
-                        {addServiceDate ?
-                        <Button
-                          justIcon
-                          round
-                          color="danger"
-                          onClick={event => this.handleAddServiceDate()}
-                          className={classes.button}
-                        >
-                          <DeleteIcon /> 
-                        </Button>
-                          :
-                        <Button
-                          justIcon
-                          round
-                          color="success"
-                          onClick={event => this.handleAddServiceDate()}
-                          className={classes.button}
-                        >
-                          <AddIcon /> 
-                        </Button>
-                        }
-                        </GridItem>
-                        {addServiceDate === true && (
-                        <GridContainer>
-                        <GridItem xs={6} sm={6} md={6}>
-                        <InputLabel className={classes.label}><FormattedMessage id="form.day.start" /></InputLabel>
-                        <br />
-                      <FormControl fullWidth>
-                        <Datetime
-                          timeFormat={false}
-                          inputProps={{ 
-                            placeholder: "MM/DD/YYYY",
-                            id:"startDate",
-                            name:"startDate",
-                            }}
-                          onChange={(event) => this.handleEditSingleObject('serviceDate', 'startDate', event)}
-                          value={serviceDate.startDate}
-                          locale="en"
-                        />
-                        <FormHelperText error={startDateError.length > 0}>{startDateError}</FormHelperText>
-                      </FormControl>
                       </GridItem>
-                      <GridItem xs={6} sm={6} md={6}>
-                      <InputLabel className={classes.label}><FormattedMessage id="form.day.end" /></InputLabel>
-                        <br />
-                      <FormControl fullWidth>
-                        <Datetime
-                          timeFormat={false}
-                          inputProps={{ 
-                            placeholder: "MM/DD/YYYY",
-                            name:"endDate",
-                            id:"endDate",
-                            }}
-                            name="endDate"
-                            id="endDate"
-                          onChange={(event) => this.handleEditSingleObject('serviceDate', 'endDate', event)}
-                          value={serviceDate.endDate}
-                          locale="en"
-                        />
-                        <FormHelperText error={endDateError.length > 0}>{endDateError}</FormHelperText>
-                      </FormControl>
-                      </GridItem>
-                      </GridContainer>
-                        )}
-                      </CardBody>
-                    </Card>
-                    </GridItem>
-                    <GridItem xs={12} sm={12} md={12}>
-                    <Card>
-                      <CardHeader color="success" icon>
-                        <CardIcon color="success">
-                          <AvTimer />
-                        </CardIcon>
-                        <h4 className={classes.cardIconTitle}>
-                          <FormattedMessage id="form.time" />
-                          (<FormattedMessage id="form.optional" />)
-                        </h4>
-                      </CardHeader>
-                      <CardBody>
-                        {serviceHoursCount < 7 && (
-                        <Button
-                          justIcon
-                          round
-                          color="success"
-                          onClick={event => this.handleAddObject('serviceHours', serviceHoursObject)}
-                            >
-                          <AddIcon/>
-                        </Button>
-                        )}
-                        {serviceHours.map((member, index) => (
-                        <React.Fragment key={index}>
+                      <GridItem lg={6} md={6} sm={12} xs={12}>
                         <GridContainer>
-                          <GridItem xs={12} sm={12} md={6} lg={3} >
+                          <GridItem lg={12} md={12} sm={12} xs={12}>
+                            <CustomInput
+                              className={classes.input}
+                              labelText={<FormattedMessage id="form.title" />}
+                              formControlProps={{
+                                fullWidth: true,
+                              }}
+                              inputProps={{
+                                id: 'serviceTitle',
+                                name: 'serviceTitle',
+                                value: serviceTitle,
+                                onChange: event => this.handleChange(event),
+                              }}
+                              fullWidth
+                              helperText={serviceTitleError}
+                              error={serviceTitleError.length > 0}
+                            />
+                          </GridItem>
+                          <GridItem lg={6} md={6} sm={12} xs={12}>
                             <FormControl
                               fullWidth
                               className={classes.selectFormControl}
                             >
-                            <InputLabel
-                              htmlFor="simple-select"
-                              className={classes.selectLabel}
-                            >
-                              <FormattedMessage id="form.select.day" />
-                            </InputLabel>
-                            <Select
-                              MenuProps={{
-                                className: classes.selectMenu
-                              }}
-                              classes={{
-                                select: classes.select
-                              }}
-                              value={member.serviceDay}
-                              inputProps={{
-                                name: "serviceDay",
-
-                              }}
-                              id="serviceDay"
-                              onChange={this.handleEditObjectServiceDay('serviceHours', index)}
-                              name="serviceDay"
-                              select
-                              label="ServiceDay"
-                              fullWidth
-                              helperText={this.objectErrorText('serviceHoursError', index, 'serviceDay')}
-                              error={this.objectErrorText('serviceHoursError', index, 'serviceDay').length > 0}
-                            >
-                            <MenuItem
-                              disabled
-                              classes={{
-                                root: classes.selectMenuItem
-                              }}
-                            >
-                              Choose Day
-                            </MenuItem>
-                            {dayOfTheWeek.map(option => (
-                              <MenuItem key={option.value} value={option.value}>
-                                {option.label}
-                              </MenuItem>
-                            ))}
-                            </Select>
-                            </FormControl>
-                            <FormHelperText error={this.objectErrorText('serviceHoursError', index, 'serviceDay').length > 0}>{this.objectErrorText('serviceHoursError', index, 'serviceDay')}</FormHelperText>
-                          </GridItem>
-                          <GridItem xs={12} sm={12} md={6} lg={3} >
-                            <InputLabel className={classes.label}><FormattedMessage id="form.time.start" /></InputLabel>
-                            <br />
-                            <FormControl fullWidth>
-                            <Datetime
-                              dateFormat={false}
-                              inputProps={{ 
-                                placeholder: "HH:MM AM/PM",
-                                id:"startTime",
-                                name:"startTime",
-                                value:member.startTime,
-                                onChange:(event) => this.handleEditObject('serviceHours', 'startTime', index, event),
+                              <InputLabel
+                                htmlFor="simple-select"
+                                className={classes.selectLabel}
+                              >
+                                <FormattedMessage id="form.select.category" />
+                              </InputLabel>
+                              <Select
+                                MenuProps={{
+                                  className: classes.selectMenu,
                                 }}
-                                formControlProps={{
-                                fullWidth: true
+                                classes={{
+                                  select: classes.select,
                                 }}
-                                id="startTime"
-                                name="startTime"
-                              onChange={(event) => this.handleEditObject('serviceHours', 'startTime', index, event)}
-                              value={member.startTime}
-                              helperText={this.objectErrorText('serviceHoursError', index, 'startTime')}
-                              error={this.objectErrorText('serviceHoursError', index, 'startTime').length > 0}
-                              locale="en"
-                            />
-                            <FormHelperText error={this.objectErrorText('serviceHoursError', index, 'startTime').length > 0}>{this.objectErrorText('serviceHoursError', index, 'startTime')}</FormHelperText>
-                            </FormControl>
-                          </GridItem>
-                          <GridItem xs={12} sm={12} md={6} lg={3} >
-                            <InputLabel className={classes.label}><FormattedMessage id="form.time.end" /></InputLabel>
-                              <br />
-                            <FormControl fullWidth>
-                              <Datetime
-                                dateFormat={false}
+                                value={category}
                                 inputProps={{
-                                  placeholder: "HH:MM AM/PM",
+                                  name: 'category',
+                                  id: 'category',
                                 }}
-                                id="endTime"
-                                name="endTime"
-                                value={member.endTime}
-                                onChange={(event) => this.handleEditObject('serviceHours', 'endTime', index, event)}
-                                helperText={this.objectErrorText('serviceHoursError', index, 'endTime')}
-                                error={this.objectErrorText('serviceHoursError', index, 'endTime').length > 0}
-                                locale="en"
-                              />
-                              <FormHelperText error={this.objectErrorText('serviceHoursError', index, 'endTime').length > 0}>{this.objectErrorText('serviceHoursError', index, 'endTime')}</FormHelperText>
+                                name="category"
+                                select
+                                label={<FormattedMessage id="form.select.category" />}
+                                onChange={event => this.handleCategoryChange(event)}
+                                fullWidth
+                                helperText={categoryError}
+                                error={categoryError.length > 0}
+                              >
+                                <MenuItem
+                                  disabled
+                                  classes={{ root: classes.selectMenuItem }}
+                                >
+                                  <FormattedMessage id="form.select.category" />
+                                </MenuItem>
+                                {serviceCategories.map(option => (
+                                  <MenuItem
+                                    classes={{
+                                      root: classes.selectMenuItem,
+                                      selected: classes.selectMenuItemSelected,
+                                    }}
+                                    key={option.value}
+                                    value={option.value}
+                                  >
+                                    {option.label}
+                                  </MenuItem>
+                                ))}
+                              </Select>
                             </FormControl>
+                            <FormHelperText error={categoryError.length > 0}>{categoryError}</FormHelperText>
                           </GridItem>
-                          <GridItem>
-                            <InputLabel className={classes.label}></InputLabel>
-                              <br />
-                            <Button
-                              justIcon
-                              round
-                              color="danger"
-                              aria-label="Delete"
-                              onClick={event => this.handleRemoveObject('serviceHours', index, event)}
-                              className={classes.button}
+                          <GridItem lg={6} md={6} sm={12} xs={12}>
+                            <FormControl
+                              className={classes.selectFormControl}
+                              name="subcategory"
+                              select
+                              label={<FormattedMessage id="form.select.subcategory" />}
+                              onChange={event => this.handleChange(event)}
+                              fullWidth
+                              helperText={subcategoryError}
+                              error={subcategoryError.length > 0}
                             >
-                              <DeleteIcon />
-                            </Button>
+                              <InputLabel
+                                htmlFor="simple-select"
+                                className={classes.selectLabel}
+                              >
+                                <FormattedMessage id="form.select.subcategory" />
+                              </InputLabel>
+                              <Select
+                                MenuProps={{
+                                  className: classes.selectMenu,
+                                }}
+                                classes={{
+                                  select: classes.select,
+                                }}
+                                value={subcategory}
+                                onChange={event => this.handleChange(event)}
+                                inputProps={{
+                                  name: 'subcategory',
+                                  id: 'subcategory',
+                                }}
+                              >
+                                <MenuItem
+                                  disabled
+                                  classes={{
+                                    root: classes.selectMenuItem,
+                                  }}
+                                >
+                                  <FormattedMessage id="form.select.subcategory" />
+                                </MenuItem>
+                                {subcategoriesArray.map(option => (
+                                  <MenuItem
+                                    classes={{
+                                      root: classes.selectMenuItem,
+                                      selected: classes.selectMenuItemSelected,
+                                    }}
+                                    key={option.value}
+                                    value={option.value}
+                                  >
+                                    {option.label}
+                                  </MenuItem>
+                                ))}
+                              </Select>
+                            </FormControl>
+                            <FormHelperText error={subcategoryError.length > 0}>{subcategoryError}</FormHelperText>
+                          </GridItem>
+                          <GridItem lg={12} md={12} sm={12} xs={12}>
+                            <CustomInput
+                              labelText={<FormattedMessage id="form.summary" />}
+                              formControlProps={{
+                                fullWidth: true,
+                              }}
+                              inputProps={{
+                                name: 'serviceSummary',
+                                id: 'serviceSummary',
+                                value: serviceSummary,
+                                onChange: event => this.handleChange(event),
+                              }}
+                              helperText={serviceSummaryError}
+                              error={serviceSummaryError.length > 0}
+                            />
                           </GridItem>
                         </GridContainer>
-                      </React.Fragment>))}
-                      </CardBody>
-                    </Card>
-                    </GridItem>
-                  </GridContainer>
-                  <Card>
-                    <CardHeader color="success" icon>
-                      <CardIcon color="success">
-                        <Location />
-                      </CardIcon>
-                      <h4 className={classes.cardIconTitle}>
-                        <FormattedMessage id="form.location" />
-                        (<FormattedMessage id="form.optional" />)
-                      </h4>
-                    </CardHeader>
-                    <CardBody>
-                    {addLocation ? 
-                    <Button
-                      justIcon
-                      round
-                      color="danger"
-                      aria-label="Add Location"
-                      onClick={event => this.handleAddLocation()}
-                      className={classes.button}
-                    >
-                      <DeleteIcon />
-                    </Button>
-                    :
-                    <Button
-                      justIcon
-                      round
-                      color="success"
-                      aria-label="Add Location"
-                      onClick={event => this.handleAddLocation()}
-                      className={classes.button}
-                    >
-                      <AddIcon />
-                    </Button>}
-                    {addLocation === true && (
-                    <GridItem>
-                      <GridContainer>
-                        <GridItem xs={4} sm={4} md={4} lg={4}>
-                          <CustomInput
-                          className={classes.input}
-                            labelText={<FormattedMessage id="contact.address" />}
-                            formControlProps={{
-                              fullWidth: true
-                            }}
-                            inputProps={{
-                              name:"address",
-                              id:"address",
-                              value:location.address,
-                              onChange: this.handleEditLocationObject('location', 'address'),
-                            }}
-                            helperText={addressError}
-                            error={addressError.length > 0}
-                          />
-                        </GridItem>
-                        <GridItem xs={4} sm={4} md={4} lg={4}>
-                          <CustomInput
-                            labelText={<FormattedMessage id="contact.city" />}
-                            formControlProps={{
-                              fullWidth: true
-                            }}
-                            inputProps={{
-                              name:"city",
-                              id:"city",
-                              value:location.city,
-                              onChange: this.handleEditLocationObject('location', 'city'),
-                            }}
-                            helperText={cityError}
-                            error={cityError.length > 0}
-                          />
-                        </GridItem>
-                        <GridItem xs={2} sm={2} md={2} lg={2}>
-                          <CustomInput
-                            labelText={<FormattedMessage id="contact.apartment" />}
-                            id="apartment"
-                            formControlProps={{
-                              fullWidth: true
-                            }}
-                            inputProps={{
-                              name:"apartment",
-                              id:"apartment",
-                              value:location.apartment,
-                              onChange: this.handleEditLocationObject('location', 'apartment'),
-                            }}
-                            helperText={apartmentError}
-                            error={apartmentError.length > 0}
-                          />
-                        </GridItem>
-                      </GridContainer>
-                      <GridContainer>
-                        <GridItem xs={4} sm={4} md={4} lg={4}>
-                          <FormControl
-                            fullWidth
-                            className={classes.selectFormControl}
-                          >
-                          <InputLabel
-                            htmlFor="simple-select"
-                            className={classes.selectLabel}
-                          >
-                            Province
-                          </InputLabel>
-                          <Select
-                            MenuProps={{
-                              className: classes.selectMenu
-                            }}
-                            classes={{
-                              select: classes.select
-                            }}
-                            value={location.province}
-                            inputProps={{
-                              name: "province",
-                            }}
-                            id="province"
-                            onChange={this.handleEditLocationObject('location', 'province')}
-                            name="province"
-                            select
-                            label={<FormattedMessage id="contact.province" />}
-                            fullWidth
-                            helperText={provinceError}
-                            error={provinceError.length > 0}
-                          >
-                          <MenuItem
-                            disabled
-                            classes={{
-                              root: classes.selectMenuItem
-                            }}
-                          >
-                            <FormattedMessage id="contact.province" />
-                          </MenuItem>
-                          {provinces.map(option => (
-                            <MenuItem key={option.value} value={option.value}>
-                              {option.label}
-                            </MenuItem>
-                          ))}
-                          </Select>
-                          </FormControl>
-                          <FormHelperText error={provinceError.length > 0}>{provinceError}</FormHelperText>
-                        </GridItem>
-                        <GridItem xs={4} sm={4} md={4} lg={4}>
-                          <CustomInput
-                            labelText={<FormattedMessage id="contact.postal" />}
-                            formControlProps={{
-                              fullWidth: true
-                            }}
-                            inputProps={{
-                              name:"postalCode",
-                              id:"postalCode",
-                              value:location.postalCode.toUpperCase(),
-                              onChange: this.handleEditLocationObject('location', 'postalCode'),
-                              inputComponent: PostalCodeMask,
-                            }}
-                            helperText={postalCodeError}
-                            error={postalCodeError.length > 0}
-                          />
-                        </GridItem>
-                        <GridItem xs={4} sm={4} md={12} lg={4}>
-                          <CustomInput
-                            labelText={<FormattedMessage id="contact.phone" />}
-                            id="phoneNumber"
-                            formControlProps={{
-                              fullWidth: true
-                            }}
-                            inputProps={{
-                              name:"phoneNumber",
-                              id:"phoneNumber",
-                              value:location.phoneNumber,
-                              onChange: this.handleEditLocationObject('location', 'phoneNumber'),
-                              inputComponent: PhoneMask,
-                            }}
-                            helperText={phoneNumberError}
-                            error={phoneNumberError.length > 0}
-                          />
-                        </GridItem>
-                      </GridContainer>
-                    </GridItem>
-                    )}
-                    </CardBody>
-                  </Card>
+                      </GridItem>
+                      <GridItem lg={6} md={6} sm={12} xs={12}>
+                        <CustomInput
+                          labelText={<FormattedMessage id="form.description" />}
+                          formControlProps={{
+                            fullWidth: true,
+                          }}
+                          inputProps={{
+                            multiline: true,
+                            rows: 5,
+                            name: 'serviceDescription',
+                            id: 'serviceDescription',
+                            onChange: event => this.handleChange(event),
+                            error: serviceDescriptionError.length > 0,
+                          }}
+                          value={serviceDescription}
+                          helperText={serviceDescriptionError}
+                          error={serviceDescriptionError.length > 0}
+                        />
+                      </GridItem>
+                      <GridItem lg={6} md={6} sm={12} xs={12}>
+                        <Card>
+                          <CardHeader color="rose" icon>
+                            <CardIcon color="rose">
+                              <Location />
+                            </CardIcon>
+                            <h4 className={classes.cardIconTitle}>
+                              <FormattedMessage id="form.location" />
+                              (<FormattedMessage id="form.optional" />)
+                            </h4>
+                          </CardHeader>
+                          <CardBody>
+                            {addLocation
+                              ? (
+                                <Button
+                                  justIcon
+                                  round
+                                  color="secondary"
+                                  aria-label="Add Location"
+                                  onClick={event => this.handleAddLocation()}
+                                  className={classes.button}
+                                >
+                                  <DeleteIcon />
+                                </Button>
+                              )
+                              : (
+                                <Button
+                                  justIcon
+                                  round
+                                  color="secondary"
+                                  aria-label="Add Location"
+                                  onClick={event => this.handleAddLocation()}
+                                  className={classes.button}
+                                >
+                                  <AddIcon />
+                                </Button>
+                              )}
+                            {addLocation === true && (
+                              <GridItem>
+                                <GridContainer>
+                                  <GridItem lg={4} md={4} sm={12} xs={12}>
+                                    <CustomInput
+                                      className={classes.input}
+                                      labelText={<FormattedMessage id="contact.address" />}
+                                      formControlProps={{
+                                        fullWidth: true,
+                                      }}
+                                      inputProps={{
+                                        name: 'address',
+                                        id: 'address',
+                                        value: location.address,
+                                        onChange: this.handleEditLocationObject('location', 'address'),
+                                      }}
+                                      helperText={addressError}
+                                      error={addressError.length > 0}
+                                    />
+                                  </GridItem>
+                                  <GridItem lg={4} md={4} sm={12} xs={12}>
+                                    <CustomInput
+                                      labelText={<FormattedMessage id="contact.city" />}
+                                      formControlProps={{
+                                        fullWidth: true,
+                                      }}
+                                      inputProps={{
+                                        name: 'city',
+                                        id: 'city',
+                                        value: location.city,
+                                        onChange: this.handleEditLocationObject('location', 'city'),
+                                      }}
+                                      helperText={cityError}
+                                      error={cityError.length > 0}
+                                    />
+                                  </GridItem>
+                                  <GridItem lg={4} md={4} sm={12} xs={12}>
+                                    <CustomInput
+                                      labelText={<FormattedMessage id="contact.apartment" />}
+                                      id="apartment"
+                                      formControlProps={{
+                                        fullWidth: true,
+                                      }}
+                                      inputProps={{
+                                        name: 'apartment',
+                                        id: 'apartment',
+                                        value: location.apartment,
+                                        onChange: this.handleEditLocationObject('location', 'apartment'),
+                                      }}
+                                      helperText={apartmentError}
+                                      error={apartmentError.length > 0}
+                                    />
+                                  </GridItem>
+                                </GridContainer>
+                                <GridContainer>
+                                  <GridItem lg={4} md={4} sm={12} xs={12}>
+                                    <FormControl
+                                      fullWidth
+                                      className={classes.selectFormControl}
+                                    >
+                                      <InputLabel
+                                        htmlFor="simple-select"
+                                        className={classes.selectLabel}
+                                      >
+                                        Province
+                                      </InputLabel>
+                                      <Select
+                                        MenuProps={{
+                                          className: classes.selectMenu,
+                                        }}
+                                        classes={{
+                                          select: classes.select,
+                                        }}
+                                        value={location.province}
+                                        inputProps={{
+                                          name: 'province',
+                                        }}
+                                        id="province"
+                                        onChange={this.handleEditLocationObject('location', 'province')}
+                                        name="province"
+                                        select
+                                        label={<FormattedMessage id="contact.province" />}
+                                        fullWidth
+                                        helperText={provinceError}
+                                        error={provinceError.length > 0}
+                                      >
+                                        <MenuItem
+                                          disabled
+                                          classes={{
+                                            root: classes.selectMenuItem,
+                                          }}
+                                        >
+                                          <FormattedMessage id="contact.province" />
+                                        </MenuItem>
+                                        {provinces.map(option => (
+                                          <MenuItem key={option.value} value={option.value}>
+                                            {option.label}
+                                          </MenuItem>
+                                        ))}
+                                      </Select>
+                                    </FormControl>
+                                    <FormHelperText error={provinceError.length > 0}>{provinceError}</FormHelperText>
+                                  </GridItem>
+                                  <GridItem lg={4} md={4} sm={12} xs={12}>
+                                    <CustomInput
+                                      labelText={<FormattedMessage id="contact.postal" />}
+                                      formControlProps={{
+                                        fullWidth: true,
+                                      }}
+                                      inputProps={{
+                                        name: 'postalCode',
+                                        id: 'postalCode',
+                                        value: location.postalCode.toUpperCase(),
+                                        onChange: this.handleEditLocationObject('location', 'postalCode'),
+                                        inputComponent: PostalCodeMask,
+                                      }}
+                                      helperText={postalCodeError}
+                                      error={postalCodeError.length > 0}
+                                    />
+                                  </GridItem>
+                                  <GridItem lg={4} md={4} sm={12} xs={12}>
+                                    <CustomInput
+                                      labelText={<FormattedMessage id="contact.phone" />}
+                                      id="phoneNumber"
+                                      formControlProps={{
+                                        fullWidth: true,
+                                      }}
+                                      inputProps={{
+                                        name: 'phoneNumber',
+                                        id: 'phoneNumber',
+                                        value: location.phoneNumber,
+                                        onChange: this.handleEditLocationObject('location', 'phoneNumber'),
+                                        inputComponent: PhoneMask,
+                                      }}
+                                      helperText={phoneNumberError}
+                                      error={phoneNumberError.length > 0}
+                                    />
+                                  </GridItem>
+                                </GridContainer>
+                              </GridItem>
+                            )}
+                          </CardBody>
+                        </Card>
+                      </GridItem>
+                      <GridItem lg={6} md={6} sm={12} xs={12}>
+                        <Card>
+                          <CardHeader color="rose" icon>
+                            <CardIcon color="rose">
+                              <Today />
+                            </CardIcon>
+                            <h4 className={classes.cardIconTitle}>
+                              <FormattedMessage id="form.date" />
+                              (<FormattedMessage id="form.optional" />)
+                            </h4>
+                          </CardHeader>
+                          <CardBody>
+                            <GridItem>
+                              {addServiceDate
+                                ? (
+                                  <Button
+                                    justIcon
+                                    round
+                                    color="secondary"
+                                    onClick={event => this.handleAddServiceDate()}
+                                    className={classes.button}
+                                  >
+                                    <DeleteIcon />
+                                  </Button>
+                                )
+                                : (
+                                  <Button
+                                    justIcon
+                                    round
+                                    color="secondary"
+                                    onClick={event => this.handleAddServiceDate()}
+                                    className={classes.button}
+                                  >
+                                    <AddIcon />
+                                  </Button>
+                                )
+                              }
+                            </GridItem>
+                            <GridItem lg={6} md={6} sm={12} xs={12}>
+                              {addServiceDate === true && (
+                                <GridContainer>
+                                  <GridItem lg={6} md={6} sm={12} xs={12}>
+                                    <InputLabel className={classes.label}><FormattedMessage id="form.day.start" /></InputLabel>
+                                    <br />
+                                    <FormControl fullWidth>
+                                      <Datetime
+                                        timeFormat={false}
+                                        inputProps={{
+                                          placeholder: 'MM/DD/YYYY',
+                                          id: 'startDate',
+                                          name: 'startDate',
+                                        }}
+                                        onChange={event => this.handleEditSingleObject('serviceDate', 'startDate', event)}
+                                        value={serviceDate.startDate}
+                                        locale="en"
+                                      />
+                                      <FormHelperText error={startDateError.length > 0}>{startDateError}</FormHelperText>
+                                    </FormControl>
+                                  </GridItem>
+                                  <GridItem lg={6} md={6} sm={12} xs={12}>
+                                    <InputLabel className={classes.label}><FormattedMessage id="form.day.end" /></InputLabel>
+                                    <br />
+                                    <FormControl fullWidth>
+                                      <Datetime
+                                        timeFormat={false}
+                                        inputProps={{
+                                          placeholder: 'MM/DD/YYYY',
+                                          name: 'endDate',
+                                          id: 'endDate',
+                                        }}
+                                        name="endDate"
+                                        id="endDate"
+                                        onChange={event => this.handleEditSingleObject('serviceDate', 'endDate', event)}
+                                        value={serviceDate.endDate}
+                                        locale="en"
+                                      />
+                                      <FormHelperText error={endDateError.length > 0}>{endDateError}</FormHelperText>
+                                    </FormControl>
+                                  </GridItem>
+                                </GridContainer>
+                              )}
+                            </GridItem>
+                          </CardBody>
+                        </Card>
+                      </GridItem>
+                      <GridItem lg={6} md={6} sm={12} xs={12}>
+                        <Card>
+                          <CardHeader color="rose" icon>
+                            <CardIcon color="rose">
+                              <AvTimer />
+                            </CardIcon>
+                            <h4 className={classes.cardIconTitle}>
+                              <FormattedMessage id="form.time" />
+                              (<FormattedMessage id="form.optional" />)
+                            </h4>
+                          </CardHeader>
+                          <CardBody>
+                            {serviceHoursCount < 7 && (
+                              <Button
+                                justIcon
+                                round
+                                color="secondary"
+                                onClick={event => this.handleAddObject('serviceHours', serviceHoursObject)}
+                              >
+                                <AddIcon />
+                              </Button>
+                            )}
+                            {serviceHours.map((member, index) => (
+                              <React.Fragment key={index}>
+                                <GridContainer>
+                                  <GridItem lg={4} md={4} sm={12} xs={12}>
+                                    <FormControl
+                                      fullWidth
+                                      className={classes.selectFormControl}
+                                    >
+                                      <InputLabel
+                                        htmlFor="simple-select"
+                                        className={classes.selectLabel}
+                                      >
+                                        <FormattedMessage id="form.select.day" />
+                                      </InputLabel>
+                                      <Select
+                                        MenuProps={{
+                                          className: classes.selectMenu,
+                                        }}
+                                        classes={{
+                                          select: classes.select,
+                                        }}
+                                        value={member.serviceDay}
+                                        inputProps={{
+                                          name: 'serviceDay',
+
+                                        }}
+                                        id="serviceDay"
+                                        onChange={this.handleEditObjectServiceDay('serviceHours', index)}
+                                        name="serviceDay"
+                                        select
+                                        label="ServiceDay"
+                                        fullWidth
+                                        helperText={this.objectErrorText('serviceHoursError', index, 'serviceDay')}
+                                        error={this.objectErrorText('serviceHoursError', index, 'serviceDay').length > 0}
+                                      >
+                                        <MenuItem
+                                          disabled
+                                          classes={{
+                                            root: classes.selectMenuItem,
+                                          }}
+                                        >
+                                          Choose Day
+                                        </MenuItem>
+                                        {dayOfTheWeek.map(option => (
+                                          <MenuItem key={option.value} value={option.value}>
+                                            {option.label}
+                                          </MenuItem>
+                                        ))}
+                                      </Select>
+                                    </FormControl>
+                                    <FormHelperText error={this.objectErrorText('serviceHoursError', index, 'serviceDay').length > 0}>{this.objectErrorText('serviceHoursError', index, 'serviceDay')}</FormHelperText>
+                                  </GridItem>
+                                  <GridItem lg={4} md={4} sm={12} xs={12}>
+                                    <InputLabel className={classes.label}><FormattedMessage id="form.time.start" /></InputLabel>
+                                    <br />
+                                    <FormControl fullWidth>
+                                      <Datetime
+                                        dateFormat={false}
+                                        inputProps={{
+                                          placeholder: 'HH:MM AM/PM',
+                                          id: 'startTime',
+                                          name: 'startTime',
+                                          value: member.startTime,
+                                          onChange: event => this.handleEditObject('serviceHours', 'startTime', index, event),
+                                        }}
+                                        formControlProps={{
+                                          fullWidth: true,
+                                        }}
+                                        id="startTime"
+                                        name="startTime"
+                                        onChange={event => this.handleEditObject('serviceHours', 'startTime', index, event)}
+                                        value={member.startTime}
+                                        helperText={this.objectErrorText('serviceHoursError', index, 'startTime')}
+                                        error={this.objectErrorText('serviceHoursError', index, 'startTime').length > 0}
+                                        locale="en"
+                                      />
+                                      <FormHelperText error={this.objectErrorText('serviceHoursError', index, 'startTime').length > 0}>{this.objectErrorText('serviceHoursError', index, 'startTime')}</FormHelperText>
+                                    </FormControl>
+                                  </GridItem>
+                                  <GridItem lg={4} md={4} sm={12} xs={12}>
+                                    <InputLabel className={classes.label}><FormattedMessage id="form.time.end" /></InputLabel>
+                                    <br />
+                                    <FormControl fullWidth>
+                                      <Datetime
+                                        dateFormat={false}
+                                        inputProps={{
+                                          placeholder: 'HH:MM AM/PM',
+                                        }}
+                                        id="endTime"
+                                        name="endTime"
+                                        value={member.endTime}
+                                        onChange={event => this.handleEditObject('serviceHours', 'endTime', index, event)}
+                                        helperText={this.objectErrorText('serviceHoursError', index, 'endTime')}
+                                        error={this.objectErrorText('serviceHoursError', index, 'endTime').length > 0}
+                                        locale="en"
+                                      />
+                                      <FormHelperText error={this.objectErrorText('serviceHoursError', index, 'endTime').length > 0}>{this.objectErrorText('serviceHoursError', index, 'endTime')}</FormHelperText>
+                                    </FormControl>
+                                  </GridItem>
+                                  <GridItem lg={12} md={12} sm={12} xs={12}>
+                                    <InputLabel className={classes.label} />
+                                    <br />
+                                    <Button
+                                      justIcon
+                                      round
+                                      color="secondary"
+                                      aria-label="Delete"
+                                      onClick={event => this.handleRemoveObject('serviceHours', index, event)}
+                                      className={classes.button}
+                                    >
+                                      <DeleteIcon />
+                                    </Button>
+                                  </GridItem>
+                                </GridContainer>
+                              </React.Fragment>))}
+                          </CardBody>
+                        </Card>
+                      </GridItem>
+                    </GridContainer>
                     {!editMode ? (
                       <Button
                         variant="contained"
-                        color="primary"
-                        onClick={(event) => this.handleSubmit(event)}
+                        color="secondary"
+                        onClick={event => this.handleSubmit(event)}
                         className={classes.button}
                       >
                         <FormattedMessage id="form.create" />
@@ -1291,7 +1284,7 @@ class ServiceForm extends Component {
                     ) : (
                       <Button
                         variant="contained"
-                        color="primary"
+                        color="secondary"
                         onClick={this.autoCloseAlert.bind(this)}
                         className={classes.button}
                       >
@@ -1299,11 +1292,12 @@ class ServiceForm extends Component {
                       </Button>
                     )}
                     <Clearfix />
-                </form>
-              </CardBody>
-            </Card>
-          </GridItem>
-          </div>
+                  </form>
+                </CardBody>
+              </Card>
+            </GridItem>
+          </GridContainer>
+        </div>
       </React.Fragment>
     );
   }
