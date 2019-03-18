@@ -31,9 +31,10 @@ module.exports = {
           throw new ServerError('There was an error retrieving services.', 400, error);
         });
     }
-    return Service.find(query).exec().then(services => Promise.resolve(services)).catch((error) => {
-      throw new ServerError('There was an error retrieving services.', 400, error);
-    });
+    return Service.find(query, { score: { $meta: 'textScore' } }).sort({ score: { $meta: 'textScore' } }).exec().then(services => Promise.resolve(services))
+      .catch((error) => {
+        throw new ServerError('There was an error retrieving services.', 400, error);
+      });
   },
 
   getService(query) {
