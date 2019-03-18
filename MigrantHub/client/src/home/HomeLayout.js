@@ -36,6 +36,9 @@ const styles = theme => ({
       color: '#e5e5e5',
     },
   },
+  headerLinks: {
+    fontSize: '18px',
+  },
   title: {
     display: 'block',
     marginRight: 'auto',
@@ -139,12 +142,14 @@ class HomeLayout extends Component {
                   <Typography variant="h6" color="inherit" className={classes.title}>
                     <Link to="/">MigrantHub</Link>
                   </Typography>
-                  <Link to="/login">
-                    <FormattedMessage id="login" />
-                  </Link>
-                  <Link to="/signup/personal">
-                    <FormattedMessage id="signup" />
-                  </Link>
+                  <div className={classes.headerLinks}>
+                    <Link to="/login">
+                      <FormattedMessage id="login" />
+                    </Link>
+                    <Link to="/signup/personal">
+                      <FormattedMessage id="signup" />
+                    </Link>
+                  </div>
                   <div className={classes.languageSwitcher}>
                     <div id="google_translate_element" />
                   </div>
