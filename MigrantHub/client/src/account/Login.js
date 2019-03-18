@@ -18,7 +18,7 @@ import GoogleButton from 'account/GoogleButton';
 import DividerWithText from 'account/DividerWithText';
 import FormValidator from 'forms/FormValidator';
 import Validations from 'forms/Validations';
-
+import TermsConditions from 'app/TermsConditions'
 const qs = require('qs');
 
 const styles = theme => ({
@@ -154,6 +154,7 @@ class BaseLogin extends Component {
           <Divider />
         </div>
         <Typography>Don't have an account? <Link component={RouterLink} to="/signup/personal">Sign up.</Link></Typography>
+        <TermsConditions/>
       </LoginSignupLayout>
     );
   }

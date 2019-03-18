@@ -20,7 +20,7 @@ const styles = theme => ({
     [theme.breakpoints.down('sm')]: {
       padding: '3%',
     },
-    textSize:"10px",
+    textSize: '10px',
     textAlign: 'center',
     color: 'white',
     padding: '10% 25% 7% 25%',
