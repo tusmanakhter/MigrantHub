@@ -27,24 +27,20 @@ class Search extends Component {
     this.state = {
       servicesItem: [],
       eventItem: [],
-      // userItem: [],
     };
 
     this.getServices = this.getServices.bind(this);
     this.getEvents = this.getEvents.bind(this);
-    // this.getUsers = this.getUsers.bind(this);
   }
 
   componentDidMount(props) {
     this.getServices(this, props);
     this.getEvents(this, props);
-    // this.getUsers(this, props);
   }
 
   componentWillReceiveProps(props) {
     this.getServices(this, props);
     this.getEvents(this, props);
-    // this.getUsers(this, props);
   }
 
   getServices(event, props = this.props) {
@@ -97,27 +93,6 @@ class Search extends Component {
       });
     });
   }
-
-  /*
-  getUsers(event, props = this.props) {
-    const { location } = props;
-    let searchQuery = '';
-
-    if (location.state) {
-      searchQuery = location.state.searchQuery;
-    }
-
-    axios.get('/api/friend/viewusers', {
-      params: {
-        searchQuery: searchQuery,
-      },
-    }).then((response) => {
-      this.setState({
-        userItem: response.data,
-      });
-    });
-  }
-  */
 
   renderServices() {
     const { classes } = this.props;
@@ -191,35 +166,6 @@ class Search extends Component {
       );
     }
   }
-
-  /*
-  renderUsers() {
-    const { classes } = this.props;
-    const { userItem } = this.state;
-
-    if(this.state.userItem.length !== 0) {
-        return (
-        <div className={classes.userContainer}>
-        <h4 className={classes.searchContainer}>People</h4>
-        <Paper className={classes.root} elevation={2}>
-          {' '}
-          {
-              userItem.map(item => (
-                <UserItem
-                  userid={item._id}
-                  firstName={item.firstName}
-                  lastName={item.lastName}
-                  email={item.email}
-                  getUsers={this.getUsers}
-                />
-              ))
-          }
-        </Paper>
-        </div>
-        );
-    }
-  }
-  */
 
   render() {
     const { classes } = this.props;
