@@ -39,9 +39,7 @@ module.exports = {
     if (userId !== '') {
       query.user = userId;
     } else if (search === 'true') {
-      const tempSearchQuery = searchQuery;
-      const regex = new RegExp(tempSearchQuery.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&'), 'gi');
-      query = { eventName: regex };
+      query = ({ $text: { $search: searchQuery } });
     }
     query.deleted = false;
 

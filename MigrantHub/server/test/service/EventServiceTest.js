@@ -56,7 +56,7 @@ describe('Event Service', function () {
     it('should call getEvents to retrieve all events from getEvents service', test(async function () {
         this.stub(EventRepository, 'getEvents');
         await EventService.getEvents('', req.query.searchQuery, req.query.search);
-        assert.calledWith(EventRepository.getEvents,  { eventName: /test/gi, deleted: false });
+        assert.calledWith(EventRepository.getEvents, {  $text: { $search: req.query.searchQuery }, deleted: false });
     }));
 
     it('should call getEvent repository with correct parameters from getEvent service', test(async function () {

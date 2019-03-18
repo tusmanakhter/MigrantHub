@@ -169,6 +169,8 @@ module.exports = {
     });
   },
 
+  // view users will continue to use regex
+  // this won't be used for now as friends functionality is on pause
   viewUsers(req, res) {
     const { searchQuery } = req.query;
     let query = {};
@@ -176,7 +178,6 @@ module.exports = {
     const tempSearchQuery = searchQuery;
     const regex = new RegExp(tempSearchQuery.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&'), 'gi');
     query = { $or: [{ firstName: regex }, { lastName: regex }] };
-
     query.deleted = false;
 
     User.find(query, (err, users) => {

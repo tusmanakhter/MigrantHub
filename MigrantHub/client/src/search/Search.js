@@ -1,35 +1,23 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import withStyles from '@material-ui/core/styles/withStyles';
-import GridContainer from "components/Grid/GridContainer.jsx";
 import axios from 'axios';
 import ServiceCard from 'services/ServiceCard';
 import EventCard from 'events/EventCard';
 import UserItem from 'People/UserItem';
-import QuestionnairePanel from 'components/QuestionnairePanel/QuestionnairePanel';
 import Paper from '@material-ui/core/Paper';
-import UserTypes from 'lib/UserTypes';
 import { AuthConsumer } from 'routes/AuthContext';
+import GridItem from 'components/Grid/GridItem.jsx';
+import Grid from '@material-ui/core/Grid';
 
 const styles = theme => ({
-  mainContainer: {
-    marginLeft: 75,
-    paddingTop: 100,
-  },
-  serviceContainer : {
-    float: 'left',
-  },
   root: {
     ...theme.mixins.gutters(),
     paddingTop: theme.spacing.unit * 2,
     paddingBottom: theme.spacing.unit * 2,
   },
-  Panel: {
-    float: 'right',
-    position: 'absolute',
-    right: 0,
-    paddingTop: 25,
-    width: '25%',
+  mainContainer: {
+    paddingTop: 15,
   },
 });
 
@@ -39,33 +27,29 @@ class Search extends Component {
     this.state = {
       servicesItem: [],
       eventItem: [],
-      userItem: [],
     };
 
     this.getServices = this.getServices.bind(this);
     this.getEvents = this.getEvents.bind(this);
-    this.getUsers = this.getUsers.bind(this);
   }
 
   componentDidMount(props) {
     this.getServices(this, props);
     this.getEvents(this, props);
-    this.getUsers(this, props);
   }
 
   componentWillReceiveProps(props) {
     this.getServices(this, props);
     this.getEvents(this, props);
-    this.getUsers(this, props);
   }
 
   getServices(event, props = this.props) {
     const { location } = props;
-    let editOwnerEmail = '';
+    const editOwnerEmail = '';
     let searchQuery = '';
     let searchMode = false;
-    let category = '';
-    let subcategory = '';
+    const category = '';
+    const subcategory = '';
 
     if (location.state) {
         searchQuery = location.state.searchQuery;
@@ -90,7 +74,7 @@ class Search extends Component {
     const { location } = props;
     let searchQuery = '';
     let searchMode = false;
-    let editOwnerEmail = '';
+    const editOwnerEmail = '';
 
       if (location.state) {
         searchQuery = location.state.searchQuery;
@@ -110,57 +94,41 @@ class Search extends Component {
     });
   }
 
-  getUsers(event, props = this.props) {
-    const { location } = props;
-    let searchQuery = '';
-
-    if (location.state) {
-      searchQuery = location.state.searchQuery;
-    }
-
-    axios.get('/api/friend/viewusers', {
-      params: {
-        searchQuery: searchQuery,
-      },
-    }).then((response) => {
-      this.setState({
-        userItem: response.data,
-      });
-    });
-  }
-
   renderServices() {
     const { classes } = this.props;
     const { servicesItem } = this.state;
 
     if(this.state.servicesItem.length !== 0) {
-        return (
-        <div className={classes.serviceContainer}>
-        <h4 className={classes.searchContainer}>Services</h4>
-        <GridContainer>
-        {' '}
-        {
-            servicesItem.map(item => (
-            <ServiceCard
-                serviceId={item._id}
-                serviceTitle={item.serviceTitle}
-                serviceImagePath={item.serviceImagePath}
-                serviceDescription={item.serviceDescription}
-                serviceSummary={item.serviceSummary}
-                category={item.category}
-                subcategory={item.subcategory}
-                serviceLocation={item.location}
-                serviceDate={item.serviceDate}
-                serviceHours={item.serviceHours}
-                editMode={item.editMode}
-                editOwner={item.editOwner}
-                getServices={this.getServices}
-            />
-            ))
-        }
-        </GridContainer>
+      return (
+        <div className={classes.mainContainer}>
+          <h5 className={classes.pageSubcategoriesTitle}>
+          Services Search Results
+          </h5>
+          <Grid container spacing={16} alignItems="center" justify="center">
+            {' '}
+            {
+              servicesItem.map(item => (
+                <GridItem>
+                  <ServiceCard
+                    serviceId={item._id}
+                    serviceTitle={item.serviceTitle}
+                    serviceImagePath={item.serviceImagePath}
+                    serviceDescription={item.serviceDescription}
+                    serviceSummary={item.serviceSummary}
+                    category={item.category}
+                    subcategory={item.subcategory}
+                    serviceLocation={item.location}
+                    serviceDate={item.serviceDate}
+                    serviceHours={item.serviceHours}
+                    rating={item.avgRating}
+                    count={item.countRating}
+                  />
+                </GridItem>
+              ))
+            }
+          </Grid>
         </div>
-        );
+      );
     }
   }
 
@@ -169,59 +137,33 @@ class Search extends Component {
     const { eventItem } = this.state;
 
     if(this.state.eventItem.length !== 0) {
-        return (
-        <div className={classes.eventContainer}>
-        <h4 className={classes.searchContainer}>Events</h4>
-        <GridContainer>
-        {' '}
-        {
-            eventItem.map(item => (
-              <EventCard
-                eventId={item._id}
-                eventName={item.eventName}
-                eventImagePath={item.eventImagePath}
-                description={item.description}
-                location={item.location}
-                dateStart={item.dateStart}
-                dateEnd={item.dateEnd}
-                timeStart={item.timeStart}
-                timeEnd={item.timeEnd}
-                editMode={item.editMode}
-                editOwner={item.editOwner}
-                getEvents={this.getEvents}
-              />
-            ))
-        }
-        </GridContainer>
-        </div>
-        );
-    }
-  }
-
-  renderUsers() {
-    const { classes } = this.props;
-    const { userItem } = this.state;
-
-    if(this.state.userItem.length !== 0) {
-        return (
-        <div className={classes.userContainer}>
-        <h4 className={classes.searchContainer}>People</h4>
-        <Paper className={classes.root} elevation={2}>
-          {' '}
-          {
-              userItem.map(item => (
-                <UserItem
-                  userid={item._id}
-                  firstName={item.firstName}
-                  lastName={item.lastName}
-                  email={item.email}
-                  getUsers={this.getUsers}
-                />
+      return (
+        <div className={classes.mainContainer}>
+          <h5 className={classes.pageSubcategoriesTitle}>
+          Events Search Results
+          </h5>
+          <Grid container spacing={16} alignItems="center" justify="center">
+            {' '}
+            {
+              eventItem.map(item => (
+                <GridItem>
+                  <EventCard
+                    eventId={item._id}
+                    eventName={item.eventName}
+                    eventImagePath={item.eventImagePath}
+                    eventDescription={item.description}
+                    eventLocation={item.location}
+                    dateStart={item.dateStart}
+                    dateEnd={item.dateEnd}
+                    timeStart={item.timeStart}
+                    timeEnd={item.timeEnd}
+                  />
+                </GridItem>
               ))
-          }
-        </Paper>
+            }
+          </Grid>
         </div>
-        );
+      );
     }
   }
 
@@ -231,14 +173,12 @@ class Search extends Component {
     return (
       <AuthConsumer>
         {({ user }) => (
-          <div className={classes.mainContainer}>
-            { user.type === UserTypes.MIGRANT
-              && <div className={classes.Panel}>{<QuestionnairePanel />}</div>
-            }
-            {this.renderServices()}
-            {this.renderEvents()}
-            {this.renderUsers()}
-          </div>
+          <React.Fragment>
+            <div>
+              {this.renderServices()}
+              {this.renderEvents()}
+            </div>
+          </React.Fragment>
         )}
       </AuthConsumer>
     );
