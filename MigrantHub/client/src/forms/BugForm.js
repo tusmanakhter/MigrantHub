@@ -52,14 +52,14 @@ class BugForm extends Component {
     this.handleChange = handleChange.bind(this);
   }
 
-  validate = () => {
-    const validation = this.validator.validate(this.state);
+  validate = async () => {
+    const validation = await this.validator.validate(this.state);
     this.setState({ validation });
     return validation.isValid;
   }
 
-  handleSubmit = () => {
-    const isValid = this.validate();
+  handleSubmit = async () => {
+    const isValid = await this.validate();
     if (isValid) {
       this.createBug();
     }
