@@ -89,7 +89,7 @@ const HomePage = (props) => {
       <Grid container>
         <Grid item xs={12} className={classes.top}>
           <Grid item xs={12}>
-            <Typography variant="h5" color="inherit" gutterBottom>
+            <Typography variant="h3" color="inherit" gutterBottom>
               <FormattedMessage id="home.title" />
             </Typography>
           </Grid>

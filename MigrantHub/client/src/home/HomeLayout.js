@@ -7,7 +7,6 @@ import Typography from '@material-ui/core/Typography';
 import { Link } from 'react-router-dom';
 import { FormattedMessage } from 'react-intl';
 import { FaGithub, FaRegCopyright } from 'react-icons/fa';
-import LanguageSwitch from 'components/LanguageSwitch';
 
 const styles = theme => ({
   content: {
