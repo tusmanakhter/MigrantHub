@@ -102,7 +102,7 @@ const HomePage = (props) => {
             <Button variant="contained" component={Link} to="/signup/personal" className={[classes.button, classes.signUpButton].join(' ')}>
               <FormattedMessage id="signup" />
             </Button>
-            <Button variant="outlined" className={[classes.button, classes.aboutButton].join(' ')}>
+            <Button variant="outlined" component={Link} to="/about-us" className={[classes.button, classes.aboutButton].join(' ')}>
               <FormattedMessage id="home.aboutus" />
             </Button>
           </Grid>

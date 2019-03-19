@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Route, Switch, withRouter } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import PropTypes from 'prop-types';
+import AboutUs from 'app/AboutUs'
 import SignUpMigrant from 'account/personal/SignUpMigrant';
 import SignUpBusiness from 'account/business/SignUpBusiness';
 import SignUpAdmin from 'account/admin/SignUpAdmin';
@@ -76,6 +77,7 @@ class Routes extends Component {
           <UnprotectedRoute path="/signup/admin" component={SignUpAdmin} disableLayout exact />
           <UnprotectedRoute path="/login" component={Login} disableLayout exact />
           <UnprotectedRoute path="/forgotpassword" component={ForgotYourPasswordForm} exact />
+          <UnprotectedRoute path="/about-us" component={AboutUs} exact/>
           <ProtectedRoute path="/editmigrant" component={EditMigrant} migrant exact />
           <ProtectedRoute path="/editbusiness" component={EditBusiness} business exact />
           <ProtectedRoute path="/admin/dashboard" component={AdminDashboard} admin />

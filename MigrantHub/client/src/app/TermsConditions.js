@@ -233,7 +233,6 @@ class TermsConditions extends React.Component {
               acceptance, of the Disclaimer Notice and the full Terms and Conditions
               contained herein. Your statutory Consumer Rights are unaffected.
               </b>
-
             </DialogContentText>
           </DialogContent>
           <DialogActions>
