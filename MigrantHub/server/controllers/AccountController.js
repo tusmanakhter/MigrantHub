@@ -49,4 +49,8 @@ module.exports = {
   async resetPassword(userEmail, userPassword, token) {
     return AccountService.resetPassword(userEmail, userPassword, token);
   },
+
+  async checkUserExists(userEmail) {
+    return AccountService.checkUserExists(userEmail);
+  },
 };

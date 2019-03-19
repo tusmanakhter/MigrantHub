@@ -106,8 +106,8 @@ class BaseSignupAdmin extends Component {
     );
   }
 
-  validate = () => {
-    const validation = this.validator.validate(this.state);
+  validate = async () => {
+    const validation = await this.validator.validate(this.state);
     this.setState(prevState => ({
       validation: {
         ...prevState.validation,

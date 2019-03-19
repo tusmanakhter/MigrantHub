@@ -31,7 +31,6 @@ import FormValidator from 'forms/FormValidator';
 import Validations from 'forms/Validations';
 import { handleAutoSuggestChange } from 'helpers/Autosuggest';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import IdApi from 'account/business/IdApi';
 import { organizationTypes } from 'lib/SignUpConstants';
 
 const qs = require('qs');
@@ -354,22 +353,13 @@ class BaseSignupBusiness extends Component {
         throw new Error('Unknown step');
     }
 
-    const validation = this.validator.validate(this.state);
-
-    if (step === 1 && validation.isValid) {
-      const { intl } = this.props;
-      const { corpId } = this.state;
+    let validation;
+    if (step === 1) {
       this.setState({ loading: true });
-      const validId = await IdApi.checkCorpId(corpId);
-
+      validation = await this.validator.validate(this.state);
       this.setState({ loading: false });
-      if (!validId) {
-        validation.corpId = {
-          isInvalid: true,
-          message: `${intl.formatMessage({ id: 'business.corpId' })}  ${intl.formatMessage({ id: 'notvalid' })}`,
-        };
-        validation.isValid = false;
-      }
+    } else {
+      validation = await this.validator.validate(this.state);
     }
 
     this.setState(prevState => ({

@@ -117,4 +117,14 @@ module.exports = {
 
     return UserRepository.update(userEmail, updatePassword);
   },
+
+  async checkUserExists(userEmail) {
+    const userExists = await UserRepository.getUser(userEmail);
+
+    if (!userExists || userExists.userType !== 'local') {
+      throw new ServerError('User does not exist.', 404, `User value: ${userEmail}`);
+    } else {
+      return userExists;
+    }
+  },
 };

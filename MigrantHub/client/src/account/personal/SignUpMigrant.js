@@ -266,7 +266,7 @@ class BaseSignupMigrant extends Component {
     }
   }
 
-  validate = (step) => {
+  validate = async (step) => {
     switch (step) {
       case 0:
         this.validator = new FormValidator(Validations.migrantSignupStep1);
@@ -281,7 +281,7 @@ class BaseSignupMigrant extends Component {
         throw new Error('Unknown step');
     }
 
-    const validation = this.validator.validate(this.state);
+    const validation = await this.validator.validate(this.state);
     this.setState(prevState => ({
       validation: {
         ...prevState.validation,
