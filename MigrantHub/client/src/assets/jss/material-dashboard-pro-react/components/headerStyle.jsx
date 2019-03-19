@@ -12,6 +12,7 @@ import {
   warningColor,
   dangerColor
 } from "assets/jss/material-dashboard-pro-react.jsx";
+import { FormattedRelative } from "react-intl";
 
 const headerStyle = theme => ({
   appBar: {
@@ -89,7 +90,13 @@ const headerStyle = theme => ({
   sidebarMiniIcon: {
     width: "20px",
     height: "17px"
-  }
+  },
+  inlineBlock: {
+    'padding-left': 10,
+    width: '200px',
+    height: '70px',
+    zoom: 0.6,
+  },
 });
 
 export default headerStyle;
