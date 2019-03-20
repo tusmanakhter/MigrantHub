@@ -155,7 +155,6 @@ class BaseLogin extends Component {
           <Divider />
         </div>
         <Typography>Don't have an account? <Link component={RouterLink} to="/signup/personal">Sign up.</Link></Typography>
-        <TermsConditions />
       </LoginSignupLayout>
     );
   }

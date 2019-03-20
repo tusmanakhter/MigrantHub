@@ -1,28 +1,39 @@
-
 import React from 'react';
-import Button from '@material-ui/core/Button';
-import withStyles from '@material-ui/core/styles/withStyles';
-import { injectIntl, intlShape, FormattedMessage } from 'react-intl';
+import { withStyles } from '@material-ui/core/styles';
 import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
+import IconButton from '@material-ui/core/IconButton';
+import CloseIcon from '@material-ui/icons/Close';
+import Slide from '@material-ui/core/Slide';
+import Button from '@material-ui/core/Button';
 
-const styles = theme => ({
-  content: {
+const styles = {
+  appBar: {
+    position: 'relative',
+    color: 'white',
     textAlign: 'center',
   },
-});
+  content: {
+    paddingLeft: '10px',
+    paddingRight: '10px',
+  },
+  flex: {
+    flex: 1,
+  },
+};
+
+function Transition(props) {
+  return <Slide direction="up" {...props} />;
+}
 
 class TermsConditions extends React.Component {
   state = {
     open: false,
-    scroll: 'paper',
   };
 
-  handleClickOpen = scroll => () => {
-    this.setState({ open: true, scroll });
+  handleClickOpen = () => {
+    this.setState({ open: true });
   };
 
   handleClose = () => {
@@ -30,18 +41,29 @@ class TermsConditions extends React.Component {
   };
 
   render() {
+    const { classes } = this.props;
+
     return (
-      <div>
-        <Button size="small" onClick={this.handleClickOpen('paper')}>TERMS AND CONDITIONS</Button>
-        <Dialog
-          open={this.state.open}
-          onClose={this.handleClose}
-          scroll={this.state.scroll}
-          aria-labelledby="scroll-dialog-title"
-        >
-          <DialogTitle id="scroll-dialog-title">Using MigrantHub?</DialogTitle>
-          <DialogContent>
-            <DialogContentText>
+        <>
+          <a size="small" href="#/" onClick={this.handleClickOpen} style={{ textDecoration: 'none' }}>Terms and Conditions</a>
+          <Dialog
+            fullScreen
+            open={this.state.open}
+            onClose={this.handleClose}
+            scroll="paper"
+            aria-labelledby="max-width-dialog-title"
+            TransitionComponent={Transition}
+          >
+            <AppBar className={classes.appBar}>
+              <Toolbar>
+                <IconButton color="inherit" onClick={this.handleClose} aria-label="Close">
+                  <CloseIcon />
+                </IconButton>
+                <h3>Using MigrantHub?</h3>
+              </Toolbar>
+            </AppBar>
+            <br />
+            <div className={classes.content}>
               <b>Terms and Conditions</b>
               <p>In using this website you are deemed to have read and agreed to the
               following terms and conditions:
@@ -211,7 +233,7 @@ class TermsConditions extends React.Component {
               these Terms and Conditions or of any Agreement or any part thereof, or the
               right thereafter to enforce each and every provision. These Terms and
               Conditions shall not be amended, modified, varied or supplemented except in
-              writing and signed by duly authorised representatives of the Company.
+              writing and signed by duly authorised representatives of the Company. 
               </p>
               <br />
               <b>Notification of Changes</b>
@@ -233,18 +255,15 @@ class TermsConditions extends React.Component {
               acceptance, of the Disclaimer Notice and the full Terms and Conditions
               contained herein. Your statutory Consumer Rights are unaffected.
               </b>
-
-            </DialogContentText>
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={this.handleClose} color="primary">
-              OK
+            </div>
+            <br />
+            <Button color="inherit" onClick={this.handleClose}>
+                OK
             </Button>
-          </DialogActions>
-        </Dialog>
-      </div>
+          </Dialog>
+        </>
     );
   }
 }
 
-export default withStyles(styles)(injectIntl(TermsConditions));
+export default withStyles(styles)(TermsConditions);
