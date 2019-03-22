@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
-
+import GridItem from 'components/Grid/GridItem.jsx';
 // @material-ui/core components
 import withStyles from '@material-ui/core/styles/withStyles';
 import AppBar from '@material-ui/core/AppBar';
@@ -18,6 +18,7 @@ import Button from 'components/CustomButtons/Button.jsx';
 
 import headerStyle from 'assets/jss/material-dashboard-pro-react/components/headerStyle.jsx';
 import HeaderLinks from './HeaderLinks';
+import SearchBar from './SearchBar';
 
 function Header({ ...props }) {
   function makeBrand() {
@@ -62,6 +63,9 @@ function Header({ ...props }) {
             )}
           </div>
         </Hidden>
+        <GridItem className={classes.inlineBlock} xs={12} sm={12} md={8} lg={8}>
+          <SearchBar/>
+        </GridItem>
         <div className={classes.flex} />
         <Hidden smDown implementation="css">
           <HeaderLinks rtlActive={rtlActive} />
