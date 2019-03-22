@@ -28,7 +28,7 @@ module.exports = {
   },
 
   getMigrantUser(migrantUserId) {
-    return MigrantUser.findOne({ _id: migrantUserId.toLowerCase() }).exec()
+    return MigrantUser.findOne({ _id: migrantUserId.toLowerCase() }).select('-deleted -deletedDate -type -_id -__v -userType').exec()
       .then(migrantUser => Promise.resolve(migrantUser)).catch((error) => {
         throw new ServerError('There was an error retrieving migrant user.', 400, error);
       });
@@ -36,7 +36,7 @@ module.exports = {
 
   editMigrantUser(migrantUserId, migrantUserObject) {
     return MigrantUser.findByIdAndUpdate({ _id: migrantUserId.toLowerCase() }, migrantUserObject,
-      { new: true }).exec().then(() => Promise.resolve('Migrant user has been updated.')).catch((error) => {
+      { new: true }).exec().then(() => Promise.resolve('Profile updated succesfully.')).catch((error) => {
       throw new ServerError('There was an error retrieving updating migrant user.', 400, error);
     });
   },
