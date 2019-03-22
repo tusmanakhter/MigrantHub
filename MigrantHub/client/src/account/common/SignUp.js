@@ -166,8 +166,7 @@ class SignUp extends Component {
           </form>
         )}
         <div className={classes.terms}>
-          <FormattedHTMLMessage id="signup.terms" />
-          <TermsConditions/>
+          <p><FormattedHTMLMessage id="signup.terms" /><TermsConditions /></p>
         </div>
       </>
     );

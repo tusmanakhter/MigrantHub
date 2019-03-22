@@ -12,7 +12,6 @@ import {
   warningColor,
   dangerColor
 } from "assets/jss/material-dashboard-pro-react.jsx";
-import { FormattedRelative } from "react-intl";
 
 const headerStyle = theme => ({
   appBar: {

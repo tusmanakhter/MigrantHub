@@ -63,8 +63,8 @@ class BaseLogin extends Component {
     this.setState(state => ({ showPassword: !state.showPassword }));
   };
 
-  handleSubmit = () => {
-    const validation = this.validator.validate(this.state);
+  handleSubmit = async () => {
+    const validation = await this.validator.validate(this.state);
     this.setState({ validation });
 
     if (validation.isValid) {
@@ -155,7 +155,6 @@ class BaseLogin extends Component {
           <Divider />
         </div>
         <Typography>Don't have an account? <Link component={RouterLink} to="/signup/personal">Sign up.</Link></Typography>
-        <TermsConditions />
       </LoginSignupLayout>
     );
   }
