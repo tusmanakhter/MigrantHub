@@ -56,31 +56,39 @@ class AboutUs extends Component {
               </h5>
               This project is powered by <b>The Refugee Centre</b>.
               <hr />
-              <div style={{ float: 'center', display: 'inline-block' }}>
-                <h3>Aims</h3>
-                <ls>
-                  <p>Facilitate integration for newcomers</p>
-                  <p>Promote diversity and inclusion</p>
-                  <p>Help businesses reach out to newcomers</p>
-                  <p>Learn about newcomers using the website and guide them using AI technology</p>
-                </ls>
+              <div style={{ display: 'inline-block', padding: '10px 10px 10px 10px' }}>
+                <div style={{ textAlign: 'center' }}>
+                  <ls>
+                    <h3>Aims</h3>
+                    <div style={{ textAlign: 'left' }}>
+                      <li>Facilitate integration for newcomers</li>
+                      <li>Promote diversity and inclusion</li>
+                      <li>Help businesses reach out to newcomers</li>
+                      <li>Learn about newcomers and guide them using AI technology</li>
+                    </div>
+                  </ls>
+                </div>
                 <br />
               </div>
-              <div style={{ float: 'center', display: 'inline-block' }}>
-                <h3>Objectives</h3>
-                <ls>
-                  <p>Provide certified services to all users for free</p>
-                  <p>Learn about our users to personalize the types of services they might like</p>
-                  <p>Assist newcomers in what they are looking for </p>
-                  <p>Centralize all available services in Montreal into one place</p>
-                </ls>
-                <br />
+              <div style={{ display: 'inline-block', padding: '10px 10px 10px 10px' }}>
+                <div style={{ textAlign: 'center' }}>
+                  <h3>Objectives</h3>
+                  <div style={{ textAlign: 'left' }}>
+                    <ls>
+                      <li>Provide certified services to all users for free</li>
+                      <li>Help personalize the types of services they might like</li>
+                      <li>Assist newcomers in what they are looking for </li>
+                      <li>Centralize all available services in Montreal into one place</li>
+                    </ls>
+                  </div>
+                  <br />
+                </div>
               </div>
               <div style={{ clear: 'both' }}>
                 <hr />
                 <h3>Contact MigrantHub</h3>
                 <ls>
-                  <p>Have questions regarding the website? OR Want to help the project? Please feel free to send us an email at:</p>
+                  <p>Have questions regarding the website OR Want to help the project? Please feel free to send us an email at:</p>
                   <h4>mtl-migranthub@placeholder.com</h4>
                 </ls>
               </div>
@@ -89,7 +97,7 @@ class AboutUs extends Component {
             <Grid item xs={12} className={classes.aims}>
               <h3>Current Members</h3>
               <div style={{ float: 'center', display: 'inline-block' }}>
-                <a href="https://github.com/tusmanakhter">Tusman Akther</a><br />
+                <a href="https://github.com/tusmanakhter">Tusman Akhter</a><br />
                 <a href="https://github.com/CodeTaj">Tajbid Choudhury</a><br />
                 <a href="https://github.com/miramarhaba">Mira Marhaba</a><br />
                 <a href="https://github.com/Smoudii">Alexandre Masmoudi</a><br />
