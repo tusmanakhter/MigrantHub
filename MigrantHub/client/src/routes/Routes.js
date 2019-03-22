@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Route, Switch, withRouter } from 'react-router-dom';
-import { ToastContainer, toast } from 'react-toastify';
+import { ToastContainer } from 'react-toastify';
 import PropTypes from 'prop-types';
 import SignUpMigrant from 'account/personal/SignUpMigrant';
 import SignUpBusiness from 'account/business/SignUpBusiness';
@@ -23,8 +23,6 @@ import EventForm from 'events/EventForm';
 import BugForm from 'forms/BugForm';
 import ServiceDetails from 'services/ServiceDetails';
 import EventDetails from 'events/EventDetails';
-import ViewMigrantProfile from 'account/personal/ViewMigrantProfile';
-import ViewBusinessProfile from 'account/business/ViewBusinessProfile';
 import { AuthConsumer } from 'routes/AuthContext';
 import UsersList from 'People/UsersList';
 import FriendPanel from 'components/FriendPanel/FriendPanel';
@@ -76,8 +74,8 @@ class Routes extends Component {
           <UnprotectedRoute path="/signup/admin" component={SignUpAdmin} disableLayout exact />
           <UnprotectedRoute path="/login" component={Login} disableLayout exact />
           <UnprotectedRoute path="/forgotpassword" component={ForgotYourPasswordForm} exact />
-          <ProtectedRoute path="/editmigrant" component={EditMigrant} migrant exact />
-          <ProtectedRoute path="/editbusiness" component={EditBusiness} business exact />
+          <ProtectedRoute path="/profile/personal" component={EditMigrant} migrant exact />
+          <ProtectedRoute path="/profile/business" component={EditBusiness} business exact />
           <ProtectedRoute path="/admin/dashboard" component={AdminDashboard} admin />
           <ProtectedRoute path="/services/create" component={ServiceForm} exact />
           <ProtectedRoute path="/services/review/create/:id" component={CreateReview} exact />
@@ -91,8 +89,6 @@ class Routes extends Component {
           <ProtectedRoute path="/events" component={EventList} exact />
           <ProtectedRoute path="/events/:id" component={EventDetails} />
           <ProtectedRoute path="/users" component={UsersList} exact />
-          <ProtectedRoute path="/migrant/profile" component={ViewMigrantProfile} exact />
-          <ProtectedRoute path="/business/profile" component={ViewBusinessProfile} exact />
           <ProtectedRoute path="/friends" component={FriendPanel} exact />
           <Route component={Error} />
         </Switch>

@@ -149,24 +149,7 @@ class Sidebar extends React.Component {
               <List className={`${classes.list} ${classes.collapseList}`}>
                 <ListItem className={classes.collapseItem}>
                   <NavLink
-                    to={user.type === UserTypes.MIGRANT ? '/migrant/profile' : user.type === UserTypes.BUSINESS ? '/business/profile' : '/'}
-                    className={
-                      `${classes.itemLink} ${classes.userCollapseLinks}`
-                    }
-                  >
-                    <span className={collapseItemMini}>
-                      <PermIdentity />
-                    </span>
-                    <ListItemText
-                      primary={<FormattedMessage id="nav.myprofile" />}
-                      disableTypography
-                      className={collapseItemText}
-                    />
-                  </NavLink>
-                </ListItem>
-                <ListItem className={classes.collapseItem}>
-                  <NavLink
-                    to={user.type === UserTypes.MIGRANT ? '/editmigrant' : user.type === UserTypes.BUSINESS ? '/editbusiness' : '/'}
+                    to={user.type === UserTypes.MIGRANT ? '/profile/personal' : user.type === UserTypes.BUSINESS ? '/profile/business' : '/'}
                     className={
                       `${classes.itemLink} ${classes.userCollapseLinks}`
                     }

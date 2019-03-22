@@ -29,7 +29,8 @@ module.exports = {
 
   getMigrantUser(migrantUserId) {
     return MigrantUser.findOne({ _id: migrantUserId.toLowerCase() }).select('-deleted -deletedDate -type -_id -__v -userType').exec()
-      .then(migrantUser => Promise.resolve(migrantUser)).catch((error) => {
+      .then(migrantUser => Promise.resolve(migrantUser))
+      .catch((error) => {
         throw new ServerError('There was an error retrieving migrant user.', 400, error);
       });
   },

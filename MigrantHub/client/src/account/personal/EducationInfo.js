@@ -48,7 +48,7 @@ class EducationInfo extends Component {
         <Grid container spacing={24}>
           <Grid item xs={12}>
             <Typography align="left" color="textSecondary" variant="h6" gutterBottom>
-              <FormattedMessage id="signup.educationinfo" />
+              <FormattedMessage id="signup.education" />
             </Typography>
             <Divider />
           </Grid>
@@ -59,13 +59,13 @@ class EducationInfo extends Component {
               handleChange={handleChange}
             />
           </Grid>
-          <Grid item xs={3} s={3}>
+          <Grid item xs={12} sm={3}>
             <ProficiencyExams
               proficiencyExams={proficiencyExams}
               handleChange={handleEditSingleObject}
             />
           </Grid>
-          <Grid item xs={9} s={9}>
+          <Grid item xs={12} sm={9}>
             <Other
               other={proficiencyExams.others}
               otherError=""

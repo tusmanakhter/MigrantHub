@@ -46,8 +46,6 @@ class EditMigrant extends Component {
     super(props);
     this.state = {
       alert: null,
-      email: '',
-      password: '',
       firstName: '',
       lastName: '',
       address: '',
@@ -150,18 +148,18 @@ class EditMigrant extends Component {
       return;
     }
 
+    const { user } = this.context;
+
     const {
-      email, password, firstName, lastName, address, apartment, city, province,
+      firstName, lastName, address, apartment, city, province,
       postalCode, phoneNumber, age, gender, nationality, relationshipStatus, status,
       languages, writingLevel, speakingLevel, motherTongue, family, educationLevel,
       proficiencyExams, jobStatus, lookingForJob, currentIncome, workExperience,
       settlingLocation, settlingDuration, joiningReason,
     } = this.state;
 
-    axios.put(`/api/migrants/${email}`,
+    axios.put(`/api/migrants/${user.username}`,
       qs.stringify({
-        email,
-        password,
         firstName,
         lastName,
         address,
@@ -189,7 +187,6 @@ class EditMigrant extends Component {
         settlingLocation,
         settlingDuration,
         joiningReason,
-
       })).then((response) => {
       toast.success(response.data);
     }).catch((e) => {

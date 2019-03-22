@@ -111,7 +111,7 @@ class EmploymentInfo extends Component {
         <Grid container spacing={24}>
           <Grid item xs={12}>
             <Typography align="left" color="textSecondary" variant="h6" gutterBottom>
-              <FormattedMessage id="signup.employmentinfo" />
+              <FormattedMessage id="signup.employment" />
             </Typography>
             <Divider />
           </Grid>
