@@ -8,6 +8,9 @@ import Button from 'components/CustomButtons/Button.jsx';
 import UserTypes from 'lib/UserTypes';
 import QuestionnairePanel from 'components/QuestionnairePanel/QuestionnairePanel';
 import Grid from '@material-ui/core/Grid';
+import TermsConditions from 'app/TermsConditions';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
 import { FormattedMessage } from 'react-intl';
 import { AuthConsumer } from 'routes/AuthContext';
 
@@ -212,7 +215,7 @@ class ServiceList extends Component {
                                     </h4>
                                   </CardHeader>
                                   <CardBody>
-                                    <p><b><FormattedMessage id="legalbox" /></b></p>
+                                    <p><b><FormattedMessage id="legalbox" /> <TermsConditions /></b></p>
                                     <br />
                                     MigrantHub ©
                                   </CardBody>

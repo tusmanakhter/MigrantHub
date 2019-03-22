@@ -8,7 +8,7 @@ import UserTypes from 'lib/UserTypes';
 import Grid from '@material-ui/core/Grid';
 import { FormattedMessage } from 'react-intl';
 import { AuthConsumer } from 'routes/AuthContext';
-
+import TermsConditions from 'app/TermsConditions';
 
 // @material-ui/icons
 import Info from '@material-ui/icons/Info';
@@ -192,7 +192,7 @@ class EventList extends Component {
                             </h4>
                           </CardHeader>
                           <CardBody>
-                            <p><b><FormattedMessage id="legalbox" /></b></p>
+                            <p><b><FormattedMessage id="legalbox" /><TermsConditions /></b></p>
                             <br />
                             MigrantHub ©
                           </CardBody>

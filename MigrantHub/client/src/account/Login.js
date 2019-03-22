@@ -18,6 +18,7 @@ import GoogleButton from 'account/GoogleButton';
 import DividerWithText from 'account/DividerWithText';
 import FormValidator from 'forms/FormValidator';
 import Validations from 'forms/Validations';
+import TermsConditions from 'app/TermsConditions';
 
 const qs = require('qs');
 

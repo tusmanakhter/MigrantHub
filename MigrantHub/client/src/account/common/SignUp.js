@@ -9,6 +9,7 @@ import NextIcon from '@material-ui/icons/ArrowForward';
 import BackIcon from '@material-ui/icons/ArrowBack';
 import CheckIcon from '@material-ui/icons/Check';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import TermsConditions from 'app/TermsConditions';
 import { injectIntl, FormattedMessage, FormattedHTMLMessage } from 'react-intl';
 
 const styles = {
@@ -165,7 +166,7 @@ class SignUp extends Component {
           </form>
         )}
         <div className={classes.terms}>
-          <FormattedHTMLMessage id="signup.terms" />
+          <p><FormattedHTMLMessage id="signup.terms" /><TermsConditions /></p>
         </div>
       </>
     );
