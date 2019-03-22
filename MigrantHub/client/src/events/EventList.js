@@ -9,6 +9,8 @@ import Grid from '@material-ui/core/Grid';
 import { FormattedMessage } from 'react-intl';
 import { AuthConsumer } from 'routes/AuthContext';
 import TermsConditions from 'app/TermsConditions';
+import InfiniteScroll from 'react-infinite-scroller';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 // @material-ui/icons
 import Info from '@material-ui/icons/Info';
@@ -29,6 +31,12 @@ const styles = theme => ({
     paddingTop: theme.spacing.unit * 2,
     paddingBottom: theme.spacing.unit * 2,
   },
+  loader: {
+    margin: 5,
+  },
+  content: {
+    marginBottom: 10,
+  },
 });
 
 class EventList extends Component {
@@ -41,18 +49,6 @@ class EventList extends Component {
       limit: 20,
       moreData: true,
     };
-  }
-
-
-  componentDidMount() {
-    this.fetchData(false, this.props);
-  }
-
-  componentWillReceiveProps(nextProps) {
-    const { location } = this.props;
-    if (nextProps.location !== location) {
-      this.fetchData(true, nextProps);
-    }
   }
 
   fetchData = (redirect, props) => {
@@ -207,40 +203,40 @@ class EventList extends Component {
               <FormattedMessage id="event.browse" />
             </h5>
             <hr />
-            <Grid container spacing={16} alignItems="center" justify="center">
-            {' '}
-              {
-                items.map(item => (
-                  <GridItem>
-                    <EventCard
-                      eventId={item._id}
-                      eventName={item.eventName}
-                      eventImagePath={item.eventImagePath}
-                      eventDescription={item.description}
-                      eventLocation={item.location}
-                      dateStart={item.dateStart}
-                      dateEnd={item.dateEnd}
-                      timeStart={item.timeStart}
-                      timeEnd={item.timeEnd}
-                    />
-                  </GridItem>
-                ))
-              }
-            </Grid>
-            <Grid container spacing={16} alignItems="center" justify="center">
-              <Grid item>
-                {moreData && (
-                  <Button
-                    variant="contained"
-                    color="info"
-                    className={classes.button}
-                    onClick={() => this.fetchData(false, this.props)}
-                  >
-                    Load More
-                  </Button>
-                )}
+            <InfiniteScroll
+              pageStart={0}
+              loadMore={() => this.fetchData(this.props.redirect, this.props)}
+              hasMore={moreData}
+              loader={(
+                <Grid item style={{ paddingBottom: 15 }}>
+                  <CircularProgress className={classes.loader} disableShrink />
+                </Grid>
+              )}
+              threshold={-600}
+              useWindow={false}
+              getScrollParent={() => document.getElementById('mainPanel')}
+            >
+              <Grid className={classes.content} container spacing={16} alignItems="center" justify="center">
+                {' '}
+                {
+                  items.map(item => (
+                    <GridItem>
+                      <EventCard
+                        eventId={item._id}
+                        eventName={item.eventName}
+                        eventImagePath={item.eventImagePath}
+                        eventDescription={item.description}
+                        eventLocation={item.location}
+                        dateStart={item.dateStart}
+                        dateEnd={item.dateEnd}
+                        timeStart={item.timeStart}
+                        timeEnd={item.timeEnd}
+                      />
+                    </GridItem>
+                  ))
+                }
               </Grid>
-            </Grid>
+            </InfiniteScroll>
           </div>
         )}
       </AuthConsumer>

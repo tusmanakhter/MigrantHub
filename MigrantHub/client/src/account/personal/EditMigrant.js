@@ -22,7 +22,7 @@ import { AuthConsumer } from 'routes/AuthContext';
 import qs from 'qs';
 import { FormattedMessage } from 'react-intl';
 import { toast } from 'react-toastify';
-import CustomLinearProgress from 'components/CustomLinearProgress/CustomLinearProgress';
+import LinearProgress from '@material-ui/core/LinearProgress';
 
 const styles = theme => ({
   layout: {
@@ -45,6 +45,7 @@ class EditMigrant extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      accountProgress: 0,
       alert: null,
       firstName: '',
       lastName: '',
@@ -219,7 +220,7 @@ class EditMigrant extends Component {
         <Grid container direction="column" justify="center">
           <legend> <FormattedMessage id="profile.progress" /> </legend>
           {accountProgress}%
-          <CustomLinearProgress
+          <LinearProgress
             variant="determinate"
             color="primary"
             value={accountProgress}
