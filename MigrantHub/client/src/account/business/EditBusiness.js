@@ -67,9 +67,9 @@ class EditBusiness extends Component {
 
     axios.get(`/api/businesses/${user.username}`).then((response) => {
       if (response.status === 200) {
-        const buesinessInfo = qs.parse(qs.stringify(response.data));
+        const businessInfo = qs.parse(qs.stringify(response.data));
         this.setState({
-          ...buesinessInfo,
+          ...businessInfo,
         });
       }
     });
