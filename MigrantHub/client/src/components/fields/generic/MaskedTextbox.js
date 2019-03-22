@@ -19,11 +19,13 @@ const MaskedTextbox = (props) => {
       fullWidth
       helperText={error}
       error={error.length > 0}
+      variant={variant}
       InputProps={{
+        classes: {
+          input: inputClass,
+        },
         inputComponent: mask,
       }}
-      variant={variant}
-      inputClass={inputClass}
       margin={margin}
     />
   );

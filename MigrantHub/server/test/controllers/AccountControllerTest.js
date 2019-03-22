@@ -68,5 +68,10 @@ describe('account controller user', function () {
         await AccountController.resetPassword(req.user._id, req.user.password, req.token);
         assert.calledWith(AccountService.resetPassword, req.user._id, req.user.password, req.token);
     }));
-});
 
+  it('should call checkUserExists account service with correct parameters.', test(async function () {
+    this.stub(AccountService, 'checkUserExists');
+    await AccountController.checkUserExists(req.user._id);
+    assert.calledWith(AccountService.checkUserExists, req.user._id);
+  }));
+});

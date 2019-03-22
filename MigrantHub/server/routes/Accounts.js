@@ -6,6 +6,7 @@ const AccountController = require('../controllers/AccountController');
 const { controllerHandler } = require('../controllers/ControllerUtils');
 
 router.get('/', controllerHandler(AccountController.getCurrentUser, req => [req.user]));
+router.head('/:id', controllerHandler(AccountController.checkUserExists, req => [req.params.id]));
 router.get('/get/type', controllerHandler(AccountController.getUserType, req => [req.user]));
 router.get('/get/user', controllerHandler(AccountController.getUser, req => [req.user._id]));
 router.get('/get/user/:id', controllerHandler(AccountController.getUser, req => [req.params.id]));

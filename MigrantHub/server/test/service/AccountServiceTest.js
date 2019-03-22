@@ -146,4 +146,15 @@ describe('account service user', function () {
         this.stub(UserRepository, 'getUser').returns(req.user2);
         return chai.assert.isRejected(AccountService.resetPassword(req.user._id, req.user.password, req.token), ServerError, 'Invalid reset password request.');
     }));
+
+  it('should call UserRepository getUser and return user when user found for checkUserExists', test(async function () {
+    this.stub(UserRepository, 'getUser').returns(req.user);
+    await AccountService.checkUserExists(req.user._id);
+    assert.calledWith(UserRepository.getUser, req.user._id);
+  }));
+
+  it('should call UserRepository getUser and throw an error when no user found for checkUserExists', test(function () {
+    this.stub(UserRepository, 'getUser').returns(null);
+    return chai.assert.isRejected(AccountService.checkUserExists(req.user._id), ServerError, 'User does not exist.');
+  }));
 });
