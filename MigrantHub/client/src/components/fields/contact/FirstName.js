@@ -5,7 +5,7 @@ import { FormattedMessage } from 'react-intl';
 
 const FirstName = (props) => {
   const {
-    firstName, firstNameError, variant, margin, inputClass, handleChange,
+    firstName, firstNameError, handleChange,
   } = props;
 
   return (
@@ -16,26 +16,14 @@ const FirstName = (props) => {
       value={firstName}
       error={firstNameError}
       handleChange={event => handleChange(event)}
-      variant={variant}
-      inputClass={inputClass}
-      margin={margin}
     />
   );
-};
-
-FirstName.defaultProps = {
-  variant: 'standard',
-  inputClass: '',
-  margin: '',
 };
 
 FirstName.propTypes = {
   firstName: PropTypes.string.isRequired,
   firstNameError: PropTypes.string.isRequired,
   handleChange: PropTypes.func.isRequired,
-  variant: PropTypes.string,
-  inputClass: PropTypes.string,
-  margin: PropTypes.string,
 };
 
 export default FirstName;

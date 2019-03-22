@@ -8,12 +8,16 @@ const styles = ({
   select: {
     textAlign: 'left',
   },
+  textbox: {
+    height: 24,
+    padding: 11,
+  },
 });
 
 const Dropdown = (props) => {
   const {
     classes, name, label, value, error, options, handleChange,
-    variant, inputClass, endAdornment, margin,
+    endAdornment,
   } = props;
   return (
     <TextField
@@ -26,15 +30,15 @@ const Dropdown = (props) => {
       fullWidth
       helperText={error}
       error={error.length > 0}
-      variant={variant}
+      variant="outlined"
       InputProps={{
         endAdornment,
         classes: {
-          input: inputClass,
+          input: classes.textbox,
         },
       }}
       InputLabelProps={{
-        margin,
+        margin: 'dense',
       }}
     >
       {options.map(option => (
@@ -47,9 +51,6 @@ const Dropdown = (props) => {
 };
 
 Dropdown.defaultProps = {
-  variant: 'standard',
-  inputClass: '',
-  margin: null,
   endAdornment: null,
 };
 
@@ -61,9 +62,6 @@ Dropdown.propTypes = {
   error: PropTypes.string.isRequired,
   options: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   handleChange: PropTypes.func.isRequired,
-  variant: PropTypes.string,
-  inputClass: PropTypes.string,
-  margin: PropTypes.string,
   endAdornment: PropTypes.node,
 };
 

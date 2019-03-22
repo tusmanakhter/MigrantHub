@@ -2,11 +2,18 @@ import React from 'react';
 import TextField from '@material-ui/core/TextField';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import PropTypes from 'prop-types';
+import withStyles from '@material-ui/core/styles/withStyles';
+
+const styles = {
+  textbox: {
+    height: 24,
+    padding: 11,
+  },
+};
 
 const Years = (props) => {
   const {
-    name, label, value, error, handleChange,
-    variant, margin, inputClass,
+    name, label, value, error, handleChange, classes,
   } = props;
   return (
     <TextField
@@ -19,35 +26,27 @@ const Years = (props) => {
       error={error.length > 0}
       fullWidth
       type="number"
-      variant={variant}
+      variant="outlined"
       InputProps={{
         endAdornment: <InputAdornment position="end">years</InputAdornment>,
         classes: {
-          input: inputClass,
+          input: classes.textbox,
         },
       }}
       InputLabelProps={{
-        margin,
+        margin: 'dense',
       }}
     />
   );
 };
 
-Years.defaultProps = {
-  variant: 'standard',
-  inputClass: '',
-  margin: null,
-};
-
 Years.propTypes = {
+  classes: PropTypes.object.isRequired,
   name: PropTypes.string.isRequired,
   label: PropTypes.oneOfType([PropTypes.string, PropTypes.shape({})]).isRequired,
-  value: PropTypes.string.isRequired,
+  value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
   error: PropTypes.string.isRequired,
   handleChange: PropTypes.func.isRequired,
-  variant: PropTypes.string,
-  inputClass: PropTypes.string,
-  margin: PropTypes.string,
 };
 
-export default Years;
+export default withStyles(styles)(Years);
