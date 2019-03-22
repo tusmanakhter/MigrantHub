@@ -7,7 +7,6 @@ import Typography from '@material-ui/core/Typography';
 import { Link } from 'react-router-dom';
 import { FormattedMessage } from 'react-intl';
 import { FaGithub, FaRegCopyright } from 'react-icons/fa';
-import LanguageSwitch from 'components/LanguageSwitch';
 
 const styles = theme => ({
   content: {
@@ -35,6 +34,9 @@ const styles = theme => ({
     '& a:hover': {
       color: '#e5e5e5',
     },
+  },
+  headerLinks: {
+    fontSize: '18px',
   },
   title: {
     display: 'block',
@@ -99,6 +101,7 @@ const styles = theme => ({
   },
   languageSwitcher: {
     marginRight: 15,
+    zoom: 0.8,
   },
   copyright: {
     display: 'flex',
@@ -122,7 +125,7 @@ class HomeLayout extends Component {
     script.async = true;
     document.head.appendChild(script);
     const script2 = document.createElement('script');
-    script2.appendChild(document.createTextNode("function googleTranslateElementInit() {new google.translate.TranslateElement({pageLanguage: 'en'}, 'google_translate_element');}"));
+    script2.appendChild(document.createTextNode("function googleTranslateElementInit() {new google.translate.TranslateElement({pageLanguage: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');}"));
     document.head.appendChild(script2);
   }
 
@@ -139,12 +142,14 @@ class HomeLayout extends Component {
                   <Typography variant="h6" color="inherit" className={classes.title}>
                     <Link to="/">MigrantHub</Link>
                   </Typography>
-                  <Link to="/login">
-                    <FormattedMessage id="login" />
-                  </Link>
-                  <Link to="/signup/personal">
-                    <FormattedMessage id="signup" />
-                  </Link>
+                  <div className={classes.headerLinks}>
+                    <Link to="/login">
+                      <FormattedMessage id="login" />
+                    </Link>
+                    <Link to="/signup/personal">
+                      <FormattedMessage id="signup" />
+                    </Link>
+                  </div>
                   <div className={classes.languageSwitcher}>
                     <div id="google_translate_element" />
                   </div>

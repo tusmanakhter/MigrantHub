@@ -33,7 +33,7 @@ class Layout extends React.Component {
     script.async = true;
     document.head.appendChild(script);
     const script2 = document.createElement('script');
-    script2.appendChild(document.createTextNode("function googleTranslateElementInit() {new google.translate.TranslateElement({pageLanguage: 'en'}, 'google_translate_element');}"));
+    script2.appendChild(document.createTextNode("function googleTranslateElementInit()  {new google.translate.TranslateElement({pageLanguage: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');}"));
     document.head.appendChild(script2);
   }
 
