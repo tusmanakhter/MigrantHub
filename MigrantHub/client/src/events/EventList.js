@@ -61,16 +61,13 @@ class EventList extends Component {
 
     let editOwnerEmail = '';
     if (location.state) {
-      this.setState({
-        editMode: location.state.editMode,
-        editOwner: location.state.editOwner,
-      });
+      if (location.state.editMode) {
+        editOwnerEmail = location.state.editOwner;
 
-      editOwnerEmail = location.state.editOwner;
-
-      if (location.state.searchMode) {
-        searchMode = location.state.searchMode;
-        searchQuery = location.state.searchQuery;
+        if (location.state.searchMode) {
+          searchMode = location.state.searchMode;
+          searchQuery = location.state.searchQuery;
+        }
       }
     }
 

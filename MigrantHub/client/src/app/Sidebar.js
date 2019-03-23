@@ -186,23 +186,25 @@ class Sidebar extends React.Component {
                     />
                   </NavLink>
                 </ListItem>
-                <ListItem className={classes.collapseItem}>
-                  <NavLink
-                    to={{ pathname: '/events', state: { editOwner: email, editMode: true } }}
-                    className={
-                      `${classes.itemLink} ${classes.userCollapseLinks}`
-                    }
-                  >
-                    <span className={collapseItemMini}>
-                      <Event />
-                    </span>
-                    <ListItemText
-                      primary={<FormattedMessage id="nav.myevents" />}
-                      disableTypography
-                      className={collapseItemText}
-                    />
-                  </NavLink>
-                </ListItem>
+                {user.type === UserTypes.BUSINESS && (
+                  <ListItem className={classes.collapseItem}>
+                    <NavLink
+                      to={{ pathname: '/events', state: { editOwner: email, editMode: true } }}
+                      className={
+                        `${classes.itemLink} ${classes.userCollapseLinks}`
+                      }
+                    >
+                      <span className={collapseItemMini}>
+                        <Event />
+                      </span>
+                      <ListItemText
+                        primary={<FormattedMessage id="nav.myevents" />}
+                        disableTypography
+                        className={collapseItemText}
+                      />
+                    </NavLink>
+                  </ListItem>
+                )}
               </List>
             </Collapse>
           </ListItem>
