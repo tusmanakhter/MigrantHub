@@ -19,7 +19,7 @@ import { cardTitle } from 'assets/jss/material-dashboard-pro-react.jsx';
 import SweetAlert from 'react-bootstrap-sweetalert';
 import sweetAlertStyle from 'assets/jss/material-dashboard-pro-react/views/sweetAlertStyle.jsx';
 import Button from 'components/CustomButtons/Button.jsx';
-import moment, { invalid } from 'moment';
+import moment from 'moment';
 
 const styles = {
   ...sweetAlertStyle,
@@ -248,16 +248,12 @@ class ServiceDetails extends Component {
                     <h4 className={classes.cardIconTitle}><b>{serviceTitle}</b></h4>
                   </CardHeader>
                   <CardBody>
-                  <Grid container spacing={1}>
-                  <GridItem xs={12} sm={12} md={12} lg={6}>
-                    {serviceSummary !== undefined &&
                     <GridItem xs={12} align="left">
                       <h5><b> Summary </b></h5>
                       <p>{serviceSummary}</p>
-                    </GridItem >
-                    }
+                    </GridItem>
                     {serviceDescription !== undefined &&
-                    <GridItem xs={12} sm={12} md={12} lg={6} align="left">
+                    <GridItem xs={12} align="left">
                       <h5><b> Description </b></h5>
                       <p>{serviceDescription}</p>
                     </GridItem>
@@ -269,7 +265,7 @@ class ServiceDetails extends Component {
                         </GridItem>
                         <GridItem>
                           <GridContainer xs={12} sm={12} md={12} lg={12} align="left">
-                                <GridItem xs={12} sm={4} md={4} lg={6}>
+                          <GridItem xs={12} sm={4} md={4} lg={6}>
                                   {' '}
                                   {location.address}
                                   {', '}
@@ -280,24 +276,24 @@ class ServiceDetails extends Component {
                                   {location.province}
                                   {', '}
                                   {location.postalCode}
+                                  <br/>
+                                  {'  '}
+                                  {location.phoneNumber}
                                 </GridItem>
-                                <GridItem>
-                                {location.phoneNumber}
-                                </GridItem>
-                            </GridContainer>
+                              </GridContainer>
                         </GridItem>
                       </div>
                     )}
 
                     {serviceDate !== undefined && moment(serviceDate.startDate).format('MMM D YYYY') !== "Invalid date" && (
-                      <GridItem xs={12} sm={8} md={8} lg={6} align="left">
+                      <GridItem xs={12} sm={8} md={8} lg={4} align="left">
                         <h5><b> Date </b></h5>
                                     From {moment(serviceDate.startDate).format('MMM D YYYY')} until {moment(serviceDate.endDate).format('MMM D YYYY')}
                       </GridItem>
                     )}
 
                     {serviceHours !== undefined && serviceHours.length !== 0 && (
-                      <GridItem xs={12} sm={8} md={8} lg={6} align="left">
+                      <GridItem xs={12} sm={8} md={8} lg={4} align="left">
                         <h5><b> Time </b></h5>
                         {serviceHours.map((member, index) => (
                           <Grid item xs={12}>
@@ -306,16 +302,15 @@ class ServiceDetails extends Component {
                         ))}
                       </GridItem>
                     )}
-                    </GridItem>
+                    <Grid container spacing={1}>
                       {location !== undefined && location.address !== '' && (
-                        <Grid item lg={6} md={12} sm={12} xs={12} className={classes.gridStyleSmallPadding}>
+                        <Grid item lg={6} md={6} sm={12} xs={12} className={classes.gridStyleSmallPadding}>
                           <GoogleMaps
                                 location={location}
                               />
                         </Grid>
                       )}
-                      </Grid>
-                      <Grid item lg={12} md={12} sm={12} xs={12} className={classes.gridStyleSmallPadding}>
+                      <Grid item lg={6} md={6} sm={12} xs={12} className={classes.gridStyleSmallPadding}>
                         <Reviews
                             serviceId={serviceId}
                             serviceTitle={serviceTitle}
@@ -324,7 +319,7 @@ class ServiceDetails extends Component {
                             handleUpdate={() => this.handleReviewUpdate()}
                           />
                       </Grid>
-                    
+                    </Grid>
                   </CardBody>
                 </Card>
               </GridItem>

@@ -94,7 +94,7 @@ const ServiceCard = (props) => {
             </CardHeader>
             <CardBody>
               <div className={classes.bodyContainer}>
-              {((serviceTitle).length > 110) ? 
+              {(serviceTitle != undefined && (serviceTitle).length > 110) ? 
                 <Typography variant="body2">
                     {((serviceTitle).substring(0,105))} <b>... View More</b>
                 </Typography>: 
