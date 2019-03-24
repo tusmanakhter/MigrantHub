@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import ServiceCategories from 'services/ServiceCategoryMenu2';
+import PinnedService from 'services/PinnedService';
 import PropTypes from 'prop-types';
 import ServiceRecommendation from 'services/ServiceRecommendation';
 
@@ -14,7 +14,7 @@ class Main extends Component {
     return (
       <React.Fragment>
         <ServiceRecommendation location={location} />
-        <ServiceCategories classes={classes} />
+        <PinnedService classes={classes} />
       </React.Fragment>
     );
   }

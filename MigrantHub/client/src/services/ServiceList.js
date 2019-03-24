@@ -10,6 +10,7 @@ import QuestionnairePanel from 'components/QuestionnairePanel/QuestionnairePanel
 import Grid from '@material-ui/core/Grid';
 import { FormattedMessage } from 'react-intl';
 import { AuthConsumer } from 'routes/AuthContext';
+import { toast } from 'react-toastify';
 
 // @material-ui/icons
 import Info from '@material-ui/icons/Info';
@@ -43,6 +44,7 @@ class ServiceList extends Component {
       limit: 20,
       moreData: true,
     };
+    this.addPinnedService = this.addPinnedService.bind(this);
   }
 
   componentDidMount() {
@@ -55,6 +57,15 @@ class ServiceList extends Component {
       this.fetchData(true, nextProps);
     }
   }
+
+  addPinnedService(serviceId) {
+    axios.put('/api/services/pinned/' + serviceId)
+    .then((response) => {
+      toast.success(response.data)
+    }).catch((error) => {
+        toast.success(error.response.data)
+      });
+  };
 
   setRedirectToServiceForm = () => {
     this.setState({
@@ -259,6 +270,9 @@ class ServiceList extends Component {
                         serviceHours={item.serviceHours}
                         rating={item.avgRating}
                         count={item.countRating}
+                        pinIcon={<i class="fas fa-thumbtack"></i>}
+                        pinIconHandle={this.addPinnedService}
+                        pinIconHelperText={"Pin to Dashboard"}
                       />
                     </GridItem>
                   ))
