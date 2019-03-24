@@ -7,6 +7,7 @@ const MigrantRepository = require('../repository/MigrantRepository');
 const BusinessRepository = require('../repository/BusinessRepository');
 const AdminRepository = require('../repository/AdminRepository');
 const UserRepository = require('../repository/UserRepository');
+const PinnedServiceService = require('../service/PinnedServiceService');
 const { ServerError } = require('../errors/ServerError');
 const SendEmail = require('../mail/SendEmail');
 const { SignupConfirmationEmail } = require('../mail/EmailMessages');
@@ -24,6 +25,7 @@ module.exports = {
       migrantUserObject.password = hash;
 
       await MigrantRepository.createUser(migrantUserObject);
+      await PinnedServiceService.createPinnedService(migrantUserObject.email);
 
       const receiverEmail = migrantUserObject.email;
       SendEmail.sendEmail(receiverEmail, title, message);
