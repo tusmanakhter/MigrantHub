@@ -1,7 +1,7 @@
 const PinnedServiceService = require('../service/PinnedServiceService');
 
 module.exports = {
-  
+
   async updatePinnedService(userId, serviceId) {
     return PinnedServiceService.updatePinnedService(userId, serviceId);
   },
@@ -13,5 +13,5 @@ module.exports = {
   async deletePinnedService(userId, serviceId) {
     return PinnedServiceService.deletePinnedService(userId, serviceId);
   },
-  
+
 };

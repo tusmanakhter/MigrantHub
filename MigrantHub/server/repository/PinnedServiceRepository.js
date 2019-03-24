@@ -19,23 +19,23 @@ module.exports = {
       });
   },
 
-  getPinnedService(userId, serviceId, allowDeleted){
+  getPinnedService(userId, serviceId, allowDeleted) {
     if (allowDeleted) {
       return PinnedService.findOne({
         _id: userId,
-        pinnedList: { $elemMatch: { serviceId: serviceId} },
+        pinnedList: { $elemMatch: { serviceId } },
       }).exec()
-      .then(pinnedService => Promise.resolve(pinnedService)).catch((error) => {
-        throw new ServerError('There was an error retrieving pinned service.', 400, error);
-      });
+        .then(pinnedService => Promise.resolve(pinnedService)).catch((error) => {
+          throw new ServerError('There was an error retrieving pinned service.', 400, error);
+        });
     }
     return PinnedService.findOne({
       _id: userId,
-      pinnedList: { $elemMatch: { serviceId: serviceId, deleted: false } },
+      pinnedList: { $elemMatch: { serviceId, deleted: false } },
     }).exec()
-    .then(pinnedService => Promise.resolve(pinnedService)).catch((error) => {
-      throw new ServerError('There was an error retrieving pinned service.', 400, error);
-    });
+      .then(pinnedService => Promise.resolve(pinnedService)).catch((error) => {
+        throw new ServerError('There was an error retrieving pinned service.', 400, error);
+      });
   },
 
   getPinnedServices(query, offset, limit) {
@@ -60,13 +60,14 @@ module.exports = {
           throw new ServerError('There was an error retrieving pinned services.', 400, error);
         });
     }
-    return PinnedService.find(query).exec().then(services => Promise.resolve(services)).catch((error) => {
-      throw new ServerError('There was an error retrieving pinned services.', 400, error);
-    });
+    return PinnedService.find(query).exec()
+      .then(services => Promise.resolve(services)).catch((error) => {
+        throw new ServerError('There was an error retrieving pinned services.', 400, error);
+      });
   },
 
   updatePinnedServiceState(userId, serviceId, deleted) {
-    return PinnedService.update({"_id": userId, "pinnedList.serviceId": serviceId}, {$set: {"pinnedList.$.deleted": deleted } },
+    return PinnedService.update({ _id: userId, 'pinnedList.serviceId': serviceId }, { $set: { 'pinnedList.$.deleted': deleted } },
       { new: true }).exec()
       .then(() => Promise.resolve('Pinned Service has been updated.')).catch((error) => {
         throw new ServerError('There was an error updating pinned service in db.', 400, error);

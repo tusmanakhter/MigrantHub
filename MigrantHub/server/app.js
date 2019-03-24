@@ -76,11 +76,13 @@ mongoose.connect(connectionString, {
   useNewUrlParser: true,
 }, (error) => {
   if (error) {
+    // eslint-disable-next-line no-console
     console.error('Check if MongoDB is installed and running.');
     throw error;
   }
 });
 const database = mongoose.connection;
+// eslint-disable-next-line no-console
 database.on('error', console.error.bind(console, 'MongoDB connection error: '));
 
 module.exports = app;
