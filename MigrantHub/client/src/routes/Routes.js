@@ -34,7 +34,7 @@ import ServiceSuggestionForm from 'services/ServiceSuggestionForm';
 import ServiceSuggestionList from 'services/ServiceSuggestionList';
 import ForgotYourPasswordForm from 'account/forgotYourPassword/ForgotYourPasswordForm';
 import CreateReview from 'services/CreateReview';
-
+import ServiceCategoryList from 'services/ServiceCategoryList'
 class Routes extends Component {
   state = {
     isLoading: true,
@@ -78,9 +78,10 @@ class Routes extends Component {
           <UnprotectedRoute path="/login" component={Login} disableLayout exact />
           <UnprotectedRoute path="/forgotpassword" component={ForgotYourPasswordForm} exact />
           <UnprotectedRoute path="/about-us" component={AboutUs} exact/>
+          <ProtectedRoute path="/admin/dashboard" component={AdminDashboard} admin />
           <ProtectedRoute path="/editmigrant" component={EditMigrant} migrant exact />
           <ProtectedRoute path="/editbusiness" component={EditBusiness} business exact />
-          <ProtectedRoute path="/admin/dashboard" component={AdminDashboard} admin />
+          <ProtectedRoute path="/categories" component={ServiceCategoryList} exact />
           <ProtectedRoute path="/services/create" component={ServiceForm} exact />
           <ProtectedRoute path="/services/review/create/:id" component={CreateReview} exact />
           <ProtectedRoute path="/services/suggestions/create" component={ServiceSuggestionForm} migrant exact />

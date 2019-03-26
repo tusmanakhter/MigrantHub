@@ -128,7 +128,7 @@ const sidebarStyle = theme => ({
     width: "30px",
     display: "inline-block",
     maxHeight: "30px",
-    marginLeft: "5px",
+    marginLeft: "6px",
     marginRight: "1px",
     marginTop: "1px",
     color: "inherit"
@@ -136,7 +136,7 @@ const sidebarStyle = theme => ({
   logoMiniRTL: {
     float: "right",
     marginRight: "5px",
-    marginLeft: "5px"
+    marginLeft: "8px"
   },
   logoNormal: {
     ...defaultFont,
@@ -184,7 +184,7 @@ const sidebarStyle = theme => ({
   },
   list: {
     marginTop: "1px",
-    paddingLeft: "5px",
+    paddingLeft: "8px",
     paddingRight: "5px",
     paddingTop: "0",
     paddingBottom: "0",
@@ -251,7 +251,7 @@ const sidebarStyle = theme => ({
   itemText: {
     color: "inherit",
     ...defaultFont,
-    margin: "0",
+    margin: "0px",
     lineHeight: "30px",
     fontSize: "14px",
     transform: "translate3d(0px, 0, 0)",
@@ -278,7 +278,7 @@ const sidebarStyle = theme => ({
   },
   collapseList: {
     marginTop: "1px",
-    marginLeft: "1px",
+    marginLeft: "-24px",
   },
   collapseItem: {
     position: "relative",
@@ -317,6 +317,7 @@ const sidebarStyle = theme => ({
     textTransform: "uppercase",
     width: "30px",
     marginRight: "5px",
+    marginLeft: "0px",
     textAlign: "center",
     letterSpacing: "1px",
     position: "relative",
@@ -344,7 +345,7 @@ const sidebarStyle = theme => ({
     fontSize: "14px"
   },
   collapseItemTextRTL: {
-    textAlign: "right"
+    textAlign: "center"
   },
   collapseItemTextMiniRTL: {
     transform: "translate3d(25px, 0, 0) !important"

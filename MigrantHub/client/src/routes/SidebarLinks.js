@@ -5,21 +5,20 @@ import DateRange from '@material-ui/icons/DateRange';
 import People from '@material-ui/icons/People';
 import UserTypes from 'lib/UserTypes';
 import { FormattedMessage } from 'react-intl';
-import { serviceCategories } from 'lib/ServiceCategories';
-import ServiceCategoryMenu from 'services/ServiceCategoryMenu1'
-// {
-//   path: '/services',
-//   name: <FormattedMessage id="services" />,
-//   icon: DashboardIcon,
-//   type: [UserTypes.ADMIN, UserTypes.BUSINESS, UserTypes.MIGRANT],
-//   option: ServiceCategoryMenu
-// }
+import ServiceCategoryMenu from 'services/ServiceCategoryMenu1';
+
 const SidebarLinks = [
   {
     path: '/services/suggestions',
     name: <FormattedMessage id="nav.servicesuggestions" />,
     icon: DashboardIcon,
     type: [UserTypes.ADMIN, UserTypes.BUSINESS],
+  },
+  {
+    path: '/categories',
+    name: <FormattedMessage id="services" />,
+    icon: DashboardIcon,
+    type: [UserTypes.ADMIN, UserTypes.BUSINESS, UserTypes.MIGRANT],
   },
   {
     path: '/events',
