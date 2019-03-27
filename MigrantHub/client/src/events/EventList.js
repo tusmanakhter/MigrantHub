@@ -9,6 +9,7 @@ import Grid from '@material-ui/core/Grid';
 import { FormattedMessage } from 'react-intl';
 import { AuthConsumer } from 'routes/AuthContext';
 import TermsConditions from 'app/TermsConditions';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 // @material-ui/icons
 import Info from '@material-ui/icons/Info';
@@ -29,6 +30,9 @@ const styles = theme => ({
     paddingTop: theme.spacing.unit * 2,
     paddingBottom: theme.spacing.unit * 2,
   },
+  progress: {
+    margin: theme.spacing.unit * 2,
+  },
 });
 
 class EventList extends Component {
@@ -36,6 +40,7 @@ class EventList extends Component {
     super(props);
     this.state = {
       items: [],
+      isLoading: false,
       redirectToEventForm: false,
       offset: 0,
       limit: 20,
@@ -56,6 +61,8 @@ class EventList extends Component {
   }
 
   fetchData = (redirect, props) => {
+    this.setState({ isLoading: true });
+
     const { location } = props;
     const { limit } = this.state;
     let { offset } = this.state;
@@ -64,6 +71,7 @@ class EventList extends Component {
     let searchMode = false;
 
     let editOwnerEmail = '';
+
     if (location.state) {
       this.setState({
         editMode: location.state.editMode,
@@ -93,18 +101,20 @@ class EventList extends Component {
     }).then((response) => {
       if (response.data.length === 0) {
         if (redirect) {
-          this.setState({ items: [], moreData: false });
+          this.setState({ items: [], moreData: false, isLoading: false });
         } else {
-          this.setState({ moreData: false });
+          this.setState({ moreData: false, isLoading: false });
         }
       } else if (redirect) {
         this.setState({
+          isLoading: false,
           items: response.data,
           moreData: true,
           offset: offset + response.data.length,
         });
       } else {
         this.setState(prevState => ({
+          isLoading: false,
           items: prevState.items.concat(response.data),
           offset: prevState.offset + response.data.length,
         }));
@@ -128,7 +138,7 @@ class EventList extends Component {
 
   render() {
     const { classes } = this.props;
-    const { items, moreData } = this.state;
+    const { items, moreData, isLoading } = this.state;
     return (
       <AuthConsumer>
         {({ user }) => (
@@ -229,16 +239,26 @@ class EventList extends Component {
             </Grid>
             <Grid container spacing={16} alignItems="center" justify="center">
               <Grid item>
-                {moreData && (
-                  <Button
-                    variant="contained"
-                    color="info"
-                    className={classes.button}
-                    onClick={() => this.fetchData(false, this.props)}
-                  >
-                    Load More
-                  </Button>
-                )}
+              {isLoading ? 
+                  (<div>
+                      <CircularProgress className={classes.progress} />
+                    </div>) 
+                  : 
+                (moreData ? 
+                  (moreData && (
+                    <Button
+                      variant="contained"
+                      color="info"
+                      className={classes.button}
+                      onClick={() => this.fetchData(false, this.props)}
+                    >
+                      Load More
+                    </Button>
+                  ))
+                  :
+                  (<h6>No more events to load</h6>)
+                )
+                }
               </Grid>
             </Grid>
           </div>

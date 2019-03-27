@@ -9,8 +9,7 @@ import UserTypes from 'lib/UserTypes';
 import QuestionnairePanel from 'components/QuestionnairePanel/QuestionnairePanel';
 import Grid from '@material-ui/core/Grid';
 import TermsConditions from 'app/TermsConditions';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import { FormattedMessage } from 'react-intl';
 import { AuthConsumer } from 'routes/AuthContext';
 
@@ -33,6 +32,9 @@ const styles = theme => ({
     paddingTop: theme.spacing.unit * 2,
     paddingBottom: theme.spacing.unit * 2,
   },
+  progress: {
+    margin: theme.spacing.unit * 2,
+  },
 });
 
 class ServiceList extends Component {
@@ -40,6 +42,7 @@ class ServiceList extends Component {
     super(props);
     this.state = {
       items: [],
+      isLoading: false,
       redirectToServiceForm: false,
       redirectToSuggestionForm: false,
       offset: 0,
@@ -96,6 +99,8 @@ class ServiceList extends Component {
     let category = '';
     let subcategory = '';
 
+    this.setState({ isLoading: true });
+
     if (location.state) {
       if (location.state.editMode) {
         editOwnerEmail = location.state.editOwner;
@@ -125,18 +130,20 @@ class ServiceList extends Component {
     }).then((response) => {
       if (response.data.length === 0) {
         if (redirect) {
-          this.setState({ items: [], moreData: false });
+          this.setState({ items: [], moreData: false, isLoading: false });
         } else {
-          this.setState({ moreData: false });
+          this.setState({ moreData: false, isLoading: false });
         }
       } else if (redirect) {
         this.setState({
+          isLoading: false,
           items: response.data,
           moreData: true,
           offset: offset + response.data.length,
         });
       } else {
         this.setState(prevState => ({
+          isLoading: false,
           items: prevState.items.concat(response.data),
           offset: prevState.offset + response.data.length,
         }));
@@ -146,7 +153,7 @@ class ServiceList extends Component {
 
   render() {
     const { classes } = this.props;
-    const { items, moreData } = this.state;
+    const { items, moreData, isLoading } = this.state;
 
     return (
       <AuthConsumer>
@@ -269,16 +276,26 @@ class ServiceList extends Component {
               </Grid>
               <Grid container spacing={16} alignItems="center" justify="center">
                 <Grid item>
-                  {moreData && (
-                    <Button
-                      variant="contained"
-                      color="info"
-                      className={classes.button}
-                      onClick={() => this.fetchData(false, this.props)}
-                    >
-                      Load More
-                    </Button>
-                  )}
+                {isLoading ? 
+                  (<div>
+                      <CircularProgress className={classes.progress} />
+                    </div>) 
+                  : 
+                  (moreData ? 
+                    (moreData && (
+                      <Button
+                        variant="contained"
+                        color="info"
+                        className={classes.button}
+                        onClick={() => this.fetchData(false, this.props)}
+                      >
+                        Load More
+                      </Button>
+                    ))
+                    :
+                    <h6>No more services to load</h6>
+                  )
+                }
                 </Grid>
               </Grid>
             </div>
