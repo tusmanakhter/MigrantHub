@@ -51,19 +51,26 @@ class EmploymentInfo extends Component {
   state = {
     jobStatusError: '',
     lookingForJobError: '',
+    currentIncomeError: '',
     workExperienceError: [],
   }
 
   validate = () => {
-    const { jobStatus, workExperience, intl } = this.props;
+    const { jobStatus, workExperience, currentIncome, intl } = this.props;
     let isError = false;
     const errors = {
       jobStatusError: '',
+      currentIncomeError: '',
       workExperienceError: [],
     };
 
     if (validator.isEmpty(jobStatus)) {
       errors.jobStatusError = `${intl.formatMessage({ id: 'employment.status' })}  ${intl.formatMessage({ id: 'isrequired' })}`;
+      isError = true;
+    }
+
+    if ((currentIncome !== '' && currentIncome !== undefined) && !validator.isInt(currentIncome, { min: 0 })) {
+      errors.currentIncomeError = `${intl.formatMessage({ id: 'employment.income' })}  ${intl.formatMessage({ id: 'notvalid' })}`;
       isError = true;
     }
 
@@ -88,6 +95,9 @@ class EmploymentInfo extends Component {
       if (validator.isEmpty(job.years)) {
         errors.workExperienceError[index].years = `${intl.formatMessage({ id: 'employment.length' })}  ${intl.formatMessage({ id: 'isrequired' })}`;
         isError = true;
+      } else if (!validator.isInt(job.years, { min: 1, max: 100 })) {
+        errors.workExperienceError[index].years = `${intl.formatMessage({ id: 'employment.length' })}  ${intl.formatMessage({ id: 'notvalid' })}`;
+        isError = true;
       }
     });
 
@@ -104,7 +114,7 @@ class EmploymentInfo extends Component {
       classes, handleChange, handleAddObject, handleRemoveObject, handleEditObject,
       jobStatus, lookingForJob, currentIncome, workExperience,
     } = this.props;
-    const { jobStatusError, lookingForJobError } = this.state;
+    const { jobStatusError, lookingForJobError, currentIncomeError } = this.state;
 
     return (
       <React.Fragment>
@@ -125,7 +135,7 @@ class EmploymentInfo extends Component {
           <Grid item xs={12} sm={4}>
             <CurrentIncome
               currentIncome={currentIncome}
-              currentIncomeError=""
+              currentIncomeError={currentIncomeError}
               handleChange={handleChange}
             />
           </Grid>

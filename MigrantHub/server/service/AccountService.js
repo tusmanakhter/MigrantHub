@@ -14,7 +14,7 @@ const { SignupConfirmationEmail } = require('../mail/EmailMessages');
 module.exports = {
   async createUser(parsedMigrantUserObject) {
     const migrantUserObject = parsedMigrantUserObject;
-    const errors = await MigrantAccountValidator.migrantAccountValidator(migrantUserObject);
+    const errors = await MigrantAccountValidator.migrantAccountValidator(migrantUserObject, false);
     const { title, user } = SignupConfirmationEmail;
     const { message } = user;
 
@@ -35,7 +35,8 @@ module.exports = {
 
   async createBusiness(parsedBusinessUserObject) {
     const businessUserObject = parsedBusinessUserObject;
-    const errors = await BusinessAccountValidator.businessAccountValidator(businessUserObject);
+    const errors = await BusinessAccountValidator
+      .businessAccountValidator(businessUserObject, false);
     const { title, business } = SignupConfirmationEmail;
     const { message } = business;
     if (errors === '') {

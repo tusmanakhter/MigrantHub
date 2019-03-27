@@ -118,7 +118,7 @@ class EditBusiness extends Component {
       })).then((response) => {
       toast.success(response.data);
     }).catch((e) => {
-      toast.error(e.data);
+      toast.error(e.response.data);
     });
   }
 
@@ -128,6 +128,7 @@ class EditBusiness extends Component {
       city, province, postalCode, phoneNumber, organizationName, orgType,
       department, serviceType, description, alert,
     } = this.state;
+    const { user } = this.context;
     const { classes } = this.props;
 
     return (
@@ -154,6 +155,7 @@ class EditBusiness extends Component {
             province={province}
             postalCode={postalCode}
             phoneNumber={phoneNumber}
+            user={user}
           />
         </div>
         <div className={classes.item}>

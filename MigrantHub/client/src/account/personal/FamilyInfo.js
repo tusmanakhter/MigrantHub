@@ -63,6 +63,9 @@ class FamilyInfo extends Component {
       if (validator.isEmpty(member.age)) {
         errors.familyError[index].age = `${intl.formatMessage({ id: 'personal.age' })}  ${intl.formatMessage({ id: 'isrequired' })}`;
         isError = true;
+      } else if (!validator.isInt(member.age, { min: 1, max: 100 })) {
+        errors.familyError[index].age = `${intl.formatMessage({ id: 'personal.age' })}  ${intl.formatMessage({ id: 'notvalid' })}`;
+        isError = true;
       }
 
       if (validator.isEmpty(member.gender)) {

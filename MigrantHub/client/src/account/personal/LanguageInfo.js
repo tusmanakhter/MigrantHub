@@ -122,6 +122,7 @@ class LanguageInfo extends Component {
               language={motherTongue}
               languageError={motherTongueError}
               handleAutoSuggestChange={handleAutoSuggestChange('motherTongue')}
+              motherTongue
             />
           </Grid>
           <Grid item xs={12} sm={4}>

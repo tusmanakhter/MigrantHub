@@ -112,9 +112,9 @@ class EditMigrant extends Component {
         const migrantInfo = qs.parse(qs.stringify(response.data));
         if (migrantInfo.proficiencyExams) {
           migrantInfo.proficiencyExams = {
-            ielts: (migrantInfo.ielts === 'true'),
-            french: (migrantInfo.french === 'true'),
-            others: migrantInfo.proficiencyExams.other || '',
+            ielts: (migrantInfo.proficiencyExams.ielts === 'true'),
+            french: (migrantInfo.proficiencyExams.french === 'true'),
+            others: migrantInfo.proficiencyExams.others || '',
           };
         }
         const progress = Object.keys(migrantInfo).filter(key => (migrantInfo[key] !== null && migrantInfo[key] !== ''));
@@ -191,7 +191,7 @@ class EditMigrant extends Component {
       })).then((response) => {
       toast.success(response.data);
     }).catch((e) => {
-      toast.error(e.data);
+      toast.error(e.response.data);
     });
   }
 
@@ -203,6 +203,7 @@ class EditMigrant extends Component {
       lookingForJob, currentIncome, workExperience, settlingLocation, settlingDuration,
       joiningReason, alert, accountProgress,
     } = this.state;
+    const { user } = this.context;
     const { classes } = this.props;
 
     return (
@@ -242,6 +243,7 @@ class EditMigrant extends Component {
             province={province}
             postalCode={postalCode}
             phoneNumber={phoneNumber}
+            user={user}
           />
         </div>
         <div className={classes.item}>

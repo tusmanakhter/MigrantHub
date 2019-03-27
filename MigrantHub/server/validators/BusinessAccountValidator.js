@@ -2,21 +2,22 @@ const validator = require('validator');
 
 module.exports = {
   // Function to perform server-side validation of the create business account before sending to db.
-  async businessAccountValidator(businessObject) {
+  async businessAccountValidator(businessObject, edit) {
     let errors = '';
-
-    if (validator.isEmpty(businessObject.email)) {
-      errors += "{'\n'}Email is required";
-    } else if (!validator.isEmail(businessObject.email)) {
-      errors += "{'\n'}Email is not valid";
-    }
-    if (validator.isEmpty(businessObject.corpId)) {
-      errors += "{'\n'}Corporation ID is required";
-    }
-    if (validator.isEmpty(businessObject.password)) {
-      errors += "{'\n'}Password is empty";
-    } else if (!validator.isLength(businessObject.password, { min: 8 })) {
-      errors += "{'\n'}Password must be atleast 8 characters";
+    if (!edit) {
+      if (validator.isEmpty(businessObject.email)) {
+        errors += "{'\n'}Email is required";
+      } else if (!validator.isEmail(businessObject.email)) {
+        errors += "{'\n'}Email is not valid";
+      }
+      if (validator.isEmpty(businessObject.corpId)) {
+        errors += "{'\n'}Corporation ID is required";
+      }
+      if (validator.isEmpty(businessObject.password)) {
+        errors += "{'\n'}Password is empty";
+      } else if (!validator.isLength(businessObject.password, { min: 8 })) {
+        errors += "{'\n'}Password must be atleast 8 characters";
+      }
     }
     if (validator.isEmpty(businessObject.firstName)) {
       errors += "{'\n'}First name is required and empty";
