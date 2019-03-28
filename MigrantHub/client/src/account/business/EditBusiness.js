@@ -1,28 +1,31 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import withStyles from '@material-ui/core/styles/withStyles';
+import Button from '@material-ui/core/Button';
+import Typography from '@material-ui/core/Typography';
 import axios from 'axios';
 import ContactInfo from 'account/common/ContactInfo';
 import AboutInfo from 'account/business/AboutInfo';
-
-// core components
-import GridContainer from 'components/Grid/GridContainer.jsx';
-import GridItem from 'components/Grid/GridItem.jsx';
-import Card from 'components/Card/Card.jsx';
-import CardBody from 'components/Card/CardBody.jsx';
-import SweetAlert from 'react-bootstrap-sweetalert';
-import Button from 'components/CustomButtons/Button.jsx';
-
+import Paper from '@material-ui/core/Paper';
 import { handleChange } from 'helpers/Forms';
 import { AuthConsumer } from 'routes/AuthContext';
+import qs from 'qs';
+import { toast } from 'react-toastify';
 
-const qs = require('qs');
-
-const styles = ({
-  select: {
-    textAlign: 'left',
+const styles = theme => ({
+  layout: {
+    background: 'white',
+    padding: 20,
+    [theme.breakpoints.down('sm')]: {
+      padding: 10,
+    },
   },
-  mainContainer: {
+  item: {
+    paddingTop: 10,
+    paddingBottom: 20,
+  },
+  button: {
+    margin: theme.spacing.unit,
   },
 });
 
@@ -48,54 +51,29 @@ class EditBusiness extends Component {
 
     this.contactChild = React.createRef();
     this.aboutChild = React.createRef();
-    this.hideAlert = this.hideAlert.bind(this);
-    this.getAccount = this.getAccount.bind(this);
     this.handleChange = handleChange.bind(this);
   }
 
   componentDidMount() {
-    this.getAccount(this);
+    this.getAccount();
   }
 
   componentWillReceiveProps() {
-    this.getAccount(this);
+    this.getAccount();
   }
 
-  getAccount(e) {
+  getAccount = () => {
     const { user } = this.context;
-    axios.get(`/api/businesses/${user.username}`).then((response) => {
-      const jsonObj = qs.parse(qs.stringify(response.data));
 
+    axios.get(`/api/businesses/${user.username}`).then((response) => {
       if (response.status === 200) {
-        e.setState({
-          email: jsonObj.email,
-          corpId: jsonObj.corpId,
-          password: jsonObj.password,
-          firstName: jsonObj.firstName,
-          lastName: jsonObj.lastName,
-          address: jsonObj.address,
-          apartment: jsonObj.apartment,
-          city: jsonObj.city,
-          province: jsonObj.province,
-          postalCode: jsonObj.postalCode,
-          phoneNumber: jsonObj.phoneNumber,
-          organizationName: jsonObj.organizationName,
-          orgType: jsonObj.orgType,
-          department: jsonObj.department,
-          serviceType: jsonObj.serviceType,
-          description: jsonObj.description,
+        const businessInfo = qs.parse(qs.stringify(response.data));
+        this.setState({
+          ...businessInfo,
         });
       }
     });
   }
-
-  handleSave = async () => {
-    const error = await this.validate();
-
-    if (!error) {
-      this.updateAccount(this);
-    }
-  };
 
   validate = async () => {
     const contactError = await this.contactChild.current._wrappedInstance.validate();
@@ -108,41 +86,22 @@ class EditBusiness extends Component {
     return false;
   }
 
-  titleAndTextAlert() {
-    this.setState({
-      alert: (
-        <SweetAlert
-          style={{ display: 'block', marginTop: '-100px' }}
-          onConfirm={() => this.hideAlert()}
-          onCancel={() => this.hideAlert()}
-          confirmBtnCssClass={
-            `${this.props.classes.button} ${this.props.classes.info}`
-          }
-        >
-          Update Successful
-        </SweetAlert>
-      ),
-    });
-    this.handleSave();
-  }
+  updateAccount = async () => {
+    const error = await this.validate();
+    if (error) {
+      return;
+    }
 
-  hideAlert() {
-    this.setState({
-      alert: null,
-    });
-  }
+    const { user } = this.context;
 
-  updateAccount() {
     const {
-      email, password, corpId, firstName, lastName, address, apartment,
+      firstName, lastName, address, apartment,
       city, province, postalCode, phoneNumber, organizationName, orgType,
       department, serviceType, description,
     } = this.state;
-    axios.put(`/api/businesses/${email}`,
+
+    axios.put(`/api/businesses/${user.username}`,
       qs.stringify({
-        email,
-        corpId,
-        password,
         firstName,
         lastName,
         address,
@@ -156,88 +115,75 @@ class EditBusiness extends Component {
         department,
         serviceType,
         description,
-
       })).then((response) => {
-      this.setState({
-        messageFromServer: response.data,
-      });
+      toast.success(response.data);
+    }).catch((e) => {
+      toast.error(e.response.data);
     });
   }
 
   render() {
+    const {
+      firstName, lastName, address, apartment,
+      city, province, postalCode, phoneNumber, organizationName, orgType,
+      department, serviceType, description, alert,
+    } = this.state;
+    const { user } = this.context;
     const { classes } = this.props;
 
-    const {
-      firstName, lastName, address, apartment, city, province, postalCode, phoneNumber,
-      organizationName, department, orgType, serviceType, description,
-    } = this.state;
-
     return (
-      <React.Fragment>
-        {this.state.alert}
-        <div className={classes.mainContainer}>
-          <GridContainer justify="center">
-            <GridItem xs={11}>
-              <Card>
-                <CardBody>
-                  <div className={classes.center}>
-                    <ContactInfo
-                      innerRef={this.contactChild}
-                      handleChange={this.handleChange}
-                      firstName={firstName}
-                      lastName={lastName}
-                      address={address}
-                      apartment={apartment}
-                      city={city}
-                      province={province}
-                      postalCode={postalCode}
-                      phoneNumber={phoneNumber}
-                    />
-                  </div>
-                </CardBody>
-              </Card>
-            </GridItem>
-          </GridContainer>
-          <GridContainer justify="center">
-            <GridItem xs={11}>
-              <Card>
-                <CardBody>
-                  <AboutInfo
-                    innerRef={this.aboutChild}
-                    handleChange={this.handleChange}
-                    organizationName={organizationName}
-                    orgType={orgType}
-                    department={department}
-                    serviceType={serviceType}
-                    description={description}
-                  />
-                </CardBody>
-              </Card>
-            </GridItem>
-          </GridContainer>
-          <GridContainer justify="center">
-            <GridItem xs={11}>
-              <Card>
-                <CardBody>
-                  <div className={classes.center}>
-                    <h5>Save your changes</h5>
-                    <Button
-                      color="warning"
-                      onClick={this.titleAndTextAlert.bind(this)}
-                    >
-                      Update
-                    </Button>
-                  </div>
-                </CardBody>
-              </Card>
-            </GridItem>
-          </GridContainer>
-
+      <Paper className={classes.layout}>
+        {alert}
+        <Typography
+          className={classes.title}
+          align="left"
+          color="textSecondary"
+          variant="h5"
+          gutterBottom
+        >
+          Edit Your Business Profile
+        </Typography>
+        <div className={classes.item}>
+          <ContactInfo
+            innerRef={this.contactChild}
+            handleChange={this.handleChange}
+            firstName={firstName}
+            lastName={lastName}
+            address={address}
+            apartment={apartment}
+            city={city}
+            province={province}
+            postalCode={postalCode}
+            phoneNumber={phoneNumber}
+            user={user}
+          />
         </div>
-      </React.Fragment>
+        <div className={classes.item}>
+          <AboutInfo
+            innerRef={this.aboutChild}
+            handleChange={this.handleChange}
+            organizationName={organizationName}
+            orgType={orgType}
+            department={department}
+            serviceType={serviceType}
+            description={description}
+          />
+        </div>
+        <div>
+          <Button
+            type="submit"
+            color="primary"
+            variant="contained"
+            onClick={this.updateAccount}
+          >
+            Save
+          </Button>
+        </div>
+      </Paper>
     );
   }
 }
+
 
 EditBusiness.propTypes = {
   classes: PropTypes.shape({}).isRequired,

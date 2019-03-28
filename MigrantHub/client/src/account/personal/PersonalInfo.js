@@ -9,6 +9,7 @@ import Nationality from 'components/fields/personal/Nationality';
 import Gender from 'components/fields/personal/Gender';
 import Status from 'components/fields/personal/Status';
 import RelationshipStatus from 'components/fields/personal/RelationshipStatus';
+import Divider from '@material-ui/core/Divider';
 import { injectIntl, intlShape, FormattedMessage } from 'react-intl';
 
 const styles = ({});
@@ -81,10 +82,13 @@ class PersonalInfo extends Component {
 
     return (
       <React.Fragment>
-        <Typography variant="h6" gutterBottom>
-          <FormattedMessage id="signup.personalinfo" />
-        </Typography>
         <Grid container spacing={24}>
+          <Grid item xs={12}>
+            <Typography align="left" color="textSecondary" variant="h6" gutterBottom>
+              <FormattedMessage id="signup.personal" />
+            </Typography>
+            <Divider />
+          </Grid>
           <Grid item xs={12} sm={3}>
             <Age
               age={age}
@@ -128,7 +132,7 @@ class PersonalInfo extends Component {
 
 PersonalInfo.propTypes = {
   handleChange: PropTypes.func.isRequired,
-  age: PropTypes.string.isRequired,
+  age: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
   gender: PropTypes.string.isRequired,
   nationality: PropTypes.string.isRequired,
   relationshipStatus: PropTypes.string.isRequired,

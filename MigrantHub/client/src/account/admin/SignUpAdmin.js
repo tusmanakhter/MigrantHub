@@ -24,10 +24,6 @@ import Validations from 'forms/Validations';
 const qs = require('qs');
 
 const styles = theme => ({
-  textbox: {
-    height: 24,
-    padding: 11,
-  },
   facebook: {
     marginBottom: 8,
     '& > span': {
@@ -72,16 +68,12 @@ class BaseSignupAdmin extends Component {
               label={<FormattedMessage id="email" />}
               value={email}
               handleChange={event => this.handleChange(event)}
-              variant="outlined"
               error={validation.email.message}
-              inputClass={classes.textbox}
-              margin="dense"
             />
           </Grid>
           <Grid item xs={12}>
             <TextBox
               name="password"
-              variant="outlined"
               type={showPassword ? 'text' : 'password'}
               label={<FormattedMessage id="password" />}
               value={password}
@@ -97,8 +89,6 @@ class BaseSignupAdmin extends Component {
                   </IconButton>
                 </InputAdornment>
               )}
-              inputClass={classes.textbox}
-              margin="dense"
             />
           </Grid>
         </Grid>

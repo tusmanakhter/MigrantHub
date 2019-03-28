@@ -5,7 +5,7 @@ import { FormattedMessage } from 'react-intl';
 
 const Age = (props) => {
   const {
-    age, ageError, variant, margin, inputClass, handleChange,
+    age, ageError, handleChange,
   } = props;
   return (
     <Years
@@ -14,26 +14,14 @@ const Age = (props) => {
       value={age}
       error={ageError}
       handleChange={event => handleChange(event)}
-      variant={variant}
-      inputClass={inputClass}
-      margin={margin}
     />
   );
 };
 
-Age.defaultProps = {
-  variant: 'standard',
-  inputClass: '',
-  margin: '',
-};
-
 Age.propTypes = {
-  age: PropTypes.string.isRequired,
+  age: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
   ageError: PropTypes.string.isRequired,
   handleChange: PropTypes.func.isRequired,
-  variant: PropTypes.string,
-  inputClass: PropTypes.string,
-  margin: PropTypes.string,
 };
 
 export default Age;
