@@ -11,7 +11,7 @@ export function getCategoryIcon(category) {
     case 'CommunityOrganizations':
       return <i class="fas fa-people-carry fa-2x"/>;
     case 'BudgetAndDebtProblems':
-      return <i class="fas fa-creative-commons-nc fa-2x"/>;
+      return <i class="fab fa-creative-commons-nc fa-2x"/>;
     case 'ConsumerProtection':
       return <i class="fas fa-shield-alt fa-2x"/>;
     case 'CommunityGroups':
@@ -49,13 +49,13 @@ export function getCategoryIcon(category) {
     case 'SocialHousing':
       return <i class="fas fa-building fa-2x"/>;
     case 'CDNCommunityOrganizations':
-      return <i class="fas fa-canadian-maple-leaf fa-2x"/>;
+      return <i class="fab fa-canadian-maple-leaf fa-2x"/>;
     case 'Pensions':
       return <i class="fas fa-leaf fa-2x"/>;
     case 'Seniors':
       return <i class="fas fa-leaf fa-2x"/>;
     case 'DisabledPeople':
-      return <i class="fas fa-accessible-icon fa-2x"/>;
+      return <i class="fab fa-accessible-icon fa-2x"/>;
     case 'MentalHealth':
       return <i class="fas fa-heartbeat fa-2x"/>;
     case 'HealthAndSocialServices':
@@ -67,7 +67,7 @@ export function getCategoryIcon(category) {
     case 'MunicipalServices':
       return <i class="fas fa-university fa-2x"/>;
     case 'VictimsOfCrime':
-      return <i class="fas fa-redhat fa-2x"/>;
+      return <i class="fab fa-redhat fa-2x"/>;
     default:
       return null;
   }

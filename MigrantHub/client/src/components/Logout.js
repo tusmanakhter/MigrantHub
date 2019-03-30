@@ -19,13 +19,8 @@ class Logout extends Component {
   };
 
   render() {
-    return (
-      <React.Fragment>
-        <Button color="info" round size="sm" onClick={this.logout}>
-          <FormattedMessage id="logout" />
-        </Button>
-      </React.Fragment>
-    );
+    this.logout();
+    return null
   }
 }
 Logout.propTypes = {
