@@ -7,12 +7,16 @@ import { serviceCategories } from 'lib/ServiceCategories';
 import Card from "@material-ui/core/Card";
 import CardActionArea from "@material-ui/core/CardActionArea";
 import CardContent from "@material-ui/core/CardContent";
-import CardMedia from "@material-ui/core/CardMedia";
 import Typography from "@material-ui/core/Typography";
+import {
+  getCategoryIcon,
+} from 'helpers/Category';
+
 const styles = {
   card: {
-    width: 150,
-    height: 120,
+    width: 140,
+    height: 115,
+    padding: 10,
   },
 };
 
@@ -62,30 +66,52 @@ class ServiceCategoryList extends Component {
       <React.Fragment>
         <div>
           <h1>Service Categories</h1>
+          <Grid container className={classes.root} spacing={8}>
+            <Grid item xs={12}>
+              <Grid
+                container
+                className={classes.demo}
+                justify="center"
+                spacing={8}
+              >
+                <Grid item>
+                  <CardActionArea>
+                    <Card 
+                      className={classes.card}
+                      onClick={() => this.handleCategoryClick('', '')}
+                    >
+                      <i class="fas fa-list fa-2x"></i>
+                      <CardContent>
+                        <Typography component='p'><b>ALL SERVICES</b></Typography>
+                      </CardContent>
+                    </Card>
+                  </CardActionArea>
+                </Grid>
+              </Grid>
+            </Grid>
+          </Grid>
+          <br/>
+          <p>OR</p>
           <p>Select a category that you are looking for</p>
         </div>
-        <Grid container className={classes.root} spacing={40}>
+        <Grid container className={classes.root} spacing={8}>
         {this.renderRedirectTo()}
           <Grid item xs={12}>
             <Grid
               container
               className={classes.demo}
               justify="center"
-              spacing={40}
+              spacing={8}
             >
               {serviceCategories.map(category => (
                 <Grid key={category.id} item>
                 <CardActionArea>
-                  <CardMedia
-                    className={classes.media}
-                    image="/static/images/cards/contemplative-reptile.jpg"
-                    title="Contemplative Reptile"
-                  />
                   <Card 
                   className={classes.card}
                   onClick={() => this.handleCategoryClick(category.value, '')}
                   >
-
+                    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous"></link>
+                    {getCategoryIcon(category.value) ? (getCategoryIcon(category.value)) : (console.log('none'))}
                       <CardContent>
                         <Typography component="p">{category.label}</Typography>
                       </CardContent>

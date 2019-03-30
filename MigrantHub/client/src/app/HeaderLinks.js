@@ -10,17 +10,10 @@ import { Redirect } from 'react-router-dom';
 
 // @material-ui/core components
 import withStyles from '@material-ui/core/styles/withStyles';
-import MenuItem from '@material-ui/core/MenuItem';
-import MenuList from '@material-ui/core/MenuList';
-import ClickAwayListener from '@material-ui/core/ClickAwayListener';
-import Paper from '@material-ui/core/Paper';
-import Grow from '@material-ui/core/Grow';
 import Hidden from '@material-ui/core/Hidden';
-import Popper from '@material-ui/core/Popper';
 
 // @material-ui/icons
 import Person from '@material-ui/icons/Person';
-import Notifications from '@material-ui/icons/Notifications';
 import Dashboard from '@material-ui/icons/Dashboard';
 import Search from '@material-ui/icons/Search';
 
@@ -33,7 +26,6 @@ import { injectIntl, intlShape } from 'react-intl';
 import headerLinksStyle from 'assets/jss/material-dashboard-pro-react/components/headerLinksStyle';
 import { AuthConsumer } from 'routes/AuthContext';
 import UserTypes from 'lib/UserTypes';
-import Logout from '../components/Logout';
 
 class BaseHeaderLinks extends React.Component {
   state = {
@@ -177,7 +169,6 @@ class BaseHeaderLinks extends React.Component {
           helperText={this.state.searchError}
           error={this.state.searchError.length > 0}
         />
-
         <Button
           color="white"
           aria-label="edit"
@@ -192,7 +183,7 @@ class BaseHeaderLinks extends React.Component {
         </Button>
         <Link to="/main">
           <Button
-            color="info"
+            color="primary"
             simple
             aria-label="Dashboard"
             justIcon
@@ -216,7 +207,7 @@ class BaseHeaderLinks extends React.Component {
         </Link>
         <Link to={path}>
           <Button
-            color="info"
+            color="primary"
             simple
             aria-label="Person"
             justIcon
@@ -230,7 +221,6 @@ class BaseHeaderLinks extends React.Component {
             </Hidden>
           </Button>
         </Link>
-        <Logout />
       </div>
     );
   }

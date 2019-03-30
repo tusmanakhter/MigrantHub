@@ -5,7 +5,6 @@ export const serviceCategories = [
   { value: 'CDNCommunityOrganizations', label: 'C-D-N Community Organizations' },
   { value: 'CommunityGroups', label: 'Community Groups' },
   { value: 'CommunityOrganizations', label: 'Community Organizations' },
-  { value: 'CommunityOrganizations', label: 'Community Organizations' },
   { value: 'ConsumerProtection', label: 'Consumer Protection' },
   {
     value: 'DisabledPeople',

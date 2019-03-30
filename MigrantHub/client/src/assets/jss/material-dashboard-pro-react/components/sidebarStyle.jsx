@@ -356,7 +356,7 @@ const sidebarStyle = theme => ({
     opacity: "0"
   },
   caret: {
-    marginTop: "13px",
+    marginTop: "1px",
     position: "absolute",
     right: "18px",
     transition: "all 150ms ease-in",
