@@ -22,6 +22,7 @@ import EventList from 'events/EventList';
 import EventForm from 'events/EventForm';
 import BugForm from 'forms/BugForm';
 import BugList from 'bugs/BugList';
+import BugDetails from 'bugs/BugDetails';
 import ServiceDetails from 'services/ServiceDetails';
 import EventDetails from 'events/EventDetails';
 import { AuthConsumer } from 'routes/AuthContext';
@@ -87,6 +88,7 @@ class Routes extends Component {
           <ProtectedRoute path="/search" component={Search} exact />
           <ProtectedRoute path="/bugs/report" component={BugForm} exact />
           <ProtectedRoute path="/bugs" component={BugList} exact />
+          <ProtectedRoute path="/bugs/:id" component={BugDetails} />
           <ProtectedRoute path="/events/create" component={EventForm} business exact />
           <ProtectedRoute path="/events" component={EventList} exact />
           <ProtectedRoute path="/events/:id" component={EventDetails} />

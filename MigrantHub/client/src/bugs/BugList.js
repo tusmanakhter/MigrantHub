@@ -4,6 +4,7 @@ import axios from 'axios';
 import IconButton from '@material-ui/core/IconButton';
 import DetailIcon from '@material-ui/icons/Search';
 import { injectIntl, intlShape, FormattedMessage } from 'react-intl';
+import { Link } from 'react-router-dom';
 import 'react-table/react-table.css';
 
 class BugList extends Component {
@@ -27,15 +28,6 @@ class BugList extends Component {
     });
   }
 
-  handleViewBug = (id) => {
-    axios.delete(`/api/admins/${id}`)
-      .then((response) => {
-        if (response.status === 200) {
-          this.getUsers();
-        }
-      });
-  };
-
   render() {
     const { bugs } = this.state;
     const { intl } = this.props;
@@ -53,7 +45,7 @@ class BugList extends Component {
       Cell: ({ value }) => (
         <div>
           {(
-            <IconButton aria-label="view" onClick={() => this.handleViewBug(value._id)}>
+            <IconButton aria-label="view" component={cardProps => <Link to={`/bugs/${value._id}`} {...cardProps} />}>
               <DetailIcon />
             </IconButton>
           )}
