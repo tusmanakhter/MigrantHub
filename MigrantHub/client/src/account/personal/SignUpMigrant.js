@@ -24,7 +24,7 @@ import Status from 'components/fields/personal/Status';
 import RelationshipStatus from 'components/fields/personal/RelationshipStatus';
 import EducationLevel from 'components/fields/education/EducationLevel';
 import JobStatus from 'components/fields/employment/JobStatus';
-import SettlingLocation from 'components/fields/other/SettlingLocation';
+import Location from 'components/fields/other/Location';
 import JoiningReason from 'components/fields/other/JoiningReason';
 import TextBox from 'components/fields/generic/TextBox';
 import SignUpWithStepper from 'account/common/SignUp';
@@ -195,9 +195,9 @@ class BaseSignupMigrant extends Component {
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
-                <SettlingLocation
-                  settlingLocation={settlingLocation}
-                  settlingLocationError={validation.settlingLocation.message}
+                <Location
+                  location={settlingLocation}
+                  locationError={validation.settlingLocation.message}
                   handleAutoSuggestChange={this.handleAutoSuggestChange('settlingLocation')}
                 />
               </Grid>
