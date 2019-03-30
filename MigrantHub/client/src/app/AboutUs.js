@@ -2,16 +2,42 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
+import { Link } from 'react-router-dom';
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
+import Typography from '@material-ui/core/Typography';
 import RefugeeCenterLogo from 'assets/img/refugee_centre_logo.png';
 
 const styles = theme => ({
   root: {
+    flex: '1 0 auto',
     color: 'white',
     flexGrow: '1',
     display: 'flex',
+    flexDirection: 'column',
   },
-  label: {
-    textTransform: 'none',
+  header: {
+    '& a': {
+      [theme.breakpoints.down('sm')]: {
+        marginRight: 10,
+      },
+      color: 'white',
+      marginRight: 20,
+    },
+    '& a:hover': {
+      color: '#e5e5e5',
+    },
+  },
+  title: {
+    display: 'block',
+    marginRight: 'auto',
+    [theme.breakpoints.down('xs')]: {
+      marginRight: 'initial',
+    },
+  },
+  appBar: {
+    padding: '0% 7.5%',
+    background: theme.palette.primary.main,
   },
   summary: {
     [theme.breakpoints.down('sm')]: {
@@ -23,7 +49,7 @@ const styles = theme => ({
     padding: '1% 15% 1% 15%',
     display: 'inline-block',
   },
-  aims: {
+  members: {
     [theme.breakpoints.down('sm')]: {
       padding: '3%',
     },
@@ -44,7 +70,20 @@ class AboutUs extends Component {
 
     return (
       <React.Fragment>
-        <div className={classes.root}>
+        <div className={classes.content}>
+          <div className={classes.header}>
+            <AppBar position="static" className={classes.appBar}>
+              <Toolbar className={classes.toolbar}>
+                <Typography variant="h6" color="inherit" className={classes.title}>
+                  <Link to="/">MigrantHub</Link>
+                </Typography>
+                <div className={classes.languageSwitcher}>
+                  <div id="google_translate_element" />
+                </div>
+              </Toolbar>
+            </AppBar>
+            <div className={classes.underline} />
+          </div>
           <Grid container>
             <Grid item xs={12} className={classes.summary}>
               <h1>About Us</h1>
@@ -94,7 +133,7 @@ class AboutUs extends Component {
               </div>
               <br />
             </Grid>
-            <Grid item xs={12} className={classes.aims}>
+            <Grid item xs={12} className={classes.members}>
               <h3>Current Members</h3>
               <div style={{ float: 'center', display: 'inline-block' }}>
                 <a href="https://github.com/tusmanakhter">Tusman Akhter</a><br />

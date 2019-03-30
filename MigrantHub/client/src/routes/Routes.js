@@ -98,6 +98,7 @@ class Routes extends Component {
           <ProtectedRoute path="/users" component={UsersList} exact />
           <ProtectedRoute path="/friends" component={FriendPanel} exact />
           <ProtectedRoute path="/logout" component={Logout} exact />
+          <Route path="/about-us" component={AboutUs} exact/>
           <Route component={Error} />
         </Switch>
       </>
