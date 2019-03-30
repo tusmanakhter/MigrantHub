@@ -46,4 +46,21 @@ module.exports = {
         throw new ServerError('There was an error retrieving job.', 400, error);
       });
   },
+
+  updateJob(jobObject) {
+    return Job.findByIdAndUpdate({ _id: jobObject._id }, jobObject,
+      { new: true }).exec()
+      .then(() => Promise.resolve('Job has been updated.')).catch((error) => {
+        throw new ServerError('There was an error updating job in db.', 400, error);
+      });
+  },
+
+  deleteJob(jobId) {
+    return Job.updateOne({ _id: jobId }, {
+      deleted: true,
+      deletedDate: Date.now(),
+    }).exec().then(() => Promise.resolve('Job has been deleted.')).catch((error) => {
+      throw new ServerError('There was an error deleting job.', 400, error);
+    });
+  },
 };

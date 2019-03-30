@@ -21,17 +21,18 @@ describe('Job Service', function () {
               _id: "5c987e1f0c6e2045a7995900",
               offset: 0,
               limit: 10,
+              owner: "test@test.com"
             },
         };
 
-    it('should call createJob repository with correct parameters from createJob job', test(async function () {
+    it('should call createJob repository with correct parameters from createJob service', test(async function () {
         this.stub(JobRepository, 'createJob');
         this.stub(ExpressValidator, 'validationResult').returns({isEmpty: ()=>{return true;}});
         await JobService.createJob(req.user, req.body);
         assert.calledWith(JobRepository.createJob, req.user._id, req.body);
     }));
 
-    it('should call createJob repository with error in validation from createJob job', test(function () {
+    it('should call createJob repository with error in validation from createJob service', test(function () {
         this.stub(JobRepository, 'createJob');
       this.stub(ExpressValidator, 'validationResult').returns({isEmpty: ()=>{return false;}});
         return chai.assert.isRejected(JobService.createJob(req.user._id, req.body), ServerError, 'There was an error creating job.');
@@ -39,7 +40,27 @@ describe('Job Service', function () {
 
     it('should call getJobs repository to retrieve jobs', test(async function () {
         this.stub(JobRepository, 'getJobs').returns([]);
-        await JobService.getJobs(req.query.offset, req.query.limit);
-        assert.calledWith(JobRepository.getJobs, { deleted: false }, req.query.offset, req.query.limit);
+        await JobService.getJobs(req.query.owner, req.query.offset, req.query.limit);
+        assert.calledWith(JobRepository.getJobs, { deleted: false, user: req.query.owner }, req.query.offset, req.query.limit);
     }));
+
+  it('should call updateJob repository with correct parameters from updateJob service', test(async function () {
+    this.stub(JobRepository, 'updateJob');
+    this.stub(ExpressValidator, 'validationResult').returns({isEmpty: ()=>{return true;}});
+    await JobService.updateJob(req.body);
+    assert.calledWith(JobRepository.updateJob, req.body);
+  }));
+
+  it('should call updateJob repository with error in validation from updateJob service', test(function () {
+    this.stub(JobRepository, 'updateJob');
+    this.stub(ExpressValidator, 'validationResult').returns({isEmpty: ()=>{return false;}});
+    return chai.assert.isRejected(JobService.updateJob(req.body), ServerError, 'There was an error updating job.');
+
+  }));
+
+  it('should call deleteJob repository from deleteJob service', test(async function () {
+    this.stub(JobRepository, 'deleteJob');
+    await JobService.deleteJob(req.body._id);
+    assert.calledWith(JobRepository.deleteJob, req.body._id);
+  }));
 });

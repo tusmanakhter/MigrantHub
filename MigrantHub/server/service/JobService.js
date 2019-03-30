@@ -13,8 +13,11 @@ module.exports = {
     throw new ServerError('There was an error creating job.', 400, errors);
   },
 
-  async getJobs(offset, limit) {
+  async getJobs(owner, offset, limit) {
     const query = {};
+    if (owner !== '') {
+      query.user = owner;
+    }
 
     query.deleted = false;
     return JobRepository.getJobs(query, offset, limit);
@@ -26,5 +29,17 @@ module.exports = {
     query.deleted = false;
 
     return JobRepository.getJob(query);
+  },
+
+  async updateJob(parsedJobObject, validationObject) {
+    const errors = ExpressValidator.validationResult(validationObject);
+    if (errors.isEmpty()) {
+      return JobRepository.updateJob(parsedJobObject);
+    }
+    throw new ServerError('There was an error updating job.', 400, errors);
+  },
+
+  async deleteJob(jobId) {
+    return JobRepository.deleteJob(jobId);
   },
 };
