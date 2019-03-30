@@ -33,6 +33,7 @@ import ForgotYourPasswordForm from 'account/forgotYourPassword/ForgotYourPasswor
 import CreateReview from 'services/CreateReview';
 import JobForm from 'jobs/form/JobForm';
 import JobList from 'jobs/postings/JobList';
+import JobDetails from 'jobs/postings/JobDetails';
 
 class Routes extends Component {
   state = {
@@ -94,6 +95,7 @@ class Routes extends Component {
           <ProtectedRoute path="/friends" component={FriendPanel} exact />
           <ProtectedRoute path="/jobs/create" component={JobForm} exact />
           <ProtectedRoute path="/jobs" component={JobList} exact />
+          <ProtectedRoute path="/jobs/:id" component={JobDetails} />
           <Route component={Error} />
         </Switch>
       </>

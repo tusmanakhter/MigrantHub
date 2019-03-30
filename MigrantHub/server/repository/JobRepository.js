@@ -39,4 +39,11 @@ module.exports = {
         throw new ServerError('There was an error retrieving jobs.', 400, error);
       });
   },
+
+  getJob(query) {
+    return Job.findOne(query).exec().then(job => Promise.resolve(job))
+      .catch((error) => {
+        throw new ServerError('There was an error retrieving job.', 400, error);
+      });
+  },
 };

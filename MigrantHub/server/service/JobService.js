@@ -23,4 +23,12 @@ module.exports = {
     console.log("here");
     return JobRepository.getJobs(query, offset, limit);
   },
+
+  async getJob(jobId) {
+    const query = {};
+    query._id = jobId;
+    query.deleted = false;
+
+    return JobRepository.getJob(query);
+  },
 };

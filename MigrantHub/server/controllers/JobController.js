@@ -11,4 +11,8 @@ module.exports = {
   async getJobs(offset, limit) {
     return JobService.getJobs(offset, limit);
   },
+
+  async getJob(jobId) {
+    return JobService.getJob(jobId);
+  },
 };
