@@ -6,26 +6,13 @@ import axios from 'axios';
 import JobCard from 'jobs/postings/JobCard';
 import Button from 'components/CustomButtons/Button.jsx';
 import UserTypes from 'lib/UserTypes';
-import QuestionnairePanel from 'components/QuestionnairePanel/QuestionnairePanel';
 import Grid from '@material-ui/core/Grid';
-import TermsConditions from 'app/TermsConditions';
 import { FormattedMessage } from 'react-intl';
 import { AuthConsumer } from 'routes/AuthContext';
 import InfiniteScroll from 'react-infinite-scroller';
 import CircularProgress from '@material-ui/core/CircularProgress';
-
-// @material-ui/icons
-import Info from '@material-ui/icons/Info';
-import Gavel from '@material-ui/icons/Gavel';
-import HelpOutline from '@material-ui/icons/HelpOutline';
-
-// core components
 import GridContainer from 'components/Grid/GridContainer.jsx';
 import GridItem from 'components/Grid/GridItem.jsx';
-import NavPills from 'components/NavPills/NavPills.jsx';
-import Card from 'components/Card/Card.jsx';
-import CardHeader from 'components/Card/CardHeader.jsx';
-import CardBody from 'components/Card/CardBody.jsx';
 
 const styles = theme => ({
   root: {
@@ -68,8 +55,17 @@ class JobList extends Component {
     const { limit } = this.state;
     let { offset } = this.state;
 
+    let editOwnerEmail = '';
+
+    if (location.state) {
+      if (location.state.editMode) {
+        editOwnerEmail = location.state.editOwner;
+      }
+    }
+
     axios.get('/api/job/', {
       params: {
+        owner: editOwnerEmail,
         offset,
         limit,
       },
@@ -101,21 +97,24 @@ class JobList extends Component {
               <div>
                 {this.renderRedirectToJobForm()}
                 <Grid item container justify="center">
-                  <Grid item lg={12} md={12} sm={12} xd={12} align="right">
-                    <Button
-                      variant="contained"
-                      color="primary"
-                      className={classes.button}
-                      onClick={this.setRedirectToJobForm}
-                    >
-                      Create a Job Post
-                    </Button>
-                  </Grid>
+                  {user.type === UserTypes.BUSINESS
+                  && (
+                    <Grid item lg={12} md={12} sm={12} xd={12} align="right">
+                      <Button
+                        variant="contained"
+                        color="primary"
+                        className={classes.button}
+                        onClick={this.setRedirectToJobForm}
+                      >
+                        Create a Job Post
+                      </Button>
+                    </Grid>
+                  )}
                   <Grid lg={12} md={12} sm={12} xd={12}>
                     <h3>
                       <FormattedMessage id="job" />
                     </h3>
-                    <h5 className={classes.pageSubcategoriesTitle}>
+                    <h5>
                       <FormattedMessage id="job.browse" />
                     </h5>
                   </Grid>

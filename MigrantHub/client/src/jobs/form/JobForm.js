@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import withStyles from '@material-ui/core/styles/withStyles';
 import Typography from '@material-ui/core/Typography';
@@ -39,6 +40,8 @@ class BaseJobForm extends Component {
     this.state = {
       loading: false,
       activeStep: 0,
+      redirectToJobDetails: false,
+      redirectToJobList: false,
       title: '',
       description: EditorState.createEmpty(),
       descriptionLength: 0,
@@ -52,7 +55,6 @@ class BaseJobForm extends Component {
       salaryEnd: '',
       website: '',
       dataRetrieved: false,
-
       validation: this.validator.valid(),
     };
 
@@ -140,7 +142,6 @@ class BaseJobForm extends Component {
     } = this.state;
 
     const { classes } = this.props;
-    const { editorState } = this.state;
 
     switch (step) {
       case 0:
@@ -301,13 +302,74 @@ class BaseJobForm extends Component {
           website,
         }));
       if (result.status === 200) {
-          toast.success('Job Post Created!');
+        toast.success('Job Post Created!');
+        this.setState({
+          loading: false,
+          redirectToJobList: true,
+        });
       }
       return false;
     } catch (e) {
-      console.log(e);
+      this.setState({
+        loading: false
+      });
       toast.error('Error Creating Job Post!');
       return true;
+    }
+  };
+
+  updateJob = async () => {
+    const {
+      title, description, positionType, companyName, contactName, contactEmail, contactPhone, location, salaryStart, salaryEnd,
+      website, jobId
+    } = this.state;
+
+    const rawState = JSON.stringify(convertToRaw(description.getCurrentContent()));
+
+    try {
+      const result = await axios.put(`/api/job/${jobId}`,
+        qs.stringify({
+          _id: jobId,
+          title,
+          description: rawState,
+          positionType,
+          companyName,
+          contactName,
+          contactEmail,
+          contactPhone,
+          location,
+          salaryStart,
+          salaryEnd,
+          website,
+        }));
+      if (result.status === 200) {
+        toast.success('Job Post Updated!');
+        this.setState({
+          loading: false,
+          redirectToJobDetails: true,
+        });
+      }
+      return false;
+    } catch (e) {
+      this.setState({
+        loading: false
+      });
+      toast.error('Error Updating Job Post!');
+      return true;
+    }
+  };
+
+  renderRedirectToJobDetails = () => {
+    const { redirectToJobDetails, jobId } = this.state;
+    if (redirectToJobDetails) {
+      return <Redirect to={`/jobs/${jobId}`} />;
+    }
+  }
+
+  renderRedirectToJobList = () => {
+    const { redirectToJobList } = this.state;
+    if (redirectToJobList) {
+      return <Redirect to={`/jobs/`} />;
     }
   }
 
@@ -319,15 +381,19 @@ class BaseJobForm extends Component {
     ];
 
     const { classes } = this.props;
+    const { editMode } = this.state;
+
 
     return (
       <JobFormLayout>
+        {this.renderRedirectToJobDetails()}
+        {this.renderRedirectToJobList()}
         <div className={classes.item}>
           <Typography variant="h5"><FormattedMessage id="job.create" /></Typography>
         </div>
         <div className={classes.item}>
           <JobFormStepper
-            createJob={this.createJob}
+            formSubmit={editMode ? this.updateJob : this.createJob}
             steps={steps}
             getStepContent={this.getStepContent}
             validate={this.validate}

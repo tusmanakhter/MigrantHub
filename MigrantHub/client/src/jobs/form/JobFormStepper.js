@@ -48,7 +48,7 @@ class JobFormStepper extends Component {
 
   handleNext = async () => {
     const { activeStep } = this.state;
-    const { createJob, validate, steps } = this.props;
+    const { formSubmit, validate, steps } = this.props;
 
     const isValid = await validate(activeStep);
 
@@ -57,13 +57,7 @@ class JobFormStepper extends Component {
         this.setState({
           loading: true,
         });
-        const createError = await createJob();
-
-        if (createError) {
-          this.setState({
-            loading: false,
-          });
-        }
+        const createError = await formSubmit();
       } else {
         this.setState(state => ({
           activeStep: state.activeStep + 1,
@@ -79,7 +73,7 @@ class JobFormStepper extends Component {
   };
 
   render() {
-    const { classes, steps } = this.props;
+    const { classes, steps, update } = this.props;
     const { activeStep, loading } = this.state;
 
     let nextButtonMessage;
@@ -92,7 +86,7 @@ class JobFormStepper extends Component {
     } else if (activeStep === steps.length - 1) {
       nextButtonMessage = (
         <>
-          <FormattedMessage id="form.create" />
+        {update? <FormattedMessage id="form.create" /> : <FormattedMessage id="form.edit" />}
           <CheckIcon style={{ marginLeft: 5 }} />
         </>
       );

@@ -93,7 +93,7 @@ class Routes extends Component {
           <ProtectedRoute path="/events/:id" component={EventDetails} />
           <ProtectedRoute path="/users" component={UsersList} exact />
           <ProtectedRoute path="/friends" component={FriendPanel} exact />
-          <ProtectedRoute path="/jobs/create" component={JobForm} exact />
+          <ProtectedRoute path="/jobs/create" component={JobForm} business exact />
           <ProtectedRoute path="/jobs" component={JobList} exact />
           <ProtectedRoute path="/jobs/:id" component={JobDetails} />
           <Route component={Error} />
