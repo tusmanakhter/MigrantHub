@@ -448,14 +448,6 @@ const rules = {
       message: 'Company name is required',
     },
   ],
-  website: [
-    {
-      field: 'website',
-      method: validator.isURL,
-      validWhen: true,
-      message: 'Website is invalid',
-    },
-  ],
   contactName: [
     {
       field: 'contactName',
@@ -491,7 +483,6 @@ const rules = {
   },
   get jobFormStep3() {
     const rule = this.companyName
-      .concat(this.website)
       .concat(this.contactName)
       .concat(this.contactEmail)
       .concat(this.contactPhone);

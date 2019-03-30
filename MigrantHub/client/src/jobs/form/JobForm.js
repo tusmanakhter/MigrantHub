@@ -206,7 +206,7 @@ class BaseJobForm extends Component {
                 label="Website (Optional)"
                 value={website}
                 handleChange={event => this.handleChange(event)}
-                error={validation.website.message}
+                error={''}
               />
             </Grid>
               <Grid item xs={12}>

@@ -23,20 +23,21 @@ module.exports = {
       .withMessage('Location information is required'),
 
     check('salaryStart')
-      .optional({checkFalsy:true})
+      .optional({ checkFalsy: true })
       .not()
       .isEmpty()
       .withMessage('salary start date is required'),
 
     check('salaryEnd')
-      .optional({checkFalsy:true})
+      .optional({ checkFalsy: true })
       .not()
       .isEmpty()
       .withMessage('salary end is required'),
 
     check('website')
-      .optional({checkFalsy:true})
+      .optional({ checkFalsy: true })
       .not()
       .isEmpty()
       .withMessage('website is required'),
-  ]};
+  ],
+};
