@@ -31,6 +31,8 @@ import ServiceSuggestionForm from 'services/ServiceSuggestionForm';
 import ServiceSuggestionList from 'services/ServiceSuggestionList';
 import ForgotYourPasswordForm from 'account/forgotYourPassword/ForgotYourPasswordForm';
 import CreateReview from 'services/CreateReview';
+import JobForm from 'jobs/form/JobForm';
+import JobList from 'jobs/postings/JobList';
 
 class Routes extends Component {
   state = {
@@ -90,6 +92,8 @@ class Routes extends Component {
           <ProtectedRoute path="/events/:id" component={EventDetails} />
           <ProtectedRoute path="/users" component={UsersList} exact />
           <ProtectedRoute path="/friends" component={FriendPanel} exact />
+          <ProtectedRoute path="/jobs/create" component={JobForm} exact />
+          <ProtectedRoute path="/jobs" component={JobList} exact />
           <Route component={Error} />
         </Switch>
       </>
