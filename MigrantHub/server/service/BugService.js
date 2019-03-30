@@ -15,4 +15,7 @@ module.exports = {
     }
     throw new ServerError('There was an error creating the bug.', 400, errors);
   },
+  async getBugs() {
+    return BugRepository.getBugs();
+  },
 };
