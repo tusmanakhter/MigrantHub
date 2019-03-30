@@ -143,10 +143,10 @@ class BaseHeaderLinks extends React.Component {
     let path = '/';
     switch (context.user.type) {
       case UserTypes.MIGRANT:
-        path = '/migrant/profile';
+        path = '/profile/personal';
         break;
       case UserTypes.BUSINESS:
-        path = '/business/profile';
+        path = '/profile/business';
         break;
       default:
         break;

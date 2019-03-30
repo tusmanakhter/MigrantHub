@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import withStyles from '@material-ui/core/styles/withStyles';
+import Button from '@material-ui/core/Button';
+import Grid from '@material-ui/core/Grid';
+import Typography from '@material-ui/core/Typography';
 import axios from 'axios';
 import ContactInfo from 'account/common/ContactInfo';
 import PersonalInfo from 'account/personal/PersonalInfo';
@@ -9,36 +12,41 @@ import FamilyInfo from 'account/personal/FamilyInfo';
 import EducationInfo from 'account/personal/EducationInfo';
 import EmploymentInfo from 'account/personal/EmploymentInfo';
 import OtherInfo from 'account/personal/OtherInfo';
-import GridContainer from 'components/Grid/GridContainer.jsx';
-import GridItem from 'components/Grid/GridItem.jsx';
-import SweetAlert from 'react-bootstrap-sweetalert';
-import Button from 'components/CustomButtons/Button.jsx';
-import Card from 'components/Card/Card.jsx';
-import CardBody from 'components/Card/CardBody.jsx';
+import Paper from '@material-ui/core/Paper';
 import { handleChange } from 'helpers/Forms';
 import { handleAutoSuggestChange, handleEditObjectAutosuggest } from 'helpers/Autosuggest';
 import {
   handleAddObject, handleEditObject, handleEditSingleObject, handleRemoveObject,
 } from 'helpers/Object';
 import { AuthConsumer } from 'routes/AuthContext';
-
-const qs = require('qs');
+import qs from 'qs';
+import { FormattedMessage } from 'react-intl';
+import { toast } from 'react-toastify';
+import LinearProgress from '@material-ui/core/LinearProgress';
 
 const styles = theme => ({
+  layout: {
+    background: 'white',
+    padding: 20,
+    [theme.breakpoints.down('sm')]: {
+      padding: 10,
+    },
+  },
+  item: {
+    paddingTop: 10,
+    paddingBottom: 20,
+  },
   button: {
     margin: theme.spacing.unit,
   },
-  mainContainer: {
-  },
 });
 
-class EditMigrant extends React.Component {
+class EditMigrant extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      accountProgress: 0,
       alert: null,
-      email: '',
-      password: '',
       firstName: '',
       lastName: '',
       address: '',
@@ -72,7 +80,6 @@ class EditMigrant extends React.Component {
       joiningReason: '',
     };
 
-    this.hideAlert = this.hideAlert.bind(this);
     this.contactChild = React.createRef();
     this.personalChild = React.createRef();
     this.langChild = React.createRef();
@@ -80,7 +87,6 @@ class EditMigrant extends React.Component {
     this.educationChild = React.createRef();
     this.employmentChild = React.createRef();
     this.otherChild = React.createRef();
-    this.getAccount = this.getAccount.bind(this);
     this.handleChange = handleChange.bind(this);
     this.handleAutoSuggestChange = handleAutoSuggestChange.bind(this);
     this.handleEditObjectAutosuggest = handleEditObjectAutosuggest.bind(this);
@@ -91,105 +97,34 @@ class EditMigrant extends React.Component {
   }
 
   componentDidMount() {
-    this.getAccount(this);
+    this.getAccount();
   }
 
   componentWillReceiveProps() {
-    this.getAccount(this);
+    this.getAccount();
   }
 
-  getAccount() {
+  getAccount = () => {
     const { user } = this.context;
+    
     axios.get(`/api/migrants/${user.username}`).then((response) => {
       if (response.status === 200) {
-        const jsonObj = qs.parse(qs.stringify(response.data));
-
-        let tempLanguages;
-        let tempWorkExperience;
-        let tempFamily;
-        let tempProficiencyExams;
-        let tempMotherTongue;
-        let tempSettlingLocation;
-
-        if (jsonObj.languages !== undefined) {
-          tempLanguages = jsonObj.languages;
-        } else {
-          tempLanguages = [];
-        }
-
-        if (jsonObj.workExperience !== undefined) {
-          tempWorkExperience = jsonObj.workExperience;
-        } else {
-          tempWorkExperience = [];
-        }
-
-        if (jsonObj.family !== undefined) {
-          tempFamily = jsonObj.family;
-        } else {
-          tempFamily = [];
-        }
-        if (jsonObj.proficiencyExams !== undefined) {
-          tempProficiencyExams = jsonObj.proficiencyExams;
-        } else {
-          tempProficiencyExams = {
-            ielts: false,
-            french: false,
-            others: '',
+        const migrantInfo = qs.parse(qs.stringify(response.data));
+        if (migrantInfo.proficiencyExams) {
+          migrantInfo.proficiencyExams = {
+            ielts: (migrantInfo.proficiencyExams.ielts === 'true'),
+            french: (migrantInfo.proficiencyExams.french === 'true'),
+            others: migrantInfo.proficiencyExams.others || '',
           };
         }
-        if (jsonObj.motherTongue !== undefined) {
-          tempMotherTongue = jsonObj.motherTongue;
-        } else {
-          tempMotherTongue = '';
-        }
-
-        if (jsonObj.settlingLocation !== undefined) {
-          tempSettlingLocation = jsonObj.settlingLocation;
-        } else {
-          tempSettlingLocation = '';
-        }
-
+        const progress = Object.keys(migrantInfo).filter(key => (migrantInfo[key] !== null && migrantInfo[key] !== ''));
         this.setState({
-          email: jsonObj.email,
-          password: jsonObj.password,
-          firstName: jsonObj.firstName,
-          lastName: jsonObj.lastName,
-          address: jsonObj.address,
-          apartment: jsonObj.apartment,
-          city: jsonObj.city,
-          province: jsonObj.province,
-          postalCode: jsonObj.postalCode,
-          phoneNumber: jsonObj.phoneNumber,
-          age: jsonObj.age,
-          gender: jsonObj.gender,
-          nationality: jsonObj.nationality,
-          relationshipStatus: jsonObj.relationshipStatus,
-          status: jsonObj.status,
-          languages: tempLanguages,
-          writingLevel: jsonObj.writingLevel,
-          speakingLevel: jsonObj.speakingLevel,
-          motherTongue: tempMotherTongue,
-          family: tempFamily,
-          educationLevel: jsonObj.educationLevel,
-          proficiencyExams: tempProficiencyExams,
-          jobStatus: jsonObj.jobStatus,
-          lookingForJob: jsonObj.lookingForJob,
-          currentIncome: jsonObj.currentIncome,
-          workExperience: tempWorkExperience,
-          settlingLocation: tempSettlingLocation,
-          settlingDuration: jsonObj.settlingDuration,
-          joiningReason: jsonObj.joiningReason,
+          ...migrantInfo,
+          accountProgress: Math.round((progress.length / 27) * 100),
         });
       }
     });
   }
-
-  handleSave = async () => {
-    const error = await this.validate();
-    if (!error) {
-      this.updateAccount(this);
-    }
-  };
 
   validate = async () => {
     const contactError = await this.contactChild.current._wrappedInstance.validate();
@@ -208,43 +143,24 @@ class EditMigrant extends React.Component {
     return false;
   }
 
-  titleAndTextAlert() {
-    this.setState({
-      alert: (
-        <SweetAlert
-          style={{ display: 'block', marginTop: '-100px' }}
-          onConfirm={() => this.hideAlert()}
-          onCancel={() => this.hideAlert()}
-          confirmBtnCssClass={
-            `${this.props.classes.button} ${this.props.classes.info}`
-          }
-        >
-          Update Successful
-        </SweetAlert>
-      ),
-    });
-    this.handleSave();
-  }
+  updateAccount = async () => {
+    const error = await this.validate();
+    if (error) {
+      return;
+    }
 
-  hideAlert() {
-    this.setState({
-      alert: null,
-    });
-  }
+    const { user } = this.context;
 
-  updateAccount(e) {
     const {
-      email, password, firstName, lastName, address, apartment, city, province,
+      firstName, lastName, address, apartment, city, province,
       postalCode, phoneNumber, age, gender, nationality, relationshipStatus, status,
       languages, writingLevel, speakingLevel, motherTongue, family, educationLevel,
       proficiencyExams, jobStatus, lookingForJob, currentIncome, workExperience,
       settlingLocation, settlingDuration, joiningReason,
     } = this.state;
 
-    axios.put(`/api/migrants/${email}`,
+    axios.put(`/api/migrants/${user.username}`,
       qs.stringify({
-        email,
-        password,
         firstName,
         lastName,
         address,
@@ -272,11 +188,10 @@ class EditMigrant extends React.Component {
         settlingLocation,
         settlingDuration,
         joiningReason,
-
       })).then((response) => {
-      e.setState({
-        messageFromServer: response.data,
-      });
+      toast.success(response.data);
+    }).catch((e) => {
+      toast.error(e.response.data);
     });
   }
 
@@ -286,156 +201,129 @@ class EditMigrant extends React.Component {
       age, gender, nationality, relationshipStatus, status, languages, writingLevel,
       speakingLevel, motherTongue, family, educationLevel, proficiencyExams, jobStatus,
       lookingForJob, currentIncome, workExperience, settlingLocation, settlingDuration,
-      joiningReason,
+      joiningReason, alert, accountProgress,
     } = this.state;
+    const { user } = this.context;
     const { classes } = this.props;
 
     return (
-      <React.Fragment>
-        {this.state.alert}
-        <div className={classes.mainContainer}>
-          <GridContainer justify="center">
-            <GridItem xs={11}>
-              <Card>
-                <CardBody>
-                  <ContactInfo
-                    innerRef={this.contactChild}
-                    handleChange={this.handleChange}
-                    firstName={firstName}
-                    lastName={lastName}
-                    address={address}
-                    apartment={apartment}
-                    city={city}
-                    province={province}
-                    postalCode={postalCode}
-                    phoneNumber={phoneNumber}
-                  />
-                </CardBody>
-              </Card>
-            </GridItem>
-          </GridContainer>
-          <GridContainer justify="center">
-            <GridItem xs={11}>
-              <Card>
-                <CardBody>
-                  <PersonalInfo
-                    innerRef={this.personalChild}
-                    handleChange={this.handleChange}
-                    age={age}
-                    gender={gender}
-                    nationality={nationality}
-                    relationshipStatus={relationshipStatus}
-                    status={status}
-                  />
-                </CardBody>
-              </Card>
-            </GridItem>
-          </GridContainer>
-          <GridContainer justify="center">
-            <GridItem xs={11}>
-              <Card>
-                <CardBody>
-                  <LanguageInfo
-                    innerRef={this.langChild}
-                    handleChange={this.handleChange}
-                    handleAutoSuggestChange={this.handleAutoSuggestChange}
-                    handleAddObject={this.handleAddObject}
-                    handleRemoveObject={this.handleRemoveObject}
-                    handleEditObjectAutosuggest={this.handleEditObjectAutosuggest}
-                    handleEditObject={this.handleEditObject}
-                    languages={languages}
-                    writingLevel={writingLevel}
-                    speakingLevel={speakingLevel}
-                    motherTongue={motherTongue}
-                  />
-                </CardBody>
-              </Card>
-            </GridItem>
-          </GridContainer>
-          <GridContainer justify="center">
-            <GridItem xs={11}>
-              <Card>
-                <CardBody>
-                  <FamilyInfo
-                    innerRef={this.familyChild}
-                    handleAddObject={this.handleAddObject}
-                    handleRemoveObject={this.handleRemoveObject}
-                    handleEditObject={this.handleEditObject}
-                    family={family}
-                  />
-                </CardBody>
-              </Card>
-            </GridItem>
-          </GridContainer>
-          <GridContainer justify="center">
-            <GridItem xs={11}>
-              <Card>
-                <CardBody>
-                  <EducationInfo
-                    innerRef={this.educationChild}
-                    handleChange={this.handleChange}
-                    handleEditSingleObject={this.handleEditSingleObject}
-                    educationLevel={educationLevel}
-                    proficiencyExams={proficiencyExams}
-                  />
-                </CardBody>
-              </Card>
-            </GridItem>
-          </GridContainer>
-          <GridContainer justify="center">
-            <GridItem xs={11}>
-              <Card>
-                <CardBody>
-                  <EmploymentInfo
-                    innerRef={this.employmentChild}
-                    handleChange={this.handleChange}
-                    handleAddObject={this.handleAddObject}
-                    handleRemoveObject={this.handleRemoveObject}
-                    handleEditObject={this.handleEditObject}
-                    jobStatus={jobStatus}
-                    lookingForJob={lookingForJob}
-                    currentIncome={currentIncome}
-                    workExperience={workExperience}
-                  />
-                </CardBody>
-              </Card>
-            </GridItem>
-          </GridContainer>
-          <GridContainer justify="center">
-            <GridItem xs={11}>
-              <Card>
-                <CardBody>
-                  <OtherInfo
-                    innerRef={this.otherChild}
-                    handleChange={this.handleChange}
-                    handleAutoSuggestChange={this.handleAutoSuggestChange}
-                    settlingLocation={settlingLocation}
-                    settlingDuration={settlingDuration}
-                    joiningReason={joiningReason}
-                  />
-                </CardBody>
-              </Card>
-            </GridItem>
-          </GridContainer>
-          <GridContainer justify="center">
-            <GridItem xs={11}>
-              <Card>
-                <CardBody>
-                  <div className={classes.center}>
-                    <h5>Save your changes</h5>
-                    <Button
-                      color="warning"
-                      onClick={this.titleAndTextAlert.bind(this)}
-                    >
-                      Update
-                    </Button>
-                  </div>
-                </CardBody>
-              </Card>
-            </GridItem>
-          </GridContainer>
+      <Paper className={classes.layout}>
+        {alert}
+        <Typography
+          className={classes.title}
+          align="left"
+          color="textSecondary"
+          variant="h5"
+          gutterBottom
+        >
+          Edit Your Profile
+        </Typography>
+        <Grid container direction="column" justify="center">
+          <legend> <FormattedMessage id="profile.progress" /> </legend>
+          {accountProgress}%
+          <LinearProgress
+            variant="determinate"
+            color="primary"
+            value={accountProgress}
+          />
+          <h6><FormattedMessage id="profile.progressdesc" /></h6>
+          <small>
+            <i><b><FormattedMessage id="profile.legalwarn" /></b></i>
+          </small>
+        </Grid>
+        <div className={classes.item}>
+          <ContactInfo
+            innerRef={this.contactChild}
+            handleChange={this.handleChange}
+            firstName={firstName}
+            lastName={lastName}
+            address={address}
+            apartment={apartment}
+            city={city}
+            province={province}
+            postalCode={postalCode}
+            phoneNumber={phoneNumber}
+            user={user}
+          />
         </div>
-      </React.Fragment>
+        <div className={classes.item}>
+          <PersonalInfo
+            innerRef={this.personalChild}
+            handleChange={this.handleChange}
+            age={age}
+            gender={gender}
+            nationality={nationality}
+            relationshipStatus={relationshipStatus}
+            status={status}
+          />
+        </div>
+        <div className={classes.item}>
+          <LanguageInfo
+            innerRef={this.langChild}
+            handleChange={this.handleChange}
+            handleAutoSuggestChange={this.handleAutoSuggestChange}
+            handleAddObject={this.handleAddObject}
+            handleRemoveObject={this.handleRemoveObject}
+            handleEditObjectAutosuggest={this.handleEditObjectAutosuggest}
+            handleEditObject={this.handleEditObject}
+            languages={languages}
+            writingLevel={writingLevel}
+            speakingLevel={speakingLevel}
+            motherTongue={motherTongue}
+          />
+        </div>
+        <div className={classes.item}>
+          <FamilyInfo
+            innerRef={this.familyChild}
+            handleAddObject={this.handleAddObject}
+            handleRemoveObject={this.handleRemoveObject}
+            handleEditObject={this.handleEditObject}
+            family={family}
+          />
+        </div>
+        <div className={classes.item}>
+          <EducationInfo
+            innerRef={this.educationChild}
+            handleChange={this.handleChange}
+            handleEditSingleObject={this.handleEditSingleObject}
+            educationLevel={educationLevel}
+            proficiencyExams={proficiencyExams}
+          />
+        </div>
+        <div className={classes.item}>
+          <EmploymentInfo
+            innerRef={this.employmentChild}
+            handleChange={this.handleChange}
+            handleAddObject={this.handleAddObject}
+            handleRemoveObject={this.handleRemoveObject}
+            handleEditObject={this.handleEditObject}
+            jobStatus={jobStatus}
+            lookingForJob={lookingForJob}
+            currentIncome={currentIncome}
+            workExperience={workExperience}
+          />
+        </div>
+        <div className={classes.item}>
+          <OtherInfo
+            innerRef={this.otherChild}
+            handleChange={this.handleChange}
+            handleAutoSuggestChange={this.handleAutoSuggestChange}
+            settlingLocation={settlingLocation}
+            settlingDuration={settlingDuration}
+            joiningReason={joiningReason}
+          />
+        </div>
+        <div>
+          <Button
+            type="submit"
+            color="primary"
+            variant="contained"
+            onClick={this.updateAccount}
+          >
+            Save
+          </Button>
+        </div>
+      </Paper>
     );
   }
 }

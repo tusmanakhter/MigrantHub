@@ -12,14 +12,18 @@ const styles = ({
   formControl: {
     textAlign: 'left',
   },
+  textbox: {
+    height: 24,
+    padding: 11,
+  },
 });
 
 const RadioOption = (props) => {
   const {
-    classes, name, label, value, error, options, variant, handleChange,
+    classes, name, label, value, error, options, handleChange,
   } = props;
   return (
-    <FormControl component="fieldset" variant={variant} fullWidth className={classes.formControl}>
+    <FormControl component="fieldset" variant="outlined" fullWidth className={classes.formControl}>
       <FormLabel component="legend" error={error.length > 0}>{label}</FormLabel>
       <RadioGroup
         aria-label={label}
@@ -49,10 +53,6 @@ const RadioOption = (props) => {
   );
 };
 
-RadioOption.defaultProps = {
-  variant: 'standard',
-};
-
 RadioOption.propTypes = {
   classes: PropTypes.shape({}).isRequired,
   name: PropTypes.string.isRequired,
@@ -61,7 +61,6 @@ RadioOption.propTypes = {
   error: PropTypes.string.isRequired,
   options: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   handleChange: PropTypes.func.isRequired,
-  variant: PropTypes.string,
 };
 
 export default withStyles(styles)(RadioOption);

@@ -12,6 +12,8 @@ import City from 'components/fields/contact/City';
 import Province from 'components/fields/contact/Province';
 import PostalCode from 'components/fields/contact/PostalCode';
 import PhoneNumber from 'components/fields/contact/PhoneNumber';
+import Divider from '@material-ui/core/Divider';
+import UserTypes from 'lib/UserTypes';
 import { injectIntl, intlShape, FormattedMessage } from 'react-intl';
 
 const styles = ({});
@@ -30,12 +32,13 @@ class ContactInfo extends Component {
 
   validate = () => {
     const {
-      firstName, lastName, city, postalCode, phoneNumber, intl,
+      firstName, lastName, city, address, postalCode, phoneNumber, intl, user,
     } = this.props;
     let isError = false;
     const errors = {
       firstNameError: '',
       lastNameError: '',
+      addressError: '',
       apartmentError: '',
       cityError: '',
       postalCodeError: '',
@@ -56,6 +59,25 @@ class ContactInfo extends Component {
     } else if (!validator.isAlpha(lastName)) {
       errors.lastNameError = `${intl.formatMessage({ id: 'contact.lastname' })}  ${intl.formatMessage({ id: 'notvalid' })}`;
       isError = true;
+    }
+
+    if (user.type === UserTypes.BUSINESS) {
+      if (validator.isEmpty(address)) {
+        errors.addressError = `${intl.formatMessage({ id: 'contact.address' })}  ${intl.formatMessage({ id: 'isrequired' })}`;
+        isError = true;
+      }
+      if (validator.isEmpty(city)) {
+        errors.cityError = `${intl.formatMessage({ id: 'contact.city' })}  ${intl.formatMessage({ id: 'isrequired' })}`;
+        isError = true;
+      }
+      if (validator.isEmpty(postalCode)) {
+        errors.postalCodeError = `${intl.formatMessage({ id: 'contact.postal' })}  ${intl.formatMessage({ id: 'isrequired' })}`;
+        isError = true;
+      }
+      if (validator.isEmpty(phoneNumber)) {
+        errors.phoneNumberError = `${intl.formatMessage({ id: 'contact.phone' })}  ${intl.formatMessage({ id: 'isrequired' })}`;
+        isError = true;
+      }
     }
 
     if ((city !== '' && city !== undefined) && !validator.isAlpha(city)) {
@@ -99,10 +121,13 @@ class ContactInfo extends Component {
 
     return (
       <React.Fragment>
-        <Typography variant="h6" gutterBottom>
-          <FormattedMessage id="signup.contactinfo" />
-        </Typography>
         <Grid container spacing={24}>
+          <Grid item xs={12}>
+            <Typography align="left" color="textSecondary" variant="h6" gutterBottom>
+              <FormattedMessage id="signup.contact" />
+            </Typography>
+            <Divider />
+          </Grid>
           <Grid item xs={12} sm={6}>
             <FirstName
               firstName={firstName}
@@ -176,6 +201,7 @@ ContactInfo.propTypes = {
   postalCode: PropTypes.string.isRequired,
   phoneNumber: PropTypes.string.isRequired,
   intl: intlShape.isRequired,
+  user: PropTypes.shape({}).isRequired,
 };
 
 export default withStyles(styles)(injectIntl(ContactInfo, { withRef: true }));

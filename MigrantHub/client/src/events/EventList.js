@@ -9,6 +9,7 @@ import Grid from '@material-ui/core/Grid';
 import { FormattedMessage } from 'react-intl';
 import { AuthConsumer } from 'routes/AuthContext';
 import TermsConditions from 'app/TermsConditions';
+import InfiniteScroll from 'react-infinite-scroller';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
 // @material-ui/icons
@@ -30,8 +31,11 @@ const styles = theme => ({
     paddingTop: theme.spacing.unit * 2,
     paddingBottom: theme.spacing.unit * 2,
   },
-  progress: {
-    margin: theme.spacing.unit * 2,
+  loader: {
+    margin: 5,
+  },
+  content: {
+    marginBottom: 10,
   },
 });
 
@@ -40,7 +44,6 @@ class EventList extends Component {
     super(props);
     this.state = {
       items: [],
-      isLoading: false,
       redirectToEventForm: false,
       offset: 0,
       limit: 20,
@@ -48,21 +51,7 @@ class EventList extends Component {
     };
   }
 
-
-  componentDidMount() {
-    this.fetchData(false, this.props);
-  }
-
-  componentWillReceiveProps(nextProps) {
-    const { location } = this.props;
-    if (nextProps.location !== location) {
-      this.fetchData(true, nextProps);
-    }
-  }
-
   fetchData = (redirect, props) => {
-    this.setState({ isLoading: true });
-
     const { location } = props;
     const { limit } = this.state;
     let { offset } = this.state;
@@ -71,18 +60,14 @@ class EventList extends Component {
     let searchMode = false;
 
     let editOwnerEmail = '';
-
     if (location.state) {
-      this.setState({
-        editMode: location.state.editMode,
-        editOwner: location.state.editOwner,
-      });
+      if (location.state.editMode) {
+        editOwnerEmail = location.state.editOwner;
 
-      editOwnerEmail = location.state.editOwner;
-
-      if (location.state.searchMode) {
-        searchMode = location.state.searchMode;
-        searchQuery = location.state.searchQuery;
+        if (location.state.searchMode) {
+          searchMode = location.state.searchMode;
+          searchQuery = location.state.searchQuery;
+        }
       }
     }
 
@@ -101,20 +86,18 @@ class EventList extends Component {
     }).then((response) => {
       if (response.data.length === 0) {
         if (redirect) {
-          this.setState({ items: [], moreData: false, isLoading: false });
+          this.setState({ items: [], moreData: false });
         } else {
-          this.setState({ moreData: false, isLoading: false });
+          this.setState({ moreData: false });
         }
       } else if (redirect) {
         this.setState({
-          isLoading: false,
           items: response.data,
           moreData: true,
           offset: offset + response.data.length,
         });
       } else {
         this.setState(prevState => ({
-          isLoading: false,
           items: prevState.items.concat(response.data),
           offset: prevState.offset + response.data.length,
         }));
@@ -138,7 +121,7 @@ class EventList extends Component {
 
   render() {
     const { classes } = this.props;
-    const { items, moreData, isLoading } = this.state;
+    const { items, moreData } = this.state;
     return (
       <AuthConsumer>
         {({ user }) => (
@@ -217,50 +200,40 @@ class EventList extends Component {
               <FormattedMessage id="event.browse" />
             </h5>
             <hr />
-            <Grid container spacing={16} alignItems="center" justify="center">
-            {' '}
-              {
-                items.map(item => (
-                  <GridItem>
-                    <EventCard
-                      eventId={item._id}
-                      eventName={item.eventName}
-                      eventImagePath={item.eventImagePath}
-                      eventDescription={item.description}
-                      eventLocation={item.location}
-                      dateStart={item.dateStart}
-                      dateEnd={item.dateEnd}
-                      timeStart={item.timeStart}
-                      timeEnd={item.timeEnd}
-                    />
-                  </GridItem>
-                ))
-              }
-            </Grid>
-            <Grid container spacing={16} alignItems="center" justify="center">
-              <Grid item>
-              {isLoading ? 
-                  (<div>
-                      <CircularProgress className={classes.progress} />
-                    </div>) 
-                  : 
-                (moreData ? 
-                  (moreData && (
-                    <Button
-                      variant="contained"
-                      color="info"
-                      className={classes.button}
-                      onClick={() => this.fetchData(false, this.props)}
-                    >
-                      Load More
-                    </Button>
+            <InfiniteScroll
+              pageStart={0}
+              loadMore={() => this.fetchData(this.props.redirect, this.props)}
+              hasMore={moreData}
+              loader={(
+                <Grid item style={{ paddingBottom: 15 }}>
+                  <CircularProgress className={classes.loader} disableShrink />
+                </Grid>
+              )}
+              threshold={-600}
+              useWindow={false}
+              getScrollParent={() => document.getElementById('mainPanel')}
+            >
+              <Grid className={classes.content} container spacing={16} alignItems="center" justify="center">
+                {' '}
+                {
+                  items.map(item => (
+                    <GridItem>
+                      <EventCard
+                        eventId={item._id}
+                        eventName={item.eventName}
+                        eventImagePath={item.eventImagePath}
+                        eventDescription={item.description}
+                        eventLocation={item.location}
+                        dateStart={item.dateStart}
+                        dateEnd={item.dateEnd}
+                        timeStart={item.timeStart}
+                        timeEnd={item.timeEnd}
+                      />
+                    </GridItem>
                   ))
-                  :
-                  (<h6>No more events to load</h6>)
-                )
                 }
               </Grid>
-            </Grid>
+            </InfiniteScroll>
           </div>
         )}
       </AuthConsumer>

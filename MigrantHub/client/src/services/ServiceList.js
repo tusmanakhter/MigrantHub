@@ -9,9 +9,10 @@ import UserTypes from 'lib/UserTypes';
 import QuestionnairePanel from 'components/QuestionnairePanel/QuestionnairePanel';
 import Grid from '@material-ui/core/Grid';
 import TermsConditions from 'app/TermsConditions';
-import CircularProgress from '@material-ui/core/CircularProgress';
 import { FormattedMessage } from 'react-intl';
 import { AuthConsumer } from 'routes/AuthContext';
+import InfiniteScroll from 'react-infinite-scroller';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 // @material-ui/icons
 import Info from '@material-ui/icons/Info';
@@ -32,8 +33,8 @@ const styles = theme => ({
     paddingTop: theme.spacing.unit * 2,
     paddingBottom: theme.spacing.unit * 2,
   },
-  progress: {
-    margin: theme.spacing.unit * 2,
+  loader: {
+    margin: 5,
   },
 });
 
@@ -42,24 +43,12 @@ class ServiceList extends Component {
     super(props);
     this.state = {
       items: [],
-      isLoading: false,
       redirectToServiceForm: false,
       redirectToSuggestionForm: false,
       offset: 0,
       limit: 20,
       moreData: true,
     };
-  }
-
-  componentDidMount() {
-    this.fetchData(false, this.props);
-  }
-
-  componentWillReceiveProps(nextProps) {
-    const { location } = this.props;
-    if (nextProps.location !== location) {
-      this.fetchData(true, nextProps);
-    }
   }
 
   setRedirectToServiceForm = () => {
@@ -99,8 +88,6 @@ class ServiceList extends Component {
     let category = '';
     let subcategory = '';
 
-    this.setState({ isLoading: true });
-
     if (location.state) {
       if (location.state.editMode) {
         editOwnerEmail = location.state.editOwner;
@@ -130,20 +117,18 @@ class ServiceList extends Component {
     }).then((response) => {
       if (response.data.length === 0) {
         if (redirect) {
-          this.setState({ items: [], moreData: false, isLoading: false });
+          this.setState({ items: [], moreData: false });
         } else {
-          this.setState({ moreData: false, isLoading: false });
+          this.setState({ moreData: false });
         }
       } else if (redirect) {
         this.setState({
-          isLoading: false,
           items: response.data,
           moreData: true,
           offset: offset + response.data.length,
         });
       } else {
         this.setState(prevState => ({
-          isLoading: false,
           items: prevState.items.concat(response.data),
           offset: prevState.offset + response.data.length,
         }));
@@ -153,12 +138,12 @@ class ServiceList extends Component {
 
   render() {
     const { classes } = this.props;
-    const { items, moreData, isLoading } = this.state;
+    const { items, moreData } = this.state;
 
     return (
       <AuthConsumer>
         {({ user }) => (
-          <React.Fragment>
+          <>
             <div className={classes.mainContainer}>
               {user.type !== UserTypes.ADMIN
                 && (
@@ -251,55 +236,45 @@ class ServiceList extends Component {
                 <FormattedMessage id="service.browse" />
               </h5>
               <hr />
-              <Grid container spacing={16} alignItems="center" justify="center">
-                {' '}
-                {
-                  items.map(item => (
-                    <GridItem>
-                      <ServiceCard
-                        serviceId={item._id}
-                        serviceTitle={item.serviceTitle}
-                        serviceImagePath={item.serviceImagePath}
-                        serviceDescription={item.serviceDescription}
-                        serviceSummary={item.serviceSummary}
-                        category={item.category}
-                        subcategory={item.subcategory}
-                        serviceLocation={item.location}
-                        serviceDate={item.serviceDate}
-                        serviceHours={item.serviceHours}
-                        rating={item.avgRating}
-                        count={item.countRating}
-                      />
-                    </GridItem>
-                  ))
-                }
-              </Grid>
-              <Grid container spacing={16} alignItems="center" justify="center">
-                <Grid item>
-                {isLoading ? 
-                  (<div>
-                      <CircularProgress className={classes.progress} />
-                    </div>) 
-                  : 
-                  (moreData ? 
-                    (moreData && (
-                      <Button
-                        variant="contained"
-                        color="info"
-                        className={classes.button}
-                        onClick={() => this.fetchData(false, this.props)}
-                      >
-                        Load More
-                      </Button>
+              <InfiniteScroll
+                pageStart={0}
+                loadMore={() => this.fetchData(this.props.redirect, this.props)}
+                hasMore={moreData}
+                loader={(
+                  <Grid item style={{ paddingBottom: 15 }}>
+                    <CircularProgress className={classes.loader} disableShrink />
+                  </Grid>
+                )}
+                threshold={-600}
+                useWindow={false}
+                getScrollParent={() => document.getElementById('mainPanel')}
+              >
+                <Grid container spacing={16} alignItems="center" justify="center">
+                  {' '}
+                  {
+                    items.map(item => (
+                      <GridItem>
+                        <ServiceCard
+                          serviceId={item._id}
+                          serviceTitle={item.serviceTitle}
+                          serviceImagePath={item.serviceImagePath}
+                          serviceDescription={item.serviceDescription}
+                          serviceSummary={item.serviceSummary}
+                          category={item.category}
+                          subcategory={item.subcategory}
+                          serviceLocation={item.location}
+                          serviceDate={item.serviceDate}
+                          serviceHours={item.serviceHours}
+                          rating={item.avgRating}
+                          count={item.countRating}
+                        />
+                      </GridItem>
                     ))
-                    :
-                    <h6>No more services to load</h6>
-                  )
-                }
+                  }
                 </Grid>
-              </Grid>
+              </InfiniteScroll>
             </div>
-          </React.Fragment>
+          </>
         )}
       </AuthConsumer>
     );

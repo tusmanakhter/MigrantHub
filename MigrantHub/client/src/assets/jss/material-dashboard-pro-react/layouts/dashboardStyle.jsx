@@ -31,14 +31,11 @@ const appStyle = theme => ({
     position: "relative",
     float: "right",
     ...transition,
-    maxHeight: "100%",
     width: "100%",
-    overflowScrolling: "touch"
-  },
-  content: {
-    marginTop: "70px",
-    padding: "30px 15px",
-    minHeight: "calc(100vh - 123px)"
+    minHeight: '100vh',
+    height: '100%',
+    display: 'flex',
+    flexDirection: 'column',
   },
   container: { ...containerFluid },
   map: {
@@ -48,7 +45,11 @@ const appStyle = theme => ({
     [theme.breakpoints.up("md")]: {
       width: `calc(100% - ${drawerMiniWidth}px)`
     }
-  }
+  },
+  content: {
+    padding: '0px 15px',
+    flex: '1 0 auto',
+  },
 });
 
 export default appStyle;

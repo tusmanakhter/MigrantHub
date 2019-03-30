@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import withStyles from '@material-ui/core/styles/withStyles';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
+import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
 import DeleteIcon from '@material-ui/icons/Delete';
 import validator from 'validator';
@@ -15,6 +15,8 @@ import LookingForJob from 'components/fields/employment/LookingForJob';
 import Title from 'components/fields/employment/Title';
 import Company from 'components/fields/employment/Company';
 import EmploymentLength from 'components/fields/employment/EmploymentLength';
+import Divider from '@material-ui/core/Divider';
+import Paper from '@material-ui/core/Paper';
 import { injectIntl, intlShape, FormattedMessage } from 'react-intl';
 
 const styles = theme => ({
@@ -23,6 +25,21 @@ const styles = theme => ({
   },
   button: {
     margin: theme.spacing.unit,
+  },
+  paper: {
+    width: '100%',
+    marginTop: theme.spacing.unit,
+    marginBottom: theme.spacing.unit,
+    padding: theme.spacing.unit * 2,
+    [theme.breakpoints.up(600 + theme.spacing.unit * 3 * 2)]: {
+      marginTop: theme.spacing.unit,
+      marginBottom: theme.spacing.unit,
+      padding: theme.spacing.unit * 3,
+    },
+    layout: {
+      marginLeft: theme.spacing.unit,
+      marginRight: theme.spacing.unit,
+    },
   },
 });
 class EmploymentInfo extends Component {
@@ -34,19 +51,26 @@ class EmploymentInfo extends Component {
   state = {
     jobStatusError: '',
     lookingForJobError: '',
+    currentIncomeError: '',
     workExperienceError: [],
   }
 
   validate = () => {
-    const { jobStatus, workExperience, intl } = this.props;
+    const { jobStatus, workExperience, currentIncome, intl } = this.props;
     let isError = false;
     const errors = {
       jobStatusError: '',
+      currentIncomeError: '',
       workExperienceError: [],
     };
 
     if (validator.isEmpty(jobStatus)) {
       errors.jobStatusError = `${intl.formatMessage({ id: 'employment.status' })}  ${intl.formatMessage({ id: 'isrequired' })}`;
+      isError = true;
+    }
+
+    if ((currentIncome !== '' && currentIncome !== undefined) && !validator.isInt(currentIncome, { min: 0 })) {
+      errors.currentIncomeError = `${intl.formatMessage({ id: 'employment.income' })}  ${intl.formatMessage({ id: 'notvalid' })}`;
       isError = true;
     }
 
@@ -71,6 +95,9 @@ class EmploymentInfo extends Component {
       if (validator.isEmpty(job.years)) {
         errors.workExperienceError[index].years = `${intl.formatMessage({ id: 'employment.length' })}  ${intl.formatMessage({ id: 'isrequired' })}`;
         isError = true;
+      } else if (!validator.isInt(job.years, { min: 1, max: 100 })) {
+        errors.workExperienceError[index].years = `${intl.formatMessage({ id: 'employment.length' })}  ${intl.formatMessage({ id: 'notvalid' })}`;
+        isError = true;
       }
     });
 
@@ -87,14 +114,17 @@ class EmploymentInfo extends Component {
       classes, handleChange, handleAddObject, handleRemoveObject, handleEditObject,
       jobStatus, lookingForJob, currentIncome, workExperience,
     } = this.props;
-    const { jobStatusError, lookingForJobError } = this.state;
+    const { jobStatusError, lookingForJobError, currentIncomeError } = this.state;
 
     return (
       <React.Fragment>
-        <Typography variant="h6" gutterBottom>
-          <FormattedMessage id="signup.employmentinfo" />
-        </Typography>
         <Grid container spacing={24}>
+          <Grid item xs={12}>
+            <Typography align="left" color="textSecondary" variant="h6" gutterBottom>
+              <FormattedMessage id="signup.employment" />
+            </Typography>
+            <Divider />
+          </Grid>
           <Grid item xs={12} sm={4}>
             <JobStatus
               jobStatus={jobStatus}
@@ -105,7 +135,7 @@ class EmploymentInfo extends Component {
           <Grid item xs={12} sm={4}>
             <CurrentIncome
               currentIncome={currentIncome}
-              currentIncomeError=""
+              currentIncomeError={currentIncomeError}
               handleChange={handleChange}
             />
           </Grid>
@@ -117,57 +147,64 @@ class EmploymentInfo extends Component {
             />
           </Grid>
           <Grid item xs={12}>
-            <Typography variant="subtitle1" gutterBottom className={classes.row}>
+            <Typography variant="subtitle1" color="textSecondary" gutterBottom className={classes.row}>
               <FormattedMessage id="signup.employment.addwork" />
+              <Fab
+                size="small"
+                aria-label="Add"
+                color="primary"
+                onClick={() => handleAddObject('workExperience', workObject)}
+                className={classes.button}
+              >
+                <AddIcon />
+              </Fab>
             </Typography>
-            <Button
-              variant="fab"
-              mini
-              color="secondary"
-              aria-label="Add"
-              onClick={() => handleAddObject('workExperience', workObject)}
-              className={classes.button}
-            >
-              <AddIcon />
-            </Button>
           </Grid>
           {workExperience.map((work, index) => (
-            <React.Fragment key={index}>
-              <Grid container spacing={24} item xs={12} sm={11}>
-                <Grid item xs={12} sm={4}>
-                  <Title
-                    title={work.title}
-                    titleError={this.objectErrorText('workExperienceError', index, 'title')}
-                    handleChange={handleEditObject('workExperience', index)}
-                  />
+            <Grid item xs={12}>
+              <Paper elevation={4} className={classes.paper}>
+                <Grid container justify="space-between" alignItems="center" style={{ paddingBottom: 10 }}>
+                  <Typography variant="subtitle1" align="left" gutterBottom className={classes.row}>
+                    Employment
+                    {' '}
+                    {index + 1}
+                  </Typography>
+                  <Fab
+                    size="small"
+                    aria-label="Delete"
+                    color="secondary"
+                    onClick={event => handleRemoveObject('workExperience', index, event)}
+                    className={classes.button}
+                    styles={{ marginTop: 0 }}
+                  >
+                    <DeleteIcon />
+                  </Fab>
                 </Grid>
-                <Grid item xs={12} sm={4}>
-                  <Company
-                    company={work.company}
-                    companyError={this.objectErrorText('workExperienceError', index, 'company')}
-                    handleChange={handleEditObject('workExperience', index)}
-                  />
+                <Grid container spacing={24}>
+                  <Grid item xs={12} sm={4}>
+                    <Title
+                      title={work.title}
+                      titleError={this.objectErrorText('workExperienceError', index, 'title')}
+                      handleChange={handleEditObject('workExperience', index)}
+                    />
+                  </Grid>
+                  <Grid item xs={12} sm={4}>
+                    <Company
+                      company={work.company}
+                      companyError={this.objectErrorText('workExperienceError', index, 'company')}
+                      handleChange={handleEditObject('workExperience', index)}
+                    />
+                  </Grid>
+                  <Grid item xs={12} sm={4}>
+                    <EmploymentLength
+                      years={work.years}
+                      yearsError={this.objectErrorText('workExperienceError', index, 'years')}
+                      handleChange={handleEditObject('workExperience', index)}
+                    />
+                  </Grid>
                 </Grid>
-                <Grid item xs={12} sm={4}>
-                  <EmploymentLength
-                    years={work.years}
-                    yearsError={this.objectErrorText('workExperienceError', index, 'years')}
-                    handleChange={handleEditObject('workExperience', index)}
-                  />
-                </Grid>
-              </Grid>
-              <Grid item xs={12} sm={1}>
-                <Button
-                  variant="fab"
-                  mini
-                  aria-label="Delete"
-                  onClick={event => handleRemoveObject('workExperience', index, event)}
-                  className={classes.button}
-                >
-                  <DeleteIcon />
-                </Button>
-              </Grid>
-            </React.Fragment>
+              </Paper>
+            </Grid>
           ))}
         </Grid>
       </React.Fragment>

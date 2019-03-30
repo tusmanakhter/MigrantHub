@@ -7,7 +7,6 @@ import { FormattedMessage } from 'react-intl';
 const Province = (props) => {
   const {
     province, provinceError, handleChange,
-    variant, margin, inputClass,
   } = props;
 
   return (
@@ -18,26 +17,14 @@ const Province = (props) => {
       error={provinceError}
       options={provinces}
       handleChange={event => handleChange(event)}
-      variant={variant}
-      inputClass={inputClass}
-      margin={margin}
     />
   );
-};
-
-Province.defaultProps = {
-  variant: 'standard',
-  inputClass: '',
-  margin: '',
 };
 
 Province.propTypes = {
   province: PropTypes.string.isRequired,
   provinceError: PropTypes.string.isRequired,
   handleChange: PropTypes.func.isRequired,
-  variant: PropTypes.string,
-  inputClass: PropTypes.string,
-  margin: PropTypes.string,
 };
 
 export default Province;
