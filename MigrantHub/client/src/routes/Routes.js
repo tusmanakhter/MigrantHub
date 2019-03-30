@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Route, Switch, withRouter } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import PropTypes from 'prop-types';
+import AboutUs from 'app/AboutUs'
 import SignUpMigrant from 'account/personal/SignUpMigrant';
 import SignUpBusiness from 'account/business/SignUpBusiness';
 import SignUpAdmin from 'account/admin/SignUpAdmin';
@@ -90,6 +91,7 @@ class Routes extends Component {
           <ProtectedRoute path="/events/:id" component={EventDetails} />
           <ProtectedRoute path="/users" component={UsersList} exact />
           <ProtectedRoute path="/friends" component={FriendPanel} exact />
+          <Route path="/about-us" component={AboutUs} exact/>
           <Route component={Error} />
         </Switch>
       </>

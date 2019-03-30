@@ -9,8 +9,6 @@ import UserTypes from 'lib/UserTypes';
 import QuestionnairePanel from 'components/QuestionnairePanel/QuestionnairePanel';
 import Grid from '@material-ui/core/Grid';
 import TermsConditions from 'app/TermsConditions';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
 import { FormattedMessage } from 'react-intl';
 import { AuthConsumer } from 'routes/AuthContext';
 import InfiniteScroll from 'react-infinite-scroller';

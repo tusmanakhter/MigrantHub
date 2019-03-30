@@ -39,6 +39,11 @@ function Footer({ ...props }) {
             <ListItem className={classes.inlineBlock}>
               <TermsConditions />
             </ListItem>
+            <ListItem className={classes.inlineBlock}>
+              <a href="/about-us" className={block}>
+                  {'About'}
+              </a>
+            </ListItem>
           </List>
         </div>
         <p className={classes.right}>
