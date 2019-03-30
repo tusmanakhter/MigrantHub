@@ -10,7 +10,6 @@ import appStyle from 'assets/jss/material-dashboard-pro-react/layouts/dashboardS
 import logo from 'assets/img/logo_transparent.png';
 import { withRouter } from 'react-router';
 
-
 class Layout extends React.Component {
   constructor(props) {
     super(props);
@@ -99,7 +98,7 @@ class Layout extends React.Component {
             miniActive={miniActive}
             {...rest}
           />
-          <div className={mainPanel} ref={this.setMainPanelRef}>
+          <div id="mainPanel" className={mainPanel} ref={this.setMainPanelRef}>
             <Header
               sidebarMinimize={this.sidebarMinimize.bind(this)}
               miniActive={miniActive}

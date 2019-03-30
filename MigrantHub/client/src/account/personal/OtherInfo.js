@@ -7,6 +7,7 @@ import validator from 'validator';
 import SettlingLocation from 'components/fields/other/SettlingLocation';
 import SettlingDuration from 'components/fields/other/SettlingDuration';
 import JoiningReason from 'components/fields/other/JoiningReason';
+import Divider from '@material-ui/core/Divider';
 import { injectIntl, intlShape, FormattedMessage } from 'react-intl';
 
 const styles = ({});
@@ -18,15 +19,21 @@ class OtherInfo extends Component {
   }
 
   validate = () => {
-    const { settlingLocation, joiningReason, intl } = this.props;
+    const { settlingLocation, settlingDuration, joiningReason, intl } = this.props;
     let isError = false;
     const errors = {
       settlingLocationError: '',
+      settlingDurationError: '',
       joiningReasonError: '',
     };
 
     if (validator.isEmpty(settlingLocation)) {
       errors.settlingLocationError = `${intl.formatMessage({ id: 'other.location' })}  ${intl.formatMessage({ id: 'isrequired' })}`;
+      isError = true;
+    }
+
+    if ((settlingDuration !== '' && settlingDuration !== undefined) && !validator.isInt(settlingDuration, { min: 1, max: 100 })) {
+      errors.settlingDurationError = `${intl.formatMessage({ id: 'other.duration' })}  ${intl.formatMessage({ id: 'notvalid' })}`;
       isError = true;
     }
 
@@ -54,10 +61,13 @@ class OtherInfo extends Component {
 
     return (
       <React.Fragment>
-        <Typography variant="h6" gutterBottom>
-          <FormattedMessage id="signup.otherinfo" />
-        </Typography>
         <Grid container spacing={24}>
+          <Grid item xs={12}>
+            <Typography align="left" color="textSecondary" variant="h6" gutterBottom>
+              <FormattedMessage id="signup.other" />
+            </Typography>
+            <Divider />
+          </Grid>
           <Grid item xs={12} sm={6}>
             <SettlingLocation
               settlingLocation={settlingLocation}
@@ -90,7 +100,7 @@ OtherInfo.propTypes = {
   handleChange: PropTypes.func.isRequired,
   handleAutoSuggestChange: PropTypes.func.isRequired,
   settlingLocation: PropTypes.string.isRequired,
-  settlingDuration: PropTypes.string.isRequired,
+  settlingDuration: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
   joiningReason: PropTypes.string.isRequired,
   intl: intlShape.isRequired,
 };

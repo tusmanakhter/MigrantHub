@@ -7,7 +7,6 @@ import { FormattedMessage } from 'react-intl';
 const Gender = (props) => {
   const {
     gender, genderError, handleChange,
-    variant, margin, inputClass,
   } = props;
 
   return (
@@ -18,26 +17,14 @@ const Gender = (props) => {
       error={genderError}
       options={genders}
       handleChange={event => handleChange(event)}
-      variant={variant}
-      inputClass={inputClass}
-      margin={margin}
     />
   );
-};
-
-Gender.defaultProps = {
-  variant: 'standard',
-  inputClass: '',
-  margin: '',
 };
 
 Gender.propTypes = {
   gender: PropTypes.string.isRequired,
   genderError: PropTypes.string.isRequired,
   handleChange: PropTypes.func.isRequired,
-  variant: PropTypes.string,
-  inputClass: PropTypes.string,
-  margin: PropTypes.string,
 };
 
 export default Gender;

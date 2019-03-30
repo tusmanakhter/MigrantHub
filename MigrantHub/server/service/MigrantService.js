@@ -1,5 +1,6 @@
 const MigrantRepository = require('../repository/MigrantRepository');
-
+const MigrantAccountValidator = require('../validators/MigrantAccountValidator');
+const { ServerError } = require('../errors/ServerError');
 
 module.exports = {
   async getMigrantUser(migrantUserId) {
@@ -8,7 +9,6 @@ module.exports = {
 
   async editMigrantUser(migrantUserId, parsedMigrantUserObject) {
     const migrantUserObject = parsedMigrantUserObject;
-
     if (migrantUserObject.languages === undefined) {
       migrantUserObject.languages = [];
     }
@@ -21,6 +21,10 @@ module.exports = {
       migrantUserObject.family = [];
     }
 
-    return MigrantRepository.editMigrantUser(migrantUserId, migrantUserObject);
+    const errors = await MigrantAccountValidator.migrantAccountValidator(migrantUserObject, true);
+    if (errors === '') {
+      return MigrantRepository.editMigrantUser(migrantUserId, migrantUserObject);
+    }
+    throw new ServerError('There was an error updating profile.', 400, errors);
   },
 };

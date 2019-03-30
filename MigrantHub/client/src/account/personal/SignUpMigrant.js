@@ -39,10 +39,6 @@ import { handleAutoSuggestChange } from 'helpers/Autosuggest';
 const qs = require('qs');
 
 const styles = theme => ({
-  textbox: {
-    height: 24,
-    padding: 11,
-  },
   facebook: {
     marginBottom: 8,
     '& > span': {
@@ -104,9 +100,6 @@ class BaseSignupMigrant extends Component {
                   firstName={firstName}
                   firstNameError={validation.firstName.message}
                   handleChange={event => this.handleChange(event)}
-                  variant="outlined"
-                  inputClass={classes.textbox}
-                  margin="dense"
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
@@ -114,9 +107,6 @@ class BaseSignupMigrant extends Component {
                   lastName={lastName}
                   lastNameError={validation.lastName.message}
                   handleChange={event => this.handleChange(event)}
-                  variant="outlined"
-                  inputClass={classes.textbox}
-                  margin="dense"
                 />
               </Grid>
               <Grid item xs={12}>
@@ -125,16 +115,12 @@ class BaseSignupMigrant extends Component {
                   label={<FormattedMessage id="email" />}
                   value={email}
                   handleChange={event => this.handleChange(event)}
-                  variant="outlined"
                   error={validation.email.message}
-                  inputClass={classes.textbox}
-                  margin="dense"
                 />
               </Grid>
               <Grid item xs={12}>
                 <TextBox
                   name="password"
-                  variant="outlined"
                   type={showPassword ? 'text' : 'password'}
                   label={<FormattedMessage id="password" />}
                   value={password}
@@ -150,8 +136,6 @@ class BaseSignupMigrant extends Component {
                       </IconButton>
                     </InputAdornment>
                   )}
-                  inputClass={classes.textbox}
-                  margin="dense"
                 />
               </Grid>
             </Grid>
@@ -166,9 +150,6 @@ class BaseSignupMigrant extends Component {
                   age={age}
                   ageError={validation.age.message}
                   handleChange={event => this.handleChange(event)}
-                  variant="outlined"
-                  inputClass={classes.textbox}
-                  margin="dense"
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
@@ -176,9 +157,6 @@ class BaseSignupMigrant extends Component {
                   nationality={nationality}
                   nationalityError={validation.nationality.message}
                   handleChange={event => this.handleChange(event)}
-                  variant="outlined"
-                  inputClass={classes.textbox}
-                  margin="dense"
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
@@ -186,9 +164,6 @@ class BaseSignupMigrant extends Component {
                   status={status}
                   statusError={validation.status.message}
                   handleChange={event => this.handleChange(event)}
-                  variant="outlined"
-                  inputClass={classes.textbox}
-                  margin="dense"
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
@@ -196,9 +171,6 @@ class BaseSignupMigrant extends Component {
                   relationshipStatus={relationshipStatus}
                   relationshipStatusError={validation.relationshipStatus.message}
                   handleChange={event => this.handleChange(event)}
-                  variant="outlined"
-                  inputClass={classes.textbox}
-                  margin="dense"
                 />
               </Grid>
               <Grid item xs={12} sm={12}>
@@ -206,9 +178,6 @@ class BaseSignupMigrant extends Component {
                   gender={gender}
                   genderError={validation.gender.message}
                   handleChange={event => this.handleChange(event)}
-                  variant="outlined"
-                  inputClass={classes.textbox}
-                  margin="dense"
                 />
               </Grid>
             </Grid>
@@ -223,9 +192,6 @@ class BaseSignupMigrant extends Component {
                   educationLevel={educationLevel}
                   educationLevelError={validation.educationLevel.message}
                   handleChange={event => this.handleChange(event)}
-                  variant="outlined"
-                  inputClass={classes.textbox}
-                  margin="dense"
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
@@ -233,9 +199,6 @@ class BaseSignupMigrant extends Component {
                   settlingLocation={settlingLocation}
                   settlingLocationError={validation.settlingLocation.message}
                   handleAutoSuggestChange={this.handleAutoSuggestChange('settlingLocation')}
-                  variant="outlined"
-                  inputClass={classes.textbox}
-                  margin="dense"
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
@@ -243,9 +206,6 @@ class BaseSignupMigrant extends Component {
                   jobStatus={jobStatus}
                   jobStatusError={validation.jobStatus.message}
                   handleChange={event => this.handleChange(event)}
-                  variant="outlined"
-                  inputClass={classes.textbox}
-                  margin="dense"
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
@@ -253,9 +213,6 @@ class BaseSignupMigrant extends Component {
                   joiningReason={joiningReason}
                   joiningReasonError={validation.joiningReason.message}
                   handleChange={event => this.handleChange(event)}
-                  variant="outlined"
-                  inputClass={classes.textbox}
-                  margin="dense"
                 />
               </Grid>
             </Grid>

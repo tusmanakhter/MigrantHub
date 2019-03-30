@@ -2,18 +2,20 @@ const validator = require('validator');
 
 module.exports = {
   // Function to perform server-side validation of the create migrant account before sending to db.
-  async migrantAccountValidator(migrantObject) {
+  async migrantAccountValidator(migrantObject, edit) {
     let errors = '';
 
-    if (validator.isEmpty(migrantObject.email)) {
-      errors += '\nEmail is required';
-    } else if (!validator.isEmail(migrantObject.email)) {
-      errors += '\nEmail is not valid';
-    }
-    if (validator.isEmpty(migrantObject.password)) {
-      errors += '\nPassword is empty';
-    } else if (!validator.isLength(migrantObject.password, { min: 8 })) {
-      errors += '\nPassword must be atleast 8 characters';
+    if (!edit) {
+      if (validator.isEmpty(migrantObject.email)) {
+        errors += '\nEmail is required';
+      } else if (!validator.isEmail(migrantObject.email)) {
+        errors += '\nEmail is not valid';
+      }
+      if (validator.isEmpty(migrantObject.password)) {
+        errors += '\nPassword is empty';
+      } else if (!validator.isLength(migrantObject.password, { min: 8 })) {
+        errors += '\nPassword must be atleast 8 characters';
+      }
     }
     if (validator.isEmpty(migrantObject.firstName)) {
       errors += '\nFirst name is required and empty';
@@ -25,17 +27,17 @@ module.exports = {
     } else if (!validator.isAlpha(migrantObject.lastName)) {
       errors += '\nLast name is not valid';
     }
-    if (migrantObject.city !== undefined && !validator.isAlpha(migrantObject.city)) {
+    if ((migrantObject.city !== undefined && migrantObject.city !== '') && !validator.isAlpha(migrantObject.city)) {
       errors += '\nThis is not a valid city';
     }
-    if (migrantObject.postalCode !== undefined) {
+    if (migrantObject.postalCode !== undefined && migrantObject.postalCode !== '') {
       if (!validator.isLength(migrantObject.postalCode, { min: 7, max: 7 })) {
         errors += '\nPostal code is invalid';
       } else if (!validator.matches(migrantObject.postalCode, '[A-Za-z][0-9][A-Za-z] [0-9][A-Za-z][0-9]')) {
         errors += '\nPostal is should be in the format A1B 2E3';
       }
     }
-    if (migrantObject.phoneNumber !== undefined) {
+    if (migrantObject.phoneNumber !== undefined && migrantObject.phoneNumber !== '') {
       if (!validator.isLength(migrantObject.phoneNumber, { min: 14, max: 14 })) {
         errors += '\nPhone number is invalid';
       } else if (!validator.matches(migrantObject.phoneNumber, '[(][0-9]{3}[)][ ][0-9]{3}[-][0-9]{4}')) {
@@ -61,7 +63,7 @@ module.exports = {
     if (validator.isEmpty(migrantObject.status)) {
       errors += '\nStatus is required and empty';
     }
-    if (migrantObject.motherTongue !== undefined
+    if ((migrantObject.motherTongue !== undefined && migrantObject.motherTongue !== '')
       && !validator.isAlpha(migrantObject.motherTongue)) {
       errors += '\nMother tongue is not valid';
     }
@@ -104,14 +106,13 @@ module.exports = {
     if (validator.isEmpty(migrantObject.jobStatus)) {
       errors += '\nJob status is required and empty';
     }
-    if (migrantObject.lookingForJob !== undefined
+    if ((migrantObject.lookingForJob !== undefined && migrantObject.lookingForJob !== '')
        && !validator.isBoolean(migrantObject.lookingForJob)) {
       errors += '\nThe looking for a job field value is invalid';
     }
-    if (migrantObject.currentIncome !== undefined
-        && !validator.isEmpty(migrantObject.currentIncome)
-        && !validator.isDivisibleBy(migrantObject.currentIncome, 1)
-        && migrantObject.currentIncome < 0) {
+    if (migrantObject.currentIncome !== undefined && migrantObject.currentIncome !== ''
+        && (!validator.isDivisibleBy(migrantObject.currentIncome, 1)
+        || migrantObject.currentIncome < 0)) {
       errors += '\nThe current income value is not valid';
     }
     if (typeof migrantObject.workExperience !== 'undefined') {
@@ -133,6 +134,11 @@ module.exports = {
     }
     if (validator.isEmpty(migrantObject.settlingLocation)) {
       errors += '\nSettling location is required and empty';
+    }
+    if (migrantObject.settlingDuration !== undefined && migrantObject.settlingDuration !== ''
+        && (!validator.isDivisibleBy(migrantObject.settlingDuration, 1)
+        || migrantObject.settlingDuration < 0)) {
+      errors += '\nThe settling duration value is not valid';
     }
     if (validator.isEmpty(migrantObject.joiningReason)) {
       errors += '\nJoining reason is required and empty';

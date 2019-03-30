@@ -37,7 +37,7 @@ function Header({ ...props }) {
       [classes.sidebarMinimizeRTL]: rtlActive,
     })}`;
   return (
-    <AppBar className={classes.appBar + appBarClasses}>
+    <AppBar position="static" className={classes.appBar + appBarClasses}>
       <Toolbar className={classes.container}>
         <Hidden smDown implementation="css">
           <div className={sidebarMinimize}>

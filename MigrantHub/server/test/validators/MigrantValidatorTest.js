@@ -17,15 +17,11 @@ describe('MigrantAccountValidator()', function () {
             "\nPassword is empty" +
             "\nFirst name is required and empty" +
             "\nLast name is required and empty" +
-            "\nThis is not a valid city" +
-            "\nPostal code is invalid" +
-            "\nPhone number is invalid" +
             "\nAge is required and empty" +
             "\nGender is required and empty" +
             "\nNationality is required and empty" +
             "\nRelationship status is required and empty" +
             "\nStatus is required and empty" +
-            "\nMother tongue is not valid" +
             "\nLanguage name is required and empty" +
             "\nAdditional language writing level is required and empty" +
             "\nAdditional language speaking level is required and empty" +
@@ -43,7 +39,6 @@ describe('MigrantAccountValidator()', function () {
             "\nFamily member relation is required and empty" +
             "\nEducation level is required and empty" +
             "\nJob status is required and empty" +
-            "\nThe looking for a job field value is invalid" +
             "\nWork experience title is required and empty" +
             "\nCompany is required and empty" +
             "\nEmployment length is required and empty" +
@@ -61,7 +56,9 @@ describe('MigrantAccountValidator()', function () {
             "\nFamily member's age should be a valid number greater than 0." +
             "\nFamily member's age should be a valid number greater than 0." +
             "\nFamily member's age should be a valid number greater than 0." +
-            "\nEmployment length is not valid"
+            "\nThe current income value is not valid" +
+            "\nEmployment length is not valid" +
+            "\nThe settling duration value is not valid"
 
         let forcedErrors = await MigrantAccountValidator.migrantAccountValidator(AccountFactory.invalidNumbersMigrantAccount());
         assert.equal(forcedErrors, expectedErrors);

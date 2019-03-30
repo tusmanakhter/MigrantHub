@@ -9,12 +9,15 @@ import { FormattedMessage } from 'react-intl';
 
 const Language = (props) => {
   const {
-    language, languageError, handleAutoSuggestChange,
+    language, languageError, handleAutoSuggestChange, motherTongue,
   } = props;
 
   return (
     <AutosuggestTextbox
-      label={<FormattedMessage id="lang.lang" />}
+      label={
+      motherTongue ? 'Mother Tongue'
+        : <FormattedMessage id="lang.lang" />
+      }
       value={language}
       error={languageError}
       handleAutoSuggestChange={handleAutoSuggestChange}
@@ -26,10 +29,15 @@ const Language = (props) => {
   );
 };
 
+Language.defaultProps = {
+  motherTongue: false,
+};
+
 Language.propTypes = {
   language: PropTypes.string.isRequired,
   languageError: PropTypes.string.isRequired,
   handleAutoSuggestChange: PropTypes.func.isRequired,
+  motherTongue: PropTypes.bool,
 };
 
 export default Language;

@@ -37,6 +37,7 @@ const ProficiencyExams = (props) => {
                 name={option.value}
                 checked={proficiencyExams[option.value]}
                 onChange={handleChange('proficiencyExams', option.value)}
+                color="primary"
               />
             )}
             label={option.label}

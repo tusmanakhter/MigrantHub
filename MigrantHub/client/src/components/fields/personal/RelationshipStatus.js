@@ -7,7 +7,6 @@ import { FormattedMessage } from 'react-intl';
 const RelationshipStatus = (props) => {
   const {
     relationshipStatus, relationshipStatusError, handleChange,
-    variant, margin, inputClass,
   } = props;
 
   return (
@@ -18,26 +17,14 @@ const RelationshipStatus = (props) => {
       error={relationshipStatusError}
       options={relationshipStatuses}
       handleChange={event => handleChange(event)}
-      variant={variant}
-      inputClass={inputClass}
-      margin={margin}
     />
   );
-};
-
-RelationshipStatus.defaultProps = {
-  variant: 'standard',
-  inputClass: '',
-  margin: '',
 };
 
 RelationshipStatus.propTypes = {
   relationshipStatus: PropTypes.string.isRequired,
   relationshipStatusError: PropTypes.string.isRequired,
   handleChange: PropTypes.func.isRequired,
-  variant: PropTypes.string,
-  inputClass: PropTypes.string,
-  margin: PropTypes.string,
 };
 
 export default RelationshipStatus;
