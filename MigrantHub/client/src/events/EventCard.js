@@ -4,30 +4,32 @@ import { withStyles } from '@material-ui/core/styles';
 import Place from '@material-ui/icons/Place';
 import { Link } from 'react-router-dom';
 import Card from '@material-ui/core/Card';
+import CardHeader from "components/Card/CardHeader.jsx";
+import CardBody from "components/Card/CardBody.jsx";
+import CardFooter from "components/Card/CardFooter.jsx";
+import CardIcon from "components/Card/CardIcon.jsx";
 import CardActionArea from '@material-ui/core/CardActionArea';
-import CardContent from '@material-ui/core/CardContent';
-import CardMedia from '@material-ui/core/CardMedia';
 import Typography from '@material-ui/core/Typography';
 import moment from 'moment';
 
 const styles = {
   card: {
-    maxWidth: 345,
-    minWidth: 345,
-    minHeight: 350,
+    maxWidth: 250,
+    minWidth: 250,
+    minHeight: 200,
+    maxHeight: 200,
     textAlign: 'left',
+  },
+  headContainer:{
+    minHeight: 40,
+    maxHeight: 40,
+  },
+  bodyContainer:{
+    minHeight: 50,
+    maxHeight: 50,
   },
   media: {
     objectFit: 'cover',
-  },
-  Recommendation: {
-    color: 'green',
-  },
-  locationContainer: {
-    display: 'flex',
-  },
-  rating: {
-    marginRight: 5,
   },
 };
 
@@ -38,37 +40,57 @@ const EventCard = (props) => {
   } = props;
 
   return (
+    <React.Fragment>
     <Card>
-      <CardActionArea
+    <CardActionArea
         component={cardProps => <Link to={`/events/${eventId}`} {...cardProps} />}
         className={classes.card}
       >
-        <CardMedia
-          component="img"
-          alt={eventName}
-          className={classes.media}
-          height="200"
-          image={eventImagePath}
-          title={eventName}
-        />
-        <CardContent>
-          <Typography variant="subtitle1">
-            {eventName} <br />
-            {eventDescription}
-          </Typography>
-          <Typography variant="subtitle1">
-            {moment(dateStart).format('MMM D YYYY')} @ {timeStart}<br />
-            {moment(dateEnd).format('MMM D YYYY')} @ {timeEnd}
-          </Typography>
-          <div className={classes.locationContainer}>
-            {eventLocation
-              ? (<>{eventLocation.city}<Place fontSize="inherit" /></>)
-              : (<>Canada<Place fontSize="inherit" /></>)
+        <CardHeader color="primary" icon>
+          <CardIcon color="primary">
+            {(eventImagePath.length!=0) ? 
+              (
+                <img src={ eventImagePath } width={70} height={70} alt="NO IMAGE"/>
+              )
+              :
+              (
+                <div style={{ paddingTop:'15px' }}>
+                  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous"></link>
+                  <i class="far fa-calendar fa-2x"></i>
+                </div>
+              )
             }
+          </CardIcon>
+          <div className={classes.headContainer} style={{ textAlign:'center', paddingTop:'10px' }}>
+            <Typography variant="subheading">
+              {eventName.substring(0,20)} 
+              <hr />
+            </Typography>
           </div>
-        </CardContent>
+        </CardHeader>
+        <CardBody>
+            <div className={classes.bodyContainer}>
+              <Typography variant="subtitle2" >
+                <br />
+                { eventDescription.substring(0,50) }...
+              </Typography>
+            <div style={{ display: 'inline-block', padding: '5px 5px 5px 5px' }}>
+                <Typography variant="caption">
+                  {moment(dateStart).format('MMM D YYYY')} @ {timeStart}<br />
+                  {moment(dateEnd).format('MMM D YYYY')} @ {timeEnd}
+              </Typography>
+            </div>
+            <div style={{ display: 'inline-block', padding: '5px 5px 5px 5px' }}>
+                {eventLocation
+                  ? (<p style={{textAlign:'left'}}><Place fontSize="inherit" /> {eventLocation.city}</p>)
+                  : (<p style={{textAlign:'left'}}><Place fontSize="inherit" /> Canada</p>)
+                }
+            </div>
+            </div>
+        </CardBody>
       </CardActionArea>
     </Card>
+  </React.Fragment>
   );
 };
 
