@@ -1,4 +1,3 @@
-const qs = require('qs');
 const SavedJobService = require('../service/SavedJobService');
 
 module.exports = {

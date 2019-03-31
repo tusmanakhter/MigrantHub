@@ -34,7 +34,7 @@ module.exports = {
   getSavedJob(userId, jobId) {
     return SavedJob.findOne({
       _id: userId,
-      'savedList._id': jobId
+      'savedList._id': jobId,
     }).exec().then(savedJob => Promise.resolve(savedJob))
       .catch((error) => {
         throw new ServerError('There was an error retrieving service.', 400, error);
@@ -52,7 +52,7 @@ module.exports = {
   updateSavedJob(userId, jobId, query) {
     return SavedJob.update({
       _id: userId,
-      'savedList._id': jobId
+      'savedList._id': jobId,
     }, query)
       .exec().then(() => Promise.resolve('Saved job has been deleted.')).catch((error) => {
         throw new ServerError('There was an error deleting job.', 400, error);

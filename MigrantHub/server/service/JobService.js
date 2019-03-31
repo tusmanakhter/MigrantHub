@@ -24,22 +24,22 @@ module.exports = {
     let jobs = await JobRepository.getJobs(query, offset, limit);
     jobs = await jobs.map(async (job) => {
       const foundJob = job.toObject();
-      let foundSavedJob = await SavedJobRepository.getSavedJob(user._id, job._id);
+      const foundSavedJob = await SavedJobRepository.getSavedJob(user._id, job._id);
 
-      if(!foundSavedJob){
+      if (!foundSavedJob) {
         foundJob.savedJob = false;
-      }else{
-        const foundSavedJobState = foundSavedJob.savedList.filter(item => item._id === String(job._id));
-        if(foundSavedJobState[0].deleted == true){
+      } else {
+        const foundSavedJobState = foundSavedJob
+          .savedList.filter(item => item._id === String(job._id));
+        if (foundSavedJobState[0].deleted === true) {
           foundJob.savedJob = false;
-        }else{
+        } else {
           foundJob.savedJob = true;
         }
       }
-        return foundJob;
+      return foundJob;
     });
     return Promise.all(jobs);
-
   },
 
   async getJob(user, jobId) {
@@ -47,17 +47,18 @@ module.exports = {
     query._id = jobId;
     query.deleted = false;
 
-    let job = await JobRepository.getJob(query);
+    const job = await JobRepository.getJob(query);
     const foundJob = job.toObject();
-    let foundSavedJob = await SavedJobRepository.getSavedJob(user._id, job._id);
+    const foundSavedJob = await SavedJobRepository.getSavedJob(user._id, job._id);
 
-    if(!foundSavedJob){
+    if (!foundSavedJob) {
       foundJob.savedJob = false;
-    }else{
-      const foundSavedJobState = foundSavedJob.savedList.filter(item => item._id === String(job._id));
-      if(foundSavedJobState[0].deleted == true){
+    } else {
+      const foundSavedJobState = foundSavedJob
+        .savedList.filter(item => item._id === String(job._id));
+      if (foundSavedJobState[0].deleted === true) {
         foundJob.savedJob = false;
-      }else{
+      } else {
         foundJob.savedJob = true;
       }
     }

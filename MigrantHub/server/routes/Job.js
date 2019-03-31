@@ -1,11 +1,12 @@
 const express = require('express');
-const router = express.Router();
 const JobController = require('../controllers/JobController');
 const { controllerHandler } = require('../controllers/ControllerUtils');
 const { validateJob } = require('../validators/JobValidator');
 const { ensureIsOwner, ensureRole } = require('../middleware/AuthMiddleware');
 const UserTypes = require('../lib/UserTypes');
 const Job = require('../models/Job');
+
+const router = express.Router();
 
 router.use('/saved', require('./SavedJob'));
 
