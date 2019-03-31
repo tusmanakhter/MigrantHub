@@ -105,7 +105,7 @@ const sidebarStyle = theme => ({
     width: drawerMiniWidth + "px!important"
   },
   logo: {
-    padding: "15px 0px",
+    padding: "5px 5px",
     margin: "0",
     display: "block",
     position: "relative",
@@ -117,7 +117,7 @@ const sidebarStyle = theme => ({
       height: "1px",
       right: "15px",
       width: "calc(100% - 30px)",
-      backgroundColor: "hsla(0,0%,100%,.3)"
+      backgroundColor: "hsla(0,0%,100%,.3)",
     }
   },
   logoMini: {
@@ -128,15 +128,15 @@ const sidebarStyle = theme => ({
     width: "30px",
     display: "inline-block",
     maxHeight: "30px",
-    marginLeft: "22px",
-    marginRight: "18px",
-    marginTop: "7px",
+    marginLeft: "6px",
+    marginRight: "1px",
+    marginTop: "1px",
     color: "inherit"
   },
   logoMiniRTL: {
     float: "right",
-    marginRight: "30px",
-    marginLeft: "26px"
+    marginRight: "5px",
+    marginLeft: "8px"
   },
   logoNormal: {
     ...defaultFont,
@@ -145,8 +145,8 @@ const sidebarStyle = theme => ({
     opacity: "1",
     transform: "translate3d(0px, 0, 0)",
     textTransform: "uppercase",
-    padding: "5px 0px",
-    fontSize: "18px",
+    padding: "1px 1px",
+    fontSize: "14px",
     whiteSpace: "nowrap",
     fontWeight: "400",
     lineHeight: "30px",
@@ -183,8 +183,9 @@ const sidebarStyle = theme => ({
     transition: "all 300ms linear"
   },
   list: {
-    marginTop: "15px",
-    paddingLeft: "0",
+    marginTop: "1px",
+    paddingLeft: "8px",
+    paddingRight: "5px",
     paddingTop: "0",
     paddingBottom: "0",
     marginBottom: "0",
@@ -212,14 +213,13 @@ const sidebarStyle = theme => ({
     }
   },
   itemLink: {
-    paddingLeft: "10px",
-    paddingRight: "10px",
+    paddingRight: "1px",
     transition: "all 300ms linear",
-    margin: "10px 15px 0",
+    margin: "5px 5px 0",
     borderRadius: "3px",
     position: "relative",
     display: "block",
-    padding: "10px 15px",
+    padding: "5px 5px",
     backgroundColor: "transparent",
     ...defaultFont,
     width: "auto",
@@ -239,20 +239,19 @@ const sidebarStyle = theme => ({
     float: "left",
     position: "inherit",
     top: "3px",
-    marginRight: "15px",
     textAlign: "center",
     verticalAlign: "middle",
     opacity: "0.8"
   },
   itemIconRTL: {
     float: "right",
-    marginLeft: "15px",
+    marginLeft: "1px",
     marginRight: "1px"
   },
   itemText: {
     color: "inherit",
     ...defaultFont,
-    margin: "0",
+    margin: "0px",
     lineHeight: "30px",
     fontSize: "14px",
     transform: "translate3d(0px, 0, 0)",
@@ -278,13 +277,14 @@ const sidebarStyle = theme => ({
     transform: "translate3d(25px, 0, 0) !important"
   },
   collapseList: {
-    marginTop: "0"
+    marginTop: "1px",
+    marginLeft: "-24px",
   },
   collapseItem: {
     position: "relative",
     display: "block",
     textDecoration: "none",
-    margin: "10px 0 0 0",
+    margin: "5px 5px 5px 5px",
     padding: "0"
   },
   collapseActive: {
@@ -294,7 +294,7 @@ const sidebarStyle = theme => ({
   },
   collapseItemLink: {
     transition: "all 300ms linear",
-    margin: "0 15px",
+    margin: "5px 5px",
     borderRadius: "3px",
     position: "relative",
     display: "block",
@@ -316,7 +316,8 @@ const sidebarStyle = theme => ({
     ...defaultFont,
     textTransform: "uppercase",
     width: "30px",
-    marginRight: "15px",
+    marginRight: "5px",
+    marginLeft: "0px",
     textAlign: "center",
     letterSpacing: "1px",
     position: "relative",
@@ -327,13 +328,14 @@ const sidebarStyle = theme => ({
   },
   collapseItemMiniRTL: {
     float: "right",
-    marginLeft: "30px",
-    marginRight: "1px"
+    marginLeft: "5px",
+    marginRight: "5px"
   },
   collapseItemText: {
     color: "inherit",
     ...defaultFont,
-    margin: "0",
+    margin: "5px",
+    paddingLeft: '0px',
     position: "relative",
     transform: "translateX(0px)",
     opacity: "1",
@@ -343,17 +345,18 @@ const sidebarStyle = theme => ({
     fontSize: "14px"
   },
   collapseItemTextRTL: {
-    textAlign: "right"
+    textAlign: "center"
   },
   collapseItemTextMiniRTL: {
     transform: "translate3d(25px, 0, 0) !important"
   },
   collapseItemTextMini: {
+    paddingLeft: '0px',
     transform: "translate3d(-25px, 0, 0)",
     opacity: "0"
   },
   caret: {
-    marginTop: "13px",
+    marginTop: "1px",
     position: "absolute",
     right: "18px",
     transition: "all 150ms ease-in",
@@ -435,7 +438,7 @@ const sidebarStyle = theme => ({
     position: "relative",
     height: "calc(100vh - 75px)",
     overflow: "auto",
-    width: "260px",
+    width: "160px",
     zIndex: "4",
     overflowScrolling: "touch",
     transitionProperty: "top, bottom, width",
@@ -445,8 +448,9 @@ const sidebarStyle = theme => ({
     paddingBottom: "30px"
   },
   user: {
-    paddingBottom: "20px",
-    margin: "20px auto 0",
+    paddingBottom: "10px",
+    margin: "5px auto 0",
+    paddingLeft: "8px",
     position: "relative",
     "&:after": {
       content: '""',
@@ -465,15 +469,15 @@ const sidebarStyle = theme => ({
     overflow: "hidden",
     float: "left",
     zIndex: "5",
-    marginRight: "11px",
+    marginRight: "5px",
     borderRadius: "50%",
-    marginLeft: "23px",
+    marginLeft: "5px",
     ...boxShadow
   },
   photoRTL: {
     float: "right",
-    marginLeft: "12px",
-    marginRight: "24px"
+    marginLeft: "5px",
+    marginRight: "5px"
   },
   avatarImg: {
     width: "100%",
@@ -482,13 +486,13 @@ const sidebarStyle = theme => ({
   },
   userCollapseButton: {
     margin: "0",
-    padding: "6px 15px",
+    padding: "6px 1px",
     "&:hover": {
       background: "none"
     }
   },
   userCollapseLinks: {
-    marginTop: "-4px",
+    marginTop: "1px",
     "&:hover,&:focus": {
       color: "#FFFFFF"
     }
