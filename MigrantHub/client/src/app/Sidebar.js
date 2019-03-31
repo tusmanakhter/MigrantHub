@@ -92,6 +92,17 @@ class Sidebar extends React.Component {
     }
   }
 
+  logout = () => {
+    const Auth = this.context;
+    axios.post('/api/accounts/logout').then(async (response) => {
+      if (response.status === 200) {
+        await Auth.unauthenticate();
+        const { history } = this.props;
+        history.push('/');
+      }
+    });
+  };
+
   openCollapse(event, collapse) {
     event.preventDefault();
     const st = {};
@@ -223,7 +234,7 @@ class Sidebar extends React.Component {
                 )}
                 <ListItem className={classes.collapseItem}>
                   <NavLink
-                    to={{ pathname: '/logout'}}
+                    to={{ pathname: '/'}}
                     className={
                       `${classes.itemLink} ${classes.userCollapseLinks}`
                     }
@@ -232,6 +243,7 @@ class Sidebar extends React.Component {
                       <PowerOff />
                     </span>
                     <ListItemText
+                      onClick={this.logout}
                       primary={<FormattedMessage id="logout" />}
                       disableTypography
                       className={collapseItemText}

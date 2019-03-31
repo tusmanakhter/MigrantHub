@@ -32,7 +32,6 @@ import ServiceSuggestionForm from 'services/ServiceSuggestionForm';
 import ServiceSuggestionList from 'services/ServiceSuggestionList';
 import ForgotYourPasswordForm from 'account/forgotYourPassword/ForgotYourPasswordForm';
 import CreateReview from 'services/CreateReview';
-import Logout from 'components/Logout'
 import ServiceCategoryList from 'services/ServiceCategoryList'
 class Routes extends Component {
   state = {
@@ -97,7 +96,6 @@ class Routes extends Component {
           <ProtectedRoute path="/events/:id" component={EventDetails} />
           <ProtectedRoute path="/users" component={UsersList} exact />
           <ProtectedRoute path="/friends" component={FriendPanel} exact />
-          <ProtectedRoute path="/logout" component={Logout} exact />
           <Route path="/about-us" component={AboutUs} exact/>
           <Route component={Error} />
         </Switch>
