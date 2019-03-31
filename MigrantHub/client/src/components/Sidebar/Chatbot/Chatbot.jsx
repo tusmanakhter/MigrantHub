@@ -145,6 +145,17 @@ class Chatbot extends Component {
           redirectToHousingServices: true,
         });
       }
+      else if(intent == 'Language - French' || 'Language - English'){
+        this.setState({
+          redirectToFrenchClasses: true,
+        });
+        let linkToCenterClasses = {
+          title: 'Our Classes',
+          link: 'https://www.therefugeecentre.org/classes',
+          target: '_blank'
+        };
+        addLinkSnippet(linkToCenterClasses);
+      }
     })
   }
 
