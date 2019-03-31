@@ -7,4 +7,10 @@ module.exports = {
     const parsedBugObj = qs.parse(bugObject);
     return BugService.createBug(user, parsedBugObj);
   },
+  async getBugs() {
+    return BugService.getBugs();
+  },
+  async getBug(bugId) {
+    return BugService.getBug(bugId);
+  },
 };

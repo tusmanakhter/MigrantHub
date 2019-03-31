@@ -1,11 +1,11 @@
 import React from 'react';
 import DashboardIcon from '@material-ui/icons/Dashboard';
 import BugIcon from '@material-ui/icons/BugReport';
+import FixIcon from '@material-ui/icons/Build';
 import DateRange from '@material-ui/icons/DateRange';
 import People from '@material-ui/icons/People';
 import UserTypes from 'lib/UserTypes';
 import { FormattedMessage } from 'react-intl';
-import ServiceCategoryMenu from 'services/ServiceCategoryMenu1';
 
 const SidebarLinks = [
   {
@@ -43,6 +43,12 @@ const SidebarLinks = [
     name: <FormattedMessage id="report.bug" />,
     icon: BugIcon,
     type: [UserTypes.ADMIN, UserTypes.BUSINESS, UserTypes.MIGRANT],
+  },
+  {
+    path: '/bugs',
+    name: <FormattedMessage id="view.bug" />,
+    icon: FixIcon,
+    type: [UserTypes.ADMIN],
   },
 ];
 
