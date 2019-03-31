@@ -4,6 +4,7 @@ import 'App.css';
 import axios from 'axios';
 import withStyles from '@material-ui/core/styles/withStyles';
 import { AuthConsumer } from 'routes/AuthContext';
+import moment from 'moment';
 import GridItem from 'components/Grid/GridItem.jsx';
 import Card from 'components/Card/Card.jsx';
 import CardBody from 'components/Card/CardBody.jsx';
@@ -93,7 +94,7 @@ class BugDetails extends Component {
                   </GridItem>
                   <GridItem xs={12} align="left">
                     <h5><b> Date Reported </b></h5>
-                    <p>{dateCreated}</p>
+                    <p>{moment(dateCreated).format('ll')}</p>
                   </GridItem>
                   <GridItem xs={12} align="left">
                     <h5><b> Reported By </b></h5>

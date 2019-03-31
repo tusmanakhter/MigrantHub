@@ -3,6 +3,7 @@ import ReactTable from 'react-table';
 import axios from 'axios';
 import IconButton from '@material-ui/core/IconButton';
 import DetailIcon from '@material-ui/icons/Search';
+import moment from 'moment';
 import { injectIntl, intlShape, FormattedMessage } from 'react-intl';
 import { Link } from 'react-router-dom';
 import 'react-table/react-table.css';
@@ -38,6 +39,13 @@ class BugList extends Component {
     }, {
       Header: <FormattedMessage id="bug.date" />,
       accessor: 'dateCreated',
+      Cell: ({ value }) => {
+        moment.locale(intl.locale);
+        if (value) {
+          return moment(value).format('ll');
+        }
+        return '';
+      },
     }, {
       id: 'modify',
       Header: <FormattedMessage id="Actions" />,
