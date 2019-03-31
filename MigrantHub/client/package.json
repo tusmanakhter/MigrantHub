@@ -17,6 +17,7 @@
     "font-awesome": "^4.7.0",
     "form-data": "^2.3.3",
     "http-proxy-middleware": "^0.19.0",
+    "immutability-helper": "^3.0.0",
     "lodash": "^4.17.11",
     "material-dashboard-react": "^1.5.0",
     "material-ui-rating": "^2.0.0",
