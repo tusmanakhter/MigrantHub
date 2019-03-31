@@ -1,4 +1,4 @@
-module.exports.validCreateBugData = function() {
+module.exports.validBugData = function() {
     return {
         _id: "5c8e24e338d368847c341bea",
         user: 'mira@mira.mira',
