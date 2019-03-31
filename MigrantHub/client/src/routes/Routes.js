@@ -34,7 +34,8 @@ import ServiceSuggestionForm from 'services/ServiceSuggestionForm';
 import ServiceSuggestionList from 'services/ServiceSuggestionList';
 import ForgotYourPasswordForm from 'account/forgotYourPassword/ForgotYourPasswordForm';
 import CreateReview from 'services/CreateReview';
-
+import Logout from 'components/Logout'
+import ServiceCategoryList from 'services/ServiceCategoryList'
 class Routes extends Component {
   state = {
     isLoading: true,
@@ -77,6 +78,11 @@ class Routes extends Component {
           <UnprotectedRoute path="/signup/admin" component={SignUpAdmin} disableLayout exact />
           <UnprotectedRoute path="/login" component={Login} disableLayout exact />
           <UnprotectedRoute path="/forgotpassword" component={ForgotYourPasswordForm} exact />
+          <UnprotectedRoute path="/about-us" component={AboutUs} exact/>
+          <ProtectedRoute path="/admin/dashboard" component={AdminDashboard} admin />
+          <ProtectedRoute path="/editmigrant" component={EditMigrant} migrant exact />
+          <ProtectedRoute path="/editbusiness" component={EditBusiness} business exact />
+          <ProtectedRoute path="/categories" component={ServiceCategoryList} exact />
           <ProtectedRoute path="/profile/personal" component={EditMigrant} migrant exact />
           <ProtectedRoute path="/profile/business" component={EditBusiness} business exact />
           <ProtectedRoute path="/admin/dashboard" component={AdminDashboard} admin />
@@ -95,6 +101,7 @@ class Routes extends Component {
           <ProtectedRoute path="/events/:id" component={EventDetails} />
           <ProtectedRoute path="/users" component={UsersList} exact />
           <ProtectedRoute path="/friends" component={FriendPanel} exact />
+          <ProtectedRoute path="/logout" component={Logout} exact />
           <Route path="/about-us" component={AboutUs} exact/>
           <Route component={Error} />
         </Switch>

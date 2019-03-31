@@ -16,6 +16,7 @@ import Icon from '@material-ui/core/Icon';
 import PermIdentity from '@material-ui/icons/PermIdentity';
 import ViewList from '@material-ui/icons/ViewList';
 import Event from '@material-ui/icons/Event';
+import PowerOff from '@material-ui/icons/PowerOff';
 import { FormattedMessage } from 'react-intl';
 import HeaderLinks from 'app/HeaderLinks';
 import sidebarStyle from 'assets/jss/material-dashboard-pro-react/components/sidebarStyle.jsx';
@@ -135,7 +136,7 @@ class Sidebar extends React.Component {
               onClick={event => this.openCollapse(event, 'openAvatar')}
             >
               <ListItemText
-                primary={`${firstName} ${lastName}`}
+                primary={`${firstName}`}
                 secondary={(
                   <b
                     className={`${caret} ${classes.userCaret} ${this.state.openAvatar ? classes.caretActive : ''}`}
@@ -205,6 +206,23 @@ class Sidebar extends React.Component {
                     </NavLink>
                   </ListItem>
                 )}
+                <ListItem className={classes.collapseItem}>
+                  <NavLink
+                    to={{ pathname: '/logout'}}
+                    className={
+                      `${classes.itemLink} ${classes.userCollapseLinks}`
+                    }
+                  >
+                    <span className={collapseItemMini}>
+                      <PowerOff />
+                    </span>
+                    <ListItemText
+                      primary={<FormattedMessage id="Logout" />}
+                      disableTypography
+                      className={collapseItemText}
+                    />
+                  </NavLink>
+                </ListItem>
               </List>
             </Collapse>
           </ListItem>
@@ -421,7 +439,7 @@ class Sidebar extends React.Component {
             <SidebarWrapper
               className={sidebarWrapper}
               user={userComponent}
-              headerLinks={<HeaderLinks />}
+              //headerLinks={<HeaderLinks />}
               links={links}
             />
             {image !== undefined ? (
