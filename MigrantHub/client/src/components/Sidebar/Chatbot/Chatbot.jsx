@@ -19,14 +19,8 @@ class Chatbot extends Component {
       redirectToAllServices: false,
       redirectToAllEvents: false,
       redirectToFrenchClasses: false,
-      redirectToEmployementServices: false,
-      redirectToSocialWelfare: false,
-      redirectToBankingServices: false,
-      redirectToChildBenefitServices: false,
-      redirectToPensionServices: false,
-      redirectToTaxesServices: false,
-      redirectToLowIncomeHousing: false,
       redirectToHousingServices: false,
+      serviceCategoryReturn: '',
     };
   }
 
@@ -94,12 +88,14 @@ class Chatbot extends Component {
         addLinkSnippet(linkToEmployementWorkshops);
         addResponseMessage("If you can't make it, here is a list of services I recommend.");
         this.setState({
-          redirectToEmployementServices: true,
+          redirectToServiceCategory: true,
+          serviceCategoryReturn: 'employement'
         });
       }
       else if(intent == 'Financial Help - Social Welfare'){
         this.setState({
-          redirectToSocialWelfare: true,
+          redirectToServiceCategory: true,
+          serviceCategoryReturn: 'welfare'
         });
       }
       else if(intent == 'Financial Help - Social Welfare - Qualifications'){
@@ -112,40 +108,47 @@ class Chatbot extends Component {
       }
       else if(intent == 'Financial Help - Banking/debt relief'){
         this.setState({
-          redirectToBankingServices: true,
+          redirectToServiceCategory: true,
+          serviceCategoryReturn: 'BudgetAndDebtProblems'
         });
       }
       else if(intent == 'Financial Help - Child Benefit'){
         this.setState({
-          redirectToChildBenefitServices: true,
+          redirectToServiceCategory: true,
+          serviceCategoryReturn: 'FamilyBenefits'
         });
       }
       else if(intent == 'Financial Help - University Loans & Burseries'){
         this.setState({
-          redirectToBankingServices: true,
+          redirectToServiceCategory: true,
+          serviceCategoryReturn: 'BudgetAndDebtProblems'
         });
       }
       else if(intent == 'Financial Help - Pensions'){
         this.setState({
-          redirectToPensionServices: true,
+          redirectToServiceCategory: true,
+          serviceCategoryReturn: 'pensions'
         });
       }
       else if(intent == 'Financial Help - Taxes'){
         this.setState({
-          redirectToTaxesServices: true,
+          redirectToServiceCategory: true,
+          serviceCategoryReturn: 'IncomeTaxes'
         });
       }
       else if(intent == 'Housing - Low-income housing'){
         this.setState({
-          redirectToLowIncomeHousing: true,
+          redirectToServiceCategory: true,
+          serviceCategoryReturn: 'SocialHousing'
         });
       }
       else if(intent == 'Housing - Buy'){
         this.setState({
-          redirectToHousingServices: true,
+          redirectToServiceCategory: true,
+          serviceCategoryReturn: 'housing'
         });
       }
-      else if(intent == 'Language - French' || 'Language - English'){
+      else if(intent == 'Language - French' || intent == 'Language - English'){
         this.setState({
           redirectToFrenchClasses: true,
         });
@@ -203,91 +206,14 @@ class Chatbot extends Component {
       });
       return <Redirect to="/services/5c63a6d4e890b00034a5f159"/>
     }
-    else if(this.state.redirectToEmployementServices){
+    else if(this.state.redirectToServiceCategory){
       this.setState({
-        redirectToEmployementServices: false,
+        redirectToServiceCategory: false,
       });
       return <Redirect to={{
         pathname: '/services/',
         state: {
-          category: 'employement',
-        },
-      }}/>
-    }
-    else if(this.state.redirectToSocialWelfare){
-      this.setState({
-        redirectToSocialWelfare: false,
-      });
-      return <Redirect to={{
-        pathname: '/services/',
-        state: {
-          category: 'welfare',
-        },
-      }}/>
-    }
-    else if(this.state.redirectToBankingServices){
-      this.setState({
-        redirectToBankingServices: false,
-      });
-      return <Redirect to={{
-        pathname: '/services/',
-        state: {
-          category: 'BudgetAndDebtProblems',
-        },
-      }}/>
-    }
-    else if(this.state.redirectToChildBenefitServices){
-      this.setState({
-        redirectToChildBenefitServices: false,
-      });
-      return <Redirect to={{
-        pathname: '/services/',
-        state: {
-          category: 'FamilyBenefits',
-        },
-      }}/>
-    }
-    else if(this.state.redirectToPensionServices){
-      this.setState({
-        redirectToPensionServices: false,
-      });
-      return <Redirect to={{
-        pathname: '/services/',
-        state: {
-          category: 'pensions',
-        },
-      }}/>
-    }
-    else if(this.state.redirectToTaxesServices){
-      this.setState({
-        redirectToTaxesServices: false,
-      });
-      return <Redirect to={{
-        pathname: '/services/',
-        state: {
-          category: 'IncomeTaxes',
-        },
-      }}/>
-    }
-    else if(this.state.redirectToLowIncomeHousing){
-      this.setState({
-        redirectToLowIncomeHousing: false,
-      });
-      return <Redirect to={{
-        pathname: '/services/',
-        state: {
-          category: 'SocialHousing',
-        },
-      }}/>
-    }
-    else if(this.state.redirectToHousingServices){
-      this.setState({
-        redirectToHousingServices: false,
-      });
-      return <Redirect to={{
-        pathname: '/services/',
-        state: {
-          category: 'housing',
+          category: this.state.serviceCategoryReturn,
         },
       }}/>
     }
