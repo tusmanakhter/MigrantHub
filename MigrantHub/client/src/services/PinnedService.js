@@ -117,7 +117,7 @@ class PinnedService extends Component {
                 useWindow={false}
                 getScrollParent={() => document.getElementById('mainPanel')}
               >
-                <GridContainer spacing={16} alignItems="center" justify="left">
+                <GridContainer spacing={16} alignItems="center" justify="center">
                   {' '}
                   {
                     items.length > 0 ? (

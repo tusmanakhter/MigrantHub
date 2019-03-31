@@ -1,5 +1,6 @@
 const PinnedServiceRepository = require('../repository/PinnedServiceRepository');
 const ServiceRepository = require('../repository/ServiceRepository');
+const ReviewRepository = require('../repository/ReviewRepository');
 
 module.exports = {
 
@@ -35,9 +36,23 @@ module.exports = {
         $or: pinnedServiceListQuery,
       };
       query.deleted = false;
-      return ServiceRepository.getServices(query, undefined, undefined);
+      let services = await ServiceRepository.getServices(query, undefined, undefined);
+      services = await services.map(async (service) => {
+        const updatedService = service.toObject();
+        const avg = await ReviewRepository.getAverageRating(service._id.toString());
+        let average = 0;
+        let count = 0;
+        if (avg[0] !== undefined) {
+          average = avg[0].avgRating;
+          count = avg[0].countRating;
+        }
+        updatedService.avgRating = average;
+        updatedService.countRating = count;
+        return updatedService;
+      });
+      return Promise.all(services);
     }
-    Promise.resolve([]);
+    return Promise.resolve([]);
   },
 
   async deletePinnedService(userId, serviceId) {
