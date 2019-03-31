@@ -4,6 +4,7 @@ var sinonTest = require('sinon-test');
 var test = sinonTest(sinon);
 var JobService = require('../../service/JobService');
 var JobRepository = require('../../repository/JobRepository');
+var SavedJobRepository = require('../../repository/SavedJobRepository');
 var JobFactory = require('../factories/JobFactory');
 var { ServerError } = require('../../errors/ServerError');
 var ExpressValidator = require('express-validator/check');
@@ -13,17 +14,17 @@ chai.use(chaiAsPromised);
 
 describe('Job Service', function () {
     let req = {
-            body: JobFactory.validJobData(),
-            user: {
-                _id: "test@test.com"
-            },
-            query: {
-              _id: "5c987e1f0c6e2045a7995900",
-              offset: 0,
-              limit: 10,
-              owner: "test@test.com"
-            },
-        };
+      body: JobFactory.validJobData(),
+      user: {
+          _id: "test@test.com"
+      },
+      query: {
+        _id: "5c987e1f0c6e2045a7995900",
+        offset: 0,
+        limit: 10,
+        owner: "test@test.com"
+      },
+    };
 
     it('should call createJob repository with correct parameters from createJob service', test(async function () {
         this.stub(JobRepository, 'createJob');
@@ -39,9 +40,10 @@ describe('Job Service', function () {
     }));
 
     it('should call getJobs repository to retrieve jobs', test(async function () {
-        this.stub(JobRepository, 'getJobs').returns([]);
-        await JobService.getJobs(req.query.owner, req.query.offset, req.query.limit);
-        assert.calledWith(JobRepository.getJobs, { deleted: false, user: req.query.owner }, req.query.offset, req.query.limit);
+      this.stub(JobRepository, 'getJobs').returns([]);
+      this.stub(SavedJobRepository, 'getSavedJob').returns([]);
+      await JobService.getJobs(req.user, req.user._id,);
+        assert.calledWith(JobRepository.getJobs, { deleted: false, user: req.user._id });
     }));
 
   it('should call updateJob repository with correct parameters from updateJob service', test(async function () {

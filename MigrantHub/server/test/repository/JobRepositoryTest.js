@@ -12,10 +12,16 @@ chai.use(chaiAsPromised);
 
 describe('Job Repository', function () {
     let req = {
-            body: JobFactory.validJobData(),
-            user:{
-                _id: "test@test.com"
-            },
+      body: JobFactory.validJobData(),
+      user:{
+          _id: "test@test.com"
+      },
+      query: {
+        _id: "5c987e1f0c6e2045a7995900",
+        offset: 0,
+        limit: 10,
+        owner: "test@test.com"
+      },
         };
 
     it('should successfully call mongodb save to createJob', test(function () {
@@ -29,13 +35,13 @@ describe('Job Repository', function () {
     }));
 
     it('should successfully call mongodb find to findJobs', test(function () {
-        this.stub(Job, 'find').returns({sort: sinon.stub().returns({exec: sinon.stub().returns(Promise.resolve({}))})});
+        this.stub(Job, 'find').returns({exec: sinon.stub().returns(Promise.resolve({}))});
         JobRepository.getJobs({ deleted: false });
         assert.calledWith(Job.find, { deleted: false });
     }));
 
     it('should throw error, since there was a error getting all jobs', test(function () {
-        this.stub(Job, 'find').returns({sort: sinon.stub().returns({exec: sinon.stub().returns(Promise.reject({}))})});
+      this.stub(Job, 'find').returns({exec: sinon.stub().returns(Promise.reject({}))});
         return chai.assert.isRejected(JobRepository.getJobs({ deleted: false }), ServerError, 'There was an error retrieving jobs.');
     }));
 
