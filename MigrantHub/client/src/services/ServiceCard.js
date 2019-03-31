@@ -67,7 +67,7 @@ const ServiceCard = (props) => {
               title={pinIconHelperText}
               className={classes.tooltip}
             >
-              <Button size='sm' color="primary" 
+              <Button size='sm' color="rose" 
                 justIcon
                 round
                 simple 

@@ -63,7 +63,7 @@ class ServiceRecommendation extends Component {
             <b><FormattedMessage id="service.suggested" /></b>
           </h5>
           <hr />
-            <GridContainer alignItems="center" justify="left">
+            <GridContainer alignItems="center" justify="center">
               {' '}
               {
                 items.length > 0 ? (
