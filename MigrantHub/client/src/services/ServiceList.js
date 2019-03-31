@@ -173,7 +173,7 @@ class ServiceList extends Component {
                                   <CardBody>
                                     <Button
                                       variant="contained"
-                                      color="info"
+                                      color="primary"
                                       className={classes.button}
                                       onClick={this.setRedirectToServiceForm}
                                     >
@@ -273,6 +273,11 @@ class ServiceList extends Component {
                   }
                 </Grid>
               </InfiniteScroll>
+              {moreData ? 
+                (null) 
+                : 
+                (<h6>No more results</h6>)
+              }
             </div>
           </>
         )}

@@ -153,7 +153,7 @@ class EditMigrant extends Component {
     }
 
     const { user } = this.context;
-
+    this.setState({ isLoading: true });
     const {
       firstName, lastName, address, apartment, city, province,
       postalCode, phoneNumber, age, gender, nationality, relationshipStatus, status,
@@ -193,6 +193,7 @@ class EditMigrant extends Component {
         joiningReason,
       })).then((response) => {
       toast.success(response.data);
+      this.setState({ isLoading: false });
     }).catch((e) => {
       toast.error(e.response.data);
     });
