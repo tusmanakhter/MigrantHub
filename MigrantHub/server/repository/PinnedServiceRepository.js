@@ -43,17 +43,9 @@ module.exports = {
       return PinnedService
         .aggregate([
           { $match: query },
-          {
-            $project: {
-              pinnedList: {
-                $filter: {
-                  input: '$pinnedList',
-                  as: 'pinnedService',
-                  cond: { $eq: ['$$pinnedService.deleted', false] },
-                },
-              },
-            },
-          },
+          { $unwind: '$pinnedList' },
+          { $replaceRoot: { newRoot: '$pinnedList' } },
+          { $match: { deleted: false } },
         ]).skip(parseInt(offset, 10)).limit(parseInt(limit, 10)).exec()
         .then(services => Promise.resolve(services))
         .catch((error) => {

@@ -24,8 +24,8 @@ module.exports = {
     let query = { _id: userId };
 
     const pinnedServices = await PinnedServiceRepository.getPinnedServices(query, offset, limit);
-    if (pinnedServices !== null) {
-      const listOfServices = pinnedServices[0].pinnedList;
+    if (pinnedServices.length > 0) {
+      const listOfServices = pinnedServices;
       const pinnedServiceListQuery = [];
       // eslint-disable-next-line no-plusplus
       for (let i = 0; i < listOfServices.length; i++) {
