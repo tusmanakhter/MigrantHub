@@ -67,7 +67,7 @@ export function getCategoryIcon(category) {
     case 'MunicipalServices':
       return <i class="fas fa-university fa-2x"/>;
     case 'VictimsOfCrime':
-      return <i class="fas fa-redhat fa-2x"/>;
+      return <i class="fab fa-redhat fa-2x"/>;
     default:
       return null;
   }
