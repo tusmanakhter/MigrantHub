@@ -8,11 +8,14 @@ var BugService = require('../../service/BugService');
 
 describe('Bug controller', function () {
     let req = {
-            body: BugFactory.validCreateBugData(),
+            body: BugFactory.validBugData(),
             user: {
                 _id: "test@test.com"
             },
-        }
+        },
+        bug = {
+            _id: "5bda52305ccfd051484ea790",
+        };
 
     it('should call createBug service with correct parameters from createBug controller', test(async function () {
         this.stub(BugService, 'createBug');
@@ -20,4 +23,15 @@ describe('Bug controller', function () {
         assert.calledWith(BugService.createBug, req.user, req.body);
     }));
 
+    it('should call getBugs service with correct parameters from getBugs controller', test(async function () {
+        this.stub(BugService, 'getBugs');
+        await BugController.getBugs();
+        assert.calledWith(BugService.getBugs);
+    }));
+
+    it('should call getBug service with correct parameters from getBug controller', test(async function () {
+        this.stub(BugService, 'getBug');
+        await BugController.getBug(bug._id);
+        assert.calledWith(BugService.getBug, bug._id);
+    }));
 });
