@@ -86,7 +86,7 @@ class JobFormStepper extends Component {
     } else if (activeStep === steps.length - 1) {
       nextButtonMessage = (
         <>
-        {update? <FormattedMessage id="form.create" /> : <FormattedMessage id="form.edit" />}
+        {update? <FormattedMessage id="form.edit" /> : <FormattedMessage id="form.create" />}
           <CheckIcon style={{ marginLeft: 5 }} />
         </>
       );

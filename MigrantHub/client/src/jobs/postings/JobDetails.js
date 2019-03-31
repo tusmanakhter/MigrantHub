@@ -23,6 +23,10 @@ import Fab from '@material-ui/core/Fab';
 import { positionTypes } from 'lib/JobConstants';
 import Typography from '@material-ui/core/Typography';
 import { toast } from 'react-toastify';
+import { FormattedMessage } from 'react-intl';
+import FavoriteIcon from '@material-ui/icons/Favorite';
+import UnFavoriteIcon from '@material-ui/icons/FavoriteBorder';
+import OutlineButton from '@material-ui/core/Button';
 
 const styles = {
   ...sweetAlertStyle,
@@ -34,6 +38,13 @@ const styles = {
   },
   websiteButton: {
     textTransform: "none"
+  },
+  tooltip:{
+    position: "relative",
+  },
+  savedJob:{
+    position: "absolute",
+    right: 0,
   },
 };
 
@@ -56,6 +67,7 @@ class JobDetails extends Component {
       website: '',
       redirect: false,
       alert: null,
+      savedJob: false,
     };
 
     this.hideAlert = this.hideAlert.bind(this);
@@ -78,8 +90,6 @@ class JobDetails extends Component {
       },
     }).then((response) => {
       const parsedObj = qs.parse(response.data);
-      console.log(parsedObj);
-
       this.setState({
         owner: parsedObj.user,
         jobDate: parsedObj.dateCreated,
@@ -93,6 +103,7 @@ class JobDetails extends Component {
         salaryStart: parsedObj.salaryEnd,
         salaryEnd: parsedObj.salaryEnd,
         website: parsedObj.website,
+        savedJob: parsedObj.savedJob,
       });
 
       if (parsedObj.description) {
@@ -175,12 +186,40 @@ class JobDetails extends Component {
     });
   }
 
+  addSavedJob = (jobId) => {
+    axios.put(`/api/job/saved/${jobId}`)
+      .then((response) => {
+        if (response.status === 200) {
+          toast.success("Job Post Saved!");
+          this.setState({
+            savedJob: true,
+          });
+        }
+      }).catch((error) => {
+      toast.error("Error Saving Job Post!");
+    });
+  };
+
+  deleteSavedJob = (jobId) => {
+    axios.delete(`/api/job/saved/${jobId}`)
+      .then((response) => {
+        if (response.status === 200) {
+          toast.success("Job Post Unsaved!");
+          this.setState({
+            savedJob: false,
+          });
+        }
+      }).catch((error) => {
+      toast.error("Error Unsaving Job Post!");
+    });
+  };
+
     render() {
       const {
         classes,
       } = this.props;
       const {
-        alert, owner, redirect, jobId, jobDate, title, description, positionType, companyName, contactName, contactEmail, contactPhone, location, salaryStart, salaryEnd, website,
+        alert, owner, redirect, jobId, jobDate, title, description, positionType, companyName, contactName, contactEmail, contactPhone, location, savedJob, website,
       } = this.state;
 
 
@@ -202,12 +241,41 @@ class JobDetails extends Component {
                 <Card>
                   <CardHeader color="rose" icon>
                     <CardIcon color="rose">
-                      <h4><b>Job Posting</b></h4>
+                      <h4><b>Job Posting  </b></h4>
                     </CardIcon>
                     <br />
                     <br />
                     <br />
-                    <Typography variant="h4" className={classes.cardIconTitle}><b>{title}</b></Typography>
+                    <Typography variant="h4" className={classes.cardIconTitle}>
+                      <b>{title}{' '}</b>
+                        {savedJob ?
+                          (
+                            <OutlineButton
+                              id="savedJob"
+                              color="primary"
+                              variant="outlined"
+                              aria-label="Saved Job"
+                              title={<FormattedMessage id="job.save" />}
+                              onClick={() => this.deleteSavedJob(jobId)}
+                              className={classes.savedJob}>
+                            <UnFavoriteIcon/> {' '} Saved
+                            </OutlineButton>
+                          )
+                          :
+                          (
+                            <OutlineButton
+                              id="savedJob"
+                              color="primary"
+                              variant="outlined"
+                              aria-label="Saved Job"
+                              title={<FormattedMessage id="job.save" />}
+                              onClick={() => this.addSavedJob(jobId)}
+                              className={classes.savedJob}>
+                              <FavoriteIcon/>{' '} Save
+                            </OutlineButton>
+                          )
+                        }
+                    </Typography>
                     <Typography variant="caption" className={classes.cardIconTitle}>{companyName}{'-'}{location}</Typography>
                     <br />
                     {website? <Fab

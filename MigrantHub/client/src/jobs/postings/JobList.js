@@ -13,6 +13,8 @@ import InfiniteScroll from 'react-infinite-scroller';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import GridContainer from 'components/Grid/GridContainer.jsx';
 import GridItem from 'components/Grid/GridItem.jsx';
+import { toast } from 'react-toastify';
+import update from 'immutability-helper';
 
 const styles = theme => ({
   root: {
@@ -32,7 +34,7 @@ class JobList extends Component {
       items: [],
       redirectToJobForm: false,
       offset: 0,
-      limit: 20,
+      limit: 10,
       moreData: true,
     };
   }
@@ -70,7 +72,6 @@ class JobList extends Component {
         limit,
       },
     }).then((response) => {
-      console.log(response.data);
       if (response.data.length === 0) {
           this.setState({ moreData: false });
       } else {
@@ -82,6 +83,34 @@ class JobList extends Component {
       }
     });
   }
+
+  addSavedJob = (jobId, index) => {
+    axios.put(`/api/job/saved/${jobId}`)
+      .then((response) => {
+        if (response.status === 200) {
+          this.setState({
+            items: update(this.state.items, {[index]: {savedJob: {$set: true}}})
+          });
+          toast.success("Job Post Saved!");
+        }
+      }).catch((error) => {
+      toast.error("Error Saving Job Post!");
+    });
+  };
+
+  deleteSavedJob = (jobId, index) => {
+    axios.delete(`/api/job/saved/${jobId}`)
+      .then((response) => {
+        if (response.status === 200) {
+          this.setState({
+            items: update(this.state.items, {[index]: {savedJob: {$set: false}}})
+          });
+          toast.success("Job Post Unsaved!");
+        }
+      }).catch((error) => {
+      toast.error("Error Unsaving Job Post!");
+    });
+  };
 
   render() {
     const { classes } = this.props;
@@ -132,14 +161,14 @@ class JobList extends Component {
                   <CircularProgress className={classes.loader} disableShrink />
                 </Grid>
               )}
-              threshold={-350}
+              threshold={-200}
               useWindow={false}
               getScrollParent={() => document.getElementById('mainPanel')}
             >
               <GridContainer justify="center">
                 {' '}
                 {
-                  items.map(item => (
+                  items.map((item, index) => (
                     <GridItem xs={12} sm={12} md={8}>
                       <JobCard
                         jobId={item._id}
@@ -148,6 +177,10 @@ class JobList extends Component {
                         companyName={item.companyName}
                         location={item.location}
                         dateCreated={item.dateCreated}
+                        savedJob={item.savedJob}
+                        itemIndex={index}
+                        addSavedJob={this.addSavedJob}
+                        deleteSavedJob={this.deleteSavedJob}
                       />
                     </GridItem>
                   ))

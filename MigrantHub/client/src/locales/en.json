@@ -442,6 +442,7 @@
   "countries.ZW":"Zimbabwe",
   "job.create": "Create Job Post",
   "job.browse": "Browse available jobs",
+  "job.saved.browse": "Browse saved jobs",
   "job.form": "Job Form",
   "job": "Jobs",
   "job.save": "Save Jobs",

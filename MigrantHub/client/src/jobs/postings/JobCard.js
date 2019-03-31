@@ -17,6 +17,7 @@ import 'rc-menu/assets/index.css';
 import { getCategoryIcon, getCategory, getSubCategory } from 'helpers/Category';
 import Place from '@material-ui/icons/Place';
 import FavoriteIcon from '@material-ui/icons/Favorite';
+import UnFavoriteIcon from '@material-ui/icons/FavoriteBorder';
 import Business from '@material-ui/icons/Business';
 import moment from 'moment';
 import GridContainer from 'components/Grid/GridContainer.jsx';
@@ -25,14 +26,11 @@ import { FormattedMessage } from 'react-intl';
 
 const styles = theme => ({
   card: {
-    minHeight: 200,
-    maxHeight: 200,
+    minHeight: 205,
+    maxHeight: 205,
     textAlign: 'left',
-  },
-  cardContainer: {
     margin: 5,
     padding: 0,
-
   },
   headContainer:{
     minHeight: 50,
@@ -67,27 +65,94 @@ const styles = theme => ({
     minHeight: 40,
     maxHeight: 40,
   },
-  cardFavorite: {
-    maxWidth: 250,
-    minWidth: 250,
+  cardSaved: {
+    maxWidth: 280,
+    minWidth: 280,
+    minHeight: 240,
+    maxHeight: 240,
+  },
+  cardSavedBody: {
+    minHeight: 60,
+    maxHeight: 60,
+  },
+  cardSavedFooter:{
+    minHeight: 70,
+    maxHeight: 70,
+  },
+  locationSavedContainer: {
+    position: 'relative',
+  },
+  timePostedSavedContainer: {
+    position: 'relative',
   },
 });
 
 const JobCard = (props) => {
-  const { classes, jobId, title, description, location, companyName, dateCreated, className, smallCard } = props;
+  const {
+    classes, jobId, title, description, location, companyName, dateCreated,
+    className, smallCard, savedJob, addSavedJob, deleteSavedJob, itemIndex
+  } = props;
 
   const cardClasses = classNames({
     [classes.card]: true,
-    [classes.cardFavorite]: smallCard,
+    [classes.cardSaved]: smallCard,
+    [className]: className !== undefined
+  });
+
+  const cardBodyClasses = classNames({
+    [classes.bodyContainer]: true,
+    [classes.cardSavedBody]: smallCard,
+    [className]: className !== undefined
+  });
+
+  const cardFooterClasses = classNames({
+    [classes.cardFooter]: true,
+    [classes.cardSavedFooter]: smallCard,
+    [className]: className !== undefined
+  });
+
+  const cardLocationClasses = classNames({
+    [classes.locationContainer]: true,
+    [classes.locationSavedContainer]: smallCard,
+    [className]: className !== undefined
+  });
+
+  const cardTimeClasses = classNames({
+    [classes.timePostedContainer]: true,
+    [classes.timePostedSavedContainer]: smallCard,
     [className]: className !== undefined
   });
 
   return (
     <React.Fragment>
-      <Card className={classes.cardContainer}>
+      <Card className={cardClasses}>
         <GridItem align='right'>
+          <Tooltip
+            id="tooltip-top"
+            aria-label="SavedIcon"
+            title={<FormattedMessage id="job.save" />}
+            className={classes.tooltip}
+          >
+            {savedJob ?
+              (<Button size='sm' color="primary"
+                       justIcon
+                       round
+                       simple
+                       onClick={() => deleteSavedJob(jobId, itemIndex)}>
+                <UnFavoriteIcon/>
+              </Button>)
+              :
+              (<Button size='sm' color="primary"
+                       justIcon
+                       round
+                       simple
+                       onClick={() => addSavedJob(jobId, itemIndex)}>
+                <FavoriteIcon/>
+              </Button> )
+            }
+          </Tooltip>
         </GridItem>
-        <CardActionArea component={cardProps => <Link to={`/jobs/${jobId}`} {...cardProps} />} className={cardClasses}>
+        <CardActionArea component={cardProps => <Link to={`/jobs/${jobId}`} {...cardProps} />}>
           <CardHeader color="primary" icon className={classes.headContainer}>
             <CardIcon color="primary">
               <Business />
@@ -106,7 +171,7 @@ const JobCard = (props) => {
               </Typography>
             }
           </CardHeader>
-          <CardBody className={classes.bodyContainer}>
+          <CardBody className={cardBodyClasses}>
               {(description != undefined && (description).length > 110) ?
                 <Typography variant="body1">
                   {((description).substring(0,105))} <b>...View More</b>
@@ -116,24 +181,25 @@ const JobCard = (props) => {
                 </Typography>
               }
           </CardBody>
-          <CardFooter stats className={classes.cardFooter}>
+          <CardFooter stats className={cardFooterClasses}>
             <GridContainer justify="center">
-              <GridItem lg={6} md={6} sm={12} xs={12} allign="left">
-                <div className={classes.locationContainer}>
-                  {location
-                    ? (<p><Place fontSize="inherit" /> {location}</p>)
-                    : (<p><Place fontSize="inherit" /> Canada</p>)
-                  }
-                </div>
-              </GridItem>
-              <GridItem lg={6} md={6} sm={12} xs={12} allign="right">
-                <div className={classes.timePostedContainer}>
-                  {dateCreated
-                    ? (<p className={classes.date}><CalendarToday />Posted: {moment(dateCreated).fromNow()}</p>)
-                    : (<p />)
-                  }
+              <GridItem lg={12} md={12} sm={12} xs={12}>
+                  <div className={cardLocationClasses}>
+                    {location
+                      ? (<p><Place fontSize="inherit" /> {location}</p>)
+                      : (<p><Place fontSize="inherit" /> Canada</p>)
+                    }
                   </div>
               </GridItem>
+              <GridItem lg={12} md={12} sm={12} xs={12}>
+                <div className={cardTimeClasses}>
+                    {dateCreated
+                      ? (<p className={classes.date}><CalendarToday />Posted: {moment(dateCreated).fromNow()}</p>)
+                      : (<p />)
+                    }
+                    </div>
+                </GridItem>
+
             </GridContainer>
           </CardFooter>
         </CardActionArea>
