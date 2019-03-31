@@ -3,7 +3,7 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import PropTypes from 'prop-types';
 import withStyles from '@material-ui/core/styles/withStyles';
-import Button from '@material-ui/core/Button';
+import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
 import DeleteIcon from '@material-ui/icons/Delete';
 import Paper from '@material-ui/core/Paper';
@@ -14,6 +14,7 @@ import Age from 'components/fields/personal/Age';
 import RelationshipStatus from 'components/fields/personal/RelationshipStatus';
 import Relation from 'components/fields/family/Relation';
 import Gender from 'components/fields/personal/Gender';
+import Divider from '@material-ui/core/Divider';
 import { injectIntl, intlShape, FormattedMessage } from 'react-intl';
 
 const styles = theme => ({
@@ -27,15 +28,11 @@ const styles = theme => ({
     width: '100%',
     marginTop: theme.spacing.unit,
     marginBottom: theme.spacing.unit,
-    paddingTop: theme.spacing.unit * 2,
-    paddingBottom: theme.spacing.unit * 2,
-    paddingLeft: theme.spacing.unit * 2,
+    padding: theme.spacing.unit * 2,
     [theme.breakpoints.up(600 + theme.spacing.unit * 3 * 2)]: {
       marginTop: theme.spacing.unit,
       marginBottom: theme.spacing.unit,
-      paddingTop: theme.spacing.unit * 3,
-      paddingBottom: theme.spacing.unit * 3,
-      paddingLeft: theme.spacing.unit * 3,
+      padding: theme.spacing.unit * 3,
     },
     layout: {
       marginLeft: theme.spacing.unit,
@@ -65,6 +62,9 @@ class FamilyInfo extends Component {
 
       if (validator.isEmpty(member.age)) {
         errors.familyError[index].age = `${intl.formatMessage({ id: 'personal.age' })}  ${intl.formatMessage({ id: 'isrequired' })}`;
+        isError = true;
+      } else if (!validator.isInt(member.age, { min: 1, max: 100 })) {
+        errors.familyError[index].age = `${intl.formatMessage({ id: 'personal.age' })}  ${intl.formatMessage({ id: 'notvalid' })}`;
         isError = true;
       }
 
@@ -99,78 +99,79 @@ class FamilyInfo extends Component {
 
     return (
       <React.Fragment>
-        <Typography variant="h6" gutterBottom>
-          <FormattedMessage id="signup.familyinfo" />
-        </Typography>
         <Grid container spacing={24}>
           <Grid item xs={12}>
-            <Typography variant="subtitle1" gutterBottom className={classes.row}>
-              <FormattedMessage id="signup.family.addfam" />
+            <Typography align="left" color="textSecondary" variant="h6" gutterBottom>
+              <FormattedMessage id="signup.family" />
             </Typography>
-            <Button
-              variant="fab"
-              mini
-              color="secondary"
-              aria-label="Add"
-              onClick={() => handleAddObject('family', familyObject)}
-              className={classes.button}
-            >
-              <AddIcon />
-            </Button>
+            <Divider />
+          </Grid>
+          <Grid item xs={12}>
+            <Typography variant="subtitle1" color="textSecondary" gutterBottom className={classes.row}>
+              <FormattedMessage id="signup.family.addfam" />
+              <Fab
+                size="small"
+                aria-label="Add"
+                color="primary"
+                onClick={() => handleAddObject('family', familyObject)}
+                className={classes.button}
+              >
+                <AddIcon />
+              </Fab>
+            </Typography>
           </Grid>
           {family.map((member, index) => (
-            <React.Fragment key={index}>
-              <Paper className={classes.paper}>
-                <Typography variant="subtitle1" align="left" gutterBottom>
-                  <FormattedMessage id="signup.family.member" />
-                  {' '}
-                  {index + 1}
-                </Typography>
-                <Grid justify="center" alignItems="center" container item xs>
-                  <Grid container spacing={24} item xs={11}>
-                    <Grid item xs={12} sm={4}>
-                      <Age
-                        age={member.age}
-                        ageError={this.objectErrorText('familyError', index, 'age')}
-                        handleChange={handleEditObject('family', index)}
-                      />
-                    </Grid>
-                    <Grid item xs={12} sm={4}>
-                      <RelationshipStatus
-                        relationshipStatus={member.relationshipStatus}
-                        relationshipStatusError={this.objectErrorText('familyError', index, 'relationshipStatus')}
-                        handleChange={handleEditObject('family', index)}
-                      />
-                    </Grid>
-                    <Grid item xs={12} sm={4}>
-                      <Relation
-                        relation={member.relation}
-                        relationError={this.objectErrorText('familyError', index, 'relation')}
-                        handleChange={handleEditObject('family', index)}
-                      />
-                    </Grid>
-                    <Grid item xs={12}>
-                      <Gender
-                        gender={member.gender}
-                        genderError={this.objectErrorText('familyError', index, 'gender')}
-                        handleChange={handleEditObject('family', index)}
-                      />
-                    </Grid>
+            <Grid item xs={12}>
+              <Paper elevation={4} className={classes.paper}>
+                <Grid container justify="space-between" alignItems="center" style={{ paddingBottom: 10 }}>
+                  <Typography variant="subtitle1" align="left" gutterBottom className={classes.row}>
+                    <FormattedMessage id="signup.family.member" />
+                    {' '}
+                    {index + 1}
+                  </Typography>
+                  <Fab
+                    size="small"
+                    aria-label="Delete"
+                    color="secondary"
+                    onClick={event => handleRemoveObject('family', index, event)}
+                    className={classes.button}
+                    styles={{ marginTop: 0 }}
+                  >
+                    <DeleteIcon />
+                  </Fab>
+                </Grid>
+                <Grid container spacing={24}>
+                  <Grid item xs={12} sm={4}>
+                    <Age
+                      age={member.age}
+                      ageError={this.objectErrorText('familyError', index, 'age')}
+                      handleChange={handleEditObject('family', index)}
+                    />
                   </Grid>
-                  <Grid item xs={1}>
-                    <Button
-                      variant="fab"
-                      mini
-                      aria-label="Delete"
-                      onClick={event => handleRemoveObject('family', index, event)}
-                      className={classes.button}
-                    >
-                      <DeleteIcon />
-                    </Button>
+                  <Grid item xs={12} sm={4}>
+                    <RelationshipStatus
+                      relationshipStatus={member.relationshipStatus}
+                      relationshipStatusError={this.objectErrorText('familyError', index, 'relationshipStatus')}
+                      handleChange={handleEditObject('family', index)}
+                    />
+                  </Grid>
+                  <Grid item xs={12} sm={4}>
+                    <Relation
+                      relation={member.relation}
+                      relationError={this.objectErrorText('familyError', index, 'relation')}
+                      handleChange={handleEditObject('family', index)}
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <Gender
+                      gender={member.gender}
+                      genderError={this.objectErrorText('familyError', index, 'gender')}
+                      handleChange={handleEditObject('family', index)}
+                    />
                   </Grid>
                 </Grid>
               </Paper>
-            </React.Fragment>
+            </Grid>
           ))}
         </Grid>
       </React.Fragment>

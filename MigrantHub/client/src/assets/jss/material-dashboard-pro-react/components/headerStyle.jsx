@@ -19,7 +19,6 @@ const headerStyle = theme => ({
     boxShadow: "none",
     borderBottom: "0",
     marginBottom: "0",
-    position: "absolute",
     width: "100%",
     paddingTop: "10px",
     zIndex: "1029",
@@ -89,7 +88,13 @@ const headerStyle = theme => ({
   sidebarMiniIcon: {
     width: "20px",
     height: "17px"
-  }
+  },
+  inlineBlock: {
+    'padding-left': 10,
+    width: '200px',
+    height: '70px',
+    zoom: 0.6,
+  },
 });
 
 export default headerStyle;

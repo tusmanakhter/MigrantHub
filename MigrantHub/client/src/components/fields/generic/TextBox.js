@@ -1,13 +1,21 @@
 import React from 'react';
 import TextField from '@material-ui/core/TextField';
 import PropTypes from 'prop-types';
+import withStyles from '@material-ui/core/styles/withStyles';
+
+const styles = {
+  textbox: {
+    height: 24,
+    padding: 11,
+  },
+};
 
 const TextBox = (props) => {
   const {
     name, label, value, error, placeholder, endAdornment,
-    variant, type, inputClass, margin, handleChange,
-
+    type, handleChange, classes,
   } = props;
+
   return (
     <TextField
       id={name}
@@ -19,31 +27,29 @@ const TextBox = (props) => {
       fullWidth
       helperText={error}
       error={error.length > 0}
-      variant={variant}
+      variant="outlined"
       type={type}
       InputProps={{
         endAdornment,
         classes: {
-          input: inputClass,
+          input: classes.textbox,
         },
       }}
       InputLabelProps={{
-        margin,
+        margin: 'dense',
       }}
     />
   );
 };
 
 TextBox.defaultProps = {
-  variant: 'standard',
   type: '',
   placeholder: '',
-  inputClass: '',
-  margin: null,
   endAdornment: null,
 };
 
 TextBox.propTypes = {
+  classes: PropTypes.object.isRequired,
   name: PropTypes.string.isRequired,
   label: PropTypes.oneOfType([PropTypes.string, PropTypes.shape({})]).isRequired,
   value: PropTypes.string.isRequired,
@@ -51,10 +57,7 @@ TextBox.propTypes = {
   handleChange: PropTypes.func.isRequired,
   placeholder: PropTypes.string,
   type: PropTypes.string,
-  variant: PropTypes.string,
-  inputClass: PropTypes.string,
-  margin: PropTypes.string,
   endAdornment: PropTypes.node,
 };
 
-export default TextBox;
+export default withStyles(styles)(TextBox);

@@ -36,10 +36,6 @@ import { organizationTypes } from 'lib/SignUpConstants';
 const qs = require('qs');
 
 const styles = theme => ({
-  textbox: {
-    height: 24,
-    padding: 11,
-  },
   facebook: {
     marginBottom: 8,
     '& > span': {
@@ -103,9 +99,6 @@ class BaseSignupBusiness extends Component {
                   firstName={firstName}
                   firstNameError={validation.firstName.message}
                   handleChange={event => this.handleChange(event)}
-                  variant="outlined"
-                  inputClass={classes.textbox}
-                  margin="dense"
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
@@ -113,9 +106,6 @@ class BaseSignupBusiness extends Component {
                   lastName={lastName}
                   lastNameError={validation.lastName.message}
                   handleChange={event => this.handleChange(event)}
-                  variant="outlined"
-                  inputClass={classes.textbox}
-                  margin="dense"
                 />
               </Grid>
               <Grid item xs={12}>
@@ -124,16 +114,12 @@ class BaseSignupBusiness extends Component {
                   label={<FormattedMessage id="email" />}
                   value={email}
                   handleChange={event => this.handleChange(event)}
-                  variant="outlined"
                   error={validation.email.message}
-                  inputClass={classes.textbox}
-                  margin="dense"
                 />
               </Grid>
               <Grid item xs={12}>
                 <TextBox
                   name="password"
-                  variant="outlined"
                   type={showPassword ? 'text' : 'password'}
                   label={<FormattedMessage id="password" />}
                   value={password}
@@ -149,8 +135,6 @@ class BaseSignupBusiness extends Component {
                       </IconButton>
                     </InputAdornment>
                   )}
-                  inputClass={classes.textbox}
-                  margin="dense"
                 />
               </Grid>
             </Grid>
@@ -179,9 +163,6 @@ class BaseSignupBusiness extends Component {
                   value={corpId}
                   handleChange={event => this.handleChange(event)}
                   error={validation.corpId.message}
-                  inputClass={classes.textbox}
-                  variant="outlined"
-                  margin="dense"
                 />
               </Grid>
               {loading && (
@@ -203,9 +184,6 @@ class BaseSignupBusiness extends Component {
                   address={address}
                   addressError={validation.address.message}
                   handleChange={event => this.handleChange(event)}
-                  inputClass={classes.textbox}
-                  variant="outlined"
-                  margin="dense"
                 />
               </Grid>
               <Grid item xs={12}>
@@ -213,9 +191,6 @@ class BaseSignupBusiness extends Component {
                   apartment={apartment}
                   apartmentError=""
                   handleChange={event => this.handleChange(event)}
-                  inputClass={classes.textbox}
-                  variant="outlined"
-                  margin="dense"
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
@@ -223,9 +198,6 @@ class BaseSignupBusiness extends Component {
                   city={city}
                   cityError={validation.city.message}
                   handleChange={event => this.handleChange(event)}
-                  inputClass={classes.textbox}
-                  variant="outlined"
-                  margin="dense"
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
@@ -233,9 +205,6 @@ class BaseSignupBusiness extends Component {
                   province={province}
                   provinceError={validation.province.message}
                   handleChange={event => this.handleChange(event)}
-                  inputClass={classes.textbox}
-                  variant="outlined"
-                  margin="dense"
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
@@ -243,9 +212,6 @@ class BaseSignupBusiness extends Component {
                   postalCode={postalCode}
                   postalCodeError={validation.postalCode.message}
                   handleChange={event => this.handleChange(event)}
-                  inputClass={classes.textbox}
-                  variant="outlined"
-                  margin="dense"
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
@@ -253,9 +219,6 @@ class BaseSignupBusiness extends Component {
                   phoneNumber={phoneNumber}
                   phoneNumberError={validation.phoneNumber.message}
                   handleChange={event => this.handleChange(event)}
-                  inputClass={classes.textbox}
-                  variant="outlined"
-                  margin="dense"
                 />
               </Grid>
             </Grid>
@@ -272,10 +235,7 @@ class BaseSignupBusiness extends Component {
                   value={organizationName}
                   handleChange={event => this.handleChange(event)}
                   fullWidth
-                  error={validation.phoneNumber.message}
-                  variant="outlined"
-                  inputClass={classes.textbox}
-                  margin="dense"
+                  error={validation.organizationName.message}
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
@@ -286,9 +246,6 @@ class BaseSignupBusiness extends Component {
                   handleChange={event => this.handleChange(event)}
                   options={organizationTypes}
                   error={validation.orgType.message}
-                  variant="outlined"
-                  inputClass={classes.textbox}
-                  margin="dense"
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
@@ -298,9 +255,6 @@ class BaseSignupBusiness extends Component {
                   value={department}
                   handleChange={event => this.handleChange(event)}
                   error={validation.department.message}
-                  variant="outlined"
-                  inputClass={classes.textbox}
-                  margin="dense"
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
@@ -310,9 +264,6 @@ class BaseSignupBusiness extends Component {
                   value={serviceType}
                   handleChange={event => this.handleChange(event)}
                   error={validation.serviceType.message}
-                  variant="outlined"
-                  inputClass={classes.textbox}
-                  margin="dense"
                 />
               </Grid>
               <Grid item xs={12}>
@@ -322,9 +273,6 @@ class BaseSignupBusiness extends Component {
                   value={description}
                   handleChange={event => this.handleChange(event)}
                   error={validation.description.message}
-                  variant="outlined"
-                  inputClass={classes.textbox}
-                  margin="dense"
                 />
               </Grid>
             </Grid>

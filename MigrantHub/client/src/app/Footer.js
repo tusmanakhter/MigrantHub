@@ -6,8 +6,8 @@ import cx from 'classnames';
 import withStyles from '@material-ui/core/styles/withStyles';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
-import LanguageSwitch from 'components/LanguageSwitch';
 import footerStyle from 'assets/jss/material-dashboard-pro-react/components/footerStyle';
+import TermsConditions from 'app/TermsConditions';
 
 function Footer({ ...props }) {
   const {
@@ -34,6 +34,14 @@ function Footer({ ...props }) {
             <ListItem className={classes.inlineBlock}>
               <a href="/" className={block}>
                 {'Home'}
+              </a>
+            </ListItem>
+            <ListItem className={classes.inlineBlock}>
+              <TermsConditions />
+            </ListItem>
+            <ListItem className={classes.inlineBlock}>
+              <a href="/about-us" className={block}>
+                  {'About'}
               </a>
             </ListItem>
           </List>

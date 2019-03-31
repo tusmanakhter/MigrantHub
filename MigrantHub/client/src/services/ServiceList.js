@@ -8,9 +8,12 @@ import Button from 'components/CustomButtons/Button.jsx';
 import UserTypes from 'lib/UserTypes';
 import QuestionnairePanel from 'components/QuestionnairePanel/QuestionnairePanel';
 import Grid from '@material-ui/core/Grid';
+import TermsConditions from 'app/TermsConditions';
 import { FormattedMessage } from 'react-intl';
 import { AuthConsumer } from 'routes/AuthContext';
 import { toast } from 'react-toastify';
+import InfiniteScroll from 'react-infinite-scroller';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 // @material-ui/icons
 import Info from '@material-ui/icons/Info';
@@ -31,6 +34,9 @@ const styles = theme => ({
     paddingTop: theme.spacing.unit * 2,
     paddingBottom: theme.spacing.unit * 2,
   },
+  loader: {
+    margin: 5,
+  },
 });
 
 class ServiceList extends Component {
@@ -45,17 +51,6 @@ class ServiceList extends Component {
       moreData: true,
     };
     this.addPinnedService = this.addPinnedService.bind(this);
-  }
-
-  componentDidMount() {
-    this.fetchData(false, this.props);
-  }
-
-  componentWillReceiveProps(nextProps) {
-    const { location } = this.props;
-    if (nextProps.location !== location) {
-      this.fetchData(true, nextProps);
-    }
   }
 
   addPinnedService(serviceId) {
@@ -159,7 +154,7 @@ class ServiceList extends Component {
     return (
       <AuthConsumer>
         {({ user }) => (
-          <React.Fragment>
+          <>
             <div className={classes.mainContainer}>
               {user.type !== UserTypes.ADMIN
                 && (
@@ -223,7 +218,7 @@ class ServiceList extends Component {
                                     </h4>
                                   </CardHeader>
                                   <CardBody>
-                                    <p><b><FormattedMessage id="legalbox" /></b></p>
+                                    <p><b><FormattedMessage id="legalbox" /> <TermsConditions /></b></p>
                                     <br />
                                     MigrantHub ©
                                   </CardBody>
@@ -252,48 +247,48 @@ class ServiceList extends Component {
                 <FormattedMessage id="service.browse" />
               </h5>
               <hr />
-              <Grid container spacing={16} alignItems="center" justify="center">
-                {' '}
-                {
-                  items.map(item => (
-                    <GridItem>
-                      <ServiceCard
-                        serviceId={item._id}
-                        serviceTitle={item.serviceTitle}
-                        serviceImagePath={item.serviceImagePath}
-                        serviceDescription={item.serviceDescription}
-                        serviceSummary={item.serviceSummary}
-                        category={item.category}
-                        subcategory={item.subcategory}
-                        serviceLocation={item.location}
-                        serviceDate={item.serviceDate}
-                        serviceHours={item.serviceHours}
-                        rating={item.avgRating}
-                        count={item.countRating}
-                        pinIcon={<i class="fas fa-thumbtack"></i>}
-                        pinIconHandle={this.addPinnedService}
-                        pinIconHelperText={"Pin to Dashboard"}
-                      />
-                    </GridItem>
-                  ))
-                }
-              </Grid>
-              <Grid container spacing={16} alignItems="center" justify="center">
-                <Grid item>
-                  {moreData && (
-                    <Button
-                      variant="contained"
-                      color="info"
-                      className={classes.button}
-                      onClick={() => this.fetchData(false, this.props)}
-                    >
-                      Load More
-                    </Button>
-                  )}
+              <InfiniteScroll
+                pageStart={0}
+                loadMore={() => this.fetchData(this.props.redirect, this.props)}
+                hasMore={moreData}
+                loader={(
+                  <Grid item style={{ paddingBottom: 15 }}>
+                    <CircularProgress className={classes.loader} disableShrink />
+                  </Grid>
+                )}
+                threshold={-600}
+                useWindow={false}
+                getScrollParent={() => document.getElementById('mainPanel')}
+              >
+                <Grid container spacing={16} alignItems="center" justify="center">
+                  {' '}
+                  {
+                    items.map(item => (
+                      <GridItem>
+                        <ServiceCard
+                          serviceId={item._id}
+                          serviceTitle={item.serviceTitle}
+                          serviceImagePath={item.serviceImagePath}
+                          serviceDescription={item.serviceDescription}
+                          serviceSummary={item.serviceSummary}
+                          category={item.category}
+                          subcategory={item.subcategory}
+                          serviceLocation={item.location}
+                          serviceDate={item.serviceDate}
+                          serviceHours={item.serviceHours}
+                          rating={item.avgRating}
+                          count={item.countRating}
+                          pinIcon={<i class="fas fa-thumbtack"></i>}
+                          pinIconHandle={this.addPinnedService}
+                          pinIconHelperText={"Pin to Dashboard"}
+                        />
+                      </GridItem>
+                    ))
+                  }
                 </Grid>
-              </Grid>
+              </InfiniteScroll>
             </div>
-          </React.Fragment>
+          </>
         )}
       </AuthConsumer>
     );

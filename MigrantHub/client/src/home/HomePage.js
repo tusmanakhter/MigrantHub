@@ -20,6 +20,7 @@ const styles = theme => ({
     [theme.breakpoints.down('sm')]: {
       padding: '3%',
     },
+    textSize: '10px',
     textAlign: 'center',
     color: 'white',
     padding: '10% 25% 7% 25%',
@@ -52,11 +53,7 @@ const styles = theme => ({
     marginTop: 50,
   },
   underline: {
-    content: ' ',
-    display: 'block',
-    width: '100px',
-    margin: '10px 0',
-    border: '2px solid',
+    textDecoration: 'underline',
   },
   content: {
     marginTop: '10px',
@@ -92,12 +89,12 @@ const HomePage = (props) => {
       <Grid container>
         <Grid item xs={12} className={classes.top}>
           <Grid item xs={12}>
-            <Typography variant="h2" color="inherit" gutterBottom>
+            <Typography variant="h3" color="inherit" gutterBottom>
               <FormattedMessage id="home.title" />
             </Typography>
           </Grid>
           <Grid item xs={12}>
-            <Typography variant="h6" color="inherit" gutterBottom>
+            <Typography color="inherit" gutterBottom>
               <FormattedMessage id="home.subtitle" />
             </Typography>
           </Grid>
@@ -105,7 +102,7 @@ const HomePage = (props) => {
             <Button variant="contained" component={Link} to="/signup/personal" className={[classes.button, classes.signUpButton].join(' ')}>
               <FormattedMessage id="signup" />
             </Button>
-            <Button variant="outlined" className={[classes.button, classes.aboutButton].join(' ')}>
+            <Button variant="outlined" component={Link} to="/about-us" className={[classes.button, classes.aboutButton].join(' ')}>
               <FormattedMessage id="home.aboutus" />
             </Button>
           </Grid>
@@ -114,7 +111,7 @@ const HomePage = (props) => {
           <Typography variant="h5" gutterBottom>
             <FormattedMessage id="home.askBusiness" />
           </Typography>
-          <Typography variant="subtitle1" gutterBottom>
+          <Typography gutterBottom>
             <FormattedMessage id="home.businessInfo" />
           </Typography>
           <Grid item xs={12} className={classes.buttons}>
@@ -124,12 +121,15 @@ const HomePage = (props) => {
           </Grid>
         </Grid>
         <Grid item xs={12} className={classes.about}>
-          <Typography variant="h4" align="left" gutterBottom>
-            <FormattedMessage id="home.aboutus" />
-          </Typography>
-          <div className={classes.underline} />
+          <div className={classes.underline}>
+            <a href='/about-us' style={{ textDecoration: 'none' }}>
+              <Typography variant="h5" gutterBottom>
+                <FormattedMessage id="home.aboutus" />
+              </Typography>
+            </a>
+          </div>
           <div className={classes.content}>
-            <Typography variant="h6" align="left" gutterBottom>
+            <Typography gutterBottom>
               <FormattedHTMLMessage id="home.aboutus1" />
             </Typography>
           </div>

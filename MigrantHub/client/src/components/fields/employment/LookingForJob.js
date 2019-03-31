@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { lookingForJobOptions } from 'lib/SignUpConstants';
-import RadioOption from 'components/fields/generic/RadioOption';
+import Dropdown from 'components/fields/generic/Dropdown';
 import { FormattedMessage } from 'react-intl';
 
 const LookingForJob = (props) => {
@@ -10,7 +10,7 @@ const LookingForJob = (props) => {
   } = props;
 
   return (
-    <RadioOption
+    <Dropdown
       name="lookingForJob"
       label={<FormattedMessage id="employment.looking" />}
       value={lookingForJob}
