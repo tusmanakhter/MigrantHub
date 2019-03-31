@@ -8,6 +8,26 @@ module.exports = {
     return SavedJobRepository.createSavedJob(userId);
   },
 
+  async getSavedJobs(user, offset, limit) {
+    let query = {};
+    query._id = user._id;
+
+    let savedJobs = await SavedJobRepository.getSavedJobs(query, offset, limit);
+    if(savedJobs.length > 0){
+      let savedJobsList = [];
+      for (let i = 0; i < savedJobs.length; i++){
+        savedJobsList.push({_id: savedJobs[i]._id});
+      }
+      query = {
+        $or: savedJobsList,
+      };
+      query.deleted = false;
+      return JobRepository.getJobs(query, undefined, undefined)
+    }else{
+      return Promise.resolve([]);
+    }
+  },
+
   async addSavedJob(user, jobId) {
     let foundSavedJob = await SavedJobRepository.getSavedJob(user._id, jobId);
 

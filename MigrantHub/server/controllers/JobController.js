@@ -8,12 +8,12 @@ module.exports = {
     return JobService.createJob(user, parsedJobObject, validationObject);
   },
 
-  async getJobs(owner, offset, limit) {
-    return JobService.getJobs(owner, offset, limit);
+  async getJobs(user, owner, offset, limit) {
+    return JobService.getJobs(user, owner, offset, limit);
   },
 
-  async getJob(jobId) {
-    return JobService.getJob(jobId);
+  async getJob(user, jobId) {
+    return JobService.getJob(user, jobId);
   },
 
   async updateJob(jobObject, validationObject) {

@@ -34,7 +34,7 @@ module.exports = {
           throw new ServerError('There was an error retrieving jobs.', 400, error);
         });
     }
-    return Job.find(query, { score: { $meta: 'textScore' } }).sort({ score: { $meta: 'textScore' } }).exec().then(jobs => Promise.resolve(jobs))
+    return Job.find(query).exec().then(jobs => Promise.resolve(jobs))
       .catch((error) => {
         throw new ServerError('There was an error retrieving jobs.', 400, error);
       });

@@ -12,6 +12,35 @@ module.exports = {
     });
   },
 
+  getSavedJobs(query, offset, limit) {
+    if (offset !== undefined && limit !== undefined) {
+      return SavedJob.aggregate([
+        { $match: query },
+        { $unwind: '$savedList' },
+        { $replaceRoot: { newRoot: '$savedList' } },
+        { $match: { deleted: false } },
+      ]).skip(parseInt(offset, 10)).limit(parseInt(limit, 10)).exec()
+        .then(savedJobs => Promise.resolve(savedJobs))
+        .catch((error) => {
+          throw new ServerError('There was an error retrieving jobs.', 400, error);
+        });
+    }
+    return SavedJob.findOne(query).exec().then(jobs => Promise.resolve(jobs))
+      .catch((error) => {
+        throw new ServerError('There was an error retrieving jobs.', 400, error);
+      });
+  },
+
+  getSavedJob(userId, jobId) {
+    return SavedJob.findOne({
+      _id: userId,
+      'savedList._id': jobId
+    }).exec().then(savedJob => Promise.resolve(savedJob))
+      .catch((error) => {
+        throw new ServerError('There was an error retrieving service.', 400, error);
+      });
+  },
+
   addSavedJob(userId, savedData) {
     return SavedJob.update({ _id: userId }, { $push: { savedList: savedData } },
       { new: true }).exec()
