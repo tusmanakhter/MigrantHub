@@ -11,6 +11,7 @@ import Grid from '@material-ui/core/Grid';
 import TermsConditions from 'app/TermsConditions';
 import { FormattedMessage } from 'react-intl';
 import { AuthConsumer } from 'routes/AuthContext';
+import { toast } from 'react-toastify';
 import InfiniteScroll from 'react-infinite-scroller';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
@@ -49,7 +50,17 @@ class ServiceList extends Component {
       limit: 20,
       moreData: true,
     };
+    this.addPinnedService = this.addPinnedService.bind(this);
   }
+
+  addPinnedService(serviceId) {
+    axios.put('/api/services/pinned/' + serviceId)
+    .then((response) => {
+      toast.success(response.data)
+    }).catch((error) => {
+        toast.success(error.response.data)
+      });
+  };
 
   setRedirectToServiceForm = () => {
     this.setState({
@@ -173,7 +184,7 @@ class ServiceList extends Component {
                                   <CardBody>
                                     <Button
                                       variant="contained"
-                                      color="info"
+                                      color="primary"
                                       className={classes.button}
                                       onClick={this.setRedirectToServiceForm}
                                     >
@@ -267,12 +278,20 @@ class ServiceList extends Component {
                           serviceHours={item.serviceHours}
                           rating={item.avgRating}
                           count={item.countRating}
+                          pinIcon={<i class="fas fa-thumbtack"></i>}
+                          pinIconHandle={this.addPinnedService}
+                          pinIconHelperText={"Pin to Dashboard"}
                         />
                       </GridItem>
                     ))
                   }
                 </Grid>
               </InfiniteScroll>
+              {moreData ? 
+                (null) 
+                : 
+                (<h6>No more results</h6>)
+              }
             </div>
           </>
         )}

@@ -25,6 +25,7 @@ module.exports = {
 
   async reviewExists(user, serviceId) {
     const review = await this.getReview(user, serviceId);
+    // eslint-disable-next-line no-console
     console.log(review);
     if (review != null) {
       return Promise.resolve('Review Exists.');

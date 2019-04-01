@@ -5,8 +5,6 @@ import GridContainer from "components/Grid/GridContainer.jsx";
 import axios from 'axios';
 import ServiceCard from 'services/ServiceCard';
 import dashboardStyle from "assets/jss/material-dashboard-pro-react/views/dashboardStyle.jsx";
-import Card from "components/Card/Card.jsx";
-import CardHeader from "components/Card/CardHeader.jsx";
 import { FormattedMessage } from 'react-intl';
 
 const styles = theme => ({
@@ -23,6 +21,9 @@ const styles = theme => ({
     ...theme.mixins.gutters(),
     paddingTop: theme.spacing.unit * 2,
     paddingBottom: theme.spacing.unit * 2,
+  },
+  cardTitle: {
+    'text-align' : 'left'
   },
 });
 
@@ -56,15 +57,16 @@ class ServiceRecommendation extends Component {
     const { classes, ...rest } = this.props;
     const { items } = this.state;
     return (
-      <Card style={{ padding: '20px' }}>
-        <CardHeader>
-          <h4 className={classes.cardTitle}><FormattedMessage id="service.suggested" /></h4>
-        </CardHeader>
-        <React.Fragment>
-          <div className={classes.mainContainer}>
-            <GridContainer>
+      <React.Fragment>
+        <div className={classes.mainContainer}>
+          <h5 className={classes.cardTitle}>
+            <b><FormattedMessage id="service.suggested" /></b>
+          </h5>
+          <hr />
+            <GridContainer alignItems="center" justify="center">
               {' '}
               {
+                items.length > 0 ? (
                   items.map(item => (
                     <ServiceCard
                       serviceId={item._id}
@@ -82,12 +84,15 @@ class ServiceRecommendation extends Component {
                       editOwner={item.editOwner}
                       getData={this.getData}
                     />
-                  ))
+                  ))) : (
+                    <div>
+                      <h4 style={{'text-indent':'50px'}}>You have no suggested services yet</h4>
+                    </div>
+                  )
               }
             </GridContainer>
           </div>
         </React.Fragment>
-      </Card>
     );
   }
 }

@@ -89,12 +89,7 @@ const headerStyle = theme => ({
     width: "20px",
     height: "17px"
   },
-  inlineBlock: {
-    'padding-left': 10,
-    width: '200px',
-    height: '70px',
-    zoom: 0.6,
-  },
+  
 });
 
 export default headerStyle;

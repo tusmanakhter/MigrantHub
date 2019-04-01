@@ -8,6 +8,7 @@ const Service = require('../models/Service');
 
 router.use('/:id/reviews', require('./Reviews'));
 router.use('/suggestions', require('./ServiceSuggestions'));
+router.use('/pinned', require('./PinnedService'));
 
 router.get('/recommendations', controllerHandler(ServiceController.getRecommendations, req => [req.user]));
 router.get('/', controllerHandler(ServiceController.getServices, req => [req.query.editOwner, req.query.searchQuery, req.query.search, req.query.category, req.query.subcategory, req.cookies.locale, req.query.offset, req.query.limit]));
