@@ -15,4 +15,16 @@ module.exports = {
     }
     throw new ServerError('There was an error creating the bug.', 400, errors);
   },
+  async getBugs() {
+    return BugRepository.getBugs();
+  },
+  async getBug(bugId) {
+    const query = {};
+
+    if (bugId !== '') {
+      query._id = bugId;
+    }
+
+    return BugRepository.getBug(query);
+  },
 };

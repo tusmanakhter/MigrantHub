@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Route, Switch, withRouter } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import PropTypes from 'prop-types';
+import AboutUs from 'app/AboutUs'
 import SignUpMigrant from 'account/personal/SignUpMigrant';
 import SignUpBusiness from 'account/business/SignUpBusiness';
 import SignUpAdmin from 'account/admin/SignUpAdmin';
@@ -21,6 +22,8 @@ import Search from 'search/Search';
 import EventList from 'events/EventList';
 import EventForm from 'events/EventForm';
 import BugForm from 'forms/BugForm';
+import BugList from 'bugs/BugList';
+import BugDetails from 'bugs/BugDetails';
 import ServiceDetails from 'services/ServiceDetails';
 import EventDetails from 'events/EventDetails';
 import { AuthConsumer } from 'routes/AuthContext';
@@ -31,7 +34,8 @@ import ServiceSuggestionForm from 'services/ServiceSuggestionForm';
 import ServiceSuggestionList from 'services/ServiceSuggestionList';
 import ForgotYourPasswordForm from 'account/forgotYourPassword/ForgotYourPasswordForm';
 import CreateReview from 'services/CreateReview';
-
+import Logout from 'components/Logout'
+import ServiceCategoryList from 'services/ServiceCategoryList'
 class Routes extends Component {
   state = {
     isLoading: true,
@@ -74,6 +78,11 @@ class Routes extends Component {
           <UnprotectedRoute path="/signup/admin" component={SignUpAdmin} disableLayout exact />
           <UnprotectedRoute path="/login" component={Login} disableLayout exact />
           <UnprotectedRoute path="/forgotpassword" component={ForgotYourPasswordForm} exact />
+          <UnprotectedRoute path="/about-us" component={AboutUs} exact/>
+          <ProtectedRoute path="/admin/dashboard" component={AdminDashboard} admin />
+          <ProtectedRoute path="/editmigrant" component={EditMigrant} migrant exact />
+          <ProtectedRoute path="/editbusiness" component={EditBusiness} business exact />
+          <ProtectedRoute path="/categories" component={ServiceCategoryList} exact />
           <ProtectedRoute path="/profile/personal" component={EditMigrant} migrant exact />
           <ProtectedRoute path="/profile/business" component={EditBusiness} business exact />
           <ProtectedRoute path="/admin/dashboard" component={AdminDashboard} admin />
@@ -85,11 +94,15 @@ class Routes extends Component {
           <ProtectedRoute path="/services/:id" component={ServiceDetails} />
           <ProtectedRoute path="/search" component={Search} exact />
           <ProtectedRoute path="/bugs/report" component={BugForm} exact />
+          <ProtectedRoute path="/bugs" component={BugList} exact />
+          <ProtectedRoute path="/bugs/:id" component={BugDetails} />
           <ProtectedRoute path="/events/create" component={EventForm} business exact />
           <ProtectedRoute path="/events" component={EventList} exact />
           <ProtectedRoute path="/events/:id" component={EventDetails} />
           <ProtectedRoute path="/users" component={UsersList} exact />
           <ProtectedRoute path="/friends" component={FriendPanel} exact />
+          <ProtectedRoute path="/logout" component={Logout} exact />
+          <Route path="/about-us" component={AboutUs} exact/>
           <Route component={Error} />
         </Switch>
       </>

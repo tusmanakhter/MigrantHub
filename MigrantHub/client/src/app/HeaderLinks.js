@@ -10,17 +10,10 @@ import { Redirect } from 'react-router-dom';
 
 // @material-ui/core components
 import withStyles from '@material-ui/core/styles/withStyles';
-import MenuItem from '@material-ui/core/MenuItem';
-import MenuList from '@material-ui/core/MenuList';
-import ClickAwayListener from '@material-ui/core/ClickAwayListener';
-import Paper from '@material-ui/core/Paper';
-import Grow from '@material-ui/core/Grow';
 import Hidden from '@material-ui/core/Hidden';
-import Popper from '@material-ui/core/Popper';
 
 // @material-ui/icons
 import Person from '@material-ui/icons/Person';
-import Notifications from '@material-ui/icons/Notifications';
 import Dashboard from '@material-ui/icons/Dashboard';
 import Search from '@material-ui/icons/Search';
 
@@ -33,7 +26,6 @@ import { injectIntl, intlShape } from 'react-intl';
 import headerLinksStyle from 'assets/jss/material-dashboard-pro-react/components/headerLinksStyle';
 import { AuthConsumer } from 'routes/AuthContext';
 import UserTypes from 'lib/UserTypes';
-import Logout from '../components/Logout';
 
 class BaseHeaderLinks extends React.Component {
   state = {
@@ -177,7 +169,6 @@ class BaseHeaderLinks extends React.Component {
           helperText={this.state.searchError}
           error={this.state.searchError.length > 0}
         />
-
         <Button
           color="white"
           aria-label="edit"
@@ -192,7 +183,7 @@ class BaseHeaderLinks extends React.Component {
         </Button>
         <Link to="/main">
           <Button
-            color="info"
+            color="primary"
             simple
             aria-label="Dashboard"
             justIcon
@@ -214,82 +205,9 @@ class BaseHeaderLinks extends React.Component {
             </Hidden>
           </Button>
         </Link>
-        <div className={managerClasses}>
-          <Button
-            color="info"
-            simple
-            justIcon
-            aria-label="Notifications"
-            aria-owns={open ? 'menu-list' : null}
-            aria-haspopup="true"
-            onClick={this.handleClick}
-            className={classes.buttonLink}
-            buttonRef={(node) => {
-              this.anchorEl = node;
-            }}
-          >
-            <Notifications
-              className={
-                `${classes.headerLinksSvg
-                } ${classes.links}`
-              }
-            />
-            <span className={classes.notifications}>5</span>
-            <Hidden mdUp implementation="css">
-              <span onClick={this.handleClick} className={classes.linkText}>
-                {'Notification'}
-              </span>
-            </Hidden>
-          </Button>
-          <Popper
-            open={open}
-            anchorEl={this.anchorEl}
-            transition
-            disablePortal
-            placement="bottom"
-            className={classNames({
-              [classes.popperClose]: !open,
-              [classes.pooperResponsive]: true,
-              [classes.pooperNav]: true,
-            })}
-          >
-            {({ TransitionProps, placement }) => (
-              <Grow
-                {...TransitionProps}
-                id="menu-list"
-                style={{ transformOrigin: '0 0 0' }}
-              >
-                <Paper className={classes.dropdown}>
-                  <ClickAwayListener onClickAway={this.handleClose}>
-                    <MenuList role="menu">
-                      <MenuItem
-                        onClick={this.handleClose}
-                        className={dropdownItem}
-                      >
-                        PLACEHOLDER
-                      </MenuItem>
-                      <MenuItem
-                        onClick={this.handleClose}
-                        className={dropdownItem}
-                      >
-                        PLACEHOLDER
-                      </MenuItem>
-                      <MenuItem
-                        onClick={this.handleClose}
-                        className={dropdownItem}
-                      >
-                        PLACEHOLDER
-                      </MenuItem>
-                    </MenuList>
-                  </ClickAwayListener>
-                </Paper>
-              </Grow>
-            )}
-          </Popper>
-        </div>
         <Link to={path}>
           <Button
-            color="info"
+            color="primary"
             simple
             aria-label="Person"
             justIcon
@@ -303,7 +221,6 @@ class BaseHeaderLinks extends React.Component {
             </Hidden>
           </Button>
         </Link>
-        <Logout />
       </div>
     );
   }
