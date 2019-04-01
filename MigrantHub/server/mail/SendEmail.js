@@ -22,6 +22,7 @@ module.exports = {
     };
 
     const info = await transporter.sendMail(mailOptions);
+    // eslint-disable-next-line no-console
     console.log('Message sent: %s', info.messageId);
   },
 };

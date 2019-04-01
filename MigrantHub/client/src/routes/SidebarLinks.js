@@ -27,6 +27,12 @@ const SidebarLinks = [
     type: [UserTypes.ADMIN, UserTypes.BUSINESS, UserTypes.MIGRANT],
   },
   {
+    path: '/jobs',
+    name: <FormattedMessage id="job" />,
+    icon: DashboardIcon,
+    type: [UserTypes.ADMIN, UserTypes.BUSINESS, UserTypes.MIGRANT],
+  },
+  {
     path: '/friends',
     name: <FormattedMessage id="friends" />,
     icon: People,

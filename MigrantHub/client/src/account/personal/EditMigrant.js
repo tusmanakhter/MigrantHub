@@ -13,6 +13,7 @@ import EducationInfo from 'account/personal/EducationInfo';
 import EmploymentInfo from 'account/personal/EmploymentInfo';
 import OtherInfo from 'account/personal/OtherInfo';
 import Paper from '@material-ui/core/Paper';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import { handleChange } from 'helpers/Forms';
 import { handleAutoSuggestChange, handleEditObjectAutosuggest } from 'helpers/Autosuggest';
 import {
@@ -45,6 +46,7 @@ class EditMigrant extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      isLoading: false,
       accountProgress: 0,
       alert: null,
       firstName: '',
@@ -106,7 +108,7 @@ class EditMigrant extends Component {
 
   getAccount = () => {
     const { user } = this.context;
-    
+    this.setState({ isLoading: true });
     axios.get(`/api/migrants/${user.username}`).then((response) => {
       if (response.status === 200) {
         const migrantInfo = qs.parse(qs.stringify(response.data));
@@ -121,6 +123,7 @@ class EditMigrant extends Component {
         this.setState({
           ...migrantInfo,
           accountProgress: Math.round((progress.length / 27) * 100),
+         isLoading: false,
         });
       }
     });
@@ -150,7 +153,7 @@ class EditMigrant extends Component {
     }
 
     const { user } = this.context;
-
+    this.setState({ isLoading: true });
     const {
       firstName, lastName, address, apartment, city, province,
       postalCode, phoneNumber, age, gender, nationality, relationshipStatus, status,
@@ -190,6 +193,7 @@ class EditMigrant extends Component {
         joiningReason,
       })).then((response) => {
       toast.success(response.data);
+      this.setState({ isLoading: false });
     }).catch((e) => {
       toast.error(e.response.data);
     });
@@ -201,7 +205,7 @@ class EditMigrant extends Component {
       age, gender, nationality, relationshipStatus, status, languages, writingLevel,
       speakingLevel, motherTongue, family, educationLevel, proficiencyExams, jobStatus,
       lookingForJob, currentIncome, workExperience, settlingLocation, settlingDuration,
-      joiningReason, alert, accountProgress,
+      joiningReason, alert, accountProgress, isLoading,
     } = this.state;
     const { user } = this.context;
     const { classes } = this.props;
@@ -231,6 +235,15 @@ class EditMigrant extends Component {
             <i><b><FormattedMessage id="profile.legalwarn" /></b></i>
           </small>
         </Grid>
+        {isLoading ? 
+        (
+        <div>
+          <CircularProgress className={classes.progress} />
+        </div>
+        ) 
+        : 
+        (
+        <>
         <div className={classes.item}>
           <ContactInfo
             innerRef={this.contactChild}
@@ -323,6 +336,8 @@ class EditMigrant extends Component {
             Save
           </Button>
         </div>
+        </>
+        )}
       </Paper>
     );
   }

@@ -1,7 +1,8 @@
 @import url('https://fonts.googleapis.com/css?family=Roboto:300,400,500,700');
 
 .App {
-  background: #e0e0e0;
+  height: 100%;
+  background: #FFFFFF;
   background-repeat: no-repeat;
   background-size: auto;
   /* color: white; */

@@ -160,7 +160,7 @@ class EventList extends Component {
                                   {this.renderRedirectToEventForm()}
                                   <Button
                                     variant="contained"
-                                    color="info"
+                                    color="primary"
                                     className={classes.button}
                                     onClick={this.setRedirectToEventForm}
                                   >
@@ -234,6 +234,11 @@ class EventList extends Component {
                 }
               </Grid>
             </InfiniteScroll>
+            {moreData ? 
+                (null) 
+                : 
+                (<h6>No more results</h6>)
+            }
           </div>
         )}
       </AuthConsumer>

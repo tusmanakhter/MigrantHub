@@ -171,7 +171,7 @@
   "nav.editprofile": "Edit Profile",
   "nav.myservices": "My Services",
   "nav.myevents": "My Events",
-  "nav.servicesuggestions": "Service Suggestions",
+  "nav.servicesuggestions": "Suggestions",
   "nav.unapproved": "Unapproved",
   "nav.admins": "Admins",
   "rejected": "Rejected",
@@ -243,6 +243,7 @@
   "event.form": "Event Form",
   "form.min.char.10": "must be at least 10 characters",
   "service.categories": "Service Categories",
+  "service.dashboard": "My Dashboard",
   "service.suggested": "Suggested Services",
   "report": "Report",
   "report.bug": "Report Bug",
@@ -442,5 +443,13 @@
   "countries.VN":"Viet Nam",
   "countries.YE":"Yemen",
   "countries.ZM":"Zambia",
-  "countries.ZW":"Zimbabwe"
+  "countries.ZW":"Zimbabwe",
+  "job.create": "Create Job Post",
+  "job.browse": "Browse available jobs",
+  "job.saved.browse": "Browse saved jobs",
+  "job.form": "Job Form",
+  "job": "Jobs",
+  "job.save": "Save Jobs",
+  "job.saved": "Saved Jobs",
+  "job.saved.empty": "No Saved Jobs"
 }

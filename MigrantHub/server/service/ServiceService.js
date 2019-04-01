@@ -25,6 +25,7 @@ module.exports = {
 
   async getServices(userId, searchQuery, search, category, subcategory, locale, offset, limit) {
     let query = {};
+    // eslint-disable-next-line no-console
     console.log(`logging locale for eslint ${locale}`);
     if (userId !== '') {
       query.user = userId;

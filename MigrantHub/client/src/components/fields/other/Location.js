@@ -7,16 +7,16 @@ import {
 import AutosuggestTextbox from 'components/fields/generic/AutosuggestTextbox';
 import { FormattedMessage } from 'react-intl';
 
-const SettlingLocation = (props) => {
+const Location = (props) => {
   const {
-    settlingLocation, settlingLocationError, handleAutoSuggestChange,
+    location, locationError, handleAutoSuggestChange,
   } = props;
 
   return (
     <AutosuggestTextbox
       label={<FormattedMessage id="other.location" />}
-      value={settlingLocation}
-      error={settlingLocationError}
+      value={location}
+      error={locationError}
       handleAutoSuggestChange={handleAutoSuggestChange}
       handleSuggestionsClearRequested={handleSuggestionsClearRequested}
       handleSuggestionsFetchRequested={handleSuggestionsFetchRequested}
@@ -26,10 +26,10 @@ const SettlingLocation = (props) => {
   );
 };
 
-SettlingLocation.propTypes = {
-  settlingLocation: PropTypes.string.isRequired,
-  settlingLocationError: PropTypes.string.isRequired,
+Location.propTypes = {
+  location: PropTypes.string.isRequired,
+  locationError: PropTypes.string.isRequired,
   handleAutoSuggestChange: PropTypes.func.isRequired,
 };
 
-export default SettlingLocation;
+export default Location;

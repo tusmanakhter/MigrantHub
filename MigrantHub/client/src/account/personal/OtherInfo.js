@@ -4,7 +4,7 @@ import withStyles from '@material-ui/core/styles/withStyles';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import validator from 'validator';
-import SettlingLocation from 'components/fields/other/SettlingLocation';
+import Location from 'components/fields/other/Location';
 import SettlingDuration from 'components/fields/other/SettlingDuration';
 import JoiningReason from 'components/fields/other/JoiningReason';
 import Divider from '@material-ui/core/Divider';
@@ -69,9 +69,9 @@ class OtherInfo extends Component {
             <Divider />
           </Grid>
           <Grid item xs={12} sm={6}>
-            <SettlingLocation
-              settlingLocation={settlingLocation}
-              settlingLocationError={settlingLocationError}
+            <Location
+              location={settlingLocation}
+              locationError={settlingLocationError}
               handleAutoSuggestChange={handleAutoSuggestChange('settlingLocation')}
             />
           </Grid>

@@ -4,8 +4,10 @@ var sinonTest = require('sinon-test');
 var test = sinonTest(sinon);
 var AccountFactory = require('../factories/AccountFactory');
 var AccountService = require('../../service/AccountService');
+var SavedJobService = require('../../service/SavedJobService');
 var MigrantRepository = require('../../repository/MigrantRepository');
 var MigrantAccountValidator = require('../../validators/MigrantAccountValidator');
+var PinnedServiceService = require('../../service/PinnedServiceService');
 var BusinessRepository = require('../../repository/BusinessRepository');
 var UserRepository = require('../../repository/UserRepository');
 var BusinessAccountValidator = require('../../validators/BusinessAccountValidator');
@@ -26,6 +28,8 @@ describe('account service migrant', function () {
 
   it('should call MigrantRepository repository with no errors to createUser', test(async function () {
     this.stub(MigrantRepository, 'createUser');
+    this.stub(SavedJobService, 'createSavedJob');
+    this.stub(PinnedServiceService, 'createPinnedService');
     this.stub(MigrantAccountValidator, 'migrantAccountValidator').returns('');
     this.stub(bcrypt, 'hashSync').returns('$2a$10$XlWI50RjCbUmZ7tJFuVoRe9O1UFhtIDJ1PAw62cR5YDwnaQAJcTEK');
     this.stub(SendEmail, 'sendEmail');
@@ -38,6 +42,7 @@ describe('account service migrant', function () {
 
   it('should call MigrantRepository repository with error in validation to createUser', test(function () {
     this.stub(MigrantRepository, 'createUser');
+    this.stub(SavedJobService, 'createSavedJob');
     this.stub(MigrantAccountValidator, 'migrantAccountValidator').returns("error");
     return chai.assert.isRejected(AccountService.createUser(req.body), ServerError, 'There was an error creating migrant user.');
   }));
