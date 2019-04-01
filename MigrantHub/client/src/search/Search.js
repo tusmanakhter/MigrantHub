@@ -4,8 +4,7 @@ import withStyles from '@material-ui/core/styles/withStyles';
 import axios from 'axios';
 import ServiceCard from 'services/ServiceCard';
 import EventCard from 'events/EventCard';
-import UserItem from 'People/UserItem';
-import Paper from '@material-ui/core/Paper';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import { AuthConsumer } from 'routes/AuthContext';
 import GridItem from 'components/Grid/GridItem.jsx';
 import Grid from '@material-ui/core/Grid';
@@ -27,6 +26,9 @@ class Search extends Component {
     this.state = {
       servicesItem: [],
       eventItem: [],
+      serviceAvailable: false,
+      eventAvailable:false,
+      isLoading: false,
     };
 
     this.getServices = this.getServices.bind(this);
@@ -51,9 +53,10 @@ class Search extends Component {
     const category = '';
     const subcategory = '';
 
+    this.setState({ isLoading: true });
     if (location.state) {
-        searchQuery = location.state.searchQuery;
-        searchMode = location.state.searchMode;
+      searchQuery = location.state.searchQuery;
+      searchMode = location.state.searchMode;
     }
     axios.get('/api/services/', {
       params: {
@@ -64,9 +67,15 @@ class Search extends Component {
         subcategory: subcategory,
       },
     }).then((response) => {
-      this.setState({
-        servicesItem: response.data,
-      });
+      if (response.data.length === 0) {
+        this.setState({ serviceAvailable: false, isLoading: false });
+      } else {
+        this.setState({
+          servicesItem: response.data,
+          serviceAvailable: true,
+          isLoading: false,
+        });
+      }
     });
   }
 
@@ -76,6 +85,7 @@ class Search extends Component {
     let searchMode = false;
     const editOwnerEmail = '';
 
+    this.setState({ isLoading: true });
       if (location.state) {
         searchQuery = location.state.searchQuery;
         searchMode = location.state.searchMode;
@@ -88,45 +98,66 @@ class Search extends Component {
         search: searchMode,
       },
     }).then((response) => {
-      this.setState({
-        eventItem: response.data,
+      if (response.data.length === 0) {
+        this.setState({ eventAvailable: false, isLoading: false });
+      } else {
+        this.setState({
+          eventItem: response.data,
+          eventAvailable: true,
+          isLoading: false,
       });
+      }
     });
   }
 
   renderServices() {
     const { classes } = this.props;
-    const { servicesItem } = this.state;
-
+    const { servicesItem, isLoading, dataAvailable } = this.state;
     if(this.state.servicesItem.length !== 0) {
       return (
         <div className={classes.mainContainer}>
           <h5 className={classes.pageSubcategoriesTitle}>
           Services Search Results
           </h5>
-          <Grid container spacing={16} alignItems="center" justify="center">
-            {' '}
-            {
-              servicesItem.map(item => (
+          {isLoading ? 
+            (
+            <Grid container spacing={16} alignItems="center" justify="center">
+              {' '}
+              {
                 <GridItem>
-                  <ServiceCard
-                    serviceId={item._id}
-                    serviceTitle={item.serviceTitle}
-                    serviceImagePath={item.serviceImagePath}
-                    serviceDescription={item.serviceDescription}
-                    serviceSummary={item.serviceSummary}
-                    category={item.category}
-                    subcategory={item.subcategory}
-                    serviceLocation={item.location}
-                    serviceDate={item.serviceDate}
-                    serviceHours={item.serviceHours}
-                    rating={item.avgRating}
-                    count={item.countRating}
-                  />
+                  <CircularProgress className={classes.progress} />
                 </GridItem>
-              ))
-            }
-          </Grid>
+              }
+            </Grid>)
+            :
+            (dataAvailable ? 
+              (<Grid container spacing={16} alignItems="center" justify="center">
+              {' '}
+              {
+                servicesItem.map(item => (
+                  <GridItem>
+                    <ServiceCard
+                      serviceId={item._id}
+                      serviceTitle={item.serviceTitle}
+                      serviceImagePath={item.serviceImagePath}
+                      serviceDescription={item.serviceDescription}
+                      serviceSummary={item.serviceSummary}
+                      category={item.category}
+                      subcategory={item.subcategory}
+                      serviceLocation={item.location}
+                      serviceDate={item.serviceDate}
+                      serviceHours={item.serviceHours}
+                      rating={item.avgRating}
+                      count={item.countRating}
+                    />
+                  </GridItem>
+                ))
+              }
+              </Grid>)
+              :
+              (<h6>No services available</h6>)
+            )
+           }
         </div>
       );
     }
@@ -134,7 +165,7 @@ class Search extends Component {
 
   renderEvents() {
     const { classes } = this.props;
-    const { eventItem } = this.state;
+    const { eventItem, isLoading, eventAvailable } = this.state;
 
     if(this.state.eventItem.length !== 0) {
       return (
@@ -142,26 +173,42 @@ class Search extends Component {
           <h5 className={classes.pageSubcategoriesTitle}>
           Events Search Results
           </h5>
-          <Grid container spacing={16} alignItems="center" justify="center">
-            {' '}
-            {
-              eventItem.map(item => (
+          {isLoading ? 
+            (
+            <Grid container spacing={16} alignItems="center" justify="center">
+              {' '}
+              {
                 <GridItem>
-                  <EventCard
-                    eventId={item._id}
-                    eventName={item.eventName}
-                    eventImagePath={item.eventImagePath}
-                    eventDescription={item.description}
-                    eventLocation={item.location}
-                    dateStart={item.dateStart}
-                    dateEnd={item.dateEnd}
-                    timeStart={item.timeStart}
-                    timeEnd={item.timeEnd}
-                  />
+                  <CircularProgress className={classes.progress} />
                 </GridItem>
-              ))
-            }
-          </Grid>
+              }
+            </Grid>)
+            :
+            (eventAvailable ? 
+              (<Grid container spacing={16} alignItems="center" justify="center">
+              {' '}
+              {
+                eventItem.map(item => (
+                  <GridItem>
+                    <EventCard
+                      eventId={item._id}
+                      eventName={item.eventName}
+                      eventImagePath={item.eventImagePath}
+                      eventDescription={item.description}
+                      eventLocation={item.location}
+                      dateStart={item.dateStart}
+                      dateEnd={item.dateEnd}
+                      timeStart={item.timeStart}
+                      timeEnd={item.timeEnd}
+                    />
+                  </GridItem>
+                ))
+              }
+            </Grid>)
+              :
+              (<h6>No events available</h6>)
+            )
+           }
         </div>
       );
     }
