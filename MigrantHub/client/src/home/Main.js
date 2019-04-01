@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PinnedService from 'services/PinnedService';
 import PropTypes from 'prop-types';
 import ServiceRecommendation from 'services/ServiceRecommendation';
+import SavedJobMain from 'jobs/saved/SavedJobMain';
 
 class Main extends Component {
   constructor(props) {
@@ -15,6 +16,7 @@ class Main extends Component {
       <React.Fragment>
         <ServiceRecommendation location={location} />
         <PinnedService classes={classes} />
+        <SavedJobMain smallCard />
       </React.Fragment>
     );
   }

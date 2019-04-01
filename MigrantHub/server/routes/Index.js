@@ -15,5 +15,6 @@ router.use('/bugs', ensureUser, require('./Bugs'));
 router.use('/questions', ensureUser, ensureRole(UserTypes.MIGRANT), require('./Questions'));
 router.use('/useranswers', ensureUser, ensureRole(UserTypes.MIGRANT), require('./UserAnswers'));
 router.use('/chatbot', ensureUser, require('./Chatbot'));
+router.use('/job', ensureUser, require('./Job'));
 
 module.exports = router;

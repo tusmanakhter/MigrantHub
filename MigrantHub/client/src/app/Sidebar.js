@@ -234,6 +234,28 @@ class Sidebar extends React.Component {
                 )}
                 <ListItem className={classes.collapseItem}>
                   <NavLink
+                    to={{
+                      pathname: '/jobs',
+                      state: {
+                        editOwner: email, editMode: true, searchQuery: '', searchMode: false,
+                      },
+                    }}
+                    className={
+                      `${classes.itemLink} ${classes.userCollapseLinks}`
+                    }
+                  >
+                    <span className={collapseItemMini}>
+                      <ViewList />
+                    </span>
+                    <ListItemText
+                      primary='My Jobs'
+                      disableTypography
+                      className={collapseItemText}
+                    />
+                  </NavLink>
+                </ListItem>
+                <ListItem className={classes.collapseItem}>
+                  <NavLink
                     to={{ pathname: '/'}}
                     className={
                       `${classes.itemLink} ${classes.userCollapseLinks}`

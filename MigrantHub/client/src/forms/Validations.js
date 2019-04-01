@@ -409,6 +409,91 @@ const rules = {
       .concat(this.description);
     return rule;
   },
+  descriptionLength: [
+    {
+      field: 'descriptionLength',
+      method: validator.isEmpty,
+      validWhen: false,
+      message: 'Description is required',
+    },
+    {
+      field: 'descriptionLength',
+      method: validator.isInt,
+      args: [{ min: 10,}],
+      validWhen: true,
+      message: 'Description is not valid',
+    },
+  ],
+  positionType: [
+    {
+      field: 'positionType',
+      method: validator.isEmpty,
+      validWhen: false,
+      message: 'Position Type is required',
+    },
+  ],
+  location: [
+    {
+      field: 'location',
+      method: validator.isEmpty,
+      validWhen: false,
+      message: 'Location is required',
+    },
+  ],
+  companyName: [
+    {
+      field: 'companyName',
+      method: validator.isEmpty,
+      validWhen: false,
+      message: 'Company name is required',
+    },
+  ],
+  contactName: [
+    {
+      field: 'contactName',
+      method: validator.isEmpty,
+      validWhen: false,
+      message: 'Contact name is required',
+    },
+  ],
+  contactEmail: [
+    {
+      field: 'contactEmail',
+      method: validator.isEmpty,
+      validWhen: false,
+      message: 'Contact email is required',
+    },
+  ],
+  contactPhone: [
+    {
+      field: 'contactPhone',
+      method: validator.isEmpty,
+      validWhen: false,
+      message: 'Contact phone is required',
+    },
+  ],
+  get jobFormStep1() {
+    const rule = this.title
+      .concat(this.positionType)
+      .concat(this.location)
+    return rule;
+  },
+  get jobFormStep2() {
+    return this.descriptionLength;
+  },
+  get jobFormStep3() {
+    const rule = this.companyName
+      .concat(this.contactName)
+      .concat(this.contactEmail)
+      .concat(this.contactPhone);
+    return rule;
+  },
+  get jobFormCreate() {
+    const rule = this.jobFormStep1
+      .concat(this.jobFormStep2)
+      .concat(this.jobFormStep3)
+    return rule;
+  },
 };
 
 export default rules;

@@ -441,5 +441,13 @@
   "countries.VN":"Viêt Nam",
   "countries.YE":"Yémen",
   "countries.ZM":"Zambie",
-  "countries.ZW":"Zimbabwe"
+  "countries.ZW":"Zimbabwe",
+  "job.create": "Publier une offre d'emploi",
+  "job.browse": "Parcourir les offre d'emploi disponibles",
+  "job.saved.browse": "Parcourir les offre d'emploi sauvegardés",
+  "job.form": "Formulaire d'emploi",
+  "job": "Emplois",
+  "job.save": "Sauvez l'emploi",
+  "job.saved": "Emplois sauvegardés",
+  "job.saved.empty": "Aucun emplois sauvegardés"
 }

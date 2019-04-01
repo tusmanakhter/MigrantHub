@@ -34,7 +34,13 @@ import ServiceSuggestionForm from 'services/ServiceSuggestionForm';
 import ServiceSuggestionList from 'services/ServiceSuggestionList';
 import ForgotYourPasswordForm from 'account/forgotYourPassword/ForgotYourPasswordForm';
 import CreateReview from 'services/CreateReview';
+import Logout from 'components/Logout'
+import JobForm from 'jobs/form/JobForm';
+import JobList from 'jobs/postings/JobList';
+import JobDetails from 'jobs/postings/JobDetails';
+import SavedJobList from 'jobs/saved/SavedJobList';
 import ServiceCategoryList from 'services/ServiceCategoryList'
+
 class Routes extends Component {
   state = {
     isLoading: true,
@@ -100,6 +106,11 @@ class Routes extends Component {
           <ProtectedRoute path="/events/:id" component={EventDetails} />
           <ProtectedRoute path="/users" component={UsersList} exact />
           <ProtectedRoute path="/friends" component={FriendPanel} exact />
+          <ProtectedRoute path="/logout" component={Logout} exact />
+          <ProtectedRoute path="/jobs/create" component={JobForm} business exact />
+          <ProtectedRoute path="/jobs" component={JobList} exact />
+          <ProtectedRoute path="/jobs/saved" component={SavedJobList} exact />
+          <ProtectedRoute path="/jobs/:id" component={JobDetails} />
           <Route path="/about-us" component={AboutUs} exact/>
           <Route component={Error} />
         </Switch>

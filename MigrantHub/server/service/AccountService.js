@@ -11,6 +11,7 @@ const PinnedServiceService = require('../service/PinnedServiceService');
 const { ServerError } = require('../errors/ServerError');
 const SendEmail = require('../mail/SendEmail');
 const { SignupConfirmationEmail } = require('../mail/EmailMessages');
+const SavedJobService = require('../service/SavedJobService');
 
 module.exports = {
   async createUser(parsedMigrantUserObject) {
@@ -25,6 +26,7 @@ module.exports = {
       migrantUserObject.password = hash;
 
       await MigrantRepository.createUser(migrantUserObject);
+      await SavedJobService.createSavedJob(migrantUserObject.email);
       await PinnedServiceService.createPinnedService(migrantUserObject.email);
 
       const receiverEmail = migrantUserObject.email;
