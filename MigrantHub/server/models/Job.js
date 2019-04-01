@@ -12,7 +12,7 @@ const jobSchema = new Schema({
   contactPhone: { type: String, required: true },
   location: { type: String, required: true },
   website: { type: String, required: false },
-  dateCreated: { type: Date, required: false },
+  dateCreated: { type: Date, required: true },
   deleted: { type: Boolean, default: false },
   deletedDate: { type: Date, default: null },
 });
