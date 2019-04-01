@@ -37,13 +37,13 @@ const styles = {
     marginTop: '2px',
   },
   websiteButton: {
-    textTransform: "none"
+    textTransform: 'none',
   },
-  tooltip:{
-    position: "relative",
+  tooltip: {
+    position: 'relative',
   },
-  savedJob:{
-    position: "absolute",
+  savedJob: {
+    position: 'absolute',
     right: 0,
   },
 };
@@ -125,14 +125,14 @@ class JobDetails extends Component {
     axios.delete(`/api/job/${jobId}`)
       .then((response) => {
         if (response.status === 200) {
-          toast.success("Job post deleted!");
+          toast.success('Job post deleted!');
           this.setState({
             redirect: true,
           });
         }
       }).catch((error) => {
-      toast.error("Error Deleting Job Post!");
-    });
+        toast.error('Error Deleting Job Post!');
+      });
     this.hideAlert();
   };
 
@@ -190,155 +190,163 @@ class JobDetails extends Component {
     axios.put(`/api/job/saved/${jobId}`)
       .then((response) => {
         if (response.status === 200) {
-          toast.success("Job Post Saved!");
+          toast.success('Job Post Saved!');
           this.setState({
             savedJob: true,
           });
         }
       }).catch((error) => {
-      toast.error("Error Saving Job Post!");
-    });
+        toast.error('Error Saving Job Post!');
+      });
   };
 
   deleteSavedJob = (jobId) => {
     axios.delete(`/api/job/saved/${jobId}`)
       .then((response) => {
         if (response.status === 200) {
-          toast.success("Job Post Unsaved!");
+          toast.success('Job Post Unsaved!');
           this.setState({
             savedJob: false,
           });
         }
       }).catch((error) => {
-      toast.error("Error Unsaving Job Post!");
-    });
+        toast.error('Error Unsaving Job Post!');
+      });
   };
 
-    render() {
-      const {
-        classes,
-      } = this.props;
-      const {
-        alert, owner, redirect, jobId, jobDate, title, description, positionType, companyName, contactName, contactEmail, contactPhone, location, savedJob, website,
-      } = this.state;
+  render() {
+    const {
+      classes,
+    } = this.props;
+    const {
+      alert, owner, redirect, jobId, jobDate, title, description, positionType, companyName, contactName, contactEmail, contactPhone, location, savedJob, website,
+    } = this.state;
 
 
-     const positionTypeObject = positionTypes.find(type => type.value === positionType);
-     const positionTypeString = positionTypeObject == undefined? '' : positionTypeObject.label;
+    const positionTypeObject = positionTypes.find(type => type.value === positionType);
+    const positionTypeString = positionTypeObject == undefined ? '' : positionTypeObject.label;
 
-      if (redirect) {
-        return (
-          <Redirect to="/jobs" />
-        );
-      }
-
+    if (redirect) {
       return (
-        <AuthConsumer>
-          {({ user }) => (
-            <div>
-              {alert}
-              <GridItem xs={12} sm={12} md={12} lg={12}>
-                <Card>
-                  <CardHeader color="rose" icon>
-                    <CardIcon color="rose">
-                      <h4><b>Job Posting  </b></h4>
-                    </CardIcon>
-                    <br />
-                    <br />
-                    <br />
-                    <Typography variant="h4" className={classes.cardIconTitle}>
-                      <b>{title}{' '}</b>
-                        {savedJob ?
-                          (
-                            <OutlineButton
-                              id="savedJob"
-                              color="primary"
-                              variant="outlined"
-                              aria-label="Saved Job"
-                              title={<FormattedMessage id="job.save" />}
-                              onClick={() => this.deleteSavedJob(jobId)}
-                              className={classes.savedJob}>
-                            <UnFavoriteIcon/> {' '} Saved
-                            </OutlineButton>
-                          )
-                          :
-                          (
-                            <OutlineButton
-                              id="savedJob"
-                              color="primary"
-                              variant="outlined"
-                              aria-label="Saved Job"
-                              title={<FormattedMessage id="job.save" />}
-                              onClick={() => this.addSavedJob(jobId)}
-                              className={classes.savedJob}>
-                              <FavoriteIcon/>{' '} Save
-                            </OutlineButton>
-                          )
+        <Redirect to="/jobs" />
+      );
+    }
+
+    return (
+      <AuthConsumer>
+        {({ user }) => (
+          <div>
+            {alert}
+            <GridItem xs={12} sm={12} md={12} lg={12}>
+              <Card>
+                <CardHeader color="rose" icon>
+                  <CardIcon color="rose">
+                    <h4><b>Job Posting  </b></h4>
+                  </CardIcon>
+                  <br />
+                  <br />
+                  <br />
+                  <Typography variant="h4" className={classes.cardIconTitle}>
+                    <b>{title}{' '}</b>
+                    {user.type === UserTypes.MIGRANT && (
+                        <>
+                          {savedJob
+                            ? (
+                              <OutlineButton
+                                id="savedJob"
+                                color="primary"
+                                variant="outlined"
+                                aria-label="Saved Job"
+                                title={<FormattedMessage id="job.save" />}
+                                onClick={() => this.deleteSavedJob(jobId)}
+                                className={classes.savedJob}
+                              >
+                                <FavoriteIcon /> {' '} Saved
+                              </OutlineButton>
+                            )
+                            : (
+                              <OutlineButton
+                                id="savedJob"
+                                color="primary"
+                                variant="outlined"
+                                aria-label="Saved Job"
+                                title={<FormattedMessage id="job.save" />}
+                                onClick={() => this.addSavedJob(jobId)}
+                                className={classes.savedJob}
+                              >
+                                <UnFavoriteIcon />{' '} Save
+                              </OutlineButton>
+                            )
                         }
-                    </Typography>
-                    <Typography variant="caption" className={classes.cardIconTitle}>{companyName}{'-'}{location}</Typography>
-                    <br />
-                    {website? <Fab
+                        </>
+                    )}
+                  </Typography>
+                  <Typography variant="caption" className={classes.cardIconTitle}>{companyName}{'-'}{location}</Typography>
+                  <br />
+                  {website ? (
+                    <Fab
                       variant="extended"
                       size="medium"
                       color="primary"
                       aria-label="Add"
                       className={classes.websiteButton}
-                      onClick={()=>window.open(website, "_blank")}
+                      onClick={() => window.open(website, '_blank')}
                     >
                       Visit Company Website
-                    </Fab> : ''}
-                  </CardHeader>
-                  <CardBody>
-                    <GridItem xs={12} align="left">
-                      <Typography variant="body1"><b> Position Type: </b>{positionTypeString}</Typography>
+                    </Fab>
+                  ) : ''}
+                </CardHeader>
+                <CardBody>
+                  <GridItem xs={12} align="left">
+                    <Typography variant="body1"><b>Position Type: </b>{positionTypeString}</Typography>
+                    <Typography variant="body1"><b>Location: </b>{location}</Typography>
 
-                      <br />
-                      <Typography variant="body1"><b>Contact Name: </b>{contactName}</Typography>
-                      <Typography variant="body1"><b>Contact Email: </b>{contactEmail}</Typography>
-                      <Typography variant="body1"><b>Contact Phone: </b>{contactPhone}</Typography>
-                      <br />
-                      <Typography variant="title"><b>Job Description: </b></Typography>
-                      <br />
-                      <Editor
-                        toolbarHidden
-                        editorState={description}
-                      />
-                    </GridItem>
-                    <GridItem xs={12} sm={8} md={8} lg={4} align="left">
-                      <br />
-                      {moment(jobDate).format('MMM D YYYY')}
-                    </GridItem>
-                  </CardBody>
-                </Card>
-              </GridItem>
-              <Grid item xs={12}>
-                {user.type === UserTypes.ADMIN
+                    <br />
+                    <Typography variant="body1"><b>Contact Name: </b>{contactName}</Typography>
+                    <Typography variant="body1"><b>Contact Email: </b>{contactEmail}</Typography>
+                    <Typography variant="body1"><b>Contact Phone: </b>{contactPhone}</Typography>
+                    <br />
+                    <Typography variant="title"><b>Job Description: </b></Typography>
+                    <br />
+                    <Editor
+                      toolbarHidden
+                      editorState={description}
+                    />
+                  </GridItem>
+                  <GridItem xs={12} sm={8} md={8} lg={4} align="left">
+                    <br />
+                    {moment(jobDate).format('MMM D YYYY')}
+                  </GridItem>
+                </CardBody>
+              </Card>
+            </GridItem>
+            <Grid item xs={12}>
+              {user.type === UserTypes.ADMIN
                 && (
                   <Button onClick={this.warningWithConfirmAndCancelMessage} color="danger">
                     Delete
                   </Button>
                 )
                 }
-                {user.username === owner && (
-                  <React.Fragment>
-                    <Button onClick={this.warningWithConfirmAndCancelMessage} color="danger">
+              {user.username === owner && (
+              <React.Fragment>
+                <Button onClick={this.warningWithConfirmAndCancelMessage} color="danger">
                       Delete
-                    </Button>
-                    <Button
-                      color="primary"
-                      component={props => <Link to={{ pathname: '/jobs/create', state: { editMode: true, jobId } }} {...props} />}
-                    >
+                </Button>
+                <Button
+                  color="primary"
+                  component={props => <Link to={{ pathname: '/jobs/create', state: { editMode: true, jobId } }} {...props} />}
+                >
                       Edit
-                    </Button>
-                  </React.Fragment>
-                )}
-              </Grid>
-            </div>
-          )}
-        </AuthConsumer>
-      );
-    }
+                </Button>
+              </React.Fragment>
+              )}
+            </Grid>
+          </div>
+        )}
+      </AuthConsumer>
+    );
+  }
 }
 
 export default withStyles(styles)(JobDetails);

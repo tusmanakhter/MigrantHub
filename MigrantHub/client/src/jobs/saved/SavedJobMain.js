@@ -8,10 +8,11 @@ import { FormattedMessage } from 'react-intl';
 import { AuthConsumer } from 'routes/AuthContext';
 import GridContainer from 'components/Grid/GridContainer.jsx';
 import Button from '@material-ui/core/Button';
-import Card from "components/Card/Card.jsx";
-import CardHeader from "components/Card/CardHeader.jsx";
+import Card from 'components/Card/Card.jsx';
+import CardHeader from 'components/Card/CardHeader.jsx';
 import { toast } from 'react-toastify';
 import update from 'immutability-helper';
+import GridItem from 'components/Grid/GridItem.jsx';
 
 const styles = theme => ({
   root: {
@@ -20,15 +21,18 @@ const styles = theme => ({
   },
   button: {
     margin: theme.spacing.unit,
-    position: "absolute",
+    position: 'absolute',
     right: 0,
-    textTransform: "none"
+    textTransform: 'none',
+  },
+  cardTitle: {
+    'text-align': 'left',
   },
   emptyContainer: {
     minHeight: 200,
     maxHeight: 200,
-    textAlign: "center",
-},
+    textAlign: 'center',
+  },
 });
 
 class SavedJobMain extends Component {
@@ -41,7 +45,6 @@ class SavedJobMain extends Component {
     };
 
     this.fetchData = this.fetchData.bind(this);
-
   }
 
   componentDidMount() {
@@ -69,11 +72,11 @@ class SavedJobMain extends Component {
     axios.put(`/api/job/saved/${jobId}`)
       .then((response) => {
         if (response.status === 200) {
-          toast.success("Job Post Saved!");
+          toast.success('Job Post Saved!');
         }
       }).catch((error) => {
-      toast.error("Error Saving Job Post!");
-    });
+        toast.error('Error Saving Job Post!');
+      });
   };
 
   deleteSavedJob = (jobId, index) => {
@@ -81,14 +84,14 @@ class SavedJobMain extends Component {
       .then((response) => {
         if (response.status === 200) {
           this.setState(prevState => ({
-            items: update(prevState.items, {$splice: [[index, 1]]})
+            items: update(prevState.items, { $splice: [[index, 1]] }),
           }));
-          toast.success("Job Post Unsaved!");
+          toast.success('Job Post Unsaved!');
           this.fetchData();
         }
       }).catch((error) => {
-      toast.error("Error Unsaving Job Post!");
-    });
+        toast.error('Error Unsaving Job Post!');
+      });
   };
 
   fetchData = (props) => {
@@ -100,7 +103,7 @@ class SavedJobMain extends Component {
     }).then((response) => {
       if (response.data.length === 0) {
         this.setState({
-          noData: true
+          noData: true,
         });
       } else {
         this.setState({
@@ -109,34 +112,34 @@ class SavedJobMain extends Component {
       }
     });
   }
+
   render() {
     const { classes, ...rest } = this.props;
     const { items, noData } = this.state;
     return (
-      <Card className={classes.root}>
+      <React.Fragment>
         {this.renderRedirectToSavedList()}
-
-        <CardHeader>
+        {noData == false
+          && (
           <Button
             color="primary"
             className={classes.button}
             onClick={this.setRedirectToSavedList}
-
           >
             See all
           </Button>
-          <h4 className={classes.cardTitle}>
-            <FormattedMessage id="job.saved" />
-          </h4>
-          <hr />
-
-        </CardHeader>
-        <React.Fragment>
-          <div className={classes.mainContainer}>
-            <GridContainer justify="center">
-              {' '}
-              {
+          )
+        }
+        <h5 className={classes.cardTitle}>
+          <b><FormattedMessage id="job.saved" /></b>
+        </h5>
+        <hr />
+        <div className={classes.mainContainer}>
+          <GridContainer justify="left">
+            {' '}
+            {
                 items.map((item, index) => (
+                  <GridItem>
                     <JobCard
                       smallCard
                       jobId={item._id}
@@ -145,22 +148,24 @@ class SavedJobMain extends Component {
                       companyName={item.companyName}
                       location={item.location}
                       dateCreated={item.dateCreated}
-                      savedJob={true}
+                      savedJob
                       itemIndex={index}
-                      addSavedJob={()=>{}}
+                      addSavedJob={() => {}}
                       deleteSavedJob={this.deleteSavedJob}
                     />
+                  </GridItem>
                 ))
               }
-            </GridContainer>
-          </div>
-          { noData == true &&
-            <div className={classes.emptyContainer}>
-              <h3 color="gray"><FormattedMessage id="job.saved.empty" /></h3>
+          </GridContainer>
+        </div>
+        { noData == true
+            && (
+            <div>
+              <h4 style={{ 'text-indent': '50px' }}><FormattedMessage id="job.saved.empty" /></h4>
             </div>
+            )
           }
-        </React.Fragment>
-      </Card>
+      </React.Fragment>
     );
   }
 }

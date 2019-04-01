@@ -23,6 +23,7 @@ import { EditorState, convertFromRaw, convertToRaw } from 'draft-js';
 import { FormHelperText } from '@material-ui/core';
 
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
+
 const qs = require('qs');
 
 const styles = theme => ({
@@ -66,6 +67,7 @@ class BaseJobForm extends Component {
       this.getData = this.getData.bind(this);
     }
   }
+
   componentDidMount() {
     const { location } = this.props;
     if (location.state) {
@@ -123,7 +125,6 @@ class BaseJobForm extends Component {
 
           });
         }
-
       });
     }
   }
@@ -135,6 +136,7 @@ class BaseJobForm extends Component {
       descriptionLength: description.getCurrentContent().getPlainText('').length,
     });
   };
+
   getStepContent = (step) => {
     const {
       title, description, positionType, companyName, contactName, contactEmail, contactPhone, location, salaryStart, salaryEnd,
@@ -202,14 +204,14 @@ class BaseJobForm extends Component {
                 />
               </Grid>
               <Grid item xs={12}>
-              <TextBox
-                name="website"
-                label="Website (Optional)"
-                value={website}
-                handleChange={event => this.handleChange(event)}
-                error={''}
-              />
-            </Grid>
+                <TextBox
+                  name="website"
+                  label="Website (Optional)"
+                  value={website}
+                  handleChange={event => this.handleChange(event)}
+                  error=""
+                />
+              </Grid>
               <Grid item xs={12}>
                 <TextBox
                   name="contactName"
@@ -311,7 +313,7 @@ class BaseJobForm extends Component {
       return false;
     } catch (e) {
       this.setState({
-        loading: false
+        loading: false,
       });
       toast.error('Error Creating Job Post!');
       return true;
@@ -321,7 +323,7 @@ class BaseJobForm extends Component {
   updateJob = async () => {
     const {
       title, description, positionType, companyName, contactName, contactEmail, contactPhone, location, salaryStart, salaryEnd,
-      website, jobId
+      website, jobId,
     } = this.state;
 
     const rawState = JSON.stringify(convertToRaw(description.getCurrentContent()));
@@ -352,7 +354,7 @@ class BaseJobForm extends Component {
       return false;
     } catch (e) {
       this.setState({
-        loading: false
+        loading: false,
       });
       toast.error('Error Updating Job Post!');
       return true;
@@ -369,7 +371,7 @@ class BaseJobForm extends Component {
   renderRedirectToJobList = () => {
     const { redirectToJobList } = this.state;
     if (redirectToJobList) {
-      return <Redirect to={`/jobs/`} />;
+      return <Redirect to="/jobs/" />;
     }
   }
 

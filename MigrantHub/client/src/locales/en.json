@@ -449,7 +449,8 @@
   "job.saved.browse": "Browse saved jobs",
   "job.form": "Job Form",
   "job": "Jobs",
-  "job.save": "Save Jobs",
+  "job.save": "Save Job",
+  "job.unsave": "Unsave Job",
   "job.saved": "Saved Jobs",
-  "job.saved.empty": "No Saved Jobs"
+  "job.saved.empty": "No saved jobs"
 }
