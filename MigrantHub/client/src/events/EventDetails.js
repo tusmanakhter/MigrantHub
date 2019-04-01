@@ -17,6 +17,7 @@ import CardHeader from 'components/Card/CardHeader';
 import { cardTitle } from 'assets/jss/material-dashboard-pro-react';
 import SweetAlert from 'react-bootstrap-sweetalert';
 import sweetAlertStyle from 'assets/jss/material-dashboard-pro-react/views/sweetAlertStyle';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import { AuthConsumer } from 'routes/AuthContext';
 import UserTypes from 'lib/UserTypes';
 import moment from 'moment';
@@ -38,6 +39,7 @@ class EventDetails extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      isLoading:false,
       eventId: props.match.params.id,
       eventName: '',
       eventDescription: '',
@@ -73,6 +75,7 @@ class EventDetails extends Component {
   }
 
   getData() {
+    this.setState({ isLoading: true });
     axios.get(`/api/events/${this.state.eventId}`, {
       params: {
         _id: this.state.eventId,
@@ -110,6 +113,7 @@ class EventDetails extends Component {
           startTime: moment(moment(parsedObj.dateStart).format('MMM D YYYY') + parsedObj.timeStart, ['MMM D YYYYh:mm A']).format(),
           endTime: moment(moment(parsedObj.dateEnd).format('MMM D YYYY') + parsedObj.timeEnd, ['MMM D YYYYh:mm A']).format(),
         },
+        isLoading: false,
       });
     });
   }
@@ -202,7 +206,7 @@ class EventDetails extends Component {
       classes,
     } = this.props;
     const {
-      eventId, eventName, eventDescription, dateStart, dateEnd, timeStart, timeEnd, location, eventOwner, alert, redirect,
+      eventId, eventName, eventDescription, dateStart, dateEnd, timeStart, timeEnd, location, eventOwner, alert, redirect, isLoading,
     } = this.state;
     const icon = { 'calendar-plus-o': 'left' };
 
@@ -225,75 +229,84 @@ class EventDetails extends Component {
                   </CardIcon>
                   <h4 className={classes.cardIconTitle}><b>{eventName}</b></h4>
                 </CardHeader>
-                <CardBody>
-                  <GridItem xs={12} align="left">
-                    <h5><b> Description </b></h5>
-                    <h3>{eventDescription}</h3>
-                  </GridItem>
+                {isLoading ? 
+                (
+                <div>
+                  <CircularProgress className={classes.progress} />
+                </div>
+                ) 
+                : 
+                (
+                  <CardBody>
+                    <GridItem xs={12} align="left">
+                      <h5><b> Description </b></h5>
+                      <h3>{eventDescription}</h3>
+                    </GridItem>
 
-                  {location !== undefined && location.address !== '' && (
-                    <div>
-                      <GridItem xs={12} sm={12} md={12} lg={12} align="left">
-                        <h5><b> Location </b></h5>
-                      </GridItem>
-                      <GridItem>
-                        <GridContainer xs={12} sm={12} md={12} lg={12} align="left">
-                          <GridItem xs={12} sm={4} md={4} lg={2}>
-                            <h6>Address</h6>
-                            {' '}
-                            {location.address}
-                          </GridItem>
-                          {location.apartment !== '' && (
-                            <GridItem xs={12} sm={2} md={2} lg={2}>
-                              <h6>Apartment</h6>
+                    {location !== undefined && location.address !== '' && (
+                      <div>
+                        <GridItem xs={12} sm={12} md={12} lg={12} align="left">
+                          <h5><b> Location </b></h5>
+                        </GridItem>
+                        <GridItem>
+                          <GridContainer xs={12} sm={12} md={12} lg={12} align="left">
+                            <GridItem xs={12} sm={4} md={4} lg={2}>
+                              <h6>Address</h6>
                               {' '}
-                              {location.apartment}
+                              {location.address}
                             </GridItem>
-                          )}
-                          <GridItem xs={12} sm={4} md={4} lg={3}>
-                            <h6>City</h6>
-                            {' '}
-                            {location.city}
-                          </GridItem>
-                          <GridItem xs={12} sm={4} md={4} lg={2}>
-                            <h6>Province</h6>
-                            {' '}
-                            {location.province}
-                          </GridItem>
-                          <GridItem xs={12} sm={4} md={4} lg={2}>
-                            <h6>Postal Code</h6>
-                            {' '}
-                            {location.postalCode}
-                          </GridItem>
-                          <GridItem xs={12} sm={4} md={4} lg={2}>
-                            <h6>Phone Number</h6>
-                            {' '}
-                            {location.phoneNumber}
-                          </GridItem>
-                        </GridContainer>
-                      </GridItem>
-                    </div>
-                  )}
-                  <GridItem xs={12} sm={8} md={8} lg={4} align="left">
-                    <h5><b> Time </b></h5>
-                    <GridItem xs={12}>
-                      From {moment(dateStart).format('MMM D YYYY')} at {timeStart}
-                    </GridItem>
-                    <GridItem xs={12}>
-                      Until {moment(dateEnd).format('MMM D YYYY')} at {timeEnd}
-                    </GridItem>
-                  </GridItem>
-                  {location !== undefined && location.address !== '' && timeStart !== undefined && (
+                            {location.apartment !== '' && (
+                              <GridItem xs={12} sm={2} md={2} lg={2}>
+                                <h6>Apartment</h6>
+                                {' '}
+                                {location.apartment}
+                              </GridItem>
+                            )}
+                            <GridItem xs={12} sm={4} md={4} lg={3}>
+                              <h6>City</h6>
+                              {' '}
+                              {location.city}
+                            </GridItem>
+                            <GridItem xs={12} sm={4} md={4} lg={2}>
+                              <h6>Province</h6>
+                              {' '}
+                              {location.province}
+                            </GridItem>
+                            <GridItem xs={12} sm={4} md={4} lg={2}>
+                              <h6>Postal Code</h6>
+                              {' '}
+                              {location.postalCode}
+                            </GridItem>
+                            <GridItem xs={12} sm={4} md={4} lg={2}>
+                              <h6>Phone Number</h6>
+                              {' '}
+                              {location.phoneNumber}
+                            </GridItem>
+                          </GridContainer>
+                        </GridItem>
+                      </div>
+                    )}
                     <GridItem xs={12} sm={8} md={8} lg={4} align="left">
-                      <Card><AddToCalendar event={this.state.event} buttonTemplate={icon} /></Card>
+                      <h5><b> Time </b></h5>
+                      <GridItem xs={12}>
+                        From {moment(dateStart).format('MMM D YYYY')} at {timeStart}
+                      </GridItem>
+                      <GridItem xs={12}>
+                        Until {moment(dateEnd).format('MMM D YYYY')} at {timeEnd}
+                      </GridItem>
                     </GridItem>
-                  )}
-                  {location !== undefined && location.address !== '' && (
-                    <GoogleMaps
-                      location={location}
-                    />
-                  )}
-                </CardBody>
+                    {location !== undefined && location.address !== '' && timeStart !== undefined && (
+                      <GridItem xs={12} sm={8} md={8} lg={4} align="left">
+                        <Card><AddToCalendar event={this.state.event} buttonTemplate={icon} /></Card>
+                      </GridItem>
+                    )}
+                    {location !== undefined && location.address !== '' && (
+                      <GoogleMaps
+                        location={location}
+                      />
+                    )}
+                  </CardBody>
+                )}
               </Card>
             </GridItem>
             <Grid item xs={12}>

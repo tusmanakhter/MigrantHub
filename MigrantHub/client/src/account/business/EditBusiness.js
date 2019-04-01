@@ -7,6 +7,7 @@ import axios from 'axios';
 import ContactInfo from 'account/common/ContactInfo';
 import AboutInfo from 'account/business/AboutInfo';
 import Paper from '@material-ui/core/Paper';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import { handleChange } from 'helpers/Forms';
 import { AuthConsumer } from 'routes/AuthContext';
 import qs from 'qs';
@@ -33,6 +34,7 @@ class EditBusiness extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      isLoading: false,
       alert: null,
       firstName: '',
       lastName: '',
@@ -64,12 +66,13 @@ class EditBusiness extends Component {
 
   getAccount = () => {
     const { user } = this.context;
-
+    this.setState({ isLoading: true });
     axios.get(`/api/businesses/${user.username}`).then((response) => {
       if (response.status === 200) {
         const businessInfo = qs.parse(qs.stringify(response.data));
         this.setState({
           ...businessInfo,
+          isLoading: false,
         });
       }
     });
@@ -93,7 +96,7 @@ class EditBusiness extends Component {
     }
 
     const { user } = this.context;
-
+    this.setState({ isLoading: true });
     const {
       firstName, lastName, address, apartment,
       city, province, postalCode, phoneNumber, organizationName, orgType,
@@ -117,6 +120,7 @@ class EditBusiness extends Component {
         description,
       })).then((response) => {
       toast.success(response.data);
+      this.setState({ isLoading: false });
     }).catch((e) => {
       toast.error(e.response.data);
     });
@@ -126,7 +130,7 @@ class EditBusiness extends Component {
     const {
       firstName, lastName, address, apartment,
       city, province, postalCode, phoneNumber, organizationName, orgType,
-      department, serviceType, description, alert,
+      department, serviceType, description, alert, isLoading,
     } = this.state;
     const { user } = this.context;
     const { classes } = this.props;
@@ -143,42 +147,53 @@ class EditBusiness extends Component {
         >
           Edit Your Business Profile
         </Typography>
-        <div className={classes.item}>
-          <ContactInfo
-            innerRef={this.contactChild}
-            handleChange={this.handleChange}
-            firstName={firstName}
-            lastName={lastName}
-            address={address}
-            apartment={apartment}
-            city={city}
-            province={province}
-            postalCode={postalCode}
-            phoneNumber={phoneNumber}
-            user={user}
-          />
-        </div>
-        <div className={classes.item}>
-          <AboutInfo
-            innerRef={this.aboutChild}
-            handleChange={this.handleChange}
-            organizationName={organizationName}
-            orgType={orgType}
-            department={department}
-            serviceType={serviceType}
-            description={description}
-          />
-        </div>
+        {isLoading ? 
+        (
         <div>
-          <Button
-            type="submit"
-            color="primary"
-            variant="contained"
-            onClick={this.updateAccount}
-          >
-            Save
-          </Button>
+          <CircularProgress className={classes.progress} />
         </div>
+        ) 
+        : 
+        (
+        <>
+          <div className={classes.item}>
+            <ContactInfo
+              innerRef={this.contactChild}
+              handleChange={this.handleChange}
+              firstName={firstName}
+              lastName={lastName}
+              address={address}
+              apartment={apartment}
+              city={city}
+              province={province}
+              postalCode={postalCode}
+              phoneNumber={phoneNumber}
+              user={user}
+            />
+          </div>
+          <div className={classes.item}>
+            <AboutInfo
+              innerRef={this.aboutChild}
+              handleChange={this.handleChange}
+              organizationName={organizationName}
+              orgType={orgType}
+              department={department}
+              serviceType={serviceType}
+              description={description}
+            />
+          </div>
+          <div>
+            <Button
+              type="submit"
+              color="primary"
+              variant="contained"
+              onClick={this.updateAccount}
+            >
+              Save
+            </Button>
+          </div>
+        </>
+        )}
       </Paper>
     );
   }

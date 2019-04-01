@@ -18,6 +18,7 @@ import ViewList from '@material-ui/icons/ViewList';
 import Event from '@material-ui/icons/Event';
 import PowerOff from '@material-ui/icons/PowerOff';
 import { FormattedMessage } from 'react-intl';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import HeaderLinks from 'app/HeaderLinks';
 import sidebarStyle from 'assets/jss/material-dashboard-pro-react/components/sidebarStyle.jsx';
 import man from 'assets/img/faces/man.png'
@@ -43,6 +44,7 @@ class Sidebar extends React.Component {
     this.state = {
       openAvatar: false,
       miniActive: true,
+      isLoading : false,
       type: '',
     };
     this.getUser = this.getUser.bind(this);
@@ -58,6 +60,7 @@ class Sidebar extends React.Component {
 
   getUser() {
     const { dataRetrieved } = this.state;
+    this.setState({ isLoading: true });
     if (!dataRetrieved) {
       axios.get('/api/accounts/get/user').then((response) => {
         if (response.status === 200) {
@@ -67,10 +70,13 @@ class Sidebar extends React.Component {
             firstName: response.data.firstName,
             lastName: response.data.lastName,
             gender: response.data.gender,
+            isLoading: false,
             dataRetrieved: true,
           });
         }
       });
+    } else {
+      this.setState({ isLoading: false });
     }
   }
 
@@ -86,6 +92,17 @@ class Sidebar extends React.Component {
     }
   }
 
+  logout = () => {
+    const Auth = this.context;
+    axios.post('/api/accounts/logout').then(async (response) => {
+      if (response.status === 200) {
+        await Auth.unauthenticate();
+        const { history } = this.props;
+        history.push('/');
+      }
+    });
+  };
+
   openCollapse(event, collapse) {
     event.preventDefault();
     const st = {};
@@ -99,7 +116,7 @@ class Sidebar extends React.Component {
     } = this.props;
 
     const {
-      email, firstName, lastName, gender
+      email, firstName, lastName, gender, isLoading
     } = this.state;
 
     const { caret, collapseItemMini, photo } = classes;
@@ -135,6 +152,14 @@ class Sidebar extends React.Component {
               className={`${classes.itemLink} ${classes.userCollapseButton}`}
               onClick={event => this.openCollapse(event, 'openAvatar')}
             >
+            {isLoading ? 
+            ( 
+              <div>
+                <CircularProgress className={classes.progress} />
+              </div>
+            ) 
+            :
+            (
               <ListItemText
                 primary={`${firstName}`}
                 secondary={(
@@ -145,6 +170,7 @@ class Sidebar extends React.Component {
                 disableTypography
                 className={`${itemText} ${classes.userItemText}`}
               />
+            )}
             </NavLink>
             <Collapse in={this.state.openAvatar} unmountOnExit>
               <List className={`${classes.list} ${classes.collapseList}`}>
@@ -208,7 +234,7 @@ class Sidebar extends React.Component {
                 )}
                 <ListItem className={classes.collapseItem}>
                   <NavLink
-                    to={{ pathname: '/logout'}}
+                    to={{ pathname: '/'}}
                     className={
                       `${classes.itemLink} ${classes.userCollapseLinks}`
                     }
@@ -217,7 +243,8 @@ class Sidebar extends React.Component {
                       <PowerOff />
                     </span>
                     <ListItemText
-                      primary={<FormattedMessage id="Logout" />}
+                      onClick={this.logout}
+                      primary={<FormattedMessage id="logout" />}
                       disableTypography
                       className={collapseItemText}
                     />
