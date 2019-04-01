@@ -22,12 +22,12 @@ module.exports = {
       ]).skip(parseInt(offset, 10)).limit(parseInt(limit, 10)).exec()
         .then(savedJobs => Promise.resolve(savedJobs))
         .catch((error) => {
-          throw new ServerError('There was an error retrieving jobs.', 400, error);
+          throw new ServerError('There was an error retrieving saved jobs.', 400, error);
         });
     }
     return SavedJob.findOne(query).exec().then(jobs => Promise.resolve(jobs))
       .catch((error) => {
-        throw new ServerError('There was an error retrieving jobs.', 400, error);
+        throw new ServerError('There was an error retrieving saved jobs.', 400, error);
       });
   },
 
@@ -37,7 +37,7 @@ module.exports = {
       'savedList._id': jobId,
     }).exec().then(savedJob => Promise.resolve(savedJob))
       .catch((error) => {
-        throw new ServerError('There was an error retrieving service.', 400, error);
+        throw new ServerError('There was an error retrieving saved job.', 400, error);
       });
   },
 
@@ -54,8 +54,8 @@ module.exports = {
       _id: userId,
       'savedList._id': jobId,
     }, query)
-      .exec().then(() => Promise.resolve('Saved job has been deleted.')).catch((error) => {
-        throw new ServerError('There was an error deleting job.', 400, error);
+      .exec().then(() => Promise.resolve('Saved job has been updated.')).catch((error) => {
+        throw new ServerError('There was an error updating saved job.', 400, error);
       });
   },
 };
