@@ -46,8 +46,8 @@ class FriendPanel extends Component {
       qs.stringify({
         _id,
       })).then((response) => {
-      });
-    event.getFriendRequests(event); //to update friend request list
+    });
+    event.getFriendRequests(event); // to update friend request list
   }
 
   getFriendRequests(event) {
@@ -79,9 +79,9 @@ class FriendPanel extends Component {
         requestFrom: requestFromP,
         requestTo: requestToP,
       })).then((response) => {
-        event.getFriendsList(event); // to update friends list list
-        event.getFriendRequests(event); // to update friend request list
-      });
+      event.getFriendsList(event); // to update friends list list
+      event.getFriendRequests(event); // to update friend request list
+    });
   }
 
   handleAddFriend = () => {
@@ -103,7 +103,7 @@ class FriendPanel extends Component {
       qs.stringify({
         friendId: friendid,
       })).then((response) => {
-      });
+    });
   }
 
   handleUnfriendRow(index) {

@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import withStyles from '@material-ui/core/styles/withStyles';
-import GridContainer from "components/Grid/GridContainer.jsx";
+import GridContainer from 'components/Grid/GridContainer.jsx';
 import axios from 'axios';
 import ServiceCard from 'services/ServiceCard';
-import dashboardStyle from "assets/jss/material-dashboard-pro-react/views/dashboardStyle.jsx";
+import dashboardStyle from 'assets/jss/material-dashboard-pro-react/views/dashboardStyle.jsx';
 import { FormattedMessage } from 'react-intl';
 
 const styles = theme => ({
@@ -23,7 +23,7 @@ const styles = theme => ({
     paddingBottom: theme.spacing.unit * 2,
   },
   cardTitle: {
-    'text-align' : 'left'
+    'text-align': 'left',
   },
 });
 
@@ -63,9 +63,9 @@ class ServiceRecommendation extends Component {
             <b><FormattedMessage id="service.suggested" /></b>
           </h5>
           <hr />
-            <GridContainer alignItems="center" justify="center">
-              {' '}
-              {
+          <GridContainer alignItems="center" justify="center">
+            {' '}
+            {
                 items.length > 0 ? (
                   items.map(item => (
                     <ServiceCard
@@ -86,13 +86,13 @@ class ServiceRecommendation extends Component {
                     />
                   ))) : (
                     <div>
-                      <h4 style={{'text-indent':'50px'}}>You have no suggested services yet</h4>
+                      <h4 style={{ 'text-indent': '50px' }}>You have no suggested services yet</h4>
                     </div>
-                  )
+                )
               }
-            </GridContainer>
-          </div>
-        </React.Fragment>
+          </GridContainer>
+        </div>
+      </React.Fragment>
     );
   }
 }

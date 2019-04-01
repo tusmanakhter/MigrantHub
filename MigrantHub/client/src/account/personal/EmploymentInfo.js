@@ -56,7 +56,9 @@ class EmploymentInfo extends Component {
   }
 
   validate = () => {
-    const { jobStatus, workExperience, currentIncome, intl } = this.props;
+    const {
+      jobStatus, workExperience, currentIncome, intl,
+    } = this.props;
     let isError = false;
     const errors = {
       jobStatusError: '',

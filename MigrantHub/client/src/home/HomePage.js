@@ -122,7 +122,7 @@ const HomePage = (props) => {
         </Grid>
         <Grid item xs={12} className={classes.about}>
           <div className={classes.underline}>
-            <a href='/about-us' style={{ textDecoration: 'none' }}>
+            <a href="/about-us" style={{ textDecoration: 'none' }}>
               <Typography variant="h5" gutterBottom>
                 <FormattedMessage id="home.aboutus" />
               </Typography>

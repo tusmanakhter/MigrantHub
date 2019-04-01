@@ -4,10 +4,10 @@ import { withStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import { Redirect } from 'react-router-dom';
 import { serviceCategories } from 'lib/ServiceCategories';
-import Card from "@material-ui/core/Card";
-import CardActionArea from "@material-ui/core/CardActionArea";
-import CardContent from "@material-ui/core/CardContent";
-import Typography from "@material-ui/core/Typography";
+import Card from '@material-ui/core/Card';
+import CardActionArea from '@material-ui/core/CardActionArea';
+import CardContent from '@material-ui/core/CardContent';
+import Typography from '@material-ui/core/Typography';
 import {
   getCategoryIcon,
 } from 'helpers/Category';
@@ -76,13 +76,13 @@ class ServiceCategoryList extends Component {
               >
                 <Grid item>
                   <CardActionArea>
-                    <Card 
+                    <Card
                       className={classes.card}
                       onClick={() => this.handleCategoryClick('', '')}
                     >
-                      <i class="fas fa-list fa-2x"></i>
+                      <i className="fas fa-list fa-2x" />
                       <CardContent>
-                        <Typography component='p'><b>ALL SERVICES</b></Typography>
+                        <Typography component="p"><b>ALL SERVICES</b></Typography>
                       </CardContent>
                     </Card>
                   </CardActionArea>
@@ -90,12 +90,12 @@ class ServiceCategoryList extends Component {
               </Grid>
             </Grid>
           </Grid>
-          <br/>
+          <br />
           <p>OR</p>
           <p>Select a category that you are looking for</p>
         </div>
         <Grid container className={classes.root} spacing={8}>
-        {this.renderRedirectTo()}
+          {this.renderRedirectTo()}
           <Grid item xs={12}>
             <Grid
               container
@@ -105,18 +105,18 @@ class ServiceCategoryList extends Component {
             >
               {serviceCategories.map(category => (
                 <Grid key={category.id} item>
-                <CardActionArea>
-                  <Card 
-                  className={classes.card}
-                  onClick={() => this.handleCategoryClick(category.value, '')}
-                  >
-                    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous"></link>
-                    {getCategoryIcon(category.value) ? (getCategoryIcon(category.value)) : (console.log('none'))}
+                  <CardActionArea>
+                    <Card
+                      className={classes.card}
+                      onClick={() => this.handleCategoryClick(category.value, '')}
+                    >
+                      <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossOrigin="anonymous" />
+                      {getCategoryIcon(category.value) ? (getCategoryIcon(category.value)) : (console.log('none'))}
                       <CardContent>
                         <Typography component="p">{category.label}</Typography>
                       </CardContent>
-                  </Card>
-                </CardActionArea>
+                    </Card>
+                  </CardActionArea>
                 </Grid>
               ))}
             </Grid>

@@ -143,13 +143,13 @@ class EventList extends Component {
                         <Card>
                           <CardHeader>
                             <h6 className={classes.cardTitle}>
-                              { 
-                                user.type === UserTypes.BUSINESS &&
-                                <FormattedMessage id="event.infobox.merchant" />
+                              {
+                                user.type === UserTypes.BUSINESS
+                                && <FormattedMessage id="event.infobox.merchant" />
                               }
                               {
-                                user.type !== UserTypes.BUSINESS &&
-                                <FormattedMessage id="event.infobox" />
+                                user.type !== UserTypes.BUSINESS
+                                && <FormattedMessage id="event.infobox" />
                               }
                             </h6>
                           </CardHeader>
@@ -234,10 +234,9 @@ class EventList extends Component {
                 }
               </Grid>
             </InfiniteScroll>
-            {moreData ? 
-                (null) 
-                : 
-                (<h6>No more results</h6>)
+            {moreData
+              ? (null)
+              : (<h6>No more results</h6>)
             }
           </div>
         )}

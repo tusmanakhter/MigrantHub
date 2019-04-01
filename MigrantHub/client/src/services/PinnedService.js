@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import withStyles from '@material-ui/core/styles/withStyles';
 import axios from 'axios';
 import ServiceCard from 'services/ServiceCard';
-import GridContainer from "components/Grid/GridContainer.jsx";
+import GridContainer from 'components/Grid/GridContainer.jsx';
 import { FormattedMessage } from 'react-intl';
 import { AuthConsumer } from 'routes/AuthContext';
 import Grid from '@material-ui/core/Grid';
@@ -11,7 +11,7 @@ import InfiniteScroll from 'react-infinite-scroller';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
 // @material-ui/icons
-import Close from "@material-ui/icons/Close";
+import Close from '@material-ui/icons/Close';
 
 // core components
 import GridItem from 'components/Grid/GridItem.jsx';
@@ -25,11 +25,11 @@ const styles = theme => ({
     paddingBottom: theme.spacing.unit * 2,
   },
   pageSubcategoriesTitle: {
-    'text-align': 'left'
+    'text-align': 'left',
   },
   emptyDashboard: {
-    'text-align': 'left'
-  }
+    'text-align': 'left',
+  },
 });
 
 class PinnedService extends Component {
@@ -79,7 +79,7 @@ class PinnedService extends Component {
 
   deletePinnedService = (serviceId) => {
     const { items, offset } = this.state;
-    axios.delete('/api/services/pinned/' + serviceId)
+    axios.delete(`/api/services/pinned/${serviceId}`)
       .then((response) => {
         toast.success(response.data);
         items.splice(items.findIndex(i => i._id === serviceId), 1);
@@ -103,7 +103,7 @@ class PinnedService extends Component {
               <h5 className={classes.pageSubcategoriesTitle}>
                 <b><FormattedMessage id="service.dashboard" /></b>
               </h5>
-              <hr/>
+              <hr />
               <InfiniteScroll
                 pageStart={0}
                 loadMore={() => this.fetchData(this.props.redirect, this.props)}
@@ -122,7 +122,7 @@ class PinnedService extends Component {
                   {
                     items.length > 0 ? (
                       items.map(item => (
-                        <GridItem height='100px'>
+                        <GridItem height="100px">
                           <ServiceCard
                             serviceId={item._id}
                             serviceTitle={item.serviceTitle}
@@ -138,12 +138,12 @@ class PinnedService extends Component {
                             count={item.countRating}
                             pinIcon={<Close />}
                             pinIconHandle={this.deletePinnedService}
-                            pinIconHelperText={"Remove from dashboard"}
+                            pinIconHelperText="Remove from dashboard"
                           />
                         </GridItem>
                       ))) : (
                         <div>
-                          <h4 style={{'text-indent':'50px'}}>You have no pinned services yet</h4>
+                          <h4 style={{ 'text-indent': '50px' }}>You have no pinned services yet</h4>
                         </div>)
                   }
                 </GridContainer>

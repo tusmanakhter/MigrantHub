@@ -76,12 +76,11 @@ class Layout extends React.Component {
 
   render() {
     const { classes, ...rest } = this.props;
-    const mainPanel =
-      classes.mainPanel +
-      ' ' +
+    const mainPanel = `${classes.mainPanel
+    } ${
       cx({
         [classes.mainPanelSidebarMini]: this.state.miniActive,
-      });
+      })}`;
     const { children } = this.props;
     const { mobileOpen, miniActive } = this.state;
     return (

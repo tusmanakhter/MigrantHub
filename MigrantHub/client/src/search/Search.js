@@ -27,7 +27,7 @@ class Search extends Component {
       servicesItem: [],
       eventItem: [],
       serviceAvailable: false,
-      eventAvailable:false,
+      eventAvailable: false,
       isLoading: false,
     };
 
@@ -61,10 +61,10 @@ class Search extends Component {
     axios.get('/api/services/', {
       params: {
         editOwner: editOwnerEmail,
-        searchQuery: searchQuery,
+        searchQuery,
         search: searchMode,
-        category: category,
-        subcategory: subcategory,
+        category,
+        subcategory,
       },
     }).then((response) => {
       if (response.data.length === 0) {
@@ -86,15 +86,15 @@ class Search extends Component {
     const editOwnerEmail = '';
 
     this.setState({ isLoading: true });
-      if (location.state) {
-        searchQuery = location.state.searchQuery;
-        searchMode = location.state.searchMode;
-      }
+    if (location.state) {
+      searchQuery = location.state.searchQuery;
+      searchMode = location.state.searchMode;
+    }
 
-      axios.get('/api/events/', {
+    axios.get('/api/events/', {
       params: {
         editOwner: editOwnerEmail,
-        searchQuery: searchQuery,
+        searchQuery,
         search: searchMode,
       },
     }).then((response) => {
@@ -105,7 +105,7 @@ class Search extends Component {
           eventItem: response.data,
           eventAvailable: true,
           isLoading: false,
-      });
+        });
       }
     });
   }
@@ -113,27 +113,27 @@ class Search extends Component {
   renderServices() {
     const { classes } = this.props;
     const { servicesItem, isLoading, dataAvailable } = this.state;
-    if(this.state.servicesItem.length !== 0) {
+    if (this.state.servicesItem.length !== 0) {
       return (
         <div className={classes.mainContainer}>
           <h5 className={classes.pageSubcategoriesTitle}>
           Services Search Results
           </h5>
-          {isLoading ? 
-            (
-            <Grid container spacing={16} alignItems="center" justify="center">
-              {' '}
-              {
-                <GridItem>
-                  <CircularProgress className={classes.progress} />
-                </GridItem>
+          {isLoading
+            ? (
+              <Grid container spacing={16} alignItems="center" justify="center">
+                {' '}
+                {
+                  <GridItem>
+                    <CircularProgress className={classes.progress} />
+                  </GridItem>
               }
-            </Grid>)
-            :
-            (dataAvailable ? 
-              (<Grid container spacing={16} alignItems="center" justify="center">
-              {' '}
-              {
+              </Grid>)
+            : (dataAvailable
+              ? (
+                <Grid container spacing={16} alignItems="center" justify="center">
+                  {' '}
+                  {
                 servicesItem.map(item => (
                   <GridItem>
                     <ServiceCard
@@ -153,9 +153,9 @@ class Search extends Component {
                   </GridItem>
                 ))
               }
-              </Grid>)
-              :
-              (<h6>No services available</h6>)
+                </Grid>
+              )
+              : (<h6>No services available</h6>)
             )
            }
         </div>
@@ -167,27 +167,27 @@ class Search extends Component {
     const { classes } = this.props;
     const { eventItem, isLoading, eventAvailable } = this.state;
 
-    if(this.state.eventItem.length !== 0) {
+    if (this.state.eventItem.length !== 0) {
       return (
         <div className={classes.mainContainer}>
           <h5 className={classes.pageSubcategoriesTitle}>
           Events Search Results
           </h5>
-          {isLoading ? 
-            (
-            <Grid container spacing={16} alignItems="center" justify="center">
-              {' '}
-              {
-                <GridItem>
-                  <CircularProgress className={classes.progress} />
-                </GridItem>
+          {isLoading
+            ? (
+              <Grid container spacing={16} alignItems="center" justify="center">
+                {' '}
+                {
+                  <GridItem>
+                    <CircularProgress className={classes.progress} />
+                  </GridItem>
               }
-            </Grid>)
-            :
-            (eventAvailable ? 
-              (<Grid container spacing={16} alignItems="center" justify="center">
-              {' '}
-              {
+              </Grid>)
+            : (eventAvailable
+              ? (
+                <Grid container spacing={16} alignItems="center" justify="center">
+                  {' '}
+                  {
                 eventItem.map(item => (
                   <GridItem>
                     <EventCard
@@ -204,9 +204,9 @@ class Search extends Component {
                   </GridItem>
                 ))
               }
-            </Grid>)
-              :
-              (<h6>No events available</h6>)
+                </Grid>
+              )
+              : (<h6>No events available</h6>)
             )
            }
         </div>

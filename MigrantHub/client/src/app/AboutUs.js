@@ -88,10 +88,10 @@ class AboutUs extends Component {
             <Grid item xs={12} className={classes.summary}>
               <h1>About Us</h1>
               <h5>
-                We are a group of software engineering students working to create the most innovative service platform for newcomers in Montreal. 
-                MigrantHub was started because of refugees, immigrants, international students that have a hard time finding services that they need. 
-                Many times we find ourselves not even knowing the existence of a particular service. 
-                This is where MigrantHub comes in, bringing all services available in Montreal into one simple website. 
+                We are a group of software engineering students working to create the most innovative service platform for newcomers in Montreal.
+                MigrantHub was started because of refugees, immigrants, international students that have a hard time finding services that they need.
+                Many times we find ourselves not even knowing the existence of a particular service.
+                This is where MigrantHub comes in, bringing all services available in Montreal into one simple website.
               </h5>
               This project is powered by <b>The Refugee Centre</b>.
               <hr />

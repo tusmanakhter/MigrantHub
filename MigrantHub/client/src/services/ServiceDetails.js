@@ -38,7 +38,7 @@ class ServiceDetails extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      isLoading:false,
+      isLoading: false,
       serviceId: props.match.params.id,
       serviceTitle: '',
       serviceSummary: '',
@@ -285,7 +285,7 @@ class ServiceDetails extends Component {
                                 {location.province}
                                 {', '}
                                 {location.postalCode}
-                                <br/>
+                                <br />
                                 {'  '}
                                 {location.phoneNumber}
                               </GridItem>
@@ -294,7 +294,7 @@ class ServiceDetails extends Component {
                         </div>
                       )}
 
-                      {serviceDate !== undefined && moment(serviceDate.startDate).format('MMM D YYYY') !== "Invalid date" && (
+                      {serviceDate !== undefined && moment(serviceDate.startDate).format('MMM D YYYY') !== 'Invalid date' && (
                         <GridItem xs={12} sm={8} md={8} lg={4} align="left">
                           <h5><b> Date </b></h5>
                                       From {moment(serviceDate.startDate).format('MMM D YYYY')} until {moment(serviceDate.endDate).format('MMM D YYYY')}

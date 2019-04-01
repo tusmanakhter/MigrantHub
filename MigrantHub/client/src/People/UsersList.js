@@ -42,7 +42,7 @@ class ServiceList extends Component {
 
     axios.get('/api/friend/viewusers', {
       params: {
-        searchQuery: searchQuery,
+        searchQuery,
       },
     }).then((response) => {
       this.setState({

@@ -20,7 +20,7 @@ class Logout extends Component {
 
   render() {
     this.logout();
-    return null
+    return null;
   }
 }
 Logout.propTypes = {

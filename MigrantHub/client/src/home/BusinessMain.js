@@ -12,12 +12,13 @@ class BusinessMain extends Component {
         { description: 'Events', link: '/events' },
         { description: 'Service Suggestions', link: '/services/suggestions' },
       ],
-      navPanelVisibility: true
+      navPanelVisibility: true,
     };
 
     render() {
       const {
-        appLogo, appName, userPic, navPanelVisibility, navOptions } = this.state;
+        appLogo, appName, userPic, navPanelVisibility, navOptions,
+      } = this.state;
 
       return (
         <div className="Main-feed">

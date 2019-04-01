@@ -118,7 +118,6 @@ const styles = theme => ({
 });
 
 class HomeLayout extends Component {
-
   componentDidMount() {
     const script = document.createElement('script');
     script.src = '//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';
@@ -186,7 +185,7 @@ class HomeLayout extends Component {
       </React.Fragment>
     );
   }
-};
+}
 
 HomeLayout.propTypes = {
   classes: PropTypes.object.isRequired,

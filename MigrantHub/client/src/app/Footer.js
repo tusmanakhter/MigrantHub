@@ -18,9 +18,9 @@ function Footer({ ...props }) {
     [classes.containerFluid]: fluid,
     [classes.whiteColor]: white,
   });
-  const anchor =    classes.a
+  const anchor = classes.a
     + cx({
-      [' ' + classes.whiteColor]: white,
+      [` ${classes.whiteColor}`]: white,
     });
   const block = cx({
     [classes.block]: true,
@@ -41,7 +41,7 @@ function Footer({ ...props }) {
             </ListItem>
             <ListItem className={classes.inlineBlock}>
               <a href="/about-us" className={block}>
-                  {'About'}
+                {'About'}
               </a>
             </ListItem>
           </List>

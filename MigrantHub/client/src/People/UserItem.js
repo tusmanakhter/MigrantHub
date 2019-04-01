@@ -27,13 +27,13 @@ class UserItem extends Component {
     const {
       classes, userid, firstName, lastName, email,
     } = this.props;
-    const { scroll} = this.state;
+    const { scroll } = this.state;
     return (
       <Card className={classes.card}>
         <CardActionArea>
           <CardContent>
             <Typography gutterBottom variant="h5" component="h2">
-              {firstName + ' ' + lastName}
+              {`${firstName} ${lastName}`}
             </Typography>
             <Typography component="p">
               {email}

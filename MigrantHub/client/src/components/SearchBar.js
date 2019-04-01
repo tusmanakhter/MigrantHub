@@ -1,7 +1,7 @@
-import React from "react";
-import Search from "@material-ui/icons/Search";
+import React from 'react';
+import Search from '@material-ui/icons/Search';
 import withStyles from '@material-ui/core/styles/withStyles';
-import Card from "components/Card/Card.jsx";
+import Card from 'components/Card/Card.jsx';
 import { injectIntl, intlShape } from 'react-intl';
 
 
@@ -23,13 +23,13 @@ const styles = theme => ({
 
 class SearchBar extends React.Component {
   render() {
-    const { intl } = this.props
+    const { intl } = this.props;
     return (
       <div>
         <Card style={{ padding: '20px' }}>
           <div className="input-group md-form form-sm form-1 pl-0">
             <div className="input-group-prepend">
-              <span className="input-group-text green" id="basic-text1" >
+              <span className="input-group-text green" id="basic-text1">
                 <Search className="text-white" icon="search" />
               </span>
             </div>

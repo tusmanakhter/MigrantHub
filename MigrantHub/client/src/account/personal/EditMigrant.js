@@ -123,7 +123,7 @@ class EditMigrant extends Component {
         this.setState({
           ...migrantInfo,
           accountProgress: Math.round((progress.length / 27) * 100),
-         isLoading: false,
+          isLoading: false,
         });
       }
     });
@@ -235,109 +235,108 @@ class EditMigrant extends Component {
             <i><b><FormattedMessage id="profile.legalwarn" /></b></i>
           </small>
         </Grid>
-        {isLoading ? 
-        (
-        <div>
-          <CircularProgress className={classes.progress} />
-        </div>
-        ) 
-        : 
-        (
+        {isLoading
+          ? (
+            <div>
+              <CircularProgress className={classes.progress} />
+            </div>
+          )
+          : (
         <>
-        <div className={classes.item}>
-          <ContactInfo
-            innerRef={this.contactChild}
-            handleChange={this.handleChange}
-            firstName={firstName}
-            lastName={lastName}
-            address={address}
-            apartment={apartment}
-            city={city}
-            province={province}
-            postalCode={postalCode}
-            phoneNumber={phoneNumber}
-            user={user}
-          />
-        </div>
-        <div className={classes.item}>
-          <PersonalInfo
-            innerRef={this.personalChild}
-            handleChange={this.handleChange}
-            age={age}
-            gender={gender}
-            nationality={nationality}
-            relationshipStatus={relationshipStatus}
-            status={status}
-          />
-        </div>
-        <div className={classes.item}>
-          <LanguageInfo
-            innerRef={this.langChild}
-            handleChange={this.handleChange}
-            handleAutoSuggestChange={this.handleAutoSuggestChange}
-            handleAddObject={this.handleAddObject}
-            handleRemoveObject={this.handleRemoveObject}
-            handleEditObjectAutosuggest={this.handleEditObjectAutosuggest}
-            handleEditObject={this.handleEditObject}
-            languages={languages}
-            writingLevel={writingLevel}
-            speakingLevel={speakingLevel}
-            motherTongue={motherTongue}
-          />
-        </div>
-        <div className={classes.item}>
-          <FamilyInfo
-            innerRef={this.familyChild}
-            handleAddObject={this.handleAddObject}
-            handleRemoveObject={this.handleRemoveObject}
-            handleEditObject={this.handleEditObject}
-            family={family}
-          />
-        </div>
-        <div className={classes.item}>
-          <EducationInfo
-            innerRef={this.educationChild}
-            handleChange={this.handleChange}
-            handleEditSingleObject={this.handleEditSingleObject}
-            educationLevel={educationLevel}
-            proficiencyExams={proficiencyExams}
-          />
-        </div>
-        <div className={classes.item}>
-          <EmploymentInfo
-            innerRef={this.employmentChild}
-            handleChange={this.handleChange}
-            handleAddObject={this.handleAddObject}
-            handleRemoveObject={this.handleRemoveObject}
-            handleEditObject={this.handleEditObject}
-            jobStatus={jobStatus}
-            lookingForJob={lookingForJob}
-            currentIncome={currentIncome}
-            workExperience={workExperience}
-          />
-        </div>
-        <div className={classes.item}>
-          <OtherInfo
-            innerRef={this.otherChild}
-            handleChange={this.handleChange}
-            handleAutoSuggestChange={this.handleAutoSuggestChange}
-            settlingLocation={settlingLocation}
-            settlingDuration={settlingDuration}
-            joiningReason={joiningReason}
-          />
-        </div>
-        <div>
-          <Button
-            type="submit"
-            color="primary"
-            variant="contained"
-            onClick={this.updateAccount}
-          >
+          <div className={classes.item}>
+            <ContactInfo
+              innerRef={this.contactChild}
+              handleChange={this.handleChange}
+              firstName={firstName}
+              lastName={lastName}
+              address={address}
+              apartment={apartment}
+              city={city}
+              province={province}
+              postalCode={postalCode}
+              phoneNumber={phoneNumber}
+              user={user}
+            />
+          </div>
+          <div className={classes.item}>
+            <PersonalInfo
+              innerRef={this.personalChild}
+              handleChange={this.handleChange}
+              age={age}
+              gender={gender}
+              nationality={nationality}
+              relationshipStatus={relationshipStatus}
+              status={status}
+            />
+          </div>
+          <div className={classes.item}>
+            <LanguageInfo
+              innerRef={this.langChild}
+              handleChange={this.handleChange}
+              handleAutoSuggestChange={this.handleAutoSuggestChange}
+              handleAddObject={this.handleAddObject}
+              handleRemoveObject={this.handleRemoveObject}
+              handleEditObjectAutosuggest={this.handleEditObjectAutosuggest}
+              handleEditObject={this.handleEditObject}
+              languages={languages}
+              writingLevel={writingLevel}
+              speakingLevel={speakingLevel}
+              motherTongue={motherTongue}
+            />
+          </div>
+          <div className={classes.item}>
+            <FamilyInfo
+              innerRef={this.familyChild}
+              handleAddObject={this.handleAddObject}
+              handleRemoveObject={this.handleRemoveObject}
+              handleEditObject={this.handleEditObject}
+              family={family}
+            />
+          </div>
+          <div className={classes.item}>
+            <EducationInfo
+              innerRef={this.educationChild}
+              handleChange={this.handleChange}
+              handleEditSingleObject={this.handleEditSingleObject}
+              educationLevel={educationLevel}
+              proficiencyExams={proficiencyExams}
+            />
+          </div>
+          <div className={classes.item}>
+            <EmploymentInfo
+              innerRef={this.employmentChild}
+              handleChange={this.handleChange}
+              handleAddObject={this.handleAddObject}
+              handleRemoveObject={this.handleRemoveObject}
+              handleEditObject={this.handleEditObject}
+              jobStatus={jobStatus}
+              lookingForJob={lookingForJob}
+              currentIncome={currentIncome}
+              workExperience={workExperience}
+            />
+          </div>
+          <div className={classes.item}>
+            <OtherInfo
+              innerRef={this.otherChild}
+              handleChange={this.handleChange}
+              handleAutoSuggestChange={this.handleAutoSuggestChange}
+              settlingLocation={settlingLocation}
+              settlingDuration={settlingDuration}
+              joiningReason={joiningReason}
+            />
+          </div>
+          <div>
+            <Button
+              type="submit"
+              color="primary"
+              variant="contained"
+              onClick={this.updateAccount}
+            >
             Save
-          </Button>
-        </div>
+            </Button>
+          </div>
         </>
-        )}
+          )}
       </Paper>
     );
   }

@@ -11,65 +11,65 @@ const styles = ({});
 
 class VerificationCode extends Component {
     state = {
-        verificationCodeError: '',
+      verificationCodeError: '',
     };
 
     validate = () => {
-        const { verificationCode, intl } = this.props;
+      const { verificationCode, intl } = this.props;
 
-        let isError = false;
-        const errors = {
-            verificationCodeError: '',
-        };
+      let isError = false;
+      const errors = {
+        verificationCodeError: '',
+      };
 
-        if (validator.isEmpty(verificationCode)) {
-            errors.verificationCodeError = 'Verification code is required';
-            isError = true;
-        }
+      if (validator.isEmpty(verificationCode)) {
+        errors.verificationCodeError = 'Verification code is required';
+        isError = true;
+      }
 
-        this.setState(prevState => ({
-            ...prevState,
-            ...errors,
-        }));
+      this.setState(prevState => ({
+        ...prevState,
+        ...errors,
+      }));
 
-        return isError;
+      return isError;
     };
 
     render() {
-        const { verificationCode, handleChange } = this.props;
-        const { verificationCodeError } = this.state;
+      const { verificationCode, handleChange } = this.props;
+      const { verificationCodeError } = this.state;
 
-        return (
-            <React.Fragment>
-                <Typography variant="h6" gutterBottom>
-                    <FormattedMessage id="forgotpassword.validationcode" />
-                </Typography>
-                <Grid container spacing={24}>
-                    <Grid item xs={12}>
-                        <Typography variant="subtitle1" alignLeft color='secondary'>
-                            <FormattedMessage id="forgotpassword.validationcode.info" />
-                        </Typography>
-                        <TextField
-                            id="verificationCode"
-                            name="verificationCode"
-                            label={<FormattedMessage id="forgotpassword.validationcode" />}
-                            value={verificationCode}
-                            onChange={event => handleChange(event)}
-                            fullWidth
-                            helperText={verificationCodeError}
-                            error={verificationCodeError.length > 0}
-                        />
-                    </Grid>
-                </Grid>
-            </React.Fragment>
-        );
+      return (
+        <React.Fragment>
+          <Typography variant="h6" gutterBottom>
+            <FormattedMessage id="forgotpassword.validationcode" />
+          </Typography>
+          <Grid container spacing={24}>
+            <Grid item xs={12}>
+              <Typography variant="subtitle1" alignLeft color="secondary">
+                <FormattedMessage id="forgotpassword.validationcode.info" />
+              </Typography>
+              <TextField
+                id="verificationCode"
+                name="verificationCode"
+                label={<FormattedMessage id="forgotpassword.validationcode" />}
+                value={verificationCode}
+                onChange={event => handleChange(event)}
+                fullWidth
+                helperText={verificationCodeError}
+                error={verificationCodeError.length > 0}
+              />
+            </Grid>
+          </Grid>
+        </React.Fragment>
+      );
     }
 }
 
 VerificationCode.propTypes = {
-    verificationCode: PropTypes.string.isRequired,
-    handleChange: PropTypes.func.isRequired,
-    intl: intlShape.isRequired,
+  verificationCode: PropTypes.string.isRequired,
+  handleChange: PropTypes.func.isRequired,
+  intl: intlShape.isRequired,
 };
 
 export default withStyles(styles)(injectIntl(VerificationCode, { withRef: true }));

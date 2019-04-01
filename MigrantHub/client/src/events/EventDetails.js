@@ -39,7 +39,7 @@ class EventDetails extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      isLoading:false,
+      isLoading: false,
       eventId: props.match.params.id,
       eventName: '',
       eventDescription: '',
@@ -229,21 +229,20 @@ class EventDetails extends Component {
                   </CardIcon>
                   <h4 className={classes.cardIconTitle}><b>{eventName}</b></h4>
                 </CardHeader>
-                {isLoading ? 
-                (
-                <div>
-                  <CircularProgress className={classes.progress} />
-                </div>
-                ) 
-                : 
-                (
-                  <CardBody>
-                    <GridItem xs={12} align="left">
-                      <h5><b> Description </b></h5>
-                      <h3>{eventDescription}</h3>
-                    </GridItem>
+                {isLoading
+                  ? (
+                    <div>
+                      <CircularProgress className={classes.progress} />
+                    </div>
+                  )
+                  : (
+                    <CardBody>
+                      <GridItem xs={12} align="left">
+                        <h5><b> Description </b></h5>
+                        <h3>{eventDescription}</h3>
+                      </GridItem>
 
-                    {location !== undefined && location.address !== '' && (
+                      {location !== undefined && location.address !== '' && (
                       <div>
                         <GridItem xs={12} sm={12} md={12} lg={12} align="left">
                           <h5><b> Location </b></h5>
@@ -285,28 +284,28 @@ class EventDetails extends Component {
                           </GridContainer>
                         </GridItem>
                       </div>
-                    )}
-                    <GridItem xs={12} sm={8} md={8} lg={4} align="left">
-                      <h5><b> Time </b></h5>
-                      <GridItem xs={12}>
+                      )}
+                      <GridItem xs={12} sm={8} md={8} lg={4} align="left">
+                        <h5><b> Time </b></h5>
+                        <GridItem xs={12}>
                         From {moment(dateStart).format('MMM D YYYY')} at {timeStart}
-                      </GridItem>
-                      <GridItem xs={12}>
+                        </GridItem>
+                        <GridItem xs={12}>
                         Until {moment(dateEnd).format('MMM D YYYY')} at {timeEnd}
+                        </GridItem>
                       </GridItem>
-                    </GridItem>
-                    {location !== undefined && location.address !== '' && timeStart !== undefined && (
+                      {location !== undefined && location.address !== '' && timeStart !== undefined && (
                       <GridItem xs={12} sm={8} md={8} lg={4} align="left">
                         <Card><AddToCalendar event={this.state.event} buttonTemplate={icon} /></Card>
                       </GridItem>
-                    )}
-                    {location !== undefined && location.address !== '' && (
+                      )}
+                      {location !== undefined && location.address !== '' && (
                       <GoogleMaps
                         location={location}
                       />
-                    )}
-                  </CardBody>
-                )}
+                      )}
+                    </CardBody>
+                  )}
               </Card>
             </GridItem>
             <Grid item xs={12}>
