@@ -251,23 +251,22 @@ class ServiceDetails extends Component {
                     </CardIcon>
                     <h4 className={classes.cardIconTitle}><b>{serviceTitle}</b></h4>
                   </CardHeader>
-                  {isLoading ? 
-                  (
-                  <div>
-                    <CircularProgress className={classes.progress} />
-                  </div>
-                  ) 
-                  : 
-                  (
+                  {isLoading ? (
+                    <div>
+                      <CircularProgress className={classes.progress} />
+                    </div>
+                  ) : (
                     <CardBody>
                       <GridItem xs={12} align="left">
                         <h5><b> Summary </b></h5>
                         <p>{serviceSummary}</p>
                       </GridItem>
+                      {serviceDescription !== undefined && (
                       <GridItem xs={12} align="left">
                         <h5><b> Description </b></h5>
                         <p>{serviceDescription}</p>
                       </GridItem>
+                      )}
                       {location !== undefined && location.address !== '' && (
                         <div style={{}}>
                           <GridItem xs={12} sm={12} md={12} lg={12} align="left">
@@ -275,44 +274,27 @@ class ServiceDetails extends Component {
                           </GridItem>
                           <GridItem>
                             <GridContainer xs={12} sm={12} md={12} lg={12} align="left">
-                                  <GridItem xs={12} sm={4} md={4} lg={2}>
-                                    <h6>Address</h6>
-                                    {' '}
-                                    {location.address}
-                                  </GridItem>
-                                  {location.apartment !== '' && (
-                                  <GridItem xs={12} sm={2} md={2} lg={2}>
-                                        <h6>Apartment</h6>
-                                        {' '}
-                                        {location.apartment}
-                                      </GridItem>
-                                  )}
-                                  <GridItem xs={12} sm={4} md={4} lg={3}>
-                                    <h6>City</h6>
-                                    {' '}
-                                    {location.city}
-                                  </GridItem>
-                                  <GridItem xs={12} sm={4} md={4} lg={2}>
-                                    <h6>Province</h6>
-                                    {' '}
-                                    {location.province}
-                                  </GridItem>
-                                  <GridItem xs={12} sm={4} md={4} lg={2}>
-                                    <h6>Postal Code</h6>
-                                    {' '}
-                                    {location.postalCode}
-                                  </GridItem>
-                                  <GridItem xs={12} sm={4} md={4} lg={2}>
-                                    <h6>Phone Number</h6>
-                                    {' '}
-                                    {location.phoneNumber}
-                                  </GridItem>
-                                </GridContainer>
+                              <GridItem xs={12} sm={4} md={4} lg={6}>
+                                {' '}
+                                {location.address}
+                                {', '}
+                                {location.apartment !== '' && (location.apartment)}
+                                {' '}
+                                {location.city}
+                                {', '}
+                                {location.province}
+                                {', '}
+                                {location.postalCode}
+                                <br/>
+                                {'  '}
+                                {location.phoneNumber}
+                              </GridItem>
+                            </GridContainer>
                           </GridItem>
                         </div>
                       )}
 
-                      {serviceDate !== undefined && (
+                      {serviceDate !== undefined && moment(serviceDate.startDate).format('MMM D YYYY') !== "Invalid date" && (
                         <GridItem xs={12} sm={8} md={8} lg={4} align="left">
                           <h5><b> Date </b></h5>
                                       From {moment(serviceDate.startDate).format('MMM D YYYY')} until {moment(serviceDate.endDate).format('MMM D YYYY')}
@@ -324,8 +306,8 @@ class ServiceDetails extends Component {
                           <h5><b> Time </b></h5>
                           {serviceHours.map((member, index) => (
                             <Grid item xs={12}>
-                                  {member.serviceDay} from {member.startTime} to {member.endTime}
-                                </Grid>
+                              {member.serviceDay} from {member.startTime} to {member.endTime}
+                            </Grid>
                           ))}
                         </GridItem>
                       )}
@@ -333,18 +315,18 @@ class ServiceDetails extends Component {
                         {location !== undefined && location.address !== '' && (
                           <Grid item lg={6} md={6} sm={12} xs={12} className={classes.gridStyleSmallPadding}>
                             <GoogleMaps
-                                  location={location}
-                                />
+                              location={location}
+                            />
                           </Grid>
                         )}
                         <Grid item lg={6} md={6} sm={12} xs={12} className={classes.gridStyleSmallPadding}>
                           <Reviews
-                              serviceId={serviceId}
-                              serviceTitle={serviceTitle}
-                              avgRating={serviceAverageRating}
-                              countRating={serviceRatingCount}
-                              handleUpdate={() => this.handleReviewUpdate()}
-                            />
+                            serviceId={serviceId}
+                            serviceTitle={serviceTitle}
+                            avgRating={serviceAverageRating}
+                            countRating={serviceRatingCount}
+                            handleUpdate={() => this.handleReviewUpdate()}
+                          />
                         </Grid>
                       </Grid>
                     </CardBody>

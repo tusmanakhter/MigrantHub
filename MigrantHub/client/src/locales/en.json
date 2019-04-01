@@ -243,6 +243,7 @@
   "event.form": "Event Form",
   "form.min.char.10": "must be at least 10 characters",
   "service.categories": "Service Categories",
+  "service.dashboard": "My Dashboard",
   "service.suggested": "Suggested Services",
   "report": "Report",
   "report.bug": "Report Bug",

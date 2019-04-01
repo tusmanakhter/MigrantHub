@@ -1,12 +1,8 @@
-/* eslint-disable react/destructuring-assignment */
-/* eslint-disable react/no-access-state-in-setstate */
 import React from 'react';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import validator from 'validator';
 import { Redirect } from 'react-router-dom';
-
-// import { Manager, Target, Popper } from "react-popper";
 
 // @material-ui/core components
 import withStyles from '@material-ui/core/styles/withStyles';
@@ -15,11 +11,9 @@ import Hidden from '@material-ui/core/Hidden';
 // @material-ui/icons
 import Person from '@material-ui/icons/Person';
 import Dashboard from '@material-ui/icons/Dashboard';
-import Search from '@material-ui/icons/Search';
 
 // core components
 import Button from 'components/CustomButtons/Button.jsx';
-import CustomInput from 'components/CustomInput/CustomInput.jsx';
 import { Link } from 'react-router-dom';
 import { injectIntl, intlShape } from 'react-intl';
 
@@ -110,16 +104,9 @@ class BaseHeaderLinks extends React.Component {
 
   render() {
     const {
-      classes, rtlActive, intl, context,
+      classes, rtlActive, context,
     } = this.props;
     const { open } = this.state;
-    const searchButton = `${classes.top
-    } ${
-      classes.searchButton
-    } ${
-      classNames({
-        [classes.searchRTL]: rtlActive,
-      })}`;
     const dropdownItem = classNames(
       classes.dropdownItem,
       classes.primaryHover,
@@ -147,40 +134,6 @@ class BaseHeaderLinks extends React.Component {
     return (
       <div className={wrapper}>
         {this.renderRedirectTo()}
-        <CustomInput
-          formControlProps={{
-            className: `${classes.top} ${classes.search}`,
-          }}
-          inputProps={{
-            id: 'search',
-            name: 'search',
-            placeholder: intl.formatMessage({ id: 'search' }),
-            value: this.state.search,
-            error: this.state.searchError.length > 0,
-            onChange: event => this.handleChange(event),
-            classes: {
-              root: classes.inputRoot,
-              input: classes.multilineColor,
-            },
-            inputProps: {
-              className: classes.searchInput,
-            },
-          }}
-          helperText={this.state.searchError}
-          error={this.state.searchError.length > 0}
-        />
-        <Button
-          color="white"
-          aria-label="edit"
-          justIcon
-          round
-          onClick={this.handleSearch}
-          className={searchButton}
-        >
-          <Search
-            className={`${classes.headerLinksSvg} ${classes.searchIcon}`}
-          />
-        </Button>
         <Link to="/main">
           <Button
             color="primary"
