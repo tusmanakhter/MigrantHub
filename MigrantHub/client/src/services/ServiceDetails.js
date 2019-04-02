@@ -21,6 +21,7 @@ import sweetAlertStyle from 'assets/jss/material-dashboard-pro-react/views/sweet
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Button from 'components/CustomButtons/Button.jsx';
 import moment from 'moment';
+import CardMedia from '@material-ui/core/CardMedia';
 
 const styles = {
   ...sweetAlertStyle,
@@ -31,6 +32,14 @@ const styles = {
   },
   gridStyleSmallPadding: {
     marginTop: '2px',
+  },
+  media: {
+    objectFit: 'cover',
+    padding: '15px',
+    maxWidth: 600,
+    minWidth: 600,
+    minHeight: 400,
+    maxHeight: 400,
   },
 };
 
@@ -229,6 +238,7 @@ class ServiceDetails extends Component {
       const {
         serviceId, serviceTitle, serviceSummary, serviceDescription, serviceDate, serviceHours,
         location, alert, serviceOwner, redirect, serviceAverageRating, serviceRatingCount, isLoading,
+        serviceImageName, serviceImagePath
       } = this.state;
       const icon = { 'calendar-plus-o': 'left' };
 
@@ -251,6 +261,17 @@ class ServiceDetails extends Component {
                     </CardIcon>
                     <h4 className={classes.cardIconTitle}><b>{serviceTitle}</b></h4>
                   </CardHeader>
+                  {serviceImagePath != '' && serviceImagePath != undefined &&
+                    < GridItem align="center">
+                      <CardMedia
+                      component="img"
+                      alt={serviceTitle}
+                      className={classes.media}
+                      image={serviceImagePath}
+                      title={serviceImageName}
+                      />
+                    </GridItem>
+                  }
                   {isLoading ? (
                     <div>
                       <CircularProgress className={classes.progress} />

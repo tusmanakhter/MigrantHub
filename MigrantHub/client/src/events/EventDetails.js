@@ -21,6 +21,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import { AuthConsumer } from 'routes/AuthContext';
 import UserTypes from 'lib/UserTypes';
 import moment from 'moment';
+import CardMedia from '@material-ui/core/CardMedia';
 
 const styles = {
   ...sweetAlertStyle,
@@ -32,6 +33,14 @@ const styles = {
   gridStyle: {
     backgroundColor: 'white',
     marginTop: '20px',
+  },
+  media: {
+    objectFit: 'cover',
+    padding: '15px',
+    maxWidth: 600,
+    minWidth: 600,
+    minHeight: 400,
+    maxHeight: 400,
   },
 };
 
@@ -206,7 +215,7 @@ class EventDetails extends Component {
       classes,
     } = this.props;
     const {
-      eventId, eventName, eventDescription, dateStart, dateEnd, timeStart, timeEnd, location, eventOwner, alert, redirect, isLoading,
+      eventId, eventName, eventImagePath, eventDescription, dateStart, dateEnd, timeStart, timeEnd, location, eventOwner, alert, redirect, isLoading,
     } = this.state;
     const icon = { 'calendar-plus-o': 'left' };
 
@@ -229,6 +238,17 @@ class EventDetails extends Component {
                   </CardIcon>
                   <h4 className={classes.cardIconTitle}><b>{eventName}</b></h4>
                 </CardHeader>
+                {eventImagePath != '' && eventImagePath != undefined &&
+                  <GridItem align="center">
+                    <CardMedia
+                      component="img"
+                      alt={eventName}
+                      className={classes.media}
+                      image={eventImagePath}
+                      title={eventName}
+                    />
+                  </GridItem>
+                }
                 {isLoading
                   ? (
                     <div>
@@ -249,35 +269,18 @@ class EventDetails extends Component {
                         </GridItem>
                         <GridItem>
                           <GridContainer xs={12} sm={12} md={12} lg={12} align="left">
-                            <GridItem xs={12} sm={4} md={4} lg={2}>
-                              <h6>Address</h6>
+                            <GridItem xs={12} sm={4} md={4} lg={12}>
                               {' '}
                               {location.address}
-                            </GridItem>
-                            {location.apartment !== '' && (
-                              <GridItem xs={12} sm={2} md={2} lg={2}>
-                                <h6>Apartment</h6>
-                                {' '}
-                                {location.apartment}
-                              </GridItem>
-                            )}
-                            <GridItem xs={12} sm={4} md={4} lg={3}>
-                              <h6>City</h6>
+                              {', '}
+                              {location.apartment !== '' && (location.apartment)}
                               {' '}
                               {location.city}
-                            </GridItem>
-                            <GridItem xs={12} sm={4} md={4} lg={2}>
-                              <h6>Province</h6>
-                              {' '}
+                              {', '}
                               {location.province}
-                            </GridItem>
-                            <GridItem xs={12} sm={4} md={4} lg={2}>
-                              <h6>Postal Code</h6>
-                              {' '}
+                              {', '}
                               {location.postalCode}
-                            </GridItem>
-                            <GridItem xs={12} sm={4} md={4} lg={2}>
-                              <h6>Phone Number</h6>
+                              <br/>
                               {' '}
                               {location.phoneNumber}
                             </GridItem>

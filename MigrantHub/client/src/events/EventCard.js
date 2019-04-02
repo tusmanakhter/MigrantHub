@@ -1,74 +1,123 @@
-import React from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
-import Place from '@material-ui/icons/Place';
+import CalendarToday from '@material-ui/icons/CalendarToday';
 import { Link } from 'react-router-dom';
-import Card from '@material-ui/core/Card';
+import GridItem from 'components/Grid/GridItem.jsx';
+import Card from 'components/Card/Card.jsx';
+import CardHeader from 'components/Card/CardHeader.jsx';
+import CardBody from 'components/Card/CardBody.jsx';
+import CardFooter from 'components/Card/CardFooter.jsx';
+import CardIcon from 'components/Card/CardIcon.jsx';
 import CardActionArea from '@material-ui/core/CardActionArea';
-import CardContent from '@material-ui/core/CardContent';
-import CardMedia from '@material-ui/core/CardMedia';
 import Typography from '@material-ui/core/Typography';
+import 'rc-menu/assets/index.css';
+import { getCategoryIcon, getCategory, getSubCategory } from 'helpers/Category';
+import Place from '@material-ui/icons/Place';
+import Business from '@material-ui/icons/Business';
 import moment from 'moment';
+import GridContainer from 'components/Grid/GridContainer.jsx';
+import { AuthConsumer } from 'routes/AuthContext';
 
-const styles = {
+const styles = theme => ({
   card: {
-    maxWidth: 345,
-    minWidth: 345,
-    minHeight: 350,
+    maxWidth: 300,
+    minWidth: 300,
+    minHeight: 200,
+    maxHeight: 200,
     textAlign: 'left',
   },
-  media: {
-    objectFit: 'cover',
+  headContainer: {
+    minHeight: 40,
+    maxHeight: 40,
   },
-  Recommendation: {
-    color: 'green',
+  bodyContainer: {
+    minHeight: 80,
+    maxHeight: 80,
+  },
+  eventTitle: {
+    textDecoration: 'underline',
   },
   locationContainer: {
-    display: 'flex',
+    position: 'absolute',
+    left: 0,
   },
-  rating: {
-    marginRight: 5,
+  timePostedContainer: {
+    position: 'absolute',
+    right: 0,
   },
-};
+  date: {
+    color: 'green',
+  },
+  cardFooter: {
+    position: 'relative',
+    minHeight: 20,
+    maxHeight: 20,
+  },
+});
 
 const EventCard = (props) => {
   const {
-    classes, eventId, eventName, eventDescription, eventImagePath, eventLocation,
-    dateStart, dateEnd, timeStart, timeEnd,
+    classes, eventId, eventName, eventDescription, eventLocation, dateEnd,
   } = props;
 
   return (
-    <Card>
-      <CardActionArea
-        component={cardProps => <Link to={`/events/${eventId}`} {...cardProps} />}
-        className={classes.card}
-      >
-        <CardMedia
-          component="img"
-          alt={eventName}
-          className={classes.media}
-          height="200"
-          image={eventImagePath}
-          title={eventName}
-        />
-        <CardContent>
-          <Typography variant="subtitle1">
-            {eventName} <br />
-            {eventDescription}
-          </Typography>
-          <Typography variant="subtitle1">
-            {moment(dateStart).format('MMM D YYYY')} @ {timeStart}<br />
-            {moment(dateEnd).format('MMM D YYYY')} @ {timeEnd}
-          </Typography>
-          <div className={classes.locationContainer}>
-            {eventLocation
-              ? (<>{eventLocation.city}<Place fontSize="inherit" /></>)
-              : (<>Canada<Place fontSize="inherit" /></>)
-            }
-          </div>
-        </CardContent>
-      </CardActionArea>
-    </Card>
+    <React.Fragment>
+    <Card className={classes.card}>
+  <CardActionArea component={cardProps =>  <Link to={`/events/${eventId}`} {...cardProps} />}>
+    <CardHeader color="primary" icon className={classes.headContainer}>
+      <CardIcon color="primary">
+        <CalendarToday />
+      </CardIcon>
+      <Typography variant="title" className={classes.eventTitle}>
+        {(eventName != undefined && (eventName).length > 51)
+          ? (
+            <Typography variant="body2">
+              {((eventName).substring(0, 48))} <b>...</b>
+            </Typography>
+          ) : (
+            <Typography variant="body2">
+              {eventName}
+            </Typography>
+          )}
+      </Typography>
+    </CardHeader>
+    <CardBody className={classes.bodyContainer}>
+    {(eventDescription != undefined && (eventDescription).length > 120)
+    ? (
+    <Typography variant="body1">
+      {((eventDescription).substring(0, 160))} <b>...View More</b>
+    </Typography>
+    ) : (
+    <Typography variant="body1">
+      {eventDescription}
+    </Typography>
+    )}
+  </CardBody>
+  <CardFooter stats className={classes.cardFooter}>
+    <GridContainer justify="center">
+      <GridItem lg={12} md={12} sm={12} xs={12}>
+        <div className={classes.locationContainer}>
+          {eventLocation
+            ? (<p><Place fontSize="inherit" /> {eventLocation.city}</p>)
+            : (<p><Place fontSize="inherit" /> Canada</p>)
+          }
+        </div>
+      </GridItem>
+      <GridItem lg={12} md={12} sm={12} xs={12}>
+        <div className={classes.timePostedContainer}>
+          {moment(dateEnd) > moment()
+            ? (<p className={classes.date}><CalendarToday />Ends {moment(dateEnd).fromNow()}</p>)
+            : (<p className={classes.date}><CalendarToday />Ended {moment(dateEnd).fromNow()}</p>)
+          }
+        </div>
+      </GridItem>
+
+    </GridContainer>
+    </CardFooter>
+  </CardActionArea>
+</Card>
+</React.Fragment>
   );
 };
 
