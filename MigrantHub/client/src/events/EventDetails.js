@@ -21,6 +21,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import { AuthConsumer } from 'routes/AuthContext';
 import UserTypes from 'lib/UserTypes';
 import moment from 'moment';
+import CardMedia from '@material-ui/core/CardMedia';
 
 const styles = {
   ...sweetAlertStyle,
@@ -32,6 +33,14 @@ const styles = {
   gridStyle: {
     backgroundColor: 'white',
     marginTop: '20px',
+  },
+  media: {
+    objectFit: 'cover',
+    padding: '15px',
+    maxWidth: 600,
+    minWidth: 600,
+    minHeight: 400,
+    maxHeight: 400,
   },
 };
 
@@ -206,7 +215,7 @@ class EventDetails extends Component {
       classes,
     } = this.props;
     const {
-      eventId, eventName, eventDescription, dateStart, dateEnd, timeStart, timeEnd, location, eventOwner, alert, redirect, isLoading,
+      eventId, eventName, eventImagePath, eventDescription, dateStart, dateEnd, timeStart, timeEnd, location, eventOwner, alert, redirect, isLoading,
     } = this.state;
     const icon = { 'calendar-plus-o': 'left' };
 
@@ -229,6 +238,17 @@ class EventDetails extends Component {
                   </CardIcon>
                   <h4 className={classes.cardIconTitle}><b>{eventName}</b></h4>
                 </CardHeader>
+                {eventImagePath != '' && eventImagePath != undefined &&
+                  <GridItem align="center">
+                    <CardMedia
+                      component="img"
+                      alt={eventName}
+                      className={classes.media}
+                      image={eventImagePath}
+                      title={eventName}
+                    />
+                  </GridItem>
+                }
                 {isLoading
                   ? (
                     <div>
