@@ -177,13 +177,22 @@ const JobCard = (props) => {
                 </CardIcon>
                 <Typography variant="title" className={classes.jobTitle}>
                   <b>
-                    {title && title.substring(0, 90)}
+                    {(title != undefined && (title).length > 54 )
+                      ? (
+                        <Typography variant="body2">
+                          {((title).substring(0, 51))} <b>...</b>
+                        </Typography>
+                      ) : (
+                        <Typography variant="body2">
+                          {title}
+                        </Typography>
+                      )}
                   </b>
                 </Typography>
-                {(companyName != undefined && (companyName).length > 110)
+                {(companyName != undefined && (companyName).length > 38)
                   ? (
                     <Typography variant="subheading" color="primary">
-                      {((companyName).substring(0, 105))} <b>...</b>
+                      {((companyName).substring(0, 35))} <b>...</b>
                     </Typography>
                   )
                   : (
@@ -194,10 +203,10 @@ const JobCard = (props) => {
               }
               </CardHeader>
               <CardBody className={cardBodyClasses}>
-                {(description != undefined && (description).length > 110)
+                {(description != undefined && (description).length > 122)
                   ? (
                     <Typography variant="body1">
-                      {((description).substring(0, 105))} <b>...View More</b>
+                      {((description).substring(0, 110))} <b>...View More</b>
                     </Typography>
                   ) : (
                     <Typography variant="body1">

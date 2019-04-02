@@ -101,7 +101,7 @@ class PinnedService extends Component {
           <React.Fragment>
             <div className={classes.mainContainer}>
               <h5 className={classes.pageSubcategoriesTitle}>
-                <b><FormattedMessage id="service.dashboard" /></b>
+                <b><FormattedMessage id="service.pinned.service" /></b>
               </h5>
               <hr />
               <InfiniteScroll
@@ -117,7 +117,7 @@ class PinnedService extends Component {
                 useWindow={false}
                 getScrollParent={() => document.getElementById('mainPanel')}
               >
-                <GridContainer spacing={16} alignItems="center" justify="center">
+                <GridContainer spacing={16} alignItems="left" justify="left">
                   {' '}
                   {
                     items.length > 0 ? (

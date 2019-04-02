@@ -112,7 +112,7 @@ class Search extends Component {
 
   renderServices() {
     const { classes } = this.props;
-    const { servicesItem, isLoading, dataAvailable } = this.state;
+    const { servicesItem, isLoading, serviceAvailable } = this.state;
     if (this.state.servicesItem.length !== 0) {
       return (
         <div className={classes.mainContainer}>
@@ -129,7 +129,7 @@ class Search extends Component {
                   </GridItem>
               }
               </Grid>)
-            : (dataAvailable
+            : (serviceAvailable
               ? (
                 <Grid container spacing={16} alignItems="center" justify="center">
                   {' '}

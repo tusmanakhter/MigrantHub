@@ -244,6 +244,7 @@
   "form.min.char.10": "must be at least 10 characters",
   "service.categories": "Service Categories",
   "service.dashboard": "My Dashboard",
+  "service.pinned.service": "Pinned Services",
   "service.suggested": "Suggested Services",
   "report": "Report",
   "report.bug": "Report Bug",

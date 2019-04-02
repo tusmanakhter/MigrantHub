@@ -244,6 +244,7 @@
   "form.min.char.10": "doit comporter au moins 10 caractères",
   "service.categories": "Catégories de service",
   "service.dashboard": "Mon Tableau",
+  "service.pinned.service": "Services Épinglés",
   "service.suggested": "Services Suggérés",
   "report": "Signaler",
   "report.bug": "Signaler Bogue",

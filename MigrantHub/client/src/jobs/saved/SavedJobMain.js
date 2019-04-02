@@ -135,7 +135,7 @@ class SavedJobMain extends Component {
         </h5>
         <hr />
         <div className={classes.mainContainer}>
-          <GridContainer justify="left">
+          <GridContainer alignItems="left" justify="left">
             {' '}
             {
                 items.map((item, index) => (

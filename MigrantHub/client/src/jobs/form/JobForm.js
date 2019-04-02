@@ -21,6 +21,8 @@ import Location from 'components/fields/other/Location';
 import { Editor } from 'react-draft-wysiwyg';
 import { EditorState, convertFromRaw, convertToRaw } from 'draft-js';
 import { FormHelperText } from '@material-ui/core';
+import { PhoneMask } from 'lib/Masks';
+import MaskedTextbox from 'components/fields/generic/MaskedTextbox';
 
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 
@@ -231,12 +233,14 @@ class BaseJobForm extends Component {
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
-                <TextBox
+                <MaskedTextbox
                   name="contactPhone"
                   label="Contact Phone"
+                  placeholder=""
                   value={contactPhone}
-                  handleChange={event => this.handleChange(event)}
                   error={validation.contactPhone.message}
+                  mask={PhoneMask}
+                  handleChange={event => this.handleChange(event)}
                 />
               </Grid>
             </Grid>

@@ -39,6 +39,8 @@ const styles = theme => ({
   },
   Recommendation: {
     color: 'green',
+    position: 'absolute',
+    right: 0,
   },
   ratingContainer: {
     display: 'flex',
@@ -125,7 +127,7 @@ const ServiceCard = (props) => {
               {`${count} Rating`}
             </div>
             {percentageMatch
-              ? (<div className={classes.Recommendation}>{' • '}<Star />Recommendation: {percentageMatch}%</div>)
+              ? (<div className={classes.Recommendation}>{'•'}<Star />Recommendation:{percentageMatch}%</div>)
               : (<div />)
                 }
           </CardFooter>
@@ -139,7 +141,6 @@ ServiceCard.propTypes = {
   classes: PropTypes.shape({}).isRequired,
   serviceId: PropTypes.string.isRequired,
   serviceTitle: PropTypes.string.isRequired,
-  serviceImagePath: PropTypes.string.isRequired,
   serviceLocation: PropTypes.shape({
     address: PropTypes.string.isRequired,
     apartment: PropTypes.string.isRequired,
