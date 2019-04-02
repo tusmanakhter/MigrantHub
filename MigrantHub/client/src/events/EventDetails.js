@@ -270,34 +270,17 @@ class EventDetails extends Component {
                         <GridItem>
                           <GridContainer xs={12} sm={12} md={12} lg={12} align="left">
                             <GridItem xs={12} sm={4} md={4} lg={2}>
-                              <h6>Address</h6>
                               {' '}
                               {location.address}
-                            </GridItem>
-                            {location.apartment !== '' && (
-                              <GridItem xs={12} sm={2} md={2} lg={2}>
-                                <h6>Apartment</h6>
-                                {' '}
-                                {location.apartment}
-                              </GridItem>
-                            )}
-                            <GridItem xs={12} sm={4} md={4} lg={3}>
-                              <h6>City</h6>
+                              {', '}
+                              {location.apartment !== '' && (location.apartment)}
                               {' '}
                               {location.city}
-                            </GridItem>
-                            <GridItem xs={12} sm={4} md={4} lg={2}>
-                              <h6>Province</h6>
-                              {' '}
+                              {', '}
                               {location.province}
-                            </GridItem>
-                            <GridItem xs={12} sm={4} md={4} lg={2}>
-                              <h6>Postal Code</h6>
-                              {' '}
+                              {', '}
                               {location.postalCode}
-                            </GridItem>
-                            <GridItem xs={12} sm={4} md={4} lg={2}>
-                              <h6>Phone Number</h6>
+                              <br/>
                               {' '}
                               {location.phoneNumber}
                             </GridItem>
