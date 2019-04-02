@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import withStyles from '@material-ui/core/styles/withStyles';
-import GridContainer from "components/Grid/GridContainer.jsx";
+import GridContainer from 'components/Grid/GridContainer.jsx';
 import axios from 'axios';
 import ServiceCard from 'services/ServiceCard';
-import dashboardStyle from "assets/jss/material-dashboard-pro-react/views/dashboardStyle.jsx";
+import dashboardStyle from 'assets/jss/material-dashboard-pro-react/views/dashboardStyle.jsx';
 import { FormattedMessage } from 'react-intl';
+import GridItem from 'components/Grid/GridItem.jsx';
 
 const styles = theme => ({
   ...dashboardStyle,
@@ -23,7 +24,7 @@ const styles = theme => ({
     paddingBottom: theme.spacing.unit * 2,
   },
   cardTitle: {
-    'text-align' : 'left'
+    'text-align': 'left',
   },
 });
 
@@ -63,36 +64,34 @@ class ServiceRecommendation extends Component {
             <b><FormattedMessage id="service.suggested" /></b>
           </h5>
           <hr />
-            <GridContainer alignItems="center" justify="center">
-              {' '}
-              {
+          <GridContainer alignItems="left" justify="left">
+            {' '}
+            {
                 items.length > 0 ? (
                   items.map(item => (
-                    <ServiceCard
-                      serviceId={item._id}
-                      serviceTitle={item.serviceTitle}
-                      serviceImagePath={item.serviceImagePath}
-                      serviceDescription={item.serviceDescription}
-                      serviceSummary={item.serviceSummary}
-                      category={item.category}
-                      subcategory={item.subcategory}
-                      serviceLocation={item.location}
-                      serviceDate={item.serviceDate}
-                      serviceHours={item.serviceHours}
-                      percentageMatch={item.percentageMatch}
-                      editMode={item.editMode}
-                      editOwner={item.editOwner}
-                      getData={this.getData}
-                    />
+                    <GridItem>
+                      <ServiceCard
+                        serviceId={item._id}
+                        serviceTitle={item.serviceTitle}
+                        category={item.category}
+                        subcategory={item.subcategory}
+                        serviceLocation={item.location}
+                        percentageMatch={item.percentageMatch}
+                        editMode={item.editMode}
+                        editOwner={item.editOwner}
+                        rating={item.avgRating}
+                        count={item.countRating}
+                      />
+                    </GridItem>
                   ))) : (
                     <div>
-                      <h4 style={{'text-indent':'50px'}}>You have no suggested services yet</h4>
+                      <h4 style={{ 'text-indent': '50px' }}>You have no suggested services yet</h4>
                     </div>
-                  )
+                )
               }
-            </GridContainer>
-          </div>
-        </React.Fragment>
+          </GridContainer>
+        </div>
+      </React.Fragment>
     );
   }
 }

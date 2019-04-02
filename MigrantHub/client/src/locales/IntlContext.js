@@ -50,7 +50,7 @@ class IntlProviderWrapper extends React.Component {
     this.state = {
       locale,
       messages,
-      switchToEnglish: this.switchToEnglish, 
+      switchToEnglish: this.switchToEnglish,
       switchToFrench: this.switchToFrench,
     };
   }

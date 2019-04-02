@@ -244,6 +244,7 @@
   "form.min.char.10": "must be at least 10 characters",
   "service.categories": "Service Categories",
   "service.dashboard": "My Dashboard",
+  "service.pinned.service": "Pinned Services",
   "service.suggested": "Suggested Services",
   "report": "Report",
   "report.bug": "Report Bug",
@@ -449,7 +450,8 @@
   "job.saved.browse": "Browse saved jobs",
   "job.form": "Job Form",
   "job": "Jobs",
-  "job.save": "Save Jobs",
+  "job.save": "Save Job",
+  "job.unsave": "Unsave Job",
   "job.saved": "Saved Jobs",
-  "job.saved.empty": "No Saved Jobs"
+  "job.saved.empty": "No saved jobs"
 }

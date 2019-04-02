@@ -10,4 +10,3 @@ export const positionTypes = [
   { value: 'temporary', label: 'Temporary' },
   { value: 'volunteer', label: 'Volunteer' },
 ];
-

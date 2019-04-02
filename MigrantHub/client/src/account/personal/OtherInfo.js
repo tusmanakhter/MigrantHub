@@ -19,7 +19,9 @@ class OtherInfo extends Component {
   }
 
   validate = () => {
-    const { settlingLocation, settlingDuration, joiningReason, intl } = this.props;
+    const {
+      settlingLocation, settlingDuration, joiningReason, intl,
+    } = this.props;
     let isError = false;
     const errors = {
       settlingLocationError: '',

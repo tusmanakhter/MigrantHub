@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import withStyles from '@material-ui/core/styles/withStyles';
 import validator from 'validator';
 import axios from 'axios';
-import Clearfix from "components/Clearfix/Clearfix.jsx";
+import Clearfix from 'components/Clearfix/Clearfix.jsx';
 import { handleChange } from 'helpers/Forms';
 import FormValidator from 'forms/FormValidator';
 import Validations from 'forms/Validations';
@@ -12,17 +12,17 @@ import { toast } from 'react-toastify';
 import { Redirect } from 'react-router-dom';
 
 // core components
-import GridContainer from "components/Grid/GridContainer.jsx";
-import GridItem from "components/Grid/GridItem.jsx";
-import CustomInput from "components/CustomInput/CustomInput.jsx";
-import Button from "components/CustomButtons/Button.jsx";
-import Card from "components/Card/Card.jsx";
-import CardHeader from "components/Card/CardHeader.jsx";
-import CardText from "components/Card/CardText.jsx";
-import CardBody from "components/Card/CardBody.jsx";
+import GridContainer from 'components/Grid/GridContainer.jsx';
+import GridItem from 'components/Grid/GridItem.jsx';
+import CustomInput from 'components/CustomInput/CustomInput.jsx';
+import Button from 'components/CustomButtons/Button.jsx';
+import Card from 'components/Card/Card.jsx';
+import CardHeader from 'components/Card/CardHeader.jsx';
+import CardText from 'components/Card/CardText.jsx';
+import CardBody from 'components/Card/CardBody.jsx';
 
-import extendedFormsStyle from "assets/jss/material-dashboard-pro-react/views/extendedFormsStyle.jsx";
-import regularFormsStyle from "assets/jss/material-dashboard-pro-react/views/regularFormsStyle";
+import extendedFormsStyle from 'assets/jss/material-dashboard-pro-react/views/extendedFormsStyle.jsx';
+import regularFormsStyle from 'assets/jss/material-dashboard-pro-react/views/regularFormsStyle';
 
 const styles = theme => ({
   ...extendedFormsStyle,
@@ -47,7 +47,7 @@ class BugForm extends Component {
       title: '',
       description: '',
       success: false,
-      validation: this.validator.valid()
+      validation: this.validator.valid(),
     };
     this.handleChange = handleChange.bind(this);
   }
@@ -68,13 +68,13 @@ class BugForm extends Component {
   // Send bug data in post body to add to mongodb
   createBug = () => {
     const {
-      user, title, description, success
+      user, title, description, success,
     } = this.state;
-    
+
     const formData = {
-      user: user,
+      user,
       bugName: title,
-      description: description
+      description,
     };
 
     axios.post('/api/bugs/', formData).then((response) => {
@@ -83,13 +83,13 @@ class BugForm extends Component {
         this.setState({ success: true });
       }
     }).catch((error) => {
-      toast.error(error.response.data)
+      toast.error(error.response.data);
     });
   }
 
   render() {
     const {
-      title, description, validation, success
+      title, description, validation, success,
     } = this.state;
     const { classes } = this.props;
     return (
@@ -111,11 +111,11 @@ class BugForm extends Component {
                         className={classes.input}
                         labelText={<FormattedMessage id="form.title" />}
                         formControlProps={{
-                          fullWidth: true
+                          fullWidth: true,
                         }}
                         inputProps={{
-                          id: "title",
-                          name: "title",
+                          id: 'title',
+                          name: 'title',
                           value: title,
                           onChange: event => this.handleChange(event),
                         }}
@@ -128,13 +128,13 @@ class BugForm extends Component {
                       <CustomInput
                         labelText={<FormattedMessage id="form.description" />}
                         formControlProps={{
-                          fullWidth: true
+                          fullWidth: true,
                         }}
                         inputProps={{
                           multiline: true,
                           rows: 5,
-                          name: "description",
-                          id: "description",
+                          name: 'description',
+                          id: 'description',
                           onChange: event => this.handleChange(event),
                         }}
                         value={description}
@@ -146,12 +146,12 @@ class BugForm extends Component {
                   <Button
                     variant="contained"
                     color="primary"
-                    onClick={(event) => this.handleSubmit(event)}
+                    onClick={event => this.handleSubmit(event)}
                     className={classes.button}
                   >
                     <FormattedMessage id="report" />
                   </Button>
-                  <br/>
+                  <br />
                   <Clearfix />
                 </form>
               </CardBody>

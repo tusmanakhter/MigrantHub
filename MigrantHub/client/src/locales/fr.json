@@ -244,6 +244,7 @@
   "form.min.char.10": "doit comporter au moins 10 caractères",
   "service.categories": "Catégories de service",
   "service.dashboard": "Mon Tableau",
+  "service.pinned.service": "Services Épinglés",
   "service.suggested": "Services Suggérés",
   "report": "Signaler",
   "report.bug": "Signaler Bogue",
@@ -448,6 +449,7 @@
   "job.form": "Formulaire d'emploi",
   "job": "Emplois",
   "job.save": "Sauvez l'emploi",
+  "job.unsave": "Annuler l’enregistrement ",
   "job.saved": "Emplois sauvegardés",
   "job.saved.empty": "Aucun emplois sauvegardés"
 }

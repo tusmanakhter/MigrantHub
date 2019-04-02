@@ -150,18 +150,28 @@ module.exports = {
 
     query.deleted = false;
 
-    const services = await ServiceRepository.getServices(query);
+    let services = await ServiceRepository.getServices(query);
 
-    if (services !== undefined) {
-      Object.keys(services).forEach((serviceIndex) => {
-        const percentageMatch = results.services.filter(
-          item => item.id === String(services[serviceIndex]._id),
-        );
-        services[serviceIndex] = JSON.parse(JSON.stringify(services[serviceIndex]));
-        services[serviceIndex].percentageMatch = percentageMatch[0].percentageMatch;
-      });
-    }
+    services = await services.map(async (service) => {
+      const updatedService = service.toObject();
+      const avg = await ReviewRepository.getAverageRating(service._id.toString());
+      let average = 0;
+      let count = 0;
+      if (avg[0] !== undefined) {
+        average = avg[0].avgRating;
+        count = avg[0].countRating;
+      }
+      updatedService.avgRating = average;
+      updatedService.countRating = count;
 
-    return Promise.resolve(services);
+      const percentageMatch = results.services.filter(
+        item => item.id === String(updatedService._id),
+      );
+      updatedService.percentageMatch = percentageMatch[0].percentageMatch;
+
+      return updatedService;
+    });
+
+    return Promise.all(services);
   },
 };

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Route, Switch, withRouter } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import PropTypes from 'prop-types';
-import AboutUs from 'app/AboutUs'
+import AboutUs from 'app/AboutUs';
 import SignUpMigrant from 'account/personal/SignUpMigrant';
 import SignUpBusiness from 'account/business/SignUpBusiness';
 import SignUpAdmin from 'account/admin/SignUpAdmin';
@@ -34,12 +34,12 @@ import ServiceSuggestionForm from 'services/ServiceSuggestionForm';
 import ServiceSuggestionList from 'services/ServiceSuggestionList';
 import ForgotYourPasswordForm from 'account/forgotYourPassword/ForgotYourPasswordForm';
 import CreateReview from 'services/CreateReview';
-import Logout from 'components/Logout'
+import Logout from 'components/Logout';
 import JobForm from 'jobs/form/JobForm';
 import JobList from 'jobs/postings/JobList';
 import JobDetails from 'jobs/postings/JobDetails';
 import SavedJobList from 'jobs/saved/SavedJobList';
-import ServiceCategoryList from 'services/ServiceCategoryList'
+import ServiceCategoryList from 'services/ServiceCategoryList';
 
 class Routes extends Component {
   state = {
@@ -83,7 +83,7 @@ class Routes extends Component {
           <UnprotectedRoute path="/signup/admin" component={SignUpAdmin} disableLayout exact />
           <UnprotectedRoute path="/login" component={Login} disableLayout exact />
           <UnprotectedRoute path="/forgotpassword" component={ForgotYourPasswordForm} exact />
-          <UnprotectedRoute path="/about-us" component={AboutUs} exact/>
+          <UnprotectedRoute path="/about-us" component={AboutUs} exact />
           <ProtectedRoute path="/admin/dashboard" component={AdminDashboard} admin />
           <ProtectedRoute path="/editmigrant" component={EditMigrant} migrant exact />
           <ProtectedRoute path="/editbusiness" component={EditBusiness} business exact />
@@ -111,7 +111,7 @@ class Routes extends Component {
           <ProtectedRoute path="/jobs" component={JobList} exact />
           <ProtectedRoute path="/jobs/saved" component={SavedJobList} exact />
           <ProtectedRoute path="/jobs/:id" component={JobDetails} />
-          <Route path="/about-us" component={AboutUs} exact/>
+          <Route path="/about-us" component={AboutUs} exact />
           <Route component={Error} />
         </Switch>
       </>

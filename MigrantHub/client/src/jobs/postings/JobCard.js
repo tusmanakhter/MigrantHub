@@ -1,17 +1,17 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import CalendarToday from '@material-ui/icons/CalendarToday';
 import { Link } from 'react-router-dom';
 import GridItem from 'components/Grid/GridItem.jsx';
-import Card from "components/Card/Card.jsx";
-import CardHeader from "components/Card/CardHeader.jsx";
-import CardBody from "components/Card/CardBody.jsx";
-import CardFooter from "components/Card/CardFooter.jsx";
-import CardIcon from "components/Card/CardIcon.jsx";
+import Card from 'components/Card/Card.jsx';
+import CardHeader from 'components/Card/CardHeader.jsx';
+import CardBody from 'components/Card/CardBody.jsx';
+import CardFooter from 'components/Card/CardFooter.jsx';
+import CardIcon from 'components/Card/CardIcon.jsx';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import Typography from '@material-ui/core/Typography';
-import Button from "components/CustomButtons/Button.jsx";
+import Button from 'components/CustomButtons/Button.jsx';
 import Tooltip from '@material-ui/core/Tooltip';
 import 'rc-menu/assets/index.css';
 import { getCategoryIcon, getCategory, getSubCategory } from 'helpers/Category';
@@ -21,8 +21,10 @@ import UnFavoriteIcon from '@material-ui/icons/FavoriteBorder';
 import Business from '@material-ui/icons/Business';
 import moment from 'moment';
 import GridContainer from 'components/Grid/GridContainer.jsx';
-import classNames from "classnames";
+import classNames from 'classnames';
 import { FormattedMessage } from 'react-intl';
+import { AuthConsumer } from 'routes/AuthContext';
+import UserTypes from 'lib/UserTypes';
 
 const styles = theme => ({
   card: {
@@ -32,11 +34,11 @@ const styles = theme => ({
     margin: 5,
     padding: 0,
   },
-  headContainer:{
+  headContainer: {
     minHeight: 50,
     maxHeight: 50,
   },
-  bodyContainer:{
+  bodyContainer: {
     minHeight: 40,
     maxHeight: 40,
   },
@@ -44,23 +46,23 @@ const styles = theme => ({
     objectFit: 'cover',
   },
   jobTitle: {
-    textDecoration: 'underline'
+    textDecoration: 'underline',
   },
   locationContainer: {
-    position: "absolute",
+    position: 'absolute',
     left: 0,
   },
   timePostedContainer: {
-    position: "absolute",
+    position: 'absolute',
     right: 0,
   },
-  tooltip:{
+  tooltip: {
     position: 'relative',
   },
   date: {
     color: 'green',
   },
-  cardFooter:{
+  cardFooter: {
     position: 'relative',
     minHeight: 40,
     maxHeight: 40,
@@ -75,7 +77,7 @@ const styles = theme => ({
     minHeight: 60,
     maxHeight: 60,
   },
-  cardSavedFooter:{
+  cardSavedFooter: {
     minHeight: 70,
     maxHeight: 70,
   },
@@ -90,121 +92,154 @@ const styles = theme => ({
 const JobCard = (props) => {
   const {
     classes, jobId, title, description, location, companyName, dateCreated,
-    className, smallCard, savedJob, addSavedJob, deleteSavedJob, itemIndex
+    className, smallCard, savedJob, addSavedJob, deleteSavedJob, itemIndex,
   } = props;
 
   const cardClasses = classNames({
     [classes.card]: true,
     [classes.cardSaved]: smallCard,
-    [className]: className !== undefined
+    [className]: className !== undefined,
   });
 
   const cardBodyClasses = classNames({
     [classes.bodyContainer]: true,
     [classes.cardSavedBody]: smallCard,
-    [className]: className !== undefined
+    [className]: className !== undefined,
   });
 
   const cardFooterClasses = classNames({
     [classes.cardFooter]: true,
     [classes.cardSavedFooter]: smallCard,
-    [className]: className !== undefined
+    [className]: className !== undefined,
   });
 
   const cardLocationClasses = classNames({
     [classes.locationContainer]: true,
     [classes.locationSavedContainer]: smallCard,
-    [className]: className !== undefined
+    [className]: className !== undefined,
   });
 
   const cardTimeClasses = classNames({
     [classes.timePostedContainer]: true,
     [classes.timePostedSavedContainer]: smallCard,
-    [className]: className !== undefined
+    [className]: className !== undefined,
   });
 
   return (
-    <React.Fragment>
-      <Card className={cardClasses}>
-        <GridItem align='right'>
-          <Tooltip
-            id="tooltip-top"
-            aria-label="SavedIcon"
-            title={<FormattedMessage id="job.save" />}
-            className={classes.tooltip}
-          >
-            {savedJob ?
-              (<Button size='sm' color="primary"
-                       justIcon
-                       round
-                       simple
-                       onClick={() => deleteSavedJob(jobId, itemIndex)}>
-                <UnFavoriteIcon/>
-              </Button>)
-              :
-              (<Button size='sm' color="primary"
-                       justIcon
-                       round
-                       simple
-                       onClick={() => addSavedJob(jobId, itemIndex)}>
-                <FavoriteIcon/>
-              </Button> )
-            }
-          </Tooltip>
-        </GridItem>
-        <CardActionArea component={cardProps => <Link to={`/jobs/${jobId}`} {...cardProps} />}>
-          <CardHeader color="primary" icon className={classes.headContainer}>
-            <CardIcon color="primary">
-              <Business />
-            </CardIcon>
-            <Typography variant="title" className={classes.jobTitle} >
-              <b>
-                {title && title.substring(0,90)}
-              </b>
-            </Typography>
-            {(companyName != undefined && (companyName).length > 110) ?
-              <Typography variant="subheading" color="primary">
-                {((companyName).substring(0, 105))} <b>...</b>
-              </Typography> :
-              <Typography variant="subheading" color="primary">
-                {companyName}
-              </Typography>
-            }
-          </CardHeader>
-          <CardBody className={cardBodyClasses}>
-              {(description != undefined && (description).length > 110) ?
-                <Typography variant="body1">
-                  {((description).substring(0,105))} <b>...View More</b>
-                </Typography>:
-                <Typography variant="body1">
-                  {description}
-                </Typography>
+    <AuthConsumer>
+      {({ user }) => (
+        <React.Fragment>
+          <Card className={cardClasses}>
+            <GridItem align="right">
+              {user.type === UserTypes.MIGRANT ? (
+                <Tooltip
+                  id="tooltip-top"
+                  aria-label="SavedIcon"
+                  title={savedJob ? <FormattedMessage id="job.unsave" /> : <FormattedMessage id="job.save" />}
+                  className={classes.tooltip}
+                >
+                  {savedJob
+                    ? (
+                      <Button
+                        size="sm"
+                        color="primary"
+                        justIcon
+                        round
+                        simple
+                        onClick={() => deleteSavedJob(jobId, itemIndex)}
+                      >
+                        <FavoriteIcon />
+                      </Button>
+                    )
+                    : (
+                      <Button
+                        size="sm"
+                        color="primary"
+                        justIcon
+                        round
+                        simple
+                        onClick={() => addSavedJob(jobId, itemIndex)}
+                      >
+                        <UnFavoriteIcon />
+                      </Button>
+                    )
               }
-          </CardBody>
-          <CardFooter stats className={cardFooterClasses}>
-            <GridContainer justify="center">
-              <GridItem lg={12} md={12} sm={12} xs={12}>
-                  <div className={cardLocationClasses}>
-                    {location
-                      ? (<p><Place fontSize="inherit" /> {location}</p>)
-                      : (<p><Place fontSize="inherit" /> Canada</p>)
-                    }
-                  </div>
-              </GridItem>
-              <GridItem lg={12} md={12} sm={12} xs={12}>
-                <div className={cardTimeClasses}>
-                    {dateCreated
-                      ? (<p className={classes.date}><CalendarToday />Posted: {moment(dateCreated).fromNow()}</p>)
-                      : (<p />)
-                    }
+                </Tooltip>
+              )
+                : (<div><br /><br /></div>
+                )
+          }
+            </GridItem>
+            <CardActionArea component={cardProps => <Link to={`/jobs/${jobId}`} {...cardProps} />}>
+              <CardHeader color="primary" icon className={classes.headContainer}>
+                <CardIcon color="primary">
+                  <Business />
+                </CardIcon>
+                <Typography variant="title" className={classes.jobTitle}>
+                  <b>
+                    {(title != undefined && (title).length > 54 )
+                      ? (
+                        <Typography variant="body2">
+                          {((title).substring(0, 51))} <b>...</b>
+                        </Typography>
+                      ) : (
+                        <Typography variant="body2">
+                          {title}
+                        </Typography>
+                      )}
+                  </b>
+                </Typography>
+                {(companyName != undefined && (companyName).length > 38)
+                  ? (
+                    <Typography variant="subheading" color="primary">
+                      {((companyName).substring(0, 35))} <b>...</b>
+                    </Typography>
+                  )
+                  : (
+                    <Typography variant="subheading" color="primary">
+                      {companyName}
+                    </Typography>
+                  )
+              }
+              </CardHeader>
+              <CardBody className={cardBodyClasses}>
+                {(description != undefined && (description).length > 122)
+                  ? (
+                    <Typography variant="body1">
+                      {((description).substring(0, 110))} <b>...View More</b>
+                    </Typography>
+                  ) : (
+                    <Typography variant="body1">
+                      {description}
+                    </Typography>
+                  )}
+              </CardBody>
+              <CardFooter stats className={cardFooterClasses}>
+                <GridContainer justify="center">
+                  <GridItem lg={12} md={12} sm={12} xs={12}>
+                    <div className={cardLocationClasses}>
+                      {location
+                        ? (<p><Place fontSize="inherit" /> {location}</p>)
+                        : (<p><Place fontSize="inherit" /> Canada</p>)
+                      }
                     </div>
-                </GridItem>
+                  </GridItem>
+                  <GridItem lg={12} md={12} sm={12} xs={12}>
+                    <div className={cardTimeClasses}>
+                      {dateCreated
+                        ? (<p className={classes.date}><CalendarToday />Posted: {moment(dateCreated).fromNow()}</p>)
+                        : (<p />)
+                      }
+                    </div>
+                  </GridItem>
 
-            </GridContainer>
-          </CardFooter>
-        </CardActionArea>
-      </Card>
-    </React.Fragment>
+                </GridContainer>
+              </CardFooter>
+            </CardActionArea>
+          </Card>
+        </React.Fragment>
+      )}
+    </AuthConsumer>
   );
 };
 

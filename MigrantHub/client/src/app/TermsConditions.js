@@ -233,7 +233,7 @@ class TermsConditions extends React.Component {
               these Terms and Conditions or of any Agreement or any part thereof, or the
               right thereafter to enforce each and every provision. These Terms and
               Conditions shall not be amended, modified, varied or supplemented except in
-              writing and signed by duly authorised representatives of the Company. 
+              writing and signed by duly authorised representatives of the Company.
               </p>
               <br />
               <b>Notification of Changes</b>

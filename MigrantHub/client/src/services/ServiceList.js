@@ -54,13 +54,13 @@ class ServiceList extends Component {
   }
 
   addPinnedService(serviceId) {
-    axios.put('/api/services/pinned/' + serviceId)
-    .then((response) => {
-      toast.success(response.data)
-    }).catch((error) => {
-        toast.success(error.response.data)
+    axios.put(`/api/services/pinned/${serviceId}`)
+      .then((response) => {
+        toast.success(response.data);
+      }).catch((error) => {
+        toast.success(error.response.data);
       });
-  };
+  }
 
   setRedirectToServiceForm = () => {
     this.setState({
@@ -278,19 +278,18 @@ class ServiceList extends Component {
                           serviceHours={item.serviceHours}
                           rating={item.avgRating}
                           count={item.countRating}
-                          pinIcon={<i class="fas fa-thumbtack"></i>}
+                          pinIcon={<i className="fas fa-thumbtack" />}
                           pinIconHandle={this.addPinnedService}
-                          pinIconHelperText={"Pin to Dashboard"}
+                          pinIconHelperText="Pin to Dashboard"
                         />
                       </GridItem>
                     ))
                   }
                 </Grid>
               </InfiniteScroll>
-              {moreData ? 
-                (null) 
-                : 
-                (<h6>No more results</h6>)
+              {moreData
+                ? (null)
+                : (<h6>No more results</h6>)
               }
             </div>
           </>

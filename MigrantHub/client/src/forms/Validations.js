@@ -419,9 +419,9 @@ const rules = {
     {
       field: 'descriptionLength',
       method: validator.isInt,
-      args: [{ min: 10,}],
+      args: [{ min: 10 }],
       validWhen: true,
-      message: 'Description is not valid',
+      message: 'Description is too short',
     },
   ],
   positionType: [
@@ -463,19 +463,32 @@ const rules = {
       validWhen: false,
       message: 'Contact email is required',
     },
+    {
+      field: 'contactEmail',
+      method: validator.isEmail,
+      validWhen: true,
+      message: 'Contact email is not valid',
+    },
   ],
   contactPhone: [
     {
       field: 'contactPhone',
       method: validator.isEmpty,
       validWhen: false,
-      message: 'Contact phone is required',
+      message: 'Contact phone number is required',
+    },
+    {
+      field: 'contactPhone',
+      method: validator.isLength,
+      args: [{ min: 14, max: 14 }],
+      validWhen: true,
+      message: 'Contact phone number is not valid',
     },
   ],
   get jobFormStep1() {
     const rule = this.title
       .concat(this.positionType)
-      .concat(this.location)
+      .concat(this.location);
     return rule;
   },
   get jobFormStep2() {
@@ -491,7 +504,7 @@ const rules = {
   get jobFormCreate() {
     const rule = this.jobFormStep1
       .concat(this.jobFormStep2)
-      .concat(this.jobFormStep3)
+      .concat(this.jobFormStep3);
     return rule;
   },
 };

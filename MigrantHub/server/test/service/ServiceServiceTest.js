@@ -112,7 +112,8 @@ describe('Service Service', function () {
     }));
 
     it('should call getServices to retrieve recommended services from getRecommendations service', test(async function () {
-        this.stub(ServiceRepository, 'getServices');
+        this.stub(ServiceRepository, 'getServices').returns([]);
+        this.stub(ReviewRepository, 'getAverageRating').returns([]);
         this.stub(axios, 'get').returns(Promise.resolve({ data: "[ '5c495110d50aa425309f2da6'; '50'];[ '5c495114d50aa425309f3077'; '50'];[ '5c495114d50aa425309f3071'; '50']" }));
         this.stub(recommendationServiceConfig, 'recommendationServiceConnectionString').returns('');
         await ServiceService.getRecommendations(req.user);

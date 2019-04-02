@@ -55,7 +55,7 @@ class JobList extends Component {
   fetchData = (redirect, props) => {
     const { location } = props;
     const { limit } = this.state;
-    let { offset } = this.state;
+    const { offset } = this.state;
 
     let editOwnerEmail = '';
 
@@ -73,7 +73,7 @@ class JobList extends Component {
       },
     }).then((response) => {
       if (response.data.length === 0) {
-          this.setState({ moreData: false });
+        this.setState({ moreData: false });
       } else {
         this.setState(prevState => ({
           moreData: true,
@@ -89,13 +89,13 @@ class JobList extends Component {
       .then((response) => {
         if (response.status === 200) {
           this.setState({
-            items: update(this.state.items, {[index]: {savedJob: {$set: true}}})
+            items: update(this.state.items, { [index]: { savedJob: { $set: true } } }),
           });
-          toast.success("Job Post Saved!");
+          toast.success('Job Post Saved!');
         }
       }).catch((error) => {
-      toast.error("Error Saving Job Post!");
-    });
+        toast.error('Error Saving Job Post!');
+      });
   };
 
   deleteSavedJob = (jobId, index) => {
@@ -103,13 +103,13 @@ class JobList extends Component {
       .then((response) => {
         if (response.status === 200) {
           this.setState({
-            items: update(this.state.items, {[index]: {savedJob: {$set: false}}})
+            items: update(this.state.items, { [index]: { savedJob: { $set: false } } }),
           });
-          toast.success("Job Post Unsaved!");
+          toast.success('Job Post Unsaved!');
         }
       }).catch((error) => {
-      toast.error("Error Unsaving Job Post!");
-    });
+        toast.error('Error Unsaving Job Post!');
+      });
   };
 
   render() {
@@ -120,8 +120,8 @@ class JobList extends Component {
       <AuthConsumer>
         {({ user }) => (
           <>
-          <div className={classes.mainContainer}>
-            {user.type !== UserTypes.ADMIN
+            <div className={classes.mainContainer}>
+              {user.type !== UserTypes.ADMIN
             && (
               <div>
                 {this.renderRedirectToJobForm()}
@@ -152,22 +152,22 @@ class JobList extends Component {
               </div>
             )
             }
-            <InfiniteScroll
-              pageStart={0}
-              loadMore={() => this.fetchData(this.props.redirect, this.props)}
-              hasMore={moreData}
-              loader={(
-                <Grid item style={{ paddingBottom: 15 }}>
-                  <CircularProgress className={classes.loader} disableShrink />
-                </Grid>
+              <InfiniteScroll
+                pageStart={0}
+                loadMore={() => this.fetchData(this.props.redirect, this.props)}
+                hasMore={moreData}
+                loader={(
+                  <Grid item style={{ paddingBottom: 15 }}>
+                    <CircularProgress className={classes.loader} disableShrink />
+                  </Grid>
               )}
-              threshold={-200}
-              useWindow={false}
-              getScrollParent={() => document.getElementById('mainPanel')}
-            >
-              <GridContainer justify="center">
-                {' '}
-                {
+                threshold={-200}
+                useWindow={false}
+                getScrollParent={() => document.getElementById('mainPanel')}
+              >
+                <GridContainer justify="center">
+                  {' '}
+                  {
                   items.map((item, index) => (
                     <GridItem xs={12} sm={12} md={8}>
                       <JobCard
@@ -185,9 +185,9 @@ class JobList extends Component {
                     </GridItem>
                   ))
                 }
-              </GridContainer>
-            </InfiniteScroll>
-          </div>
+                </GridContainer>
+              </InfiniteScroll>
+            </div>
           </>
         )}
       </AuthConsumer>

@@ -11,65 +11,65 @@ const styles = ({});
 
 class EmailInfo extends Component {
     state = {
-        emailError: '',
+      emailError: '',
     };
 
     validate = () => {
-        const { email, intl } = this.props;
+      const { email, intl } = this.props;
 
-        let isError = false;
-        const errors = {
-            emailError: '',
-        };
+      let isError = false;
+      const errors = {
+        emailError: '',
+      };
 
-        if (validator.isEmpty(email)) {
-            errors.emailError = `${intl.formatMessage({ id: 'email' })}  ${intl.formatMessage({ id: 'isrequired' })}`;
-            isError = true;
-        } else if (!validator.isEmail(email)) {
-            errors.emailError = `${intl.formatMessage({ id: 'email' })}  ${intl.formatMessage({ id: 'notvalid' })}`;
-            isError = true;
-        }
+      if (validator.isEmpty(email)) {
+        errors.emailError = `${intl.formatMessage({ id: 'email' })}  ${intl.formatMessage({ id: 'isrequired' })}`;
+        isError = true;
+      } else if (!validator.isEmail(email)) {
+        errors.emailError = `${intl.formatMessage({ id: 'email' })}  ${intl.formatMessage({ id: 'notvalid' })}`;
+        isError = true;
+      }
 
-        this.setState(prevState => ({
-            ...prevState,
-            ...errors,
-        }));
+      this.setState(prevState => ({
+        ...prevState,
+        ...errors,
+      }));
 
-        return isError;
+      return isError;
     };
 
     render() {
-        const { email, handleChange } = this.props;
-        const { emailError } = this.state;
+      const { email, handleChange } = this.props;
+      const { emailError } = this.state;
 
-        return (
-            <React.Fragment>
-                <Typography variant="h6" gutterBottom>
-                    <FormattedMessage id="signup.accountinfo" />
-                </Typography>
-                <Grid container spacing={24}>
-                    <Grid item xs={12}>
-                        <TextField
-                            id="email"
-                            name="email"
-                            label={<FormattedMessage id="email" />}
-                            value={email}
-                            onChange={event => handleChange(event)}
-                            fullWidth
-                            helperText={emailError}
-                            error={emailError.length > 0}
-                        />
-                    </Grid>
-                </Grid>
-            </React.Fragment>
-        );
+      return (
+        <React.Fragment>
+          <Typography variant="h6" gutterBottom>
+            <FormattedMessage id="signup.accountinfo" />
+          </Typography>
+          <Grid container spacing={24}>
+            <Grid item xs={12}>
+              <TextField
+                id="email"
+                name="email"
+                label={<FormattedMessage id="email" />}
+                value={email}
+                onChange={event => handleChange(event)}
+                fullWidth
+                helperText={emailError}
+                error={emailError.length > 0}
+              />
+            </Grid>
+          </Grid>
+        </React.Fragment>
+      );
     }
 }
 
 EmailInfo.propTypes = {
-    email: PropTypes.string.isRequired,
-    handleChange: PropTypes.func.isRequired,
-    intl: intlShape.isRequired,
+  email: PropTypes.string.isRequired,
+  handleChange: PropTypes.func.isRequired,
+  intl: intlShape.isRequired,
 };
 
 export default withStyles(styles)(injectIntl(EmailInfo, { withRef: true }));

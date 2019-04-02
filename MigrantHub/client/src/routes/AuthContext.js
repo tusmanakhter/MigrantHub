@@ -12,42 +12,38 @@ class AuthProviderWrapper extends React.Component {
 
     const { cookies } = props;
 
-    this.authenticate = () => {
-      return new Promise((resolve) => {
-        axios.get('/api/accounts/').then((response) => {
-          let user = {};
-          if (response.data.user) {
-            user = {
-              authenticated: true,
-              username: response.data.user._id,
-              type: response.data.user.type,
-            };
-          } else {
-            user = {
-              authenticated: false,
-              username: null,
-              type: null,
-            };
-          }
-          cookies.set('user', user, { path: '/' });
-          this.setState({ user });
-          resolve('done');
-        });
-      });
-    };
-
-    this.unauthenticate = () => {
-      return new Promise((resolve) => {
-        const user = {
-          authenticated: false,
-          username: null,
-          type: null,
-        };
+    this.authenticate = () => new Promise((resolve) => {
+      axios.get('/api/accounts/').then((response) => {
+        let user = {};
+        if (response.data.user) {
+          user = {
+            authenticated: true,
+            username: response.data.user._id,
+            type: response.data.user.type,
+          };
+        } else {
+          user = {
+            authenticated: false,
+            username: null,
+            type: null,
+          };
+        }
         cookies.set('user', user, { path: '/' });
         this.setState({ user });
         resolve('done');
       });
-    };
+    });
+
+    this.unauthenticate = () => new Promise((resolve) => {
+      const user = {
+        authenticated: false,
+        username: null,
+        type: null,
+      };
+      cookies.set('user', user, { path: '/' });
+      this.setState({ user });
+      resolve('done');
+    });
 
     this.isAuthenticated = (migrant, business, admin) => {
       const user = cookies.get('user');
@@ -76,7 +72,7 @@ class AuthProviderWrapper extends React.Component {
 
     this.state = {
       user,
-      authenticate: this.authenticate, 
+      authenticate: this.authenticate,
       unauthenticate: this.unauthenticate,
       isAuthenticated: this.isAuthenticated,
     };

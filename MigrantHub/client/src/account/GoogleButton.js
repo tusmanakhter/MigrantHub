@@ -31,9 +31,9 @@ const style = {
 
 class BaseGoogleButton extends Component {
   googleAuthenticationLogin = (reply) => {
-      const { context } = this.props;
-      const Auth = context;
-      axios.post('/api/accounts/auth/google',
+    const { context } = this.props;
+    const Auth = context;
+    axios.post('/api/accounts/auth/google',
       qs.stringify({
         access_token: reply.accessToken,
       })).then(async (response) => {

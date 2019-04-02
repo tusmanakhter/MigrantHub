@@ -147,14 +147,13 @@ class EditBusiness extends Component {
         >
           Edit Your Business Profile
         </Typography>
-        {isLoading ? 
-        (
-        <div>
-          <CircularProgress className={classes.progress} />
-        </div>
-        ) 
-        : 
-        (
+        {isLoading
+          ? (
+            <div>
+              <CircularProgress className={classes.progress} />
+            </div>
+          )
+          : (
         <>
           <div className={classes.item}>
             <ContactInfo
@@ -193,7 +192,7 @@ class EditBusiness extends Component {
             </Button>
           </div>
         </>
-        )}
+          )}
       </Paper>
     );
   }

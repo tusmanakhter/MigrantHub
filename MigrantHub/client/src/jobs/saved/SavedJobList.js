@@ -81,14 +81,14 @@ class SavedJobList extends Component {
       .then((response) => {
         if (response.status === 200) {
           this.setState(prevState => ({
-            items: update(prevState.items, {$splice: [[index, 1]]})
+            items: update(prevState.items, { $splice: [[index, 1]] }),
           }));
           this.fetchData();
-          toast.success("Job Post Unsaved!");
+          toast.success('Job Post Unsaved!');
         }
       }).catch((error) => {
-      toast.error("Error Unsaving Job Post!");
-    });
+        toast.error('Error Unsaving Job Post!');
+      });
   };
 
   render() {
@@ -99,8 +99,8 @@ class SavedJobList extends Component {
       <AuthConsumer>
         {({ user }) => (
           <>
-          <div className={classes.mainContainer}>
-            {user.type !== UserTypes.ADMIN
+            <div className={classes.mainContainer}>
+              {user.type !== UserTypes.ADMIN
             && (
               <div>
                 {this.renderRedirectToJobForm()}
@@ -131,22 +131,22 @@ class SavedJobList extends Component {
               </div>
             )
             }
-            <InfiniteScroll
-              pageStart={0}
-              loadMore={() => this.fetchData(this.props.redirect, this.props)}
-              hasMore={moreData}
-              loader={(
-                <Grid item style={{ paddingBottom: 15 }}>
-                  <CircularProgress className={classes.loader} disableShrink />
-                </Grid>
+              <InfiniteScroll
+                pageStart={0}
+                loadMore={() => this.fetchData(this.props.redirect, this.props)}
+                hasMore={moreData}
+                loader={(
+                  <Grid item style={{ paddingBottom: 15 }}>
+                    <CircularProgress className={classes.loader} disableShrink />
+                  </Grid>
               )}
-              threshold={-200}
-              useWindow={false}
-              getScrollParent={() => document.getElementById('mainPanel')}
-            >
-              <GridContainer justify="center">
-                {' '}
-                {
+                threshold={-200}
+                useWindow={false}
+                getScrollParent={() => document.getElementById('mainPanel')}
+              >
+                <GridContainer justify="center">
+                  {' '}
+                  {
                   items.map((item, index) => (
                     <GridItem xs={12} sm={12} md={8}>
                       <JobCard
@@ -156,17 +156,17 @@ class SavedJobList extends Component {
                         companyName={item.companyName}
                         location={item.location}
                         dateCreated={item.dateCreated}
-                        savedJob={true}
+                        savedJob
                         itemIndex={index}
-                        addSavedJob={()=>{}}
+                        addSavedJob={() => {}}
                         deleteSavedJob={this.deleteSavedJob}
                       />
                     </GridItem>
                   ))
                 }
-              </GridContainer>
-            </InfiniteScroll>
-          </div>
+                </GridContainer>
+              </InfiniteScroll>
+            </div>
           </>
         )}
       </AuthConsumer>

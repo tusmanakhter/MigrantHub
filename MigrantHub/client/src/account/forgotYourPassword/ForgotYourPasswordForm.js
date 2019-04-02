@@ -9,104 +9,107 @@ import VerificationCode from 'account/forgotYourPassword/VerificationCode';
 import { FormattedMessage } from 'react-intl';
 
 class ForgotYourPasswordForm extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            messageFromServer: '',
-            verificationError: false,
-        };
-    }
-    getStepContent(step) {
-        const { email, password, confirmPassword, verificationCode } = this.state;
+  constructor(props) {
+    super(props);
+    this.state = {
+      messageFromServer: '',
+      verificationError: false,
+    };
+  }
 
-        switch (step) {
-            case 0:
-                return (
-                    <EmailInfo
-                        innerRef={this.child}
-                        handleChange={this.handleChange}
-                        email={email}
-                    />
-                );
-            case 1:
-                return (
-                    <VerificationCode
-                        innerRef={this.child}
-                        handleChange={this.handleChange}
-                        verificationCode={verificationCode}
-                    />
-                );
-            case 2:
-                return (
-                    <NewPasswordInfo
-                        innerRef={this.child}
-                        handleChange={this.handleChange}
-                        password={password}
-                        confirmPassword={confirmPassword}
-                    />
-                );
-            default:
-                throw new Error('Unknown step');
-        }
-    }
+  getStepContent(step) {
+    const {
+      email, password, confirmPassword, verificationCode,
+    } = this.state;
 
-    verifyAccount(event){
-        const { email } = event.state;
-        axios.post('/api/accounts/forgot/user',
-            qs.stringify({
-                email,
-            })).then((response) => {
-            event.setState({
-                messageFromServer: <FormattedMessage id="forgotpassword.validationcode.sent" />
-            });
-        }).catch((error) => {
-            event.setState({
-                verificationError: true,
-                messageFromServer: error.response.data,
-            });
-        });
-    }
-
-    resetPassword(event) {
-        const { email, password, verificationCode } = event.state;
-
-        axios.post('/api/accounts/reset/user',
-            qs.stringify({
-                email,
-                password,
-                verificationCode,
-            })).then((response) => {
-            event.setState({
-                messageFromServer: response.data,
-            });
-        }).catch((error) => {
-            event.setState({
-                messageFromServer: error.response.data,
-            });
-        });
-    }
-
-    render() {
-        const steps = [
-            <FormattedMessage id="email" />,
-            <FormattedMessage id="forgotpassword.validationcode" />,
-            <FormattedMessage id="forgotpassword.resetPassword" />,
-        ];
-        const { messageFromServer, verificationError } = this.state;
-
+    switch (step) {
+      case 0:
         return (
-            <React.Fragment>
-                <ForgotYourPasswordContainer
-                    resetPassword={this.resetPassword}
-                    verifyAccount={this.verifyAccount}
-                    steps={steps}
-                    getStepContent={this.getStepContent}
-                    verificationError={verificationError}
-                    messageFromServer={messageFromServer}
-                />
-            </React.Fragment>
+          <EmailInfo
+            innerRef={this.child}
+            handleChange={this.handleChange}
+            email={email}
+          />
         );
+      case 1:
+        return (
+          <VerificationCode
+            innerRef={this.child}
+            handleChange={this.handleChange}
+            verificationCode={verificationCode}
+          />
+        );
+      case 2:
+        return (
+          <NewPasswordInfo
+            innerRef={this.child}
+            handleChange={this.handleChange}
+            password={password}
+            confirmPassword={confirmPassword}
+          />
+        );
+      default:
+        throw new Error('Unknown step');
     }
+  }
+
+  verifyAccount(event) {
+    const { email } = event.state;
+    axios.post('/api/accounts/forgot/user',
+      qs.stringify({
+        email,
+      })).then((response) => {
+      event.setState({
+        messageFromServer: <FormattedMessage id="forgotpassword.validationcode.sent" />,
+      });
+    }).catch((error) => {
+      event.setState({
+        verificationError: true,
+        messageFromServer: error.response.data,
+      });
+    });
+  }
+
+  resetPassword(event) {
+    const { email, password, verificationCode } = event.state;
+
+    axios.post('/api/accounts/reset/user',
+      qs.stringify({
+        email,
+        password,
+        verificationCode,
+      })).then((response) => {
+      event.setState({
+        messageFromServer: response.data,
+      });
+    }).catch((error) => {
+      event.setState({
+        messageFromServer: error.response.data,
+      });
+    });
+  }
+
+  render() {
+    const steps = [
+      <FormattedMessage id="email" />,
+      <FormattedMessage id="forgotpassword.validationcode" />,
+      <FormattedMessage id="forgotpassword.resetPassword" />,
+    ];
+    const { messageFromServer, verificationError } = this.state;
+
+    return (
+      <React.Fragment>
+        <ForgotYourPasswordContainer
+          resetPassword={this.resetPassword}
+          verifyAccount={this.verifyAccount}
+          steps={steps}
+          getStepContent={this.getStepContent}
+          verificationError={verificationError}
+          messageFromServer={messageFromServer}
+        />
+      </React.Fragment>
+    );
+  }
 }
 
 export default ForgotYourPasswordForm;

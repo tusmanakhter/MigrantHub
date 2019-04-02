@@ -88,10 +88,10 @@ class ServiceCategoryMenu1 extends Component {
                 </SubMenu>
               ) : (
                 <MenuItem
-                    onClick={() => this.handleCategoryClick(category.value, '')}
-                  >
-                    {category.label}
-                  </MenuItem>
+                  onClick={() => this.handleCategoryClick(category.value, '')}
+                >
+                  {category.label}
+                </MenuItem>
               )))}
           </Menu>
         </div>

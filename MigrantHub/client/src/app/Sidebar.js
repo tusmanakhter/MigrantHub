@@ -21,9 +21,9 @@ import { FormattedMessage } from 'react-intl';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import HeaderLinks from 'app/HeaderLinks';
 import sidebarStyle from 'assets/jss/material-dashboard-pro-react/components/sidebarStyle.jsx';
-import man from 'assets/img/faces/man.png'
-import woman from 'assets/img/faces/woman.png'
-import other from 'assets/img/faces/other.png'
+import man from 'assets/img/faces/man.png';
+import woman from 'assets/img/faces/woman.png';
+import other from 'assets/img/faces/other.png';
 import SidebarWrapper from 'app/SidebarWrapper';
 import { AuthConsumer } from 'routes/AuthContext';
 import Menu, { SubMenu } from 'rc-menu';
@@ -44,7 +44,7 @@ class Sidebar extends React.Component {
     this.state = {
       openAvatar: false,
       miniActive: true,
-      isLoading : false,
+      isLoading: false,
       type: '',
     };
     this.getUser = this.getUser.bind(this);
@@ -80,16 +80,15 @@ class Sidebar extends React.Component {
     }
   }
 
-  getAvatar(gender){
-    if(gender == 'female'){
+  getAvatar(gender) {
+    if (gender == 'female') {
       return woman;
     }
-    else if(gender == 'male'){
+    if (gender == 'male') {
       return man;
     }
-    else{
-      return other;
-    }
+
+    return other;
   }
 
   logout = () => {
@@ -116,7 +115,7 @@ class Sidebar extends React.Component {
     } = this.props;
 
     const {
-      email, firstName, lastName, gender, isLoading
+      email, firstName, lastName, gender, isLoading,
     } = this.state;
 
     const { caret, collapseItemMini, photo } = classes;
@@ -152,25 +151,24 @@ class Sidebar extends React.Component {
               className={`${classes.itemLink} ${classes.userCollapseButton}`}
               onClick={event => this.openCollapse(event, 'openAvatar')}
             >
-            {isLoading ? 
-            ( 
-              <div>
-                <CircularProgress className={classes.progress} />
-              </div>
-            ) 
-            :
-            (
-              <ListItemText
-                primary={`${firstName}`}
-                secondary={(
-                  <b
-                    className={`${caret} ${classes.userCaret} ${this.state.openAvatar ? classes.caretActive : ''}`}
+              {isLoading
+                ? (
+                  <div>
+                    <CircularProgress className={classes.progress} />
+                  </div>
+                )
+                : (
+                  <ListItemText
+                    primary={`${firstName}`}
+                    secondary={(
+                      <b
+                        className={`${caret} ${classes.userCaret} ${this.state.openAvatar ? classes.caretActive : ''}`}
+                      />
+                )}
+                    disableTypography
+                    className={`${itemText} ${classes.userItemText}`}
                   />
                 )}
-                disableTypography
-                className={`${itemText} ${classes.userItemText}`}
-              />
-            )}
             </NavLink>
             <Collapse in={this.state.openAvatar} unmountOnExit>
               <List className={`${classes.list} ${classes.collapseList}`}>
@@ -232,31 +230,35 @@ class Sidebar extends React.Component {
                     </NavLink>
                   </ListItem>
                 )}
+                {user.type === UserTypes.BUSINESS
+                  && (
+                  <ListItem className={classes.collapseItem}>
+                    <NavLink
+                      to={{
+                        pathname: '/jobs',
+                        state: {
+                          editOwner: email, editMode: true, searchQuery: '', searchMode: false,
+                        },
+                      }}
+                      className={
+                        `${classes.itemLink} ${classes.userCollapseLinks}`
+                      }
+                    >
+                      <span className={collapseItemMini}>
+                        <ViewList />
+                      </span>
+                      <ListItemText
+                        primary="My Jobs"
+                        disableTypography
+                        className={collapseItemText}
+                      />
+                    </NavLink>
+                  </ListItem>
+                  )
+                }
                 <ListItem className={classes.collapseItem}>
                   <NavLink
-                    to={{
-                      pathname: '/jobs',
-                      state: {
-                        editOwner: email, editMode: true, searchQuery: '', searchMode: false,
-                      },
-                    }}
-                    className={
-                      `${classes.itemLink} ${classes.userCollapseLinks}`
-                    }
-                  >
-                    <span className={collapseItemMini}>
-                      <ViewList />
-                    </span>
-                    <ListItemText
-                      primary='My Jobs'
-                      disableTypography
-                      className={collapseItemText}
-                    />
-                  </NavLink>
-                </ListItem>
-                <ListItem className={classes.collapseItem}>
-                  <NavLink
-                    to={{ pathname: '/'}}
+                    to={{ pathname: '/' }}
                     className={
                       `${classes.itemLink} ${classes.userCollapseLinks}`
                     }
@@ -488,7 +490,7 @@ class Sidebar extends React.Component {
             <SidebarWrapper
               className={sidebarWrapper}
               user={userComponent}
-              //headerLinks={<HeaderLinks />}
+              // headerLinks={<HeaderLinks />}
               links={links}
             />
             {image !== undefined ? (

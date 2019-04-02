@@ -9,9 +9,9 @@ const isLoggedIn = (isAuthenticated, user) => {
   if (auth === true) {
     if (user.type === UserTypes.ADMIN) {
       return '/admin/dashboard';
-    } else if (user.type === UserTypes.MIGRANT) {
+    } if (user.type === UserTypes.MIGRANT) {
       return '/main';
-    } else if (user.type === UserTypes.BUSINESS) {
+    } if (user.type === UserTypes.BUSINESS) {
       return '/businessmain';
     }
   } else {

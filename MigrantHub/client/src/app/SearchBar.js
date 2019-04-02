@@ -15,7 +15,7 @@ import { injectIntl, intlShape } from 'react-intl';
 import { fade } from '@material-ui/core/styles/colorManipulator';
 
 const styles = theme => ({
-search: {
+  search: {
     position: 'relative',
     borderRadius: theme.shape.borderRadius,
     backgroundColor: fade(theme.palette.common.black, 0.15),
@@ -158,37 +158,37 @@ class SearchBar extends React.Component {
       <div className={classes.search}>
         {this.renderRedirectTo()}
         <div className={classes.searchIcon}>
-            <Button
+          <Button
             type="submit"
             color="white"
             aria-label="edit"
             onClick={this.handleSearch}
             className={searchButton}
-            >
-                <Search/>
-            </Button>
+          >
+            <Search />
+          </Button>
         </div>
-            <InputBase
-            classes={{
-                root: classes.inputRoot,
-                input: classes.inputInput,
-            }}
-            inputProps={{
-                id: 'search',
-                name: 'search',
-                placeholder: intl.formatMessage({ id: 'search' }),
-                value: this.state.search,
-                error: this.state.searchError.length > 0,
-                onChange: event => this.handleChange(event),
-                classes: {
-                root: classes.inputRoot,
-                input: classes.multilineColor,
-                },
-            }}
-            onKeyPress={event => this.handleCheckForEnter(event)}
-            helperText={this.state.searchError}
-            error={this.state.searchError.length > 0}
-            />
+        <InputBase
+          classes={{
+            root: classes.inputRoot,
+            input: classes.inputInput,
+          }}
+          inputProps={{
+            id: 'search',
+            name: 'search',
+            placeholder: intl.formatMessage({ id: 'search' }),
+            value: this.state.search,
+            error: this.state.searchError.length > 0,
+            onChange: event => this.handleChange(event),
+            classes: {
+              root: classes.inputRoot,
+              input: classes.multilineColor,
+            },
+          }}
+          onKeyPress={event => this.handleCheckForEnter(event)}
+          helperText={this.state.searchError}
+          error={this.state.searchError.length > 0}
+        />
       </div>
     );
   }

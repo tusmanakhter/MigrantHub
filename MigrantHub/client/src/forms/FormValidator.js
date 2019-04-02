@@ -26,7 +26,7 @@ class FormValidator {
           validation.isValid = false;
         }
       }
-    };
+    }
 
     return validation;
   }

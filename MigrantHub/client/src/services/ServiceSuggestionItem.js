@@ -23,7 +23,7 @@ const styles = {
 class ServiceItem extends Component {
   handleDelete = () => {
     const { serviceSuggestionId, getData } = this.props;
-    axios.delete('/api/services/suggestions/' + serviceSuggestionId)
+    axios.delete(`/api/services/suggestions/${serviceSuggestionId}`)
       .then((response) => {
         if (response.status === 200) {
           getData();

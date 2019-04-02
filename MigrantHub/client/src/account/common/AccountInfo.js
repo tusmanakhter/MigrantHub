@@ -32,8 +32,7 @@ class AccountInfo extends Component {
   async checkForExistingUser(email) {
     const response = await axios.get(`/api/accounts/get/user/${email}`);
 
-    return response.data !== "" ? true : false
-    
+    return response.data !== '';
   }
 
   async validate() {
@@ -53,7 +52,7 @@ class AccountInfo extends Component {
       isError = true;
     }
 
-    var userExists = await this.checkForExistingUser(email);
+    const userExists = await this.checkForExistingUser(email);
 
     if (userExists) {
       errors.emailError = `${intl.formatMessage({ id: 'email' })}  ${intl.formatMessage({ id: 'alreadyexists' })}`;

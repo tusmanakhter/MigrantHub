@@ -53,18 +53,18 @@ function Header({ ...props }) {
               </Button>
             ) : (
               <Button
-                  justIcon
-                  round
-                  color="white"
-                  onClick={props.sidebarMinimize}
-                >
-                  <MoreVert className={classes.sidebarMiniIcon} />
-                </Button>
+                justIcon
+                round
+                color="white"
+                onClick={props.sidebarMinimize}
+              >
+                <MoreVert className={classes.sidebarMiniIcon} />
+              </Button>
             )}
           </div>
         </Hidden>
         <GridItem className={classes.inlineBlock} xs={12} sm={12} md={8} lg={8}>
-          <SearchBar/>
+          <SearchBar />
         </GridItem>
         <div className={classes.flex} />
         <Hidden smDown implementation="css">
