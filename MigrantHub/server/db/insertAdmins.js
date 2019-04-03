@@ -11,7 +11,7 @@ async function insertAdmins() {
   const promises = [];
   for (let i = 0; i < 100; i += 1) {
     const admin = new Admin();
-    const email = faker.internet.email();
+    const email = faker.internet.email().toLowerCase();
 
     admin._id = email;
     admin.authorized = faker.random.boolean();

@@ -160,8 +160,8 @@ class SavedJobMain extends Component {
         </div>
         { noData == true
             && (
-            <div>
-              <h4 style={{ 'text-indent': '50px' }}><FormattedMessage id="job.saved.empty" /></h4>
+            <div style={{textAlign: "left"}}>
+              <h4 style={{ 'text-indent': '40px' }}><FormattedMessage id="job.saved.empty" /></h4>
             </div>
             )
           }

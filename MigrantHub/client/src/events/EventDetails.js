@@ -38,8 +38,6 @@ const styles = {
     objectFit: 'cover',
     padding: '15px',
     maxWidth: 600,
-    minWidth: 600,
-    minHeight: 400,
     maxHeight: 400,
   },
 };

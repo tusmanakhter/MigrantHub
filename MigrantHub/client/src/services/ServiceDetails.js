@@ -37,8 +37,6 @@ const styles = {
     objectFit: 'cover',
     padding: '15px',
     maxWidth: 600,
-    minWidth: 600,
-    minHeight: 400,
     maxHeight: 400,
   },
 };
@@ -54,6 +52,8 @@ class ServiceDetails extends Component {
       serviceDescription: '',
       serviceDate: '',
       location: '',
+      website: '',
+      email: '',
       serviceHours: [],
       serviceImagePath: '',
       tempServiceImagePath: '',
@@ -132,6 +132,8 @@ class ServiceDetails extends Component {
         serviceDescription: parsedObj.serviceDescription,
         serviceDate: tempServiceDate,
         location: tempLocation,
+        website: parsedObj.website,
+        email: parsedObj.email,
         serviceHours: tempServiceHours,
         serviceImagePath: parsedObj.serviceImagePath,
         tempServiceImagePath: parsedObj.serviceImagePath,
@@ -237,7 +239,7 @@ class ServiceDetails extends Component {
       } = this.props;
       const {
         serviceId, serviceTitle, serviceSummary, serviceDescription, serviceDate, serviceHours,
-        location, alert, serviceOwner, redirect, serviceAverageRating, serviceRatingCount, isLoading,
+        location, website, email, alert, serviceOwner, redirect, serviceAverageRating, serviceRatingCount, isLoading,
         serviceImageName, serviceImagePath
       } = this.state;
       const icon = { 'calendar-plus-o': 'left' };
@@ -278,15 +280,15 @@ class ServiceDetails extends Component {
                     </div>
                   ) : (
                     <CardBody>
-                      <GridItem xs={12} align="left">
-                        <h5><b> Summary </b></h5>
-                        <p>{serviceSummary}</p>
-                      </GridItem>
                       {serviceDescription !== undefined && (
                       <GridItem xs={12} align="left">
                         <h5><b> Description </b></h5>
                         <p>{serviceDescription}</p>
-                      </GridItem>
+                        <br/>
+                        <p>{website}</p>
+                        <br/>
+                        <p>{email}</p>
+                    </GridItem>
                       )}
                       {location !== undefined && location.address !== '' && (
                         <div style={{}}>

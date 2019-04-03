@@ -2,6 +2,8 @@ const FacebookTokenStrategy = require('passport-facebook-token');
 const User = require('../models/MigrantUser');
 const { facebookConfig } = require('../config');
 const { logger, formatMessage } = require('../config/winston');
+const PinnedServiceService = require('../service/PinnedServiceService');
+const SavedJobService = require('../service/SavedJobService');
 
 const facebookStrategy = new FacebookTokenStrategy({
   clientID: facebookConfig.clientID,
@@ -28,12 +30,16 @@ const facebookStrategy = new FacebookTokenStrategy({
         token: accessToken,
       };
 
-      newUser.save((error, createdUser) => {
+      newUser.save(async (error, createdUser) => {
         if (error) {
           logger.error(formatMessage(req.ip, req.method, req.originalUrl, req.httpVersion,
             error.status, req.referer, 'FacebookTokenStrategy - Authenticate User', error.message));
           return done(error);
         }
+
+        await SavedJobService.createSavedJob(newUser.email);
+        await PinnedServiceService.createPinnedService(newUser.email);
+
         return done(null, createdUser);
       });
     } else {
