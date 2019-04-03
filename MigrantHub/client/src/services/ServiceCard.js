@@ -109,7 +109,7 @@ const ServiceCard = (props) => {
                     {serviceTitle}
                   </Typography>
                 )}
-              {serviceLocation
+              {serviceLocation && serviceLocation.city != ''
                 ? (<p style={{ textAlign: 'left' }}><Place fontSize="inherit" /> {serviceLocation.city}</p>)
                 : (<p style={{ textAlign: 'left' }}><Place fontSize="inherit" /> Canada</p>)
                 }

@@ -10,7 +10,10 @@ module.exports = {
     const serviceSuggestions = await ServiceSuggestionRepository.getSuggestions({ deleted: false });
 
     similarExists = services.find(service => stringSimilarity
-      .compareTwoStrings(service.serviceSummary, parsedServiceSuggestionObj.serviceSummary) > 0.9);
+      .compareTwoStrings(
+        service.serviceDescription,
+        parsedServiceSuggestionObj.serviceSummary
+      ) > 0.9);
 
     if (!similarExists) {
       similarExists = serviceSuggestions.find(serviceSuggestion => stringSimilarity

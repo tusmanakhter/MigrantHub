@@ -152,7 +152,7 @@ class Reviews extends Component {
               <h4 className={classes.cardIconTitle}>
                     Reviews
                 <br />
-                {`${avgRating}`}
+                {avgRating && avgRating != 0 ? avgRating : ''}
                 <StarRatingComponent
                   name="averageRating"
                   editing={false}

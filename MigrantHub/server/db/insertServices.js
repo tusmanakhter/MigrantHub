@@ -56,7 +56,6 @@ function createDocRecurse(err) {
     };
 
     line.split(';').forEach((entry, i) => {
-      console.log(entry);
       doc.user = 'admin@migranhub.com';
       doc[servicesSchemaKeyList[i]] = entry;
       doc.dateCreated = date;
