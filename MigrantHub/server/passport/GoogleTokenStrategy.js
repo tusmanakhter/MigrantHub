@@ -2,6 +2,8 @@ const GoogleTokenStrategy = require('passport-google-token').Strategy;
 const User = require('../models/MigrantUser');
 const { googleConfig } = require('../config');
 const { logger, formatMessage } = require('../config/winston');
+const PinnedServiceService = require('../service/PinnedServiceService');
+const SavedJobService = require('../service/SavedJobService');
 
 const googleStrategy = new GoogleTokenStrategy({
   clientID: googleConfig.clientID,
@@ -27,12 +29,16 @@ const googleStrategy = new GoogleTokenStrategy({
         token: accessToken,
       };
 
-      newUser.save((error, createdUser) => {
+      newUser.save(async (error, createdUser) => {
         if (error) {
           logger.error(formatMessage(req.ip, req.method, req.originalUrl, req.httpVersion,
             error.status, req.referer, 'GoogleTokenStrategy - Authenticate User', error.message));
           return done(error);
         }
+
+        await SavedJobService.createSavedJob(newUser.email);
+        await PinnedServiceService.createPinnedService(newUser.email);
+
         return done(null, createdUser);
       });
     } else {

@@ -12,7 +12,7 @@ module.exports = {
     similarExists = services.find(service => stringSimilarity
       .compareTwoStrings(
         service.serviceDescription,
-        parsedServiceSuggestionObj.serviceSummary
+        parsedServiceSuggestionObj.serviceSummary,
       ) > 0.9);
 
     if (!similarExists) {

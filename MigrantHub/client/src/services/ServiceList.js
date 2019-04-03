@@ -256,7 +256,7 @@ class ServiceList extends Component {
                     <CircularProgress className={classes.loader} disableShrink />
                   </Grid>
                 )}
-                threshold={-600}
+                threshold={user.type == UserTypes.ADMIN ? -200 : -600}
                 useWindow={false}
                 getScrollParent={() => document.getElementById('mainPanel')}
               >

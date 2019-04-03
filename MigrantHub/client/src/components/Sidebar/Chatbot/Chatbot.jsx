@@ -25,7 +25,6 @@ class Chatbot extends Component {
   }
 
   componentDidMount() {
-    addResponseMessage("Hey there!");
   }
 
   handleSubmit = (newMessage) => {
