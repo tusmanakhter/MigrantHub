@@ -24,24 +24,25 @@ module.exports = {
   },
 
   getServices(query, search, offset, limit) {
-    if(search == 'true'){
-      return Service.find(query, {score: {$meta: 'textScore'}}).sort({score: {$meta: 'textScore'}})
-        .skip(parseInt(offset, 10)).limit(parseInt(limit, 10)).exec().then(services => Promise.resolve(services))
+    if (search === 'true') {
+      return Service.find(query, { score: { $meta: 'textScore' } }).sort({ score: { $meta: 'textScore' } })
+        .skip(parseInt(offset, 10)).limit(parseInt(limit, 10))
+        .exec()
+        .then(services => Promise.resolve(services))
         .catch((error) => {
           throw new ServerError('There was an error retrieving services.', 400, error);
         });
-    }else if (offset !== undefined && limit !== undefined) {
+    } if (offset !== undefined && limit !== undefined) {
       return Service.find(query).skip(parseInt(offset, 10)).limit(parseInt(limit, 10)).exec()
         .then(services => Promise.resolve(services))
         .catch((error) => {
           throw new ServerError('There was an error retrieving services.', 400, error);
         });
-    }else {
-      return Service.find(query).exec().then(services => Promise.resolve(services))
-        .catch((error) => {
-          throw new ServerError('There was an error retrieving services.', 400, error);
-        });
     }
+    return Service.find(query).exec().then(services => Promise.resolve(services))
+      .catch((error) => {
+        throw new ServerError('There was an error retrieving services.', 400, error);
+      });
   },
 
   getService(query) {

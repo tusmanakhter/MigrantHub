@@ -35,13 +35,13 @@ describe('Service Repository', function () {
     }));
 
     it('should successfully call mongodb find to findServices', test(function () {
-        this.stub(Service, 'find').returns({sort: sinon.stub().returns({exec: sinon.stub().returns(Promise.resolve({}))})});
+        this.stub(Service, 'find').returns({exec: sinon.stub().returns(Promise.resolve({}))});
         ServiceRepository.getServices({ $text: { $search: /test/ } , deleted: false });
         assert.calledWith(Service.find, { $text: { $search: /test/ } , deleted: false });
     }));
 
     it('should throw error, since there was a error getting all services', test(function () {
-        this.stub(Service, 'find').returns({sort: sinon.stub().returns({exec: sinon.stub().returns(Promise.reject({}))})});
+        this.stub(Service, 'find').returns({exec: sinon.stub().returns(Promise.reject({}))});
         return chai.assert.isRejected(ServiceRepository.getServices({ $text: { $search: /test/ } , deleted: false }), ServerError, 'There was an error retrieving services.');
     }));
 

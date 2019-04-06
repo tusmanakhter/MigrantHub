@@ -30,24 +30,25 @@ module.exports = {
   },
 
   getEvents(query, search, offset, limit) {
-    if(search == 'true'){
+    if (search === 'true') {
       return Event.find(query, { score: { $meta: 'textScore' } }).sort({ score: { $meta: 'textScore' } })
-        .skip(parseInt(offset, 10)).limit(parseInt(limit, 10)).exec().then(events => Promise.resolve(events))
+        .skip(parseInt(offset, 10)).limit(parseInt(limit, 10))
+        .exec()
+        .then(events => Promise.resolve(events))
         .catch((error) => {
           throw new ServerError('There was an error retrieving events.', 400, error);
         });
-    } else if (offset !== undefined && limit !== undefined) {
+    } if (offset !== undefined && limit !== undefined) {
       return Event.find(query).skip(parseInt(offset, 10)).limit(parseInt(limit, 10)).exec()
         .then(events => Promise.resolve(events))
         .catch((error) => {
           throw new ServerError('There was an error retrieving events.', 400, error);
         });
-    }else{
-      return Event.find(query).exec().then(events => Promise.resolve(events))
-        .catch((error) => {
-          throw new ServerError('There was an error retrieving events.', 400, error);
-        });
     }
+    return Event.find(query).exec().then(events => Promise.resolve(events))
+      .catch((error) => {
+        throw new ServerError('There was an error retrieving events.', 400, error);
+      });
   },
 
   updateEvent(eventObject) {

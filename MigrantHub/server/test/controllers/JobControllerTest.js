@@ -16,6 +16,9 @@ describe('Job controller', function () {
         _id: "5c987e1f0c6e2045a7995900",
         offset: 0,
         limit: 10,
+        owner: "test@test.com",
+        searchQuery: "Test",
+        search: true,
       }
     };
 
@@ -29,6 +32,12 @@ describe('Job controller', function () {
     this.stub(JobService, 'getJobs');
     await JobController.getJobs(req.query.offset, req.query.limit);
     assert.calledWith(JobService.getJobs, req.query.offset, req.query.limit);
+  }));
+
+  it('should call getJobs service with correct parameters from createJob controller', test(async function () {
+    this.stub(JobService, 'getJobs');
+    await JobController.getJobs(req.user, req.searchQuery, req.search, req.query.offset, req.query.limit);
+    assert.calledWith(JobService.getJobs, req.user, req.searchQuery, req.search, req.query.offset, req.query.limit);
   }));
 
   it('should call getJob service with correct parameters from getJob controller', test(async function () {
