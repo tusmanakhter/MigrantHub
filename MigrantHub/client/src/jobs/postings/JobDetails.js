@@ -75,15 +75,15 @@ class JobDetails extends Component {
     this.warningWithConfirmAndCancelMessage = this.warningWithConfirmAndCancelMessage.bind(this);
   }
 
-  componentDidMount(props) {
-    this.getData(this, props);
+  componentDidMount() {
+    this.getData(this);
   }
 
-  componentWillReceiveProps(props) {
-    this.getData(this, props);
+  componentWillReceiveProps() {
+    this.getData(this);
   }
 
-  getData(props) {
+  getData() {
     axios.get(`/api/job/${this.state.jobId}`, {
       params: {
         _id: this.state.jobId,
@@ -247,10 +247,10 @@ class JobDetails extends Component {
                   <br />
                   <br />
                   <Typography variant="h4" className={classes.cardIconTitle}>
-                    <b>{title}{' '}</b>
                     {user.type === UserTypes.MIGRANT && (
                         <>
-                          {savedJob
+                        {console.log(savedJob)}
+                        {savedJob
                             ? (
                               <OutlineButton
                                 id="savedJob"
@@ -280,6 +280,9 @@ class JobDetails extends Component {
                         }
                         </>
                     )}
+                    <br />
+                    <br />
+                    <b>{title}</b>
                   </Typography>
                   <Typography variant="caption" className={classes.cardIconTitle}>{companyName}{'-'}{location}</Typography>
                   <br />

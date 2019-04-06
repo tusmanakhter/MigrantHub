@@ -68,8 +68,8 @@ const styles = theme => ({
     maxHeight: 40,
   },
   cardSaved: {
-    maxWidth: 280,
-    minWidth: 280,
+    maxWidth: 300,
+    minWidth: 300,
     minHeight: 240,
     maxHeight: 240,
   },
