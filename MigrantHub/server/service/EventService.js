@@ -43,7 +43,7 @@ module.exports = {
     }
     query.deleted = false;
 
-    return EventRepository.getEvents(query, offset, limit);
+    return EventRepository.getEvents(query, search, offset, limit);
   },
 
   async updateEvent(user, parsedEventObject) {

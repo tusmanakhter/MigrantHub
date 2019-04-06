@@ -8,6 +8,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import { AuthConsumer } from 'routes/AuthContext';
 import GridItem from 'components/Grid/GridItem.jsx';
 import Grid from '@material-ui/core/Grid';
+import SearchEventContainer from 'search/eventSearch/SearchEventContainer';
 import SearchServiceContainer from 'search/serviceSearch/SearchServiceContainer';
 
 const styles = theme => ({
@@ -39,6 +40,7 @@ class Search extends Component {
           <React.Fragment>
             <div>
               <SearchServiceContainer  editMode={false} searchQuery={searchQuery} searchMode={true} />
+              <SearchEventContainer editMode={false} searchQuery={searchQuery} searchMode={true} />
             </div>
           </React.Fragment>
         )}
