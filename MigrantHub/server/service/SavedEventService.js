@@ -37,7 +37,9 @@ module.exports = {
 
       return SavedEventRepository.addSavedEvent(user._id, query);
     }
-    const foundSavedEventState = foundSavedEvent.savedList.filter(item => item._id === String(eventId));
+    const foundSavedEventState = foundSavedEvent.savedList.filter(
+      item => item._id === String(eventId),
+    );
 
     if (foundSavedEventState[0].deleted === true) {
       const query = { $set: { 'savedList.$.deleted': false, 'savedList.$.deletedDate': null } };
