@@ -22,6 +22,12 @@ import { AuthConsumer } from 'routes/AuthContext';
 import UserTypes from 'lib/UserTypes';
 import moment from 'moment';
 import CardMedia from '@material-ui/core/CardMedia';
+import Typography from '@material-ui/core/Typography';
+import { toast } from 'react-toastify';
+import { FormattedMessage } from 'react-intl';
+import FavoriteIcon from '@material-ui/icons/Favorite';
+import UnFavoriteIcon from '@material-ui/icons/FavoriteBorder';
+import OutlineButton from '@material-ui/core/Button';
 
 const styles = {
   ...sweetAlertStyle,
@@ -39,6 +45,13 @@ const styles = {
     padding: '15px',
     maxWidth: 600,
     maxHeight: 400,
+  },
+  tooltip: {
+    position: 'relative',
+  },
+  savedEvent: {
+    position: 'absolute',
+    right: 0,
   },
 };
 
@@ -65,6 +78,7 @@ class EventDetails extends Component {
         startTime: '',
         endTime: '',
       },
+      savedEvent: false,
     };
 
     this.hideAlert = this.hideAlert.bind(this);
@@ -73,12 +87,12 @@ class EventDetails extends Component {
     this.warningWithConfirmAndCancelMessage = this.warningWithConfirmAndCancelMessage.bind(this);
   }
 
-  componentDidMount(props) {
-    this.getData(this, props);
+  componentDidMount() {
+    this.getData(this);
   }
 
-  componentWillReceiveProps(props) {
-    this.getData(this, props);
+  componentWillReceiveProps() {
+    this.getData(this);
   }
 
   getData() {
@@ -88,7 +102,7 @@ class EventDetails extends Component {
         _id: this.state.eventId,
       },
     }).then((response) => {
-      const parsedObj = qs.parse(qs.stringify(response.data));
+      const parsedObj = qs.parse(response.data);
 
       let tempLocation = {
         address: '',
@@ -121,6 +135,7 @@ class EventDetails extends Component {
           endTime: moment(moment(parsedObj.dateEnd).format('MMM D YYYY') + parsedObj.timeEnd, ['MMM D YYYYh:mm A']).format(),
         },
         isLoading: false,
+        savedEvent: parsedObj.savedEvent,
       });
     });
   }
@@ -208,12 +223,41 @@ class EventDetails extends Component {
     });
   }
 
+  addSavedEvent = (eventId) => {
+    axios.put(`/api/events/saved/${eventId}`)
+      .then((response) => {
+        if (response.status === 200) {
+          toast.success('Event Post Saved!');
+          this.setState({
+            savedEvent: true,
+          });
+        }
+      }).catch((error) => {
+      toast.error('Error Saving Event Post!');
+    });
+  };
+
+  deleteSavedEvent = (eventId) => {
+    axios.delete(`/api/events/saved/${eventId}`)
+      .then((response) => {
+        if (response.status === 200) {
+          toast.success('Event Post Unsaved!');
+          this.setState({
+            savedEvent: false,
+          });
+        }
+      }).catch((error) => {
+      toast.error('Error Unsaving Event Post!');
+    });
+  };
+
   render() {
     const {
       classes,
     } = this.props;
     const {
-      eventId, eventName, eventImagePath, eventDescription, dateStart, dateEnd, timeStart, timeEnd, location, eventOwner, alert, redirect, isLoading,
+      eventId, eventName, eventImagePath, eventDescription, dateStart, dateEnd, timeStart, timeEnd, location,
+      eventOwner, alert, redirect, isLoading, savedEvent
     } = this.state;
     const icon = { 'calendar-plus-o': 'left' };
 
@@ -234,7 +278,43 @@ class EventDetails extends Component {
                   <CardIcon color="rose">
                     <h4><b>Event</b></h4>
                   </CardIcon>
-                  <h4 className={classes.cardIconTitle}><b>{eventName}</b></h4>
+                  <Typography variant="h4" className={classes.cardIconTitle}>
+                    {user.type === UserTypes.MIGRANT && (
+                      <>
+                      {savedEvent
+                        ? (
+                          <OutlineButton
+                            id="savedEvent"
+                            color="primary"
+                            variant="outlined"
+                            aria-label="Saved Event"
+                            title={<FormattedMessage id="event.saved" />}
+                            onClick={() => this.deleteSavedEvent(eventId)}
+                            className={classes.savedEvent}
+                          >
+                            <FavoriteIcon /> {' '} Saved
+                          </OutlineButton>
+                        )
+                        : (
+                          <OutlineButton
+                            id="savedEvent"
+                            color="primary"
+                            variant="outlined"
+                            aria-label="Saved Event"
+                            title={<FormattedMessage id="event.save" />}
+                            onClick={() => this.addSavedEvent(eventId)}
+                            className={classes.savedEvent}
+                          >
+                            <UnFavoriteIcon />{' '} Save
+                          </OutlineButton>
+                        )
+                      }
+                      </>
+                    )}
+                    <br />
+                    <br />
+                    <b>{eventName}</b>
+                  </Typography>
                 </CardHeader>
                 {eventImagePath != '' && eventImagePath != undefined &&
                   <GridItem align="center">

@@ -454,5 +454,12 @@
   "job.saved.empty": "Aucun emplois sauvegardés",
   "search.events": "Résultats des Événements Recherchés",
   "search.services": "Résultats des Services Recherchés",
-  "search.jobs": "Résultats des Emplois Recherchés"
+  "search.jobs": "Résultats des Emplois Recherchés",
+  "event.unsave": "Annuler l’Événements ",
+  "event.save": "Sauvez Événements",
+  "event.saved": "Événements sauvegardés",
+  "event": "Événements",
+  "event.browse": "Parcourir les événements disponibles",
+  "event.saved.browse": "Parcourir les événements sauvegardés",
+  "event.saved.empty": "Aucun événements sauvegardés"
 }

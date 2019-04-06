@@ -18,6 +18,12 @@ import Business from '@material-ui/icons/Business';
 import moment from 'moment';
 import GridContainer from 'components/Grid/GridContainer.jsx';
 import { AuthConsumer } from 'routes/AuthContext';
+import Tooltip from '@material-ui/core/Tooltip';
+import FavoriteIcon from '@material-ui/icons/Favorite';
+import UnFavoriteIcon from '@material-ui/icons/FavoriteBorder';
+import UserTypes from 'lib/UserTypes';
+import { FormattedMessage } from 'react-intl';
+import Button from 'components/CustomButtons/Button.jsx';
 
 const styles = theme => ({
   card: {
@@ -32,8 +38,8 @@ const styles = theme => ({
     maxHeight: 40,
   },
   bodyContainer: {
-    minHeight: 80,
-    maxHeight: 80,
+    minHeight: 55,
+    maxHeight: 55,
   },
   eventTitle: {
     textDecoration: 'underline',
@@ -59,11 +65,54 @@ const styles = theme => ({
 const EventCard = (props) => {
   const {
     classes, eventId, eventName, eventDescription, eventLocation, dateEnd,
+    savedEvent, addSavedEvent, deleteSavedEvent, itemIndex,
   } = props;
 
   return (
+    <AuthConsumer>
+      {({ user }) => (
     <React.Fragment>
     <Card className={classes.card}>
+      <GridItem align="right">
+        {user.type === UserTypes.MIGRANT ? (
+            <Tooltip
+              id="tooltip-top"
+              aria-label="SavedIcon"
+              title={savedEvent ? <FormattedMessage id="event.unsave" /> : <FormattedMessage id="event.save" />}
+              className={classes.tooltip}
+            >
+              {savedEvent
+                ? (
+                  <Button
+                    size="sm"
+                    color="primary"
+                    justIcon
+                    round
+                    simple
+                    onClick={() => deleteSavedEvent(eventId, itemIndex)}
+                  >
+                    <FavoriteIcon />
+                  </Button>
+                )
+                : (
+                  <Button
+                    size="sm"
+                    color="primary"
+                    justIcon
+                    round
+                    simple
+                    onClick={() => addSavedEvent(eventId, itemIndex)}
+                  >
+                    <UnFavoriteIcon />
+                  </Button>
+                )
+              }
+            </Tooltip>
+          )
+          : (<div><br /><br /></div>
+          )
+        }
+      </GridItem>
   <CardActionArea component={cardProps =>  <Link to={`/events/${eventId}`} {...cardProps} />}>
     <CardHeader color="primary" icon className={classes.headContainer}>
       <CardIcon color="primary">
@@ -83,10 +132,10 @@ const EventCard = (props) => {
       </Typography>
     </CardHeader>
     <CardBody className={classes.bodyContainer}>
-    {(eventDescription != undefined && (eventDescription).length > 120)
+    {(eventDescription != undefined && (eventDescription).length > 87)
     ? (
     <Typography variant="body1">
-      {((eventDescription).substring(0, 160))} <b>...View More</b>
+      {((eventDescription).substring(0, 100))} <b>...View More</b>
     </Typography>
     ) : (
     <Typography variant="body1">
@@ -118,6 +167,8 @@ const EventCard = (props) => {
   </CardActionArea>
 </Card>
 </React.Fragment>
+      )}
+    </AuthConsumer>
   );
 };
 
