@@ -12,6 +12,25 @@ module.exports = {
     });
   },
 
+  getSavedEvents(query, offset, limit) {
+    if (offset !== undefined && limit !== undefined) {
+      return SavedEvent.aggregate([
+        { $match: query },
+        { $unwind: '$savedList' },
+        { $replaceRoot: { newRoot: '$savedList' } },
+        { $match: { deleted: false } },
+      ]).skip(parseInt(offset, 10)).limit(parseInt(limit, 10)).exec()
+        .then(savedEvents => Promise.resolve(savedEvents))
+        .catch((error) => {
+          throw new ServerError('There was an error retrieving saved events.', 400, error);
+        });
+    }
+    return SavedEvent.findOne(query).exec().then(events => Promise.resolve(events))
+      .catch((error) => {
+        throw new ServerError('There was an error retrieving saved events.', 400, error);
+      });
+  },
+
   getSavedEvent(userId, eventId) {
     return SavedEvent.findOne({
       _id: userId,

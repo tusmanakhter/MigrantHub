@@ -8,6 +8,25 @@ module.exports = {
     return SavedEventRepository.createSavedEvent(userId);
   },
 
+  async getSavedEvents(user, offset, limit) {
+    let query = {};
+    query._id = user._id;
+
+    const savedEvents = await SavedEventRepository.getSavedEvents(query, offset, limit);
+    if (savedEvents.length > 0) {
+      const savedEventsList = [];
+      for (let i = 0; i < savedEvents.length; i += 1) {
+        savedEventsList.push({ _id: savedEvents[i]._id });
+      }
+      query = {
+        $or: savedEventsList,
+      };
+      query.deleted = false;
+      return EventRepository.getEvents(query, false, undefined, undefined);
+    }
+    return Promise.resolve([]);
+  },
+
   async addSavedEvent(user, eventId) {
     const foundSavedEvent = await SavedEventRepository.getSavedEvent(user._id, eventId);
 
