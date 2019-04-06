@@ -41,6 +41,7 @@ import JobDetails from 'jobs/postings/JobDetails';
 import SavedJobList from 'jobs/saved/SavedJobList';
 import ServiceCategoryList from 'services/ServiceCategoryList';
 import SearchEventList from 'search/eventSearch/SearchEventList';
+import SearchJobList from 'search/jobSearch/SearchJobList';
 import SearchServiceList from 'search/serviceSearch/SearchServiceList';
 
 class Routes extends Component {
@@ -99,8 +100,9 @@ class Routes extends Component {
           <ProtectedRoute path="/services/suggestions" component={ServiceSuggestionList} business admin exact />
           <ProtectedRoute path="/services" component={ServiceList} exact />
           <ProtectedRoute path="/services/:id" component={ServiceDetails} />
-          <ProtectedRoute path="/search" component={Search} exact />
+          <ProtectedRoute path="/search/:query" component={Search} />
           <ProtectedRoute path="/search/events" component={SearchEventList} exact />
+          <ProtectedRoute path="/search/jobs" component={SearchJobList} exact />
           <ProtectedRoute path="/search/services" component={SearchServiceList} exact />
           <ProtectedRoute path="/bugs/report" component={BugForm} exact />
           <ProtectedRoute path="/bugs" component={BugList} exact />

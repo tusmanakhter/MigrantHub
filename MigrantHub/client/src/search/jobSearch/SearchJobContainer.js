@@ -8,10 +8,11 @@ import { FormattedMessage } from 'react-intl';
 import { AuthConsumer } from 'routes/AuthContext';
 import GridContainer from 'components/Grid/GridContainer.jsx';
 import Button from '@material-ui/core/Button';
+import Card from 'components/Card/Card.jsx';
+import CardHeader from 'components/Card/CardHeader.jsx';
 import { toast } from 'react-toastify';
 import update from 'immutability-helper';
 import GridItem from 'components/Grid/GridItem.jsx';
-import ServiceCard from 'services/ServiceCard';
 
 const styles = theme => ({
   root: {
@@ -34,17 +35,16 @@ const styles = theme => ({
   },
 });
 
-class SearchServiceContainer extends Component {
+class SearchJobContainer extends Component {
   constructor(props) {
     super(props);
     this.state = {
       items: [],
-      redirectToSavedList: false,
+      redirectToSearchResultList: false,
       noData: false,
     };
 
     this.fetchData = this.fetchData.bind(this);
-    this.addPinnedService = this.addPinnedService.bind(this);
   }
 
   componentDidMount() {
@@ -68,7 +68,7 @@ class SearchServiceContainer extends Component {
     if (redirectToSearchResultList) {
       return (
         <Redirect to={{
-          pathname: 'search/services',
+          pathname: 'search/jobs',
           state: {
             searchMode,
             searchQuery
@@ -78,14 +78,31 @@ class SearchServiceContainer extends Component {
       );    }
   }
 
-  addPinnedService(serviceId) {
-    axios.put(`/api/services/pinned/${serviceId}`)
+  addSavedJob = (jobId) => {
+    axios.put(`/api/job/saved/${jobId}`)
       .then((response) => {
-        toast.success(response.data);
+        if (response.status === 200) {
+          toast.success('Job Post Saved!');
+        }
       }).catch((error) => {
-      toast.success(error.response.data);
-    });
-  }
+        toast.error('Error Saving Job Post!');
+      });
+  };
+
+  deleteSavedJob = (jobId, index) => {
+    axios.delete(`/api/job/saved/${jobId}`)
+      .then((response) => {
+        if (response.status === 200) {
+          this.setState(prevState => ({
+            items: update(prevState.items, { $splice: [[index, 1]] }),
+          }));
+          toast.success('Job Post Unsaved!');
+          this.fetchData();
+        }
+      }).catch((error) => {
+        toast.error('Error Unsaving Job Post!');
+      });
+  };
 
   fetchData = () => {
     const { searchMode, searchQuery } = this.props;
@@ -94,7 +111,7 @@ class SearchServiceContainer extends Component {
       items: [],
     });
 
-    axios.get('/api/services/', {
+    axios.get('/api/job/', {
       params: {
         searchQuery,
         search: searchMode,
@@ -114,7 +131,6 @@ class SearchServiceContainer extends Component {
     });
   }
 
-
   render() {
     const { classes, ...rest } = this.props;
     const { items, noData } = this.state;
@@ -133,7 +149,7 @@ class SearchServiceContainer extends Component {
           )
         }
         <h5 className={classes.cardTitle}>
-          <b><FormattedMessage id="search.services" /></b>
+          <b><FormattedMessage id="search.jobs" /></b>
         </h5>
         <hr />
         <div className={classes.mainContainer}>
@@ -142,22 +158,18 @@ class SearchServiceContainer extends Component {
             {
                 items.map((item, index) => (
                   <GridItem>
-                    <ServiceCard
-                      serviceId={item._id}
-                      serviceTitle={item.serviceTitle}
-                      serviceImagePath={item.serviceImagePath}
-                      serviceDescription={item.serviceDescription}
-                      serviceSummary={item.serviceSummary}
-                      category={item.category}
-                      subcategory={item.subcategory}
-                      serviceLocation={item.location}
-                      serviceDate={item.serviceDate}
-                      serviceHours={item.serviceHours}
-                      rating={item.avgRating}
-                      count={item.countRating}
-                      pinIcon={<i className="fas fa-thumbtack" />}
-                      pinIconHandle={this.addPinnedService}
-                      pinIconHelperText="Pin to Dashboard"
+                    <JobCard
+                      smallCard
+                      jobId={item._id}
+                      title={item.title}
+                      description={JSON.parse(item.description).blocks[0].text}
+                      companyName={item.companyName}
+                      location={item.location}
+                      dateCreated={item.dateCreated}
+                      savedJob
+                      itemIndex={index}
+                      addSavedJob={() => {}}
+                      deleteSavedJob={this.deleteSavedJob}
                     />
                   </GridItem>
                 ))
@@ -167,7 +179,7 @@ class SearchServiceContainer extends Component {
         { noData == true
             && (
             <div style={{textAlign: "left"}}>
-              <h4 style={{ 'text-indent': '40px' }}>No services available</h4>
+              <h4 style={{ 'text-indent': '40px' }}>No jobs available</h4>
             </div>
             )
           }
@@ -176,9 +188,9 @@ class SearchServiceContainer extends Component {
   }
 }
 
-SearchServiceContainer.propTypes = {
+SearchJobContainer.propTypes = {
   classes: PropTypes.shape({}).isRequired,
   location: PropTypes.shape({}).isRequired,
 };
 
-export default withStyles(styles)(SearchServiceContainer);
+export default withStyles(styles)(SearchJobContainer);

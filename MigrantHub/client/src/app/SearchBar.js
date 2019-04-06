@@ -114,18 +114,12 @@ class SearchBar extends React.Component {
   sendSearch() {
     this.setState({
       redirectTo: true,
-      redirectToURL: '/search',
-      redirectState: {
-        editOwner: '',
-        editMode: false,
-        searchQuery: this.state.search,
-        searchMode: true,
-      },
+      redirectToURL: `/search/${this.state.search}`,
     });
   }
 
   renderRedirectTo = () => {
-    const { redirectTo, redirectToURL, redirectState } = this.state;
+    const { redirectTo, redirectToURL } = this.state;
 
     if (redirectTo) {
       this.setState({
@@ -133,10 +127,7 @@ class SearchBar extends React.Component {
         redirectToURL: '',
       });
       return (
-        <Redirect to={{
-          pathname: redirectToURL,
-          state: redirectState,
-        }}
+        <Redirect to={redirectToURL}
         />
       );
     }

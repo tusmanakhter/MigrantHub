@@ -13,6 +13,7 @@ import InfiniteScroll from 'react-infinite-scroller';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import GridContainer from 'components/Grid/GridContainer.jsx';
 import GridItem from 'components/Grid/GridItem.jsx';
+import FavoriteIcon from '@material-ui/icons/Favorite';
 import { toast } from 'react-toastify';
 import update from 'immutability-helper';
 
@@ -27,7 +28,7 @@ const styles = theme => ({
   },
 });
 
-class JobList extends Component {
+class SearchJobList extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -39,41 +40,24 @@ class JobList extends Component {
     };
   }
 
-  setRedirectToJobForm = () => {
-    this.setState({
-      redirectToJobForm: true,
-    });
-  }
-
-  renderRedirectToJobForm = () => {
-    const { redirectToJobForm } = this.state;
-    if (redirectToJobForm) {
-      return <Redirect to="/jobs/create" />;
-    }
-  }
-
-  fetchData = (redirect, props) => {
-    const { location } = props;
+  fetchData = () => {
+    const { location } = this.props;
     const { limit } = this.state;
     let { offset } = this.state;
 
-    let editOwnerEmail = '';
     let searchQuery = '';
     let searchMode = false;
 
     if (location.state) {
-      if (location.state.editMode) {
-        editOwnerEmail = location.state.editOwner;
-      } else if (location.state.searchMode) {
+      if (location.state.searchMode) {
         searchMode = location.state.searchMode;
         searchQuery = location.state.searchQuery;
       }
     }
 
-
     axios.get('/api/job/', {
       params: {
-        editOwner: editOwnerEmail,
+        editOwner: '',
         searchQuery,
         search: searchMode,
         offset,
@@ -92,32 +76,30 @@ class JobList extends Component {
     });
   }
 
-  addSavedJob = (jobId, index) => {
+  addSavedJob = (jobId) => {
     axios.put(`/api/job/saved/${jobId}`)
       .then((response) => {
         if (response.status === 200) {
-          this.setState({
-            items: update(this.state.items, { [index]: { savedJob: { $set: true } } }),
-          });
           toast.success('Job Post Saved!');
         }
       }).catch((error) => {
-        toast.error('Error Saving Job Post!');
-      });
+      toast.error('Error Saving Job Post!');
+    });
   };
 
   deleteSavedJob = (jobId, index) => {
     axios.delete(`/api/job/saved/${jobId}`)
       .then((response) => {
         if (response.status === 200) {
-          this.setState({
-            items: update(this.state.items, { [index]: { savedJob: { $set: false } } }),
-          });
+          this.setState(prevState => ({
+            items: update(prevState.items, { $splice: [[index, 1]] }),
+          }));
           toast.success('Job Post Unsaved!');
+          this.fetchData();
         }
       }).catch((error) => {
-        toast.error('Error Unsaving Job Post!');
-      });
+      toast.error('Error Unsaving Job Post!');
+    });
   };
 
   render() {
@@ -129,37 +111,10 @@ class JobList extends Component {
         {({ user }) => (
           <>
             <div className={classes.mainContainer}>
-              {user.type !== UserTypes.ADMIN
-            && (
               <div>
-                {this.renderRedirectToJobForm()}
-                <Grid item container justify="center">
-                  {user.type === UserTypes.BUSINESS
-                  && (
-                    <Grid item lg={12} md={12} sm={12} xd={12} align="right">
-                      <Button
-                        variant="contained"
-                        color="primary"
-                        className={classes.button}
-                        onClick={this.setRedirectToJobForm}
-                      >
-                        Create a Job Post
-                      </Button>
-                    </Grid>
-                  )}
-                  <Grid lg={12} md={12} sm={12} xd={12}>
-                    <h3>
-                      <FormattedMessage id="job" />
-                    </h3>
-                    <h5>
-                      <FormattedMessage id="job.browse" />
-                    </h5>
-                  </Grid>
-                </Grid>
+                <b><FormattedMessage id="search.jobs" /></b>
                 <hr />
               </div>
-            )
-            }
               <InfiniteScroll
                 pageStart={0}
                 loadMore={() => this.fetchData(this.props.redirect, this.props)}
@@ -185,9 +140,9 @@ class JobList extends Component {
                         companyName={item.companyName}
                         location={item.location}
                         dateCreated={item.dateCreated}
-                        savedJob={item.savedJob}
+                        savedJob
                         itemIndex={index}
-                        addSavedJob={this.addSavedJob}
+                        addSavedJob={() => {}}
                         deleteSavedJob={this.deleteSavedJob}
                       />
                     </GridItem>
@@ -203,9 +158,9 @@ class JobList extends Component {
   }
 }
 
-JobList.propTypes = {
+SearchJobList.propTypes = {
   classes: PropTypes.shape({}).isRequired,
   location: PropTypes.shape({}).isRequired,
 };
 
-export default withStyles(styles)(JobList);
+export default withStyles(styles)(SearchJobList);

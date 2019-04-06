@@ -77,6 +77,10 @@ class SearchEventContainer extends Component {
   fetchData = () => {
     const { searchMode, searchQuery } = this.props;
 
+    this.setState({
+      items: [],
+    });
+
     axios.get('/api/events/', {
       params: {
         offset: 0,
@@ -93,8 +97,7 @@ class SearchEventContainer extends Component {
       } else {
         this.setState(prevState => ({
           moreData: true,
-          items: prevState.items.concat(response.data),
-          offset: prevState.offset + response.data.length,
+          items: response.data,
         }));
       }
     });
