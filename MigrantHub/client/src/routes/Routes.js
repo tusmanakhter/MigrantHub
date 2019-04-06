@@ -21,6 +21,7 @@ import ServiceList from 'services/ServiceList';
 import Search from 'search/Search';
 import EventList from 'events/EventList';
 import EventForm from 'events/EventForm';
+import SavedEventList from 'events/saved/SavedEventList';
 import BugForm from 'forms/BugForm';
 import BugList from 'bugs/BugList';
 import BugDetails from 'bugs/BugDetails';
@@ -100,15 +101,16 @@ class Routes extends Component {
           <ProtectedRoute path="/services/suggestions" component={ServiceSuggestionList} business admin exact />
           <ProtectedRoute path="/services" component={ServiceList} exact />
           <ProtectedRoute path="/services/:id" component={ServiceDetails} />
-          <ProtectedRoute path="/search/:query" component={Search} />
           <ProtectedRoute path="/search/events" component={SearchEventList} exact />
           <ProtectedRoute path="/search/jobs" component={SearchJobList} exact />
           <ProtectedRoute path="/search/services" component={SearchServiceList} exact />
+          <ProtectedRoute path="/search/:query" component={Search} />
           <ProtectedRoute path="/bugs/report" component={BugForm} exact />
           <ProtectedRoute path="/bugs" component={BugList} exact />
           <ProtectedRoute path="/bugs/:id" component={BugDetails} />
           <ProtectedRoute path="/events/create" component={EventForm} business exact />
           <ProtectedRoute path="/events" component={EventList} exact />
+          <ProtectedRoute path="/events/saved" component={SavedEventList} exact />
           <ProtectedRoute path="/events/:id" component={EventDetails} />
           <ProtectedRoute path="/users" component={UsersList} exact />
           <ProtectedRoute path="/friends" component={FriendPanel} exact />

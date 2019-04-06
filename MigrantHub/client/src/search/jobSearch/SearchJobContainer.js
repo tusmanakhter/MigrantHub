@@ -68,20 +68,24 @@ class SearchJobContainer extends Component {
     if (redirectToSearchResultList) {
       return (
         <Redirect to={{
-          pathname: 'search/jobs',
+          pathname: '/search/jobs',
           state: {
             searchMode,
-            searchQuery
+            searchQuery,
           },
         }}
         />
-      );    }
+      );
+    }
   }
 
-  addSavedJob = (jobId) => {
+  addSavedJob = (jobId, index) => {
     axios.put(`/api/job/saved/${jobId}`)
       .then((response) => {
         if (response.status === 200) {
+          this.setState({
+            items: update(this.state.items, { [index]: { savedJob: { $set: true } } }),
+          });
           toast.success('Job Post Saved!');
         }
       }).catch((error) => {
@@ -93,11 +97,10 @@ class SearchJobContainer extends Component {
     axios.delete(`/api/job/saved/${jobId}`)
       .then((response) => {
         if (response.status === 200) {
-          this.setState(prevState => ({
-            items: update(prevState.items, { $splice: [[index, 1]] }),
-          }));
+          this.setState({
+            items: update(this.state.items, { [index]: { savedJob: { $set: false } } }),
+          });
           toast.success('Job Post Unsaved!');
-          this.fetchData();
         }
       }).catch((error) => {
         toast.error('Error Unsaving Job Post!');
@@ -166,9 +169,9 @@ class SearchJobContainer extends Component {
                       companyName={item.companyName}
                       location={item.location}
                       dateCreated={item.dateCreated}
-                      savedJob
+                      savedJob={item.savedJob}
                       itemIndex={index}
-                      addSavedJob={() => {}}
+                      addSavedJob={this.addSavedJob}
                       deleteSavedJob={this.deleteSavedJob}
                     />
                   </GridItem>
@@ -178,7 +181,7 @@ class SearchJobContainer extends Component {
         </div>
         { noData == true
             && (
-            <div style={{textAlign: "left"}}>
+            <div style={{ textAlign: 'left' }}>
               <h4 style={{ 'text-indent': '40px' }}>No jobs available</h4>
             </div>
             )

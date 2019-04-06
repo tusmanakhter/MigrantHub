@@ -127,8 +127,7 @@ class SearchBar extends React.Component {
         redirectToURL: '',
       });
       return (
-        <Redirect to={redirectToURL}
-        />
+        <Redirect to={redirectToURL} />
       );
     }
   }

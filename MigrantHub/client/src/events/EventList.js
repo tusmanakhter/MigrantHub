@@ -131,8 +131,8 @@ class EventList extends Component {
           toast.success('Event Post Saved!');
         }
       }).catch((error) => {
-      toast.error('Error Saving Event Post!');
-    });
+        toast.error('Error Saving Event Post!');
+      });
   };
 
   deleteSavedEvent = (eventId, index) => {
@@ -145,8 +145,8 @@ class EventList extends Component {
           toast.success('Event Post Unsaved!');
         }
       }).catch((error) => {
-      toast.error('Error Unsaving Event Post!');
-    });
+        toast.error('Error Unsaving Event Post!');
+      });
   };
 
   render() {

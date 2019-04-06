@@ -233,8 +233,8 @@ class EventDetails extends Component {
           });
         }
       }).catch((error) => {
-      toast.error('Error Saving Event Post!');
-    });
+        toast.error('Error Saving Event Post!');
+      });
   };
 
   deleteSavedEvent = (eventId) => {
@@ -247,8 +247,8 @@ class EventDetails extends Component {
           });
         }
       }).catch((error) => {
-      toast.error('Error Unsaving Event Post!');
-    });
+        toast.error('Error Unsaving Event Post!');
+      });
   };
 
   render() {
@@ -257,7 +257,7 @@ class EventDetails extends Component {
     } = this.props;
     const {
       eventId, eventName, eventImagePath, eventDescription, dateStart, dateEnd, timeStart, timeEnd, location,
-      eventOwner, alert, redirect, isLoading, savedEvent
+      eventOwner, alert, redirect, isLoading, savedEvent,
     } = this.state;
     const icon = { 'calendar-plus-o': 'left' };
 
@@ -281,33 +281,33 @@ class EventDetails extends Component {
                   <Typography variant="h4" className={classes.cardIconTitle}>
                     {user.type === UserTypes.MIGRANT && (
                       <>
-                      {savedEvent
-                        ? (
-                          <OutlineButton
-                            id="savedEvent"
-                            color="primary"
-                            variant="outlined"
-                            aria-label="Saved Event"
-                            title={<FormattedMessage id="event.saved" />}
-                            onClick={() => this.deleteSavedEvent(eventId)}
-                            className={classes.savedEvent}
-                          >
-                            <FavoriteIcon /> {' '} Saved
-                          </OutlineButton>
-                        )
-                        : (
-                          <OutlineButton
-                            id="savedEvent"
-                            color="primary"
-                            variant="outlined"
-                            aria-label="Saved Event"
-                            title={<FormattedMessage id="event.save" />}
-                            onClick={() => this.addSavedEvent(eventId)}
-                            className={classes.savedEvent}
-                          >
-                            <UnFavoriteIcon />{' '} Save
-                          </OutlineButton>
-                        )
+                        {savedEvent
+                          ? (
+                            <OutlineButton
+                              id="savedEvent"
+                              color="primary"
+                              variant="outlined"
+                              aria-label="Saved Event"
+                              title={<FormattedMessage id="event.saved" />}
+                              onClick={() => this.deleteSavedEvent(eventId)}
+                              className={classes.savedEvent}
+                            >
+                              <FavoriteIcon /> {' '} Saved
+                            </OutlineButton>
+                          )
+                          : (
+                            <OutlineButton
+                              id="savedEvent"
+                              color="primary"
+                              variant="outlined"
+                              aria-label="Saved Event"
+                              title={<FormattedMessage id="event.save" />}
+                              onClick={() => this.addSavedEvent(eventId)}
+                              className={classes.savedEvent}
+                            >
+                              <UnFavoriteIcon />{' '} Save
+                            </OutlineButton>
+                          )
                       }
                       </>
                     )}
@@ -316,7 +316,8 @@ class EventDetails extends Component {
                     <b>{eventName}</b>
                   </Typography>
                 </CardHeader>
-                {eventImagePath != '' && eventImagePath != undefined &&
+                {eventImagePath != '' && eventImagePath != undefined
+                  && (
                   <GridItem align="center">
                     <CardMedia
                       component="img"
@@ -326,6 +327,7 @@ class EventDetails extends Component {
                       title={eventName}
                     />
                   </GridItem>
+                  )
                 }
                 {isLoading
                   ? (
@@ -358,7 +360,7 @@ class EventDetails extends Component {
                               {location.province}
                               {', '}
                               {location.postalCode}
-                              <br/>
+                              <br />
                               {' '}
                               {location.phoneNumber}
                             </GridItem>

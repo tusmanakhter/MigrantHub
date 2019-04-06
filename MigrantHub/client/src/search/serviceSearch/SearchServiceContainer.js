@@ -68,14 +68,15 @@ class SearchServiceContainer extends Component {
     if (redirectToSearchResultList) {
       return (
         <Redirect to={{
-          pathname: 'search/services',
+          pathname: '/search/services',
           state: {
             searchMode,
-            searchQuery
+            searchQuery,
           },
         }}
         />
-      );    }
+      );
+    }
   }
 
   addPinnedService(serviceId) {
@@ -83,8 +84,8 @@ class SearchServiceContainer extends Component {
       .then((response) => {
         toast.success(response.data);
       }).catch((error) => {
-      toast.success(error.response.data);
-    });
+        toast.success(error.response.data);
+      });
   }
 
   fetchData = () => {
@@ -166,7 +167,7 @@ class SearchServiceContainer extends Component {
         </div>
         { noData == true
             && (
-            <div style={{textAlign: "left"}}>
+            <div style={{ textAlign: 'left' }}>
               <h4 style={{ 'text-indent': '40px' }}>No services available</h4>
             </div>
             )

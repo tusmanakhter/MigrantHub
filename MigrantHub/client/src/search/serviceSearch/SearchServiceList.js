@@ -39,7 +39,7 @@ class SearchServiceList extends Component {
   fetchData = () => {
     const { location } = this.props;
     const { limit } = this.state;
-    let { offset } = this.state;
+    const { offset } = this.state;
 
     let searchQuery = '';
     let searchMode = false;
@@ -63,7 +63,6 @@ class SearchServiceList extends Component {
       if (response.data.length === 0) {
         this.setState({ moreData: false });
       } else {
-        console.log(response.data);
         this.setState(prevState => ({
           moreData: true,
           items: prevState.items.concat(response.data),
@@ -78,8 +77,8 @@ class SearchServiceList extends Component {
       .then((response) => {
         toast.success(response.data);
       }).catch((error) => {
-      toast.success(error.response.data);
-    });
+        toast.success(error.response.data);
+      });
   }
 
   render() {
@@ -112,7 +111,7 @@ class SearchServiceList extends Component {
                   {' '}
                   {
                   items.map((item, index) => (
-                    <GridItem xs={12} sm={12} md={8}>
+                    <GridItem>
                       <ServiceCard
                         serviceId={item._id}
                         serviceTitle={item.serviceTitle}

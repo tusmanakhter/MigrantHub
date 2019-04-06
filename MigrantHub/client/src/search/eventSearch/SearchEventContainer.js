@@ -9,6 +9,8 @@ import GridContainer from 'components/Grid/GridContainer.jsx';
 import Button from '@material-ui/core/Button';
 import GridItem from 'components/Grid/GridItem.jsx';
 import EventCard from 'events/EventCard';
+import { toast } from 'react-toastify';
+import update from 'immutability-helper';
 
 const styles = theme => ({
   root: {
@@ -64,14 +66,15 @@ class SearchEventContainer extends Component {
     if (redirectToSearchResultList) {
       return (
         <Redirect to={{
-          pathname: 'search/events',
+          pathname: '/search/events',
           state: {
             searchMode,
-            searchQuery
+            searchQuery,
           },
         }}
         />
-      );    }
+      );
+    }
   }
 
   fetchData = () => {
@@ -103,6 +106,33 @@ class SearchEventContainer extends Component {
     });
   }
 
+  addSavedEvent = (eventId, index) => {
+    axios.put(`/api/events/saved/${eventId}`)
+      .then((response) => {
+        if (response.status === 200) {
+          this.setState({
+            items: update(this.state.items, { [index]: { savedEvent: { $set: true } } }),
+          });
+          toast.success('Event Post Saved!');
+        }
+      }).catch((error) => {
+        toast.error('Error Saving Event Post!');
+      });
+  };
+
+  deleteSavedEvent = (eventId, index) => {
+    axios.delete(`/api/events/saved/${eventId}`)
+      .then((response) => {
+        if (response.status === 200) {
+          this.setState({
+            items: update(this.state.items, { [index]: { savedEvent: { $set: false } } }),
+          });
+          toast.success('Event Post Unsaved!');
+        }
+      }).catch((error) => {
+        toast.error('Error Unsaving Event Post!');
+      });
+  };
 
   render() {
     const { classes, ...rest } = this.props;
@@ -141,6 +171,10 @@ class SearchEventContainer extends Component {
                       dateEnd={item.dateEnd}
                       timeStart={item.timeStart}
                       timeEnd={item.timeEnd}
+                      savedEvent={item.savedEvent}
+                      itemIndex={index}
+                      addSavedEvent={this.addSavedEvent}
+                      deleteSavedEvent={this.deleteSavedEvent}
                     />
                   </GridItem>
                 ))
@@ -149,7 +183,7 @@ class SearchEventContainer extends Component {
         </div>
         { noData == true
             && (
-            <div style={{textAlign: "left"}}>
+            <div style={{ textAlign: 'left' }}>
               <h4 style={{ 'text-indent': '40px' }}>No events available</h4>
             </div>
             )

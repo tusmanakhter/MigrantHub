@@ -25,20 +25,22 @@ class Search extends Component {
     };
   }
 
-  componentWillReceiveProps(){
-    window.location.reload();
+  componentWillReceiveProps(nextProps) {
+    if(nextProps.match.params.query != this.props.match.params.query){
+      nextProps.history.push(`/`);
+      nextProps.history.goBack();
+    }
   }
 
   render() {
-
-    const {searchQuery} = this.state;
+    const { searchQuery } = this.state;
 
     return (
-        <React.Fragment>
-          <SearchServiceContainer editMode={false} searchQuery={searchQuery} searchMode={true} />
-            <SearchEventContainer editMode={false} searchQuery={searchQuery} searchMode={true} />
-            <SearchJobContainer editMode={false} searchQuery={searchQuery} searchMode={true} />
-        </React.Fragment>
+      <React.Fragment>
+        <SearchServiceContainer editMode={false} searchQuery={searchQuery} searchMode />
+        <SearchEventContainer editMode={false} searchQuery={searchQuery} searchMode />
+        <SearchJobContainer editMode={false} searchQuery={searchQuery} searchMode />
+      </React.Fragment>
     );
   }
 }

@@ -55,7 +55,7 @@ class JobList extends Component {
   fetchData = (redirect, props) => {
     const { location } = props;
     const { limit } = this.state;
-    let { offset } = this.state;
+    const { offset } = this.state;
 
     let editOwnerEmail = '';
     let searchQuery = '';

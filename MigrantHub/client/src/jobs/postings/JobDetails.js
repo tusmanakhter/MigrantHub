@@ -249,8 +249,7 @@ class JobDetails extends Component {
                   <Typography variant="h4" className={classes.cardIconTitle}>
                     {user.type === UserTypes.MIGRANT && (
                         <>
-                        {console.log(savedJob)}
-                        {savedJob
+                          {savedJob
                             ? (
                               <OutlineButton
                                 id="savedJob"

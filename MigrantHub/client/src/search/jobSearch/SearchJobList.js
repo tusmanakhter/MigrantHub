@@ -43,7 +43,7 @@ class SearchJobList extends Component {
   fetchData = () => {
     const { location } = this.props;
     const { limit } = this.state;
-    let { offset } = this.state;
+    const { offset } = this.state;
 
     let searchQuery = '';
     let searchMode = false;
@@ -76,30 +76,32 @@ class SearchJobList extends Component {
     });
   }
 
-  addSavedJob = (jobId) => {
+  addSavedJob = (jobId, index) => {
     axios.put(`/api/job/saved/${jobId}`)
       .then((response) => {
         if (response.status === 200) {
+          this.setState({
+            items: update(this.state.items, { [index]: { savedJob: { $set: true } } }),
+          });
           toast.success('Job Post Saved!');
         }
       }).catch((error) => {
-      toast.error('Error Saving Job Post!');
-    });
+        toast.error('Error Saving Job Post!');
+      });
   };
 
   deleteSavedJob = (jobId, index) => {
     axios.delete(`/api/job/saved/${jobId}`)
       .then((response) => {
         if (response.status === 200) {
-          this.setState(prevState => ({
-            items: update(prevState.items, { $splice: [[index, 1]] }),
-          }));
+          this.setState({
+            items: update(this.state.items, { [index]: { savedJob: { $set: false } } }),
+          });
           toast.success('Job Post Unsaved!');
-          this.fetchData();
         }
       }).catch((error) => {
-      toast.error('Error Unsaving Job Post!');
-    });
+        toast.error('Error Unsaving Job Post!');
+      });
   };
 
   render() {
@@ -140,9 +142,9 @@ class SearchJobList extends Component {
                         companyName={item.companyName}
                         location={item.location}
                         dateCreated={item.dateCreated}
-                        savedJob
+                        savedJob={item.savedJob}
                         itemIndex={index}
-                        addSavedJob={() => {}}
+                        addSavedJob={this.addSavedJob}
                         deleteSavedJob={this.deleteSavedJob}
                       />
                     </GridItem>

@@ -31,8 +31,6 @@ const styles = theme => ({
     minHeight: 205,
     maxHeight: 205,
     textAlign: 'left',
-    margin: 5,
-    padding: 0,
   },
   headContainer: {
     minHeight: 50,
@@ -177,7 +175,7 @@ const JobCard = (props) => {
                 </CardIcon>
                 <Typography variant="title" className={classes.jobTitle}>
                   <b>
-                    {(title != undefined && (title).length > 54 )
+                    {(title != undefined && (title).length > 54)
                       ? (
                         <Typography variant="body2">
                           {((title).substring(0, 51))} <b>...</b>

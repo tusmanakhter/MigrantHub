@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import withStyles from '@material-ui/core/styles/withStyles';
 import { Redirect } from 'react-router-dom';
 import axios from 'axios';
-import EventCard from 'events/postings/EventCard';
+import EventCard from 'events/EventCard';
 import Button from 'components/CustomButtons/Button.jsx';
 import UserTypes from 'lib/UserTypes';
 import Grid from '@material-ui/core/Grid';
@@ -13,7 +13,6 @@ import InfiniteScroll from 'react-infinite-scroller';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import GridContainer from 'components/Grid/GridContainer.jsx';
 import GridItem from 'components/Grid/GridItem.jsx';
-import FavoriteIcon from '@material-ui/icons/Favorite';
 import { toast } from 'react-toastify';
 import update from 'immutability-helper';
 
@@ -62,11 +61,9 @@ class SavedEventList extends Component {
         limit,
       },
     }).then((response) => {
-      console.log(response.data);
       if (response.data.length === 0) {
         this.setState({ moreData: false });
       } else {
-        console.log(response.data);
         this.setState(prevState => ({
           moreData: true,
           items: prevState.items.concat(response.data),
@@ -148,7 +145,7 @@ class SavedEventList extends Component {
                   {' '}
                   {
                   items.map((item, index) => (
-                    <GridItem xs={12} sm={12} md={8}>
+                    <GridItem>
                       <EventCard
                         eventId={item._id}
                         eventName={item.eventName}

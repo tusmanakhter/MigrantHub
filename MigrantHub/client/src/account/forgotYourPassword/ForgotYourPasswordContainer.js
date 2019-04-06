@@ -87,55 +87,55 @@ class ForgotYourPasswordContainer extends Component {
                     <Stepper activeStep={activeStep} className={classes.stepper}>
                       {this.props.steps.map(label => (
                         <Step key={label}>
-                            <StepLabel>{label}</StepLabel>
-                          </Step>
+                          <StepLabel>{label}</StepLabel>
+                        </Step>
                       ))}
                     </Stepper>
                     <CardBody>
                       <GridContainer justify="center">
                         <GridItem xs={12} sm={8} md={5}>
-                            <form className={classes.form}>
+                          <form className={classes.form}>
+                            <React.Fragment>
+                              {activeStep === this.props.steps.length ? (
                                 <React.Fragment>
-                                    {activeStep === this.props.steps.length ? (
-                                        <React.Fragment>
-                                            <Typography variant="h5" gutterBottom>
-                                                <FormattedMessage id="signup.welcome" />
-                                              </Typography>
-                                            <Typography variant="subtitle1">
-                                                <FormattedMessage id="signup.login" />
-                                              </Typography>
-                                            <Link to="/login">
-                                                <Button round color="primary">
-                                                    <FormattedMessage id="home.getStarted" />
-                                                  </Button>
-                                              </Link>
-                                          </React.Fragment>
-                                      ) : (
-                                          <React.Fragment>
-                                              {this.getStepContent(activeStep)}
-                                              <div className={classes.buttons}>
-                                                  {activeStep !== 0 && (
-                                                    <Button onClick={this.handleBack} className={classes.button}>
-                                                          <FormattedMessage id="back" />
-                                                        </Button>
-                                                    )}
-                                                  <Button
-                                                      variant="contained"
-                                                      color="primary"
-                                                      onClick={this.handleNext}
-                                                      className={classes.button}
-                                                    >
-                                                      {activeStep === this.props.steps.length - 1
-                                                          ? <FormattedMessage id="forgotpassword.reset" />
-                                                          : <FormattedMessage id="next" />
+                                  <Typography variant="h5" gutterBottom>
+                                    <FormattedMessage id="signup.welcome" />
+                                  </Typography>
+                                  <Typography variant="subtitle1">
+                                    <FormattedMessage id="signup.login" />
+                                  </Typography>
+                                  <Link to="/login">
+                                    <Button round color="primary">
+                                      <FormattedMessage id="home.getStarted" />
+                                    </Button>
+                                  </Link>
+                                </React.Fragment>
+                              ) : (
+                                <React.Fragment>
+                                  {this.getStepContent(activeStep)}
+                                  <div className={classes.buttons}>
+                                    {activeStep !== 0 && (
+                                    <Button onClick={this.handleBack} className={classes.button}>
+                                      <FormattedMessage id="back" />
+                                    </Button>
+                                    )}
+                                    <Button
+                                      variant="contained"
+                                      color="primary"
+                                      onClick={this.handleNext}
+                                      className={classes.button}
+                                    >
+                                      {activeStep === this.props.steps.length - 1
+                                        ? <FormattedMessage id="forgotpassword.reset" />
+                                        : <FormattedMessage id="next" />
                                                                         }
-                                                    </Button>
-                                                </div>
-                                            </React.Fragment>
-                                      )}
-                                  </React.Fragment>
-                              </form>
-                          </GridItem>
+                                    </Button>
+                                  </div>
+                                </React.Fragment>
+                              )}
+                            </React.Fragment>
+                          </form>
+                        </GridItem>
                       </GridContainer>
                     </CardBody>
                   </Card>

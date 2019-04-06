@@ -10,6 +10,8 @@ import GridContainer from 'components/Grid/GridContainer.jsx';
 import GridItem from 'components/Grid/GridItem.jsx';
 import EventCard from 'events/EventCard';
 import { FormattedMessage } from 'react-intl';
+import { toast } from 'react-toastify';
+import update from 'immutability-helper';
 
 const styles = theme => ({
   root: {
@@ -27,7 +29,7 @@ class SearchEventList extends Component {
     super(props);
     this.state = {
       items: [],
-      redirectToJobForm: false,
+      redirectToEventForm: false,
       offset: 0,
       limit: 20,
       moreData: true,
@@ -37,7 +39,7 @@ class SearchEventList extends Component {
   fetchData = () => {
     const { location } = this.props;
     const { limit } = this.state;
-    let { offset } = this.state;
+    const { offset } = this.state;
 
     let searchQuery = '';
     let searchMode = false;
@@ -61,7 +63,6 @@ class SearchEventList extends Component {
       if (response.data.length === 0) {
         this.setState({ moreData: false });
       } else {
-        console.log(response.data);
         this.setState(prevState => ({
           moreData: true,
           items: prevState.items.concat(response.data),
@@ -70,6 +71,34 @@ class SearchEventList extends Component {
       }
     });
   }
+
+  addSavedEvent = (eventId, index) => {
+    axios.put(`/api/events/saved/${eventId}`)
+      .then((response) => {
+        if (response.status === 200) {
+          this.setState({
+            items: update(this.state.items, { [index]: { savedEvent: { $set: true } } }),
+          });
+          toast.success('Event Post Saved!');
+        }
+      }).catch((error) => {
+        toast.error('Error Saving Event Post!');
+      });
+  };
+
+  deleteSavedEvent = (eventId, index) => {
+    axios.delete(`/api/events/saved/${eventId}`)
+      .then((response) => {
+        if (response.status === 200) {
+          this.setState({
+            items: update(this.state.items, { [index]: { savedEvent: { $set: false } } }),
+          });
+          toast.success('Event Post Unsaved!');
+        }
+      }).catch((error) => {
+        toast.error('Error Unsaving Event Post!');
+      });
+  };
 
   render() {
     const { classes } = this.props;
@@ -112,6 +141,10 @@ class SearchEventList extends Component {
                         dateEnd={item.dateEnd}
                         timeStart={item.timeStart}
                         timeEnd={item.timeEnd}
+                        savedEvent={item.savedEvent}
+                        itemIndex={index}
+                        addSavedEvent={this.addSavedEvent}
+                        deleteSavedEvent={this.deleteSavedEvent}
                       />
                     </GridItem>
                   ))

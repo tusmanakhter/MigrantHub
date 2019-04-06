@@ -101,7 +101,6 @@ class BaseJobForm extends Component {
           _id: jobId,
         },
       }).then((response) => {
-        console.log(response.data);
         const parsedObj = qs.parse(response.data);
         this.setState({
           title: parsedObj.title,

@@ -162,7 +162,7 @@ class SavedEventMain extends Component {
         </div>
         { noData == true
             && (
-            <div style={{textAlign: "left"}}>
+            <div style={{ textAlign: 'left' }}>
               <h4 style={{ 'text-indent': '40px' }}><FormattedMessage id="event.saved.empty" /></h4>
             </div>
             )
