@@ -8,6 +8,9 @@ import axios from "axios";
 
 import './styles.css';  
 
+// Count number of time Chatbot Component is called
+let chatbotRenderCount = 0;
+
 class Chatbot extends Component {
   constructor(props) {
     super(props);
@@ -21,14 +24,52 @@ class Chatbot extends Component {
       redirectToFrenchClasses: false,
       redirectToHousingServices: false,
       serviceCategoryReturn: '',
+      subcategory: '',
+      isLoading: false,
+      firstName: '',
+      dataRetrieved: false,
     };
+    this.getUser = this.getUser.bind(this);
   }
 
   componentDidMount() {
+    this.getUser(this);
+    // Only greet user on initial load
+    if(chatbotRenderCount == 0)
+      if(!this.state.isLoading){
+        setTimeout(
+          function() {
+            addResponseMessage("Hey there " + this.state.firstName + "! Welcome to MigrantHub!");;
+          }
+          .bind(this),
+          2000
+        );
+      }
+    chatbotRenderCount += 1;
   }
 
+  getUser() {
+    const { dataRetrieved } = this.state;
+    this.setState({ isLoading: true });
+    if (!dataRetrieved) {
+      axios.get('/api/accounts/get/user').then((response) => {
+        if (response.status === 200) {
+          this.setState({
+            firstName: response.data.firstName,
+            isLoading: false,
+            dataRetrieved: true,
+          });
+        }
+      });
+    } else {
+      this.setState({ isLoading: false });
+    }
+  }
+  
   handleSubmit = (newMessage) => {
     if(!newMessage.trim()) return;
+
+    let count = 1;
 
     axios.get('../api/chatbot/', {
       params: {
@@ -39,10 +80,20 @@ class Chatbot extends Component {
         this.setState({
           redirectToRecommendation: false,
         });
-        addResponseMessage(element.text.text[0])
+        setTimeout(
+          function() {
+            addResponseMessage(element.text.text[0]);
+          }
+          .bind(this),
+          count*1000
+        );
+        count *= 6;
       });
 
-      let intent = response.data.intent.displayName;
+      let intent = response.data.intent
+      if(intent != null)
+        intent = response.data.intent.displayName;
+
       if(intent === 'Recommendation Service'){
         this.setState({
           redirectToRecommendation: true,
@@ -73,10 +124,24 @@ class Chatbot extends Component {
           link: 'http://tinyurl.com/y4jkubp4',
           target: '_blank'
         };
-        addLinkSnippet(linkToCenterClasses);
-        addResponseMessage("If you still want to try your luck without french, you can book an appointment with us.");
-        addLinkSnippet(linkToBookAppointment);
-        addResponseMessage("In the meantime, here is an organization that offers french classes you might be interested in.");
+        setTimeout(
+          function() {
+            addLinkSnippet(linkToCenterClasses);
+            addResponseMessage("If you still want to try your luck without french, you can book an appointment with us.");
+          }
+          .bind(this),
+          count*1000
+        );
+        count *= 6;
+        setTimeout(
+          function() {
+            addLinkSnippet(linkToBookAppointment);
+            addResponseMessage("In the meantime, here is an organization that offers french classes you might be interested in.");
+          }
+          .bind(this),
+          count*1000
+        );
+        count *= 6;
       }
       else if(intent == 'Employment - Oui French'){
         let linkToEmployementWorkshops = {
@@ -84,8 +149,15 @@ class Chatbot extends Component {
           link: 'https://www.therefugeecentre.org/erc',
           target: '_blank'
         };
-        addLinkSnippet(linkToEmployementWorkshops);
-        addResponseMessage("If you can't make it, here is a list of services I recommend.");
+        setTimeout(
+          function() {
+            addLinkSnippet(linkToEmployementWorkshops);
+            addResponseMessage("If you can't make it, here is a list of services I recommend.");
+          }
+          .bind(this),
+          count*1000
+        );
+        count *= 6;
         this.setState({
           redirectToServiceCategory: true,
           serviceCategoryReturn: 'employement'
@@ -103,7 +175,14 @@ class Chatbot extends Component {
           link: 'http://tinyurl.com/y4fjpwlt',
           target: '_blank'
         };
-        addLinkSnippet(linkToSocialWelfareQualifications);
+        setTimeout(
+          function() {
+            addLinkSnippet(linkToSocialWelfareQualifications);
+          }
+          .bind(this),
+          count*1000
+        );
+        count *= 6;
       }
       else if(intent == 'Financial Help - Banking/debt relief'){
         this.setState({
@@ -126,7 +205,7 @@ class Chatbot extends Component {
       else if(intent == 'Financial Help - Pensions'){
         this.setState({
           redirectToServiceCategory: true,
-          serviceCategoryReturn: 'pensions'
+          serviceCategoryReturn: 'Pensions'
         });
       }
       else if(intent == 'Financial Help - Taxes'){
@@ -144,7 +223,7 @@ class Chatbot extends Component {
       else if(intent == 'Housing - Buy'){
         this.setState({
           redirectToServiceCategory: true,
-          serviceCategoryReturn: 'housing'
+          serviceCategoryReturn: 'Housing'
         });
       }
       else if(intent == 'Language - French' || intent == 'Language - English'){
@@ -156,7 +235,14 @@ class Chatbot extends Component {
           link: 'https://www.therefugeecentre.org/classes',
           target: '_blank'
         };
-        addLinkSnippet(linkToCenterClasses);
+        setTimeout(
+          function() {
+            addLinkSnippet(linkToCenterClasses);
+          }
+          .bind(this),
+          count*1000
+        );
+        count *= 6;
       }
     })
   }
@@ -203,6 +289,7 @@ class Chatbot extends Component {
       this.setState({
         redirectToFrenchClasses: false,
       });
+      // Redirect to serviceId of the Quebec Gov. Language Classes Service
       return <Redirect to="/services/5c63a6d4e890b00034a5f159"/>
     }
     else if(this.state.redirectToServiceCategory){
@@ -213,6 +300,7 @@ class Chatbot extends Component {
         pathname: '/services/',
         state: {
           category: this.state.serviceCategoryReturn,
+          subcategory: this.state.subcategory,
         },
       }}/>
     }
