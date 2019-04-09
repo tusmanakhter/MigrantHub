@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Collections.Generic;
 using System.Linq;
@@ -57,7 +57,10 @@ namespace Service_Rating_Model.Controllers
                 {
                     new TextLoader.Column("userId", DataKind.Text, 0),
                     new TextLoader.Column("serviceId", DataKind.Text, 1),
-                    new TextLoader.Column("Label", DataKind.R4, 2)
+                    new TextLoader.Column("age", DataKind.Text, 2),
+                    new TextLoader.Column("gender", DataKind.Text, 3),
+                    new TextLoader.Column("nationality", DataKind.Text, 4),
+                    new TextLoader.Column("Label", DataKind.R4, 5)
                 }
             });
 
@@ -68,7 +71,10 @@ namespace Service_Rating_Model.Controllers
             //transform the data by encoding the two features (userId, serviceID) to later provide them as input to the learner
             var pipeline = ctx.Transforms.Categorical.OneHotEncoding("userId", "userIdEncoded").
                                           Append(ctx.Transforms.Categorical.OneHotEncoding("serviceId", "serviceIdEncoded").
-                                          Append(ctx.Transforms.Concatenate("Features", "userIdEncoded", "serviceIdEncoded")).
+                                          Append(ctx.Transforms.Categorical.OneHotEncoding("age", "ageEncoded").
+                                          Append(ctx.Transforms.Categorical.OneHotEncoding("gender", "genderEncoded").
+                                          Append(ctx.Transforms.Categorical.OneHotEncoding("nationality", "nationalityEncoded").
+                                          Append(ctx.Transforms.Concatenate("Features", "userIdEncoded", "serviceIdEncoded", "ageEncoded", "genderEncoded", "nationalityEncoded")).
                                           Append(ctx.BinaryClassification.Trainers.FieldAwareFactorizationMachine(label: "Label", features: new string[] {
                                                                                                                                       "Features"})));
             //train the model by fitting it with our dataset then save the model to disk (locally)
