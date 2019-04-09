@@ -1,5 +1,9 @@
 const appRoot = require('app-root-path');
-const { createLogger, format, transports } = require('winston');
+const {
+  createLogger, format, transports, add,
+} = require('winston');
+require('winston-loggly-bulk');
+const { logglyConfig } = require('../config');
 
 const {
   combine, timestamp, printf, colorize,
@@ -37,15 +41,43 @@ const options = {
       myFormatConsole,
     ),
   },
+  loggly: {
+    level: 'info',
+    inputToken: logglyConfig.token,
+    json: true,
+    stripColors: true,
+    subdomain: logglyConfig.subdomain,
+    tags: ['Winston-NodeJS'],
+  },
 };
-// Create file and console Winston Logger transport
-const logger = createLogger({
-  transports: [
-    new transports.File(options.file),
-    new transports.Console(options.console),
-  ],
-  exitOnError: false,
-});
+
+const logglyTransport = new transports.Loggly(options.loggly);
+add(logglyTransport, null, true);
+
+let logger;
+
+if (process.env.NODE_ENV === 'production') {
+  // Create file and loggly Winston Logger transport for production
+  logger = createLogger({
+    transports: [
+      new transports.File(options.file),
+      new transports.Console(options.console),
+      logglyTransport,
+    ],
+    exitOnError: false,
+  });
+} else {
+  // Create file and console Winston Logger transport
+  logger = createLogger({
+    transports: [
+      new transports.File(options.file),
+      new transports.Console(options.console),
+    ],
+    exitOnError: false,
+  });
+}
+
+
 logger.streamProd = {
   write(message) {
     logger.info(message);
@@ -56,4 +88,5 @@ logger.streamDev = {
     logger.debug(message);
   },
 };
+
 module.exports = { logger, formatMessage };

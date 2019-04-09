@@ -22,7 +22,9 @@ describe('Job Service', function () {
         _id: "5c987e1f0c6e2045a7995900",
         offset: 0,
         limit: 10,
-        owner: "test@test.com"
+        editOwner: "test@test.com",
+        search: 'true',
+        searchQuery: 'test',
       },
     };
 
@@ -43,8 +45,15 @@ describe('Job Service', function () {
       this.stub(JobRepository, 'getJobs').returns([]);
       this.stub(SavedJobRepository, 'getSavedJob').returns([]);
       await JobService.getJobs(req.user, req.user._id,);
-        assert.calledWith(JobRepository.getJobs, { deleted: false, user: req.user._id });
+      assert.calledWith(JobRepository.getJobs, { deleted: false, user: req.user._id });
     }));
+
+  it('should call getJobs repository to retrieve searched jobs', test(async function () {
+    this.stub(JobRepository, 'getJobs').returns([]);
+    this.stub(SavedJobRepository, 'getSavedJob').returns([]);
+    await JobService.getJobs('', '', req.query.searchQuery, req.query.search, req.query.offset, req.query.limit);
+    assert.calledWith(JobRepository.getJobs, { $text: { $search: "test" }, deleted: false }, req.query.search, req.query.offset, req.query.limit);
+  }));
 
   it('should call updateJob repository with correct parameters from updateJob service', test(async function () {
     this.stub(JobRepository, 'updateJob');

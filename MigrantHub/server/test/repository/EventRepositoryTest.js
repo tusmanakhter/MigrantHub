@@ -33,13 +33,13 @@ describe('Event Repository', function () {
     }));
 
     it('should successfully call mongodb find to find all events', test(function () {
-        this.stub(Event, 'find').returns({sort: sinon.stub().returns({exec: sinon.stub().returns(Promise.resolve({}))})});
+        this.stub(Event, 'find').returns({exec: sinon.stub().returns(Promise.resolve({}))});
         EventRepository.getEvents({ $text: { $search: /test/ }, deleted: false });
         assert.calledWith(Event.find, { $text: { $search: /test/ }, deleted: false });
     }));
 
     it('should throw error, since there was a error getting all events', test(function () {
-        this.stub(Event, 'find').returns({sort: sinon.stub().returns({exec: sinon.stub().returns(Promise.reject({}))})});
+        this.stub(Event, 'find').returns({exec: sinon.stub().returns(Promise.reject({}))});
         return chai.assert.isRejected(EventRepository.getEvents({ $text: { $search: /test/ }, deleted: false }), ServerError, 'There was an error retrieving events.');
     }));
 

@@ -14,14 +14,16 @@ module.exports = {
     throw new ServerError('There was an error creating job.', 400, errors);
   },
 
-  async getJobs(user, owner, offset, limit) {
-    const query = {};
+  async getJobs(user, owner, searchQuery, search, offset, limit) {
+    let query = {};
     if (owner !== '') {
       query.user = owner;
+    } else if (search === 'true') {
+      query = ({ $text: { $search: searchQuery } });
     }
-    query.deleted = false;
 
-    let jobs = await JobRepository.getJobs(query, offset, limit);
+    query.deleted = false;
+    let jobs = await JobRepository.getJobs(query, search, offset, limit);
     jobs = await jobs.map(async (job) => {
       const foundJob = job.toObject();
       const foundSavedJob = await SavedJobRepository.getSavedJob(user._id, job._id);

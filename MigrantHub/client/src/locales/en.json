@@ -453,5 +453,16 @@
   "job.save": "Save Job",
   "job.unsave": "Unsave Job",
   "job.saved": "Saved Jobs",
-  "job.saved.empty": "No saved jobs"
+  "job.saved.empty": "No saved jobs",
+  "search.events": "Searched Events Results",
+  "search.services": "Searched Services Results",
+  "search.jobs": "Searched Job Results",
+  "event.save": "Save Event",
+  "event.saved": "Saved Events",
+  "event.unsave": "Unsave Event",
+  "event": "Events",
+  "event.browse": "Browse available events",
+  "event.saved.browse": "Browse saved event",
+  "event.saved.empty": "No saved events"
+
 }

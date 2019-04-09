@@ -36,7 +36,7 @@ module.exports = {
         $or: pinnedServiceListQuery,
       };
       query.deleted = false;
-      let services = await ServiceRepository.getServices(query, undefined, undefined);
+      let services = await ServiceRepository.getServices(query, false, undefined, undefined);
       services = await services.map(async (service) => {
         const updatedService = service.toObject();
         const avg = await ReviewRepository.getAverageRating(service._id.toString());

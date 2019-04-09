@@ -265,16 +265,18 @@ class ServiceDetails extends Component {
                     </CardIcon>
                     <h4 className={classes.cardIconTitle}><b>{serviceTitle}</b></h4>
                   </CardHeader>
-                  {serviceImagePath != '' && serviceImagePath != undefined &&
-                    < GridItem align="center">
+                  {serviceImagePath != '' && serviceImagePath != undefined
+                    && (
+                    <GridItem align="center">
                       <CardMedia
-                      component="img"
-                      alt={serviceTitle}
-                      className={classes.media}
-                      image={serviceImagePath}
-                      title={serviceImageName}
+                        component="img"
+                        alt={serviceTitle}
+                        className={classes.media}
+                        image={serviceImagePath}
+                        title={serviceImageName}
                       />
                     </GridItem>
+                    )
                   }
                   {isLoading ? (
                     <div>
@@ -293,7 +295,7 @@ class ServiceDetails extends Component {
                       {website !== '' && (
                         <GridItem xs={12} align="left">
                         <h5><b>Website</b></h5>
-                        <a href={'//'+ website} target="_blank">{website}</a>
+                        <a href={website} target="_blank">{website}</a>
                       </GridItem>
                       )}
                       {email !== '' && (
