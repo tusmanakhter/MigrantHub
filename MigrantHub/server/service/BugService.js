@@ -27,4 +27,13 @@ module.exports = {
 
     return BugRepository.getBug(query);
   },
+  async updateBug(bugId, parsedBugObject) {
+    const bugObject = parsedBugObject;
+
+    const errors = await BugValidator.bugValidator(bugObject);
+    if (errors === '') {
+      return BugRepository.updateBug(bugId, bugObject);
+    }
+    throw new ServerError('There was an error updating bug.', 400, errors);
+  },
 };
