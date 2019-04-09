@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import withStyles from '@material-ui/core/styles/withStyles';
 import { Redirect } from 'react-router-dom';
 import axios from 'axios';
-import JobCard from 'jobs/postings/JobCard';
+import EventCard from 'events/EventCard';
 import { FormattedMessage } from 'react-intl';
 import { AuthConsumer } from 'routes/AuthContext';
 import GridContainer from 'components/Grid/GridContainer.jsx';
@@ -35,7 +35,7 @@ const styles = theme => ({
   },
 });
 
-class SavedJobMain extends Component {
+class SavedEventMain extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -64,38 +64,38 @@ class SavedJobMain extends Component {
   renderRedirectToSavedList = () => {
     const { redirectToSavedList } = this.state;
     if (redirectToSavedList) {
-      return <Redirect to="jobs/saved" />;
+      return <Redirect to="events/saved" />;
     }
   }
 
-  addSavedJob = (jobId) => {
-    axios.put(`/api/job/saved/${jobId}`)
+  addSavedEvent = (eventId) => {
+    axios.put(`/api/events/saved/${eventId}`)
       .then((response) => {
         if (response.status === 200) {
-          toast.success('Job Post Saved!');
+          toast.success('Event Post Saved!');
         }
       }).catch((error) => {
-        toast.error('Error Saving Job Post!');
+        toast.error('Error Saving Event Post!');
       });
   };
 
-  deleteSavedJob = (jobId, index) => {
-    axios.delete(`/api/job/saved/${jobId}`)
+  deleteSavedEvent = (eventId, index) => {
+    axios.delete(`/api/events/saved/${eventId}`)
       .then((response) => {
         if (response.status === 200) {
           this.setState(prevState => ({
             items: update(prevState.items, { $splice: [[index, 1]] }),
           }));
-          toast.success('Job Post Unsaved!');
+          toast.success('Event Post Unsaved!');
           this.fetchData();
         }
       }).catch((error) => {
-        toast.error('Error Unsaving Job Post!');
+        toast.error('Error Unsaving Event Post!');
       });
   };
 
   fetchData = (props) => {
-    axios.get('/api/job/saved', {
+    axios.get('/api/events/saved', {
       params: {
         offset: 0,
         limit: 4,
@@ -131,7 +131,7 @@ class SavedJobMain extends Component {
           )
         }
         <h5 className={classes.cardTitle}>
-          <b><FormattedMessage id="job.saved" /></b>
+          <b><FormattedMessage id="event.saved" /></b>
         </h5>
         <hr />
         <div className={classes.mainContainer}>
@@ -140,18 +140,20 @@ class SavedJobMain extends Component {
             {
                 items.map((item, index) => (
                   <GridItem>
-                    <JobCard
-                      smallCard
-                      jobId={item._id}
-                      title={item.title}
-                      description={JSON.parse(item.description).blocks[0].text}
-                      companyName={item.companyName}
-                      location={item.location}
-                      dateCreated={item.dateCreated}
-                      savedJob
+                    <EventCard
+                      eventId={item._id}
+                      eventName={item.eventName}
+                      eventImagePath={item.eventImagePath}
+                      eventDescription={item.description}
+                      eventLocation={item.location}
+                      dateStart={item.dateStart}
+                      dateEnd={item.dateEnd}
+                      timeStart={item.timeStart}
+                      timeEnd={item.timeEnd}
+                      savedEvent
                       itemIndex={index}
-                      addSavedJob={() => {}}
-                      deleteSavedJob={this.deleteSavedJob}
+                      addSavedEvent={() => {}}
+                      deleteSavedEvent={this.deleteSavedEvent}
                     />
                   </GridItem>
                 ))
@@ -161,7 +163,7 @@ class SavedJobMain extends Component {
         { noData == true
             && (
             <div style={{ textAlign: 'left' }}>
-              <h4 style={{ 'text-indent': '40px' }}><FormattedMessage id="job.saved.empty" /></h4>
+              <h4 style={{ 'text-indent': '40px' }}><FormattedMessage id="event.saved.empty" /></h4>
             </div>
             )
           }
@@ -170,9 +172,9 @@ class SavedJobMain extends Component {
   }
 }
 
-SavedJobMain.propTypes = {
+SavedEventMain.propTypes = {
   classes: PropTypes.shape({}).isRequired,
   location: PropTypes.shape({}).isRequired,
 };
 
-export default withStyles(styles)(SavedJobMain);
+export default withStyles(styles)(SavedEventMain);

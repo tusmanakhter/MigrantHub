@@ -28,7 +28,7 @@ const styles = theme => ({
   },
 });
 
-class SavedJobList extends Component {
+class SearchJobList extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -40,24 +40,26 @@ class SavedJobList extends Component {
     };
   }
 
-  setRedirectToJobForm = () => {
-    this.setState({
-      redirectToJobForm: true,
-    });
-  }
+  fetchData = () => {
+    const { location } = this.props;
+    const { limit } = this.state;
+    const { offset } = this.state;
 
-  renderRedirectToJobForm = () => {
-    const { redirectToJobForm } = this.state;
-    if (redirectToJobForm) {
-      return <Redirect to="/jobs/create" />;
+    let searchQuery = '';
+    let searchMode = false;
+
+    if (location.state) {
+      if (location.state.searchMode) {
+        searchMode = location.state.searchMode;
+        searchQuery = location.state.searchQuery;
+      }
     }
-  }
 
-  fetchData = (props) => {
-    const { limit, offset } = this.state;
-
-    axios.get('/api/job/saved', {
+    axios.get('/api/job/', {
       params: {
+        editOwner: '',
+        searchQuery,
+        search: searchMode,
         offset,
         limit,
       },
@@ -74,14 +76,27 @@ class SavedJobList extends Component {
     });
   }
 
+  addSavedJob = (jobId, index) => {
+    axios.put(`/api/job/saved/${jobId}`)
+      .then((response) => {
+        if (response.status === 200) {
+          this.setState({
+            items: update(this.state.items, { [index]: { savedJob: { $set: true } } }),
+          });
+          toast.success('Job Post Saved!');
+        }
+      }).catch((error) => {
+        toast.error('Error Saving Job Post!');
+      });
+  };
+
   deleteSavedJob = (jobId, index) => {
     axios.delete(`/api/job/saved/${jobId}`)
       .then((response) => {
         if (response.status === 200) {
-          this.setState(prevState => ({
-            items: update(prevState.items, { $splice: [[index, 1]] }),
-          }));
-          this.fetchData();
+          this.setState({
+            items: update(this.state.items, { [index]: { savedJob: { $set: false } } }),
+          });
           toast.success('Job Post Unsaved!');
         }
       }).catch((error) => {
@@ -98,37 +113,10 @@ class SavedJobList extends Component {
         {({ user }) => (
           <>
             <div className={classes.mainContainer}>
-              {user.type !== UserTypes.ADMIN
-            && (
               <div>
-                {this.renderRedirectToJobForm()}
-                <Grid item container justify="center">
-                  {user.type === UserTypes.BUSINESS
-                  && (
-                    <Grid item lg={12} md={12} sm={12} xd={12} align="right">
-                      <Button
-                        variant="contained"
-                        color="primary"
-                        className={classes.button}
-                        onClick={this.setRedirectToJobForm}
-                      >
-                        Create a Job Post
-                      </Button>
-                    </Grid>
-                  )}
-                  <Grid lg={12} md={12} sm={12} xd={12}>
-                    <h3>
-                      <FormattedMessage id="job.saved" />
-                    </h3>
-                    <h5>
-                      <FormattedMessage id="job.saved.browse" />
-                    </h5>
-                  </Grid>
-                </Grid>
+                <b><FormattedMessage id="search.jobs" /></b>
                 <hr />
               </div>
-            )
-            }
               <InfiniteScroll
                 pageStart={0}
                 loadMore={() => this.fetchData(this.props.redirect, this.props)}
@@ -154,9 +142,9 @@ class SavedJobList extends Component {
                         companyName={item.companyName}
                         location={item.location}
                         dateCreated={item.dateCreated}
-                        savedJob
+                        savedJob={item.savedJob}
                         itemIndex={index}
-                        addSavedJob={() => {}}
+                        addSavedJob={this.addSavedJob}
                         deleteSavedJob={this.deleteSavedJob}
                       />
                     </GridItem>
@@ -172,9 +160,9 @@ class SavedJobList extends Component {
   }
 }
 
-SavedJobList.propTypes = {
+SearchJobList.propTypes = {
   classes: PropTypes.shape({}).isRequired,
   location: PropTypes.shape({}).isRequired,
 };
 
-export default withStyles(styles)(SavedJobList);
+export default withStyles(styles)(SearchJobList);

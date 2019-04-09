@@ -32,14 +32,14 @@ describe('Event controller', function () {
 
     it('should call getEvents service with correct parameters from getEvents controller', test(async function () {
         this.stub(EventService, 'getEvents');
-        await EventController.getEvents(req.query.editOwner, req.query.searchQuery, req.query.search);
-        assert.calledWith(EventService.getEvents, req.query.editOwner, req.query.searchQuery, req.query.search);
+        await EventController.getEvents(req.user, req.query.editOwner, req.query.searchQuery, req.query.search);
+        assert.calledWith(EventService.getEvents, req.user, req.query.editOwner, req.query.searchQuery, req.query.search);
     }));
 
     it('should call getEvent service with correct parameters from getEvent controller', test(async function () {
         this.stub(EventService, 'getEvent');
-        await EventController.getEvent(event._id);
-        assert.calledWith(EventService.getEvent, event._id);
+        await EventController.getEvent(req.user, event._id);
+        assert.calledWith(EventService.getEvent, req.user, event._id);
     }));
 
     it('should call updateEvent service with correct parameters from updateEvent controller', test(async function () {

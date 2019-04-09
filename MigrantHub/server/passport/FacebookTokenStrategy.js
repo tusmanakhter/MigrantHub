@@ -4,6 +4,7 @@ const { facebookConfig } = require('../config');
 const { logger, formatMessage } = require('../config/winston');
 const PinnedServiceService = require('../service/PinnedServiceService');
 const SavedJobService = require('../service/SavedJobService');
+const SavedEventService = require('../service/SavedEventService');
 
 const facebookStrategy = new FacebookTokenStrategy({
   clientID: facebookConfig.clientID,
@@ -39,6 +40,7 @@ const facebookStrategy = new FacebookTokenStrategy({
 
         await SavedJobService.createSavedJob(newUser.email);
         await PinnedServiceService.createPinnedService(newUser.email);
+        await SavedEventService.createSavedEvent(newUser.email);
 
         return done(null, createdUser);
       });

@@ -8,11 +8,10 @@ import { FormattedMessage } from 'react-intl';
 import { AuthConsumer } from 'routes/AuthContext';
 import GridContainer from 'components/Grid/GridContainer.jsx';
 import Button from '@material-ui/core/Button';
-import Card from 'components/Card/Card.jsx';
-import CardHeader from 'components/Card/CardHeader.jsx';
 import { toast } from 'react-toastify';
 import update from 'immutability-helper';
 import GridItem from 'components/Grid/GridItem.jsx';
+import ServiceCard from 'services/ServiceCard';
 
 const styles = theme => ({
   root: {
@@ -35,7 +34,7 @@ const styles = theme => ({
   },
 });
 
-class SavedJobMain extends Component {
+class SearchServiceContainer extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -45,6 +44,7 @@ class SavedJobMain extends Component {
     };
 
     this.fetchData = this.fetchData.bind(this);
+    this.addPinnedService = this.addPinnedService.bind(this);
   }
 
   componentDidMount() {
@@ -55,83 +55,86 @@ class SavedJobMain extends Component {
     this.fetchData(this);
   }
 
-  setRedirectToSavedList = () => {
+  setRedirectToSearchResultList = () => {
     this.setState({
-      redirectToSavedList: true,
+      redirectToSearchResultList: true,
     });
   }
 
-  renderRedirectToSavedList = () => {
-    const { redirectToSavedList } = this.state;
-    if (redirectToSavedList) {
-      return <Redirect to="jobs/saved" />;
+  renderRedirectToSearchResultList = () => {
+    const { redirectToSearchResultList } = this.state;
+    const { searchMode, searchQuery } = this.props;
+
+    if (redirectToSearchResultList) {
+      return (
+        <Redirect to={{
+          pathname: '/search/services',
+          state: {
+            searchMode,
+            searchQuery,
+          },
+        }}
+        />
+      );
     }
   }
 
-  addSavedJob = (jobId) => {
-    axios.put(`/api/job/saved/${jobId}`)
+  addPinnedService(serviceId) {
+    axios.put(`/api/services/pinned/${serviceId}`)
       .then((response) => {
-        if (response.status === 200) {
-          toast.success('Job Post Saved!');
-        }
+        toast.success(response.data);
       }).catch((error) => {
-        toast.error('Error Saving Job Post!');
+        toast.success(error.response.data);
       });
-  };
+  }
 
-  deleteSavedJob = (jobId, index) => {
-    axios.delete(`/api/job/saved/${jobId}`)
-      .then((response) => {
-        if (response.status === 200) {
-          this.setState(prevState => ({
-            items: update(prevState.items, { $splice: [[index, 1]] }),
-          }));
-          toast.success('Job Post Unsaved!');
-          this.fetchData();
-        }
-      }).catch((error) => {
-        toast.error('Error Unsaving Job Post!');
-      });
-  };
+  fetchData = () => {
+    const { searchMode, searchQuery } = this.props;
 
-  fetchData = (props) => {
-    axios.get('/api/job/saved', {
+    this.setState({
+      items: [],
+    });
+
+    axios.get('/api/services/', {
       params: {
+        searchQuery,
+        search: searchMode,
+        editOwner: '',
         offset: 0,
         limit: 4,
       },
     }).then((response) => {
       if (response.data.length === 0) {
-        this.setState({
-          noData: true,
-        });
+        this.setState({ moreData: false });
       } else {
-        this.setState({
+        this.setState(prevState => ({
+          moreData: true,
           items: response.data,
-        });
+        }));
       }
     });
   }
+
 
   render() {
     const { classes, ...rest } = this.props;
     const { items, noData } = this.state;
     return (
       <React.Fragment>
-        {this.renderRedirectToSavedList()}
+        {this.renderRedirectToSearchResultList()}
         {noData == false
           && (
           <Button
             color="primary"
             className={classes.button}
-            onClick={this.setRedirectToSavedList}
+            onClick={this.setRedirectToSearchResultList}
           >
             See all
           </Button>
           )
         }
         <h5 className={classes.cardTitle}>
-          <b><FormattedMessage id="job.saved" /></b>
+          <b><FormattedMessage id="search.services" /></b>
         </h5>
         <hr />
         <div className={classes.mainContainer}>
@@ -140,18 +143,22 @@ class SavedJobMain extends Component {
             {
                 items.map((item, index) => (
                   <GridItem>
-                    <JobCard
-                      smallCard
-                      jobId={item._id}
-                      title={item.title}
-                      description={JSON.parse(item.description).blocks[0].text}
-                      companyName={item.companyName}
-                      location={item.location}
-                      dateCreated={item.dateCreated}
-                      savedJob
-                      itemIndex={index}
-                      addSavedJob={() => {}}
-                      deleteSavedJob={this.deleteSavedJob}
+                    <ServiceCard
+                      serviceId={item._id}
+                      serviceTitle={item.serviceTitle}
+                      serviceImagePath={item.serviceImagePath}
+                      serviceDescription={item.serviceDescription}
+                      serviceSummary={item.serviceSummary}
+                      category={item.category}
+                      subcategory={item.subcategory}
+                      serviceLocation={item.location}
+                      serviceDate={item.serviceDate}
+                      serviceHours={item.serviceHours}
+                      rating={item.avgRating}
+                      count={item.countRating}
+                      pinIcon={<i className="fas fa-thumbtack" />}
+                      pinIconHandle={this.addPinnedService}
+                      pinIconHelperText="Pin to Dashboard"
                     />
                   </GridItem>
                 ))
@@ -161,7 +168,7 @@ class SavedJobMain extends Component {
         { noData == true
             && (
             <div style={{ textAlign: 'left' }}>
-              <h4 style={{ 'text-indent': '40px' }}><FormattedMessage id="job.saved.empty" /></h4>
+              <h4 style={{ 'text-indent': '40px' }}>No services available</h4>
             </div>
             )
           }
@@ -170,9 +177,9 @@ class SavedJobMain extends Component {
   }
 }
 
-SavedJobMain.propTypes = {
+SearchServiceContainer.propTypes = {
   classes: PropTypes.shape({}).isRequired,
   location: PropTypes.shape({}).isRequired,
 };
 
-export default withStyles(styles)(SavedJobMain);
+export default withStyles(styles)(SearchServiceContainer);

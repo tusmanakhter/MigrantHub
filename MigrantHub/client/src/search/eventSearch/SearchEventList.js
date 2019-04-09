@@ -1,19 +1,15 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import withStyles from '@material-ui/core/styles/withStyles';
-import { Redirect } from 'react-router-dom';
 import axios from 'axios';
-import JobCard from 'jobs/postings/JobCard';
-import Button from 'components/CustomButtons/Button.jsx';
-import UserTypes from 'lib/UserTypes';
 import Grid from '@material-ui/core/Grid';
-import { FormattedMessage } from 'react-intl';
 import { AuthConsumer } from 'routes/AuthContext';
 import InfiniteScroll from 'react-infinite-scroller';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import GridContainer from 'components/Grid/GridContainer.jsx';
 import GridItem from 'components/Grid/GridItem.jsx';
-import FavoriteIcon from '@material-ui/icons/Favorite';
+import EventCard from 'events/EventCard';
+import { FormattedMessage } from 'react-intl';
 import { toast } from 'react-toastify';
 import update from 'immutability-helper';
 
@@ -28,36 +24,38 @@ const styles = theme => ({
   },
 });
 
-class SavedJobList extends Component {
+class SearchEventList extends Component {
   constructor(props) {
     super(props);
     this.state = {
       items: [],
-      redirectToJobForm: false,
+      redirectToEventForm: false,
       offset: 0,
-      limit: 10,
+      limit: 20,
       moreData: true,
     };
   }
 
-  setRedirectToJobForm = () => {
-    this.setState({
-      redirectToJobForm: true,
-    });
-  }
+  fetchData = () => {
+    const { location } = this.props;
+    const { limit } = this.state;
+    const { offset } = this.state;
 
-  renderRedirectToJobForm = () => {
-    const { redirectToJobForm } = this.state;
-    if (redirectToJobForm) {
-      return <Redirect to="/jobs/create" />;
+    let searchQuery = '';
+    let searchMode = false;
+
+    if (location.state) {
+      if (location.state.searchMode) {
+        searchMode = location.state.searchMode;
+        searchQuery = location.state.searchQuery;
+      }
     }
-  }
 
-  fetchData = (props) => {
-    const { limit, offset } = this.state;
-
-    axios.get('/api/job/saved', {
+    axios.get('/api/events/', {
       params: {
+        editOwner: '',
+        searchQuery,
+        search: searchMode,
         offset,
         limit,
       },
@@ -74,18 +72,31 @@ class SavedJobList extends Component {
     });
   }
 
-  deleteSavedJob = (jobId, index) => {
-    axios.delete(`/api/job/saved/${jobId}`)
+  addSavedEvent = (eventId, index) => {
+    axios.put(`/api/events/saved/${eventId}`)
       .then((response) => {
         if (response.status === 200) {
-          this.setState(prevState => ({
-            items: update(prevState.items, { $splice: [[index, 1]] }),
-          }));
-          this.fetchData();
-          toast.success('Job Post Unsaved!');
+          this.setState({
+            items: update(this.state.items, { [index]: { savedEvent: { $set: true } } }),
+          });
+          toast.success('Event Post Saved!');
         }
       }).catch((error) => {
-        toast.error('Error Unsaving Job Post!');
+        toast.error('Error Saving Event Post!');
+      });
+  };
+
+  deleteSavedEvent = (eventId, index) => {
+    axios.delete(`/api/events/saved/${eventId}`)
+      .then((response) => {
+        if (response.status === 200) {
+          this.setState({
+            items: update(this.state.items, { [index]: { savedEvent: { $set: false } } }),
+          });
+          toast.success('Event Post Unsaved!');
+        }
+      }).catch((error) => {
+        toast.error('Error Unsaving Event Post!');
       });
   };
 
@@ -98,37 +109,10 @@ class SavedJobList extends Component {
         {({ user }) => (
           <>
             <div className={classes.mainContainer}>
-              {user.type !== UserTypes.ADMIN
-            && (
               <div>
-                {this.renderRedirectToJobForm()}
-                <Grid item container justify="center">
-                  {user.type === UserTypes.BUSINESS
-                  && (
-                    <Grid item lg={12} md={12} sm={12} xd={12} align="right">
-                      <Button
-                        variant="contained"
-                        color="primary"
-                        className={classes.button}
-                        onClick={this.setRedirectToJobForm}
-                      >
-                        Create a Job Post
-                      </Button>
-                    </Grid>
-                  )}
-                  <Grid lg={12} md={12} sm={12} xd={12}>
-                    <h3>
-                      <FormattedMessage id="job.saved" />
-                    </h3>
-                    <h5>
-                      <FormattedMessage id="job.saved.browse" />
-                    </h5>
-                  </Grid>
-                </Grid>
+                <b><FormattedMessage id="search.events" /></b>
                 <hr />
               </div>
-            )
-            }
               <InfiniteScroll
                 pageStart={0}
                 loadMore={() => this.fetchData(this.props.redirect, this.props)}
@@ -146,18 +130,21 @@ class SavedJobList extends Component {
                   {' '}
                   {
                   items.map((item, index) => (
-                    <GridItem xs={12} sm={12} md={8}>
-                      <JobCard
-                        jobId={item._id}
-                        title={item.title}
-                        description={JSON.parse(item.description).blocks[0].text}
-                        companyName={item.companyName}
-                        location={item.location}
-                        dateCreated={item.dateCreated}
-                        savedJob
+                    <GridItem>
+                      <EventCard
+                        eventId={item._id}
+                        eventName={item.eventName}
+                        eventImagePath={item.eventImagePath}
+                        eventDescription={item.description}
+                        eventLocation={item.location}
+                        dateStart={item.dateStart}
+                        dateEnd={item.dateEnd}
+                        timeStart={item.timeStart}
+                        timeEnd={item.timeEnd}
+                        savedEvent={item.savedEvent}
                         itemIndex={index}
-                        addSavedJob={() => {}}
-                        deleteSavedJob={this.deleteSavedJob}
+                        addSavedEvent={this.addSavedEvent}
+                        deleteSavedEvent={this.deleteSavedEvent}
                       />
                     </GridItem>
                   ))
@@ -172,9 +159,9 @@ class SavedJobList extends Component {
   }
 }
 
-SavedJobList.propTypes = {
+SearchEventList.propTypes = {
   classes: PropTypes.shape({}).isRequired,
   location: PropTypes.shape({}).isRequired,
 };
 
-export default withStyles(styles)(SavedJobList);
+export default withStyles(styles)(SearchEventList);

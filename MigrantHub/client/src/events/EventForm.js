@@ -452,7 +452,6 @@ class EventForm extends Component {
     if (eventImageName !== '') {
       tempImageName = eventImageName;
     }
-    console.log(`EventImageName: ${eventImageName}`);
     const date = new Date();
     const todaysDate = (`${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`);
 

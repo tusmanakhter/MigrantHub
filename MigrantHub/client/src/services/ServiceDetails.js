@@ -240,7 +240,7 @@ class ServiceDetails extends Component {
       const {
         serviceId, serviceTitle, serviceSummary, serviceDescription, serviceDate, serviceHours,
         location, website, email, alert, serviceOwner, redirect, serviceAverageRating, serviceRatingCount, isLoading,
-        serviceImageName, serviceImagePath
+        serviceImageName, serviceImagePath,
       } = this.state;
       const icon = { 'calendar-plus-o': 'left' };
 
@@ -263,16 +263,18 @@ class ServiceDetails extends Component {
                     </CardIcon>
                     <h4 className={classes.cardIconTitle}><b>{serviceTitle}</b></h4>
                   </CardHeader>
-                  {serviceImagePath != '' && serviceImagePath != undefined &&
-                    < GridItem align="center">
+                  {serviceImagePath != '' && serviceImagePath != undefined
+                    && (
+                    <GridItem align="center">
                       <CardMedia
-                      component="img"
-                      alt={serviceTitle}
-                      className={classes.media}
-                      image={serviceImagePath}
-                      title={serviceImageName}
+                        component="img"
+                        alt={serviceTitle}
+                        className={classes.media}
+                        image={serviceImagePath}
+                        title={serviceImageName}
                       />
                     </GridItem>
+                    )
                   }
                   {isLoading ? (
                     <div>
@@ -284,11 +286,11 @@ class ServiceDetails extends Component {
                       <GridItem xs={12} align="left">
                         <h5><b> Description </b></h5>
                         <p>{serviceDescription}</p>
-                        <br/>
+                        <br />
                         <p>{website}</p>
-                        <br/>
+                        <br />
                         <p>{email}</p>
-                    </GridItem>
+                      </GridItem>
                       )}
                       {location !== undefined && location.address !== '' && (
                         <div style={{}}>

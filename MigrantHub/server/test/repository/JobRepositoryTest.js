@@ -20,9 +20,11 @@ describe('Job Repository', function () {
         _id: "5c987e1f0c6e2045a7995900",
         offset: 0,
         limit: 10,
-        owner: "test@test.com"
+        editOwner: "test@test.com",
+        search: 'true',
+        searchQuery: 'test',
       },
-        };
+    };
 
     it('should successfully call mongodb save to createJob', test(function () {
         this.stub(Job.prototype, 'save').returns(Promise.resolve({}));
@@ -45,16 +47,40 @@ describe('Job Repository', function () {
         return chai.assert.isRejected(JobRepository.getJobs({ deleted: false }), ServerError, 'There was an error retrieving jobs.');
     }));
 
-    it('should successfully call mongodb findOne to findOneJob', test(function () {
-        this.stub(Job, 'findOne').returns({exec: sinon.stub().returns(Promise.resolve({}))});
-        JobRepository.getJob({ _id: req.body._id, deleted: false });
-        assert.calledWith(Job.findOne, { _id: req.body._id, deleted: false });
-    }));
+  it('should successfully call mongodb find searched findJobs', test(function () {
+    this.stub(Job, 'find').returns({sort: sinon.stub().returns({skip: sinon.stub().returns({limit: sinon.stub()
+      .returns({exec: sinon.stub().returns(Promise.resolve({}))})})})});
+    JobRepository.getJobs({ deleted: false }, req.query.search, req.query.offset, req.query.limit);
+    assert.calledWith(Job.find, { deleted: false });
+  }));
 
-    it('should throw error, since there was a error getting job', test(function () {
-        this.stub(Job, 'findOne').returns({exec: sinon.stub().returns(Promise.reject({}))});
-        return chai.assert.isRejected(JobRepository.getJob({ _id: req.body._id, deleted: false }), ServerError, 'There was an error retrieving job.');
-    }));
+  it('should throw error, since there was a error getting all searched jobs', test(function () {
+    this.stub(Job, 'find').returns({sort: sinon.stub().returns({skip: sinon.stub().returns({limit: sinon.stub()
+      .returns({exec: sinon.stub().returns(Promise.reject({}))})})})});
+    return chai.assert.isRejected(JobRepository.getJobs({ deleted: false }, req.query.search, req.query.offset, req.query.limit), ServerError, 'There was an error retrieving jobs.');
+  }));
+
+  it('should successfully call mongodb find findJobs with no search, offset, limit', test(function () {
+    this.stub(Job, 'find').returns({exec: sinon.stub().returns(Promise.reject({}))});
+    JobRepository.getJobs({ deleted: false }, undefined, undefined, undefined);
+    assert.calledWith(Job.find, { deleted: false });
+  }));
+
+  it('should throw error, since there was a error getting all jobs with no search, offset, limit', test(function () {
+    this.stub(Job, 'find').returns({exec: sinon.stub().returns(Promise.reject({}))});
+    return chai.assert.isRejected(JobRepository.getJobs({ deleted: false }, undefined, undefined, undefined), ServerError, 'There was an error retrieving jobs.');
+  }));
+
+  it('should successfully call mongodb findOne to findOneJob', test(function () {
+      this.stub(Job, 'findOne').returns({exec: sinon.stub().returns(Promise.resolve({}))});
+      JobRepository.getJob({ _id: req.body._id, deleted: false });
+      assert.calledWith(Job.findOne, { _id: req.body._id, deleted: false });
+  }));
+
+  it('should throw error, since there was a error getting job', test(function () {
+      this.stub(Job, 'findOne').returns({exec: sinon.stub().returns(Promise.reject({}))});
+      return chai.assert.isRejected(JobRepository.getJob({ _id: req.body._id, deleted: false }), ServerError, 'There was an error retrieving job.');
+  }));
 
   it('should successfully call mongodb findByIdAndUpdate to updateJob', test(function () {
     this.stub(Job, 'findByIdAndUpdate').returns({exec: sinon.stub().returns(Promise.resolve({}))});

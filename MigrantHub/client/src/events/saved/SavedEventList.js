@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import withStyles from '@material-ui/core/styles/withStyles';
 import { Redirect } from 'react-router-dom';
 import axios from 'axios';
-import JobCard from 'jobs/postings/JobCard';
+import EventCard from 'events/EventCard';
 import Button from 'components/CustomButtons/Button.jsx';
 import UserTypes from 'lib/UserTypes';
 import Grid from '@material-ui/core/Grid';
@@ -13,7 +13,6 @@ import InfiniteScroll from 'react-infinite-scroller';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import GridContainer from 'components/Grid/GridContainer.jsx';
 import GridItem from 'components/Grid/GridItem.jsx';
-import FavoriteIcon from '@material-ui/icons/Favorite';
 import { toast } from 'react-toastify';
 import update from 'immutability-helper';
 
@@ -28,35 +27,35 @@ const styles = theme => ({
   },
 });
 
-class SavedJobList extends Component {
+class SavedEventList extends Component {
   constructor(props) {
     super(props);
     this.state = {
       items: [],
-      redirectToJobForm: false,
+      redirectToEventForm: false,
       offset: 0,
       limit: 10,
       moreData: true,
     };
   }
 
-  setRedirectToJobForm = () => {
+  setRedirectToEventForm = () => {
     this.setState({
-      redirectToJobForm: true,
+      redirectToEventForm: true,
     });
   }
 
-  renderRedirectToJobForm = () => {
-    const { redirectToJobForm } = this.state;
-    if (redirectToJobForm) {
-      return <Redirect to="/jobs/create" />;
+  renderRedirectToEventForm = () => {
+    const { redirectToEventForm } = this.state;
+    if (redirectToEventForm) {
+      return <Redirect to="/events/create" />;
     }
   }
 
   fetchData = (props) => {
     const { limit, offset } = this.state;
 
-    axios.get('/api/job/saved', {
+    axios.get('/api/events/saved', {
       params: {
         offset,
         limit,
@@ -74,18 +73,18 @@ class SavedJobList extends Component {
     });
   }
 
-  deleteSavedJob = (jobId, index) => {
-    axios.delete(`/api/job/saved/${jobId}`)
+  deleteSavedEvent = (eventId, index) => {
+    axios.delete(`/api/events/saved/${eventId}`)
       .then((response) => {
         if (response.status === 200) {
           this.setState(prevState => ({
             items: update(prevState.items, { $splice: [[index, 1]] }),
           }));
           this.fetchData();
-          toast.success('Job Post Unsaved!');
+          toast.success('Event Post Unsaved!');
         }
       }).catch((error) => {
-        toast.error('Error Unsaving Job Post!');
+        toast.error('Error Unsaving Event Post!');
       });
   };
 
@@ -101,7 +100,7 @@ class SavedJobList extends Component {
               {user.type !== UserTypes.ADMIN
             && (
               <div>
-                {this.renderRedirectToJobForm()}
+                {this.renderRedirectToEventForm()}
                 <Grid item container justify="center">
                   {user.type === UserTypes.BUSINESS
                   && (
@@ -110,18 +109,18 @@ class SavedJobList extends Component {
                         variant="contained"
                         color="primary"
                         className={classes.button}
-                        onClick={this.setRedirectToJobForm}
+                        onClick={this.setRedirectToEventForm}
                       >
-                        Create a Job Post
+                        Create a Event Post
                       </Button>
                     </Grid>
                   )}
                   <Grid lg={12} md={12} sm={12} xd={12}>
                     <h3>
-                      <FormattedMessage id="job.saved" />
+                      <FormattedMessage id="event.saved" />
                     </h3>
                     <h5>
-                      <FormattedMessage id="job.saved.browse" />
+                      <FormattedMessage id="event.saved.browse" />
                     </h5>
                   </Grid>
                 </Grid>
@@ -146,18 +145,21 @@ class SavedJobList extends Component {
                   {' '}
                   {
                   items.map((item, index) => (
-                    <GridItem xs={12} sm={12} md={8}>
-                      <JobCard
-                        jobId={item._id}
-                        title={item.title}
-                        description={JSON.parse(item.description).blocks[0].text}
-                        companyName={item.companyName}
-                        location={item.location}
-                        dateCreated={item.dateCreated}
-                        savedJob
+                    <GridItem>
+                      <EventCard
+                        eventId={item._id}
+                        eventName={item.eventName}
+                        eventImagePath={item.eventImagePath}
+                        eventDescription={item.description}
+                        eventLocation={item.location}
+                        dateStart={item.dateStart}
+                        dateEnd={item.dateEnd}
+                        timeStart={item.timeStart}
+                        timeEnd={item.timeEnd}
+                        savedEvent
                         itemIndex={index}
-                        addSavedJob={() => {}}
-                        deleteSavedJob={this.deleteSavedJob}
+                        addSavedEvent={() => {}}
+                        deleteSavedEvent={this.deleteSavedEvent}
                       />
                     </GridItem>
                   ))
@@ -172,9 +174,9 @@ class SavedJobList extends Component {
   }
 }
 
-SavedJobList.propTypes = {
+SavedEventList.propTypes = {
   classes: PropTypes.shape({}).isRequired,
   location: PropTypes.shape({}).isRequired,
 };
 
-export default withStyles(styles)(SavedJobList);
+export default withStyles(styles)(SavedEventList);

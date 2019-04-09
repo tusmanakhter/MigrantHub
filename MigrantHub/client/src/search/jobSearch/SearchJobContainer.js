@@ -35,12 +35,12 @@ const styles = theme => ({
   },
 });
 
-class SavedJobMain extends Component {
+class SearchJobContainer extends Component {
   constructor(props) {
     super(props);
     this.state = {
       items: [],
-      redirectToSavedList: false,
+      redirectToSearchResultList: false,
       noData: false,
     };
 
@@ -55,23 +55,37 @@ class SavedJobMain extends Component {
     this.fetchData(this);
   }
 
-  setRedirectToSavedList = () => {
+  setRedirectToSearchResultList = () => {
     this.setState({
-      redirectToSavedList: true,
+      redirectToSearchResultList: true,
     });
   }
 
-  renderRedirectToSavedList = () => {
-    const { redirectToSavedList } = this.state;
-    if (redirectToSavedList) {
-      return <Redirect to="jobs/saved" />;
+  renderRedirectToSearchResultList = () => {
+    const { redirectToSearchResultList } = this.state;
+    const { searchMode, searchQuery } = this.props;
+
+    if (redirectToSearchResultList) {
+      return (
+        <Redirect to={{
+          pathname: '/search/jobs',
+          state: {
+            searchMode,
+            searchQuery,
+          },
+        }}
+        />
+      );
     }
   }
 
-  addSavedJob = (jobId) => {
+  addSavedJob = (jobId, index) => {
     axios.put(`/api/job/saved/${jobId}`)
       .then((response) => {
         if (response.status === 200) {
+          this.setState({
+            items: update(this.state.items, { [index]: { savedJob: { $set: true } } }),
+          });
           toast.success('Job Post Saved!');
         }
       }).catch((error) => {
@@ -83,32 +97,39 @@ class SavedJobMain extends Component {
     axios.delete(`/api/job/saved/${jobId}`)
       .then((response) => {
         if (response.status === 200) {
-          this.setState(prevState => ({
-            items: update(prevState.items, { $splice: [[index, 1]] }),
-          }));
+          this.setState({
+            items: update(this.state.items, { [index]: { savedJob: { $set: false } } }),
+          });
           toast.success('Job Post Unsaved!');
-          this.fetchData();
         }
       }).catch((error) => {
         toast.error('Error Unsaving Job Post!');
       });
   };
 
-  fetchData = (props) => {
-    axios.get('/api/job/saved', {
+  fetchData = () => {
+    const { searchMode, searchQuery } = this.props;
+
+    this.setState({
+      items: [],
+    });
+
+    axios.get('/api/job/', {
       params: {
+        searchQuery,
+        search: searchMode,
+        editOwner: '',
         offset: 0,
         limit: 4,
       },
     }).then((response) => {
       if (response.data.length === 0) {
-        this.setState({
-          noData: true,
-        });
+        this.setState({ moreData: false });
       } else {
-        this.setState({
+        this.setState(prevState => ({
+          moreData: true,
           items: response.data,
-        });
+        }));
       }
     });
   }
@@ -118,20 +139,20 @@ class SavedJobMain extends Component {
     const { items, noData } = this.state;
     return (
       <React.Fragment>
-        {this.renderRedirectToSavedList()}
+        {this.renderRedirectToSearchResultList()}
         {noData == false
           && (
           <Button
             color="primary"
             className={classes.button}
-            onClick={this.setRedirectToSavedList}
+            onClick={this.setRedirectToSearchResultList}
           >
             See all
           </Button>
           )
         }
         <h5 className={classes.cardTitle}>
-          <b><FormattedMessage id="job.saved" /></b>
+          <b><FormattedMessage id="search.jobs" /></b>
         </h5>
         <hr />
         <div className={classes.mainContainer}>
@@ -148,9 +169,9 @@ class SavedJobMain extends Component {
                       companyName={item.companyName}
                       location={item.location}
                       dateCreated={item.dateCreated}
-                      savedJob
+                      savedJob={item.savedJob}
                       itemIndex={index}
-                      addSavedJob={() => {}}
+                      addSavedJob={this.addSavedJob}
                       deleteSavedJob={this.deleteSavedJob}
                     />
                   </GridItem>
@@ -161,7 +182,7 @@ class SavedJobMain extends Component {
         { noData == true
             && (
             <div style={{ textAlign: 'left' }}>
-              <h4 style={{ 'text-indent': '40px' }}><FormattedMessage id="job.saved.empty" /></h4>
+              <h4 style={{ 'text-indent': '40px' }}>No jobs available</h4>
             </div>
             )
           }
@@ -170,9 +191,9 @@ class SavedJobMain extends Component {
   }
 }
 
-SavedJobMain.propTypes = {
+SearchJobContainer.propTypes = {
   classes: PropTypes.shape({}).isRequired,
   location: PropTypes.shape({}).isRequired,
 };
 
-export default withStyles(styles)(SavedJobMain);
+export default withStyles(styles)(SearchJobContainer);
