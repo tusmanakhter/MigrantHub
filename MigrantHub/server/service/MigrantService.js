@@ -27,4 +27,17 @@ module.exports = {
     }
     throw new ServerError('There was an error updating profile.', 400, errors);
   },
+
+  async onBoardingComplete(migrantUserId) {
+    const user = await MigrantRepository.getMigrantUser(migrantUserId);
+    const performOnBoarding = user.onBoarding === true;
+
+    return Promise.resolve(performOnBoarding);
+  },
+
+  async updateOnBoardingComplete(migrantUserId) {
+    const query = { onBoarding: false };
+
+    return MigrantRepository.editMigrantUser(migrantUserId, query);
+  },
 };

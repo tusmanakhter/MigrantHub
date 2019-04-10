@@ -41,4 +41,12 @@ module.exports = {
       throw new ServerError('There was an error retrieving updating migrant user.', 400, error);
     });
   },
+
+  updateMigrantUser(migrantUserId, query) {
+    return MigrantUser.findByIdAndUpdate({ _id: migrantUserId }, query,
+      { new: true }).exec()
+      .then(() => Promise.resolve('Migrant user has been updated.')).catch((error) => {
+        throw new ServerError('There was an error updating migrant user in db.', 400, error);
+      });
+  },
 };

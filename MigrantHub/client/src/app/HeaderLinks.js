@@ -37,7 +37,9 @@ import { AuthConsumer } from 'routes/AuthContext';
 import UserTypes from 'lib/UserTypes';
 
 class BaseHeaderLinks extends React.Component {
-  state = {
+  constructor(props) {
+    super(props);
+    this.state = {
     open: false,
     search: '',
     searchError: '',
@@ -46,25 +48,59 @@ class BaseHeaderLinks extends React.Component {
     redirectState: {},
     isTourOpen: false,
     isShowingMore: false,
-  };
+    dataRetrieved: false,
+    };
+    this.getUser = this.getUser.bind(this);
+  }
 
-  // componentDidMount() {
-  //   this.getOnboarding(this.props.context);
-  // }
+  componentDidMount() {
+    this.getUser(this);
+  }
 
-  // componentWillReceiveProps() {
-  //   this.getOnboarding(this.props.context);
-  // }
+  componentWillReceiveProps() {
+    this.getUser(this);
+  }
+
+  getUser() {
+    const { dataRetrieved } = this.state;
+    const { user } = this.context;
+
+    if (!dataRetrieved) {
+      axios.get(`/api/migrants/onboarding/${user.username}`).then((response) => {
+        if (response.status === 200) {
+          let performOnBoarding = response.data == true ? true: false ;
+          this.setState({
+            dataRetrieved: true,
+          });
+          if(performOnBoarding){
+            axios.put(`/api/migrants/onboarding/${user.username}`);
+            this.openTour(mainTour);
+          }
+        }
+      });
+    }
+  }
 
   closeTour = () => {
     this.setState({ isTourOpen: false });
   };
 
   openTour = (tourSteps) => {
-    this.setState({ 
-      tourSteps: tourSteps,
-      isTourOpen: true });
+    if(tourSteps == mainTour){
+      this.setState({ 
+        tourSteps: tourSteps,
+        closeWithMask: false,
+        isTourOpen: true
+      });
+    } else {
+      this.setState({ 
+        tourSteps: tourSteps,
+        closeWithMask: true,
+        isTourOpen: true
+      });
+    } 
   };
+  
   handleClick = () => {
     this.setState({ open: !this.state.open });
   };
@@ -140,7 +176,7 @@ class BaseHeaderLinks extends React.Component {
     const {
       classes, rtlActive, context,
     } = this.props;
-    const { open,  isTourOpen, tourSteps, onBoarding } = this.state;
+    const { open,  isTourOpen, tourSteps, closeWithMask } = this.state;
     const dropdownItem = classNames(
       classes.dropdownItem,
       classes.primaryHover,
@@ -168,11 +204,11 @@ class BaseHeaderLinks extends React.Component {
     return (
       <div className={wrapper}>
         {this.renderRedirectTo()}
-        {/* {this.getOnboarding(context.user)} */}
         <div className={managerClasses} data-tut="reactour__onboarding">
           <Tour
             onRequestClose={this.closeTour}
             steps={tourSteps}
+            closeWithMask={closeWithMask}
             isOpen={isTourOpen}
             maskClassName="mask"
             className="helper"
@@ -229,8 +265,8 @@ class BaseHeaderLinks extends React.Component {
                       <MenuItem
                           onClick={() => this.openTour(mainTour)}
                           className={dropdownItem}
-                        >
-                          {"Onboarding"}
+                      >
+                        {"Onboarding"}
                       </MenuItem>
                       <MenuItem
                         onClick={() => this.openTour(pinServiceTour)}
@@ -312,5 +348,7 @@ HeaderLinks.propTypes = {
   classes: PropTypes.object.isRequired,
   intl: intlShape.isRequired,
 };
+
+BaseHeaderLinks.contextType = AuthConsumer;
 
 export default withStyles(headerLinksStyle)(injectIntl(HeaderLinks));
