@@ -59,7 +59,7 @@ class ServiceRecommendation extends Component {
     const { items } = this.state;
     return (
       <React.Fragment>
-        <div className={classes.mainContainer}>
+        <div className={classes.mainContainer} data-tut="reactour__recommendedServices">
           <h5 className={classes.cardTitle}>
             <b><FormattedMessage id="service.suggested" /></b>
           </h5>

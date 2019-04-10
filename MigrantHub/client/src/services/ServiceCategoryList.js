@@ -74,7 +74,7 @@ class ServiceCategoryList extends Component {
                 justify="center"
                 spacing={8}
               >
-                <Grid item>
+                <Grid item data-tut="reactour__selectAllServices">
                   <CardActionArea>
                     <Card
                       className={classes.card}

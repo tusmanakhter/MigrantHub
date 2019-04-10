@@ -453,5 +453,5 @@
   "job.save": "Save Job",
   "job.unsave": "Unsave Job",
   "job.saved": "Saved Jobs",
-  "job.saved.empty": "No saved jobs"
+  "job.saved.empty": "You have no saved jobs yet"
 }

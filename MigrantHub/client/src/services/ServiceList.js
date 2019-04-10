@@ -181,7 +181,7 @@ class ServiceList extends Component {
                                       <FormattedMessage id="service.infobox" />
                                     </h6>
                                   </CardHeader>
-                                  <CardBody>
+                                  <CardBody data-tut="reactour__createServiceButton">
                                     <Button
                                       variant="contained"
                                       color="primary"
@@ -260,7 +260,7 @@ class ServiceList extends Component {
                 useWindow={false}
                 getScrollParent={() => document.getElementById('mainPanel')}
               >
-                <Grid container spacing={16} alignItems="center" justify="center">
+                <Grid container spacing={16} alignItems="center" justify="center" data-tut="reactour__serviceList">
                   {' '}
                   {
                     items.map(item => (

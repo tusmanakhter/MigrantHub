@@ -24,7 +24,7 @@ class SidebarWrapper extends React.Component {
     } = this.props;
 
     return (
-      <div className={className} ref={this.setSidebarRef}>
+      <div className={className} ref={this.setSidebarRef} data-tut="reactour__sidebar">
         {user}
         {headerLinks}
         {links}
