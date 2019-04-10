@@ -18,6 +18,12 @@ import Business from '@material-ui/icons/Business';
 import moment from 'moment';
 import GridContainer from 'components/Grid/GridContainer.jsx';
 import { AuthConsumer } from 'routes/AuthContext';
+import Tooltip from '@material-ui/core/Tooltip';
+import FavoriteIcon from '@material-ui/icons/Favorite';
+import UnFavoriteIcon from '@material-ui/icons/FavoriteBorder';
+import UserTypes from 'lib/UserTypes';
+import { FormattedMessage } from 'react-intl';
+import Button from 'components/CustomButtons/Button.jsx';
 
 const styles = theme => ({
   card: {
@@ -32,8 +38,8 @@ const styles = theme => ({
     maxHeight: 40,
   },
   bodyContainer: {
-    minHeight: 80,
-    maxHeight: 80,
+    minHeight: 55,
+    maxHeight: 55,
   },
   eventTitle: {
     textDecoration: 'underline',
@@ -59,65 +65,110 @@ const styles = theme => ({
 const EventCard = (props) => {
   const {
     classes, eventId, eventName, eventDescription, eventLocation, dateEnd,
+    savedEvent, addSavedEvent, deleteSavedEvent, itemIndex,
   } = props;
 
   return (
-    <React.Fragment>
-    <Card className={classes.card}>
-  <CardActionArea component={cardProps =>  <Link to={`/events/${eventId}`} {...cardProps} />}>
-    <CardHeader color="primary" icon className={classes.headContainer}>
-      <CardIcon color="primary">
-        <CalendarToday />
-      </CardIcon>
-      <Typography variant="title" className={classes.eventTitle}>
-        {(eventName != undefined && (eventName).length > 51)
-          ? (
-            <Typography variant="body2">
-              {((eventName).substring(0, 48))} <b>...</b>
-            </Typography>
-          ) : (
-            <Typography variant="body2">
-              {eventName}
-            </Typography>
-          )}
-      </Typography>
-    </CardHeader>
-    <CardBody className={classes.bodyContainer}>
-    {(eventDescription != undefined && (eventDescription).length > 120)
-    ? (
-    <Typography variant="body1">
-      {((eventDescription).substring(0, 160))} <b>...View More</b>
-    </Typography>
-    ) : (
-    <Typography variant="body1">
-      {eventDescription}
-    </Typography>
-    )}
-  </CardBody>
-  <CardFooter stats className={classes.cardFooter}>
-    <GridContainer justify="center">
-      <GridItem lg={12} md={12} sm={12} xs={12}>
-        <div className={classes.locationContainer}>
-          {eventLocation
-            ? (<p><Place fontSize="inherit" /> {eventLocation.city}</p>)
-            : (<p><Place fontSize="inherit" /> Canada</p>)
+    <AuthConsumer>
+      {({ user }) => (
+        <React.Fragment>
+          <Card className={classes.card}>
+            <GridItem align="right">
+              {user.type === UserTypes.MIGRANT ? (
+                <Tooltip
+                  id="tooltip-top"
+                  aria-label="SavedIcon"
+                  title={savedEvent ? <FormattedMessage id="event.unsave" /> : <FormattedMessage id="event.save" />}
+                  className={classes.tooltip}
+                >
+                  {savedEvent
+                    ? (
+                      <Button
+                        size="sm"
+                        color="primary"
+                        justIcon
+                        round
+                        simple
+                        onClick={() => deleteSavedEvent(eventId, itemIndex)}
+                      >
+                        <FavoriteIcon />
+                      </Button>
+                    )
+                    : (
+                      <Button
+                        size="sm"
+                        color="primary"
+                        justIcon
+                        round
+                        simple
+                        onClick={() => addSavedEvent(eventId, itemIndex)}
+                      >
+                        <UnFavoriteIcon />
+                      </Button>
+                    )
+              }
+                </Tooltip>
+              )
+                : (<div><br /><br /></div>
+                )
+        }
+            </GridItem>
+            <CardActionArea component={cardProps => <Link to={`/events/${eventId}`} {...cardProps} />}>
+              <CardHeader color="primary" icon className={classes.headContainer}>
+                <CardIcon color="primary">
+                  <CalendarToday />
+                </CardIcon>
+                <Typography variant="title" className={classes.eventTitle}>
+                  {(eventName != undefined && (eventName).length > 51)
+                    ? (
+                      <Typography variant="body2">
+                        {((eventName).substring(0, 48))} <b>...</b>
+                      </Typography>
+                    ) : (
+                      <Typography variant="body2">
+                        {eventName}
+                      </Typography>
+                    )}
+                </Typography>
+              </CardHeader>
+              <CardBody className={classes.bodyContainer}>
+                {(eventDescription != undefined && (eventDescription).length > 87)
+                  ? (
+                    <Typography variant="body1">
+                      {((eventDescription).substring(0, 100))} <b>...View More</b>
+                    </Typography>
+                  ) : (
+                    <Typography variant="body1">
+                      {eventDescription}
+                    </Typography>
+                  )}
+              </CardBody>
+              <CardFooter stats className={classes.cardFooter}>
+                <GridContainer justify="center">
+                  <GridItem lg={12} md={12} sm={12} xs={12}>
+                    <div className={classes.locationContainer}>
+                      {eventLocation
+                        ? (<p><Place fontSize="inherit" /> {eventLocation.city}</p>)
+                        : (<p><Place fontSize="inherit" /> Canada</p>)
           }
-        </div>
-      </GridItem>
-      <GridItem lg={12} md={12} sm={12} xs={12}>
-        <div className={classes.timePostedContainer}>
-          {moment(dateEnd) > moment()
-            ? (<p className={classes.date}><CalendarToday />Ends {moment(dateEnd).fromNow()}</p>)
-            : (<p className={classes.date}><CalendarToday />Ended {moment(dateEnd).fromNow()}</p>)
+                    </div>
+                  </GridItem>
+                  <GridItem lg={12} md={12} sm={12} xs={12}>
+                    <div className={classes.timePostedContainer}>
+                      {moment(dateEnd) > moment()
+                        ? (<p className={classes.date}><CalendarToday />Ends {moment(dateEnd).fromNow()}</p>)
+                        : (<p className={classes.date}><CalendarToday />Ended {moment(dateEnd).fromNow()}</p>)
           }
-        </div>
-      </GridItem>
+                    </div>
+                  </GridItem>
 
-    </GridContainer>
-    </CardFooter>
-  </CardActionArea>
-</Card>
-</React.Fragment>
+                </GridContainer>
+              </CardFooter>
+            </CardActionArea>
+          </Card>
+        </React.Fragment>
+      )}
+    </AuthConsumer>
   );
 };
 

@@ -12,6 +12,7 @@ const { ServerError } = require('../errors/ServerError');
 const SendEmail = require('../mail/SendEmail');
 const { SignupConfirmationEmail } = require('../mail/EmailMessages');
 const SavedJobService = require('../service/SavedJobService');
+const SavedEventService = require('../service/SavedEventService');
 
 module.exports = {
   async createUser(parsedMigrantUserObject) {
@@ -28,6 +29,7 @@ module.exports = {
       await MigrantRepository.createUser(migrantUserObject);
       await SavedJobService.createSavedJob(migrantUserObject.email);
       await PinnedServiceService.createPinnedService(migrantUserObject.email);
+      await SavedEventService.createSavedEvent(migrantUserObject.email);
 
       const receiverEmail = migrantUserObject.email;
       SendEmail.sendEmail(receiverEmail, title, message);

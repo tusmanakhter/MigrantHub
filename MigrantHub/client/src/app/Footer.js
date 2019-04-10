@@ -8,6 +8,7 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import footerStyle from 'assets/jss/material-dashboard-pro-react/components/footerStyle';
 import TermsConditions from 'app/TermsConditions';
+import { buildForumUrl } from 'helpers/Forms';
 
 function Footer({ ...props }) {
   const {
@@ -42,6 +43,11 @@ function Footer({ ...props }) {
             <ListItem className={classes.inlineBlock}>
               <a href="/about-us" className={block}>
                 {'About'}
+              </a>
+            </ListItem>
+            <ListItem className={classes.inlineBlock}>
+              <a href={buildForumUrl()} className={block}>
+                {'Forum'}
               </a>
             </ListItem>
           </List>

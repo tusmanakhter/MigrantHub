@@ -62,11 +62,9 @@ class SavedJobList extends Component {
         limit,
       },
     }).then((response) => {
-      console.log(response.data);
       if (response.data.length === 0) {
         this.setState({ moreData: false });
       } else {
-        console.log(response.data);
         this.setState(prevState => ({
           moreData: true,
           items: prevState.items.concat(response.data),

@@ -414,20 +414,37 @@ class Sidebar extends React.Component {
                   </Menu>
                 )
                 : (
-                  <NavLink to={prop.path} className={navLinkClasses}>
-                    <ListItemIcon className={itemIcon}>
-                      {typeof prop.icon === 'string' ? (
-                        <Icon>{prop.icon}</Icon>
-                      ) : (
-                        <prop.icon />
-                      )}
-                    </ListItemIcon>
-                    <ListItemText
-                      primary={prop.name}
-                      disableTypography
-                      className={itemText}
-                    />
-                  </NavLink>
+                  prop.subdomain ? (
+                    <a href={prop.path} className={navLinkClasses}>
+                      <ListItemIcon className={itemIcon}>
+                        {typeof prop.icon === 'string' ? (
+                          <Icon>{prop.icon}</Icon>
+                        ) : (
+                          <prop.icon />
+                        )}
+                      </ListItemIcon>
+                      <ListItemText
+                        primary={prop.name}
+                        disableTypography
+                        className={itemText}
+                      />
+                    </a>
+                  ) : (
+                    <NavLink to={prop.path} className={navLinkClasses}>
+                      <ListItemIcon className={itemIcon}>
+                        {typeof prop.icon === 'string' ? (
+                          <Icon>{prop.icon}</Icon>
+                        ) : (
+                          <prop.icon />
+                        )}
+                      </ListItemIcon>
+                      <ListItemText
+                        primary={prop.name}
+                        disableTypography
+                        className={itemText}
+                      />
+                    </NavLink>
+                )
                 )}
             </ListItem>
           );

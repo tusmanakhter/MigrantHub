@@ -4,7 +4,9 @@ import BugIcon from '@material-ui/icons/BugReport';
 import FixIcon from '@material-ui/icons/Build';
 import DateRange from '@material-ui/icons/DateRange';
 import People from '@material-ui/icons/People';
+import Forum from '@material-ui/icons/Forum';
 import UserTypes from 'lib/UserTypes';
+import { buildForumUrl } from 'helpers/Forms';
 import { FormattedMessage } from 'react-intl';
 
 const SidebarLinks = [
@@ -37,6 +39,13 @@ const SidebarLinks = [
     name: <FormattedMessage id="friends" />,
     icon: People,
     type: [UserTypes.MIGRANT],
+  },
+  {
+    path: buildForumUrl(),
+    name: 'Forum',
+    icon: Forum,
+    type: [UserTypes.ADMIN, UserTypes.BUSINESS, UserTypes.MIGRANT],
+    subdomain: true,
   },
   {
     path: '/admin/dashboard',

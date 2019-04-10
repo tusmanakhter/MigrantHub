@@ -22,7 +22,7 @@ module.exports = {
         $or: savedJobsList,
       };
       query.deleted = false;
-      return JobRepository.getJobs(query, undefined, undefined);
+      return JobRepository.getJobs(query, false, undefined, undefined);
     }
     return Promise.resolve([]);
   },
