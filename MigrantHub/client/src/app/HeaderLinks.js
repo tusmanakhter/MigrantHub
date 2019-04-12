@@ -2,8 +2,8 @@ import React from 'react';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import validator from 'validator';
-import { Redirect } from 'react-router-dom';
-import {pinServiceTour, viewServiceTour, createServiceTour, mainTour} from 'lib/GuidedTour'
+import { Redirect, withRouter } from 'react-router-dom';
+import { pinServiceTour, viewServiceTour, createServiceTour, mainTour } from 'lib/GuidedTour'
 import MenuItem from "@material-ui/core/MenuItem";
 import MenuList from "@material-ui/core/MenuList";
 import ClickAwayListener from "@material-ui/core/ClickAwayListener";
@@ -12,11 +12,7 @@ import Grow from "@material-ui/core/Grow";
 import Popper from "@material-ui/core/Popper";
 import Help from "@material-ui/icons/Help";
 
-import qs from 'qs';
-import { toast } from 'react-toastify';
 import axios from 'axios';
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Switch from "@material-ui/core/Switch";
 import Tour from "reactour";
 
 // @material-ui/core components
@@ -174,7 +170,7 @@ class BaseHeaderLinks extends React.Component {
 
   render() {
     const {
-      classes, rtlActive, context,
+      classes, rtlActive, context
     } = this.props;
     const { open,  isTourOpen, tourSteps, closeWithMask } = this.state;
     const dropdownItem = classNames(
@@ -215,6 +211,8 @@ class BaseHeaderLinks extends React.Component {
             rounded={10}
             startAt={0}
           />
+          {this.props.location.pathname ==="/main" ?
+          <div>
           <Button
             color="primary"
             justIcon
@@ -292,6 +290,7 @@ class BaseHeaderLinks extends React.Component {
               </Grow>
             )}
           </Popper>
+          </div>: ""}
         </div>
         <Link to="/main" data-tut="reactour__returnToDashboard">
           <Button
@@ -351,4 +350,4 @@ HeaderLinks.propTypes = {
 
 BaseHeaderLinks.contextType = AuthConsumer;
 
-export default withStyles(headerLinksStyle)(injectIntl(HeaderLinks));
+export default withRouter(withStyles(headerLinksStyle)(injectIntl(HeaderLinks)));
