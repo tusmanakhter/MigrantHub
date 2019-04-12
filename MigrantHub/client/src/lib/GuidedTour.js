@@ -1,15 +1,16 @@
 import React from 'react';
+import { FormattedMessage } from 'react-intl';
 
-export const pinServiceTour = [
+  export const pinServiceTour = [
     {
       selector: '[data-tut="reactour__iso"]',
       content: () => (
         <div>
           <h4 color="#e5e5e5">
-            Welcome to MigrantHub Guided Tour
+            <FormattedMessage id="tour.guidedTour.welcome" />
           </h4>
           <p color="#373737" size=".7em" style={{ marginTop: ".7em" }}>
-            Let us show you how to pin a service!
+            <FormattedMessage id="tour.pinServiceTour.1.1" />
           </p>
         </div>
       ),
@@ -19,10 +20,10 @@ export const pinServiceTour = [
         content: () => (
           <div>
           <h3>
-            This is your pinned services dashboard
+           <FormattedMessage id="tour.pinServiceTour.2" />
           </h3>
           <p>
-            Let's start filling up this section!
+           <FormattedMessage id="tour.pinServiceTour.2.1" />
           </p>
           </div>
         ),
@@ -32,10 +33,10 @@ export const pinServiceTour = [
       content: () => (
         <div>
           <h4 color="#e5e5e5">
-            First: Browse our services
+            <FormattedMessage id="tour.pinServiceTour.3" />
           </h4>
           <p color="#373737" size=".7em" style={{ marginTop: ".7em" }}>
-            Click on Services
+            <FormattedMessage id="tour.pinServiceTour.3.1" />
           </p>
         </div>
       ),
@@ -45,7 +46,7 @@ export const pinServiceTour = [
       content: () => (
         <div>
           <p color="#373737" size=".7em" style={{ marginTop: ".7em" }}>
-            Explore all services
+            <FormattedMessage id="tour.pinServiceTour.4" />
           </p>
         </div>
       )
@@ -55,13 +56,17 @@ export const pinServiceTour = [
       content: () => (
         <div>
         <h3>
-          This is a list of all services.
+          <FormattedMessage id="tour.pinServiceTour.5" />
         </h3>
         <p>
-          You may return at any time to explore the service details
+          <FormattedMessage id="tour.pinServiceTour.5.1" />
         </p>
-        <p>For now, we will pin a service to our dashboard!</p>
-        <p>Press Next! -></p>
+        <p>
+          <FormattedMessage id="tour.pinServiceTour.5.2" />
+        </p>
+        <p>
+          <FormattedMessage id="tour.pinServiceTour.5.3" />
+        </p>
         </div>
       ),
       position: "top"
@@ -71,10 +76,10 @@ export const pinServiceTour = [
       content: () => (
         <div>
         <h3>
-          Pin a service!
+          <FormattedMessage id="tour.pinServiceTour.6" />
         </h3>
         <p>
-          Select the pin button inside the service card!
+          <FormattedMessage id="tour.pinServiceTour.6.1" />
         </p>
         </div>
       ),
@@ -84,15 +89,23 @@ export const pinServiceTour = [
       content: () => (
         <div>
         <h3>
-          Return to your Dashboard
+          <FormattedMessage id="tour.pinServiceTour.7" />
         </h3>
         </div>
       ),
     },
     {
       selector: '[data-tut="reactour__pinnedService"]',
-      content:
-        "Congratulation! You have pinned an item"
+      content: () => (
+        <div>
+        <h3>
+          <FormattedMessage id="tour.pinServiceTour.8" />
+        </h3>
+        <p>
+          <FormattedMessage id="tour.pinServiceTour.8.1" />
+        </p>
+        </div>
+      ),
     },
   ];
 
@@ -102,10 +115,10 @@ export const pinServiceTour = [
       content: () => (
         <div>
           <h4 color="#e5e5e5">
-            Welcome to MigrantHub Guided Tour
+            <FormattedMessage id="tour.guidedTour.welcome" />
           </h4>
           <p color="#373737" size=".7em" style={{ marginTop: ".7em" }}>
-            Let us show you how to view all services.
+            <FormattedMessage id="tour.viewServiceTour.1.1" />
           </p>
         </div>
       ),
@@ -115,10 +128,10 @@ export const pinServiceTour = [
       content: () => (
         <div>
           <h4 color="#e5e5e5">
-            First: Browse our service categories
+            <FormattedMessage id="tour.viewServiceTour.2" />
           </h4>
           <p color="#373737" size=".7em" style={{ marginTop: ".7em" }}>
-            Click on Services
+            <FormattedMessage id="tour.viewServiceTour.2.1" />
           </p>
         </div>
       )
@@ -128,7 +141,7 @@ export const pinServiceTour = [
       content: () => (
         <div>
           <p color="#373737" size=".7em" style={{ marginTop: ".7em" }}>
-            Explore all services
+            <FormattedMessage id="tour.viewServiceTour.3" />
           </p>
         </div>
       )
@@ -138,10 +151,10 @@ export const pinServiceTour = [
       content: () => (
         <div>
         <h3>
-          This is a list of all services.
+          <FormattedMessage id="tour.viewServiceTour.4" />
         </h3>
         <p>
-          You may click on any services to view more details!
+          <FormattedMessage id="tour.viewServiceTour.4.1" />
         </p>
         </div>
       ),
@@ -155,10 +168,10 @@ export const pinServiceTour = [
       content: () => (
         <div>
           <h4 color="#e5e5e5">
-            Welcome to MigrantHub Guided Tour
+            <FormattedMessage id="tour.guidedTour.welcome" />
           </h4>
           <p color="#373737" size=".7em" style={{ marginTop: ".7em" }}>
-            Let us show you how to create a service.
+            <FormattedMessage id="tour.createServiceTour.1.1" />
           </p>
         </div>
       ),
@@ -168,10 +181,10 @@ export const pinServiceTour = [
       content: () => (
         <div>
           <h4 color="#e5e5e5">
-            Browse our services section
+            <FormattedMessage id="tour.createServiceTour.2" />
           </h4>
           <p color="#373737" size=".7em" style={{ marginTop: ".7em" }}>
-            Click here
+            <FormattedMessage id="tour.createServiceTour.2.1" />
           </p>
         </div>
       )
@@ -181,7 +194,7 @@ export const pinServiceTour = [
       content: () => (
         <div>
           <p color="#373737" size=".7em" style={{ marginTop: ".7em" }}>
-            Explore all services
+            <FormattedMessage id="tour.createServiceTour.3" />
           </p>
         </div>
       )
@@ -191,10 +204,14 @@ export const pinServiceTour = [
       content: () => (
         <div>
         <h3>
-          Two Options?
+          <FormattedMessage id="tour.createServiceTour.4" />
         </h3>
-        <p> 1. You may <b>create</b> your own service for other users to see!</p>
-        <p> 2. If you haven't found the service you'd like, why not <b>suggest</b> one?</p>
+        <p>
+          <FormattedMessage id="tour.createServiceTour.4.1" />
+        </p>
+        <p>
+          <FormattedMessage id="tour.createServiceTour.4.2" />
+        </p>
         </div>
       ),
       position: "buttom"
@@ -204,9 +221,11 @@ export const pinServiceTour = [
         content: () => (
           <div>
           <h3>
-            My Services
+            <FormattedMessage id="tour.createServiceTour.5" />
           </h3>
-          <p> Once created, you may edit/view your own services by visiting <b>My services</b></p>
+          <p>
+            <FormattedMessage id="tour.createServiceTour.5.1" />
+          </p>
           </div>
         ),
     },
@@ -215,9 +234,11 @@ export const pinServiceTour = [
       content: () => (
         <div>
         <h3>
-          My Services
+          <FormattedMessage id="tour.createServiceTour.5" />
         </h3>
-        <p> Once created, you may edit/view your own services by visiting <b>My services</b></p>
+        <p>
+          <FormattedMessage id="tour.createServiceTour.5.1" />
+        </p>
         </div>
       ),
     }
@@ -229,10 +250,10 @@ export const pinServiceTour = [
       content: () => (
         <div>
           <h4 color="#e5e5e5">
-            Welcome to MigrantHub
+            <FormattedMessage id="tour.guidedTour.welcome" />
           </h4>
           <p color="#373737" size=".7em" style={{ marginTop: ".7em" }}>
-            Let us show you how to nagivate through our platform.
+            <FormattedMessage id="tour.mainTour.1.1" />
           </p>
         </div>
       ),
@@ -243,10 +264,10 @@ export const pinServiceTour = [
         content: () => (
           <div>
           <h3>
-            Translate
+            <FormattedMessage id="tour.mainTour.2" />
           </h3>
           <p>
-            Dont speak english? No problem, we got you covered!
+            <FormattedMessage id="tour.mainTour.2.1" />
           </p>
           </div>
         ),
@@ -257,10 +278,10 @@ export const pinServiceTour = [
       content: () => (
         <div>
           <h4 color="#e5e5e5">
-            Our Sidebar provides many features
+            <FormattedMessage id="tour.mainTour.3" />
           </h4>
           <p color="#373737" size=".7em" style={{ marginTop: ".7em" }}>
-            You may view all services, events and job postings.
+            <FormattedMessage id="tour.mainTour.3.1" />
           </p>
         </div>
       ),
@@ -271,7 +292,7 @@ export const pinServiceTour = [
       content: () => (
         <div>
           <h4 color="#e5e5e5">
-            This is your personal dashboard!
+            <FormattedMessage id="tour.mainTour.4" />
           </h4>
         </div>
       ),
@@ -282,10 +303,10 @@ export const pinServiceTour = [
       content: () => (
         <div>
           <h4 color="#e5e5e5">
-             Recommended Services!
+            <FormattedMessage id="tour.mainTour.5" />
           </h4>
-          <p>In this section, you will find our recommendation</p>
-          <p>Those recommendation are based upon your profile progress, service ratings and other factors</p>
+          <p><FormattedMessage id="tour.mainTour.5.1" /></p>
+          <p><FormattedMessage id="tour.mainTour.5.2" /></p>
         </div>
         ),
         stepInteraction: false,
@@ -295,10 +316,14 @@ export const pinServiceTour = [
       content: () => (
         <div>
         <h4 color="#e5e5e5">
-           Pinned services!
+          <FormattedMessage id="tour.mainTour.6" />
         </h4>
-        <p>In this section, you will find your pinned services</p>
-        <p> As you browse, pin the services that you like for quick access</p>
+        <p>
+          <FormattedMessage id="tour.mainTour.6.1" />
+        </p>
+        <p>
+          <FormattedMessage id="tour.mainTour.6.2" />
+        </p>
         </div>
         ),
         stepInteraction: false,
@@ -308,10 +333,14 @@ export const pinServiceTour = [
       content: () => (
         <div>
         <h4 color="#e5e5e5">
-          Saved Jobs!
+          <FormattedMessage id="tour.mainTour.7" />
         </h4>
-        <p>In this section, you will find your saved jobs</p>
-        <p>Found a job posting that interest you? Save it to your dashboard!</p>
+        <p>
+          <FormattedMessage id="tour.mainTour.7.1" />
+        </p>
+        <p>
+          <FormattedMessage id="tour.mainTour.7.2" />
+        </p>
         </div>
       ),
       stepInteraction: false,
@@ -321,11 +350,11 @@ export const pinServiceTour = [
       content: () => (
         <div>
         <h4 color="#e5e5e5">
-            Our Search Bar!
+          <FormattedMessage id="tour.mainTour.8" />
         </h4>
-          <p color="#373737" size=".7em" style={{ marginTop: ".7em" }}>
-            You had something in mind? Go ahead and search our platform for services, jobs, events and more!
-          </p>
+        <p color="#373737" size=".7em" style={{ marginTop: ".7em" }}>
+          <FormattedMessage id="tour.mainTour.8.1" />
+        </p>
         </div>
       ),
       stepInteraction: false,
@@ -335,9 +364,11 @@ export const pinServiceTour = [
       content: () => (
         <div>
         <h3>
-          Your profile
+          <FormattedMessage id="tour.mainTour.9" />
         </h3>
-        <p>The higher your profile progress, the better our recommendation will be!</p>
+        <p>
+          <FormattedMessage id="tour.mainTour.9.1" />
+        </p>
         </div>
       ),
       position: "buttom",
@@ -348,9 +379,11 @@ export const pinServiceTour = [
       content: () => (
           <div>
           <h3>
-            Guided Tour
+            <FormattedMessage id="tour.mainTour.10" />
           </h3>
-          <p>Learn to nagivate through our platform with simple use cases</p>
+          <p>
+            <FormattedMessage id="tour.mainTour.10.1" />
+          </p>
           </div>
       ),
       position: "buttom",
