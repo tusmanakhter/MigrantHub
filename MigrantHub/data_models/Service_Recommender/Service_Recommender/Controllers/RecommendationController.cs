@@ -20,7 +20,7 @@ namespace Service_Recommender.Controllers
         {
             string modelPath = @"./model.zip";
             string allServicesPath = @"./allServices.csv";
-            string bucketPath = "data_model_files";
+            string bucketPath = "data_model_files_test";
 
             //set up the access to the google storage bucket
             string googleKeyPath = @"./key.json";
@@ -40,11 +40,7 @@ namespace Service_Recommender.Controllers
             // create the local environment and load the ServicesRecommendation Model
             MLContext mlContext = new MLContext();
 
-            ITransformer loadedModel;
-            using (var stream = new FileStream(modelPath, FileMode.Open, FileAccess.Read, FileShare.Read))
-            {
-                loadedModel = mlContext.Model.Load(stream);
-            }
+            ITransformer loadedModel = mlContext.Model.Load(modelPath, out var modelInputSchema);
 
             //fetch the list of all service ids and put them into an array
             string[] serviceIds = System.IO.File.ReadAllLines(allServicesPath);
@@ -84,20 +80,15 @@ namespace Service_Recommender.Controllers
 
         public class ServiceRating
         {
-            [Column("0")]
             public string userId;
 
-            [Column("1")]
             public string serviceId;
 
-            [Column("2")]
-            [ColumnName("Label")]
-            public float Label;
+            public bool Label;
         }
 
         public class ServiceRatingPrediction
         {
-            [ColumnName("PredictedLabel")]
             public bool predictedLabel;
 
             public float Score;

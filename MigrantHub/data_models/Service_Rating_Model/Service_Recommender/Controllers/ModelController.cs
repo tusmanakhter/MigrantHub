@@ -57,8 +57,7 @@ namespace Service_Rating_Model.Controllers
                 //train the model by fitting it with our dataset then save the model to disk (locally and temporarily)
                 var model = pipeline.Fit(trainingDataView);
 
-                using (var fileStream = new FileStream(ModelPath, FileMode.Create, FileAccess.Write, FileShare.Write))
-                    mlContext.Model.Save(model, fileStream);
+                mlContext.Model.Save(model, trainingDataView.Schema, ModelPath);
 
                 //upload the latest model from the local temp path and store it in the google bucket for later use
                 using (var inputFile = System.IO.File.OpenRead("./model.zip"))
