@@ -34,4 +34,10 @@ describe('Bug Service', function () {
         await BugService.getBug(bug._id);
         assert.calledWith(BugRepository.getBug, { _id: '5bda52305ccfd051484ea790' });
     }));
+
+    it('should call updateBug repository with correct parameters.', test(async function () {
+        this.stub(BugRepository, 'updateBug');
+        await BugService.updateBug(bug._id, req.body);
+        assert.calledWith(BugRepository.updateBug, bug._id, req.body);
+    }));
 });

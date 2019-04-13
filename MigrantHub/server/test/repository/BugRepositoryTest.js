@@ -43,4 +43,14 @@ describe('Bug Repository', function () {
         return chai.assert.isRejected(BugRepository.getBug({ _id: bug._id }), ServerError, 'There was an error retrieving bug.');
     }));
 
+    it('should successfully call mongodb findOne bug', test(function () {
+        this.stub(Bug, 'findByIdAndUpdate').returns({exec: sinon.stub().returns(Promise.resolve({}))});
+        BugRepository.updateBug(bug._id, req.body);
+        assert.calledWith(Bug.findByIdAndUpdate, { _id: bug._id });
+    }));
+  
+    it('should throw error, since there was an error finding bug', test(function () {
+        this.stub(Bug, 'findByIdAndUpdate').returns({exec: sinon.stub().returns(Promise.reject({}))});
+        return chai.assert.isRejected(BugRepository.updateBug(bug._i, req.body), ServerError, 'There was an error updating bug.');
+    }));
 });
