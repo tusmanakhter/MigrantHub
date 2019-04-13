@@ -20,10 +20,10 @@ import { FormattedMessage } from 'react-intl';
       content: () => (
         <div>
           <h3>
-          <FormattedMessage id="tour.pinServiceTour.2" />
+           <FormattedMessage id="tour.pinServiceTour.2" />
           </h3>
           <p>
-          <FormattedMessage id="tour.pinServiceTour.2.1" />
+           <FormattedMessage id="tour.pinServiceTour.2.1" />
           </p>
         </div>
       ),
