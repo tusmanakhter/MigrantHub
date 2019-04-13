@@ -7,6 +7,7 @@ import Typography from '@material-ui/core/Typography';
 import { Link } from 'react-router-dom';
 import { FormattedMessage } from 'react-intl';
 import { FaGithub, FaRegCopyright } from 'react-icons/fa';
+import { buildForumUrl } from 'helpers/Forms';
 
 const styles = theme => ({
   content: {
@@ -75,18 +76,17 @@ const styles = theme => ({
     padding: '10px 20px 10px 20px',
     '& a': {
       color: 'white',
-      marginRight: 20,
     },
     '& a:hover': {
       color: '#e5e5e5',
-    },
-    '& h6': {
-      marginRight: 15,
     },
     flexWrap: 'wrap',
     [theme.breakpoints.down('sm')]: {
       justifyContent: 'center',
     },
+  },
+  item: {
+    marginRight: 15,
   },
   right: {
     marginLeft: 'auto',
@@ -160,16 +160,16 @@ class HomeLayout extends Component {
           </div>
           <div className={classes.footer}>
             <div className={classes.root}>
-              <Typography variant="subtitle2" color="inherit" component={Link} to="/">
+              <Typography variant="subtitle2" color="inherit" className={classes.item} component={Link} to="/">
                 <FormattedMessage id="home" />
               </Typography>
-              <Typography variant="subtitle2" color="inherit">
+              <Typography variant="subtitle2" color="inherit" className={classes.item}>
                 <FormattedMessage id="footer.privacypolicy" />
               </Typography>
-              <Typography variant="subtitle2" color="inherit">
-                <FormattedMessage id="footer.faq" />
+              <Typography variant="subtitle2" color="inherit" className={classes.item}>
+                <a href={buildForumUrl()}>Forum</a>
               </Typography>
-              <Typography variant="subtitle2" color="inherit">
+              <Typography variant="subtitle2" color="inherit" className={classes.item}>
                 <FormattedMessage id="contact" />
               </Typography>
               <Typography variant="subtitle2" color="inherit" className={classes.copyright}>

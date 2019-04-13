@@ -58,16 +58,24 @@ class JobList extends Component {
     const { offset } = this.state;
 
     let editOwnerEmail = '';
+    let searchQuery = '';
+    let searchMode = false;
 
     if (location.state) {
       if (location.state.editMode) {
         editOwnerEmail = location.state.editOwner;
+      } else if (location.state.searchMode) {
+        searchMode = location.state.searchMode;
+        searchQuery = location.state.searchQuery;
       }
     }
 
+
     axios.get('/api/job/', {
       params: {
-        owner: editOwnerEmail,
+        editOwner: editOwnerEmail,
+        searchQuery,
+        search: searchMode,
         offset,
         limit,
       },

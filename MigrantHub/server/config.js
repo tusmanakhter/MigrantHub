@@ -93,6 +93,11 @@ const recommendationServiceConnectionString = () => {
   return connectionString;
 };
 
+const logglyConfig = {
+  token: process.env.LOGGLY_TOKEN || 'migranthub_loggly_token',
+  subdomain: process.env.LOGGLY_SUBDOMAIN || 'migranthub',
+};
+
 module.exports = {
   dbConfig,
   facebookConfig,
@@ -102,4 +107,5 @@ module.exports = {
   emailConfig,
   dbConnectionString,
   recommendationServiceConnectionString,
+  logglyConfig,
 };

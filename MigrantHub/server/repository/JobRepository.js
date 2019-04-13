@@ -26,8 +26,16 @@ module.exports = {
     });
   },
 
-  getJobs(query, offset, limit) {
-    if (offset !== undefined && limit !== undefined) {
+  getJobs(query, search, offset, limit) {
+    if (search === 'true') {
+      return Job.find(query, { score: { $meta: 'textScore' } }).sort({ score: { $meta: 'textScore' } })
+        .skip(parseInt(offset, 10)).limit(parseInt(limit, 10))
+        .exec()
+        .then(jobs => Promise.resolve(jobs))
+        .catch((error) => {
+          throw new ServerError('There was an error retrieving jobs.', 400, error);
+        });
+    } if (offset !== undefined && limit !== undefined) {
       return Job.find(query).skip(parseInt(offset, 10)).limit(parseInt(limit, 10)).exec()
         .then(jobs => Promise.resolve(jobs))
         .catch((error) => {

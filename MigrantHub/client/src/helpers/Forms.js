@@ -24,3 +24,14 @@ export async function login(username, password, context) {
     return true;
   }
 }
+
+export function buildForumUrl() {
+  let url = '';
+  let cleanedHost = window.location.hostname;
+  if (window.location.host.indexOf('www.') === 0) {
+    cleanedHost = window.location.host.replace('www.', '');
+  }
+
+  url = `${window.location.protocol}//forum.${cleanedHost}`;
+  return url;
+}

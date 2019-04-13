@@ -24,6 +24,8 @@ import Card from 'components/Card/Card.jsx';
 import CardHeader from 'components/Card/CardHeader.jsx';
 import CardBody from 'components/Card/CardBody.jsx';
 import Button from 'components/CustomButtons/Button.jsx';
+import { toast } from 'react-toastify';
+import update from 'immutability-helper';
 
 const styles = theme => ({
   root: {
@@ -118,6 +120,34 @@ class EventList extends Component {
       return <Redirect to="/events/create" />;
     }
   }
+
+  addSavedEvent = (eventId, index) => {
+    axios.put(`/api/events/saved/${eventId}`)
+      .then((response) => {
+        if (response.status === 200) {
+          this.setState({
+            items: update(this.state.items, { [index]: { savedEvent: { $set: true } } }),
+          });
+          toast.success('Event Post Saved!');
+        }
+      }).catch((error) => {
+        toast.error('Error Saving Event Post!');
+      });
+  };
+
+  deleteSavedEvent = (eventId, index) => {
+    axios.delete(`/api/events/saved/${eventId}`)
+      .then((response) => {
+        if (response.status === 200) {
+          this.setState({
+            items: update(this.state.items, { [index]: { savedEvent: { $set: false } } }),
+          });
+          toast.success('Event Post Unsaved!');
+        }
+      }).catch((error) => {
+        toast.error('Error Unsaving Event Post!');
+      });
+  };
 
   render() {
     const { classes } = this.props;
@@ -216,7 +246,7 @@ class EventList extends Component {
               <Grid className={classes.content} container spacing={16} alignItems="center" justify="center">
                 {' '}
                 {
-                  items.map(item => (
+                  items.map((item, index) => (
                     <GridItem>
                       <EventCard
                         eventId={item._id}
@@ -228,6 +258,10 @@ class EventList extends Component {
                         dateEnd={item.dateEnd}
                         timeStart={item.timeStart}
                         timeEnd={item.timeEnd}
+                        savedEvent={item.savedEvent}
+                        itemIndex={index}
+                        addSavedEvent={this.addSavedEvent}
+                        deleteSavedEvent={this.deleteSavedEvent}
                       />
                     </GridItem>
                   ))
