@@ -44,6 +44,7 @@ class BugDetails extends Component {
       dateCreated: '',
       status: '',
       statusError: '',
+      redirectToAllBugs: false,
     };
 
     this.handleChange = handleChange.bind(this);
@@ -124,9 +125,21 @@ class BugDetails extends Component {
         status,
       })).then((response) => {
       toast.success(response.data);
+      if (response.status === 200) {
+        this.setState({
+          redirectToAllBugs: true,
+        });
+      }
     }).catch((e) => {
       toast.error(e.response.data);
     });
+  }
+
+  renderRedirectToAllBugs = () => {
+    const { redirectToAllBugs } = this.state;
+    if (redirectToAllBugs) {
+      return <Redirect to="/bugs" />;
+    }
   }
 
   render() {
@@ -134,19 +147,14 @@ class BugDetails extends Component {
       classes,
     } = this.props;
     const {
-      reporter, bugName, description, dateCreated, redirect, status, statusError,
+      reporter, bugName, description, dateCreated, status, statusError,
     } = this.state;
-
-    if (redirect) {
-      return (
-        <Redirect to="/bugs" />
-      );
-    }
 
     return (
       <AuthConsumer>
         {({ user }) => (
           <div>
+            {this.renderRedirectToAllBugs()}
             {alert}
             <GridItem xs={12} sm={12} md={12} lg={12}>
               <Card>
