@@ -37,7 +37,7 @@ const styles = {
     objectFit: 'cover',
     padding: '15px',
     maxWidth: 600,
-    maxHeight: 400,
+    maxHeight: 500,
   },
 };
 
@@ -54,6 +54,7 @@ class ServiceDetails extends Component {
       location: '',
       website: '',
       email: '',
+      notes: '',
       serviceHours: [],
       serviceImagePath: '',
       tempServiceImagePath: '',
@@ -134,6 +135,7 @@ class ServiceDetails extends Component {
         location: tempLocation,
         website: parsedObj.website,
         email: parsedObj.email,
+        notes: parsedObj.notes,
         serviceHours: tempServiceHours,
         serviceImagePath: parsedObj.serviceImagePath,
         tempServiceImagePath: parsedObj.serviceImagePath,
@@ -239,8 +241,8 @@ class ServiceDetails extends Component {
       } = this.props;
       const {
         serviceId, serviceTitle, serviceSummary, serviceDescription, serviceDate, serviceHours,
-        location, website, email, alert, serviceOwner, redirect, serviceAverageRating, serviceRatingCount, isLoading,
-        serviceImageName, serviceImagePath,
+        location, website, email, notes, alert, serviceOwner, redirect, serviceAverageRating, serviceRatingCount, isLoading,
+        serviceImageName, serviceImagePath
       } = this.state;
       const icon = { 'calendar-plus-o': 'left' };
 
@@ -286,10 +288,20 @@ class ServiceDetails extends Component {
                       <GridItem xs={12} align="left">
                         <h5><b> Description </b></h5>
                         <p>{serviceDescription}</p>
-                        <br />
-                        <p>{website}</p>
-                        <br />
-                        <p>{email}</p>
+                        <br/>
+                        <p>{notes}</p>
+                      </GridItem>
+                      )}
+                      {website !== '' && (
+                        <GridItem xs={12} align="left">
+                        <h5><b>Website</b></h5>
+                        <a href={website} target="_blank">{website}</a>
+                      </GridItem>
+                      )}
+                      {email !== '' && (
+                        <GridItem xs={12} align="left">
+                        <h5><b>Email</b></h5>
+                        <a href={'mailto:'+ email} target="_blank">{email}</a>
                       </GridItem>
                       )}
                       {location !== undefined && location.address !== '' && (

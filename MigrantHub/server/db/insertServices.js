@@ -137,7 +137,7 @@ function createDocRecurse(err) {
         }
       }
 
-      doc.serviceImagePath = "/uploads/default/villeDeMontreal.png";
+      doc.serviceImagePath = "/uploads/default/refugeecentrelogo.png";
     });
     doc.save(createDocRecurse);
   }
