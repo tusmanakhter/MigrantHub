@@ -1,13 +1,12 @@
 ﻿using System;
-using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.ML;
-using Microsoft.ML.Runtime.Api;
-using Microsoft.ML.Runtime.Data;
-using Microsoft.ML.Core.Data;
+using Microsoft.ML.Data;
 using Google.Cloud.Storage.V1;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.IO;
 
 namespace Service_Recommender.Controllers
 {
@@ -39,30 +38,30 @@ namespace Service_Recommender.Controllers
             }
 
             // create the local environment and load the ServicesRecommendation Model
-            var ctx = new MLContext();
+            MLContext mlContext = new MLContext();
 
             ITransformer loadedModel;
             using (var stream = new FileStream(modelPath, FileMode.Open, FileAccess.Read, FileShare.Read))
             {
-                loadedModel = ctx.Model.Load(stream);
+                loadedModel = mlContext.Model.Load(stream);
             }
 
             //fetch the list of all service ids and put them into an array
             string[] serviceIds = System.IO.File.ReadAllLines(allServicesPath);
 
             //create a prediction function
-            var predictionfunction = loadedModel.MakePredictionFunction<RatingData, RatingPrediction>(ctx);
+            var predictionEngine = mlContext.Model.CreatePredictionEngine<ServiceRating, ServiceRatingPrediction>(loadedModel);
 
             // find the rating prediction for each service and compile the normalized predictions into a list
             List<Tuple<String, float>> predictions = new List<Tuple<String, float>>();
 
-            RatingPrediction prediction = null;
+            ServiceRatingPrediction prediction = null;
             for (var i = 0; i < serviceIds.Length; i++)
             {
                 var serviceLine = serviceIds[i].Split(';');
                 var serviceId = serviceLine[0];
 
-                prediction = predictionfunction.Predict(new RatingData { userId = id.ToString(), serviceId = serviceId });
+                prediction = predictionEngine.Predict(new ServiceRating { userId = id.ToString(), serviceId = serviceId });
 
                 var normalizedscore = Sigmoid(prediction.Score);
 
@@ -83,7 +82,7 @@ namespace Service_Recommender.Controllers
             return recommendations;
         }
 
-        public class RatingData
+        public class ServiceRating
         {
             [Column("0")]
             public string userId;
@@ -96,7 +95,7 @@ namespace Service_Recommender.Controllers
             public float Label;
         }
 
-        public class RatingPrediction
+        public class ServiceRatingPrediction
         {
             [ColumnName("PredictedLabel")]
             public bool predictedLabel;
