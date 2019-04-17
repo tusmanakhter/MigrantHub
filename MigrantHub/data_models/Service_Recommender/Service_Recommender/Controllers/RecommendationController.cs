@@ -14,13 +14,13 @@ namespace Service_Recommender.Controllers
     [ApiController]
     public class RecommendationController : ControllerBase
     {
-        // GET api/recommendation/{id}
-        [HttpGet("{id}")]
-        public ActionResult<string> Get(string id)
+        // GET api/recommendation/{id}/{age}
+        [HttpGet("{id}/{age}")]
+        public ActionResult<string> Get(string id, string age)
         {
             string modelPath = @"./model.zip";
             string allServicesPath = @"./allServices.csv";
-            string bucketPath = "data_model_files_test";
+            string bucketPath = "data_model_files";
 
             //set up the access to the google storage bucket
             string googleKeyPath = @"./key.json";
@@ -57,7 +57,7 @@ namespace Service_Recommender.Controllers
                 var serviceLine = serviceIds[i].Split(';');
                 var serviceId = serviceLine[0];
 
-                prediction = predictionEngine.Predict(new ServiceRating { userId = id.ToString(), serviceId = serviceId });
+                prediction = predictionEngine.Predict(new ServiceRating { userId = id.ToString(), serviceId = serviceId, userAge = age.ToString()});
 
                 var normalizedscore = Sigmoid(prediction.Score);
 
@@ -83,6 +83,8 @@ namespace Service_Recommender.Controllers
             public string userId;
 
             public string serviceId;
+
+            public string userAge;
 
             public bool Label;
         }
