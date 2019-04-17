@@ -47,12 +47,12 @@ namespace Service_Rating_Model.Controllers
                 var trainingDataView = mlContext.Data.LoadFromTextFile<ServiceRating>(path: TrainingDataLocation, hasHeader: false, separatorChar: ';');
                 trainingDataView = mlContext.Data.Cache(trainingDataView);
 
-
                 //transform the data by encoding the two features (userId, serviceID) to later provide them as input to the learner
                 var pipeline = mlContext.Transforms.Text.FeaturizeText(outputColumnName: "userIdFeaturized", inputColumnName: nameof(ServiceRating.userId))
-                                                .Append(mlContext.Transforms.Text.FeaturizeText(outputColumnName: "serviceIdFeaturized", inputColumnName: nameof(ServiceRating.serviceId))
-                                                .Append(mlContext.Transforms.Concatenate("Features", "userIdFeaturized", "serviceIdFeaturized"))
-                                                .Append(mlContext.BinaryClassification.Trainers.FieldAwareFactorizationMachine(new string[] { "Features" })));
+                                                    .Append(mlContext.Transforms.Text.FeaturizeText(outputColumnName: "serviceIdFeaturized", inputColumnName: nameof(ServiceRating.serviceId))
+                                                    .Append(mlContext.Transforms.Text.FeaturizeText(outputColumnName: "userAgeFeaturized", inputColumnName: nameof(ServiceRating.userAge))
+                                                    .Append(mlContext.Transforms.Concatenate("Features", "userIdFeaturized", "serviceIdFeaturized", "userAgeFeaturized"))
+                                                    .Append(mlContext.BinaryClassification.Trainers.FieldAwareFactorizationMachine(new string[] { "Features" }))));
 
                 //train the model by fitting it with our dataset then save the model to disk (locally and temporarily)
                 var model = pipeline.Fit(trainingDataView);
@@ -79,17 +79,19 @@ namespace Service_Rating_Model.Controllers
             public static void dataprep()
             {
                 string[] dataset = System.IO.File.ReadAllLines("./ratings.csv");
-
+            
                 string[] new_dataset = new string[dataset.Length];
-                new_dataset[0] = dataset[0];
-                for (var i = 1; i < dataset.Length; i++)
+                for (var i = 0; i < dataset.Length; i++)
                 {
                     var line = dataset[i];
                     var lineSplit = line.Split(';');
-                    var rating = Double.Parse(lineSplit[2]);
+                    var rating = Double.Parse(lineSplit[3]);
+
                     rating = rating > 3 ? 1 : 0;
-                    lineSplit[2] = rating.ToString();
+                    lineSplit[3] = rating.ToString();
+
                     var new_line = string.Join(';', lineSplit);
+
                     new_dataset[i] = new_line;
                 }
 
@@ -97,7 +99,7 @@ namespace Service_Rating_Model.Controllers
 
                 var numLines = dataset.Length;
                 var body = dataset.Skip(1);
-                var sorted = body.Select(line => new { SortKey = Int32.Parse(line.Split(';')[3]), Line = line })
+                var sorted = body.Select(line => new { SortKey = Int32.Parse(line.Split(';')[4]), Line = line })
                                  .OrderBy(x => x.SortKey)
                                  .Select(x => x.Line);
 
@@ -119,6 +121,9 @@ namespace Service_Rating_Model.Controllers
             public string serviceId;
 
             [LoadColumn(2)]
+            public string userAge;
+
+            [LoadColumn(3)]
             public bool Label;
         }
     }
