@@ -4,6 +4,7 @@ var sinonTest = require('sinon-test');
 var test = sinonTest(sinon);
 var axios = require('axios');
 var ServiceService = require('../../service/ServiceService');
+var MigrantRepository = require('../../repository/MigrantRepository');
 var ServiceRepository = require('../../repository/ServiceRepository');
 var ServiceFactory = require('../factories/ServiceFactory');
 var ServiceValidator = require('../../validators/ServiceValidator');
@@ -112,6 +113,7 @@ describe('Service Service', function () {
     }));
 
     it('should call getServices to retrieve recommended services from getRecommendations service', test(async function () {
+        this.stub(MigrantRepository, 'getMigrantUser').returns([]);
         this.stub(ServiceRepository, 'getServices').returns([]);
         this.stub(ReviewRepository, 'getAverageRating').returns([]);
         this.stub(axios, 'get').returns(Promise.resolve({ data: "[ '5c495110d50aa425309f2da6'; '50'];[ '5c495114d50aa425309f3077'; '50'];[ '5c495114d50aa425309f3071'; '50']" }));
@@ -121,6 +123,7 @@ describe('Service Service', function () {
     }));
 
     it('should call getRecommendations services with error', test(async function () {
+        this.stub(MigrantRepository, 'getMigrantUser').returns([]);
         this.stub(ServiceRepository, 'getServices');
         this.stub(axios, 'get').returns(Promise.reject({}));
         return chai.assert.isRejected(ServiceService.getRecommendations(req.user), ServerError, 'There was an error retrieving recommended services.');

@@ -124,7 +124,7 @@ module.exports = {
   async getRecommendations(user) {
     let query = {};
 
-    const migrantUser = await MigrantRepository.getMigrantUser(user._id)
+    const migrantUser = await MigrantRepository.getMigrantUser(user._id);
     const connectionString = recommendationServiceConnectionString();
     const recommendedIds = await axios.get(`${connectionString}/${user._id}/${migrantUser.age}`)
       .then(response => response.data)
