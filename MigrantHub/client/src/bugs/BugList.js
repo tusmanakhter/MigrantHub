@@ -47,6 +47,9 @@ class BugList extends Component {
         return '';
       },
     }, {
+      Header: <FormattedMessage id="bug.status" />,
+      accessor: 'status',
+    }, {
       id: 'modify',
       Header: <FormattedMessage id="Actions" />,
       accessor: row => row,

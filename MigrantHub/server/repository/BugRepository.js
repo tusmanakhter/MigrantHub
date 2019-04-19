@@ -24,4 +24,10 @@ module.exports = {
       throw new ServerError('There was an error retrieving bug.', 400, error);
     });
   },
+  updateBug(bugId, bugObject) {
+    return Bug.findByIdAndUpdate({ _id: bugId }, bugObject,
+      { new: true }).exec().then(() => Promise.resolve('Bug updated succesfully.')).catch((error) => {
+      throw new ServerError('There was an error updating bug.', 400, error);
+    });
+  },
 };

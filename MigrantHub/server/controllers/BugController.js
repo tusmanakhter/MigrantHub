@@ -13,4 +13,9 @@ module.exports = {
   async getBug(bugId) {
     return BugService.getBug(bugId);
   },
+  async updateBug(bugId, bugObject) {
+    const parsedBugObject = qs.parse(bugObject);
+    return BugService.updateBug(bugId, parsedBugObject);
+  },
+
 };

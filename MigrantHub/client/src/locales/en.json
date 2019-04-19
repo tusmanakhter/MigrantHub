@@ -251,6 +251,7 @@
   "view.bug": "View Bugs",
   "bug.title": "Title",
   "bug.date": "Date",
+  "bug.status": "Status",
   "congrats.reported.bug": "Thank you for your feedback, the bug has been reported to us!",
   "countries.AF":"Afghanistan",
   "countries.AL":"Albania",

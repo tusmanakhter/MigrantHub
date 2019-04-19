@@ -34,4 +34,10 @@ describe('Bug controller', function () {
         await BugController.getBug(bug._id);
         assert.calledWith(BugService.getBug, bug._id);
     }));
+
+    it('should call updateBug service with correct parameters.', test(async function () {
+        this.stub(BugService, 'updateBug');
+        await BugController.updateBug(bug._id, req.body);
+        assert.calledWith(BugService.updateBug, bug._id, req.body);
+    }));
 });
