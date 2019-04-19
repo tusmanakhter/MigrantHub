@@ -63,14 +63,14 @@ function Header({ ...props }) {
             )}
           </div>
         </Hidden>
-        <GridItem className={classes.inlineBlock} xs={12} sm={12} md={8} lg={8}>
+        <GridItem className={classes.inlineBlock} xs={12} sm={12} md={8} lg={8} data-tut="reactour__searchBar">
           <SearchBar />
         </GridItem>
         <div className={classes.flex} />
         <Hidden smDown implementation="css">
           <HeaderLinks rtlActive={rtlActive} />
         </Hidden>
-        <div className={classes.inlineBlock} id="google_translate_element" />
+        <div className={classes.inlineBlock} id="google_translate_element" data-tut="reactour__translate"/>
         <Hidden mdUp implementation="css">
           <Button
             className={classes.appResponsive}

@@ -141,7 +141,7 @@ class NavPanel extends React.Component {
       const { email, type } = this.state;
 
       return (
-        <div className={classes.root}>
+        <div className={classes.root} data-tut="reactour__sidebar">
           <CssBaseline />
 
           <Drawer

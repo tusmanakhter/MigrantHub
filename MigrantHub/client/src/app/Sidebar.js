@@ -145,7 +145,7 @@ class Sidebar extends React.Component {
           <img src={this.getAvatar(gender)} className={classes.avatarImg} alt="..." />
         </div>
         <List className={classes.list}>
-          <ListItem className={`${classes.item} ${classes.userItem}`}>
+          <ListItem className={`${classes.item} ${classes.userItem}`} data-tut="reactour__myAvatar">
             <NavLink
               to="#"
               className={`${classes.itemLink} ${classes.userCollapseButton}`}
@@ -189,7 +189,7 @@ class Sidebar extends React.Component {
                     />
                   </NavLink>
                 </ListItem>
-                <ListItem className={classes.collapseItem}>
+                <ListItem className={classes.collapseItem} data-tut="reactour__myServices">
                   <NavLink
                     to={{
                       pathname: '/services',

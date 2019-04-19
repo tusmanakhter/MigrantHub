@@ -104,7 +104,7 @@ class Layout extends React.Component {
               handleDrawerToggle={this.handleDrawerToggle}
               {...rest}
             />
-            <div className={classes.content}>
+            <div className={classes.content} data-tut="reactour__dashboard">
               {children}
             </div>
             <Footer fluid />

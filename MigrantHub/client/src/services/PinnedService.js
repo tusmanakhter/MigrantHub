@@ -99,7 +99,7 @@ class PinnedService extends Component {
       <AuthConsumer>
         {({ user }) => (
           <React.Fragment>
-            <div className={classes.mainContainer}>
+            <div className={classes.mainContainer}  data-tut="reactour__pinnedService">
               <h5 className={classes.pageSubcategoriesTitle}>
                 <b><FormattedMessage id="service.pinned.service" /></b>
               </h5>

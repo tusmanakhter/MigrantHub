@@ -2,7 +2,18 @@ import React from 'react';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import validator from 'validator';
-import { Redirect } from 'react-router-dom';
+import { Redirect, withRouter } from 'react-router-dom';
+import { pinServiceTour, viewServiceTour, createServiceTour, mainTour } from 'lib/GuidedTour'
+import MenuItem from "@material-ui/core/MenuItem";
+import MenuList from "@material-ui/core/MenuList";
+import ClickAwayListener from "@material-ui/core/ClickAwayListener";
+import Paper from "@material-ui/core/Paper";
+import Grow from "@material-ui/core/Grow";
+import Popper from "@material-ui/core/Popper";
+import Help from "@material-ui/icons/Help";
+
+import axios from 'axios';
+import Tour from "reactour";
 
 // @material-ui/core components
 import withStyles from '@material-ui/core/styles/withStyles';
@@ -22,15 +33,70 @@ import { AuthConsumer } from 'routes/AuthContext';
 import UserTypes from 'lib/UserTypes';
 
 class BaseHeaderLinks extends React.Component {
-  state = {
+  constructor(props) {
+    super(props);
+    this.state = {
     open: false,
     search: '',
     searchError: '',
     redirectTo: false,
     redirectToURL: '',
     redirectState: {},
+    isTourOpen: false,
+    isShowingMore: false,
+    dataRetrieved: false,
+    };
+    this.getUser = this.getUser.bind(this);
+  }
+
+  componentDidMount() {
+    this.getUser(this);
+  }
+
+  componentWillReceiveProps() {
+    this.getUser(this);
+  }
+
+  getUser() {
+    const { dataRetrieved } = this.state;
+    const { user } = this.context;
+
+    if (!dataRetrieved) {
+      axios.get(`/api/migrants/onboarding/${user.username}`).then((response) => {
+        if (response.status === 200) {
+          let performOnBoarding = response.data == true ? true: false ;
+          this.setState({
+            dataRetrieved: true,
+          });
+          if(performOnBoarding){
+            axios.put(`/api/migrants/onboarding/${user.username}`);
+            this.openTour(mainTour);
+          }
+        }
+      });
+    }
+  }
+
+  closeTour = () => {
+    this.setState({ isTourOpen: false });
   };
 
+  openTour = (tourSteps) => {
+    if(tourSteps == mainTour){
+      this.setState({ 
+        tourSteps: tourSteps,
+        closeWithMask: false,
+        isTourOpen: true
+      });
+    } else {
+      this.setState({ 
+        tourSteps: tourSteps,
+        closeWithMask: true,
+        isTourOpen: true
+      });
+    } 
+  };
+  
   handleClick = () => {
     this.setState({ open: !this.state.open });
   };
@@ -104,9 +170,9 @@ class BaseHeaderLinks extends React.Component {
 
   render() {
     const {
-      classes, rtlActive, context,
+      classes, rtlActive, context
     } = this.props;
-    const { open } = this.state;
+    const { open,  isTourOpen, tourSteps, closeWithMask } = this.state;
     const dropdownItem = classNames(
       classes.dropdownItem,
       classes.primaryHover,
@@ -134,7 +200,99 @@ class BaseHeaderLinks extends React.Component {
     return (
       <div className={wrapper}>
         {this.renderRedirectTo()}
-        <Link to="/main">
+        <div className={managerClasses} data-tut="reactour__onboarding">
+          <Tour
+            onRequestClose={this.closeTour}
+            steps={tourSteps}
+            closeWithMask={closeWithMask}
+            isOpen={isTourOpen}
+            maskClassName="mask"
+            className="helper"
+            rounded={10}
+            startAt={0}
+          />
+          {this.props.location.pathname ==="/main" ?
+          <div>
+          <Button
+            color="primary"
+            justIcon
+            simple
+            aria-label="Guided Tour"
+            aria-owns={open ? "menu-list" : null}
+            aria-haspopup="true"
+            onClick={this.handleClick}
+            className={rtlActive ? classes.buttonLinkRTL : classes.buttonLink}
+            muiClasses={{
+              label: rtlActive ? classes.labelRTL : ""
+            }}
+            buttonRef={node => {
+              this.anchorEl = node;
+            }}
+          >
+            <Help
+              className={
+                classes.headerLinksSvg +
+                " " +
+                (rtlActive
+                  ? classes.links + " " + classes.linksRTL
+                  : classes.links)
+              }
+            />
+          </Button>
+          <Popper
+            open={open}
+            anchorEl={this.anchorEl}
+            transition
+            disablePortal
+            placement="bottom"
+            className={classNames({
+              [classes.popperClose]: !open,
+              [classes.pooperResponsive]: true,
+              [classes.pooperNav]: true
+            })}
+          >
+            {({ TransitionProps, placement }) => (
+              <Grow
+                {...TransitionProps}
+                id="menu-list"
+                style={{ transformOrigin: "0 0 0" }}
+              >
+                <Paper className={classes.dropdown}>
+                  <ClickAwayListener onClickAway={this.handleClose}>
+                    <MenuList role="menu">
+                      <MenuItem
+                          onClick={() => this.openTour(mainTour)}
+                          className={dropdownItem}
+                      >
+                        {"Onboarding"}
+                      </MenuItem>
+                      <MenuItem
+                        onClick={() => this.openTour(pinServiceTour)}
+                        className={dropdownItem}
+                      >
+                        {"How to pin a service?"}
+                      </MenuItem>
+                      <MenuItem
+                        onClick={() => this.openTour(viewServiceTour)}
+                        className={dropdownItem}
+                      >
+                        {"How to view all services?"}
+                      </MenuItem>
+                      <MenuItem
+                        onClick={() => this.openTour(createServiceTour)}
+                        className={dropdownItem}
+                      >
+                        {"How to create a service?"}
+                      </MenuItem>
+                    </MenuList>
+                  </ClickAwayListener>
+                </Paper>
+              </Grow>
+            )}
+          </Popper>
+          </div>: ""}
+        </div>
+        <Link to="/main" data-tut="reactour__returnToDashboard">
           <Button
             color="primary"
             simple
@@ -158,7 +316,7 @@ class BaseHeaderLinks extends React.Component {
             </Hidden>
           </Button>
         </Link>
-        <Link to={path}>
+        <Link to={path} data-tut="reactour__myProfile">
           <Button
             color="primary"
             simple
@@ -190,4 +348,6 @@ HeaderLinks.propTypes = {
   intl: intlShape.isRequired,
 };
 
-export default withStyles(headerLinksStyle)(injectIntl(HeaderLinks));
+BaseHeaderLinks.contextType = AuthConsumer;
+
+export default withRouter(withStyles(headerLinksStyle)(injectIntl(HeaderLinks)));

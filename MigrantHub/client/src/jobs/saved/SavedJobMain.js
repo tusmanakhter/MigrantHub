@@ -130,11 +130,11 @@ class SavedJobMain extends Component {
           </Button>
           )
         }
+        <div className={classes.mainContainer} data-tut="reactour__jobs">
         <h5 className={classes.cardTitle}>
           <b><FormattedMessage id="job.saved" /></b>
         </h5>
         <hr />
-        <div className={classes.mainContainer}>
           <GridContainer alignItems="left" justify="left">
             {' '}
             {
@@ -157,7 +157,6 @@ class SavedJobMain extends Component {
                 ))
               }
           </GridContainer>
-        </div>
         { noData == true
             && (
             <div style={{ textAlign: 'left' }}>
@@ -165,6 +164,7 @@ class SavedJobMain extends Component {
             </div>
             )
           }
+        </div>
       </React.Fragment>
     );
   }

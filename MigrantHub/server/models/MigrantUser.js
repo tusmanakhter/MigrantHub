@@ -69,6 +69,7 @@ const MigrantUser = User.discriminator(UserTypes.MIGRANT,
       },
       select: false,
     },
+    onBoarding: { type: Boolean, default: true },
   }, options));
 
 module.exports = MigrantUser;

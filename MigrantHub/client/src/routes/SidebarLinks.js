@@ -18,7 +18,7 @@ const SidebarLinks = [
   },
   {
     path: '/categories',
-    name: <FormattedMessage id="services" />,
+    name: <div data-tut="reactour__selectService"><FormattedMessage id="services" /></div>,
     icon: DashboardIcon,
     type: [UserTypes.ADMIN, UserTypes.BUSINESS, UserTypes.MIGRANT],
   },
