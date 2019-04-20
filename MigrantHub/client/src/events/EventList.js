@@ -12,6 +12,10 @@ import TermsConditions from 'app/TermsConditions';
 import InfiniteScroll from 'react-infinite-scroller';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
+// filter
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Switch from '@material-ui/core/Switch';
+
 // @material-ui/icons
 import Info from '@material-ui/icons/Info';
 import Gavel from '@material-ui/icons/Gavel';
@@ -50,10 +54,21 @@ class EventList extends Component {
       offset: 0,
       limit: 20,
       moreData: true,
+      filtered: false,
+      filterbyDate: false,
     };
   }
 
-  fetchData = (redirect, props) => {
+  handleHiddenChange = (event, filtered) => {
+    this.setState(state => ({
+      filtered,
+      items: [],
+      offset: 0,
+    }))
+    this.fetchData(true, this.props, filtered);
+  };
+
+  fetchData = (redirect, props, filtered) => {
     const { location } = props;
     const { limit } = this.state;
     let { offset } = this.state;
@@ -82,6 +97,7 @@ class EventList extends Component {
         editOwner: editOwnerEmail,
         searchQuery,
         search: searchMode,
+        filtered,
         offset,
         limit,
       },
@@ -151,7 +167,7 @@ class EventList extends Component {
 
   render() {
     const { classes } = this.props;
-    const { items, moreData } = this.state;
+    const { items, moreData, filtered } = this.state;
     return (
       <AuthConsumer>
         {({ user }) => (
@@ -230,6 +246,17 @@ class EventList extends Component {
               <FormattedMessage id="event.browse" />
             </h5>
             <hr />
+            <FormControlLabel
+                control={
+                  <Switch
+                    checked={filtered}
+                    onChange={this.handleHiddenChange}
+                    value="filtered"
+                    color="primary"
+                  />
+                }
+                label="Filter by date"
+              />
             <InfiniteScroll
               pageStart={0}
               loadMore={() => this.fetchData(this.props.redirect, this.props)}

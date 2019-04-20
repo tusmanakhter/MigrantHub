@@ -39,8 +39,8 @@ describe('Service controller', function () {
 
     it('should call getServices service with correct parameters from createService controller', test(async function () {
         this.stub(ServiceService, 'getServices');
-        await ServiceController.getServices(req.query.editOwner, req.query.searchQuery, req.query.search, service.category, service.subcategory );
-        assert.calledWith(ServiceService.getServices, req.query.editOwner, req.query.searchQuery, req.query.search, service.category, service.subcategory);
+        await ServiceController.getServices(req.query.editOwner, req.query.searchQuery, req.query.search, service.category, service.subcategory, req.query.filtered);
+        assert.calledWith(ServiceService.getServices, req.query.editOwner, req.query.searchQuery, req.query.search, service.category, service.subcategory, req.query.filtered);
     }));
 
     it('should call getService service with correct parameters from getService controller', test(async function () {

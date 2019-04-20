@@ -22,7 +22,7 @@ module.exports = {
         $or: savedEventsList,
       };
       query.deleted = false;
-      return EventRepository.getEvents(query, false, undefined, undefined);
+      return EventRepository.getEvents(query, false, undefined, undefined, undefined);
     }
     return Promise.resolve([]);
   },

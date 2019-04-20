@@ -97,16 +97,16 @@ class ServiceList extends Component {
   handleHiddenChange = (event, filtered) => {
     this.setState(state => ({
       filtered,
+      items: [],
+      offset: 0,
     }))
-    this.fetchData(this.props.redirect, this.props);
+    this.fetchData(true, this.props, filtered);
   };
 
-  fetchData = (redirect, props) => {
-    console.log('HELLO FROM FETCH')
+  fetchData = (redirect, props, filtered) => {
     const { location } = props;
     const { limit } = this.state;
     let { offset } = this.state;
-    let { filtered } = this.state;
     let editOwnerEmail = '';
     let searchQuery = '';
     let searchMode = false;
@@ -164,7 +164,7 @@ class ServiceList extends Component {
 
   render() {
     const { classes } = this.props;
-    const { items, moreData, filtered, filterbyDate } = this.state;
+    const { items, moreData, filtered } = this.state;
 
     return (
       <AuthConsumer>
