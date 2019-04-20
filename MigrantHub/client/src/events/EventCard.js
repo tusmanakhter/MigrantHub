@@ -65,7 +65,7 @@ const styles = theme => ({
 const EventCard = (props) => {
   const {
     classes, eventId, eventName, eventDescription, eventLocation, dateEnd,
-    savedEvent, addSavedEvent, deleteSavedEvent, itemIndex,
+    savedEvent, addSavedEvent, deleteSavedEvent, itemIndex, dateCreated,
   } = props;
 
   return (
@@ -106,12 +106,12 @@ const EventCard = (props) => {
                         <UnFavoriteIcon />
                       </Button>
                     )
-              }
+                  }
                 </Tooltip>
               )
                 : (<div><br /><br /></div>
                 )
-        }
+              }
             </GridItem>
             <CardActionArea component={cardProps => <Link to={`/events/${eventId}`} {...cardProps} />}>
               <CardHeader color="primary" icon className={classes.headContainer}>
@@ -142,6 +142,9 @@ const EventCard = (props) => {
                       {eventDescription}
                     </Typography>
                   )}
+                <div style={{ textAlign: 'right', padding: '5px 5px', color: 'gray' }}>
+                  <h6>Posted {moment(dateCreated).fromNow()}</h6>
+                </div>
               </CardBody>
               <CardFooter stats className={classes.cardFooter}>
                 <GridContainer justify="center">
@@ -150,7 +153,7 @@ const EventCard = (props) => {
                       {eventLocation
                         ? (<p><Place fontSize="inherit" /> {eventLocation.city}</p>)
                         : (<p><Place fontSize="inherit" /> Canada</p>)
-          }
+                      }
                     </div>
                   </GridItem>
                   <GridItem lg={12} md={12} sm={12} xs={12}>
@@ -158,7 +161,7 @@ const EventCard = (props) => {
                       {moment(dateEnd) > moment()
                         ? (<p className={classes.date}><CalendarToday />Ends {moment(dateEnd).fromNow()}</p>)
                         : (<p className={classes.date}><CalendarToday />Ended {moment(dateEnd).fromNow()}</p>)
-          }
+                      }
                     </div>
                   </GridItem>
 

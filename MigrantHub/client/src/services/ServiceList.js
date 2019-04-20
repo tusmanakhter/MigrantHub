@@ -304,6 +304,7 @@ class ServiceList extends Component {
                           serviceHours={item.serviceHours}
                           rating={item.avgRating}
                           count={item.countRating}
+                          dateCreated={item.dateCreated}
                           pinIcon={<i className="fas fa-thumbtack" />}
                           pinIconHandle={this.addPinnedService}
                           pinIconHelperText="Pin to Dashboard"

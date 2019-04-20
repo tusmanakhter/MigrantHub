@@ -23,9 +23,11 @@ module.exports = {
     return ServiceService.createService(user, parsedServiceObj);
   },
 
-  async getServices(userId, searchQuery, search, category, subcategory, locale, offset, limit, filtered) {
+  async getServices(userId, searchQuery, search, category, subcategory, locale, offset, limit,
+    filtered) {
     return ServiceService
-      .getServices(userId, searchQuery, search, category, subcategory, locale, offset, limit, filtered);
+      .getServices(userId, searchQuery, search, category, subcategory, locale, offset, limit,
+        filtered);
   },
 
   async getService(serviceId) {

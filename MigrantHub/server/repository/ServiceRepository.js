@@ -34,7 +34,8 @@ module.exports = {
         });
     } if (offset !== undefined && limit !== undefined) {
       if (filtered === 'true') {
-        return Service.find(query).skip(parseInt(offset, 10)).limit(parseInt(limit, 10)).sort({ dateCreated: -1 })
+        return Service.find(query).skip(parseInt(offset, 10)).limit(parseInt(limit, 10))
+          .sort({ dateCreated: -1 })
           .exec()
           .then(services => Promise.resolve(services))
           .catch((error) => {

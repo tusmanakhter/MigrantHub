@@ -23,7 +23,8 @@ module.exports = {
     throw new ServerError('There was an error creating service.', 400, errors);
   },
 
-  async getServices(userId, searchQuery, search, category, subcategory, locale, offset, limit, filtered) {
+  async getServices(userId, searchQuery, search, category, subcategory, locale, offset, limit,
+    filtered) {
     let query = {};
     // eslint-disable-next-line no-console
     console.log(`logging locale for eslint ${locale}`);

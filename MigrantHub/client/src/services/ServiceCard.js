@@ -15,6 +15,7 @@ import Typography from '@material-ui/core/Typography';
 import StarRatingComponent from 'react-star-rating-component';
 import Button from 'components/CustomButtons/Button.jsx';
 import Tooltip from '@material-ui/core/Tooltip';
+import moment from 'moment';
 import 'rc-menu/assets/index.css';
 import { getCategoryIcon, getCategory, getSubCategory } from 'helpers/Category';
 
@@ -56,7 +57,7 @@ const styles = theme => ({
 const ServiceCard = (props) => {
   const {
     classes, serviceId, serviceTitle, serviceImagePath, rating, count,
-    serviceLocation, category, subcategory, percentageMatch, pinIcon, pinIconHandle, pinIconHelperText,
+    serviceLocation, category, subcategory, percentageMatch, pinIcon, pinIconHandle, pinIconHelperText, dateCreated,
   } = props;
 
   return (
@@ -113,7 +114,10 @@ const ServiceCard = (props) => {
               {serviceLocation && serviceLocation.city != ''
                 ? (<p style={{ textAlign: 'left' }}><Place fontSize="inherit" /> {serviceLocation.city}</p>)
                 : (<p style={{ textAlign: 'left' }}><Place fontSize="inherit" /> Canada</p>)
-                }
+              }
+              <div style={{ textAlign: 'right', padding: '5px 5px', color: 'gray' }}>
+                <h6>{moment(dateCreated).fromNow()}</h6>
+              </div>
             </div>
           </CardBody>
           <CardFooter stats>
@@ -130,7 +134,7 @@ const ServiceCard = (props) => {
             {percentageMatch
               ? (<div className={classes.Recommendation}>{'•'}<Star />Recommendation:{percentageMatch}%</div>)
               : (<div />)
-                }
+            }
           </CardFooter>
         </CardActionArea>
       </Card>

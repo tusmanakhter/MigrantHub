@@ -200,7 +200,7 @@ class EventList extends Component {
                             </h6>
                           </CardHeader>
                           <CardBody>
-                            { user.type === UserTypes.BUSINESS
+                            {user.type === UserTypes.BUSINESS
                               && (
                                 <div>
                                   {this.renderRedirectToEventForm()}
@@ -247,16 +247,16 @@ class EventList extends Component {
             </h5>
             <hr />
             <FormControlLabel
-                control={
-                  <Switch
-                    checked={filtered}
-                    onChange={this.handleHiddenChange}
-                    value="filtered"
-                    color="primary"
-                  />
-                }
-                label="Filter by date"
-              />
+              control={
+                <Switch
+                  checked={filtered}
+                  onChange={this.handleHiddenChange}
+                  value="filtered"
+                  color="primary"
+                />
+              }
+              label="Filter by date"
+            />
             <InfiniteScroll
               pageStart={0}
               loadMore={() => this.fetchData(this.props.redirect, this.props)}
@@ -286,6 +286,7 @@ class EventList extends Component {
                         timeStart={item.timeStart}
                         timeEnd={item.timeEnd}
                         savedEvent={item.savedEvent}
+                        dateCreated={item.dateCreated}
                         itemIndex={index}
                         addSavedEvent={this.addSavedEvent}
                         deleteSavedEvent={this.deleteSavedEvent}
