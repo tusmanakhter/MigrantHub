@@ -11,6 +11,7 @@ import { AuthConsumer } from 'routes/AuthContext';
 import TermsConditions from 'app/TermsConditions';
 import InfiniteScroll from 'react-infinite-scroller';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import Checkbox from '@material-ui/core/Checkbox';
 
 // filter
 import FormControlLabel from '@material-ui/core/FormControlLabel';
@@ -64,8 +65,9 @@ class EventList extends Component {
       filtered,
       items: [],
       offset: 0,
-    }))
-    this.fetchData(true, this.props, filtered);
+    }), () => {
+      this.fetchData(true, this.props, filtered)
+    });
   };
 
   fetchData = (redirect, props, filtered) => {
@@ -246,16 +248,18 @@ class EventList extends Component {
               <FormattedMessage id="event.browse" />
             </h5>
             <hr />
+            <FormattedMessage id="sort" />
+            <br />
             <FormControlLabel
               control={
-                <Switch
+                <Checkbox
                   checked={filtered}
                   onChange={this.handleHiddenChange}
                   value="filtered"
-                  color="primary"
+                  color="default"
                 />
               }
-              label="Filter by date"
+              label="Newest first"
             />
             <InfiniteScroll
               pageStart={0}

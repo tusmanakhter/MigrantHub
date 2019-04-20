@@ -14,10 +14,10 @@ import { AuthConsumer } from 'routes/AuthContext';
 import { toast } from 'react-toastify';
 import InfiniteScroll from 'react-infinite-scroller';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import Checkbox from '@material-ui/core/Checkbox';
 
 // filter
 import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Switch from '@material-ui/core/Switch';
 
 // @material-ui/icons
 import Info from '@material-ui/icons/Info';
@@ -99,8 +99,9 @@ class ServiceList extends Component {
       filtered,
       items: [],
       offset: 0,
-    }))
-    this.fetchData(true, this.props, filtered);
+    }), () => {
+      this.fetchData(true, this.props, filtered)
+    });
   };
 
   fetchData = (redirect, props, filtered) => {
@@ -262,16 +263,18 @@ class ServiceList extends Component {
                 <FormattedMessage id="service.browse" />
               </h5>
               <hr />
+              <FormattedMessage id="sort" />
+              <br />
               <FormControlLabel
                 control={
-                  <Switch
+                  <Checkbox
                     checked={filtered}
                     onChange={this.handleHiddenChange}
                     value="filtered"
-                    color="primary"
+                    color="default"
                   />
                 }
-                label="Filter by date"
+                label="Newest first"
               />
               <InfiniteScroll
                 pageStart={0}
