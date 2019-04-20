@@ -20,7 +20,7 @@
     "Service_Recommender": {
       "commandName": "Project",
       "launchBrowser": true,
-      "launchUrl": "api/recommendation/1",
+      "launchUrl": "api/recommendation/1/5",
       "applicationUrl": "https://localhost:5001;http://localhost:5000",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"

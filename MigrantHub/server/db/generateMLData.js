@@ -46,19 +46,23 @@ function generateServiceReviewsData() {
     });
   });
 
-  // serviceReviews.csv
+  // ratings.csv
   MongoClient.connect(url, function(err, db) {
     if (err) throw err;
     var dbo = db.db("migranthub");
     dbo.collection("reviews").find({}).forEach(function(doc) {
-      var text = doc.user + ';' + doc.serviceId + ';' + doc.rating + '; 0000';
-      if(!doc.deleted) {
-        fs.appendFile("./ratings.csv", ['\n' + text], function(err) {
-          if(err) {
-              console.log(err);
-          }
-        })
-      }
+      //get the age before writing to the file
+      dbo.collection("users").findOne({ _id: doc.user })
+      .then(function(user) {
+        var text = doc.user + ';' + doc.serviceId + ';' + user.age + ';' + doc.rating + '; 0000';
+        if(!doc.deleted) {
+          fs.appendFile("./ratings.csv", ['\n' + text], function(err) {
+            if(err) {
+                console.log(err);
+            }
+          })
+        }
+      })
     }, function(err) {
       uploadFile('data_model_files', './ratings.csv');
       if(err) {

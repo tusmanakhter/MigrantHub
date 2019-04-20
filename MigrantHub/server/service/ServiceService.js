@@ -1,6 +1,7 @@
 const fs = require('fs-extra');
 const axios = require('axios');
 const ServiceValidator = require('../validators/ServiceValidator');
+const MigrantRepository = require('../repository/MigrantRepository');
 const ServiceRepository = require('../repository/ServiceRepository');
 const ReviewRepository = require('../repository/ReviewRepository');
 const { ServerError } = require('../errors/ServerError');
@@ -123,8 +124,10 @@ module.exports = {
 
   async getRecommendations(user) {
     let query = {};
+
+    const migrantUser = await MigrantRepository.getMigrantUser(user._id);
     const connectionString = recommendationServiceConnectionString();
-    const recommendedIds = await axios.get(`${connectionString}/${user._id}`)
+    const recommendedIds = await axios.get(`${connectionString}/${user._id}/${migrantUser.age}`)
       .then(response => response.data)
       .catch((error) => {
         throw new ServerError('There was an error retrieving recommended services.', 400, error);
