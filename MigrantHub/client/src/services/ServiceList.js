@@ -15,6 +15,10 @@ import { toast } from 'react-toastify';
 import InfiniteScroll from 'react-infinite-scroller';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
+// filter
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Switch from '@material-ui/core/Switch';
+
 // @material-ui/icons
 import Info from '@material-ui/icons/Info';
 import Gavel from '@material-ui/icons/Gavel';
@@ -49,6 +53,8 @@ class ServiceList extends Component {
       offset: 0,
       limit: 20,
       moreData: true,
+      filtered: false,
+      filterbyDate: false,
     };
     this.addPinnedService = this.addPinnedService.bind(this);
   }
@@ -88,11 +94,19 @@ class ServiceList extends Component {
     }
   }
 
+  handleHiddenChange = (event, filtered) => {
+    this.setState(state => ({
+      filtered,
+    }))
+    this.fetchData(this.props.redirect, this.props);
+  };
+
   fetchData = (redirect, props) => {
+    console.log('HELLO FROM FETCH')
     const { location } = props;
     const { limit } = this.state;
     let { offset } = this.state;
-
+    let { filtered } = this.state;
     let editOwnerEmail = '';
     let searchQuery = '';
     let searchMode = false;
@@ -122,6 +136,7 @@ class ServiceList extends Component {
         search: searchMode,
         category,
         subcategory,
+        filtered,
         offset,
         limit,
       },
@@ -149,7 +164,7 @@ class ServiceList extends Component {
 
   render() {
     const { classes } = this.props;
-    const { items, moreData } = this.state;
+    const { items, moreData, filtered, filterbyDate } = this.state;
 
     return (
       <AuthConsumer>
@@ -247,6 +262,17 @@ class ServiceList extends Component {
                 <FormattedMessage id="service.browse" />
               </h5>
               <hr />
+              <FormControlLabel
+                control={
+                  <Switch
+                    checked={filtered}
+                    onChange={this.handleHiddenChange}
+                    value="filtered"
+                    color="primary"
+                  />
+                }
+                label="Filter by date"
+              />
               <InfiniteScroll
                 pageStart={0}
                 loadMore={() => this.fetchData(this.props.redirect, this.props)}
