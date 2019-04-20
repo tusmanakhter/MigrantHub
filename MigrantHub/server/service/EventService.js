@@ -49,7 +49,7 @@ module.exports = {
     return Promise.resolve(foundEvent);
   },
 
-  async getEvents(user, userId, searchQuery, search, offset, limit) {
+  async getEvents(user, userId, searchQuery, search, offset, limit, filtered) {
     let query = {};
 
     if (userId !== '') {
@@ -59,7 +59,7 @@ module.exports = {
     }
     query.deleted = false;
 
-    let events = await EventRepository.getEvents(query, search, offset, limit);
+    let events = await EventRepository.getEvents(query, search, offset, limit, filtered);
     events = await events.map(async (event) => {
       const foundEvent = event.toObject();
       const foundSavedEvent = await SavedEventRepository.getSavedEvent(user._id, event._id);

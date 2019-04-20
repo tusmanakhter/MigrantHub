@@ -11,6 +11,11 @@ import { AuthConsumer } from 'routes/AuthContext';
 import TermsConditions from 'app/TermsConditions';
 import InfiniteScroll from 'react-infinite-scroller';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import Checkbox from '@material-ui/core/Checkbox';
+
+// filter
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Switch from '@material-ui/core/Switch';
 
 // @material-ui/icons
 import Info from '@material-ui/icons/Info';
@@ -50,10 +55,22 @@ class EventList extends Component {
       offset: 0,
       limit: 20,
       moreData: true,
+      filtered: false,
+      filterbyDate: false,
     };
   }
 
-  fetchData = (redirect, props) => {
+  handleHiddenChange = (event, filtered) => {
+    this.setState(state => ({
+      filtered,
+      items: [],
+      offset: 0,
+    }), () => {
+      this.fetchData(true, this.props, filtered)
+    });
+  };
+
+  fetchData = (redirect, props, filtered) => {
     const { location } = props;
     const { limit } = this.state;
     let { offset } = this.state;
@@ -82,6 +99,7 @@ class EventList extends Component {
         editOwner: editOwnerEmail,
         searchQuery,
         search: searchMode,
+        filtered,
         offset,
         limit,
       },
@@ -151,7 +169,7 @@ class EventList extends Component {
 
   render() {
     const { classes } = this.props;
-    const { items, moreData } = this.state;
+    const { items, moreData, filtered } = this.state;
     return (
       <AuthConsumer>
         {({ user }) => (
@@ -184,7 +202,7 @@ class EventList extends Component {
                             </h6>
                           </CardHeader>
                           <CardBody>
-                            { user.type === UserTypes.BUSINESS
+                            {user.type === UserTypes.BUSINESS
                               && (
                                 <div>
                                   {this.renderRedirectToEventForm()}
@@ -230,6 +248,19 @@ class EventList extends Component {
               <FormattedMessage id="event.browse" />
             </h5>
             <hr />
+            <FormattedMessage id="sort" />
+            <br />
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={filtered}
+                  onChange={this.handleHiddenChange}
+                  value="filtered"
+                  color="default"
+                />
+              }
+              label="Newest first"
+            />
             <InfiniteScroll
               pageStart={0}
               loadMore={() => this.fetchData(this.props.redirect, this.props)}
@@ -259,6 +290,7 @@ class EventList extends Component {
                         timeStart={item.timeStart}
                         timeEnd={item.timeEnd}
                         savedEvent={item.savedEvent}
+                        dateCreated={item.dateCreated}
                         itemIndex={index}
                         addSavedEvent={this.addSavedEvent}
                         deleteSavedEvent={this.deleteSavedEvent}

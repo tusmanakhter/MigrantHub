@@ -14,6 +14,10 @@ import { AuthConsumer } from 'routes/AuthContext';
 import { toast } from 'react-toastify';
 import InfiniteScroll from 'react-infinite-scroller';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import Checkbox from '@material-ui/core/Checkbox';
+
+// filter
+import FormControlLabel from '@material-ui/core/FormControlLabel';
 
 // @material-ui/icons
 import Info from '@material-ui/icons/Info';
@@ -49,6 +53,8 @@ class ServiceList extends Component {
       offset: 0,
       limit: 20,
       moreData: true,
+      filtered: false,
+      filterbyDate: false,
     };
     this.addPinnedService = this.addPinnedService.bind(this);
   }
@@ -88,11 +94,20 @@ class ServiceList extends Component {
     }
   }
 
-  fetchData = (redirect, props) => {
+  handleHiddenChange = (event, filtered) => {
+    this.setState(state => ({
+      filtered,
+      items: [],
+      offset: 0,
+    }), () => {
+      this.fetchData(true, this.props, filtered)
+    });
+  };
+
+  fetchData = (redirect, props, filtered) => {
     const { location } = props;
     const { limit } = this.state;
     let { offset } = this.state;
-
     let editOwnerEmail = '';
     let searchQuery = '';
     let searchMode = false;
@@ -122,6 +137,7 @@ class ServiceList extends Component {
         search: searchMode,
         category,
         subcategory,
+        filtered,
         offset,
         limit,
       },
@@ -149,7 +165,7 @@ class ServiceList extends Component {
 
   render() {
     const { classes } = this.props;
-    const { items, moreData } = this.state;
+    const { items, moreData, filtered } = this.state;
 
     return (
       <AuthConsumer>
@@ -247,6 +263,19 @@ class ServiceList extends Component {
                 <FormattedMessage id="service.browse" />
               </h5>
               <hr />
+              <FormattedMessage id="sort" />
+              <br />
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={filtered}
+                    onChange={this.handleHiddenChange}
+                    value="filtered"
+                    color="default"
+                  />
+                }
+                label="Newest first"
+              />
               <InfiniteScroll
                 pageStart={0}
                 loadMore={() => this.fetchData(this.props.redirect, this.props)}
@@ -278,6 +307,7 @@ class ServiceList extends Component {
                           serviceHours={item.serviceHours}
                           rating={item.avgRating}
                           count={item.countRating}
+                          dateCreated={item.dateCreated}
                           pinIcon={<i className="fas fa-thumbtack" />}
                           pinIconHandle={this.addPinnedService}
                           pinIconHelperText="Pin to Dashboard"

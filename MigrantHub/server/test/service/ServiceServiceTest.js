@@ -78,7 +78,7 @@ describe('Service Service', function () {
     it('should call getServices to retrieve all services from getServices service', test(async function () {
         this.stub(ServiceRepository, 'getServices').returns([]);
         this.stub(ReviewRepository, 'getAverageRating').returns([]);
-        await ServiceService.getServices('', '', '', '', '');
+        await ServiceService.getServices('', '', '', '', '', '');
         assert.calledWith(ServiceRepository.getServices, { deleted: false });
     }));
 

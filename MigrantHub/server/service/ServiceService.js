@@ -23,7 +23,8 @@ module.exports = {
     throw new ServerError('There was an error creating service.', 400, errors);
   },
 
-  async getServices(userId, searchQuery, search, category, subcategory, locale, offset, limit) {
+  async getServices(userId, searchQuery, search, category, subcategory, locale, offset, limit,
+    filtered) {
     let query = {};
     // eslint-disable-next-line no-console
     console.log(`logging locale for eslint ${locale}`);
@@ -40,7 +41,7 @@ module.exports = {
     }
 
     query.deleted = false;
-    let services = await ServiceRepository.getServices(query, search, offset, limit);
+    let services = await ServiceRepository.getServices(query, search, offset, limit, filtered);
     services = await services.map(async (service) => {
       const updatedService = service.toObject();
       const avg = await ReviewRepository.getAverageRating(service._id.toString());

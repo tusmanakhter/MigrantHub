@@ -23,8 +23,8 @@ module.exports = {
     return EventService.createEvent(user, parsedEventObj);
   },
 
-  async getEvents(user, userId, searchQuery, search, offset, limit) {
-    return EventService.getEvents(user, userId, searchQuery, search, offset, limit);
+  async getEvents(user, userId, searchQuery, search, offset, limit, filtered) {
+    return EventService.getEvents(user, userId, searchQuery, search, offset, limit, filtered);
   },
 
   async getEvent(user, eventId) {
