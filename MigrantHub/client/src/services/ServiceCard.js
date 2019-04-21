@@ -41,7 +41,7 @@ const styles = theme => ({
   Recommendation: {
     color: 'green',
     position: 'absolute',
-    right: 0,
+    left: 10,
   },
   ratingContainer: {
     display: 'flex',
@@ -132,7 +132,12 @@ const ServiceCard = (props) => {
               {`${count} Rating`}
             </div>
             {percentageMatch
-              ? (<div className={classes.Recommendation}>{'•'}<Star />Recommendation:{percentageMatch}%</div>)
+              ? (
+                <div className={classes.Recommendation}>
+                  <br />
+                  <br />
+                  <Star />Recommendation: {percentageMatch}%
+                </div>)
               : (<div />)
             }
           </CardFooter>
