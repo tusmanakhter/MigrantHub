@@ -116,7 +116,7 @@ describe('Service Service', function () {
         this.stub(MigrantRepository, 'getMigrantUser').returns([]);
         this.stub(ServiceRepository, 'getServices').returns([]);
         this.stub(ReviewRepository, 'getAverageRating').returns([]);
-        this.stub(axios, 'get').returns(Promise.resolve({ data: "[ '5c495110d50aa425309f2da6'; '50'];[ '5c495114d50aa425309f3077'; '50'];[ '5c495114d50aa425309f3071'; '50']" }));
+        this.stub(axios, 'get').returns(Promise.resolve({ data: "[ '5c495110d50aa425309f2da6'; '50.99'];[ '5c495114d50aa425309f3077'; '50.99'];[ '5c495114d50aa425309f3071'; '50.99']" }));
         this.stub(recommendationServiceConfig, 'recommendationServiceConnectionString').returns('');
         await ServiceService.getRecommendations(req.user);
         assert.calledWith(ServiceRepository.getServices,{ $or: [{ _id: '5c495110d50aa425309f2da6' }, { _id: '5c495114d50aa425309f3077' }, { _id: '5c495114d50aa425309f3071' }], deleted: false });

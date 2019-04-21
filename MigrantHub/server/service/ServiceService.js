@@ -133,8 +133,8 @@ module.exports = {
         throw new ServerError('There was an error retrieving recommended services.', 400, error);
       });
 
-    const serviceIds = recommendedIds.match(/[A-Za-z_0-9]{5,}/g);
-    const percentageValue = recommendedIds.match(/'[0-9]{1,3}'/g);
+    const serviceIds = recommendedIds.match(/[A-Za-z_0-9]{24}/g);
+    const percentageValue = recommendedIds.match(/'[0-9]{1,3}.[0-9]{1,}'/g);
 
     const results = {
       services: [],
@@ -143,7 +143,7 @@ module.exports = {
     Object.keys(serviceIds).forEach((idIndex) => {
       results.services[idIndex] = {
         id: serviceIds[idIndex],
-        percentageMatch: percentageValue[idIndex].replace(/'/gi, ''),
+        percentageMatch: parseInt(percentageValue[idIndex].replace(/'/gi, ''), 10),
       };
     });
 
